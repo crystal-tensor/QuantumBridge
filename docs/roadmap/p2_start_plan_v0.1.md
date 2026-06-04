@@ -27,17 +27,21 @@ with owners, acceptance criteria, and review gates.
 
 Initial planning focus:
 
+- Qiskit Nature / Qiskit Algorithms public API inventory
+- implementation-mode classification: upstream passthrough, adapter integration, native core, or source port with attribution
+- result schema/versioning policy for native and upstream-wrapped outputs
+- chemistry workflow adapter design for H2, LiH, and H2O
 - grammar-based QASM parser design
-- optional Qiskit Aer adapter decision
 - compiler pass expansion design
 - PennyLane coverage boundaries
-- result schema/versioning policy
 
 ## 3. P2 Deferred / Not Yet Started
 
 Do not start the following until issue scope and review gate are accepted:
 
 - QASM parser implementation
+- Qiskit Nature / Qiskit Algorithms adapter implementation
+- PySCF or OpenFermion integration
 - Aer adapter implementation
 - broader PennyLane operation/template implementation
 - real noisy execution path
@@ -49,12 +53,16 @@ Do not start the following until issue scope and review gate are accepted:
 
 P2 issue groups should follow the existing backlog:
 
-- QASM grammar parser
-- Qiskit Aer optional adapter
-- compiler pass expansion
-- PennyLane operation/template coverage
-- noise execution path
+- Qiskit Nature / Qiskit Algorithms public API inventory
+- upstream passthrough and adapter integration strategy
+- chemistry and algorithms workflow adapters
 - result schema and serialization
+- QASM grammar parser
+- compiler pass expansion
+- noise execution path
+- QOS backend abstraction
+- PennyLane operation/template coverage
+- Qiskit Aer optional adapter as second-batch review
 - visualization
 - CI, coverage, packaging, legal, trademark, docs, examples, benchmarks,
   versioning, and release process
@@ -79,8 +87,10 @@ Every P2 implementation task must include:
 - design source document
 - supported behavior and non-goals
 - tests based on QuantumBridge-owned behavior
+- implementation mode declaration
 - optional dependency boundary review, where applicable
-- legal/trademark review for upstream-facing adapter changes
+- license/attribution/migration-ledger update for upstream-facing changes
+- legal/trademark review for upstream-facing adapter or passthrough changes
 - CI evidence before merge
 
 ## 7. P1 RC Baseline Protection
