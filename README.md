@@ -136,10 +136,10 @@ Do not create or push the release tag until remote CI has run and the release is
 
 ## Legal and Attribution
 
-- Apache-2.0 plan: [docs/legal/apache2_compliance_plan.md](/Users/avalok/work/QuantumBridge/docs/legal/apache2_compliance_plan.md)
-- Third-party source policy: [docs/legal/third_party_source_policy.md](/Users/avalok/work/QuantumBridge/docs/legal/third_party_source_policy.md)
-- Third-party notices: [THIRD_PARTY_NOTICES.md](/Users/avalok/work/QuantumBridge/THIRD_PARTY_NOTICES.md)
-- Source migration ledger: [docs/migration/source_migration_ledger.md](/Users/avalok/work/QuantumBridge/docs/migration/source_migration_ledger.md)
+- Apache-2.0 plan: [docs/legal/apache2_compliance_plan.md](docs/legal/apache2_compliance_plan.md)
+- Third-party source policy: [docs/legal/third_party_source_policy.md](docs/legal/third_party_source_policy.md)
+- Third-party notices: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
+- Source migration ledger: [docs/migration/source_migration_ledger.md](docs/migration/source_migration_ledger.md)
 
 Suggested public description:
 
