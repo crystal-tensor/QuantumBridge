@@ -1,32 +1,43 @@
 | ID | Title | Type | Priority | Area | Description | Acceptance Criteria |
 |---|---|---|---|---|---|---|
-| P2-001 | Define QASM grammar subset | Design | High | QASM parser | Write the owned grammar scope for the supported OpenQASM subset. | Grammar doc lists supported and rejected statements with examples. |
-| P2-002 | Implement grammar parser spike | Engineering | High | QASM parser | Prototype a parser without copying third-party grammar code. | Spike parses P1-supported examples and rejects unsupported statements. |
-| P2-003 | Add QASM diagnostic tests | Test | High | QASM parser | Add tests for malformed input and unsupported syntax. | Tests assert QuantumBridge-owned diagnostic behavior. |
-| P2-004 | Decide Aer adapter dependency policy | Review | High | Aer adapter | Confirm whether Aer is optional, extra-only, and CI-safe. | Decision doc accepted by maintainers and legal reviewer. |
-| P2-005 | Design minimal Aer adapter | Design | High | Aer adapter | Define supported delegation paths and result conversion. | Design has clear non-goals and no parity claims. |
-| P2-006 | Add Aer installed-environment test plan | Test | Medium | Aer adapter | Plan tests that run only when Aer is installed. | Test plan distinguishes unavailable dependency from failure. |
-| P2-007 | Expand PennyLane operation coverage list | Design | Medium | PennyLane coverage | Select the next safe operation subset. | Backlog lists operations, observables, and unsupported cases. |
-| P2-008 | Add PennyLane template bridge plan | Design | Medium | PennyLane coverage | Define minimal template compatibility boundaries. | Plan names supported templates without claiming plugin parity. |
-| P2-009 | Add compiler routing design | Design | High | Compiler | Specify routing behavior for coupling constraints. | Design includes examples, invariants, and rejected cases. |
-| P2-010 | Add compiler layout design | Design | Medium | Compiler | Specify initial layout selection behavior. | Design documents deterministic behavior and metadata. |
-| P2-011 | Add decomposition pass plan | Design | Medium | Compiler | Define native-gate decomposition boundary. | Plan identifies supported decompositions and equivalence tests. |
-| P2-012 | Add depth reduction pass plan | Design | Medium | Compiler | Define safe local depth reduction rules. | Plan includes circuit equivalence acceptance checks. |
-| P2-013 | Add two-qubit optimization pass plan | Design | Medium | Compiler | Plan safe reductions for adjacent two-qubit operations. | Plan lists exact rewrite rules and no-op cases. |
-| P2-014 | Design noisy sampler execution | Design | High | Noise | Move from metadata-only noise toward real noisy sampling. | Design defines channels, ordering, seeds, and statistical tolerances. |
-| P2-015 | Add noise channel behavior tests | Test | High | Noise | Test bit-flip, phase-flip, depolarizing, and readout behavior. | Tests use owned mathematical expectations and seeded runs. |
-| P2-016 | Define result JSON schema | Design | High | Result schema | Create versioned result serialization schema. | Schema covers counts, probabilities, statevector, expectation, and metadata. |
-| P2-017 | Add serialization compatibility tests | Test | Medium | Serialization | Add round-trip and metadata preservation tests. | Tests pass for current schema and documented legacy examples. |
-| P2-018 | Replace visualization placeholders | Engineering | Low | Visualization | Complete text drawer and decide matplotlib drawer minimum. | Placeholder modules either implemented or explicitly retained with docs. |
-| P2-019 | Add remote CI evidence record | CI | High | CI | Capture actual GitHub Actions matrix run URL and result. | Review doc includes successful workflow URL and commit SHA. |
-| P2-020 | Add coverage gate policy | CI | Medium | Coverage | Decide whether P2 requires a coverage threshold. | Policy sets threshold or explicitly defers it. |
-| P2-021 | Add source distribution check | Packaging | Medium | Packaging | Validate sdist and wheel contents before release. | Build artifacts include license/docs and exclude caches. |
-| P2-022 | Complete legal review | Review | High | Legal review | Review Apache, notices, optional adapters, and attribution. | Signed review status is recorded. |
-| P2-023 | Complete trademark review | Review | High | Trademark review | Review all public references to Qiskit, PennyLane, IBM, and Xanadu. | No endorsement or full-parity language remains. |
-| P2-024 | Align docs for P2 entry | Docs | Medium | Docs | Update roadmap/review docs after P1 RC approval. | Docs state P2 scope and retain experimental caveats. |
-| P2-025 | Add examples policy | Docs | Medium | Examples | Define examples that avoid implying full upstream compatibility. | Example list is approved and tied to supported behavior. |
-| P2-026 | Add benchmark plan | Design | Low | Benchmarks | Plan small benchmarks for native simulator and adapters. | Plan defines metrics without production performance claims. |
-| P2-027 | Prepare internal demo | Task | Low | Internal demo | Prepare a small P1 demo for reviewers. | Demo runs locally and states unsupported features. |
-| P2-028 | Define API stability levels | Design | High | API stability | Mark stable, experimental, and placeholder APIs. | API stability table is published in docs. |
-| P2-029 | Define versioning policy | Design | High | Versioning | Decide pre-release and compatibility version rules. | Versioning doc maps package versions to RC tags. |
-| P2-030 | Define release process | Process | High | Release process | Document tag, CI, review, and publication steps. | Release checklist requires remote CI and human approval. |
+| P2-001 | Define P2 implementation-mode policy | Governance | High | Architecture | Apply Upstream Passthrough, Adapter Integration, Native Core, and Source Port with Attribution modes to P2. | Policy is documented and referenced by all first-batch issues. |
+| P2-002 | Inventory Qiskit Nature public APIs | Research | High | Qiskit Nature | Build a public API inventory and classify each area by implementation mode. | Inventory table covers public API areas with mode, dependency, risk, and test notes. |
+| P2-003 | Inventory Qiskit Algorithms public APIs | Research | High | Qiskit Algorithms | Build a public API inventory and classify each area by implementation mode. | Inventory table covers public API areas with mode, dependency, risk, and test notes. |
+| P2-004 | Define upstream provenance metadata | Design | High | Result schema | Add schema fields that identify upstream package, version, workflow, and adapter mode. | Result schema design includes provenance examples and backward compatibility notes. |
+| P2-005 | Define result JSON schema | Design | High | Result schema | Create versioned result serialization schema for native and upstream-wrapped outputs. | Schema covers counts, probabilities, statevector, expectation, energy, optimizer results, and metadata. |
+| P2-006 | Add serialization compatibility tests | Test | High | Serialization | Plan round-trip and metadata preservation tests. | Tests cover P1 result compatibility and P2 provenance fields. |
+| P2-007 | Design H2 chemistry workflow adapter | Design | High | Chemistry adapters | Use optional upstream driver/solver path and wrap output as QuantumBridge objects. | Design states dependencies, object conversions, expected result fields, and skip behavior. |
+| P2-008 | Design LiH chemistry workflow adapter | Design | Medium | Chemistry adapters | Use optional upstream driver/solver path and wrap output as QuantumBridge objects. | Design states dependencies, runtime constraints, and CI feasibility. |
+| P2-009 | Design H2O chemistry workflow adapter | Design | Medium | Chemistry adapters | Use optional upstream driver/solver path and wrap output as QuantumBridge objects. | Design states dependencies, runtime constraints, and CI feasibility. |
+| P2-010 | Define Hamiltonian adapter contract | Design | High | Hamiltonian adapters | Convert upstream operator/Hamiltonian objects into QuantumBridge Hamiltonian representation. | Contract includes supported operator forms, unsupported cases, and provenance metadata. |
+| P2-011 | Define Solver adapter contract | Design | High | Solver adapters | Wrap upstream solver/algorithm outputs as QuantumBridge Solver/Result objects. | Contract includes status, optimum, energy, parameters, metadata, and errors. |
+| P2-012 | Define QASM grammar subset | Design | High | QASM parser | Write the owned grammar scope for the supported OpenQASM subset. | Grammar doc lists supported and rejected statements with examples. |
+| P2-013 | Implement grammar parser spike | Engineering | High | QASM parser | Prototype a parser without copying third-party grammar code. | Spike parses P1-supported examples and rejects unsupported statements. |
+| P2-014 | Add QASM diagnostic tests | Test | High | QASM parser | Add tests for malformed input and unsupported syntax. | Tests assert QuantumBridge-owned diagnostic behavior. |
+| P2-015 | Add compiler routing design | Design | High | Compiler | Specify routing behavior for coupling constraints. | Design includes examples, invariants, and rejected cases. |
+| P2-016 | Add compiler layout design | Design | Medium | Compiler | Specify initial layout selection behavior. | Design documents deterministic behavior and metadata. |
+| P2-017 | Add decomposition pass plan | Design | Medium | Compiler | Define native-gate decomposition boundary. | Plan identifies supported decompositions and equivalence tests. |
+| P2-018 | Add depth reduction pass plan | Design | Medium | Compiler | Define safe local depth reduction rules. | Plan includes circuit equivalence acceptance checks. |
+| P2-019 | Add two-qubit optimization pass plan | Design | Medium | Compiler | Plan safe reductions for adjacent two-qubit operations. | Plan lists exact rewrite rules and no-op cases. |
+| P2-020 | Design noisy sampler execution | Design | High | Noise | Move from metadata-only noise toward small native noisy sampling. | Design defines channels, ordering, seeds, statistical tolerances, and non-goals. |
+| P2-021 | Add noise channel behavior tests | Test | High | Noise | Test bit-flip, phase-flip, depolarizing, and readout behavior. | Tests use owned mathematical expectations and seeded runs. |
+| P2-022 | Define QOS backend contract | Design | High | QOS backend | Define backend capabilities, job states, queue/status metadata, and adapter boundaries. | Contract includes native and upstream backend examples. |
+| P2-023 | Expand PennyLane operation coverage list | Design | Medium | PennyLane coverage | Select the next safe operation subset. | Backlog lists operations, observables, templates, and unsupported cases. |
+| P2-024 | Add PennyLane template bridge plan | Design | Medium | PennyLane coverage | Define minimal template compatibility boundaries. | Plan names supported templates without claiming plugin parity. |
+| P2-025 | Decide PySCF optional dependency policy | Review | Medium | PySCF | Decide whether PySCF is used directly or via Qiskit Nature workflows. | Decision records license, install, CI, and runtime implications. |
+| P2-026 | Decide OpenFermion optional dependency policy | Review | Medium | OpenFermion | Decide whether OpenFermion object bridges enter P2. | Decision records license, install, conversion, and unsupported scope. |
+| P2-027 | Decide Aer adapter dependency policy | Review | Medium | Aer adapter | Confirm whether Aer remains second-batch optional passthrough/backend adapter. | Decision doc accepted by maintainers and legal reviewer. |
+| P2-028 | Design minimal Aer adapter | Design | Low | Aer adapter | Define future supported delegation paths and result conversion. | Design has clear non-goals and no parity claims. |
+| P2-029 | Add remote CI evidence record | CI | High | CI | Capture actual GitHub Actions matrix run URL and result for P2 branches. | Review doc includes successful workflow URL and commit SHA. |
+| P2-030 | Add optional dependency CI matrix design | CI | High | CI | Plan extras for qiskit-nature, qiskit-algorithms, pyscf, openfermion, and aer. | Matrix design isolates optional dependency failures from core tests. |
+| P2-031 | Add coverage gate policy | CI | Medium | Coverage | Decide whether P2 requires a coverage threshold. | Policy sets threshold or explicitly defers it. |
+| P2-032 | Add source distribution check | Packaging | Medium | Packaging | Validate sdist and wheel contents before release. | Build artifacts include license/docs and exclude caches. |
+| P2-033 | Complete legal review | Review | High | Legal review | Review Apache, notices, optional adapters, passthrough dependencies, and attribution. | Signed review status is recorded. |
+| P2-034 | Complete trademark review | Review | High | Trademark review | Review public references to Qiskit, PennyLane, Nature, Algorithms, IBM, Xanadu, PySCF, and OpenFermion. | No endorsement or full-parity language remains. |
+| P2-035 | Update source migration ledger for upstream integrations | Governance | High | Migration ledger | Ensure every upstream-facing file records mode, dependency, and copied-source status. | Ledger entries exist before merge for every upstream-facing change. |
+| P2-036 | Add examples policy | Docs | Medium | Examples | Define examples that avoid implying full upstream compatibility. | Example list is approved and tied to supported behavior. |
+| P2-037 | Add benchmark plan | Design | Low | Benchmarks | Plan small benchmarks for native core and upstream passthrough wrappers. | Plan defines metrics without production performance claims. |
+| P2-038 | Prepare internal demo | Task | Low | Internal demo | Prepare a small P2 planning demo for reviewers. | Demo states optional dependency requirements and unsupported features. |
+| P2-039 | Define API stability levels | Design | High | API stability | Mark stable, experimental, adapter, passthrough, and placeholder APIs. | API stability table is published in docs. |
+| P2-040 | Define versioning policy | Design | High | Versioning | Decide pre-release and compatibility version rules. | Versioning doc maps package versions to RC tags and optional integrations. |
+| P2-041 | Define release process | Process | High | Release process | Document tag, CI, review, and publication steps. | Release checklist requires remote CI, optional dependency evidence, and human approval. |
