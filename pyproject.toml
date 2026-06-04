@@ -80,3 +80,6 @@ packages = {find = {include = ["quantumbridge*"]}}
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
+markers = [
+  "slow: installed-environment smoke tests that may touch larger optional upstream dependencies"
+]

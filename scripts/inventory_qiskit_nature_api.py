@@ -54,7 +54,7 @@ def inventory():
             if inspect.isclass(value) or inspect.isfunction(value):
                 mode, dependency = classify(name)
                 kind = "class" if inspect.isclass(value) else "function"
-                rows.append((f"{module_name}.{name}", kind, "inventory", mode, dependency, "planned", "medium", "runtime introspection only"))
+                rows.append((f"{module_name}.{name}", kind, "Inventory only", mode, dependency, "planned", "medium", "runtime introspection only"))
     return rows, unavailable
 
 

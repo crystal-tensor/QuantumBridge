@@ -5,7 +5,10 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
 PYTHON_BIN="${PYTHON:-python3}"
-PYTEST_BIN="${PYTEST:-pytest}"
+
+run_pytest() {
+  "$PYTHON_BIN" -m pytest "$@"
+}
 
 section() {
   printf '\n== %s ==\n' "$1"
@@ -21,11 +24,11 @@ PY
 }
 
 section "core-only"
-"$PYTEST_BIN" -q -rs
+run_pytest -q -rs
 
 section "qiskit-extra"
 if has_module qiskit; then
-  "$PYTEST_BIN" -q -rs \
+  run_pytest -q -rs \
     tests/compat/test_qiskit_adapter_realistic.py \
     tests/compat/test_qiskit_import_basic_circuit.py \
     tests/compat/test_qiskit_export_basic_circuit.py \
@@ -36,7 +39,7 @@ fi
 
 section "pennylane-extra"
 if has_module pennylane; then
-  "$PYTEST_BIN" -q -rs \
+  run_pytest -q -rs \
     tests/compat/test_pennylane_adapter_realistic.py \
     tests/compat/test_pennylane_installed_environment.py \
     tests/qml/test_pennylane_observable_bridge.py \
@@ -146,15 +149,18 @@ section "ecosystem-inventory"
 "$PYTEST_BIN" -q -rs tests/ecosystem
 
 section "dev"
-"$PYTEST_BIN" -q -rs
-if "$PYTEST_BIN" --help | grep -q -- '--cov'; then
-  "$PYTEST_BIN" --cov=quantumbridge
+run_pytest -q -rs
+if "$PYTHON_BIN" - <<'PY'
+import pytest_cov  # noqa: F401
+PY
+then
+  run_pytest --cov=quantumbridge
 else
   echo "pytest-cov unavailable; coverage not executed."
 fi
 
 section "chemistry-core"
-"$PYTEST_BIN" -q -rs \
+run_pytest -q -rs \
   tests/chemistry/test_molecule.py \
   tests/chemistry/test_fermionic_op.py \
   tests/chemistry/test_jordan_wigner.py \
@@ -163,21 +169,34 @@ section "chemistry-core"
 
 section "chemistry-extra"
 if has_module qiskit_nature || has_module pyscf || has_module openfermion || has_module qiskit_algorithms; then
-  "$PYTEST_BIN" -q -rs tests/chemistry tests/algorithms_compat tests/compat_inventory
+  run_pytest -q -rs tests/chemistry tests/algorithms_compat tests/compat_inventory
 else
   echo "chemistry optional dependencies unavailable; installed-environment adapter subsets not executed."
 fi
 
 section "qiskit-nature-extra"
 if has_module qiskit_nature; then
-  "$PYTEST_BIN" -q -rs tests/chemistry/test_qiskit_nature_driver_optional.py tests/compat_inventory/test_qiskit_nature_inventory_generated.py
+  "$PYTHON_BIN" scripts/inventory_qiskit_nature_api.py
+  run_pytest -q -rs \
+    tests/chemistry/test_qiskit_nature_driver_optional.py \
+    tests/chemistry/test_qiskit_nature_driver_installed.py \
+    tests/chemistry/test_h2_installed_workflow.py \
+    tests/compat_inventory/test_qiskit_nature_inventory_generated.py
 else
   echo "qiskit_nature unavailable; qiskit-nature-extra subset not executed."
 fi
 
 section "algorithms-extra"
 if has_module qiskit_algorithms; then
-  "$PYTEST_BIN" -q -rs tests/algorithms_compat
+  "$PYTHON_BIN" scripts/inventory_qiskit_algorithms_api.py
+  run_pytest -q -rs tests/algorithms_compat
 else
   echo "qiskit_algorithms unavailable; algorithms-extra subset not executed."
+fi
+
+section "openfermion-extra"
+if has_module openfermion; then
+  run_pytest -q -rs tests/chemistry/test_openfermion_adapter_installed.py
+else
+  echo "openfermion unavailable; openfermion-extra subset not executed."
 fi

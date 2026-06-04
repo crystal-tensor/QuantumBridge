@@ -78,10 +78,13 @@ jobs:
             command: "pytest -q -rs tests/chemistry tests/algorithms_compat tests/compat_inventory"
           - profile: qiskit-nature-p2-extra
             install: "python -m pip install -e '.[qiskit-nature]' pytest"
-            command: "pytest -q -rs tests/chemistry/test_qiskit_nature_driver_optional.py tests/compat_inventory/test_qiskit_nature_inventory_generated.py"
+            command: "python scripts/inventory_qiskit_nature_api.py && pytest -q -rs tests/chemistry/test_qiskit_nature_driver_optional.py tests/chemistry/test_qiskit_nature_driver_installed.py tests/chemistry/test_h2_installed_workflow.py tests/compat_inventory/test_qiskit_nature_inventory_generated.py"
           - profile: algorithms-extra
             install: "python -m pip install -e '.[algorithms]' pytest"
-            command: "pytest -q -rs tests/algorithms_compat"
+            command: "python scripts/inventory_qiskit_algorithms_api.py && pytest -q -rs tests/algorithms_compat"
+          - profile: openfermion-extra
+            install: "python -m pip install -e '.[openfermion]' pytest"
+            command: "pytest -q -rs tests/chemistry/test_openfermion_adapter_installed.py"
     continue-on-error: ${{ matrix.advisory == true }}
     steps:
       - uses: actions/checkout@v4
