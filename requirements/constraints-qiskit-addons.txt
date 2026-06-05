@@ -1,0 +1,6 @@
+# QuantumBridge Stage 7 optional dependency constraints.
+# Qiskit Addons are optional and should be installed only in a reviewed addon lane.
+qiskit-addon-sqd
+qiskit-addon-mpf
+qiskit-addon-aqc-tensor
+qiskit-addon-obp

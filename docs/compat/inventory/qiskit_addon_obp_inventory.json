@@ -1,0 +1,14 @@
+[
+  {
+    "api_type": "dependency",
+    "dependency_extra": "qiskit-addons",
+    "mode": "Inventory only",
+    "module": "qiskit_addon_obp",
+    "notes": "Optional dependency is not installed in this environment.",
+    "public_api": "dependency-not-installed",
+    "quantumbridge_level": 0,
+    "risk": "LOW",
+    "test": "dependency availability smoke",
+    "upstream_package": "qiskit-addon-obp"
+  }
+]

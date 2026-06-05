@@ -1,0 +1,86 @@
+[
+  {
+    "api_type": "class",
+    "dependency_extra": "qiskit-aer",
+    "mode": "Inventory/Passthrough scaffold",
+    "module": "qiskit_aer",
+    "notes": "Runtime public-name inventory; no upstream source or docs copied.",
+    "public_api": "AerError",
+    "quantumbridge_level": 0,
+    "risk": "MEDIUM",
+    "test": "inventory/introspection smoke",
+    "upstream_package": "qiskit-aer"
+  },
+  {
+    "api_type": "class",
+    "dependency_extra": "qiskit-aer",
+    "mode": "Inventory/Passthrough scaffold",
+    "module": "qiskit_aer",
+    "notes": "Runtime public-name inventory; no upstream source or docs copied.",
+    "public_api": "AerJob",
+    "quantumbridge_level": 0,
+    "risk": "MEDIUM",
+    "test": "inventory/introspection smoke",
+    "upstream_package": "qiskit-aer"
+  },
+  {
+    "api_type": "class",
+    "dependency_extra": "qiskit-aer",
+    "mode": "Inventory/Passthrough scaffold",
+    "module": "qiskit_aer",
+    "notes": "Runtime public-name inventory; no upstream source or docs copied.",
+    "public_api": "AerProvider",
+    "quantumbridge_level": 0,
+    "risk": "MEDIUM",
+    "test": "inventory/introspection smoke",
+    "upstream_package": "qiskit-aer"
+  },
+  {
+    "api_type": "class",
+    "dependency_extra": "qiskit-aer",
+    "mode": "Inventory/Passthrough scaffold",
+    "module": "qiskit_aer",
+    "notes": "Runtime public-name inventory; no upstream source or docs copied.",
+    "public_api": "AerSimulator",
+    "quantumbridge_level": 0,
+    "risk": "MEDIUM",
+    "test": "inventory/introspection smoke",
+    "upstream_package": "qiskit-aer"
+  },
+  {
+    "api_type": "class",
+    "dependency_extra": "qiskit-aer",
+    "mode": "Inventory/Passthrough scaffold",
+    "module": "qiskit_aer",
+    "notes": "Runtime public-name inventory; no upstream source or docs copied.",
+    "public_api": "QasmSimulator",
+    "quantumbridge_level": 0,
+    "risk": "MEDIUM",
+    "test": "inventory/introspection smoke",
+    "upstream_package": "qiskit-aer"
+  },
+  {
+    "api_type": "class",
+    "dependency_extra": "qiskit-aer",
+    "mode": "Inventory/Passthrough scaffold",
+    "module": "qiskit_aer",
+    "notes": "Runtime public-name inventory; no upstream source or docs copied.",
+    "public_api": "StatevectorSimulator",
+    "quantumbridge_level": 0,
+    "risk": "MEDIUM",
+    "test": "inventory/introspection smoke",
+    "upstream_package": "qiskit-aer"
+  },
+  {
+    "api_type": "class",
+    "dependency_extra": "qiskit-aer",
+    "mode": "Inventory/Passthrough scaffold",
+    "module": "qiskit_aer",
+    "notes": "Runtime public-name inventory; no upstream source or docs copied.",
+    "public_api": "UnitarySimulator",
+    "quantumbridge_level": 0,
+    "risk": "MEDIUM",
+    "test": "inventory/introspection smoke",
+    "upstream_package": "qiskit-aer"
+  }
+]

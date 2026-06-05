@@ -24,6 +24,24 @@ jobs:
           - profile: dev
             install: "python -m pip install -e '.[dev]'"
             command: "pytest -q -rs && pytest --cov=quantumbridge"
+          - profile: qiskit-aer-extra
+            install: "python -m pip install -e '.[qiskit-aer]' pytest"
+            command: "pytest -q -rs tests/compat_qiskit_aer"
+          - profile: qiskit-finance-extra
+            install: "python -m pip install -e '.[qiskit-finance]' pytest"
+            command: "pytest -q -rs tests/compat_qiskit_finance"
+          - profile: qiskit-optimization-extra
+            install: "python -m pip install -e '.[qiskit-optimization]' pytest"
+            command: "pytest -q -rs tests/compat_qiskit_optimization"
+          - profile: qiskit-machine-learning-extra
+            install: "python -m pip install -e '.[qiskit-machine-learning]' pytest"
+            command: "pytest -q -rs tests/compat_qiskit_machine_learning"
+          - profile: pennylane-full-extra
+            install: "python -m pip install -e '.[pennylane-full]' pytest"
+            command: "pytest -q -rs tests/compat_pennylane_full"
+          - profile: ecosystem-inventory
+            install: "python -m pip install -e '.[dev]'"
+            command: "python scripts/inventory_qiskit_core_api.py && python scripts/inventory_qiskit_aer_api.py && python scripts/inventory_qiskit_ibm_runtime_api.py && python scripts/inventory_qiskit_finance_api.py && python scripts/inventory_qiskit_optimization_api.py && python scripts/inventory_qiskit_machine_learning_api.py && python scripts/inventory_qiskit_experiments_api.py && python scripts/inventory_qiskit_addons_api.py && python scripts/inventory_pennylane_full_api.py && pytest -q -rs tests/ecosystem"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

@@ -1,6 +1,6 @@
 # QuantumBridge SDK
 
-QuantumBridge is an experimental quantum SDK. The current repository is in Stage 5.5 P1 release-candidate baseline: a small native core plus optional compatibility adapters for common Qiskit and PennyLane workflows.
+QuantumBridge is an experimental quantum SDK. The current repository keeps the P1 release-candidate baseline intact while Stage 7 planning adds optional ecosystem inventory and adapter scaffolds.
 
 QuantumBridge is an independent project. It is not an official Qiskit, PennyLane, IBM, or Xanadu project, and it does not claim full feature parity or full replacement coverage.
 
@@ -11,6 +11,7 @@ QuantumBridge is an independent project. It is not an official Qiskit, PennyLane
 - Apache-2.0 compliance route with attribution records.
 - Qiskit and PennyLane support is provided through optional adapter / compatibility layers.
 - Qiskit and PennyLane remain separate projects owned by their respective rightsholders.
+- Wider ecosystem packages are optional dependencies only; QuantumBridge does not vendor third-party package source.
 
 ## Supported P0 Features
 
@@ -29,6 +30,32 @@ QuantumBridge is an independent project. It is not an official Qiskit, PennyLane
 - NumPy/Torch/JAX array interface helpers, with Torch and JAX optional.
 - Minimal QNode-like wrapper and QML templates.
 
+## Ecosystem Compatibility Status
+
+Stage 7 planning defines function coverage by level:
+
+- Level 0 Inventory: public API names are identified and written to a matrix; this does not mean runnable support.
+- Level 1 Passthrough: when the upstream optional dependency is installed, QuantumBridge can retrieve or call selected upstream objects and wrap results with provenance.
+- Level 2 Adapter: selected upstream objects convert into QuantumBridge schemas, such as Circuit, IR, Result, Hamiltonian, Problem, Job, or Backend.
+- Level 3 Native subset: QuantumBridge implements an independent subset for core capabilities.
+- Level 4 Production equivalent: not promised in this project stage.
+
+Current Qiskit ecosystem status:
+
+- Qiskit core: Level 0 inventory across core modules, Level 1 passthrough scaffold, existing P1 Level 2 subset for basic circuits/results.
+- Qiskit Aer: Level 0 inventory and Level 1 passthrough scaffold; no Aer-native parity claim.
+- Qiskit Finance: Level 0 inventory and Level 1 scaffold when installed; not production finance.
+- Qiskit Optimization: Level 0 inventory and Level 1 scaffold when installed; no full optimizer parity.
+- Qiskit Machine Learning: Level 0 inventory and Level 1 scaffold when installed; not production ML.
+- Qiskit IBM Runtime / Experiments / Addons: inventory-first planning; no hardware, service, experiment, or addon parity claims.
+- Qiskit Nature / Algorithms / PySCF / OpenFermion: handled by the separate P2 dual-track branch and remain optional upstream dependencies.
+
+Current PennyLane ecosystem status:
+
+- Operations, measurements, QNode, devices, qchem, transforms, gradients, templates, resources, and plugin-adjacent APIs: Level 0 inventory and Level 1 scaffold when PennyLane is installed.
+- Existing P1 PennyLane tape/observable support remains a small reviewed Level 2 subset.
+- Full plugin ecosystem, Catalyst bridge, TensorFlow interface parity, and production qchem workflows are not implemented.
+
 ## P1 Controlled Expansion
 
 Stage 5 adds controlled P1 subset coverage:
@@ -45,12 +72,14 @@ Stage 5 adds controlled P1 subset coverage:
 
 - Full Qiskit feature parity.
 - Full PennyLane feature parity.
+- Full Qiskit Nature / Algorithms / Finance / Optimization / Machine Learning / Aer / Runtime / Experiments parity.
 - Full OpenQASM grammar.
 - Hardware cloud providers.
-- Qiskit Aer/noise integration.
+- Production Qiskit Aer/noise integration.
 - Full transpiler and pass ecosystem.
 - Full PennyLane plugin ecosystem.
-- Quantum chemistry.
+- Production quantum chemistry, finance, optimization, or machine learning workflows.
+- Materials band gap workflows.
 - Production-grade visualization.
 - Production release guarantees.
 
@@ -66,13 +95,35 @@ Optional adapter extras:
 
 ```bash
 python -m pip install -e '.[qiskit]'
+python -m pip install -e '.[qiskit-core]'
+python -m pip install -e '.[qiskit-aer]'
+python -m pip install -e '.[qiskit-finance]'
+python -m pip install -e '.[qiskit-optimization]'
+python -m pip install -e '.[qiskit-machine-learning]'
 python -m pip install -e '.[pennylane]'
+python -m pip install -e '.[pennylane-full]'
 python -m pip install -e '.[torch]'
 python -m pip install -e '.[jax]'
 python -m pip install -e '.[dev]'
 ```
 
-Qiskit, PennyLane, Torch, and JAX are optional dependencies. Tests that require unavailable optional packages should skip with an explicit reason.
+Qiskit, Qiskit ecosystem packages, PennyLane, Torch, and JAX are optional dependencies. Tests that require unavailable optional packages should skip with an explicit reason or run only dependency-smoke checks.
+
+Do not commit third-party package source trees, local `site-packages`, downloaded wheels, or vendored Qiskit / PennyLane / PySCF / OpenFermion / Quafu code into this repository.
+
+### Ecosystem dependency lanes
+
+Stage 7 uses separate optional dependency lanes. Do not assume all optional dependencies can coexist in one environment.
+
+- `qiskit-core`: Qiskit core public API inventory and selected P1 adapters.
+- `qiskit-aer`: optional Aer simulator/noise passthrough scaffold.
+- `qiskit-finance`: optional finance application/data-provider/circuit inventory.
+- `qiskit-optimization`: optional optimization inventory and passthrough scaffold.
+- `qiskit-machine-learning`: optional QNN/kernel/classifier/Torch connector inventory.
+- `pennylane-full`: optional PennyLane operations, measurements, QNode, devices, qchem, transforms, gradients, templates, resources, and plugin-adjacent inventory.
+- `ecosystem-chemistry`: optional Qiskit Nature / Algorithms / PySCF / OpenFermion lane; not production chemistry.
+
+If environment conflicts appear, use separate virtual environments such as `quantumbridge-ecosystem-qiskit`, `quantumbridge-chemistry`, and `quantumbridge-pennylane`. Materials band gap workflows are not implemented.
 
 ## Test
 
@@ -126,6 +177,17 @@ Local matrix simulation:
 bash scripts/run_local_matrix.sh
 ```
 
+Ecosystem inventory scripts:
+
+```bash
+python scripts/inventory_qiskit_core_api.py
+python scripts/inventory_qiskit_aer_api.py
+python scripts/inventory_qiskit_finance_api.py
+python scripts/inventory_qiskit_optimization_api.py
+python scripts/inventory_qiskit_machine_learning_api.py
+python scripts/inventory_pennylane_full_api.py
+```
+
 Suggested P1 RC tag name for a future explicit release action:
 
 ```text
@@ -138,6 +200,8 @@ Do not create or push the release tag until remote CI has run and the release is
 
 - Apache-2.0 plan: [docs/legal/apache2_compliance_plan.md](docs/legal/apache2_compliance_plan.md)
 - Third-party source policy: [docs/legal/third_party_source_policy.md](docs/legal/third_party_source_policy.md)
+- Qiskit ecosystem attribution: [docs/legal/qiskit_ecosystem_attribution_v0.1.md](docs/legal/qiskit_ecosystem_attribution_v0.1.md)
+- PennyLane ecosystem attribution: [docs/legal/pennylane_ecosystem_attribution_v0.1.md](docs/legal/pennylane_ecosystem_attribution_v0.1.md)
 - Third-party notices: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
 - Source migration ledger: [docs/migration/source_migration_ledger.md](docs/migration/source_migration_ledger.md)
 

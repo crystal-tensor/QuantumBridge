@@ -1,0 +1,7 @@
+# QuantumBridge Stage 7 optional dependency constraints.
+# This lane avoids claiming that every optional ecosystem dependency can coexist.
+qiskit
+qiskit-aer
+qiskit-finance
+qiskit-optimization
+qiskit-machine-learning

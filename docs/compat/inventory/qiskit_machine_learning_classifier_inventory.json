@@ -1,0 +1,14 @@
+[
+  {
+    "api_type": "dependency",
+    "dependency_extra": "qiskit-machine-learning",
+    "mode": "Inventory only",
+    "module": "qiskit_machine_learning.algorithms.classifiers",
+    "notes": "Optional dependency is not installed in this environment.",
+    "public_api": "dependency-not-installed",
+    "quantumbridge_level": 0,
+    "risk": "LOW",
+    "test": "dependency availability smoke",
+    "upstream_package": "qiskit-machine-learning"
+  }
+]

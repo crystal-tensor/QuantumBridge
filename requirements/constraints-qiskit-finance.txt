@@ -1,0 +1,3 @@
+# QuantumBridge Stage 7 optional dependency constraints.
+# Qiskit Finance is optional and is not required by the core SDK.
+qiskit-finance

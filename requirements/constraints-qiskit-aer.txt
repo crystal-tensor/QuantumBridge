@@ -1,0 +1,3 @@
+# QuantumBridge Stage 7 optional dependency constraints.
+# Qiskit Aer is installed only in the Aer compatibility lane.
+qiskit-aer
