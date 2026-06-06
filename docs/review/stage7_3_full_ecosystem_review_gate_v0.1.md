@@ -267,8 +267,11 @@ is not ready to merge until these delivery blockers are addressed:
    review documents introduced by commits `cecec4d` and `e06021a`. They are not
    UI implementation, but they broaden this ecosystem PR beyond its stated
    scope.
-4. Commit this Stage 7.3 review document and obtain a fresh green CI result for
-   the final PR head.
+4. Make `git diff --check main...HEAD` pass. It currently reports trailing
+   whitespace in the concurrent UI/OpenClaw documents and several earlier
+   Stage 7 Markdown files.
+5. Obtain a fresh green CI result for the final PR head containing this Stage
+   7.3 review document.
 
 ## 24. Release Blockers
 
