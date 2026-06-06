@@ -9,9 +9,17 @@ Date: 2026-06-06
 
 ## 2. Commit
 
-Reviewed head commit:
+Reviewed Stage 7.2 implementation commit:
 
 `c31b564088dafa4c96dbce7e03164d74a5527623`
+
+During this review, separate concurrent documentation commits
+`cecec4d6ed1d55d8a295a1c22ca38adef4e6c4ba` and
+`e06021a55ac44ca3707f974c5fc98c592482721c` were added to the branch. They add
+UI/OpenClaw planning and review documents, not SDK implementation. The Stage
+7.3 review document was then added on top. The final PR head must receive a
+fresh CI run because run `27053825667` validated the PR merge ref containing
+the implementation commit, before these documentation-only commits.
 
 The branch is the head of PR #2:
 
@@ -255,9 +263,10 @@ is not ready to merge until these delivery blockers are addressed:
    outdated test totals, and mark several now-verified ecosystems as pending.
 2. Explain Metal as `package installed on CI, upstream import failed, advisory
    compatibility path passed`; do not present the green job as Metal support.
-3. Separate or explicitly approve unrelated UI/OpenClaw planning documents
-   included by the earlier Stage 7 commit. They are not UI implementation, but
-   they broaden this ecosystem PR beyond its stated scope.
+3. Separate or explicitly approve the 11 unrelated UI/OpenClaw planning and
+   review documents introduced by commits `cecec4d` and `e06021a`. They are not
+   UI implementation, but they broaden this ecosystem PR beyond its stated
+   scope.
 4. Commit this Stage 7.3 review document and obtain a fresh green CI result for
    the final PR head.
 
