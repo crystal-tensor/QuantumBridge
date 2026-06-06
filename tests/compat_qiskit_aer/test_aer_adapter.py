@@ -1,3 +1,8 @@
+# This file is independently implemented for QuantumBridge SDK.
+# No source code from Qiskit or PennyLane was copied.
+
+
+import numpy as np
 import pytest
 
 from quantumbridge.compat.qiskit_aer.aer_adapter import ADAPTER as AER
@@ -33,13 +38,13 @@ def test_qiskit_aer_statevector_and_density_matrix_smoke_when_installed():
     state_circuit.h(0)
     state_circuit.save_statevector()
     state_result = AerSimulator(method="statevector").run(state_circuit).result()
-    assert len(state_result.get_statevector()) == 2
+    assert np.asarray(state_result.get_statevector()).shape == (2,)
 
     density_circuit = qiskit.QuantumCircuit(1)
     density_circuit.x(0)
     density_circuit.save_density_matrix()
     density_result = AerSimulator(method="density_matrix").run(density_circuit).result()
-    assert density_result.data(0)["density_matrix"].shape == (2, 2)
+    assert np.asarray(density_result.data(0)["density_matrix"]).shape == (2, 2)
 
 
 def test_qiskit_aer_noise_model_availability_or_clear_import_error():

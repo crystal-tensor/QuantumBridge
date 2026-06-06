@@ -76,7 +76,24 @@ class EcosystemAdapter:
                     )
                 )
                 continue
-            module = import_module(module_name)
+            try:
+                module = import_module(module_name)
+            except Exception as exc:
+                records.append(
+                    CapabilityRecord(
+                        upstream_package=self.package_name,
+                        module=module_name,
+                        public_api="import-failed",
+                        api_type="dependency",
+                        quantumbridge_level=int(CoverageLevel.INVENTORY),
+                        mode="Inventory only",
+                        dependency_extra=self.dependency_extra,
+                        test="module import smoke",
+                        risk="HIGH",
+                        notes=f"Module discovery succeeded but import failed: {type(exc).__name__}: {exc}",
+                    )
+                )
+                continue
             discovered = 0
             for name in sorted(dir(module)):
                 if name.startswith("_"):
@@ -86,8 +103,9 @@ class EcosystemAdapter:
                 except Exception:
                     continue
                 api_type = _api_type(obj)
-                if api_type is None:
+                if api_type is None and not _is_public_constant(obj):
                     continue
+                api_type = api_type or "constant"
                 records.append(
                     CapabilityRecord(
                         upstream_package=self.package_name,
@@ -119,7 +137,25 @@ class EcosystemAdapter:
                         )
                     )
                     break
+            if discovered == 0:
+                records.append(
+                    CapabilityRecord(
+                        upstream_package=self.package_name,
+                        module=module_name,
+                        public_api="module-imported",
+                        api_type="module",
+                        quantumbridge_level=self.default_level,
+                        mode=self.mode,
+                        dependency_extra=self.dependency_extra,
+                        test="module import smoke",
+                        risk="MEDIUM",
+                        notes="Module imported but exposes no inventory-safe public names at its top level.",
+                    )
+                )
         return records
+
+    def get_public_object(self, name: str):
+        return self._resolve_public_object(name)
 
     def passthrough_class(self, name: str):
         obj = self._resolve_public_object(name)
@@ -147,6 +183,38 @@ class EcosystemAdapter:
             "upstream_type": type(obj).__name__,
             "is_passthrough": True,
             "payload": obj if _json_safe(obj) else repr(obj),
+            "provenance": self.provenance_metadata(),
+        }
+
+    def make_result(self, result_class, obj, capability_level: int = 2, metadata: dict | None = None):
+        return result_class(
+            ecosystem=getattr(result_class, "ECOSYSTEM", None) or self.package_key,
+            upstream_package=self.package_name,
+            upstream_version=self.get_upstream_version(),
+            capability_level=capability_level,
+            mode="Adapter",
+            raw_type=type(obj).__name__,
+            data=obj if _json_safe(obj) else repr(obj),
+            metadata=dict(metadata or {}),
+            provenance=self.provenance_metadata(),
+        )
+
+    def get_capability_level(self, name: str) -> int:
+        for record in self.list_public_api_inventory():
+            if record.public_api == name or f"{record.module}.{record.public_api}" == name:
+                return int(record.quantumbridge_level)
+        return int(CoverageLevel.INVENTORY)
+
+    def get_provenance(self) -> dict:
+        return self.provenance_metadata()
+
+    def unsupported(self, name: str, reason: str) -> dict:
+        self.warn_unsupported(name)
+        return {
+            "name": name,
+            "supported": False,
+            "reason": reason,
+            "capability_level": int(CoverageLevel.INVENTORY),
             "provenance": self.provenance_metadata(),
         }
 
@@ -183,6 +251,10 @@ def _api_type(obj) -> str | None:
     return None
 
 
+def _is_public_constant(obj) -> bool:
+    return isinstance(obj, (str, int, float, bool, complex, tuple, frozenset, type(None)))
+
+
 def _json_safe(obj) -> bool:
     try:
         json.dumps(obj)
@@ -201,8 +273,26 @@ def write_inventory(
     matrix_path = Path(matrix_dir) / f"{adapter.package_key}_coverage_matrix.md"
     inventory_path.parent.mkdir(parents=True, exist_ok=True)
     matrix_path.parent.mkdir(parents=True, exist_ok=True)
+    installed = adapter.dependency_available()
+    version = adapter.get_upstream_version()
     inventory_path.write_text(
-        json.dumps([record.to_dict() for record in records], indent=2, sort_keys=True) + "\n",
+        json.dumps(
+            [
+                {
+                    **record.to_dict(),
+                    "installed": installed,
+                    "inventory_generated": True,
+                    "upstream_version": version,
+                    "unsupported_reason": (
+                        record.notes if record.public_api in {"dependency-not-installed", "import-failed"} else None
+                    ),
+                }
+                for record in records
+            ],
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
         encoding="utf-8",
     )
     matrix_path.write_text(_matrix_markdown(adapter, records), encoding="utf-8")
@@ -210,9 +300,17 @@ def write_inventory(
 
 
 def _matrix_markdown(adapter: EcosystemAdapter, records: Iterable[CapabilityRecord]) -> str:
+    records = list(records)
+    installed = any(record.public_api != "dependency-not-installed" for record in records)
+    public_count = sum(1 for record in records if record.public_api != "dependency-not-installed")
     lines = [
         f"# {adapter.package_name} Coverage Matrix\n\n",
         "Generated from runtime public-name introspection. No upstream source, tests, comments, or documentation text is copied.\n\n",
+        f"- Installed: {installed}\n",
+        f"- Upstream version: {adapter.get_upstream_version() or 'not installed'}\n",
+        "- Inventory generated: true\n",
+        f"- Public API count: {public_count}\n",
+        f"- QuantumBridge coverage level: {adapter.default_level}\n\n",
         MATRIX_HEADER,
     ]
     for record in records:

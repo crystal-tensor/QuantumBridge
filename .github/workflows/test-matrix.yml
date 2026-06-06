@@ -25,23 +25,50 @@ jobs:
             install: "python -m pip install -e '.[dev]'"
             command: "pytest -q -rs && pytest --cov=quantumbridge"
           - profile: qiskit-aer-extra
-            install: "python -m pip install -e '.[qiskit-aer]' pytest"
-            command: "pytest -q -rs tests/compat_qiskit_aer"
+            install: "python -m pip install -c requirements/constraints-qiskit-aer.txt -e '.[qiskit-aer]' pytest"
+            command: "python scripts/inventory_qiskit_aer_api.py && pytest -q -rs tests/compat_qiskit_aer"
           - profile: qiskit-finance-extra
-            install: "python -m pip install -e '.[qiskit-finance]' pytest"
-            command: "pytest -q -rs tests/compat_qiskit_finance"
+            install: "python -m pip install -c requirements/constraints-qiskit-finance.txt -e '.[qiskit-finance]' pytest"
+            command: "python scripts/inventory_qiskit_finance_api.py && pytest -q -rs tests/compat_qiskit_finance"
           - profile: qiskit-optimization-extra
-            install: "python -m pip install -e '.[qiskit-optimization]' pytest"
-            command: "pytest -q -rs tests/compat_qiskit_optimization"
+            install: "python -m pip install -c requirements/constraints-qiskit-optimization.txt -e '.[qiskit-optimization]' pytest"
+            command: "python scripts/inventory_qiskit_optimization_api.py && pytest -q -rs tests/compat_qiskit_optimization"
           - profile: qiskit-machine-learning-extra
-            install: "python -m pip install -e '.[qiskit-machine-learning]' pytest"
-            command: "pytest -q -rs tests/compat_qiskit_machine_learning"
+            install: "python -m pip install -c requirements/constraints-qiskit-machine-learning.txt -e '.[qiskit-machine-learning]' pytest"
+            command: "python scripts/inventory_qiskit_machine_learning_api.py && pytest -q -rs tests/compat_qiskit_machine_learning"
           - profile: pennylane-full-extra
-            install: "python -m pip install -e '.[pennylane-full]' pytest"
-            command: "pytest -q -rs tests/compat_pennylane_full"
+            install: "python -m pip install -c requirements/constraints-pennylane-full.txt -e '.[pennylane-full]' pytest"
+            command: "python scripts/inventory_pennylane_full_api.py && pytest -q -rs tests/compat_pennylane_full"
+          - profile: qiskit-nature-extra
+            install: "python -m pip install -c requirements/constraints-qiskit-nature.txt -e '.[qiskit-nature]' pytest"
+            command: "python scripts/inventory_qiskit_nature_api.py && pytest -q -rs tests/compat_qiskit_nature"
+          - profile: qiskit-algorithms-extra
+            install: "python -m pip install -c requirements/constraints-qiskit-algorithms.txt -e '.[qiskit-algorithms]' pytest"
+            command: "python scripts/inventory_qiskit_algorithms_api.py && pytest -q -rs tests/compat_qiskit_algorithms"
+          - profile: qiskit-dynamics-extra
+            advisory: true
+            install: "python -m pip install -c requirements/constraints-qiskit-dynamics.txt -e '.[qiskit-dynamics]' pytest"
+            command: "python scripts/inventory_qiskit_dynamics_api.py && pytest -q -rs tests/compat_qiskit_dynamics"
+          - profile: qiskit-metal-extra
+            advisory: true
+            install: "python -m pip install -c requirements/constraints-qiskit-metal.txt -e '.[qiskit-metal]' pytest"
+            command: "python scripts/inventory_qiskit_metal_api.py && pytest -q -rs tests/compat_qiskit_metal"
           - profile: ecosystem-inventory
             install: "python -m pip install -e '.[dev]'"
-            command: "python scripts/inventory_qiskit_core_api.py && python scripts/inventory_qiskit_aer_api.py && python scripts/inventory_qiskit_ibm_runtime_api.py && python scripts/inventory_qiskit_finance_api.py && python scripts/inventory_qiskit_optimization_api.py && python scripts/inventory_qiskit_machine_learning_api.py && python scripts/inventory_qiskit_experiments_api.py && python scripts/inventory_qiskit_addons_api.py && python scripts/inventory_pennylane_full_api.py && pytest -q -rs tests/ecosystem"
+            command: "python scripts/inventory_qiskit_core_api.py && python scripts/inventory_qiskit_aer_api.py && python scripts/inventory_qiskit_ibm_runtime_api.py && python scripts/inventory_qiskit_nature_api.py && python scripts/inventory_qiskit_finance_api.py && python scripts/inventory_qiskit_algorithms_api.py && python scripts/inventory_qiskit_optimization_api.py && python scripts/inventory_qiskit_machine_learning_api.py && python scripts/inventory_qiskit_dynamics_api.py && python scripts/inventory_qiskit_experiments_api.py && python scripts/inventory_qiskit_metal_api.py && python scripts/inventory_qiskit_addons_api.py && python scripts/inventory_pennylane_full_api.py && pytest -q -rs tests/ecosystem"
+          - profile: qiskit-runtime-extra
+            advisory: true
+            install: "python -m pip install -c requirements/constraints-qiskit-runtime.txt -e '.[qiskit-runtime]' pytest"
+            command: "python scripts/inventory_qiskit_ibm_runtime_api.py && pytest -q -rs tests/compat_qiskit_runtime"
+          - profile: qiskit-experiments-extra
+            advisory: true
+            install: "python -m pip install -c requirements/constraints-qiskit-experiments.txt -e '.[qiskit-experiments]' pytest"
+            command: "python scripts/inventory_qiskit_experiments_api.py && pytest -q -rs tests/compat_qiskit_experiments"
+          - profile: qiskit-addons-extra
+            advisory: true
+            install: "python -m pip install -c requirements/constraints-qiskit-addons.txt -e '.[qiskit-addons]' pytest"
+            command: "python scripts/inventory_qiskit_addons_api.py && pytest -q -rs tests/compat_qiskit_addons"
+    continue-on-error: ${{ matrix.advisory == true }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

@@ -5,12 +5,13 @@
 
 from quantumbridge.compat.qiskit_experiments.calibration_adapter import ADAPTER as CALIBRATION
 from quantumbridge.compat.qiskit_experiments.experiments_adapter import ADAPTER as EXPERIMENTS
+from quantumbridge.compat.qiskit_experiments.rb_adapter import ADAPTER as RB
 from quantumbridge.compat.qiskit_experiments.tomography_adapter import ADAPTER as TOMOGRAPHY
 from quantumbridge.ecosystem.registry import write_inventory
 
 
 def main() -> None:
-    for adapter in (EXPERIMENTS, TOMOGRAPHY, CALIBRATION):
+    for adapter in (EXPERIMENTS, TOMOGRAPHY, RB, CALIBRATION):
         inventory_path, matrix_path = write_inventory(adapter)
         print(f"wrote {inventory_path} and {matrix_path}")
 

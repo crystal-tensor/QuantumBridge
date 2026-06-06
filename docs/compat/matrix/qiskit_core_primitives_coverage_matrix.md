@@ -2,6 +2,12 @@
 
 Generated from runtime public-name introspection. No upstream source, tests, comments, or documentation text is copied.
 
+- Installed: True
+- Upstream version: 2.4.1
+- Inventory generated: true
+- Public API count: 21
+- QuantumBridge coverage level: 0
+
 | Upstream Package | Module | Public API | Type | QuantumBridge Level | Mode | Dependency Extra | Test | Risk | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | qiskit | qiskit.primitives | BackendEstimatorV2 | class | 0 | Inventory/Passthrough scaffold | qiskit-core | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |

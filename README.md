@@ -56,6 +56,36 @@ Current PennyLane ecosystem status:
 - Existing P1 PennyLane tape/observable support remains a small reviewed Level 2 subset.
 - Full plugin ecosystem, Catalyst bridge, TensorFlow interface parity, and production qchem workflows are not implemented.
 
+## Stage 7.2 Full Function Coverage
+
+Stage 7.2 expands installed-environment verification and adapter schemas. It remains an ecosystem coverage project, not a full replacement for any upstream SDK.
+
+| Ecosystem | Current coverage | Install extra | Status |
+| --- | --- | --- | --- |
+| Qiskit Nature | Level 0/1 plus ChemistryResult Level 2 wrapper | `.[qiskit-nature]` | Verified: 0.8.0 |
+| Qiskit Finance | Level 0/1 plus FinanceResult Level 2 wrapper | `.[qiskit-finance]` | Verified: 0.4.1; not production finance |
+| Qiskit Algorithms | Level 0/1 plus AlgorithmsResult Level 2 wrapper | `.[qiskit-algorithms]` | Verified: 0.4.0 |
+| Qiskit Machine Learning | Level 0/1 plus MLResult Level 2 wrapper | `.[qiskit-machine-learning]` | Verified: 0.9.0; not production ML |
+| Qiskit Optimization | Level 0/1 plus OptimizationResult Level 2 wrapper | `.[qiskit-optimization]` | Verified: 0.7.0 |
+| Qiskit Dynamics | Level 0/1 plus DynamicsResult Level 2 wrapper | `.[qiskit-dynamics]` | Verified: 0.6.0; advisory |
+| Qiskit Experiments | Level 0/1 plus ExperimentsResult Level 2 wrapper | `.[qiskit-experiments]` | Verified: 0.14.1; advisory and offline-only |
+| Qiskit Metal | Level 0 inventory plus MetalDesignResult schema | `.[qiskit-metal]` | Install failed on Python 3.12; advisory/unsupported |
+| Qiskit Aer | Level 0/1 plus AerResult Level 2 wrapper | `.[qiskit-aer]` | Verified: 0.17.2; no Aer parity claim |
+| PennyLane full | Level 0/1 plus PennyLaneResult Level 2 wrapper | `.[pennylane-full]` | Verified: 0.42.3; no complete replacement claim |
+
+Level 2 here means a QuantumBridge result-schema wrapper. It does not mean complete input conversion, behavioral parity, performance parity, or production equivalence.
+
+Install one lane per environment:
+
+```bash
+python -m pip install -c requirements/constraints-qiskit-nature.txt -e '.[qiskit-nature]'
+python -m pip install -c requirements/constraints-qiskit-algorithms.txt -e '.[qiskit-algorithms]'
+python -m pip install -c requirements/constraints-qiskit-dynamics.txt -e '.[qiskit-dynamics]'
+python -m pip install -c requirements/constraints-qiskit-metal.txt -e '.[qiskit-metal]'
+```
+
+Use `python scripts/verify_ecosystem_installed_envs.py` to create isolated temporary verification environments. Do not install every optional extra together. Qiskit Runtime verification is offline-only: QuantumBridge does not request tokens or contact IBM Cloud. Finance, chemistry, ML, Experiments, Dynamics, and Metal coverage is experimental and not production-grade. Metal coverage does not imply chip fabrication readiness or external electromagnetic solver validation.
+
 ## P1 Controlled Expansion
 
 Stage 5 adds controlled P1 subset coverage:

@@ -1,0 +1,808 @@
+{
+  "all_optional_mixed": false,
+  "base_python": "3.12.6",
+  "generated_at_utc": "2026-06-06T05:06:49.099966+00:00",
+  "profiles": [
+    {
+      "advisory": false,
+      "constraint": "requirements/constraints-pennylane-full.txt",
+      "create": {
+        "command": [
+          "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+          "-m",
+          "venv",
+          "/tmp/quantumbridge-stage72-venvs/pennylane-full"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": ""
+      },
+      "extra": "pennylane-full",
+      "install": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/pennylane-full/bin/python",
+          "-m",
+          "pip",
+          "install",
+          "-c",
+          "requirements/constraints-pennylane-full.txt",
+          "-e",
+          ".[pennylane-full]",
+          "pytest"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": " at multiple versions of pennylane to determine which version is compatible with other requirements. This could take a while.\nCollecting pennylane-lightning>=0.42 (from pennylane->quantumbridge-sdk==0.1.0rc1)\n  Using cached pennylane_lightning-0.44.0-cp312-cp312-macosx_13_0_arm64.whl.metadata (11 kB)\nCollecting termcolor (from diastatic-malt->pennylane->quantumbridge-sdk==0.1.0rc1)\n  Using cached termcolor-3.3.0-py3-none-any.whl.metadata (6.5 kB)\nCollecting charset_normalizer<4,>=2 (from requests->pennylane->quantumbridge-sdk==0.1.0rc1)\n  Using cached charset_normalizer-3.4.7-cp312-cp312-macosx_10_13_universal2.whl.metadata (40 kB)\nCollecting idna<4,>=2.5 (from requests->pennylane->quantumbridge-sdk==0.1.0rc1)\n  Using cached idna-3.18-py3-none-any.whl.metadata (6.1 kB)\nCollecting urllib3<3,>=1.26 (from requests->pennylane->quantumbridge-sdk==0.1.0rc1)\n  Using cached urllib3-2.7.0-py3-none-any.whl.metadata (6.9 kB)\nCollecting certifi>=2023.5.7 (from requests->pennylane->quantumbridge-sdk==0.1.0rc1)\n  Using cached certifi-2026.5.20-py3-none-any.whl.metadata (2.5 kB)\nUsing cached autoray-0.7.2-py3-none-any.whl (930 kB)\nUsing cached pytest-9.0.3-py3-none-any.whl (375 kB)\nUsing cached pluggy-1.6.0-py3-none-any.whl (20 kB)\nUsing cached iniconfig-2.3.0-py3-none-any.whl (7.5 kB)\nUsing cached numpy-2.4.6-cp312-cp312-macosx_14_0_arm64.whl (5.2 MB)\nUsing cached packaging-26.2-py3-none-any.whl (100 kB)\nUsing cached pygments-2.20.0-py3-none-any.whl (1.2 MB)\nUsing cached pennylane-0.42.3-py3-none-any.whl (4.8 MB)\nUsing cached pennylane_lightning-0.44.0-cp312-cp312-macosx_13_0_arm64.whl (1.7 MB)\nUsing cached rustworkx-0.17.1-cp39-abi3-macosx_11_0_arm64.whl (2.0 MB)\nUsing cached scipy_openblas32-0.3.33.0.0-py3-none-macosx_11_0_arm64.whl (9.8 MB)\nUsing cached appdirs-1.4.4-py2.py3-none-any.whl (9.6 kB)\nUsing cached autograd-1.8.0-py3-none-any.whl (51 kB)\nUsing cached cachetools-7.1.4-py3-none-any.whl (16 kB)\nUsing cached diastatic_malt-2.15.3-py3-none-any.whl (167 kB)\nUsing cached networkx-3.6.1-py3-none-any.whl (2.1 MB)\nUsing cached requests-2.34.2-py3-none-any.whl (73 kB)\nUsing cached charset_normalizer-3.4.7-cp312-cp312-macosx_10_13_universal2.whl (311 kB)\nUsing cached idna-3.18-py3-none-any.whl (65 kB)\nUsing cached urllib3-2.7.0-py3-none-any.whl (131 kB)\nUsing cached certifi-2026.5.20-py3-none-any.whl (134 kB)\nUsing cached scipy-1.17.1-cp312-cp312-macosx_14_0_arm64.whl (20.3 MB)\nUsing cached termcolor-3.3.0-py3-none-any.whl (7.7 kB)\nUsing cached tomlkit-0.15.0-py3-none-any.whl (41 kB)\nUsing cached typing_extensions-4.15.0-py3-none-any.whl (44 kB)\nBuilding wheels for collected packages: quantumbridge-sdk\n  Building editable for quantumbridge-sdk (pyproject.toml): started\n  Building editable for quantumbridge-sdk (pyproject.toml): finished with status 'done'\n  Created wheel for quantumbridge-sdk: filename=quantumbridge_sdk-0.1.0rc1-0.editable-py3-none-any.whl size=12158 sha256=3d304abbe3cea3e9394c50f3ebc8bf8d49a4e4af5d25eb4d44d1f0d645a8eb03\n  Stored in directory: /private/var/folders/c1/gs7_18954qx7td5_t_lnmf4c0000gn/T/pip-ephem-wheel-cache-33w5d50u/wheels/57/4d/fa/01a0f77d72bb28503622c0bccd3ce2f6fbde3bd8b185356c7d\nSuccessfully built quantumbridge-sdk\nInstalling collected packages: appdirs, urllib3, typing_extensions, tomlkit, termcolor, scipy-openblas32, pygments, pluggy, packaging, numpy, networkx, iniconfig, idna, charset_normalizer, certifi, cachetools, autoray, scipy, rustworkx, requests, quantumbridge-sdk, pytest, diastatic-malt, autograd, pennylane-lightning, pennylane\n\nSuccessfully installed appdirs-1.4.4 autograd-1.8.0 autoray-0.7.2 cachetools-7.1.4 certifi-2026.5.20 charset_normalizer-3.4.7 diastatic-malt-2.15.3 idna-3.18 iniconfig-2.3.0 networkx-3.6.1 numpy-2.4.6 packaging-26.2 pennylane-0.42.3 pennylane-lightning-0.44.0 pluggy-1.6.0 pygments-2.20.0 pytest-9.0.3 quantumbridge-sdk-0.1.0rc1 requests-2.34.2 rustworkx-0.17.1 scipy-1.17.1 scipy-openblas32-0.3.33.0.0 termcolor-3.3.0 tomlkit-0.15.0 typing_extensions-4.15.0 urllib3-2.7.0\n"
+      },
+      "installed": true,
+      "inventory": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/pennylane-full/bin/python",
+          "scripts/inventory_pennylane_full_api.py"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "wrote docs/compat/inventory/pennylane_operations_inventory.json and docs/compat/matrix/pennylane_operations_coverage_matrix.md\nwrote docs/compat/inventory/pennylane_measurements_inventory.json and docs/compat/matrix/pennylane_measurements_coverage_matrix.md\nwrote docs/compat/inventory/pennylane_qnode_inventory.json and docs/compat/matrix/pennylane_qnode_coverage_matrix.md\nwrote docs/compat/inventory/pennylane_devices_inventory.json and docs/compat/matrix/pennylane_devices_coverage_matrix.md\nwrote docs/compat/inventory/pennylane_qchem_inventory.json and docs/compat/matrix/pennylane_qchem_coverage_matrix.md\nwrote docs/compat/inventory/pennylane_transforms_inventory.json and docs/compat/matrix/pennylane_transforms_coverage_matrix.md\nwrote docs/compat/inventory/pennylane_gradients_inventory.json and docs/compat/matrix/pennylane_gradients_coverage_matrix.md\nwrote docs/compat/inventory/pennylane_templates_inventory.json and docs/compat/matrix/pennylane_templates_coverage_matrix.md\nwrote docs/compat/inventory/pennylane_resource_inventory.json and docs/compat/matrix/pennylane_resource_coverage_matrix.md\nwrote docs/compat/inventory/pennylane_plugins_inventory.json and docs/compat/matrix/pennylane_plugins_coverage_matrix.md\n"
+      },
+      "inventory_evidence": {
+        "files": [
+          "docs/compat/inventory/pennylane_devices_inventory.json",
+          "docs/compat/inventory/pennylane_gradients_inventory.json",
+          "docs/compat/inventory/pennylane_measurements_inventory.json",
+          "docs/compat/inventory/pennylane_operations_inventory.json",
+          "docs/compat/inventory/pennylane_plugins_inventory.json",
+          "docs/compat/inventory/pennylane_qchem_inventory.json",
+          "docs/compat/inventory/pennylane_qnode_inventory.json",
+          "docs/compat/inventory/pennylane_resource_inventory.json",
+          "docs/compat/inventory/pennylane_templates_inventory.json",
+          "docs/compat/inventory/pennylane_transforms_inventory.json"
+        ],
+        "public_api_count": 444,
+        "unsupported_count": 0
+      },
+      "pip_check": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/pennylane-full/bin/python",
+          "-m",
+          "pip",
+          "check"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "No broken requirements found.\n"
+      },
+      "profile": "pennylane-full",
+      "python": "3.12.6",
+      "status": "verified",
+      "tests": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/pennylane-full/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "-rs",
+          "tests/compat_pennylane_full"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": ".......                                                                  [100%]\n7 passed in 0.43s\n"
+      },
+      "venv": "/tmp/quantumbridge-stage72-venvs/pennylane-full",
+      "versions": {
+        "pennylane": "0.42.3"
+      }
+    },
+    {
+      "advisory": false,
+      "constraint": "requirements/constraints-qiskit-aer.txt",
+      "create": {
+        "command": [
+          "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+          "-m",
+          "venv",
+          "/tmp/quantumbridge-stage72-venvs/qiskit-aer"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": ""
+      },
+      "extra": "qiskit-aer",
+      "install": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-aer/bin/python",
+          "-m",
+          "pip",
+          "install",
+          "-c",
+          "requirements/constraints-qiskit-aer.txt",
+          "-e",
+          ".[qiskit-aer]",
+          "pytest"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "g cached qiskit_aer-0.17.2-cp312-cp312-macosx_11_0_arm64.whl.metadata (8.3 kB)\nCollecting iniconfig>=1.0.1 (from pytest)\n  Using cached iniconfig-2.3.0-py3-none-any.whl.metadata (2.5 kB)\nCollecting packaging>=22 (from pytest)\n  Using cached packaging-26.2-py3-none-any.whl.metadata (3.5 kB)\nCollecting pluggy<2,>=1.5 (from pytest)\n  Using cached pluggy-1.6.0-py3-none-any.whl.metadata (4.8 kB)\nCollecting pygments>=2.7.2 (from pytest)\n  Using cached pygments-2.20.0-py3-none-any.whl.metadata (2.5 kB)\nCollecting qiskit>=1.1.0 (from qiskit-aer->quantumbridge-sdk==0.1.0rc1)\n  Using cached qiskit-2.4.1-cp310-abi3-macosx_11_0_arm64.whl.metadata (12 kB)\nCollecting scipy>=1.0 (from qiskit-aer->quantumbridge-sdk==0.1.0rc1)\n  Using cached scipy-1.17.1-cp312-cp312-macosx_14_0_arm64.whl.metadata (62 kB)\nCollecting psutil>=5 (from qiskit-aer->quantumbridge-sdk==0.1.0rc1)\n  Using cached psutil-7.2.2-cp36-abi3-macosx_11_0_arm64.whl.metadata (22 kB)\nCollecting python-dateutil>=2.8.0 (from qiskit-aer->quantumbridge-sdk==0.1.0rc1)\n  Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)\nCollecting six>=1.5 (from python-dateutil>=2.8.0->qiskit-aer->quantumbridge-sdk==0.1.0rc1)\n  Using cached six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)\nCollecting rustworkx>=0.15.0 (from qiskit>=1.1.0->qiskit-aer->quantumbridge-sdk==0.1.0rc1)\n  Using cached rustworkx-0.17.1-cp39-abi3-macosx_11_0_arm64.whl.metadata (10 kB)\nCollecting dill>=0.3 (from qiskit>=1.1.0->qiskit-aer->quantumbridge-sdk==0.1.0rc1)\n  Using cached dill-0.4.1-py3-none-any.whl.metadata (10 kB)\nCollecting stevedore>=3.0.0 (from qiskit>=1.1.0->qiskit-aer->quantumbridge-sdk==0.1.0rc1)\n  Using cached stevedore-5.8.0-py3-none-any.whl.metadata (2.3 kB)\nCollecting typing-extensions (from qiskit>=1.1.0->qiskit-aer->quantumbridge-sdk==0.1.0rc1)\n  Using cached typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)\nUsing cached pytest-9.0.3-py3-none-any.whl (375 kB)\nUsing cached pluggy-1.6.0-py3-none-any.whl (20 kB)\nUsing cached iniconfig-2.3.0-py3-none-any.whl (7.5 kB)\nUsing cached numpy-2.4.6-cp312-cp312-macosx_14_0_arm64.whl (5.2 MB)\nUsing cached packaging-26.2-py3-none-any.whl (100 kB)\nUsing cached pygments-2.20.0-py3-none-any.whl (1.2 MB)\nUsing cached qiskit_aer-0.17.2-cp312-cp312-macosx_11_0_arm64.whl (2.1 MB)\nUsing cached psutil-7.2.2-cp36-abi3-macosx_11_0_arm64.whl (129 kB)\nUsing cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)\nUsing cached qiskit-2.4.1-cp310-abi3-macosx_11_0_arm64.whl (8.3 MB)\nUsing cached dill-0.4.1-py3-none-any.whl (120 kB)\nUsing cached rustworkx-0.17.1-cp39-abi3-macosx_11_0_arm64.whl (2.0 MB)\nUsing cached scipy-1.17.1-cp312-cp312-macosx_14_0_arm64.whl (20.3 MB)\nUsing cached six-1.17.0-py2.py3-none-any.whl (11 kB)\nUsing cached stevedore-5.8.0-py3-none-any.whl (54 kB)\nUsing cached typing_extensions-4.15.0-py3-none-any.whl (44 kB)\nBuilding wheels for collected packages: quantumbridge-sdk\n  Building editable for quantumbridge-sdk (pyproject.toml): started\n  Building editable for quantumbridge-sdk (pyproject.toml): finished with status 'done'\n  Created wheel for quantumbridge-sdk: filename=quantumbridge_sdk-0.1.0rc1-0.editable-py3-none-any.whl size=12158 sha256=7543bd498ba20233d063680781f96fd2643f037441e01ececa7b9d069e92a115\n  Stored in directory: /private/var/folders/c1/gs7_18954qx7td5_t_lnmf4c0000gn/T/pip-ephem-wheel-cache-jo1q7460/wheels/57/4d/fa/01a0f77d72bb28503622c0bccd3ce2f6fbde3bd8b185356c7d\nSuccessfully built quantumbridge-sdk\nInstalling collected packages: typing-extensions, stevedore, six, pygments, psutil, pluggy, packaging, numpy, iniconfig, dill, scipy, rustworkx, quantumbridge-sdk, python-dateutil, pytest, qiskit, qiskit-aer\n\nSuccessfully installed dill-0.4.1 iniconfig-2.3.0 numpy-2.4.6 packaging-26.2 pluggy-1.6.0 psutil-7.2.2 pygments-2.20.0 pytest-9.0.3 python-dateutil-2.9.0.post0 qiskit-2.4.1 qiskit-aer-0.17.2 quantumbridge-sdk-0.1.0rc1 rustworkx-0.17.1 scipy-1.17.1 six-1.17.0 stevedore-5.8.0 typing-extensions-4.15.0\n"
+      },
+      "installed": true,
+      "inventory": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-aer/bin/python",
+          "scripts/inventory_qiskit_aer_api.py"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "wrote docs/compat/inventory/qiskit_aer_inventory.json and docs/compat/matrix/qiskit_aer_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_aer_noise_inventory.json and docs/compat/matrix/qiskit_aer_noise_coverage_matrix.md\n"
+      },
+      "inventory_evidence": {
+        "files": [
+          "docs/compat/inventory/qiskit_aer_inventory.json",
+          "docs/compat/inventory/qiskit_aer_noise_inventory.json"
+        ],
+        "public_api_count": 24,
+        "unsupported_count": 0
+      },
+      "pip_check": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-aer/bin/python",
+          "-m",
+          "pip",
+          "check"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "No broken requirements found.\n"
+      },
+      "profile": "qiskit-aer",
+      "python": "3.12.6",
+      "status": "verified",
+      "tests": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-aer/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "-rs",
+          "tests/compat_qiskit_aer"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": ".......                                                                  [100%]\n=============================== warnings summary ===============================\ntests/compat_qiskit_aer/test_aer_adapter.py::test_qiskit_aer_statevector_and_density_matrix_smoke_when_installed\n  /Users/avalok/work/QuantumBridge/tests/compat_qiskit_aer/test_aer_adapter.py:36: DeprecationWarning: The return type of saved statevectors has been changed from a `numpy.ndarray` to a `qiskit.quantum_info.Statevector` as of qiskit-aer 0.10. Accessing numpy array attributes is deprecated and will result in an error in a future release. To continue using saved result objects as arrays you can explicitly cast them using  `np.asarray(object)`.\n    assert len(state_result.get_statevector()) == 2\n\ntests/compat_qiskit_aer/test_aer_adapter.py::test_qiskit_aer_statevector_and_density_matrix_smoke_when_installed\n  /Users/avalok/work/QuantumBridge/tests/compat_qiskit_aer/test_aer_adapter.py:42: DeprecationWarning: The return type of saved density matrices has been changed from a `numpy.ndarray` to a `qiskit.quantum_info.DensityMatrix` as of qiskit-aer 0.10. Accessing numpy array attributes is deprecated and will result in an error in a future release. To continue using saved result objects as arrays you can explicitly cast them using  `np.asarray(object)`.\n    assert density_result.data(0)[\"density_matrix\"].shape == (2, 2)\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n7 passed, 2 warnings in 0.17s\n"
+      },
+      "venv": "/tmp/quantumbridge-stage72-venvs/qiskit-aer",
+      "versions": {
+        "qiskit-aer": "0.17.2"
+      }
+    },
+    {
+      "advisory": false,
+      "constraint": "requirements/constraints-qiskit-algorithms.txt",
+      "create": {
+        "command": [
+          "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+          "-m",
+          "venv",
+          "/tmp/quantumbridge-stage72-venvs/qiskit-algorithms"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": ""
+      },
+      "extra": "qiskit-algorithms",
+      "install": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-algorithms/bin/python",
+          "-m",
+          "pip",
+          "install",
+          "-c",
+          "requirements/constraints-qiskit-algorithms.txt",
+          "-e",
+          ".[qiskit-algorithms]",
+          "pytest"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "es: finished with status 'done'\n  Checking if build backend supports build_editable: started\n  Checking if build backend supports build_editable: finished with status 'done'\n  Getting requirements to build editable: started\n  Getting requirements to build editable: finished with status 'done'\n  Preparing editable metadata (pyproject.toml): started\n  Preparing editable metadata (pyproject.toml): finished with status 'done'\nCollecting pytest\n  Using cached pytest-9.0.3-py3-none-any.whl.metadata (7.6 kB)\nCollecting numpy>=1.20 (from quantumbridge-sdk==0.1.0rc1)\n  Using cached numpy-2.4.6-cp312-cp312-macosx_14_0_arm64.whl.metadata (6.6 kB)\nCollecting qiskit-algorithms (from quantumbridge-sdk==0.1.0rc1)\n  Using cached qiskit_algorithms-0.4.0-py3-none-any.whl.metadata (4.7 kB)\nCollecting iniconfig>=1.0.1 (from pytest)\n  Using cached iniconfig-2.3.0-py3-none-any.whl.metadata (2.5 kB)\nCollecting packaging>=22 (from pytest)\n  Using cached packaging-26.2-py3-none-any.whl.metadata (3.5 kB)\nCollecting pluggy<2,>=1.5 (from pytest)\n  Using cached pluggy-1.6.0-py3-none-any.whl.metadata (4.8 kB)\nCollecting pygments>=2.7.2 (from pytest)\n  Using cached pygments-2.20.0-py3-none-any.whl.metadata (2.5 kB)\nCollecting qiskit>=1.0 (from qiskit-algorithms->quantumbridge-sdk==0.1.0rc1)\n  Using cached qiskit-2.4.1-cp310-abi3-macosx_11_0_arm64.whl.metadata (12 kB)\nCollecting scipy>=1.4 (from qiskit-algorithms->quantumbridge-sdk==0.1.0rc1)\n  Using cached scipy-1.17.1-cp312-cp312-macosx_14_0_arm64.whl.metadata (62 kB)\nCollecting rustworkx>=0.15.0 (from qiskit>=1.0->qiskit-algorithms->quantumbridge-sdk==0.1.0rc1)\n  Using cached rustworkx-0.17.1-cp39-abi3-macosx_11_0_arm64.whl.metadata (10 kB)\nCollecting dill>=0.3 (from qiskit>=1.0->qiskit-algorithms->quantumbridge-sdk==0.1.0rc1)\n  Using cached dill-0.4.1-py3-none-any.whl.metadata (10 kB)\nCollecting stevedore>=3.0.0 (from qiskit>=1.0->qiskit-algorithms->quantumbridge-sdk==0.1.0rc1)\n  Using cached stevedore-5.8.0-py3-none-any.whl.metadata (2.3 kB)\nCollecting typing-extensions (from qiskit>=1.0->qiskit-algorithms->quantumbridge-sdk==0.1.0rc1)\n  Using cached typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)\nUsing cached pytest-9.0.3-py3-none-any.whl (375 kB)\nUsing cached pluggy-1.6.0-py3-none-any.whl (20 kB)\nUsing cached iniconfig-2.3.0-py3-none-any.whl (7.5 kB)\nUsing cached numpy-2.4.6-cp312-cp312-macosx_14_0_arm64.whl (5.2 MB)\nUsing cached packaging-26.2-py3-none-any.whl (100 kB)\nUsing cached pygments-2.20.0-py3-none-any.whl (1.2 MB)\nUsing cached qiskit_algorithms-0.4.0-py3-none-any.whl (327 kB)\nUsing cached qiskit-2.4.1-cp310-abi3-macosx_11_0_arm64.whl (8.3 MB)\nUsing cached dill-0.4.1-py3-none-any.whl (120 kB)\nUsing cached rustworkx-0.17.1-cp39-abi3-macosx_11_0_arm64.whl (2.0 MB)\nUsing cached scipy-1.17.1-cp312-cp312-macosx_14_0_arm64.whl (20.3 MB)\nUsing cached stevedore-5.8.0-py3-none-any.whl (54 kB)\nUsing cached typing_extensions-4.15.0-py3-none-any.whl (44 kB)\nBuilding wheels for collected packages: quantumbridge-sdk\n  Building editable for quantumbridge-sdk (pyproject.toml): started\n  Building editable for quantumbridge-sdk (pyproject.toml): finished with status 'done'\n  Created wheel for quantumbridge-sdk: filename=quantumbridge_sdk-0.1.0rc1-0.editable-py3-none-any.whl size=12158 sha256=918c0943449e76c0cdb13032f98fa9fb8f1c188b0faa8a108a5571d4b43b595a\n  Stored in directory: /private/var/folders/c1/gs7_18954qx7td5_t_lnmf4c0000gn/T/pip-ephem-wheel-cache-p5vdg98n/wheels/57/4d/fa/01a0f77d72bb28503622c0bccd3ce2f6fbde3bd8b185356c7d\nSuccessfully built quantumbridge-sdk\nInstalling collected packages: typing-extensions, stevedore, pygments, pluggy, packaging, numpy, iniconfig, dill, scipy, rustworkx, quantumbridge-sdk, pytest, qiskit, qiskit-algorithms\n\nSuccessfully installed dill-0.4.1 iniconfig-2.3.0 numpy-2.4.6 packaging-26.2 pluggy-1.6.0 pygments-2.20.0 pytest-9.0.3 qiskit-2.4.1 qiskit-algorithms-0.4.0 quantumbridge-sdk-0.1.0rc1 rustworkx-0.17.1 scipy-1.17.1 stevedore-5.8.0 typing-extensions-4.15.0\n"
+      },
+      "installed": true,
+      "inventory": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-algorithms/bin/python",
+          "scripts/inventory_qiskit_algorithms_api.py"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "wrote docs/compat/inventory/qiskit_algorithms_eigensolvers_inventory.json and docs/compat/matrix/qiskit_algorithms_eigensolvers_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_algorithms_minimum_eigensolvers_inventory.json and docs/compat/matrix/qiskit_algorithms_minimum_eigensolvers_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_algorithms_amplitude_inventory.json and docs/compat/matrix/qiskit_algorithms_amplitude_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_algorithms_grover_inventory.json and docs/compat/matrix/qiskit_algorithms_grover_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_algorithms_optimizers_inventory.json and docs/compat/matrix/qiskit_algorithms_optimizers_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_algorithms_gradients_inventory.json and docs/compat/matrix/qiskit_algorithms_gradients_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_algorithms_extended_inventory.json and docs/compat/matrix/qiskit_algorithms_extended_coverage_matrix.md\n"
+      },
+      "inventory_evidence": {
+        "files": [
+          "docs/compat/inventory/qiskit_algorithms_amplitude_inventory.json",
+          "docs/compat/inventory/qiskit_algorithms_eigensolvers_inventory.json",
+          "docs/compat/inventory/qiskit_algorithms_extended_inventory.json",
+          "docs/compat/inventory/qiskit_algorithms_gradients_inventory.json",
+          "docs/compat/inventory/qiskit_algorithms_grover_inventory.json",
+          "docs/compat/inventory/qiskit_algorithms_minimum_eigensolvers_inventory.json",
+          "docs/compat/inventory/qiskit_algorithms_optimizers_inventory.json"
+        ],
+        "public_api_count": 168,
+        "unsupported_count": 0
+      },
+      "pip_check": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-algorithms/bin/python",
+          "-m",
+          "pip",
+          "check"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "No broken requirements found.\n"
+      },
+      "profile": "qiskit-algorithms",
+      "python": "3.12.6",
+      "status": "verified",
+      "tests": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-algorithms/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "-rs",
+          "tests/compat_qiskit_algorithms"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": ".........                                                                [100%]\n9 passed in 0.59s\n"
+      },
+      "venv": "/tmp/quantumbridge-stage72-venvs/qiskit-algorithms",
+      "versions": {
+        "qiskit-algorithms": "0.4.0"
+      }
+    },
+    {
+      "advisory": true,
+      "constraint": "requirements/constraints-qiskit-dynamics.txt",
+      "create": {
+        "command": [
+          "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+          "-m",
+          "venv",
+          "/tmp/quantumbridge-stage72-venvs/qiskit-dynamics"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": ""
+      },
+      "extra": "qiskit-dynamics",
+      "install": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-dynamics/bin/python",
+          "-m",
+          "pip",
+          "install",
+          "-c",
+          "requirements/constraints-qiskit-dynamics.txt",
+          "-e",
+          ".[qiskit-dynamics]",
+          "pytest"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "cs->quantumbridge-sdk==0.1.0rc1)\n  Using cached kiwisolver-1.5.0-cp312-cp312-macosx_11_0_arm64.whl.metadata (5.1 kB)\nCollecting pillow>=8 (from matplotlib>=3.0->qiskit-dynamics->quantumbridge-sdk==0.1.0rc1)\n  Using cached pillow-12.2.0-cp312-cp312-macosx_11_0_arm64.whl.metadata (8.8 kB)\nCollecting pyparsing>=3 (from matplotlib>=3.0->qiskit-dynamics->quantumbridge-sdk==0.1.0rc1)\n  Using cached pyparsing-3.3.2-py3-none-any.whl.metadata (5.8 kB)\nCollecting six>=1.5 (from python-dateutil>=2.8.0->qiskit<=1.3->qiskit-dynamics->quantumbridge-sdk==0.1.0rc1)\n  Using cached six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)\nCollecting mpmath<1.4,>=1.1.0 (from sympy>=1.12->qiskit-dynamics->quantumbridge-sdk==0.1.0rc1)\n  Using cached mpmath-1.3.0-py3-none-any.whl.metadata (8.6 kB)\nUsing cached pytest-9.0.3-py3-none-any.whl (375 kB)\nUsing cached pluggy-1.6.0-py3-none-any.whl (20 kB)\nUsing cached iniconfig-2.3.0-py3-none-any.whl (7.5 kB)\nUsing cached numpy-2.4.6-cp312-cp312-macosx_14_0_arm64.whl (5.2 MB)\nUsing cached packaging-26.2-py3-none-any.whl (100 kB)\nUsing cached pygments-2.20.0-py3-none-any.whl (1.2 MB)\nDownloading qiskit_dynamics-0.6.0-py3-none-any.whl (180 kB)\nDownloading qiskit-1.3.0-cp39-abi3-macosx_11_0_arm64.whl (6.2 MB)\n   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 6.2/6.2 MB 4.8 MB/s  0:00:01\nDownloading symengine-0.13.0-cp312-cp312-macosx_11_0_arm64.whl (22.7 MB)\n   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 22.7/22.7 MB 17.5 MB/s  0:00:01\nUsing cached dill-0.4.1-py3-none-any.whl (120 kB)\nUsing cached matplotlib-3.10.9-cp312-cp312-macosx_11_0_arm64.whl (8.2 MB)\nUsing cached contourpy-1.3.3-cp312-cp312-macosx_11_0_arm64.whl (273 kB)\nUsing cached cycler-0.12.1-py3-none-any.whl (8.3 kB)\nUsing cached fonttools-4.63.0-cp312-cp312-macosx_10_13_universal2.whl (2.9 MB)\nUsing cached kiwisolver-1.5.0-cp312-cp312-macosx_11_0_arm64.whl (64 kB)\nDownloading multiset-3.2.0-py2.py3-none-any.whl (11 kB)\nUsing cached pillow-12.2.0-cp312-cp312-macosx_11_0_arm64.whl (4.7 MB)\nUsing cached pyparsing-3.3.2-py3-none-any.whl (122 kB)\nUsing cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)\nUsing cached rustworkx-0.17.1-cp39-abi3-macosx_11_0_arm64.whl (2.0 MB)\nUsing cached scipy-1.17.1-cp312-cp312-macosx_14_0_arm64.whl (20.3 MB)\nUsing cached six-1.17.0-py2.py3-none-any.whl (11 kB)\nUsing cached stevedore-5.8.0-py3-none-any.whl (54 kB)\nUsing cached sympy-1.14.0-py3-none-any.whl (6.3 MB)\nUsing cached mpmath-1.3.0-py3-none-any.whl (536 kB)\nDownloading arraylias-0.1.1-py3-none-any.whl (21 kB)\nUsing cached typing_extensions-4.15.0-py3-none-any.whl (44 kB)\nBuilding wheels for collected packages: quantumbridge-sdk\n  Building editable for quantumbridge-sdk (pyproject.toml): started\n  Building editable for quantumbridge-sdk (pyproject.toml): finished with status 'done'\n  Created wheel for quantumbridge-sdk: filename=quantumbridge_sdk-0.1.0rc1-0.editable-py3-none-any.whl size=12158 sha256=a49b76114fd0147760d3953a6a544937ecaa118ae21e9c4fc4fe47954200f1f5\n  Stored in directory: /private/var/folders/c1/gs7_18954qx7td5_t_lnmf4c0000gn/T/pip-ephem-wheel-cache-h4df5ovf/wheels/57/4d/fa/01a0f77d72bb28503622c0bccd3ce2f6fbde3bd8b185356c7d\nSuccessfully built quantumbridge-sdk\nInstalling collected packages: mpmath, typing-extensions, sympy, symengine, stevedore, six, pyparsing, pygments, pluggy, pillow, packaging, numpy, multiset, kiwisolver, iniconfig, fonttools, dill, cycler, arraylias, scipy, rustworkx, quantumbridge-sdk, python-dateutil, pytest, contourpy, qiskit, matplotlib, qiskit-dynamics\n\nSuccessfully installed arraylias-0.1.1 contourpy-1.3.3 cycler-0.12.1 dill-0.4.1 fonttools-4.63.0 iniconfig-2.3.0 kiwisolver-1.5.0 matplotlib-3.10.9 mpmath-1.3.0 multiset-3.2.0 numpy-2.4.6 packaging-26.2 pillow-12.2.0 pluggy-1.6.0 pygments-2.20.0 pyparsing-3.3.2 pytest-9.0.3 python-dateutil-2.9.0.post0 qiskit-1.3.0 qiskit-dynamics-0.6.0 quantumbridge-sdk-0.1.0rc1 rustworkx-0.17.1 scipy-1.17.1 six-1.17.0 stevedore-5.8.0 symengine-0.13.0 sympy-1.14.0 typing-extensions-4.15.0\n"
+      },
+      "installed": true,
+      "inventory": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-dynamics/bin/python",
+          "scripts/inventory_qiskit_dynamics_api.py"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "wrote docs/compat/inventory/qiskit_dynamics_solver_inventory.json and docs/compat/matrix/qiskit_dynamics_solver_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_dynamics_models_inventory.json and docs/compat/matrix/qiskit_dynamics_models_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_dynamics_signals_inventory.json and docs/compat/matrix/qiskit_dynamics_signals_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_dynamics_backend_inventory.json and docs/compat/matrix/qiskit_dynamics_backend_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_dynamics_extended_inventory.json and docs/compat/matrix/qiskit_dynamics_extended_coverage_matrix.md\n"
+      },
+      "inventory_evidence": {
+        "files": [
+          "docs/compat/inventory/qiskit_dynamics_backend_inventory.json",
+          "docs/compat/inventory/qiskit_dynamics_extended_inventory.json",
+          "docs/compat/inventory/qiskit_dynamics_models_inventory.json",
+          "docs/compat/inventory/qiskit_dynamics_signals_inventory.json",
+          "docs/compat/inventory/qiskit_dynamics_solver_inventory.json"
+        ],
+        "public_api_count": 29,
+        "unsupported_count": 1
+      },
+      "pip_check": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-dynamics/bin/python",
+          "-m",
+          "pip",
+          "check"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "No broken requirements found.\n"
+      },
+      "profile": "qiskit-dynamics",
+      "python": "3.12.6",
+      "status": "verified",
+      "tests": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-dynamics/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "-rs",
+          "tests/compat_qiskit_dynamics"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "....                                                                     [100%]\n4 passed in 0.67s\n"
+      },
+      "venv": "/tmp/quantumbridge-stage72-venvs/qiskit-dynamics",
+      "versions": {
+        "qiskit-dynamics": "0.6.0"
+      }
+    },
+    {
+      "advisory": true,
+      "constraint": "requirements/constraints-qiskit-experiments.txt",
+      "create": {
+        "command": [
+          "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+          "-m",
+          "venv",
+          "/tmp/quantumbridge-stage72-venvs/qiskit-experiments"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": ""
+      },
+      "extra": "qiskit-experiments",
+      "install": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-experiments/bin/python",
+          "-m",
+          "pip",
+          "install",
+          "-c",
+          "requirements/constraints-qiskit-experiments.txt",
+          "-e",
+          ".[qiskit-experiments]",
+          "pytest"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": ".1-py3-none-any.whl (120 kB)\nUsing cached qiskit_ibm_runtime-0.47.0-py3-none-any.whl (1.9 MB)\nDownloading ibm_quantum_schemas-0.8.20260605-py3-none-any.whl (108 kB)\nUsing cached pydantic-2.13.4-py3-none-any.whl (472 kB)\nUsing cached pydantic_core-2.46.4-cp312-cp312-macosx_11_0_arm64.whl (2.0 MB)\nUsing cached annotated_types-0.7.0-py3-none-any.whl (13 kB)\nUsing cached ibm_platform_services-0.75.0-py3-none-any.whl (386 kB)\nUsing cached ibm_cloud_sdk_core-3.24.4-py3-none-any.whl (75 kB)\nUsing cached pyjwt-2.13.0-py3-none-any.whl (31 kB)\nUsing cached requests-2.34.2-py3-none-any.whl (73 kB)\nUsing cached charset_normalizer-3.4.7-cp312-cp312-macosx_10_13_universal2.whl (311 kB)\nUsing cached idna-3.18-py3-none-any.whl (65 kB)\nUsing cached urllib3-2.7.0-py3-none-any.whl (131 kB)\nUsing cached certifi-2026.5.20-py3-none-any.whl (134 kB)\nUsing cached pybase64-1.4.3-cp312-cp312-macosx_11_0_arm64.whl (31 kB)\nUsing cached requests_ntlm-1.3.0-py3-none-any.whl (6.6 kB)\nUsing cached cryptography-48.0.0-cp311-abi3-macosx_10_9_universal2.whl (8.0 MB)\nUsing cached cffi-2.0.0-cp312-cp312-macosx_11_0_arm64.whl (181 kB)\nUsing cached pyspnego-0.12.1-py3-none-any.whl (130 kB)\nUsing cached rustworkx-0.17.1-cp39-abi3-macosx_11_0_arm64.whl (2.0 MB)\nUsing cached samplomatic-0.19.0-py3-none-any.whl (218 kB)\nUsing cached orjson-3.11.9-cp312-cp312-macosx_15_0_arm64.whl (128 kB)\nUsing cached scipy-1.17.1-cp312-cp312-macosx_14_0_arm64.whl (20.3 MB)\nUsing cached six-1.17.0-py2.py3-none-any.whl (11 kB)\nUsing cached stevedore-5.8.0-py3-none-any.whl (54 kB)\nUsing cached typing_extensions-4.15.0-py3-none-any.whl (44 kB)\nUsing cached typing_inspection-0.4.2-py3-none-any.whl (14 kB)\nUsing cached lmfit-1.3.4-py3-none-any.whl (97 kB)\nUsing cached asteval-1.0.8-py3-none-any.whl (22 kB)\nUsing cached uncertainties-3.2.3-py3-none-any.whl (60 kB)\nUsing cached pycparser-3.0-py3-none-any.whl (48 kB)\nBuilding wheels for collected packages: quantumbridge-sdk\n  Building editable for quantumbridge-sdk (pyproject.toml): started\n  Building editable for quantumbridge-sdk (pyproject.toml): finished with status 'done'\n  Created wheel for quantumbridge-sdk: filename=quantumbridge_sdk-0.1.0rc1-0.editable-py3-none-any.whl size=12158 sha256=1901e2a09c79a60637221f870b2868a83ec3c3b86cd1009b7c6d76d4ce609132\n  Stored in directory: /private/var/folders/c1/gs7_18954qx7td5_t_lnmf4c0000gn/T/pip-ephem-wheel-cache-p8q8kftu/wheels/57/4d/fa/01a0f77d72bb28503622c0bccd3ce2f6fbde3bd8b185356c7d\nSuccessfully built quantumbridge-sdk\nInstalling collected packages: urllib3, uncertainties, typing-extensions, stevedore, six, pyparsing, PyJWT, pygments, pycparser, pybase64, pluggy, pillow, packaging, orjson, numpy, kiwisolver, iniconfig, idna, fonttools, dill, cycler, charset_normalizer, certifi, asteval, annotated-types, typing-inspection, scipy, rustworkx, requests, quantumbridge-sdk, python-dateutil, pytest, pydantic-core, contourpy, cffi, qiskit, pydantic, pandas, matplotlib, lmfit, ibm_cloud_sdk_core, cryptography, samplomatic, pyspnego, ibm-platform-services, requests-ntlm, ibm-quantum-schemas, qiskit-ibm-runtime, qiskit-experiments\n\nSuccessfully installed PyJWT-2.13.0 annotated-types-0.7.0 asteval-1.0.8 certifi-2026.5.20 cffi-2.0.0 charset_normalizer-3.4.7 contourpy-1.3.3 cryptography-48.0.0 cycler-0.12.1 dill-0.4.1 fonttools-4.63.0 ibm-platform-services-0.75.0 ibm-quantum-schemas-0.8.20260605 ibm_cloud_sdk_core-3.24.4 idna-3.18 iniconfig-2.3.0 kiwisolver-1.5.0 lmfit-1.3.4 matplotlib-3.10.9 numpy-2.4.6 orjson-3.11.9 packaging-26.2 pandas-3.0.3 pillow-12.2.0 pluggy-1.6.0 pybase64-1.4.3 pycparser-3.0 pydantic-2.13.4 pydantic-core-2.46.4 pygments-2.20.0 pyparsing-3.3.2 pyspnego-0.12.1 pytest-9.0.3 python-dateutil-2.9.0.post0 qiskit-2.4.1 qiskit-experiments-0.14.1 qiskit-ibm-runtime-0.47.0 quantumbridge-sdk-0.1.0rc1 requests-2.34.2 requests-ntlm-1.3.0 rustworkx-0.17.1 samplomatic-0.19.0 scipy-1.17.1 six-1.17.0 stevedore-5.8.0 typing-extensions-4.15.0 typing-inspection-0.4.2 uncertainties-3.2.3 urllib3-2.7.0\n"
+      },
+      "installed": true,
+      "inventory": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-experiments/bin/python",
+          "scripts/inventory_qiskit_experiments_api.py"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "wrote docs/compat/inventory/qiskit_experiments_inventory.json and docs/compat/matrix/qiskit_experiments_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_experiments_tomography_inventory.json and docs/compat/matrix/qiskit_experiments_tomography_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_experiments_rb_inventory.json and docs/compat/matrix/qiskit_experiments_rb_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_experiments_calibration_inventory.json and docs/compat/matrix/qiskit_experiments_calibration_coverage_matrix.md\n"
+      },
+      "inventory_evidence": {
+        "files": [
+          "docs/compat/inventory/qiskit_experiments_calibration_inventory.json",
+          "docs/compat/inventory/qiskit_experiments_inventory.json",
+          "docs/compat/inventory/qiskit_experiments_rb_inventory.json",
+          "docs/compat/inventory/qiskit_experiments_tomography_inventory.json"
+        ],
+        "public_api_count": 22,
+        "unsupported_count": 1
+      },
+      "pip_check": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-experiments/bin/python",
+          "-m",
+          "pip",
+          "check"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "No broken requirements found.\n"
+      },
+      "profile": "qiskit-experiments",
+      "python": "3.12.6",
+      "status": "verified",
+      "tests": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-experiments/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "-rs",
+          "tests/compat_qiskit_experiments"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": ".....                                                                    [100%]\n5 passed in 1.07s\n"
+      },
+      "venv": "/tmp/quantumbridge-stage72-venvs/qiskit-experiments",
+      "versions": {
+        "qiskit-experiments": "0.14.1"
+      }
+    },
+    {
+      "advisory": false,
+      "constraint": "requirements/constraints-qiskit-finance.txt",
+      "create": {
+        "command": [
+          "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+          "-m",
+          "venv",
+          "/tmp/quantumbridge-stage72-venvs/qiskit-finance"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": ""
+      },
+      "extra": "qiskit-finance",
+      "install": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-finance/bin/python",
+          "-m",
+          "pip",
+          "install",
+          "-c",
+          "requirements/constraints-qiskit-finance.txt",
+          "-e",
+          ".[qiskit-finance]",
+          "pytest"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "7 kB)\nUsing cached qiskit_optimization-0.7.0-py3-none-any.whl (237 kB)\nUsing cached networkx-3.6.1-py3-none-any.whl (2.1 MB)\nUsing cached rustworkx-0.17.1-cp39-abi3-macosx_11_0_arm64.whl (2.0 MB)\nUsing cached scipy-1.17.1-cp312-cp312-macosx_14_0_arm64.whl (20.3 MB)\nUsing cached setuptools-82.0.1-py3-none-any.whl (1.0 MB)\nUsing cached stevedore-5.8.0-py3-none-any.whl (54 kB)\nUsing cached yfinance-1.4.1-py2.py3-none-any.whl (137 kB)\nUsing cached beautifulsoup4-4.14.3-py3-none-any.whl (107 kB)\nUsing cached curl_cffi-0.15.0-cp310-abi3-macosx_11_0_arm64.whl (2.6 MB)\nUsing cached certifi-2026.5.20-py3-none-any.whl (134 kB)\nUsing cached cffi-2.0.0-cp312-cp312-macosx_11_0_arm64.whl (181 kB)\nUsing cached multitasking-0.0.13-py3-none-any.whl (16 kB)\nUsing cached pandas-3.0.3-cp312-cp312-macosx_11_0_arm64.whl (9.9 MB)\nUsing cached peewee-4.0.6-py3-none-any.whl (146 kB)\nUsing cached platformdirs-4.10.0-py3-none-any.whl (22 kB)\nUsing cached protobuf-7.35.0-cp310-abi3-macosx_10_9_universal2.whl (433 kB)\nUsing cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)\nUsing cached pytz-2026.2-py2.py3-none-any.whl (510 kB)\nUsing cached requests-2.34.2-py3-none-any.whl (73 kB)\nUsing cached charset_normalizer-3.4.7-cp312-cp312-macosx_10_13_universal2.whl (311 kB)\nUsing cached idna-3.18-py3-none-any.whl (65 kB)\nUsing cached urllib3-2.7.0-py3-none-any.whl (131 kB)\nUsing cached six-1.17.0-py2.py3-none-any.whl (11 kB)\nUsing cached soupsieve-2.8.4-py3-none-any.whl (37 kB)\nUsing cached typing_extensions-4.15.0-py3-none-any.whl (44 kB)\nUsing cached websockets-16.0-cp312-cp312-macosx_11_0_arm64.whl (175 kB)\nUsing cached Nasdaq_Data_Link-1.0.4-py2.py3-none-any.whl (28 kB)\nUsing cached inflection-0.5.1-py2.py3-none-any.whl (9.5 kB)\nUsing cached more_itertools-11.1.0-py3-none-any.whl (72 kB)\nUsing cached pycparser-3.0-py3-none-any.whl (48 kB)\nUsing cached rich-15.0.0-py3-none-any.whl (310 kB)\nUsing cached markdown_it_py-4.2.0-py3-none-any.whl (91 kB)\nUsing cached mdurl-0.1.2-py3-none-any.whl (10.0 kB)\nBuilding wheels for collected packages: quantumbridge-sdk\n  Building editable for quantumbridge-sdk (pyproject.toml): started\n  Building editable for quantumbridge-sdk (pyproject.toml): finished with status 'done'\n  Created wheel for quantumbridge-sdk: filename=quantumbridge_sdk-0.1.0rc1-0.editable-py3-none-any.whl size=12158 sha256=df5d81379b02268d6c2a88e245fbf4c514f8d7eca1ee9ff62d48c4a7d29ee794\n  Stored in directory: /private/var/folders/c1/gs7_18954qx7td5_t_lnmf4c0000gn/T/pip-ephem-wheel-cache-yffwz14p/wheels/57/4d/fa/01a0f77d72bb28503622c0bccd3ce2f6fbde3bd8b185356c7d\nSuccessfully built quantumbridge-sdk\nInstalling collected packages: pytz, peewee, multitasking, websockets, urllib3, typing-extensions, stevedore, soupsieve, six, setuptools, pygments, pycparser, psutil, protobuf, pluggy, platformdirs, packaging, numpy, networkx, more-itertools, mdurl, iniconfig, inflection, idna, dill, charset_normalizer, certifi, scipy, rustworkx, requests, quantumbridge-sdk, python-dateutil, pytest, markdown-it-py, fastdtw, docplex, cffi, beautifulsoup4, rich, qiskit, pandas, qiskit-optimization, qiskit-algorithms, nasdaq-data-link, curl_cffi, yfinance, qiskit-finance\n\nSuccessfully installed beautifulsoup4-4.14.3 certifi-2026.5.20 cffi-2.0.0 charset_normalizer-3.4.7 curl_cffi-0.15.0 dill-0.4.1 docplex-2.32.264 fastdtw-0.3.4 idna-3.18 inflection-0.5.1 iniconfig-2.3.0 markdown-it-py-4.2.0 mdurl-0.1.2 more-itertools-11.1.0 multitasking-0.0.13 nasdaq-data-link-1.0.4 networkx-3.6.1 numpy-2.4.6 packaging-26.2 pandas-3.0.3 peewee-4.0.6 platformdirs-4.10.0 pluggy-1.6.0 protobuf-7.35.0 psutil-7.2.2 pycparser-3.0 pygments-2.20.0 pytest-9.0.3 python-dateutil-2.9.0.post0 pytz-2026.2 qiskit-2.4.1 qiskit-algorithms-0.4.0 qiskit-finance-0.4.1 qiskit-optimization-0.7.0 quantumbridge-sdk-0.1.0rc1 requests-2.34.2 rich-15.0.0 rustworkx-0.17.1 scipy-1.17.1 setuptools-82.0.1 six-1.17.0 soupsieve-2.8.4 stevedore-5.8.0 typing-extensions-4.15.0 urllib3-2.7.0 websockets-16.0 yfinance-1.4.1\n"
+      },
+      "installed": true,
+      "inventory": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-finance/bin/python",
+          "scripts/inventory_qiskit_finance_api.py"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "wrote docs/compat/inventory/qiskit_finance_applications_inventory.json and docs/compat/matrix/qiskit_finance_applications_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_finance_data_provider_inventory.json and docs/compat/matrix/qiskit_finance_data_provider_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_finance_circuits_inventory.json and docs/compat/matrix/qiskit_finance_circuits_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_finance_uncertainty_inventory.json and docs/compat/matrix/qiskit_finance_uncertainty_coverage_matrix.md\n"
+      },
+      "inventory_evidence": {
+        "files": [
+          "docs/compat/inventory/qiskit_finance_applications_inventory.json",
+          "docs/compat/inventory/qiskit_finance_circuits_inventory.json",
+          "docs/compat/inventory/qiskit_finance_data_provider_inventory.json",
+          "docs/compat/inventory/qiskit_finance_uncertainty_inventory.json"
+        ],
+        "public_api_count": 27,
+        "unsupported_count": 0
+      },
+      "pip_check": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-finance/bin/python",
+          "-m",
+          "pip",
+          "check"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "No broken requirements found.\n"
+      },
+      "profile": "qiskit-finance",
+      "python": "3.12.6",
+      "status": "verified",
+      "tests": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-finance/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "-rs",
+          "tests/compat_qiskit_finance"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "......                                                                   [100%]\n6 passed in 1.01s\n"
+      },
+      "venv": "/tmp/quantumbridge-stage72-venvs/qiskit-finance",
+      "versions": {
+        "qiskit-finance": "0.4.1"
+      }
+    },
+    {
+      "advisory": false,
+      "constraint": "requirements/constraints-qiskit-machine-learning.txt",
+      "create": {
+        "command": [
+          "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+          "-m",
+          "venv",
+          "/tmp/quantumbridge-stage72-venvs/qiskit-machine-learning"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": ""
+      },
+      "extra": "qiskit-machine-learning",
+      "install": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-machine-learning/bin/python",
+          "-m",
+          "pip",
+          "install",
+          "-c",
+          "requirements/constraints-qiskit-machine-learning.txt",
+          "-e",
+          ".[qiskit-machine-learning]",
+          "pytest"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "x_11_0_arm64.whl.metadata (12 kB)\nCollecting scipy>=1.4 (from qiskit-machine-learning->quantumbridge-sdk==0.1.0rc1)\n  Using cached scipy-1.17.1-cp312-cp312-macosx_14_0_arm64.whl.metadata (62 kB)\nCollecting scikit-learn>=1.2 (from qiskit-machine-learning->quantumbridge-sdk==0.1.0rc1)\n  Using cached scikit_learn-1.9.0-cp312-cp312-macosx_12_0_arm64.whl.metadata (11 kB)\nCollecting setuptools>=40.1 (from qiskit-machine-learning->quantumbridge-sdk==0.1.0rc1)\n  Using cached setuptools-82.0.1-py3-none-any.whl.metadata (6.5 kB)\nCollecting dill>=0.3.4 (from qiskit-machine-learning->quantumbridge-sdk==0.1.0rc1)\n  Using cached dill-0.4.1-py3-none-any.whl.metadata (10 kB)\nCollecting rustworkx>=0.15.0 (from qiskit>=2.0->qiskit-machine-learning->quantumbridge-sdk==0.1.0rc1)\n  Using cached rustworkx-0.17.1-cp39-abi3-macosx_11_0_arm64.whl.metadata (10 kB)\nCollecting stevedore>=3.0.0 (from qiskit>=2.0->qiskit-machine-learning->quantumbridge-sdk==0.1.0rc1)\n  Using cached stevedore-5.8.0-py3-none-any.whl.metadata (2.3 kB)\nCollecting typing-extensions (from qiskit>=2.0->qiskit-machine-learning->quantumbridge-sdk==0.1.0rc1)\n  Using cached typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)\nCollecting joblib>=1.4.0 (from scikit-learn>=1.2->qiskit-machine-learning->quantumbridge-sdk==0.1.0rc1)\n  Using cached joblib-1.5.3-py3-none-any.whl.metadata (5.5 kB)\nCollecting narwhals>=2.0.1 (from scikit-learn>=1.2->qiskit-machine-learning->quantumbridge-sdk==0.1.0rc1)\n  Downloading narwhals-2.22.1-py3-none-any.whl.metadata (15 kB)\nCollecting threadpoolctl>=3.5.0 (from scikit-learn>=1.2->qiskit-machine-learning->quantumbridge-sdk==0.1.0rc1)\n  Using cached threadpoolctl-3.6.0-py3-none-any.whl.metadata (13 kB)\nUsing cached pytest-9.0.3-py3-none-any.whl (375 kB)\nUsing cached pluggy-1.6.0-py3-none-any.whl (20 kB)\nUsing cached iniconfig-2.3.0-py3-none-any.whl (7.5 kB)\nUsing cached numpy-2.4.6-cp312-cp312-macosx_14_0_arm64.whl (5.2 MB)\nUsing cached packaging-26.2-py3-none-any.whl (100 kB)\nUsing cached pygments-2.20.0-py3-none-any.whl (1.2 MB)\nUsing cached qiskit_machine_learning-0.9.0-py3-none-any.whl (263 kB)\nUsing cached dill-0.4.1-py3-none-any.whl (120 kB)\nUsing cached qiskit-2.4.1-cp310-abi3-macosx_11_0_arm64.whl (8.3 MB)\nUsing cached rustworkx-0.17.1-cp39-abi3-macosx_11_0_arm64.whl (2.0 MB)\nUsing cached scikit_learn-1.9.0-cp312-cp312-macosx_12_0_arm64.whl (8.3 MB)\nUsing cached joblib-1.5.3-py3-none-any.whl (309 kB)\nDownloading narwhals-2.22.1-py3-none-any.whl (454 kB)\nUsing cached scipy-1.17.1-cp312-cp312-macosx_14_0_arm64.whl (20.3 MB)\nUsing cached setuptools-82.0.1-py3-none-any.whl (1.0 MB)\nUsing cached stevedore-5.8.0-py3-none-any.whl (54 kB)\nUsing cached threadpoolctl-3.6.0-py3-none-any.whl (18 kB)\nUsing cached typing_extensions-4.15.0-py3-none-any.whl (44 kB)\nBuilding wheels for collected packages: quantumbridge-sdk\n  Building editable for quantumbridge-sdk (pyproject.toml): started\n  Building editable for quantumbridge-sdk (pyproject.toml): finished with status 'done'\n  Created wheel for quantumbridge-sdk: filename=quantumbridge_sdk-0.1.0rc1-0.editable-py3-none-any.whl size=12158 sha256=c5a2e8b273ebfa625bbf62864d2757322ea98ccea4794fe92d657aa63a82b4e1\n  Stored in directory: /private/var/folders/c1/gs7_18954qx7td5_t_lnmf4c0000gn/T/pip-ephem-wheel-cache-mz5zt7up/wheels/57/4d/fa/01a0f77d72bb28503622c0bccd3ce2f6fbde3bd8b185356c7d\nSuccessfully built quantumbridge-sdk\nInstalling collected packages: typing-extensions, threadpoolctl, stevedore, setuptools, pygments, pluggy, packaging, numpy, narwhals, joblib, iniconfig, dill, scipy, rustworkx, quantumbridge-sdk, pytest, scikit-learn, qiskit, qiskit-machine-learning\n\nSuccessfully installed dill-0.4.1 iniconfig-2.3.0 joblib-1.5.3 narwhals-2.22.1 numpy-2.4.6 packaging-26.2 pluggy-1.6.0 pygments-2.20.0 pytest-9.0.3 qiskit-2.4.1 qiskit-machine-learning-0.9.0 quantumbridge-sdk-0.1.0rc1 rustworkx-0.17.1 scikit-learn-1.9.0 scipy-1.17.1 setuptools-82.0.1 stevedore-5.8.0 threadpoolctl-3.6.0 typing-extensions-4.15.0\n"
+      },
+      "installed": true,
+      "inventory": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-machine-learning/bin/python",
+          "scripts/inventory_qiskit_machine_learning_api.py"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "wrote docs/compat/inventory/qiskit_machine_learning_qnn_inventory.json and docs/compat/matrix/qiskit_machine_learning_qnn_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_machine_learning_kernel_inventory.json and docs/compat/matrix/qiskit_machine_learning_kernel_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_machine_learning_classifier_inventory.json and docs/compat/matrix/qiskit_machine_learning_classifier_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_machine_learning_regressors_inventory.json and docs/compat/matrix/qiskit_machine_learning_regressors_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_machine_learning_torch_connector_inventory.json and docs/compat/matrix/qiskit_machine_learning_torch_connector_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_machine_learning_datasets_inventory.json and docs/compat/matrix/qiskit_machine_learning_datasets_coverage_matrix.md\n"
+      },
+      "inventory_evidence": {
+        "files": [
+          "docs/compat/inventory/qiskit_machine_learning_classifier_inventory.json",
+          "docs/compat/inventory/qiskit_machine_learning_datasets_inventory.json",
+          "docs/compat/inventory/qiskit_machine_learning_kernel_inventory.json",
+          "docs/compat/inventory/qiskit_machine_learning_qnn_inventory.json",
+          "docs/compat/inventory/qiskit_machine_learning_regressors_inventory.json",
+          "docs/compat/inventory/qiskit_machine_learning_torch_connector_inventory.json"
+        ],
+        "public_api_count": 21,
+        "unsupported_count": 0
+      },
+      "pip_check": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-machine-learning/bin/python",
+          "-m",
+          "pip",
+          "check"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "No broken requirements found.\n"
+      },
+      "profile": "qiskit-machine-learning",
+      "python": "3.12.6",
+      "status": "verified",
+      "tests": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-machine-learning/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "-rs",
+          "tests/compat_qiskit_machine_learning"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": ".......                                                                  [100%]\n7 passed in 0.73s\n"
+      },
+      "venv": "/tmp/quantumbridge-stage72-venvs/qiskit-machine-learning",
+      "versions": {
+        "qiskit-machine-learning": "0.9.0"
+      }
+    },
+    {
+      "advisory": true,
+      "constraint": "requirements/constraints-qiskit-metal.txt",
+      "create": {
+        "command": [
+          "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+          "-m",
+          "venv",
+          "/tmp/quantumbridge-stage72-venvs/qiskit-metal"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": ""
+      },
+      "extra": "qiskit-metal",
+      "install": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-metal/bin/python",
+          "-m",
+          "pip",
+          "install",
+          "-c",
+          "requirements/constraints-qiskit-metal.txt",
+          "-e",
+          ".[qiskit-metal]",
+          "pytest"
+        ],
+        "returncode": 2,
+        "stderr_tail": "39, in _iter_built\n    candidate = func()\n                ^^^^^^\n  File \"/private/tmp/quantumbridge-stage72-venvs/qiskit-metal/lib/python3.12/site-packages/pip/_internal/resolution/resolvelib/factory.py\", line 182, in _make_candidate_from_link\n    base: BaseCandidate | None = self._make_base_candidate_from_link(\n                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/tmp/quantumbridge-stage72-venvs/qiskit-metal/lib/python3.12/site-packages/pip/_internal/resolution/resolvelib/factory.py\", line 228, in _make_base_candidate_from_link\n    self._link_candidate_cache[link] = LinkCandidate(\n                                       ^^^^^^^^^^^^^^\n  File \"/private/tmp/quantumbridge-stage72-venvs/qiskit-metal/lib/python3.12/site-packages/pip/_internal/resolution/resolvelib/candidates.py\", line 326, in __init__\n    super().__init__(\n  File \"/private/tmp/quantumbridge-stage72-venvs/qiskit-metal/lib/python3.12/site-packages/pip/_internal/resolution/resolvelib/candidates.py\", line 168, in __init__\n    self.dist = self._prepare()\n                ^^^^^^^^^^^^^^^\n  File \"/private/tmp/quantumbridge-stage72-venvs/qiskit-metal/lib/python3.12/site-packages/pip/_internal/resolution/resolvelib/candidates.py\", line 246, in _prepare\n    dist = self._prepare_distribution()\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/tmp/quantumbridge-stage72-venvs/qiskit-metal/lib/python3.12/site-packages/pip/_internal/resolution/resolvelib/candidates.py\", line 337, in _prepare_distribution\n    return preparer.prepare_linked_requirement(self._ireq, parallel_builds=True)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/tmp/quantumbridge-stage72-venvs/qiskit-metal/lib/python3.12/site-packages/pip/_internal/operations/prepare.py\", line 542, in prepare_linked_requirement\n    return self._prepare_linked_requirement(req, parallel_builds)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/tmp/quantumbridge-stage72-venvs/qiskit-metal/lib/python3.12/site-packages/pip/_internal/operations/prepare.py\", line 661, in _prepare_linked_requirement\n    dist = _get_prepared_distribution(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/tmp/quantumbridge-stage72-venvs/qiskit-metal/lib/python3.12/site-packages/pip/_internal/operations/prepare.py\", line 77, in _get_prepared_distribution\n    abstract_dist.prepare_distribution_metadata(\n  File \"/private/tmp/quantumbridge-stage72-venvs/qiskit-metal/lib/python3.12/site-packages/pip/_internal/distributions/sdist.py\", line 55, in prepare_distribution_metadata\n    self._install_build_reqs(build_env_installer)\n  File \"/private/tmp/quantumbridge-stage72-venvs/qiskit-metal/lib/python3.12/site-packages/pip/_internal/distributions/sdist.py\", line 132, in _install_build_reqs\n    build_reqs = self._get_build_requires_wheel()\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/tmp/quantumbridge-stage72-venvs/qiskit-metal/lib/python3.12/site-packages/pip/_internal/distributions/sdist.py\", line 107, in _get_build_requires_wheel\n    return backend.get_requires_for_build_wheel()\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/tmp/quantumbridge-stage72-venvs/qiskit-metal/lib/python3.12/site-packages/pip/_internal/utils/misc.py\", line 700, in get_requires_for_build_wheel\n    return super().get_requires_for_build_wheel(config_settings=cs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/tmp/quantumbridge-stage72-venvs/qiskit-metal/lib/python3.12/site-packages/pip/_vendor/pyproject_hooks/_impl.py\", line 196, in get_requires_for_build_wheel\n    return self._call_hook(\n           ^^^^^^^^^^^^^^^^\n  File \"/private/tmp/quantumbridge-stage72-venvs/qiskit-metal/lib/python3.12/site-packages/pip/_vendor/pyproject_hooks/_impl.py\", line 402, in _call_hook\n    raise BackendUnavailable(\npip._vendor.pyproject_hooks._impl.BackendUnavailable: Cannot import 'setuptools.build_meta'\n",
+        "stdout_tail": "Obtaining file:///Users/avalok/work/QuantumBridge\n  Installing build dependencies: started\n  Installing build dependencies: finished with status 'done'\n  Checking if build backend supports build_editable: started\n  Checking if build backend supports build_editable: finished with status 'done'\n  Getting requirements to build editable: started\n  Getting requirements to build editable: finished with status 'done'\n  Preparing editable metadata (pyproject.toml): started\n  Preparing editable metadata (pyproject.toml): finished with status 'done'\nCollecting pytest\n  Using cached pytest-9.0.3-py3-none-any.whl.metadata (7.6 kB)\nCollecting numpy>=1.20 (from quantumbridge-sdk==0.1.0rc1)\n  Using cached numpy-2.4.6-cp312-cp312-macosx_14_0_arm64.whl.metadata (6.6 kB)\nCollecting qiskit-metal (from quantumbridge-sdk==0.1.0rc1)\n  Downloading qiskit_metal-0.1.5-py3-none-any.whl.metadata (10 kB)\nCollecting iniconfig>=1.0.1 (from pytest)\n  Using cached iniconfig-2.3.0-py3-none-any.whl.metadata (2.5 kB)\nCollecting packaging>=22 (from pytest)\n  Using cached packaging-26.2-py3-none-any.whl.metadata (3.5 kB)\nCollecting pluggy<2,>=1.5 (from pytest)\n  Using cached pluggy-1.6.0-py3-none-any.whl.metadata (4.8 kB)\nCollecting pygments>=2.7.2 (from pytest)\n  Using cached pygments-2.20.0-py3-none-any.whl.metadata (2.5 kB)\nCollecting addict==2.4.0 (from qiskit-metal->quantumbridge-sdk==0.1.0rc1)\n  Using cached addict-2.4.0-py3-none-any.whl.metadata (1.0 kB)\nCollecting descartes==1.1.0 (from qiskit-metal->quantumbridge-sdk==0.1.0rc1)\n  Downloading descartes-1.1.0-py3-none-any.whl.metadata (2.4 kB)\nCollecting gdspy==1.6.12 (from qiskit-metal->quantumbridge-sdk==0.1.0rc1)\n  Downloading gdspy-1.6.12.zip (157 kB)\n  Installing build dependencies: started\n  Installing build dependencies: finished with status 'done'\n  Getting requirements to build wheel: started\n  Getting requirements to build wheel: finished with status 'done'\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nCollecting geopandas==0.12.2 (from qiskit-metal->quantumbridge-sdk==0.1.0rc1)\n  Downloading geopandas-0.12.2-py3-none-any.whl.metadata (1.0 kB)\nCollecting ipython==8.10.0 (from qiskit-metal->quantumbridge-sdk==0.1.0rc1)\n  Downloading ipython-8.10.0-py3-none-any.whl.metadata (5.7 kB)\nCollecting matplotlib==3.7.0 (from qiskit-metal->quantumbridge-sdk==0.1.0rc1)\n  Downloading matplotlib-3.7.0.tar.gz (36.3 MB)\n     \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 36.3/36.3 MB 8.6 MB/s  0:00:04\n  Installing build dependencies: started\n  Installing build dependencies: finished with status 'done'\n  Getting requirements to build wheel: started\n  Getting requirements to build wheel: finished with status 'done'\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nCollecting numpy>=1.20 (from quantumbridge-sdk==0.1.0rc1)\n  Downloading numpy-1.24.2.tar.gz (10.9 MB)\n     \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 10.9/10.9 MB 1.6 MB/s  0:00:06\n  Installing build dependencies: started\n  Installing build dependencies: finished with status 'done'\n  Getting requirements to build wheel: started\n  Getting requirements to build wheel: finished with status 'done'\n"
+      },
+      "installed": false,
+      "profile": "qiskit-metal",
+      "python": "3.12.6",
+      "status": "install-failed",
+      "venv": "/tmp/quantumbridge-stage72-venvs/qiskit-metal",
+      "versions": {
+        "qiskit-metal": null
+      }
+    },
+    {
+      "advisory": false,
+      "constraint": "requirements/constraints-qiskit-nature.txt",
+      "create": {
+        "command": [
+          "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+          "-m",
+          "venv",
+          "/tmp/quantumbridge-stage72-venvs/qiskit-nature"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": ""
+      },
+      "extra": "qiskit-nature",
+      "install": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-nature/bin/python",
+          "-m",
+          "pip",
+          "install",
+          "-c",
+          "requirements/constraints-qiskit-nature.txt",
+          "-e",
+          ".[qiskit-nature]",
+          "pytest"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "ing cached scipy-1.17.1-cp312-cp312-macosx_14_0_arm64.whl (20.3 MB)\nUsing cached urllib3-2.7.0-py3-none-any.whl (131 kB)\nUsing cached certifi-2026.5.20-py3-none-any.whl (134 kB)\nUsing cached cirq_core-1.6.1-py3-none-any.whl (2.0 MB)\nUsing cached matplotlib-3.10.9-cp312-cp312-macosx_11_0_arm64.whl (8.2 MB)\nUsing cached networkx-3.6.1-py3-none-any.whl (2.1 MB)\nUsing cached pandas-2.3.3-cp312-cp312-macosx_11_0_arm64.whl (10.7 MB)\nUsing cached sortedcontainers-2.4.0-py2.py3-none-any.whl (29 kB)\nUsing cached attrs-26.1.0-py3-none-any.whl (67 kB)\nUsing cached contourpy-1.3.3-cp312-cp312-macosx_11_0_arm64.whl (273 kB)\nUsing cached cycler-0.12.1-py3-none-any.whl (8.3 kB)\nUsing cached duet-0.2.9-py3-none-any.whl (29 kB)\nUsing cached fonttools-4.63.0-cp312-cp312-macosx_10_13_universal2.whl (2.9 MB)\nUsing cached h5py-3.16.0-cp312-cp312-macosx_11_0_arm64.whl (3.1 MB)\nUsing cached kiwisolver-1.5.0-cp312-cp312-macosx_11_0_arm64.whl (64 kB)\nUsing cached pillow-12.2.0-cp312-cp312-macosx_11_0_arm64.whl (4.7 MB)\nUsing cached pyparsing-3.3.2-py3-none-any.whl (122 kB)\nUsing cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)\nUsing cached pytz-2026.2-py2.py3-none-any.whl (510 kB)\nUsing cached six-1.17.0-py2.py3-none-any.whl (11 kB)\nDownloading tqdm-4.68.1-py3-none-any.whl (78 kB)\nUsing cached typing_extensions-4.15.0-py3-none-any.whl (44 kB)\nUsing cached tzdata-2026.2-py2.py3-none-any.whl (349 kB)\nUsing cached deprecation-2.1.0-py2.py3-none-any.whl (11 kB)\nUsing cached pubchempy-1.0.5-py3-none-any.whl (21 kB)\nUsing cached pyscf-2.13.1-py3-none-macosx_11_0_arm64.whl (36.3 MB)\nUsing cached qiskit_algorithms-0.4.0-py3-none-any.whl (327 kB)\nUsing cached qiskit-2.4.1-cp310-abi3-macosx_11_0_arm64.whl (8.3 MB)\nUsing cached dill-0.4.1-py3-none-any.whl (120 kB)\nUsing cached rustworkx-0.17.1-cp39-abi3-macosx_11_0_arm64.whl (2.0 MB)\nUsing cached stevedore-5.8.0-py3-none-any.whl (54 kB)\nUsing cached qiskit_nature-0.8.0-py3-none-any.whl (2.2 MB)\nUsing cached setuptools-82.0.1-py3-none-any.whl (1.0 MB)\nUsing cached sympy-1.14.0-py3-none-any.whl (6.3 MB)\nUsing cached mpmath-1.3.0-py3-none-any.whl (536 kB)\nBuilding wheels for collected packages: quantumbridge-sdk\n  Building editable for quantumbridge-sdk (pyproject.toml): started\n  Building editable for quantumbridge-sdk (pyproject.toml): finished with status 'done'\n  Created wheel for quantumbridge-sdk: filename=quantumbridge_sdk-0.1.0rc1-0.editable-py3-none-any.whl size=12158 sha256=f0d61727fcfc589967bfd4001d1dc6cf17fc0137704489890549118014e3fb5f\n  Stored in directory: /private/var/folders/c1/gs7_18954qx7td5_t_lnmf4c0000gn/T/pip-ephem-wheel-cache-9heho9yp/wheels/57/4d/fa/01a0f77d72bb28503622c0bccd3ce2f6fbde3bd8b185356c7d\nSuccessfully built quantumbridge-sdk\nInstalling collected packages: sortedcontainers, pytz, mpmath, urllib3, tzdata, typing_extensions, tqdm, sympy, stevedore, six, setuptools, pyparsing, pygments, pubchempy, pluggy, pillow, packaging, numpy, networkx, kiwisolver, iniconfig, idna, fonttools, duet, dill, cycler, charset_normalizer, certifi, attrs, scipy, rustworkx, requests, quantumbridge-sdk, python-dateutil, pytest, h5py, deprecation, contourpy, qiskit, pyscf, pandas, matplotlib, qiskit-algorithms, cirq-core, qiskit-nature, openfermion\n\nSuccessfully installed attrs-26.1.0 certifi-2026.5.20 charset_normalizer-3.4.7 cirq-core-1.6.1 contourpy-1.3.3 cycler-0.12.1 deprecation-2.1.0 dill-0.4.1 duet-0.2.9 fonttools-4.63.0 h5py-3.16.0 idna-3.18 iniconfig-2.3.0 kiwisolver-1.5.0 matplotlib-3.10.9 mpmath-1.3.0 networkx-3.6.1 numpy-2.4.6 openfermion-1.7.1 packaging-26.2 pandas-2.3.3 pillow-12.2.0 pluggy-1.6.0 pubchempy-1.0.5 pygments-2.20.0 pyparsing-3.3.2 pyscf-2.13.1 pytest-9.0.3 python-dateutil-2.9.0.post0 pytz-2026.2 qiskit-2.4.1 qiskit-algorithms-0.4.0 qiskit-nature-0.8.0 quantumbridge-sdk-0.1.0rc1 requests-2.32.5 rustworkx-0.17.1 scipy-1.17.1 setuptools-82.0.1 six-1.17.0 sortedcontainers-2.4.0 stevedore-5.8.0 sympy-1.14.0 tqdm-4.68.1 typing_extensions-4.15.0 tzdata-2026.2 urllib3-2.7.0\n"
+      },
+      "installed": true,
+      "inventory": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-nature/bin/python",
+          "scripts/inventory_qiskit_nature_api.py"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "wrote docs/compat/inventory/qiskit_nature_inventory.json and docs/compat/matrix/qiskit_nature_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_nature_drivers_inventory.json and docs/compat/matrix/qiskit_nature_drivers_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_nature_problems_inventory.json and docs/compat/matrix/qiskit_nature_problems_coverage_matrix.md\nwrote docs/compat/inventory/openfermion_inventory.json and docs/compat/matrix/openfermion_coverage_matrix.md\n"
+      },
+      "inventory_evidence": {
+        "files": [
+          "docs/compat/inventory/qiskit_nature_drivers_inventory.json",
+          "docs/compat/inventory/qiskit_nature_inventory.json",
+          "docs/compat/inventory/qiskit_nature_problems_inventory.json"
+        ],
+        "public_api_count": 140,
+        "unsupported_count": 0
+      },
+      "pip_check": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-nature/bin/python",
+          "-m",
+          "pip",
+          "check"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "No broken requirements found.\n"
+      },
+      "profile": "qiskit-nature",
+      "python": "3.12.6",
+      "status": "verified",
+      "tests": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-nature/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "-rs",
+          "tests/compat_qiskit_nature"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": ".......                                                                  [100%]\n7 passed in 7.35s\n"
+      },
+      "venv": "/tmp/quantumbridge-stage72-venvs/qiskit-nature",
+      "versions": {
+        "openfermion": "1.7.1",
+        "pyscf": "2.13.1",
+        "qiskit-algorithms": "0.4.0",
+        "qiskit-nature": "0.8.0"
+      }
+    },
+    {
+      "advisory": false,
+      "constraint": "requirements/constraints-qiskit-optimization.txt",
+      "create": {
+        "command": [
+          "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+          "-m",
+          "venv",
+          "/tmp/quantumbridge-stage72-venvs/qiskit-optimization"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": ""
+      },
+      "extra": "qiskit-optimization",
+      "install": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-optimization/bin/python",
+          "-m",
+          "pip",
+          "install",
+          "-c",
+          "requirements/constraints-qiskit-optimization.txt",
+          "-e",
+          ".[qiskit-optimization]",
+          "pytest"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "g>=22 (from pytest)\n  Using cached packaging-26.2-py3-none-any.whl.metadata (3.5 kB)\nCollecting pluggy<2,>=1.5 (from pytest)\n  Using cached pluggy-1.6.0-py3-none-any.whl.metadata (4.8 kB)\nCollecting pygments>=2.7.2 (from pytest)\n  Using cached pygments-2.20.0-py3-none-any.whl.metadata (2.5 kB)\nCollecting qiskit<3,>=1.1 (from qiskit-optimization->quantumbridge-sdk==0.1.0rc1)\n  Using cached qiskit-2.4.1-cp310-abi3-macosx_11_0_arm64.whl.metadata (12 kB)\nCollecting scipy>=1.9.0 (from qiskit-optimization->quantumbridge-sdk==0.1.0rc1)\n  Using cached scipy-1.17.1-cp312-cp312-macosx_14_0_arm64.whl.metadata (62 kB)\nCollecting docplex!=2.24.231,>=2.21.207 (from qiskit-optimization->quantumbridge-sdk==0.1.0rc1)\n  Using cached docplex-2.32.264-py3-none-any.whl\nCollecting setuptools>=40.1.0 (from qiskit-optimization->quantumbridge-sdk==0.1.0rc1)\n  Using cached setuptools-82.0.1-py3-none-any.whl.metadata (6.5 kB)\nCollecting networkx>=2.6.3 (from qiskit-optimization->quantumbridge-sdk==0.1.0rc1)\n  Using cached networkx-3.6.1-py3-none-any.whl.metadata (6.8 kB)\nCollecting rustworkx>=0.15.0 (from qiskit<3,>=1.1->qiskit-optimization->quantumbridge-sdk==0.1.0rc1)\n  Using cached rustworkx-0.17.1-cp39-abi3-macosx_11_0_arm64.whl.metadata (10 kB)\nCollecting dill>=0.3 (from qiskit<3,>=1.1->qiskit-optimization->quantumbridge-sdk==0.1.0rc1)\n  Using cached dill-0.4.1-py3-none-any.whl.metadata (10 kB)\nCollecting stevedore>=3.0.0 (from qiskit<3,>=1.1->qiskit-optimization->quantumbridge-sdk==0.1.0rc1)\n  Using cached stevedore-5.8.0-py3-none-any.whl.metadata (2.3 kB)\nCollecting typing-extensions (from qiskit<3,>=1.1->qiskit-optimization->quantumbridge-sdk==0.1.0rc1)\n  Using cached typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)\nCollecting six (from docplex!=2.24.231,>=2.21.207->qiskit-optimization->quantumbridge-sdk==0.1.0rc1)\n  Using cached six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)\nUsing cached pytest-9.0.3-py3-none-any.whl (375 kB)\nUsing cached pluggy-1.6.0-py3-none-any.whl (20 kB)\nUsing cached iniconfig-2.3.0-py3-none-any.whl (7.5 kB)\nUsing cached numpy-2.4.6-cp312-cp312-macosx_14_0_arm64.whl (5.2 MB)\nUsing cached packaging-26.2-py3-none-any.whl (100 kB)\nUsing cached pygments-2.20.0-py3-none-any.whl (1.2 MB)\nUsing cached qiskit_optimization-0.7.0-py3-none-any.whl (237 kB)\nUsing cached qiskit-2.4.1-cp310-abi3-macosx_11_0_arm64.whl (8.3 MB)\nUsing cached dill-0.4.1-py3-none-any.whl (120 kB)\nUsing cached networkx-3.6.1-py3-none-any.whl (2.1 MB)\nUsing cached rustworkx-0.17.1-cp39-abi3-macosx_11_0_arm64.whl (2.0 MB)\nUsing cached scipy-1.17.1-cp312-cp312-macosx_14_0_arm64.whl (20.3 MB)\nUsing cached setuptools-82.0.1-py3-none-any.whl (1.0 MB)\nUsing cached stevedore-5.8.0-py3-none-any.whl (54 kB)\nUsing cached six-1.17.0-py2.py3-none-any.whl (11 kB)\nUsing cached typing_extensions-4.15.0-py3-none-any.whl (44 kB)\nBuilding wheels for collected packages: quantumbridge-sdk\n  Building editable for quantumbridge-sdk (pyproject.toml): started\n  Building editable for quantumbridge-sdk (pyproject.toml): finished with status 'done'\n  Created wheel for quantumbridge-sdk: filename=quantumbridge_sdk-0.1.0rc1-0.editable-py3-none-any.whl size=12158 sha256=93881329ecd04e3f2bee086a4eebccf0db4bd661fc649bf5f27c6d68628e35d7\n  Stored in directory: /private/var/folders/c1/gs7_18954qx7td5_t_lnmf4c0000gn/T/pip-ephem-wheel-cache-r6rwpx5l/wheels/57/4d/fa/01a0f77d72bb28503622c0bccd3ce2f6fbde3bd8b185356c7d\nSuccessfully built quantumbridge-sdk\nInstalling collected packages: typing-extensions, stevedore, six, setuptools, pygments, pluggy, packaging, numpy, networkx, iniconfig, dill, scipy, rustworkx, quantumbridge-sdk, pytest, docplex, qiskit, qiskit-optimization\n\nSuccessfully installed dill-0.4.1 docplex-2.32.264 iniconfig-2.3.0 networkx-3.6.1 numpy-2.4.6 packaging-26.2 pluggy-1.6.0 pygments-2.20.0 pytest-9.0.3 qiskit-2.4.1 qiskit-optimization-0.7.0 quantumbridge-sdk-0.1.0rc1 rustworkx-0.17.1 scipy-1.17.1 setuptools-82.0.1 six-1.17.0 stevedore-5.8.0 typing-extensions-4.15.0\n"
+      },
+      "installed": true,
+      "inventory": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-optimization/bin/python",
+          "scripts/inventory_qiskit_optimization_api.py"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "wrote docs/compat/inventory/qiskit_optimization_quadratic_program_inventory.json and docs/compat/matrix/qiskit_optimization_quadratic_program_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_optimization_optimizer_inventory.json and docs/compat/matrix/qiskit_optimization_optimizer_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_optimization_converter_inventory.json and docs/compat/matrix/qiskit_optimization_converter_coverage_matrix.md\nwrote docs/compat/inventory/qiskit_optimization_applications_inventory.json and docs/compat/matrix/qiskit_optimization_applications_coverage_matrix.md\n"
+      },
+      "inventory_evidence": {
+        "files": [
+          "docs/compat/inventory/qiskit_optimization_applications_inventory.json",
+          "docs/compat/inventory/qiskit_optimization_converter_inventory.json",
+          "docs/compat/inventory/qiskit_optimization_optimizer_inventory.json",
+          "docs/compat/inventory/qiskit_optimization_quadratic_program_inventory.json"
+        ],
+        "public_api_count": 65,
+        "unsupported_count": 0
+      },
+      "pip_check": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-optimization/bin/python",
+          "-m",
+          "pip",
+          "check"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "No broken requirements found.\n"
+      },
+      "profile": "qiskit-optimization",
+      "python": "3.12.6",
+      "status": "verified",
+      "tests": {
+        "command": [
+          "/tmp/quantumbridge-stage72-venvs/qiskit-optimization/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "-rs",
+          "tests/compat_qiskit_optimization"
+        ],
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": ".......                                                                  [100%]\n7 passed in 0.58s\n"
+      },
+      "venv": "/tmp/quantumbridge-stage72-venvs/qiskit-optimization",
+      "versions": {
+        "qiskit-optimization": "0.7.0"
+      }
+    }
+  ],
+  "repository": "/Users/avalok/work/QuantumBridge",
+  "schema_version": "0.1"
+}

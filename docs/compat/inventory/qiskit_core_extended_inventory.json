@@ -2,6 +2,8 @@
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.providers",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -9,11 +11,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.providers",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -21,11 +27,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.providers",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -33,11 +43,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.providers",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -45,11 +59,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.providers",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -57,11 +75,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.providers",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -69,11 +91,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.providers",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -81,11 +107,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.providers",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -93,11 +123,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.providers",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -105,11 +139,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.providers",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -117,11 +155,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.visualization",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -129,11 +171,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.visualization",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -141,11 +187,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.visualization",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -153,11 +203,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.visualization",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -165,11 +219,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.visualization",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -177,11 +235,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.visualization",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -189,11 +251,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.visualization",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -201,11 +267,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.visualization",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -213,11 +283,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.visualization",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -225,11 +299,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.visualization",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -237,11 +315,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.visualization",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -249,11 +331,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.visualization",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -261,11 +347,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.visualization",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -273,11 +363,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.visualization",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -285,11 +379,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.visualization",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -297,11 +395,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.visualization",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -309,11 +411,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.visualization",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -321,11 +427,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.visualization",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -333,11 +443,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.visualization",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -345,11 +459,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.visualization",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -357,11 +475,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.visualization",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -369,11 +491,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm2",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -381,11 +507,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm2",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -393,11 +523,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm2",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -405,11 +539,63 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
+  },
+  {
+    "api_type": "constant",
+    "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
+    "mode": "Inventory/Passthrough scaffold",
+    "module": "qiskit.qasm2",
+    "notes": "Runtime public-name inventory; no upstream source or docs copied.",
+    "public_api": "LEGACY_CUSTOM_CLASSICAL",
+    "quantumbridge_level": 0,
+    "risk": "MEDIUM",
+    "test": "inventory/introspection smoke",
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
+  },
+  {
+    "api_type": "constant",
+    "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
+    "mode": "Inventory/Passthrough scaffold",
+    "module": "qiskit.qasm2",
+    "notes": "Runtime public-name inventory; no upstream source or docs copied.",
+    "public_api": "LEGACY_CUSTOM_INSTRUCTIONS",
+    "quantumbridge_level": 0,
+    "risk": "MEDIUM",
+    "test": "inventory/introspection smoke",
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
+  },
+  {
+    "api_type": "constant",
+    "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
+    "mode": "Inventory/Passthrough scaffold",
+    "module": "qiskit.qasm2",
+    "notes": "Runtime public-name inventory; no upstream source or docs copied.",
+    "public_api": "LEGACY_INCLUDE_PATH",
+    "quantumbridge_level": 0,
+    "risk": "MEDIUM",
+    "test": "inventory/introspection smoke",
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm2",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -417,11 +603,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm2",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -429,11 +619,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm2",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -441,11 +635,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm2",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -453,11 +651,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm2",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -465,11 +667,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm2",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -477,11 +683,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm2",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -489,11 +699,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm2",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -501,11 +715,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm2",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -513,11 +731,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm3",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -525,11 +747,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm3",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -537,11 +763,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm3",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -549,11 +779,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm3",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -561,11 +795,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm3",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -573,11 +811,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm3",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -585,11 +827,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm3",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -597,11 +843,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm3",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -609,11 +859,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm3",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -621,11 +875,31 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
+  },
+  {
+    "api_type": "constant",
+    "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
+    "mode": "Inventory/Passthrough scaffold",
+    "module": "qiskit.qasm3",
+    "notes": "Runtime public-name inventory; no upstream source or docs copied.",
+    "public_api": "STDGATES_INC_GATES",
+    "quantumbridge_level": 0,
+    "risk": "MEDIUM",
+    "test": "inventory/introspection smoke",
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm3",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -633,11 +907,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm3",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -645,11 +923,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm3",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -657,11 +939,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm3",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -669,11 +955,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm3",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -681,11 +971,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm3",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -693,11 +987,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm3",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -705,11 +1003,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qasm3",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -717,11 +1019,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qpy",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -729,11 +1035,47 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
+  },
+  {
+    "api_type": "constant",
+    "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
+    "mode": "Inventory/Passthrough scaffold",
+    "module": "qiskit.qpy",
+    "notes": "Runtime public-name inventory; no upstream source or docs copied.",
+    "public_api": "QPY_COMPATIBILITY_VERSION",
+    "quantumbridge_level": 0,
+    "risk": "MEDIUM",
+    "test": "inventory/introspection smoke",
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
+  },
+  {
+    "api_type": "constant",
+    "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
+    "mode": "Inventory/Passthrough scaffold",
+    "module": "qiskit.qpy",
+    "notes": "Runtime public-name inventory; no upstream source or docs copied.",
+    "public_api": "QPY_VERSION",
+    "quantumbridge_level": 0,
+    "risk": "MEDIUM",
+    "test": "inventory/introspection smoke",
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qpy",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -741,11 +1083,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qpy",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -753,11 +1099,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qpy",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -765,11 +1115,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qpy",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -777,11 +1131,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.qpy",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -789,11 +1147,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -801,11 +1163,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -813,11 +1179,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -825,11 +1195,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -837,11 +1211,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -849,11 +1227,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -861,11 +1243,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -873,11 +1259,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -885,11 +1275,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -897,11 +1291,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -909,11 +1307,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -921,11 +1323,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -933,11 +1339,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -945,11 +1355,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -957,11 +1371,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -969,11 +1387,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -981,11 +1403,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -993,11 +1419,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1005,11 +1435,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1017,11 +1451,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1029,11 +1467,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1041,11 +1483,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1053,11 +1499,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1065,11 +1515,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1077,11 +1531,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1089,11 +1547,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1101,11 +1563,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1113,11 +1579,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1125,11 +1595,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1137,11 +1611,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1149,11 +1627,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1161,11 +1643,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1173,11 +1659,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1185,11 +1675,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1197,11 +1691,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1209,11 +1707,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1221,11 +1723,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1233,11 +1739,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1245,11 +1755,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1257,11 +1771,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1269,11 +1787,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1281,11 +1803,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1293,11 +1819,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1305,11 +1835,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1317,11 +1851,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1329,11 +1867,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1341,11 +1883,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1353,11 +1899,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1365,11 +1915,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1377,11 +1931,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1389,11 +1947,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1401,11 +1963,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1413,11 +1979,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1425,11 +1995,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1437,11 +2011,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1449,11 +2027,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1461,11 +2043,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1473,11 +2059,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1485,11 +2075,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1497,11 +2091,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1509,11 +2107,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1521,11 +2123,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1533,11 +2139,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.synthesis",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1545,11 +2155,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.converters",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1557,11 +2171,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.converters",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1569,11 +2187,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.converters",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1581,11 +2203,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.converters",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1593,11 +2219,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.converters",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1605,11 +2235,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.converters",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1617,11 +2251,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.converters",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1629,11 +2267,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.converters",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1641,11 +2283,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.converters",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1653,11 +2299,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.converters",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1665,11 +2315,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.dagcircuit",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1677,11 +2331,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.dagcircuit",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1689,11 +2347,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.dagcircuit",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1701,11 +2363,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.dagcircuit",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1713,11 +2379,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.dagcircuit",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1725,11 +2395,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.dagcircuit",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1737,11 +2411,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.dagcircuit",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1749,11 +2427,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.dagcircuit",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1761,11 +2443,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.dagcircuit",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1773,11 +2459,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.dagcircuit",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1785,11 +2475,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.dagcircuit",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1797,11 +2491,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-core",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit.dagcircuit",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -1809,6 +2507,8 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit",
+    "upstream_version": "2.4.1"
   }
 ]

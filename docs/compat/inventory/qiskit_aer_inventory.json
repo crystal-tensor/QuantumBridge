@@ -2,6 +2,8 @@
   {
     "api_type": "class",
     "dependency_extra": "qiskit-aer",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit_aer",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -9,11 +11,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit-aer"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit-aer",
+    "upstream_version": "0.17.2"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-aer",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit_aer",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -21,11 +27,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit-aer"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit-aer",
+    "upstream_version": "0.17.2"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-aer",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit_aer",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -33,11 +43,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit-aer"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit-aer",
+    "upstream_version": "0.17.2"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-aer",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit_aer",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -45,11 +59,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit-aer"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit-aer",
+    "upstream_version": "0.17.2"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-aer",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit_aer",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -57,11 +75,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit-aer"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit-aer",
+    "upstream_version": "0.17.2"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-aer",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit_aer",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -69,11 +91,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit-aer"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit-aer",
+    "upstream_version": "0.17.2"
   },
   {
     "api_type": "class",
     "dependency_extra": "qiskit-aer",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "qiskit_aer",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -81,6 +107,8 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "qiskit-aer"
+    "unsupported_reason": null,
+    "upstream_package": "qiskit-aer",
+    "upstream_version": "0.17.2"
   }
 ]

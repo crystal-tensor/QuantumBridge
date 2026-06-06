@@ -2,6 +2,12 @@
 
 Generated from runtime public-name introspection. No upstream source, tests, comments, or documentation text is copied.
 
+- Installed: True
+- Upstream version: 2.4.1
+- Inventory generated: true
+- Public API count: 157
+- QuantumBridge coverage level: 0
+
 | Upstream Package | Module | Public API | Type | QuantumBridge Level | Mode | Dependency Extra | Test | Risk | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | qiskit | qiskit.providers | Backend | class | 0 | Inventory/Passthrough scaffold | qiskit-core | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
@@ -38,6 +44,9 @@ Generated from runtime public-name introspection. No upstream source, tests, com
 | qiskit | qiskit.qasm2 | CustomClassical | class | 0 | Inventory/Passthrough scaffold | qiskit-core | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
 | qiskit | qiskit.qasm2 | CustomInstruction | class | 0 | Inventory/Passthrough scaffold | qiskit-core | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
 | qiskit | qiskit.qasm2 | Iterable | class | 0 | Inventory/Passthrough scaffold | qiskit-core | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| qiskit | qiskit.qasm2 | LEGACY_CUSTOM_CLASSICAL | constant | 0 | Inventory/Passthrough scaffold | qiskit-core | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| qiskit | qiskit.qasm2 | LEGACY_CUSTOM_INSTRUCTIONS | constant | 0 | Inventory/Passthrough scaffold | qiskit-core | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| qiskit | qiskit.qasm2 | LEGACY_INCLUDE_PATH | constant | 0 | Inventory/Passthrough scaffold | qiskit-core | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
 | qiskit | qiskit.qasm2 | Path | class | 0 | Inventory/Passthrough scaffold | qiskit-core | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
 | qiskit | qiskit.qasm2 | QASM2Error | class | 0 | Inventory/Passthrough scaffold | qiskit-core | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
 | qiskit | qiskit.qasm2 | QASM2ExportError | class | 0 | Inventory/Passthrough scaffold | qiskit-core | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
@@ -56,6 +65,7 @@ Generated from runtime public-name introspection. No upstream source, tests, com
 | qiskit | qiskit.qasm3 | QASM3ExporterError | class | 0 | Inventory/Passthrough scaffold | qiskit-core | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
 | qiskit | qiskit.qasm3 | QASM3ImporterError | class | 0 | Inventory/Passthrough scaffold | qiskit-core | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
 | qiskit | qiskit.qasm3 | Qubit | class | 0 | Inventory/Passthrough scaffold | qiskit-core | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| qiskit | qiskit.qasm3 | STDGATES_INC_GATES | constant | 0 | Inventory/Passthrough scaffold | qiskit-core | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
 | qiskit | qiskit.qasm3 | dump | function | 0 | Inventory/Passthrough scaffold | qiskit-core | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
 | qiskit | qiskit.qasm3 | dump_experimental | function | 0 | Inventory/Passthrough scaffold | qiskit-core | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
 | qiskit | qiskit.qasm3 | dumps | function | 0 | Inventory/Passthrough scaffold | qiskit-core | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
@@ -65,6 +75,8 @@ Generated from runtime public-name introspection. No upstream source, tests, com
 | qiskit | qiskit.qasm3 | loads | function | 0 | Inventory/Passthrough scaffold | qiskit-core | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
 | qiskit | qiskit.qasm3 | loads_experimental | function | 0 | Inventory/Passthrough scaffold | qiskit-core | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
 | qiskit | qiskit.qpy | QPYLoadingDeprecatedFeatureWarning | class | 0 | Inventory/Passthrough scaffold | qiskit-core | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| qiskit | qiskit.qpy | QPY_COMPATIBILITY_VERSION | constant | 0 | Inventory/Passthrough scaffold | qiskit-core | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| qiskit | qiskit.qpy | QPY_VERSION | constant | 0 | Inventory/Passthrough scaffold | qiskit-core | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
 | qiskit | qiskit.qpy | QpyError | class | 0 | Inventory/Passthrough scaffold | qiskit-core | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
 | qiskit | qiskit.qpy | UnsupportedFeatureForVersion | class | 0 | Inventory/Passthrough scaffold | qiskit-core | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
 | qiskit | qiskit.qpy | dump | function | 0 | Inventory/Passthrough scaffold | qiskit-core | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |

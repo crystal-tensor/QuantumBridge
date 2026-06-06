@@ -1,0 +1,5 @@
+# Stage 7.2 chemistry lane verified independently from other optional environments.
+qiskit-nature
+qiskit-algorithms
+pyscf
+openfermion

@@ -9,3 +9,7 @@ QuantumBridge Stage 7 does not vendor these packages and does not copy their sou
 Use of package names is for compatibility, dependency, and attribution purposes only. QuantumBridge is not endorsed by IBM or the Qiskit project.
 
 Any future source port must be recorded in `docs/migration/source_migration_ledger.md`, must preserve required notices, and must update `THIRD_PARTY_NOTICES.md`.
+
+Stage 7.2 additionally inventories Qiskit Nature, Qiskit Algorithms, Qiskit Dynamics, and Qiskit Metal through isolated optional extras. PySCF and OpenFermion may be installed in the Nature lane. These integrations remain passthrough/schema adapters and do not transfer ownership or imply production capability.
+
+Qiskit Runtime checks are offline-only and do not access IBM Cloud or read credentials. Qiskit Experiments checks do not use a real backend. Qiskit Metal checks do not represent a fabrication workflow.

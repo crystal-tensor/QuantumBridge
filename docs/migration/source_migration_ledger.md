@@ -100,3 +100,48 @@ The following implementation files mention upstream package names for optional d
 - `quantumbridge/compat/pennylane_full/resource_adapter.py`
 - `quantumbridge/compat/pennylane_full/templates_adapter.py`
 - `quantumbridge/compat/pennylane_full/transforms_adapter.py`
+
+## Stage 7.2 exact path registration
+
+The following files are independently implemented adapter/schema modules. They reference upstream package names or public object names only. No upstream source, tests, documentation, comments, or error strings were copied.
+
+- `quantumbridge/schema/__init__.py`
+- `quantumbridge/schema/ecosystem_results.py`
+- `quantumbridge/compat/qiskit_nature/__init__.py`
+- `quantumbridge/compat/qiskit_nature/nature_adapter.py`
+- `quantumbridge/compat/qiskit_nature/driver_adapter.py`
+- `quantumbridge/compat/qiskit_nature/problem_adapter.py`
+- `quantumbridge/compat/qiskit_nature/openfermion_adapter.py`
+- `quantumbridge/compat/qiskit_nature/result_adapter.py`
+- `quantumbridge/compat/qiskit_algorithms/__init__.py`
+- `quantumbridge/compat/qiskit_algorithms/eigensolver_adapter.py`
+- `quantumbridge/compat/qiskit_algorithms/minimum_eigensolver_adapter.py`
+- `quantumbridge/compat/qiskit_algorithms/amplitude_adapter.py`
+- `quantumbridge/compat/qiskit_algorithms/grover_adapter.py`
+- `quantumbridge/compat/qiskit_algorithms/optimizer_adapter.py`
+- `quantumbridge/compat/qiskit_algorithms/gradient_adapter.py`
+- `quantumbridge/compat/qiskit_algorithms/result_adapter.py`
+- `quantumbridge/compat/qiskit_dynamics/__init__.py`
+- `quantumbridge/compat/qiskit_dynamics/solver_adapter.py`
+- `quantumbridge/compat/qiskit_dynamics/model_adapter.py`
+- `quantumbridge/compat/qiskit_dynamics/signal_adapter.py`
+- `quantumbridge/compat/qiskit_dynamics/backend_adapter.py`
+- `quantumbridge/compat/qiskit_dynamics/result_adapter.py`
+- `quantumbridge/compat/qiskit_metal/__init__.py`
+- `quantumbridge/compat/qiskit_metal/design_adapter.py`
+- `quantumbridge/compat/qiskit_metal/component_adapter.py`
+- `quantumbridge/compat/qiskit_metal/renderer_adapter.py`
+- `quantumbridge/compat/qiskit_metal/simulation_adapter.py`
+- `quantumbridge/compat/qiskit_metal/result_adapter.py`
+- `quantumbridge/compat/qiskit_finance/result_adapter.py`
+- `quantumbridge/compat/qiskit_optimization/applications_adapter.py`
+- `quantumbridge/compat/qiskit_optimization/result_adapter.py`
+- `quantumbridge/compat/qiskit_machine_learning/regressor_adapter.py`
+- `quantumbridge/compat/qiskit_machine_learning/dataset_adapter.py`
+- `quantumbridge/compat/qiskit_machine_learning/result_adapter.py`
+- `quantumbridge/compat/qiskit_experiments/rb_adapter.py`
+- `quantumbridge/compat/qiskit_experiments/result_adapter.py`
+- `quantumbridge/compat/qiskit_aer/result_adapter.py`
+- `quantumbridge/compat/pennylane_full/result_adapter.py`
+
+Stage 7.2 source port count remains zero.

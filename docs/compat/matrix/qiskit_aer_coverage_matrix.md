@@ -2,6 +2,12 @@
 
 Generated from runtime public-name introspection. No upstream source, tests, comments, or documentation text is copied.
 
+- Installed: True
+- Upstream version: 0.17.2
+- Inventory generated: true
+- Public API count: 7
+- QuantumBridge coverage level: 0
+
 | Upstream Package | Module | Public API | Type | QuantumBridge Level | Mode | Dependency Extra | Test | Risk | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | qiskit-aer | qiskit_aer | AerError | class | 0 | Inventory/Passthrough scaffold | qiskit-aer | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |

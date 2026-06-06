@@ -34,10 +34,14 @@ qiskit = ["qiskit"]
 qiskit-core = ["qiskit"]
 qiskit-aer = ["qiskit-aer"]
 qiskit-runtime = ["qiskit-ibm-runtime"]
+qiskit-nature = ["qiskit-nature", "qiskit-algorithms", "pyscf", "openfermion"]
+qiskit-algorithms = ["qiskit-algorithms"]
 qiskit-finance = ["qiskit-finance"]
 qiskit-optimization = ["qiskit-optimization"]
 qiskit-machine-learning = ["qiskit-machine-learning"]
+qiskit-dynamics = ["qiskit-dynamics"]
 qiskit-experiments = ["qiskit-experiments"]
+qiskit-metal = ["qiskit-metal"]
 qiskit-addons = [
   "qiskit-addon-sqd",
   "qiskit-addon-mpf",

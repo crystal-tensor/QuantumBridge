@@ -2,6 +2,8 @@
   {
     "api_type": "class",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -9,11 +11,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -21,11 +27,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "class",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -33,11 +43,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -45,11 +59,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -57,11 +75,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -69,11 +91,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -81,11 +107,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -93,11 +123,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -105,11 +139,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -117,11 +155,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -129,11 +171,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -141,11 +187,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -153,11 +203,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -165,11 +219,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -177,11 +235,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -189,11 +251,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -201,11 +267,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -213,11 +283,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -225,11 +299,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -237,11 +315,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -249,11 +331,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -261,11 +347,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -273,11 +363,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -285,11 +379,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -297,11 +395,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -309,11 +411,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -321,11 +427,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -333,11 +443,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -345,11 +459,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -357,11 +475,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -369,11 +491,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -381,11 +507,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -393,11 +523,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -405,11 +539,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -417,11 +555,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -429,11 +571,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -441,11 +587,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -453,11 +603,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -465,11 +619,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -477,11 +635,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -489,11 +651,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -501,11 +667,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -513,11 +683,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -525,11 +699,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -537,11 +715,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -549,11 +731,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -561,11 +747,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -573,11 +763,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -585,11 +779,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -597,11 +795,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -609,11 +811,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -621,11 +827,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -633,11 +843,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -645,11 +859,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -657,11 +875,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -669,11 +891,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -681,11 +907,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -693,11 +923,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -705,11 +939,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -717,11 +955,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -729,11 +971,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -741,11 +987,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -753,11 +1003,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -765,11 +1019,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -777,11 +1035,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -789,11 +1051,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -801,11 +1067,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -813,11 +1083,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -825,11 +1099,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -837,11 +1115,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -849,11 +1131,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -861,11 +1147,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -873,11 +1163,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -885,11 +1179,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -897,11 +1195,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -909,11 +1211,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -921,11 +1227,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -933,11 +1243,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -945,11 +1259,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "function",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Runtime public-name inventory; no upstream source or docs copied.",
@@ -957,11 +1275,15 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   },
   {
     "api_type": "metadata",
     "dependency_extra": "pennylane-full",
+    "installed": true,
+    "inventory_generated": true,
     "mode": "Inventory/Passthrough scaffold",
     "module": "pennylane.qchem",
     "notes": "Inventory capped at 80 public names for this module.",
@@ -969,6 +1291,8 @@
     "quantumbridge_level": 0,
     "risk": "MEDIUM",
     "test": "inventory/introspection smoke",
-    "upstream_package": "pennylane"
+    "unsupported_reason": null,
+    "upstream_package": "pennylane",
+    "upstream_version": "0.44.1"
   }
 ]
