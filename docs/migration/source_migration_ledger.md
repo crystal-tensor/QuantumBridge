@@ -142,6 +142,8 @@ The following files are independently implemented adapter/schema modules. They r
 - `quantumbridge/compat/qiskit_experiments/rb_adapter.py`
 - `quantumbridge/compat/qiskit_experiments/result_adapter.py`
 - `quantumbridge/compat/qiskit_aer/result_adapter.py`
+- `quantumbridge/compat/qiskit_runtime/result_adapter.py`
+- `quantumbridge/compat/qiskit_addons/result_adapter.py`
 - `quantumbridge/compat/pennylane_full/result_adapter.py`
 
 Stage 7.2 source port count remains zero.
