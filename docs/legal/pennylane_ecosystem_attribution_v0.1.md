@@ -1,6 +1,6 @@
 # PennyLane Ecosystem Attribution v0.1
 
-Status: Stage 7 planning  
+Status: Stage 7 planning
 
 QuantumBridge may optionally depend on PennyLane and PennyLane ecosystem plugins. PennyLane remains an independent upstream project with its own maintainers, license, trademarks, release schedule, and support policy.
 

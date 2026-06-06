@@ -1,6 +1,6 @@
 # Qiskit Ecosystem Coverage Strategy
 
-Status: Stage 7 planning  
+Status: Stage 7 planning
 Mode: optional dependency, public API inventory, passthrough, and selective adapter integration
 
 ## Goal

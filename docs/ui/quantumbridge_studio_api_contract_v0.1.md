@@ -1,9 +1,9 @@
 # QuantumBridge Studio API Contract v0.1
 
-**Version**: v0.1 (Planning Stage)  
-**Date**: 2026-06-06  
-**Status**: Draft  
-**Owner**: OpenClaw (QuantumBridge 24-hour R&D Chief of Staff)  
+**Version**: v0.1 (Planning Stage)
+**Date**: 2026-06-06
+**Status**: Draft
+**Owner**: OpenClaw (QuantumBridge 24-hour R&D Chief of Staff)
 
 ---
 
@@ -39,7 +39,7 @@ This document defines the **API contract** between QuantumBridge Studio (fronten
 
 ### 2.2 Authentication
 
-**Current (MVP)**: No authentication (local only)  
+**Current (MVP)**: No authentication (local only)
 **Future (Team/Cloud)**: JWT-based authentication
 
 ### 2.3 Versioning
@@ -508,25 +508,25 @@ Access-Control-Allow-Origin: https://studio.quantumbridge.org
 
 ## 10. Open Questions
 
-1. **REST or GraphQL?**  
-   - Current: REST (simpler for MVP)  
+1. **REST or GraphQL?**
+   - Current: REST (simpler for MVP)
    - Future: Consider GraphQL for flexible queries
 
-2. **WebSocket or Polling?**  
-   - Current: Polling (simpler)  
+2. **WebSocket or Polling?**
+   - Current: Polling (simpler)
    - Future: WebSocket for real-time job updates
 
-3. **SQL or NoSQL?**  
-   - Current: SQLite (local MVP)  
+3. **SQL or NoSQL?**
+   - Current: SQLite (local MVP)
    - Future: PostgreSQL (team), MongoDB (results)
 
-4. **How to handle large results (1M+ shots)?**  
-   - Option A: Paginated results  
-   - Option B: Async result streaming  
+4. **How to handle large results (1M+ shots)?**
+   - Option A: Paginated results
+   - Option B: Async result streaming
    - Option C: Store in file, return URL
 
 ---
 
-**Document Version**: v0.1  
-**Last Updated**: 2026-06-06  
+**Document Version**: v0.1
+**Last Updated**: 2026-06-06
 **Author**: OpenClaw (QuantumBridge 24-hour R&D Chief of Staff)

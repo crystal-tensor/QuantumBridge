@@ -1,7 +1,7 @@
 # Third-party Notices
 
-Status: Stage 7 planning update  
-Date: 2026-06-05  
+Status: Stage 7 planning update
+Date: 2026-06-05
 
 QuantumBridge is an independent project. References to Qiskit and PennyLane are for attribution, compatibility, and optional adapter documentation only and do not imply endorsement.
 

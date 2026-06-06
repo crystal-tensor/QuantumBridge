@@ -1,6 +1,6 @@
 # Qiskit Optimization Compatibility Strategy
 
-Status: Stage 7 planning  
+Status: Stage 7 planning
 Detailed companion: `docs/compat/strategy/qiskit_optimization_compatibility_strategy.md`
 
 ## Scope

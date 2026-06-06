@@ -1,6 +1,6 @@
 # Qiskit Optimization Compatibility Strategy
 
-Status: Stage 7 planning  
+Status: Stage 7 planning
 Mode: optional dependency and adapter scaffold
 
 ## Goal

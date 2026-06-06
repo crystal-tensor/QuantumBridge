@@ -1,6 +1,6 @@
 # Qiskit Aer Compatibility Strategy
 
-Status: Stage 7 planning  
+Status: Stage 7 planning
 Mode: optional dependency and passthrough scaffold
 
 ## Goal

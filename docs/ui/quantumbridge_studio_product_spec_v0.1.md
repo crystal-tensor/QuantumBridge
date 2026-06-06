@@ -1,9 +1,9 @@
 # QuantumBridge Studio Product Specification v0.1
 
-**Version**: v0.1 (Planning Stage)  
-**Date**: 2026-06-06  
-**Status**: Draft  
-**Owner**: OpenClaw (QuantumBridge 24-hour R&D Chief of Staff)  
+**Version**: v0.1 (Planning Stage)
+**Date**: 2026-06-06
+**Status**: Draft
+**Owner**: OpenClaw (QuantumBridge 24-hour R&D Chief of Staff)
 
 ---
 
@@ -53,10 +53,10 @@ QuantumBridge Studio is a **visual frontend** for QuantumBridge SDK that enables
 
 ### 2.3 Long-term Vision
 
-**Year 1**: Visual circuit builder + simulator lab  
-**Year 2**: Full ecosystem coverage (Qiskit/PennyLane)  
-**Year 3**: Team collaboration + cloud integration  
-**Year 4**: Enterprise features + commercial packaging  
+**Year 1**: Visual circuit builder + simulator lab
+**Year 2**: Full ecosystem coverage (Qiskit/PennyLane)
+**Year 3**: Team collaboration + cloud integration
+**Year 4**: Enterprise features + commercial packaging
 
 ---
 
@@ -839,6 +839,6 @@ Workflows are serializable representations of user actions:
 
 ---
 
-**Document Version**: v0.1  
-**Last Updated**: 2026-06-06  
+**Document Version**: v0.1
+**Last Updated**: 2026-06-06
 **Author**: OpenClaw (QuantumBridge 24-hour R&D Chief of Staff)

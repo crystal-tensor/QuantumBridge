@@ -1,7 +1,7 @@
 # Third-party Source Policy
 
-Status: Stage 7 planning update  
-Date: 2026-06-05  
+Status: Stage 7 planning update
+Date: 2026-06-05
 
 This policy governs how QuantumBridge may reference, depend on, adapt, or port Qiskit, PennyLane, and related ecosystem code.
 

@@ -1,7 +1,7 @@
 # Source Migration Ledger
 
-Status: Stage 7 ecosystem planning update  
-Date: 2026-06-05  
+Status: Stage 7 ecosystem planning update
+Date: 2026-06-05
 
 This ledger records implementation mode and upstream source status for the current P1 release-candidate baseline. Current work uses Native Implementation, Adapter Integration, and Upstream Dependency. No new upstream source migration was introduced during Stage 5.5. No Source Port with Attribution was performed.
 

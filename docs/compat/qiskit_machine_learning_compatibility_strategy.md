@@ -1,6 +1,6 @@
 # Qiskit Machine Learning Compatibility Strategy
 
-Status: Stage 7 planning  
+Status: Stage 7 planning
 Detailed companion: `docs/compat/strategy/qiskit_machine_learning_compatibility_strategy.md`
 
 ## Scope

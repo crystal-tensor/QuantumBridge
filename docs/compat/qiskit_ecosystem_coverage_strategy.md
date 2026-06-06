@@ -1,6 +1,6 @@
 # Qiskit Ecosystem Coverage Strategy
 
-Status: Stage 7 planning  
+Status: Stage 7 planning
 Detailed companion: `docs/compat/strategy/qiskit_ecosystem_coverage_strategy.md`
 
 ## Scope

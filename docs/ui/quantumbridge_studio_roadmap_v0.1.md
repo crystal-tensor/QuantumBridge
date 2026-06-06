@@ -1,9 +1,9 @@
 # QuantumBridge Studio Roadmap v0.1
 
-**Version**: v0.1 (Planning Stage)  
-**Date**: 2026-06-06  
-**Status**: Draft  
-**Owner**: OpenClaw (QuantumBridge 24-hour R&D Chief of Staff)  
+**Version**: v0.1 (Planning Stage)
+**Date**: 2026-06-06
+**Status**: Draft
+**Owner**: OpenClaw (QuantumBridge 24-hour R&D Chief of Staff)
 
 ---
 
@@ -28,7 +28,7 @@ This document outlines the **roadmap** for QuantumBridge Studio development. It 
 
 ### Stage UI-0: Product Spec & Planning
 
-**Timeline**: Week 1-2  
+**Timeline**: Week 1-2
 **Priority**: P0 (Critical)
 
 **Deliverables**:
@@ -38,14 +38,14 @@ This document outlines the **roadmap** for QuantumBridge Studio development. It 
 - [x] API Contract (`docs/ui/quantumbridge_studio_api_contract_v0.1.md`)
 - [x] Roadmap (`docs/ui/quantumbridge_studio_roadmap_v0.1.md`)
 
-**Milestone**: UI planning complete  
+**Milestone**: UI planning complete
 **Status**: ✅ In Progress (2026-06-06)
 
 ---
 
 ### Stage UI-1: Read-only Ecosystem Explorer
 
-**Timeline**: Week 3-4  
+**Timeline**: Week 3-4
 **Priority**: P1 (High)
 
 **Deliverables**:
@@ -73,14 +73,14 @@ This document outlines the **roadmap** for QuantumBridge Studio development. It 
    - Example code
    - Provenance info
 
-**Milestone**: User can browse all APIs without writing code  
+**Milestone**: User can browse all APIs without writing code
 **Status**: 🔴 Not Started
 
 ---
 
 ### Stage UI-2: Circuit Builder + QASM Lab + Simulator MVP
 
-**Timeline**: Week 5-8  
+**Timeline**: Week 5-8
 **Priority**: P1 (High)
 
 **Deliverables**:
@@ -109,14 +109,14 @@ This document outlines the **roadmap** for QuantumBridge Studio development. It 
    - Run simulation
    - View results (Histogram, Statevector, Bloch sphere)
 
-**Milestone**: User can build circuits and run simulations  
+**Milestone**: User can build circuits and run simulations
 **Status**: 🔴 Not Started
 
 ---
 
 ### Stage UI-3: Chemistry + Algorithms MVP
 
-**Timeline**: Week 9-12  
+**Timeline**: Week 9-12
 **Priority**: P2 (Medium)
 
 **Deliverables**:
@@ -142,14 +142,14 @@ This document outlines the **roadmap** for QuantumBridge Studio development. It 
    - Parameter history
    - Convergence plot
 
-**Warning**: "Experimental chemistry. Not for production use."  
+**Warning**: "Experimental chemistry. Not for production use."
 **Status**: 🔴 Not Started
 
 ---
 
 ### Stage UI-4: Finance/Optimization/ML Labs
 
-**Timeline**: Week 13-16  
+**Timeline**: Week 13-16
 **Priority**: P2 (Medium)
 
 **Deliverables**:
@@ -177,14 +177,14 @@ This document outlines the **roadmap** for QuantumBridge Studio development. It 
    - VQC workflow
    - Training curves
 
-**Warning**: "Experimental finance/ML. Not for production use."  
+**Warning**: "Experimental finance/ML. Not for production use."
 **Status**: 🔴 Not Started
 
 ---
 
 ### Stage UI-5: Runtime/Backend/Result Center
 
-**Timeline**: Week 17-20  
+**Timeline**: Week 17-20
 **Priority**: P3 (Lower)
 
 **Deliverables**:
@@ -222,7 +222,7 @@ This document outlines the **roadmap** for QuantumBridge Studio development. It 
 
 ### Stage UI-6: Team/Cloud/Productization
 
-**Timeline**: Week 21-24+  
+**Timeline**: Week 21-24+
 **Priority**: P4 (Future)
 
 **Deliverables**:
@@ -414,21 +414,21 @@ This document outlines the **roadmap** for QuantumBridge Studio development. It 
 
 ## 9. Open Questions
 
-1. **What is the target audience for v1.0?**  
+1. **What is the target audience for v1.0?**
    - Quantum researchers? Students? Hobbyists? Enterprise?
 
-2. **Should we support real hardware backends?**  
-   - IBM Quantum? Rigetti? IonQ?  
+2. **Should we support real hardware backends?**
+   - IBM Quantum? Rigetti? IonQ?
    - What about token management?
 
-3. **Should we monetize?**  
+3. **Should we monetize?**
    - Freemium model? Subscription? Enterprise license?
 
-4. **Should we open-source?**  
-   - Frontend? Backend? Both?  
+4. **Should we open-source?**
+   - Frontend? Backend? Both?
    - What about the adapter layer?
 
-5. **What is the timeline for v1.0?**  
+5. **What is the timeline for v1.0?**
    - 6 months? 12 months? 18 months?
 
 ---
@@ -441,6 +441,6 @@ This document outlines the **roadmap** for QuantumBridge Studio development. It 
 
 ---
 
-**Document Version**: v0.1  
-**Last Updated**: 2026-06-06  
+**Document Version**: v0.1
+**Last Updated**: 2026-06-06
 **Author**: OpenClaw (QuantumBridge 24-hour R&D Chief of Staff)

@@ -1,6 +1,6 @@
 # Stage 7.0 Ecosystem Coverage Review
 
-Status: prepared for review  
+Status: prepared for review
 Branch: p2/ecosystem-full-coverage-planning
 
 ## Objective

@@ -1,7 +1,7 @@
 # QuantumBridge Full Ecosystem Coverage Policy v0.1
 
-Status: Stage 7 planning  
-Branch: p2/ecosystem-full-coverage-planning  
+Status: Stage 7 planning
+Branch: p2/ecosystem-full-coverage-planning
 Scope: optional dependency inventory, passthrough, adapter scaffold, and native-core boundary
 
 ## Purpose

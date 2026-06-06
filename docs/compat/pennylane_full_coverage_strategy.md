@@ -1,6 +1,6 @@
 # PennyLane Full Coverage Strategy
 
-Status: Stage 7 planning  
+Status: Stage 7 planning
 Detailed companion: `docs/compat/strategy/pennylane_full_coverage_strategy.md`
 
 ## Scope

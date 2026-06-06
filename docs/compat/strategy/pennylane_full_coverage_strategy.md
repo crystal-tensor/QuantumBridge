@@ -1,6 +1,6 @@
 # PennyLane Full Coverage Strategy
 
-Status: Stage 7 planning  
+Status: Stage 7 planning
 Mode: optional dependency, public API inventory, passthrough, and selected adapter integration
 
 ## Goal
