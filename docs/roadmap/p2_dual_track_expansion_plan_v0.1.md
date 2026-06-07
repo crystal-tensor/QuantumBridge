@@ -1,7 +1,7 @@
 # P2 Dual-track Expansion Plan v0.1
 
-Status: Stage 6.1 implementation guide  
-Date: 2026-06-04  
+Status: Stage 6.1 implementation guide
+Date: 2026-06-04
 Branch: `p2/dual-track-expansion`
 
 ## 1. P2 Overall Goal

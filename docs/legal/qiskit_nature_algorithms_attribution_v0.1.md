@@ -1,7 +1,7 @@
 # Qiskit Nature / Algorithms Attribution v0.1
 
-Status: P2 attribution policy  
-Date: 2026-06-04  
+Status: P2 attribution policy
+Date: 2026-06-04
 
 QuantumBridge may use Qiskit Nature, Qiskit Algorithms, PySCF, OpenFermion, and
 pyquafu as optional dependencies. These integrations are adapter, compatibility

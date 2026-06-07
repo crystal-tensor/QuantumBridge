@@ -1,7 +1,7 @@
 # P2 Start Plan v0.1
 
-Status: P2 planning branch opened, no P2 implementation started  
-Date: 2026-06-04  
+Status: P2 planning branch opened, no P2 implementation started
+Date: 2026-06-04
 Branch: `p2/planning`
 
 QuantumBridge P2 must preserve the frozen P1 RC baseline

@@ -1,7 +1,7 @@
 # P2 Upstream Integration Strategy v0.1
 
-Status: Planning route update  
-Date: 2026-06-04  
+Status: Planning route update
+Date: 2026-06-04
 Branch: `p2/planning`
 
 P2 is not a full native rewrite of Qiskit, PennyLane, Qiskit Nature, Qiskit

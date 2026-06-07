@@ -1,7 +1,7 @@
 # P2 Backlog v0.1
 
-Status: Planning only, updated for upstream integration route  
-Date: 2026-06-04  
+Status: Planning only, updated for upstream integration route
+Date: 2026-06-04
 
 This backlog does not authorize P2 implementation. P2 is not a full native
 rewrite of Qiskit, PennyLane, Qiskit Nature, Qiskit Algorithms, PySCF, or

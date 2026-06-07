@@ -1,7 +1,7 @@
 # P2 Execution Plan v0.1
 
-Status: P2 planning review document, updated for upstream integration route  
-Date: 2026-06-04  
+Status: P2 planning review document, updated for upstream integration route
+Date: 2026-06-04
 Branch: `p2/planning`
 
 This plan authorizes planning review only. It does not authorize P2
