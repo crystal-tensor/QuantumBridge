@@ -20,7 +20,7 @@ Status: Local fix applied; push to `main` prepared
 
 ## 3. Failed job
 
-Observed non-advisory failing jobs on the latest failed `main` run:
+Observed non-advisory failing jobs on the original failed `main` run:
 
 - `qiskit-optimization-extra`
 - `chemistry-extra`
@@ -44,6 +44,11 @@ Additional reproduction detail:
 - In a clean virtual environment, `python -m pip install -e . pytest` failed before tests ran.
 - Failure mode was editable-build package discovery falling back incorrectly because the tracked `pyproject.toml` no longer contained the explicit setuptools package selection.
 - Once packaging metadata was restored, editable installation succeeded again.
+- After the first restoration push, one remaining non-advisory failure persisted:
+  - `qiskit-nature-extra`
+- Exact local reproduction of that lane showed `tests/compat_qiskit_nature/test_nature_workflows.py` requires `PySCFDriver`, but `.[qiskit-nature]` did not install `pyscf`.
+- Final fix for that lane:
+  - add `pyscf` to the `qiskit-nature` extra
 
 ## 5. Whether PR #1 merge caused the issue
 
@@ -128,6 +133,7 @@ Applied minimal CI restoration only:
 5. Renamed the duplicate-basename test file to avoid global pytest import collision:
    - from `tests/compat_qiskit_nature/test_chemistry_result_schema.py`
    - to `tests/compat_qiskit_nature/test_qiskit_nature_chemistry_result_schema.py`
+6. Corrected the `qiskit-nature` extra so the non-advisory workflow lane installs `pyscf` in addition to `qiskit-nature` and `qiskit-algorithms`.
 
 No feature behavior was added. No advisory lane was converted into production
 support. No tag or release action was performed.
@@ -143,6 +149,11 @@ bash scripts/run_local_matrix.sh
 python3 -m venv /tmp/qb-ci-diag2
 /tmp/qb-ci-diag2/bin/python -m pip install --upgrade pip setuptools wheel
 /tmp/qb-ci-diag2/bin/python -m pip install -e . pytest
+python3 -m venv /tmp/qb-qn2
+/tmp/qb-qn2/bin/python -m pip install --upgrade pip
+/tmp/qb-qn2/bin/python -m pip install -c requirements/constraints-qiskit-nature.txt -e '.[qiskit-nature]' pytest
+/tmp/qb-qn2/bin/python scripts/inventory_qiskit_nature_api.py
+/tmp/qb-qn2/bin/pytest -q -rs tests/compat_qiskit_nature
 ```
 
 ## 11. Local matrix result
@@ -156,6 +167,7 @@ Result after fix:
 - `qiskit-nature-p2-extra`: pass with expected skips for unavailable optional dependencies
 - `algorithms-extra`: pass with expected skips for unavailable optional dependencies
 - `openfermion-extra`: skip only when optional dependency unavailable
+- exact `qiskit-nature-extra` reproduction: `6 passed, 1 skipped`
 - Stage 7 ecosystem lanes no longer fail due to empty runner file
 
 ## 12. GitHub Actions result
