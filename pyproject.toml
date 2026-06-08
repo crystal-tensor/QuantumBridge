@@ -67,6 +67,12 @@ ecosystem-pennylane = ["pennylane", "autoray<0.8"]
 torch = ["torch"]
 jax = ["jax", "jaxlib"]
 dev = ["pytest", "numpy", "pytest-cov"]
+chemistry = ["pyscf", "qiskit-nature", "qiskit-algorithms", "openfermion"]
+qiskit-nature = ["qiskit-nature", "qiskit-algorithms"]
+pyscf = ["pyscf"]
+openfermion = ["openfermion"]
+algorithms = ["qiskit-algorithms"]
+all-optional = ["qiskit", "qiskit-nature", "qiskit-algorithms", "pennylane", "autoray<0.8", "pyscf", "openfermion", "torch", "jax", "jaxlib"]
 
 [tool.setuptools]
 packages = {find = {include = ["quantumbridge*"]}}

@@ -152,6 +152,6 @@ class Circuit:
         return IRProgram.from_circuit(self)
 
     def to_openqasm(self) -> str:
-        from quantumbridge.ir.qasm_export import export_openqasm
+        from quantumbridge.qasm import dumps
 
-        return export_openqasm(self.to_ir())
+        return dumps(self)

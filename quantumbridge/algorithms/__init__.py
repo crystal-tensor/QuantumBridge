@@ -6,6 +6,17 @@
 
 from .qaoa import maxcut_hamiltonian, qaoa_circuit, run_qaoa
 from .vqe import run_vqe
+from .adapters import QiskitAlgorithmsAdapter
+from .minimum_eigensolvers import ExactDiagonalizationSolver, NumPyMinimumEigensolver
+from .optimizers import GradientDescentOptimizer
 
-__all__ = ["maxcut_hamiltonian", "qaoa_circuit", "run_qaoa", "run_vqe"]
-
+__all__ = [
+    "ExactDiagonalizationSolver",
+    "GradientDescentOptimizer",
+    "NumPyMinimumEigensolver",
+    "QiskitAlgorithmsAdapter",
+    "maxcut_hamiltonian",
+    "qaoa_circuit",
+    "run_qaoa",
+    "run_vqe",
+]

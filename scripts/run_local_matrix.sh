@@ -152,3 +152,32 @@ if "$PYTEST_BIN" --help | grep -q -- '--cov'; then
 else
   echo "pytest-cov unavailable; coverage not executed."
 fi
+
+section "chemistry-core"
+"$PYTEST_BIN" -q -rs \
+  tests/chemistry/test_molecule.py \
+  tests/chemistry/test_fermionic_op.py \
+  tests/chemistry/test_jordan_wigner.py \
+  tests/chemistry/test_qubit_hamiltonian.py \
+  tests/chemistry/test_chemistry_result_schema.py
+
+section "chemistry-extra"
+if has_module qiskit_nature || has_module pyscf || has_module openfermion || has_module qiskit_algorithms; then
+  "$PYTEST_BIN" -q -rs tests/chemistry tests/algorithms_compat tests/compat_inventory
+else
+  echo "chemistry optional dependencies unavailable; installed-environment adapter subsets not executed."
+fi
+
+section "qiskit-nature-extra"
+if has_module qiskit_nature; then
+  "$PYTEST_BIN" -q -rs tests/chemistry/test_qiskit_nature_driver_optional.py tests/compat_inventory/test_qiskit_nature_inventory_generated.py
+else
+  echo "qiskit_nature unavailable; qiskit-nature-extra subset not executed."
+fi
+
+section "algorithms-extra"
+if has_module qiskit_algorithms; then
+  "$PYTEST_BIN" -q -rs tests/algorithms_compat
+else
+  echo "qiskit_algorithms unavailable; algorithms-extra subset not executed."
+fi

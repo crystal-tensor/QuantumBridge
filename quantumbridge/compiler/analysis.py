@@ -21,3 +21,10 @@ class TwoQubitCountAnalysisPass(AnalysisPass):
         count = sum(1 for op in circuit.operations if len(op.wires) == 2)
         return PassResult(circuit, {"two_qubit_gate_count": count}, False)
 
+
+class GateCountAnalysisPass(AnalysisPass):
+    def run(self, circuit):
+        counts = {}
+        for op in circuit.operations:
+            counts[op.name] = counts.get(op.name, 0) + 1
+        return PassResult(circuit, {"gate_counts": counts, "operation_count": len(circuit.operations)}, False)

@@ -49,10 +49,14 @@ def circuit_to_pennylane_callable(circuit, observable: Optional[PauliString] = N
                 qml.RY(float(op.params[0]), wires=op.targets[0])
             elif op.name == "rz":
                 qml.RZ(float(op.params[0]), wires=op.targets[0])
+            elif op.name == "phase":
+                qml.PhaseShift(float(op.params[0]), wires=op.targets[0])
             elif op.name == "cx":
                 qml.CNOT(wires=[op.controls[0], op.targets[0]])
             elif op.name == "cz":
                 qml.CZ(wires=[op.controls[0], op.targets[0]])
+            elif op.name == "swap":
+                qml.SWAP(wires=[op.targets[0], op.targets[1]])
             else:
                 raise ValueError(f"QuantumBridge PennyLane executable bridge does not support operation {op.name!r}.")
         if observable is None:
@@ -91,10 +95,18 @@ def circuit_and_observable_from_pennylane_tape(tape):
             circuit.ry(params[0], wires[0])
         elif name == "RZ":
             circuit.rz(params[0], wires[0])
+        elif name == "PhaseShift":
+            circuit.phase(params[0], wires[0])
+        elif name == "Rot":
+            circuit.rz(params[0], wires[0])
+            circuit.ry(params[1], wires[0])
+            circuit.rz(params[2], wires[0])
         elif name == "CNOT":
             circuit.cx(wires[0], wires[1])
         elif name == "CZ":
             circuit.cz(wires[0], wires[1])
+        elif name == "SWAP":
+            circuit.swap(wires[0], wires[1])
         else:
             raise ValueError(f"QuantumBridge PennyLane tape bridge does not support operation {name!r}.")
     observable = None

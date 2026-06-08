@@ -4,24 +4,42 @@
 # This implementation is developed for the QuantumBridge native architecture.
 
 from .coupling import CouplingMap
-from .analysis import DepthAnalysisPass, TwoQubitCountAnalysisPass
+from .analysis import DepthAnalysisPass, GateCountAnalysisPass, TwoQubitCountAnalysisPass
 from .cancellation import MergeAdjacentRotationPass, RemoveZeroRotationPass, SimpleGateCancellationPass, SingleQubitMergePlaceholderPass
+from .config import PassManagerConfig
+from .decomposition import BasisGateConversionPass, GateDecompositionPass
+from .layout import Layout
+from .optimization import CancelAdjacentInversePass, CircuitOptimizationPass, RemoveIdentityPass, TwoQubitGateReductionPass
 from .pass_base import AnalysisPass, CompilerPass, PassResult, TransformationPass
 from .pass_manager import PassManager
+from .report import CompilerReport
+from .routing import BasicRoutingPass, SwapInsertionPass
 from .target import Target
 
 __all__ = [
     "AnalysisPass",
     "CompilerPass",
+    "CompilerReport",
     "CouplingMap",
+    "BasisGateConversionPass",
+    "BasicRoutingPass",
+    "CancelAdjacentInversePass",
+    "CircuitOptimizationPass",
     "DepthAnalysisPass",
+    "GateCountAnalysisPass",
+    "GateDecompositionPass",
+    "Layout",
     "PassManager",
+    "PassManagerConfig",
     "PassResult",
     "MergeAdjacentRotationPass",
     "RemoveZeroRotationPass",
+    "RemoveIdentityPass",
     "SimpleGateCancellationPass",
     "SingleQubitMergePlaceholderPass",
+    "SwapInsertionPass",
     "Target",
     "TransformationPass",
     "TwoQubitCountAnalysisPass",
+    "TwoQubitGateReductionPass",
 ]

@@ -60,6 +60,24 @@ QuantumBridge Stage 7 may optionally depend on PennyLane and PennyLane ecosystem
 
 Usage mode: optional dependency, public API inventory, passthrough scaffold, and selected adapter integration. Source port status: no Stage 7 PennyLane ecosystem source files were copied into QuantumBridge.
 
+## Stage 6.1 optional upstream integrations
+
+P2 planning and implementation introduces optional dependency routes for:
+
+- Qiskit Nature
+- Qiskit Algorithms
+- PySCF
+- OpenFermion
+
+These packages are not vendored into QuantumBridge. QuantumBridge uses them only
+when installed through optional extras and records behavior as Adapter
+Integration or Upstream Passthrough unless a separate source-port review
+explicitly approves otherwise.
+
+QuantumBridge does not claim that upstream functionality is QuantumBridge
+original work. QuantumBridge is not endorsed by IBM, Qiskit, Xanadu, PennyLane,
+PySCF, or OpenFermion maintainers.
+
 ## Stage 7.2 additional optional ecosystems
 
 Stage 7.2 adds optional inventory, passthrough, and result-schema adapters for Qiskit Nature, Qiskit Algorithms, Qiskit Dynamics, Qiskit Metal, PySCF, and OpenFermion, and expands the existing Finance, Optimization, Machine Learning, Experiments, Aer, and PennyLane coverage.
