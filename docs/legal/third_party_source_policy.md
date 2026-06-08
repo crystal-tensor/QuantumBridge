@@ -1,7 +1,7 @@
 # Third-party Source Policy
 
-Status: Stage 4 draft  
-Date: 2026-06-04  
+Status: Stage 7 planning update
+Date: 2026-06-05
 
 This policy governs how QuantumBridge may reference, depend on, adapt, or port Qiskit, PennyLane, and related ecosystem code.
 
@@ -43,6 +43,7 @@ Prefer upstream dependency rather than source migration for:
 - Complex PennyLane chemistry modules.
 - Large plugin devices.
 - Vendor cloud SDKs.
+- Qiskit Nature, Algorithms, Finance, Optimization, Machine Learning, Experiments, Addons, PySCF, OpenFermion, Quafu, and similar ecosystem packages unless a separate source-port review approves a bounded migration.
 
 ## 4. Code not recommended for migration
 
@@ -94,3 +95,11 @@ Before public release:
 - Flag GPL, AGPL, LGPL, SSPL, commercial-only, source-available, or unknown licenses.
 - Keep optional extras isolated when license risk differs from the core.
 
+## 10. Stage 7 ecosystem rules
+
+- Treat Qiskit ecosystem, PennyLane ecosystem, chemistry, finance, optimization, machine-learning, and hardware/provider packages as optional dependencies.
+- Prefer passthrough and adapter integration over source migration.
+- Do not claim upstream-backed features are QuantumBridge-original.
+- Do not claim official endorsement by IBM, Qiskit, Xanadu, PennyLane, or other upstream maintainers.
+- Do not require all optional dependencies to coexist in one environment.
+- Record every new optional package in `THIRD_PARTY_NOTICES.md` and `docs/migration/source_migration_ledger.md`.

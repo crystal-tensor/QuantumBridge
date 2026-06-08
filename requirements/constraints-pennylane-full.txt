@@ -1,0 +1,4 @@
+# QuantumBridge Stage 7 optional dependency constraints.
+# PennyLane is optional and remains an upstream dependency.
+pennylane
+autoray<0.8

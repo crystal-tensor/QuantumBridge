@@ -1,7 +1,7 @@
 # Third-party Notices
 
-Status: Stage 4 draft  
-Date: 2026-06-04  
+Status: Stage 7 planning update
+Date: 2026-06-05
 
 QuantumBridge is an independent project. References to Qiskit and PennyLane are for attribution, compatibility, and optional adapter documentation only and do not imply endorsement.
 
@@ -37,3 +37,31 @@ The Apache License 2.0 text is stored at:
 
 Future source ports must add a row here and update `docs/migration/source_migration_ledger.md`.
 
+## Qiskit ecosystem optional packages
+
+QuantumBridge Stage 7 may optionally depend on Qiskit ecosystem packages for inventory, passthrough, adapter integration, and result wrapping. These packages remain upstream projects and are not vendored into this repository.
+
+Packages covered by Stage 7 planning include:
+
+- Qiskit core;
+- Qiskit Aer;
+- Qiskit IBM Runtime;
+- Qiskit Finance;
+- Qiskit Optimization;
+- Qiskit Machine Learning;
+- Qiskit Experiments;
+- Qiskit Addons.
+
+Usage mode: optional dependency, public API inventory, passthrough scaffold, and selected adapter integration. Source port status: no Stage 7 Qiskit ecosystem source files were copied into QuantumBridge.
+
+## PennyLane ecosystem optional packages
+
+QuantumBridge Stage 7 may optionally depend on PennyLane and PennyLane ecosystem plugins for inventory, passthrough, adapter integration, and result wrapping. These packages remain upstream projects and are not vendored into this repository.
+
+Usage mode: optional dependency, public API inventory, passthrough scaffold, and selected adapter integration. Source port status: no Stage 7 PennyLane ecosystem source files were copied into QuantumBridge.
+
+## Stage 7.2 additional optional ecosystems
+
+Stage 7.2 adds optional inventory, passthrough, and result-schema adapters for Qiskit Nature, Qiskit Algorithms, Qiskit Dynamics, Qiskit Metal, PySCF, and OpenFermion, and expands the existing Finance, Optimization, Machine Learning, Experiments, Aer, and PennyLane coverage.
+
+These upstream packages are not distributed inside QuantumBridge. Each package is installed into an isolated optional environment for verification. Qiskit Metal coverage is advisory and does not imply chip fabrication or electromagnetic simulation capability.

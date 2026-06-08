@@ -1,0 +1,93 @@
+# pennylane Coverage Matrix
+
+Generated from runtime public-name introspection. No upstream source, tests, comments, or documentation text is copied.
+
+- Installed: True
+- Upstream version: 0.44.1
+- Inventory generated: true
+- Public API count: 81
+- QuantumBridge coverage level: 0
+
+| Upstream Package | Module | Public API | Type | QuantumBridge Level | Mode | Dependency Extra | Test | Risk | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| pennylane | pennylane.qchem | BasisFunction | class | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | Molecule | class | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | VibrationalPES | class | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | active_space | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | atom_basis_data | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | attraction_integral | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | attraction_matrix | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | basis_rotation | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | christiansen_bosonic | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | christiansen_dipole | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | christiansen_hamiltonian | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | christiansen_integrals | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | christiansen_integrals_dipole | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | clifford | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | contracted_norm | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | core_matrix | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | decompose | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | diff_hamiltonian | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | dipole_integrals | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | dipole_moment | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | dipole_of | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | electron_integrals | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | electron_repulsion | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | excitations | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | excitations_to_wires | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | expansion | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | factorize | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | fermionic_dipole | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | fermionic_hamiltonian | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | fermionic_observable | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | from_openfermion | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | gaussian_kinetic | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | gaussian_moment | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | gaussian_overlap | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | givens_decomposition | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | hermite_moment | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | hf_energy | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | hf_state | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | import_operator | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | import_state | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | kinetic_integral | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | kinetic_matrix | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | load_basisset | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | localize_normal_modes | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | meanfield | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | mol_basis_data | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | mol_data | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | mol_density_matrix | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | molecular_dipole | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | molecular_hamiltonian | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | moment_integral | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | moment_matrix | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | nuclear_attraction | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | nuclear_energy | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | observable | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | one_particle | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | optimal_sector | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | optimize_geometry | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | overlap_integral | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | overlap_matrix | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | particle_number | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | paulix_ops | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | primitive_norm | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | qubit_observable | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | read_structure | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | repulsion_integral | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | repulsion_tensor | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | scf | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | spin2 | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | spinz | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | symmetry_generators | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | symmetry_shift | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | taper | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | taper_hf | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | taper_operation | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | taylor_bosonic | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | taylor_coeffs | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | taylor_dipole_coeffs | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | taylor_hamiltonian | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | to_openfermion | function | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Runtime public-name inventory; no upstream source or docs copied. |
+| pennylane | pennylane.qchem | inventory-truncated | metadata | 0 | Inventory/Passthrough scaffold | pennylane-full | inventory/introspection smoke | MEDIUM | Inventory capped at 80 public names for this module. |

@@ -31,7 +31,39 @@ dependencies = [
 
 [project.optional-dependencies]
 qiskit = ["qiskit"]
+qiskit-core = ["qiskit"]
+qiskit-aer = ["qiskit-aer"]
+qiskit-runtime = ["qiskit-ibm-runtime"]
+qiskit-nature = ["qiskit-nature", "qiskit-algorithms", "pyscf", "openfermion"]
+qiskit-algorithms = ["qiskit-algorithms"]
+qiskit-finance = ["qiskit-finance"]
+qiskit-optimization = ["qiskit-optimization"]
+qiskit-machine-learning = ["qiskit-machine-learning"]
+qiskit-dynamics = ["qiskit-dynamics"]
+qiskit-experiments = ["qiskit-experiments"]
+qiskit-metal = ["qiskit-metal"]
+qiskit-addons = [
+  "qiskit-addon-sqd",
+  "qiskit-addon-mpf",
+  "qiskit-addon-aqc-tensor",
+  "qiskit-addon-obp"
+]
 pennylane = ["pennylane", "autoray<0.8"]
+pennylane-full = ["pennylane", "autoray<0.8"]
+ecosystem-qiskit = [
+  "qiskit",
+  "qiskit-aer",
+  "qiskit-finance",
+  "qiskit-optimization",
+  "qiskit-machine-learning"
+]
+ecosystem-chemistry = [
+  "qiskit-nature",
+  "qiskit-algorithms",
+  "pyscf",
+  "openfermion"
+]
+ecosystem-pennylane = ["pennylane", "autoray<0.8"]
 torch = ["torch"]
 jax = ["jax", "jaxlib"]
 dev = ["pytest", "numpy", "pytest-cov"]
