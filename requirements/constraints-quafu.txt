@@ -1,0 +1,4 @@
+# Stage 6.3 quafu-compatible environment constraints.
+# pyquafu 0.4.5 requires numpy<2.0.0.
+pyquafu==0.4.5
+numpy<2.0.0

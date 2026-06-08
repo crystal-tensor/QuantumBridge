@@ -3,10 +3,18 @@
 # This file is part of QuantumBridge SDK.
 # This implementation is developed for the QuantumBridge native architecture.
 
-from .embeddings import angle_embedding
+from .embeddings import amplitude_embedding, angle_embedding
 from .qnode import QNode
 from .tape import Tape
-from .templates import basic_entangler
+from .templates import basic_entangler, basic_entangler_layers, hardware_efficient_ansatz, strongly_entangling_layers
 
-__all__ = ["QNode", "Tape", "angle_embedding", "basic_entangler"]
-
+__all__ = [
+    "QNode",
+    "Tape",
+    "amplitude_embedding",
+    "angle_embedding",
+    "basic_entangler",
+    "basic_entangler_layers",
+    "hardware_efficient_ansatz",
+    "strongly_entangling_layers",
+]

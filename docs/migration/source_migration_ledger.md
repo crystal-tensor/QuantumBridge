@@ -22,6 +22,12 @@ This ledger records implementation mode and upstream source status for the curre
 | `quantumbridge/compiler/*` | Compiler placeholders | Native Implementation | No | No | N/A | N/A | No | No | Minimal native pass/coupling/target abstractions | N/A | Yes | Not P0 tested | Pending | Low |
 | `quantumbridge/visualization/*` | Text drawer | Native Implementation | No | No | N/A | N/A | No | No | Minimal native text visualization | N/A | Yes | Not P0 tested | Pending | Low |
 | `quantumbridge/legal/*` | Attribution validation automation | Native Implementation | No | No | N/A | N/A | No | No | Checks required notice, ledger, and license files exist | N/A | Yes | Yes | Pending | Low |
+| `quantumbridge/qasm/*` | P2 grammar-based QASM subset parser/exporter | Native Core | No | No | N/A | N/A | No | No | QuantumBridge-owned lexer/parser/AST for documented subset | N/A | Yes | P2 tests | Pending | Medium |
+| `quantumbridge/schema/*` | P2 result schema and JSON serialization | Native Core | No | No | N/A | N/A | No | No | Versioned QuantumBridge result payload schema | N/A | Yes | P2 tests | Pending | Low |
+| `quantumbridge/chemistry/*` | P2 chemistry native models and optional adapters | Native Core / Adapter Integration / Upstream Passthrough | API only where optional | No | N/A | Optional upstream dependencies | No | No | Molecule/FermionicOp/JW native subset; Qiskit Nature, PySCF, OpenFermion adapters require optional packages | N/A | Yes | P2 tests | Pending | High |
+| `quantumbridge/algorithms/adapters/*` | Qiskit Algorithms optional adapter | Upstream Passthrough | API only | No | N/A | Optional qiskit-algorithms dependency | No | No | Calls/wraps installed upstream algorithms only when available | N/A | Yes | P2 tests | Pending | High |
+| `scripts/inventory_qiskit_nature_api.py` | Qiskit Nature public API runtime inventory | Upstream API inventory | Runtime public API only | No | N/A | Optional qiskit-nature dependency | No | No | Uses Python introspection of installed package; does not copy source or docs | N/A | Yes | Inventory tests | Pending | Medium |
+| `scripts/inventory_qiskit_algorithms_api.py` | Qiskit Algorithms public API runtime inventory | Upstream API inventory | Runtime public API only | No | N/A | Optional qiskit-algorithms dependency | No | No | Uses Python introspection of installed package; does not copy source or docs | N/A | Yes | Inventory tests | Pending | Medium |
 | `quantumbridge/noise/*` | P1 basic noise channels and error model | Native Implementation | No | No | N/A | N/A | No | No | Native BitFlip, PhaseFlip, Depolarizing, ReadoutError, NoiseModel metadata | N/A | Yes | Yes | Pending | Medium |
 | `quantumbridge/compiler/*` | P1 compiler PassManager and basic passes | Native Implementation | No | No | N/A | N/A | No | No | Native PassResult, analysis passes, cancellation pass, merge placeholder | N/A | Yes | Yes | Pending | Medium |
 | `quantumbridge/ecosystem/*` | Optional ecosystem dependency/version/inventory/provenance registry | Native Implementation | Public package names only | Public package names only | N/A | N/A | No | No | Independently implemented registry for optional dependency introspection and result provenance | N/A | Yes | Yes | Pending | Medium |
@@ -43,6 +49,59 @@ This ledger records implementation mode and upstream source status for the curre
 - Qiskit ecosystem source files copied during Stage 7: 0.
 - PennyLane ecosystem source files copied during Stage 7: 0.
 - Files requiring upstream copyright headers beyond notices: none in current P0.
+
+## Stage 6.1 source-file coverage path index
+
+The following paths are explicitly indexed for ledger completeness tests because
+their headers or adapter text mention upstream projects while stating that no
+upstream source was copied:
+
+- `quantumbridge/__init__.py`
+- `quantumbridge/algorithms/__init__.py`
+- `quantumbridge/algorithms/adapters/__init__.py`
+- `quantumbridge/algorithms/adapters/qiskit_algorithms_adapter.py`
+- `quantumbridge/algorithms/amplitude.py`
+- `quantumbridge/algorithms/eigensolvers.py`
+- `quantumbridge/algorithms/gradients.py`
+- `quantumbridge/algorithms/grover.py`
+- `quantumbridge/algorithms/minimum_eigensolvers.py`
+- `quantumbridge/algorithms/optimizers.py`
+- `quantumbridge/chemistry/__init__.py`
+- `quantumbridge/chemistry/adapters/__init__.py`
+- `quantumbridge/chemistry/adapters/openfermion_adapter.py`
+- `quantumbridge/chemistry/adapters/pyscf_adapter.py`
+- `quantumbridge/chemistry/adapters/qiskit_nature_adapter.py`
+- `quantumbridge/chemistry/ansatz.py`
+- `quantumbridge/chemistry/drivers.py`
+- `quantumbridge/chemistry/fermion.py`
+- `quantumbridge/chemistry/integrals.py`
+- `quantumbridge/chemistry/mappings.py`
+- `quantumbridge/chemistry/molecule.py`
+- `quantumbridge/chemistry/qubit_hamiltonian.py`
+- `quantumbridge/chemistry/result.py`
+- `quantumbridge/chemistry/second_quantized.py`
+- `quantumbridge/chemistry/solvers.py`
+- `quantumbridge/compat/__init__.py`
+- `quantumbridge/compat/pennylane_adapter.py`
+- `quantumbridge/compat/qiskit_adapter.py`
+- `quantumbridge/compiler/config.py`
+- `quantumbridge/compiler/report.py`
+- `quantumbridge/legal/attribution.py`
+- `quantumbridge/noise/execution.py`
+- `quantumbridge/qasm/__init__.py`
+- `quantumbridge/qasm/ast.py`
+- `quantumbridge/qasm/errors.py`
+- `quantumbridge/qasm/exporter.py`
+- `quantumbridge/qasm/importer.py`
+- `quantumbridge/qasm/lexer.py`
+- `quantumbridge/qasm/parser.py`
+- `quantumbridge/qasm/tokens.py`
+- `quantumbridge/qasm/visitor.py`
+- `quantumbridge/schema/__init__.py`
+- `quantumbridge/schema/errors.py`
+- `quantumbridge/schema/result_schema.py`
+- `quantumbridge/schema/serialization.py`
+- `quantumbridge/schema/validation.py`
 
 ## Stage 7 exact path registration
 

@@ -39,11 +39,20 @@ Requirements:
 Prefer upstream dependency rather than source migration for:
 
 - Qiskit Aer or simulator internals.
+- Qiskit Nature chemistry internals.
+- Qiskit Algorithms solver internals.
+- PySCF molecular integral and driver internals.
+- OpenFermion operator and chemistry internals.
 - Hardware providers.
 - Complex PennyLane chemistry modules.
 - Large plugin devices.
 - Vendor cloud SDKs.
 - Qiskit Nature, Algorithms, Finance, Optimization, Machine Learning, Experiments, Addons, PySCF, OpenFermion, Quafu, and similar ecosystem packages unless a separate source-port review approves a bounded migration.
+
+Preferred P2 modes for mature upstream projects are Upstream Passthrough and
+Adapter Integration. Native Core should be reserved for QuantumBridge-owned
+control surfaces such as IR, result schema, QASM subset parser, compiler, noise
+semantics, and QOS/backend abstractions.
 
 ## 4. Code not recommended for migration
 

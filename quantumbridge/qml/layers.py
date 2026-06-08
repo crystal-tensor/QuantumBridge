@@ -3,7 +3,6 @@
 # This file is part of QuantumBridge SDK.
 # This implementation is developed for the QuantumBridge native architecture.
 
-from .templates import basic_entangler
+from .templates import basic_entangler, basic_entangler_layers, hardware_efficient_ansatz, strongly_entangling_layers
 
-__all__ = ["basic_entangler"]
-
+__all__ = ["basic_entangler", "basic_entangler_layers", "hardware_efficient_ansatz", "strongly_entangling_layers"]

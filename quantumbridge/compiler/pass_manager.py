@@ -5,6 +5,7 @@
 
 
 from .pass_base import CompilerPass, PassResult
+from .report import CompilerReport
 
 
 class PassManager:
@@ -12,6 +13,7 @@ class PassManager:
         self.passes = list(passes or [])
 
     def run(self, circuit):
+        input_operations = len(circuit.operations)
         current = circuit
         analyses = {}
         changed = False
@@ -24,4 +26,5 @@ class PassManager:
             current = result.circuit
             analyses.update(result.analyses)
             changed = changed or result.changed
+        analyses.setdefault("compiler_report", CompilerReport(input_operations, len(current.operations), analyses.copy(), changed).to_dict())
         return PassResult(current, analyses, changed)

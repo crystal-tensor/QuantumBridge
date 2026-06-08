@@ -1,0 +1,9 @@
+# Stage 6.2 verified chemistry / algorithms stack.
+# qiskit-nature==0.8.0 requires numpy>=2, so this environment is intentionally
+# separate from the quafu-compatible numpy<2 environment.
+numpy>=2,<3
+qiskit==2.4.1
+qiskit-nature==0.8.0
+qiskit-algorithms==0.4.0
+pyscf==2.13.1
+openfermion==1.7.1

@@ -24,6 +24,7 @@ jobs:
           - profile: dev
             install: "python -m pip install -e '.[dev]'"
             command: "pytest -q -rs && pytest --cov=quantumbridge"
+          # --- Stage 7 ecosystem profiles (from PR #2 merge) ---
           - profile: qiskit-aer-extra
             install: "python -m pip install -c requirements/constraints-qiskit-aer.txt -e '.[qiskit-aer]' pytest"
             command: "python scripts/inventory_qiskit_aer_api.py && pytest -q -rs tests/compat_qiskit_aer"
@@ -68,6 +69,22 @@ jobs:
             advisory: true
             install: "python -m pip install -c requirements/constraints-qiskit-addons.txt -e '.[qiskit-addons]' pytest"
             command: "python scripts/inventory_qiskit_addons_api.py && pytest -q -rs tests/compat_qiskit_addons"
+          # --- Stage 6 P2 dual-track profiles (from PR #1) ---
+          - profile: chemistry-core
+            install: "python -m pip install -e '.[dev]'"
+            command: "pytest -q -rs tests/chemistry/test_molecule.py tests/chemistry/test_fermionic_op.py tests/chemistry/test_jordan_wigner.py tests/chemistry/test_qubit_hamiltonian.py tests/chemistry/test_chemistry_result_schema.py"
+          - profile: chemistry-extra
+            install: "python -m pip install -e '.[chemistry]' pytest"
+            command: "pytest -q -rs tests/chemistry tests/algorithms_compat tests/compat_inventory"
+          - profile: qiskit-nature-p2-extra
+            install: "python -m pip install -e '.[qiskit-nature]' pytest"
+            command: "python scripts/inventory_qiskit_nature_api.py && pytest -q -rs tests/chemistry/test_qiskit_nature_driver_optional.py tests/chemistry/test_qiskit_nature_driver_installed.py tests/chemistry/test_h2_installed_workflow.py tests/compat_inventory/test_qiskit_nature_inventory_generated.py"
+          - profile: algorithms-extra
+            install: "python -m pip install -e '.[algorithms]' pytest"
+            command: "python scripts/inventory_qiskit_algorithms_api.py && pytest -q -rs tests/algorithms_compat"
+          - profile: openfermion-extra
+            install: "python -m pip install -e '.[openfermion]' pytest"
+            command: "pytest -q -rs tests/chemistry/test_openfermion_adapter_installed.py"
     continue-on-error: ${{ matrix.advisory == true }}
     steps:
       - uses: actions/checkout@v4
