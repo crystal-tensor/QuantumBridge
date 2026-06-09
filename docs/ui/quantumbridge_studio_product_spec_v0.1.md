@@ -580,7 +580,39 @@ not production compiler/simulator/mapper parity.
 4. **Warning**:
    - "Educational compatibility mode. Not full MQT parity."
 
-### 3.16 PennyLane Lab
+### 3.16 TorchQuantum / QML Lab
+
+**Purpose**: Future visualization for clean-room TorchQuantum-like educational
+QML workflows.
+
+Stage 9K supplies future Studio-ready API/schema data for tensor adapters,
+batch forward execution, native quantum layer results, deterministic toy
+classifier training, optional torch tensor interop, and optional upstream
+TorchQuantum boundary metadata. This is not UI implementation, not full
+TorchQuantum or PyTorch replacement, not production QML, and not suitable for
+high-risk automated decisions.
+
+**Features**:
+1. **Tensor / Batch View**:
+   - Tensor backend
+   - Dataset summary
+   - Batch size and feature dimension
+
+2. **Quantum Layer View**:
+   - Forward outputs
+   - Probabilities
+   - Predictions
+   - QuantumBridge circuit metadata
+
+3. **Training View**:
+   - Deterministic training trace
+   - Best weights
+   - Loss and accuracy
+
+4. **Warning**:
+   - "Educational QML mode. Not full TorchQuantum/PyTorch parity."
+
+### 3.17 PennyLane Lab
 
 **Purpose**: Work with PennyLane workflows.
 
@@ -616,7 +648,7 @@ not production compiler/simulator/mapper parity.
    - PennyLaneResult wrapper
    - Provenance tracking
 
-### 3.17 Backend / Runtime Lab
+### 3.18 Backend / Runtime Lab
 
 **Purpose**: Manage backends and runtime jobs.
 
@@ -647,7 +679,7 @@ not production compiler/simulator/mapper parity.
 5. **Warning**:
    - "No token storage. Offline only."
 
-### 3.18 Result Center
+### 3.19 Result Center
 
 **Purpose**: View and manage all results from jobs.
 
@@ -675,7 +707,7 @@ not production compiler/simulator/mapper parity.
    - Select two results
    - Side-by-side comparison
 
-### 3.19 Documentation / Code Generator
+### 3.20 Documentation / Code Generator
 
 **Purpose**: Generate code and documentation from workflows.
 

@@ -1,5 +1,5 @@
 {
-  "status": "Stage 9J clean-room catalog seed",
+  "status": "Stage 9K clean-room catalog seed",
   "source_mode": "manually curated compatibility target names only",
   "projects": [
     {
@@ -20,6 +20,30 @@
         "not full Qiskit Machine Learning replacement",
         "not production ML",
         "no high-risk decision use",
+        "no cloud/token/hardware access"
+      ],
+      "legal_boundary": "Project name only; no source, tutorial prose, UI, branding, or implementation copied."
+    },
+    {
+      "project_id": "torchquantum",
+      "upstream_name": "TorchQuantum",
+      "category": "QML",
+      "adapter": "quantumbridge.compat.torchquantum",
+      "current_status": "executable_subset",
+      "executable_slice_stage": "Stage 9K",
+      "executable_workflows": [
+        "TorchQuantum-like native educational quantum layer",
+        "tensor and batch forward",
+        "native educational classifier training",
+        "optional torch tensor compatibility",
+        "optional upstream TorchQuantum passthrough"
+      ],
+      "studio_ready": "partial",
+      "limitations": [
+        "not full TorchQuantum replacement",
+        "not full PyTorch replacement",
+        "not production QML",
+        "no high-risk ML decision use",
         "no cloud/token/hardware access"
       ],
       "legal_boundary": "Project name only; no source, tutorial prose, UI, branding, or implementation copied."

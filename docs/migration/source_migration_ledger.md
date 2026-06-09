@@ -49,6 +49,8 @@ This ledger records implementation mode and upstream source status for the curre
 | `quantumbridge/compat/qiskit_dynamics/*_native.py` | Stage 9I educational offline one-qubit dynamics workflows | Clean-room implementation | Public concept names only | No | N/A | QuantumBridge native | No | No | Z precession, Rabi drive, dephasing metadata only; no production dynamics | N/A | Yes | Native tests and examples | Complete | Medium |
 | `quantumbridge/compat/mqt/*` | Stage 9J MQT Core/DDSIM/QMAP clean-room compatibility slice | Clean-room implementation / optional upstream boundary | Public project and package names only | No | N/A | QuantumBridge native; upstream optional if installed separately | No | No | Core-like circuit dict/QASM, DDSIM-like simulation metadata, and QMAP-like routing; no full MQT, decision-diagram, optimal-mapper, or production parity claim | N/A | Yes | Native tests and examples | Complete | Medium |
 | `quantumbridge/schema/mqt_results.py` | Stage 9J MQT compatibility result envelopes | Native Implementation | Public project names only | No | N/A | QuantumBridge native | No | No | QuantumBridge-owned schemas for native MQT Core-like, DDSIM-like, QMAP-like, upstream passthrough, routing, and comparison results | N/A | Yes | Yes | Complete | Low |
+| `quantumbridge/compat/torchquantum/*` | Stage 9K TorchQuantum/PyTorch-style QML clean-room compatibility slice | Clean-room implementation / optional upstream boundary | Public project and package names only | No | N/A | QuantumBridge native; torch and TorchQuantum optional if installed separately | No | No | Tensor adapters, native educational quantum layer, batch forward, deterministic toy classifier training, optional torch tensor path, and optional TorchQuantum upstream boundary; no full TorchQuantum/PyTorch or production QML claim | N/A | Yes | Native tests and examples | Complete | Medium |
+| `quantumbridge/schema/torchquantum_results.py` | Stage 9K TorchQuantum compatibility result envelopes | Native Implementation | Public project names only | No | N/A | QuantumBridge native | No | No | QuantumBridge-owned schemas for tensor, layer, batch, training, classifier, upstream passthrough, and comparison results | N/A | Yes | Yes | Complete | Low |
 | `quantumbridge/compat/qiskit_addons/*` | Qiskit Addons inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Upstream dependency | No | No | Optional addons inventory; no source migration | N/A | Yes | Inventory smoke | Pending | High |
 | `quantumbridge/compat/pennylane_full/*` | PennyLane full ecosystem inventory and passthrough scaffold | Adapter Integration | No | API names only | N/A | Apache-2.0 dependency | No | No | Optional PennyLane modules; no full plugin parity claim | N/A | Yes | Yes | Pending | High |
 | `scripts/inventory_*_api.py` | Runtime public-name inventory generation | Native Implementation | Public package names only | Public package names only | N/A | N/A | No | No | Generates QuantumBridge JSON/Markdown matrices from runtime introspection | N/A | Yes | Yes | Pending | Medium |
@@ -547,3 +549,28 @@ egg-info, site-packages trees, or virtual environments were copied:
 - `examples/mqt_qmap_like_routing_quantumbridge.py`
 
 Stage 9J source port count remains zero.
+
+## Stage 9K Source Inventory
+
+The following Stage 9K files are clean-room QuantumBridge implementations or
+optional dependency boundaries; no upstream source, prose, model weights,
+wheels, dist-info, egg-info, site-packages trees, or virtual environments were
+copied:
+
+- `quantumbridge/compat/torchquantum/__init__.py`
+- `quantumbridge/compat/torchquantum/dependency.py`
+- `quantumbridge/compat/torchquantum/tensor_adapter.py`
+- `quantumbridge/compat/torchquantum/qml_dataset_native.py`
+- `quantumbridge/compat/torchquantum/quantum_layer_native.py`
+- `quantumbridge/compat/torchquantum/training_native.py`
+- `quantumbridge/compat/torchquantum/torch_adapter.py`
+- `quantumbridge/compat/torchquantum/upstream_adapter.py`
+- `quantumbridge/compat/torchquantum/result_adapter.py`
+- `quantumbridge/compat/torchquantum/warnings.py`
+- `quantumbridge/compat/torchquantum/examples.py`
+- `quantumbridge/schema/torchquantum_results.py`
+- `examples/torchquantum_like_layer_quantumbridge.py`
+- `examples/torchquantum_like_batch_forward_quantumbridge.py`
+- `examples/torchquantum_like_classifier_quantumbridge.py`
+
+Stage 9K source port count remains zero.

@@ -173,6 +173,22 @@ decision-diagram simulator parity claim, not optimal mapping software, not
 production compiler/simulator/mapper parity, and not endorsed by MQT maintainers
 or IBM.
 
+## Stage 9K TorchQuantum / PyTorch-style QML compatibility slice
+
+Stage 9K adds clean-room TorchQuantum-like educational QML workflows for a
+native quantum layer, tensor/batch forward execution, deterministic toy
+classifier training, optional torch tensor interop when PyTorch is installed,
+and optional upstream TorchQuantum boundary metadata when installed separately.
+
+No TorchQuantum or PyTorch source code, tutorial implementation, website text,
+UI, branding, model weights, wheels, dist-info, egg-info, site-packages trees,
+virtual environments, or vendored package artifacts are copied into
+QuantumBridge.
+
+The native subset is not a full TorchQuantum replacement, not a full PyTorch
+replacement, not production QML training, not for high-risk automated decisions,
+and not endorsed by TorchQuantum, PyTorch, IBM, or Qiskit maintainers.
+
 ## Stage 9B Qiskit Optimization native subset
 
 Stage 9B adds an independently implemented educational native binary

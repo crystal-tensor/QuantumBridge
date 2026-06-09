@@ -53,6 +53,7 @@ forcing incompatible dependency stacks into one environment.
 | Mitiq / error mitigation | Stage 9G educational ZNE and readout-mitigation workflows over simulated counts. | Not production error mitigation or hardware calibration parity. |
 | Qiskit Dynamics / Experiments | Advisory and installed-environment smoke paths. | No lab or calibration production claim. |
 | MQT Core / DDSIM / QMAP | Stage 9J educational Core-like IR/QASM, DDSIM-like simulation metadata, and QMAP-like routing. | Not full MQT replacement, decision-diagram parity, or production compiler/simulator/mapper parity. |
+| TorchQuantum / PyTorch-style QML | Stage 9K educational native quantum layer, tensor/batch forward, optional torch interop, and deterministic toy classifier training. | Not full TorchQuantum/PyTorch replacement, production QML, or high-risk ML decision support. |
 | Qiskit Metal | Advisory chip-design inventory. | Not EM simulation or fabrication support. |
 | Qiskit Runtime | Offline-only metadata and adapter planning. | No IBM Cloud access, token reads, or credential storage. |
 | PennyLane | Differentiable quantum programming, QNode, tape, operations, transforms. | Optional dependency, not a PennyLane replacement. |
@@ -323,3 +324,20 @@ Stage 9J does not claim complete MQT Core, DDSIM, or QMAP replacement,
 decision-diagram parity, optimal mapping, production compiler/simulator/mapper
 parity, official endorsement, cloud access, token access, hardware access,
 release readiness, tags, or UI implementation.
+
+## 6.10 Stage 9K TorchQuantum / PyTorch-style QML Snapshot
+
+Stage 9K promotes TorchQuantum/QML bridge compatibility from planning to a
+bounded executable slice:
+
+- Python list / NumPy / optional torch tensor adapters;
+- native TorchQuantum-like educational quantum layer;
+- batch forward execution with probabilities and predictions;
+- deterministic toy classifier training with trace, loss, and accuracy;
+- optional upstream TorchQuantum dependency boundary;
+- serializable TorchQuantum result schemas and executable examples.
+
+Stage 9K does not claim complete TorchQuantum replacement, PyTorch replacement,
+production QML training, suitability for high-risk automated decisions,
+official endorsement, cloud access, token access, hardware access, release
+readiness, tags, or UI implementation.

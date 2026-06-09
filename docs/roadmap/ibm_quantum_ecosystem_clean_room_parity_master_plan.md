@@ -81,7 +81,7 @@ contract lives in `docs/compat/ecosystem/ibm_quantum_ecosystem_project_catalog_s
 | Stage 9H | PennyLane-Qiskit | Native educational bidirectional bridge and Bell equivalence proof. |
 | Stage 9I | Qiskit Experiments / Dynamics | Implemented educational offline executable workflows for Rabi, T1, Ramsey, Z precession, Rabi drive, and dephasing metadata; no hardware calibration or production dynamics claim. |
 | Stage 9J | MQT Core / DDSIM / QMAP | Implemented clean-room educational compatibility workflows for Core-like IR/QASM, DDSIM-like simulation metadata, and QMAP-like routing; no production parity claim. |
-| Stage 9K | TorchQuantum / QML | Exploratory QML bridge. |
+| Stage 9K | TorchQuantum / QML | Implemented clean-room educational TorchQuantum-like layer, tensor/batch forward, and toy classifier training; no production QML or high-risk ML claim. |
 | Stage 9L | Azure Quantum | Advisory no-token/cloud compatibility slice. |
 | Stage 9M | Benchpress | Benchmarking slice. |
 | Stage 9N | RasQberry | Educational hardware advisory slice. |
@@ -203,6 +203,20 @@ replacement, decision-diagram parity, full QMAP replacement, optimal mapping,
 production compiler/simulator/mapper parity, cloud execution, token handling,
 hardware access, UI implementation, tags, releases, and vendored third-party
 source.
+
+## Stage 9K TorchQuantum / PyTorch-style QML Slice
+
+Stage 9K promotes TorchQuantum/QML bridge compatibility to a bounded executable
+slice. QuantumBridge now supports clean-room TensorLike adapters, optional torch
+tensor interop when torch is installed separately, a native TorchQuantum-like
+educational quantum layer, batch forward execution, deterministic toy classifier
+training, and optional upstream TorchQuantum boundary metadata.
+
+The implementation uses QuantumBridge circuits and simulation paths. It does
+not copy TorchQuantum or PyTorch source, tutorials, UI, or branding. It is not
+a full TorchQuantum replacement, not a full PyTorch replacement, not production
+QML training, and not suitable for high-risk automated decisions. No cloud,
+token, or hardware access is performed.
 
 ## Release Gating
 

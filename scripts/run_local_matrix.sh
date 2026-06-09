@@ -132,6 +132,9 @@ fi
 section "mqt-compat"
 "$PYTEST_BIN" -q -rs tests/compat_mqt
 
+section "torchquantum-compat"
+"$PYTEST_BIN" -q -rs tests/compat_torchquantum
+
 section "ecosystem-inventory"
 "$PYTHON_BIN" scripts/inventory_qiskit_core_api.py
 "$PYTHON_BIN" scripts/inventory_qiskit_aer_api.py

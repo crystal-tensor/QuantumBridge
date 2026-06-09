@@ -33,6 +33,7 @@
 | Mitiq | error mitigation | Manual Stage 9G catalog row | Yes | Optional passthrough metadata | ErrorMitigationResult wrapper | Stage 9G native ZNE/readout educational subset | dependency, upstream metadata, native ZNE/readout workflows, schema, provenance, warnings | compat_mitiq | Medium | 9G |
 | PennyLane-Qiskit bridge | framework bridge | Manual Stage 9H catalog row | Yes | Optional upstream plugin metadata | PennyLaneQiskitBridgeResult wrapper | Stage 9H native bidirectional bridge educational subset | dependency, bridge conversion, executable proof, schema, provenance, warnings | compat_pennylane_qiskit | Medium | 9H |
 | MQT Core / DDSIM / QMAP | circuit IR / simulation / mapping | Manual Stage 9J catalog row | Yes | Optional upstream MQT metadata | MQTCompatibilityResult wrapper | Stage 9J native Core-like dict/QASM, DDSIM-like simulation, and QMAP-like routing | dependency, core dict, QASM subset, statevector/counts, DD metadata, routing, schema, provenance, warnings | compat_mqt | Medium | 9J |
+| TorchQuantum / PyTorch-style QML | QML tensor workflow / training | Manual Stage 9K catalog row | Yes | Optional torch tensor path and upstream TorchQuantum metadata | TorchQuantumCompatibilityResult wrapper | Stage 9K native TorchQuantum-like quantum layer, batch forward, and deterministic classifier training | dependency, tensor adapter, dataset, layer forward, batch forward, training, optional torch, upstream boundary, schema, provenance, warnings | compat_torchquantum | Medium | 9K |
 
 ## Stage 8D Inventory Snapshot
 
@@ -163,3 +164,14 @@ This row is the MQT compatibility slice for QuantumBridge's IBM Quantum
 Ecosystem clean-room parity plan. It does not copy IBM website content, MQT
 source, Qiskit source, tutorial code, UI, branding, or third-party project
 source.
+
+## Stage 9K Update
+
+| Ecosystem | New executable subset | Native level | Upstream path | Production-ready | Notes |
+| --- | --- | --- | --- | --- | --- |
+| TorchQuantum / PyTorch-style QML | Native educational quantum layer, tensor/batch forward, toy classifier training, optional torch tensor support | Level 3 | Optional local TorchQuantum package metadata passthrough | No | Supports small clean-room workflows with TorchQuantum result schemas, warnings, provenance, and no cloud/token/hardware access. Not full TorchQuantum/PyTorch parity, production QML, or high-risk ML. |
+
+This row is the TorchQuantum/QML bridge compatibility slice for QuantumBridge's
+IBM Quantum Ecosystem clean-room parity plan. It does not copy IBM website
+content, TorchQuantum or PyTorch source, tutorials, UI, branding, or third-party
+project source.

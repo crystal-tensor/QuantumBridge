@@ -150,6 +150,16 @@ try:
         RoutingResult,
         UpstreamMQTResult,
     )
+    from quantumbridge.schema.torchquantum_results import (
+        BatchForwardResult,
+        QuantumLayerResult,
+        TensorAdapterResult,
+        TorchQuantumClassifierResult,
+        TorchQuantumCompatibilityResult,
+        TorchQuantumComparisonResult,
+        TorchQuantumTrainingResult,
+        UpstreamTorchQuantumResult,
+    )
     __all__ = [
         # P2 schema exports
         "RESULT_SCHEMA_VERSION",
@@ -270,6 +280,14 @@ try:
         "QMAPLikeMappingResult",
         "RoutingResult",
         "UpstreamMQTResult",
+        "BatchForwardResult",
+        "QuantumLayerResult",
+        "TensorAdapterResult",
+        "TorchQuantumClassifierResult",
+        "TorchQuantumCompatibilityResult",
+        "TorchQuantumComparisonResult",
+        "TorchQuantumTrainingResult",
+        "UpstreamTorchQuantumResult",
     ]
 except ImportError:
     # Fallback when ecosystem extras not installed

@@ -57,6 +57,7 @@ Current Qiskit ecosystem status:
 - Mitiq / error mitigation: Stage 9G Level 3 educational native zero-noise extrapolation and readout mitigation, plus optional upstream Mitiq dependency metadata when installed. This is not production error mitigation and not a complete Mitiq replacement.
 - PennyLane-Qiskit bridge: Stage 9H Level 3 educational native bidirectional bridge for a basic-gate subset, including Qiskit circuit to PennyLane executable spec, PennyLane operation/tape metadata to Qiskit circuit, and Bell-state equivalence proof. This is not a full PennyLane-Qiskit plugin replacement and not full Qiskit or PennyLane parity.
 - MQT Core / DDSIM / QMAP compatibility: Stage 9J Level 3 educational native circuit/IR compatibility, DDSIM-like small-circuit simulation, decision-diagram-inspired metadata, and QMAP-like topology routing with SWAP insertion. This is not a full MQT replacement, not decision-diagram parity, and not production compiler/simulator/mapper parity.
+- TorchQuantum / PyTorch-style QML compatibility: Stage 9K Level 3 educational native quantum layer, tensor/batch forward, deterministic toy classifier training, optional torch tensor path, and optional upstream TorchQuantum boundary. This is not a full TorchQuantum or PyTorch replacement, not production QML, and not for high-risk automated decisions.
 
 Current PennyLane ecosystem status:
 
@@ -83,6 +84,7 @@ Stage 7.2 expands installed-environment verification and adapter schemas. It rem
 | Mitiq / error mitigation | Stage 9G educational native ZNE and readout mitigation plus optional upstream Mitiq passthrough metadata | install upstream `mitiq` separately if needed | Native subset does not require upstream; not production error mitigation; no hardware calibration parity |
 | PennyLane-Qiskit bridge | Stage 9H educational native bidirectional bridge and Bell equivalence proof plus optional upstream plugin metadata | install upstream `pennylane-qiskit` separately if needed | Native subset does not require upstream; not full plugin parity; no cloud/token/hardware |
 | MQT Core / DDSIM / QMAP | Stage 9J educational native MQT Core-like circuit dict/QASM subset, DDSIM-like statevector/counts, and QMAP-like routing | install upstream MQT packages separately if needed | Native subset does not require upstream; not full MQT replacement; no decision-diagram or optimal-mapper parity |
+| TorchQuantum / PyTorch-style QML | Stage 9K educational native TorchQuantum-like layer, tensor/batch forward, and classifier training | torch is optional for tensor interop; TorchQuantum is optional for upstream boundary metadata | Native subset does not require TorchQuantum; not full TorchQuantum/PyTorch replacement; not production QML or high-risk ML |
 | PennyLane full | Level 0/1 plus PennyLaneResult Level 2 wrapper | `.[pennylane-full]` | Verified: 0.42.3; no complete replacement claim |
 
 Level 2 here means a QuantumBridge result-schema wrapper. It does not mean complete input conversion, behavioral parity, performance parity, or production equivalence.
@@ -232,6 +234,21 @@ not full MQT Core, DDSIM, or QMAP replacements, not decision-diagram parity,
 not optimal mapping software, and not production compiler/simulator/mapper
 parity.
 
+### TorchQuantum / PyTorch-style QML Compatibility Slice
+
+Stage 9K adds clean-room educational TorchQuantum-like QML workflows:
+
+- tensor-like adapters for Python lists, NumPy arrays, and optional torch tensors;
+- native small-circuit quantum layer forward passes over QuantumBridge simulation;
+- batch forward execution with probabilities, outputs, predictions, warnings, and provenance;
+- deterministic toy classifier training with grid search and explicit high-risk ML warnings;
+- optional upstream TorchQuantum passthrough boundary when installed separately.
+
+This slice is not a full TorchQuantum replacement, not a full PyTorch
+replacement, not production QML training, and not suitable for medical,
+financial, employment, identity, safety, or other high-risk automated
+decisions. It does not access cloud services, tokens, or real hardware.
+
 ## P1 Controlled Expansion
 
 Stage 5 adds controlled P1 subset coverage:
@@ -250,6 +267,7 @@ Stage 5 adds controlled P1 subset coverage:
 - Full PennyLane feature parity.
 - Full Qiskit Nature / Algorithms / Finance / Optimization / Machine Learning / Aer / Runtime / Experiments parity.
 - Full MQT Core / DDSIM / QMAP parity.
+- Full TorchQuantum or PyTorch parity, production QML, or high-risk ML decision support.
 - Full OpenQASM grammar.
 - Hardware cloud providers.
 - Production Qiskit Aer/noise integration.
@@ -298,6 +316,7 @@ Stage 7 uses separate optional dependency lanes. Do not assume all optional depe
 - `mitiq`: no default extra; if installed separately, QuantumBridge records optional upstream Mitiq passthrough metadata while native Stage 9G ZNE/readout examples run without it.
 - `pennylane-qiskit`: no default extra; if installed separately, QuantumBridge records optional upstream plugin metadata while native Stage 9H bridge examples run without it.
 - `mqt`: no default extra; if installed separately, QuantumBridge records optional upstream MQT Core/DDSIM/QMAP passthrough metadata while native Stage 9J examples run without it.
+- `torchquantum`: no default extra; if installed separately, QuantumBridge records optional upstream TorchQuantum passthrough metadata while native Stage 9K examples run without it. `torch` is optional for tensor interop only.
 - `qiskit-finance`: optional finance application/data-provider/circuit inventory.
 - `qiskit-optimization`: optional optimization inventory and passthrough scaffold.
 - `qiskit-machine-learning`: optional QNN/kernel/classifier/Torch connector inventory.

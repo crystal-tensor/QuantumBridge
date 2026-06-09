@@ -81,3 +81,15 @@ and QMAP-like greedy routing with SWAP insertion and execution comparison.
 Full MQT replacement, decision-diagram parity, optimal mapping, production
 compiler/simulator/mapper parity, official endorsement, cloud execution, token
 handling, and hardware access remain out of scope.
+
+## Stage 9K Application
+
+TorchQuantum / PyTorch-style QML compatibility is promoted only for educational
+TensorLike adapters, native small-circuit quantum layer forward passes,
+deterministic toy classifier training, optional torch tensor interoperability,
+optional upstream TorchQuantum boundary metadata, schema serialization,
+warnings, provenance, examples, and tests.
+
+Full TorchQuantum replacement, PyTorch replacement, production QML training,
+high-risk automated decision support, official endorsement, cloud execution,
+token handling, and hardware access remain out of scope.
