@@ -52,6 +52,7 @@ forcing incompatible dependency stacks into one environment.
 | Qiskit Finance / Optimization / ML | Domain adapters and result schemas. | Not production finance, optimization, or ML. |
 | Mitiq / error mitigation | Stage 9G educational ZNE and readout-mitigation workflows over simulated counts. | Not production error mitigation or hardware calibration parity. |
 | Qiskit Dynamics / Experiments | Advisory and installed-environment smoke paths. | No lab or calibration production claim. |
+| MQT Core / DDSIM / QMAP | Stage 9J educational Core-like IR/QASM, DDSIM-like simulation metadata, and QMAP-like routing. | Not full MQT replacement, decision-diagram parity, or production compiler/simulator/mapper parity. |
 | Qiskit Metal | Advisory chip-design inventory. | Not EM simulation or fabrication support. |
 | Qiskit Runtime | Offline-only metadata and adapter planning. | No IBM Cloud access, token reads, or credential storage. |
 | PennyLane | Differentiable quantum programming, QNode, tape, operations, transforms. | Optional dependency, not a PennyLane replacement. |
@@ -302,3 +303,23 @@ Stage 9I does not claim hardware calibration, production experiment analysis,
 production dynamics simulation, complete upstream replacement, IBM/Qiskit
 endorsement, cloud access, token access, hardware access, release readiness,
 tags, or UI implementation.
+
+## 6.9 Stage 9J MQT Core / DDSIM / QMAP Snapshot
+
+Stage 9J promotes MQT Core, DDSIM, and QMAP compatibility from catalog
+planning to bounded executable educational workflows:
+
+- QuantumBridge IR to MQT Core-like circuit dictionaries;
+- MQT Core-like dictionary to QuantumBridge IR roundtrip;
+- QASM subset compatibility artifacts;
+- DDSIM-like statevector and counts execution using QuantumBridge native simulation;
+- decision-diagram-inspired metadata;
+- QMAP-like topology validation, greedy CNOT routing, SWAP insertion, mapping
+  cost, and original-vs-mapped execution comparison;
+- optional upstream MQT dependency metadata;
+- serializable MQT result schemas and executable examples.
+
+Stage 9J does not claim complete MQT Core, DDSIM, or QMAP replacement,
+decision-diagram parity, optimal mapping, production compiler/simulator/mapper
+parity, official endorsement, cloud access, token access, hardware access,
+release readiness, tags, or UI implementation.

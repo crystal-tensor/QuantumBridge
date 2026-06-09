@@ -71,3 +71,13 @@ educational offline workflows: Rabi, T1, Ramsey, Z precession, Rabi drive, and
 dephasing metadata. Hardware calibration, production experiment analysis,
 production dynamics simulation, full upstream replacement, cloud execution,
 token handling, and hardware access remain out of scope.
+
+## Stage 9J Application
+
+MQT Core / DDSIM / QMAP compatibility is promoted only for educational
+clean-room workflows: Core-like circuit dictionaries and QASM subset artifacts,
+DDSIM-like small-circuit simulation with decision-diagram-inspired metadata,
+and QMAP-like greedy routing with SWAP insertion and execution comparison.
+Full MQT replacement, decision-diagram parity, optimal mapping, production
+compiler/simulator/mapper parity, official endorsement, cloud execution, token
+handling, and hardware access remain out of scope.

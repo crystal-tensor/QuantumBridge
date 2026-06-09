@@ -549,7 +549,38 @@ hardware calibration.
 5. **Warning**:
    - "Advisory mode. No fabrication capability claim. No EM solver validation."
 
-### 3.15 PennyLane Lab
+### 3.15 MQT Compatibility Lab
+
+**Purpose**: Future visualization for clean-room MQT-style circuit, simulation,
+and mapping artifacts.
+
+Stage 9J supplies future Studio-ready API/schema data for MQT Core-like
+circuit dictionaries, DDSIM-like educational simulation metadata, and QMAP-like
+routing results. This is not UI implementation, not full MQT replacement, and
+not production compiler/simulator/mapper parity.
+
+**Features**:
+1. **Core-like Circuit View**:
+   - QuantumBridge IR summary
+   - MQT Core-like operation table
+   - QASM subset artifact
+
+2. **DDSIM-like Metadata View**:
+   - Statevector / counts summary
+   - Support bitstrings
+   - Unique amplitude count
+   - Compression hint
+
+3. **QMAP-like Routing View**:
+   - Coupling topology
+   - Inserted SWAP operations
+   - Initial and final layout
+   - Original-vs-mapped comparison
+
+4. **Warning**:
+   - "Educational compatibility mode. Not full MQT parity."
+
+### 3.16 PennyLane Lab
 
 **Purpose**: Work with PennyLane workflows.
 
@@ -585,7 +616,7 @@ hardware calibration.
    - PennyLaneResult wrapper
    - Provenance tracking
 
-### 3.16 Backend / Runtime Lab
+### 3.17 Backend / Runtime Lab
 
 **Purpose**: Manage backends and runtime jobs.
 
@@ -616,7 +647,7 @@ hardware calibration.
 5. **Warning**:
    - "No token storage. Offline only."
 
-### 3.17 Result Center
+### 3.18 Result Center
 
 **Purpose**: View and manage all results from jobs.
 
@@ -644,7 +675,7 @@ hardware calibration.
    - Select two results
    - Side-by-side comparison
 
-### 3.18 Documentation / Code Generator
+### 3.19 Documentation / Code Generator
 
 **Purpose**: Generate code and documentation from workflows.
 

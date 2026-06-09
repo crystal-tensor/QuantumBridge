@@ -80,8 +80,8 @@ contract lives in `docs/compat/ecosystem/ibm_quantum_ecosystem_project_catalog_s
 | Stage 9G | Mitiq | Native educational ZNE and readout-mitigation workflows plus optional upstream passthrough metadata. |
 | Stage 9H | PennyLane-Qiskit | Native educational bidirectional bridge and Bell equivalence proof. |
 | Stage 9I | Qiskit Experiments / Dynamics | Implemented educational offline executable workflows for Rabi, T1, Ramsey, Z precession, Rabi drive, and dephasing metadata; no hardware calibration or production dynamics claim. |
-| Stage 9J | TorchQuantum / QML | Exploratory QML bridge. |
-| Stage 9K | MQT Core / DDSIM / QMAP / QECC | Compatibility slices. |
+| Stage 9J | MQT Core / DDSIM / QMAP | Implemented clean-room educational compatibility workflows for Core-like IR/QASM, DDSIM-like simulation metadata, and QMAP-like routing; no production parity claim. |
+| Stage 9K | TorchQuantum / QML | Exploratory QML bridge. |
 | Stage 9L | Azure Quantum | Advisory no-token/cloud compatibility slice. |
 | Stage 9M | Benchpress | Benchmarking slice. |
 | Stage 9N | RasQberry | Educational hardware advisory slice. |
@@ -187,6 +187,22 @@ and provenance only. This stage excludes full plugin replacement, full Qiskit
 or PennyLane parity, advanced device/transform/gradient parity, cloud
 execution, token handling, hardware access, UI implementation, tags, releases,
 and vendored third-party source.
+
+## Stage 9J MQT Core / DDSIM / QMAP Slice
+
+Stage 9J promotes MQT Core, DDSIM, and QMAP compatibility to a bounded
+educational executable slice. The native path converts QuantumBridge IR into an
+MQT Core-like circuit dictionary and QASM subset artifact, runs DDSIM-like
+statevector/counts workflows with decision-diagram-inspired metadata, and runs
+QMAP-like topology validation, greedy CNOT routing, SWAP insertion, mapping
+cost, and original-vs-mapped execution comparison.
+
+Optional upstream MQT passthrough records dependency availability and
+provenance only. This stage excludes full MQT Core replacement, full DDSIM
+replacement, decision-diagram parity, full QMAP replacement, optimal mapping,
+production compiler/simulator/mapper parity, cloud execution, token handling,
+hardware access, UI implementation, tags, releases, and vendored third-party
+source.
 
 ## Release Gating
 

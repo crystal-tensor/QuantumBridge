@@ -156,6 +156,23 @@ Qiskit Dynamics, tutorial prose, UI, branding, or source code, and they do not
 claim hardware calibration, production dynamics, full replacement, or production
 parity.
 
+## Stage 9J MQT Core / DDSIM / QMAP compatibility slice
+
+Stage 9J adds clean-room MQT Core-like, DDSIM-like, and QMAP-like educational
+compatibility workflows. MQT ecosystem packages remain optional upstream
+dependencies for local passthrough metadata only. The native Stage 9J examples
+do not require upstream MQT packages.
+
+No MQT source code, tutorial implementation, website text, UI, branding,
+wheels, dist-info, egg-info, site-packages trees, virtual environments, or
+vendored package artifacts are copied into QuantumBridge. Project and package
+names are used only to identify optional compatibility targets.
+
+The native subset is not a full MQT Core, DDSIM, or QMAP replacement, not a
+decision-diagram simulator parity claim, not optimal mapping software, not
+production compiler/simulator/mapper parity, and not endorsed by MQT maintainers
+or IBM.
+
 ## Stage 9B Qiskit Optimization native subset
 
 Stage 9B adds an independently implemented educational native binary

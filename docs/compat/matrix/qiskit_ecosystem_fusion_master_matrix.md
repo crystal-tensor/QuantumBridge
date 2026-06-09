@@ -32,6 +32,7 @@
 | Qiskit Addons | sqd / mpf / aqc / obp | Existing matrices present | Yes | Advisory | Advisory | No | same contract plus addon warnings | qiskit-addons-extra | Medium | 8D |
 | Mitiq | error mitigation | Manual Stage 9G catalog row | Yes | Optional passthrough metadata | ErrorMitigationResult wrapper | Stage 9G native ZNE/readout educational subset | dependency, upstream metadata, native ZNE/readout workflows, schema, provenance, warnings | compat_mitiq | Medium | 9G |
 | PennyLane-Qiskit bridge | framework bridge | Manual Stage 9H catalog row | Yes | Optional upstream plugin metadata | PennyLaneQiskitBridgeResult wrapper | Stage 9H native bidirectional bridge educational subset | dependency, bridge conversion, executable proof, schema, provenance, warnings | compat_pennylane_qiskit | Medium | 9H |
+| MQT Core / DDSIM / QMAP | circuit IR / simulation / mapping | Manual Stage 9J catalog row | Yes | Optional upstream MQT metadata | MQTCompatibilityResult wrapper | Stage 9J native Core-like dict/QASM, DDSIM-like simulation, and QMAP-like routing | dependency, core dict, QASM subset, statevector/counts, DD metadata, routing, schema, provenance, warnings | compat_mqt | Medium | 9J |
 
 ## Stage 8D Inventory Snapshot
 
@@ -151,3 +152,14 @@ This row is the PennyLane-Qiskit bridge slice for QuantumBridge's IBM Quantum
 Ecosystem clean-room parity plan. It does not copy IBM website content,
 Qiskit source, PennyLane source, PennyLane-Qiskit source, tutorial code, UI,
 branding, or third-party project source.
+
+## Stage 9J Update
+
+| Ecosystem | New executable subset | Native level | Upstream path | Production-ready | Notes |
+| --- | --- | --- | --- | --- | --- |
+| MQT Core / DDSIM / QMAP | Core-like IR/QASM compatibility, DDSIM-like statevector/counts plus DD metadata, and QMAP-like topology routing/SWAP insertion | Level 3 | Optional local MQT package metadata passthrough | No | Supports small educational workflows with MQT result schemas, warnings, provenance, and no cloud/token/hardware access. Not full MQT parity, decision-diagram parity, or optimal mapping. |
+
+This row is the MQT compatibility slice for QuantumBridge's IBM Quantum
+Ecosystem clean-room parity plan. It does not copy IBM website content, MQT
+source, Qiskit source, tutorial code, UI, branding, or third-party project
+source.

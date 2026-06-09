@@ -56,6 +56,7 @@ Current Qiskit ecosystem status:
 - Qiskit Metal remains advisory: no chip fabrication, external EM simulation, or layout signoff support is claimed.
 - Mitiq / error mitigation: Stage 9G Level 3 educational native zero-noise extrapolation and readout mitigation, plus optional upstream Mitiq dependency metadata when installed. This is not production error mitigation and not a complete Mitiq replacement.
 - PennyLane-Qiskit bridge: Stage 9H Level 3 educational native bidirectional bridge for a basic-gate subset, including Qiskit circuit to PennyLane executable spec, PennyLane operation/tape metadata to Qiskit circuit, and Bell-state equivalence proof. This is not a full PennyLane-Qiskit plugin replacement and not full Qiskit or PennyLane parity.
+- MQT Core / DDSIM / QMAP compatibility: Stage 9J Level 3 educational native circuit/IR compatibility, DDSIM-like small-circuit simulation, decision-diagram-inspired metadata, and QMAP-like topology routing with SWAP insertion. This is not a full MQT replacement, not decision-diagram parity, and not production compiler/simulator/mapper parity.
 
 Current PennyLane ecosystem status:
 
@@ -81,6 +82,7 @@ Stage 7.2 expands installed-environment verification and adapter schemas. It rem
 | Qiskit Aer | Level 0/1 plus AerResult Level 2 wrapper and Stage 9F educational native statevector / qasm counts / simple noise subset | `.[qiskit-aer]` | Verified: 0.17.2; native subset does not require upstream; no Aer parity claim |
 | Mitiq / error mitigation | Stage 9G educational native ZNE and readout mitigation plus optional upstream Mitiq passthrough metadata | install upstream `mitiq` separately if needed | Native subset does not require upstream; not production error mitigation; no hardware calibration parity |
 | PennyLane-Qiskit bridge | Stage 9H educational native bidirectional bridge and Bell equivalence proof plus optional upstream plugin metadata | install upstream `pennylane-qiskit` separately if needed | Native subset does not require upstream; not full plugin parity; no cloud/token/hardware |
+| MQT Core / DDSIM / QMAP | Stage 9J educational native MQT Core-like circuit dict/QASM subset, DDSIM-like statevector/counts, and QMAP-like routing | install upstream MQT packages separately if needed | Native subset does not require upstream; not full MQT replacement; no decision-diagram or optimal-mapper parity |
 | PennyLane full | Level 0/1 plus PennyLaneResult Level 2 wrapper | `.[pennylane-full]` | Verified: 0.42.3; no complete replacement claim |
 
 Level 2 here means a QuantumBridge result-schema wrapper. It does not mean complete input conversion, behavioral parity, performance parity, or production equivalence.
@@ -215,6 +217,21 @@ These paths do not access IBM Runtime, cloud services, tokens, or real hardware.
 They are not hardware calibration, production experiment analysis, production
 dynamics software, or full replacements for upstream projects.
 
+### MQT Core / DDSIM / QMAP Compatibility Slice
+
+Stage 9J adds clean-room educational workflows for:
+
+- MQT Core-like circuit dictionaries, QuantumBridge IR roundtrip, and a small QASM subset artifact.
+- DDSIM-like statevector and counts simulation for small circuits using QuantumBridge native simulation.
+- Decision-diagram-inspired metadata such as support bitstrings, unique amplitude counts, and compression hints.
+- QMAP-like line/ring/full/custom topology validation, greedy CNOT routing, SWAP insertion, mapping cost, and original-vs-mapped execution comparison.
+- Optional upstream MQT dependency boundary helpers when local MQT packages are installed separately.
+
+These paths do not access cloud services, tokens, or real hardware. They are
+not full MQT Core, DDSIM, or QMAP replacements, not decision-diagram parity,
+not optimal mapping software, and not production compiler/simulator/mapper
+parity.
+
 ## P1 Controlled Expansion
 
 Stage 5 adds controlled P1 subset coverage:
@@ -232,6 +249,7 @@ Stage 5 adds controlled P1 subset coverage:
 - Full Qiskit feature parity.
 - Full PennyLane feature parity.
 - Full Qiskit Nature / Algorithms / Finance / Optimization / Machine Learning / Aer / Runtime / Experiments parity.
+- Full MQT Core / DDSIM / QMAP parity.
 - Full OpenQASM grammar.
 - Hardware cloud providers.
 - Production Qiskit Aer/noise integration.
@@ -279,6 +297,7 @@ Stage 7 uses separate optional dependency lanes. Do not assume all optional depe
 - `qiskit-aer`: optional Aer simulator/noise passthrough plus Stage 9F educational native statevector, qasm-counts, and simple sampling-noise slice.
 - `mitiq`: no default extra; if installed separately, QuantumBridge records optional upstream Mitiq passthrough metadata while native Stage 9G ZNE/readout examples run without it.
 - `pennylane-qiskit`: no default extra; if installed separately, QuantumBridge records optional upstream plugin metadata while native Stage 9H bridge examples run without it.
+- `mqt`: no default extra; if installed separately, QuantumBridge records optional upstream MQT Core/DDSIM/QMAP passthrough metadata while native Stage 9J examples run without it.
 - `qiskit-finance`: optional finance application/data-provider/circuit inventory.
 - `qiskit-optimization`: optional optimization inventory and passthrough scaffold.
 - `qiskit-machine-learning`: optional QNN/kernel/classifier/Torch connector inventory.

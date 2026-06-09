@@ -47,6 +47,8 @@ This ledger records implementation mode and upstream source status for the curre
 | `quantumbridge/compat/qiskit_experiments/*` | Qiskit Experiments inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Upstream dependency | No | No | Optional experiments objects; no lab workflow guarantees | N/A | Yes | Inventory smoke | Pending | High |
 | `quantumbridge/compat/qiskit_experiments/*_native.py` | Stage 9I educational offline Rabi/T1/Ramsey workflows | Clean-room implementation | Public concept names only | No | N/A | QuantumBridge native | No | No | Synthetic data and educational fitting only; no hardware calibration | N/A | Yes | Native tests and examples | Complete | Medium |
 | `quantumbridge/compat/qiskit_dynamics/*_native.py` | Stage 9I educational offline one-qubit dynamics workflows | Clean-room implementation | Public concept names only | No | N/A | QuantumBridge native | No | No | Z precession, Rabi drive, dephasing metadata only; no production dynamics | N/A | Yes | Native tests and examples | Complete | Medium |
+| `quantumbridge/compat/mqt/*` | Stage 9J MQT Core/DDSIM/QMAP clean-room compatibility slice | Clean-room implementation / optional upstream boundary | Public project and package names only | No | N/A | QuantumBridge native; upstream optional if installed separately | No | No | Core-like circuit dict/QASM, DDSIM-like simulation metadata, and QMAP-like routing; no full MQT, decision-diagram, optimal-mapper, or production parity claim | N/A | Yes | Native tests and examples | Complete | Medium |
+| `quantumbridge/schema/mqt_results.py` | Stage 9J MQT compatibility result envelopes | Native Implementation | Public project names only | No | N/A | QuantumBridge native | No | No | QuantumBridge-owned schemas for native MQT Core-like, DDSIM-like, QMAP-like, upstream passthrough, routing, and comparison results | N/A | Yes | Yes | Complete | Low |
 | `quantumbridge/compat/qiskit_addons/*` | Qiskit Addons inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Upstream dependency | No | No | Optional addons inventory; no source migration | N/A | Yes | Inventory smoke | Pending | High |
 | `quantumbridge/compat/pennylane_full/*` | PennyLane full ecosystem inventory and passthrough scaffold | Adapter Integration | No | API names only | N/A | Apache-2.0 dependency | No | No | Optional PennyLane modules; no full plugin parity claim | N/A | Yes | Yes | Pending | High |
 | `scripts/inventory_*_api.py` | Runtime public-name inventory generation | Native Implementation | Public package names only | Public package names only | N/A | N/A | No | No | Generates QuantumBridge JSON/Markdown matrices from runtime introspection | N/A | Yes | Yes | Pending | Medium |
@@ -520,3 +522,28 @@ egg-info, site-packages trees, or virtual environments were copied:
 - `quantumbridge/schema/dynamics_results.py`
 
 Stage 9I source port count remains zero.
+
+## Stage 9J Source Inventory
+
+The following Stage 9J files are clean-room QuantumBridge implementations or
+optional dependency boundaries; no upstream source, prose, wheels, dist-info,
+egg-info, site-packages trees, or virtual environments were copied:
+
+- `quantumbridge/compat/mqt/__init__.py`
+- `quantumbridge/compat/mqt/dependency.py`
+- `quantumbridge/compat/mqt/core_adapter.py`
+- `quantumbridge/compat/mqt/ddsim_adapter.py`
+- `quantumbridge/compat/mqt/qmap_adapter.py`
+- `quantumbridge/compat/mqt/routing_native.py`
+- `quantumbridge/compat/mqt/mapping_native.py`
+- `quantumbridge/compat/mqt/decision_diagram_metadata.py`
+- `quantumbridge/compat/mqt/upstream_adapter.py`
+- `quantumbridge/compat/mqt/result_adapter.py`
+- `quantumbridge/compat/mqt/warnings.py`
+- `quantumbridge/compat/mqt/examples.py`
+- `quantumbridge/schema/mqt_results.py`
+- `examples/mqt_core_like_circuit_quantumbridge.py`
+- `examples/mqt_ddsim_like_simulation_quantumbridge.py`
+- `examples/mqt_qmap_like_routing_quantumbridge.py`
+
+Stage 9J source port count remains zero.

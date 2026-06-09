@@ -1,5 +1,5 @@
 {
-  "status": "Stage 9I clean-room catalog seed",
+  "status": "Stage 9J clean-room catalog seed",
   "source_mode": "manually curated compatibility target names only",
   "projects": [
     {
@@ -108,6 +108,73 @@
         "not full Qiskit Dynamics replacement",
         "not production dynamics",
         "no full Lindblad solver",
+        "no cloud/token/hardware access"
+      ],
+      "legal_boundary": "Project name only; no source, tutorial prose, UI, branding, or implementation copied."
+    },
+    {
+      "project_id": "mqt-core",
+      "upstream_name": "MQT Core",
+      "category": "Circuit / IR compatibility",
+      "adapter": "quantumbridge.compat.mqt",
+      "current_status": "executable_subset",
+      "executable_slice_stage": "Stage 9J",
+      "executable_workflows": [
+        "QuantumBridge IR to MQT Core-like circuit dict",
+        "MQT Core-like dict to QuantumBridge IR",
+        "QASM subset compatibility artifact",
+        "optional upstream MQT Core passthrough boundary"
+      ],
+      "studio_ready": "partial",
+      "limitations": [
+        "not full MQT Core replacement",
+        "no official MQT endorsement",
+        "no cloud/token/hardware access"
+      ],
+      "legal_boundary": "Project name only; no source, tutorial prose, UI, branding, or implementation copied."
+    },
+    {
+      "project_id": "mqt-ddsim",
+      "upstream_name": "MQT DDSIM",
+      "category": "Simulation",
+      "adapter": "quantumbridge.compat.mqt",
+      "current_status": "executable_subset",
+      "executable_slice_stage": "Stage 9J",
+      "executable_workflows": [
+        "native DDSIM-like statevector simulation",
+        "native DDSIM-like counts simulation",
+        "decision-diagram-inspired metadata",
+        "optional upstream MQT DDSIM passthrough boundary"
+      ],
+      "studio_ready": "partial",
+      "limitations": [
+        "not full DDSIM replacement",
+        "no full decision diagram parity",
+        "no production simulator parity",
+        "no cloud/token/hardware access"
+      ],
+      "legal_boundary": "Project name only; no source, tutorial prose, UI, branding, or implementation copied."
+    },
+    {
+      "project_id": "mqt-qmap",
+      "upstream_name": "MQT QMAP",
+      "category": "Mapping / routing",
+      "adapter": "quantumbridge.compat.mqt",
+      "current_status": "executable_subset",
+      "executable_slice_stage": "Stage 9J",
+      "executable_workflows": [
+        "topology validation",
+        "greedy routing",
+        "SWAP insertion",
+        "mapping cost",
+        "original vs mapped simulation comparison",
+        "optional upstream MQT QMAP passthrough boundary"
+      ],
+      "studio_ready": "partial",
+      "limitations": [
+        "not full QMAP replacement",
+        "no optimal mapping claim",
+        "no production compiler parity",
         "no cloud/token/hardware access"
       ],
       "legal_boundary": "Project name only; no source, tutorial prose, UI, branding, or implementation copied."

@@ -140,6 +140,16 @@ try:
         QiskitToPennyLaneResult,
         UpstreamPennyLaneQiskitResult,
     )
+    from quantumbridge.schema.mqt_results import (
+        DDSIMLikeSimulationResult,
+        DecisionDiagramMetadataResult,
+        MQTCompatibilityResult,
+        MQTComparisonResult,
+        MQTCoreLikeCircuitResult,
+        QMAPLikeMappingResult,
+        RoutingResult,
+        UpstreamMQTResult,
+    )
     __all__ = [
         # P2 schema exports
         "RESULT_SCHEMA_VERSION",
@@ -252,6 +262,14 @@ try:
         "PennyLaneToQiskitResult",
         "QiskitToPennyLaneResult",
         "UpstreamPennyLaneQiskitResult",
+        "DDSIMLikeSimulationResult",
+        "DecisionDiagramMetadataResult",
+        "MQTCompatibilityResult",
+        "MQTComparisonResult",
+        "MQTCoreLikeCircuitResult",
+        "QMAPLikeMappingResult",
+        "RoutingResult",
+        "UpstreamMQTResult",
     ]
 except ImportError:
     # Fallback when ecosystem extras not installed
