@@ -1,6 +1,6 @@
 # Qiskit Aer Compatibility Strategy
 
-Status: Stage 7 planning
+Status: Stage 9F executable educational slice
 Detailed companion: `docs/compat/strategy/qiskit_aer_compatibility_strategy.md`
 
 ## Scope
@@ -21,11 +21,14 @@ Current local environment has Qiskit Aer installed and generated runtime invento
 
 ## Adapter Status
 
-Level 0/1 scaffold; result wrappers carry provenance.
+Level 0/1 scaffold plus Stage 9F native educational statevector, qasm-counts,
+and simple sampling-noise workflows. Result wrappers carry provenance.
 
 ## Native Status
 
-QuantumBridge native simulator/noise modules remain independent and limited.
+QuantumBridge native simulator/noise modules remain independent and limited to
+small educational workflows. They are not Qiskit Aer internals or production
+simulation software.
 
 ## Unsupported Status
 
@@ -33,7 +36,9 @@ Full Aer simulator method parity and noise-model behavioral equivalence are unsu
 
 ## Tests
 
-Tests cover AerSimulator availability, statevector smoke, density-matrix smoke, noise model availability, wrapper provenance, and unsupported warnings.
+Tests cover AerSimulator availability, native statevector, native qasm counts,
+native simple noise, Qiskit circuit input normalization, wrapper provenance,
+examples, no cloud/token/hardware metadata, and unsupported warnings.
 
 ## Legal / Attribution
 

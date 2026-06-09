@@ -98,6 +98,14 @@ try:
         QuantumKernelResult,
         UpstreamMLResult,
     )
+    from quantumbridge.schema.aer_results import (
+        AerResult,
+        NoisySimulationResult,
+        QasmSimulationResult,
+        SimulatorComparisonResult,
+        StatevectorSimulationResult,
+        UpstreamAerResult,
+    )
     __all__ = [
         # P2 schema exports
         "RESULT_SCHEMA_VERSION",
@@ -179,6 +187,11 @@ try:
         "QNNForwardResult",
         "QuantumKernelResult",
         "UpstreamMLResult",
+        "NoisySimulationResult",
+        "QasmSimulationResult",
+        "SimulatorComparisonResult",
+        "StatevectorSimulationResult",
+        "UpstreamAerResult",
     ]
 except ImportError:
     # Fallback when ecosystem extras not installed

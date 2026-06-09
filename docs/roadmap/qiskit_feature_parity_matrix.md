@@ -22,9 +22,8 @@ This matrix maps Qiskit-like capability areas to QuantumBridge implementation ch
 | result | Result object | MVP Result | No | No | Yes | P0 | Low | Low | Low | serialization tests | Dict output stable |
 | pulse | Pulse-related functionality | Missing | Upstream only later | No | No for now | P3 | High | Medium | Medium | none in P0 | Mark split/deprecated/version-sensitive where relevant |
 | algorithms | Algorithm interfaces | MVP VQE/QAOA | Optional later | No | Yes | P1 | High | Low | Low | VQE/QAOA tests | Native algorithms pass small cases |
-| aer/noise | Aer/noise simulation | Missing | Optional upstream | No | Later minimal native noise | P2 | High | Medium | Medium | adapter tests if installed | Keep Aer as optional dependency |
+| aer/noise | Aer/noise simulation | Stage 9F educational subset | Optional upstream | No | Yes, small-circuit statevector/qasm/simple noise | P1 | High | Medium | Medium | native simulator, noise, schema, examples, and optional upstream tests | No production Aer parity claim |
 
 P0 summary:
 
 - Circuit adapter, QASM subset, Pauli/operator basics, Statevector, DensityMatrix, Sampler, Estimator, Backend adapter, Result adapter.
-

@@ -6,7 +6,40 @@ Design source: docs/compat/strategy/qiskit_aer_compatibility_strategy.md.
 """
 
 from quantumbridge.compat.qiskit_aer.aer_adapter import ADAPTER as aer_adapter
+from quantumbridge.compat.qiskit_aer.aer_upstream_adapter import (
+    dependency_available as upstream_dependency_available,
+    get_upstream_version as upstream_get_upstream_version,
+    run_noisy_upstream_aer,
+    run_qasm_upstream_aer,
+    run_statevector_upstream_aer,
+    validate_aer_dependencies,
+    wrap_upstream_aer_result,
+)
+from quantumbridge.compat.qiskit_aer.circuit_execution_adapter import (
+    execute_basic_circuit_native,
+    normalize_circuit_to_quantumbridge_ir,
+)
+from quantumbridge.compat.qiskit_aer.examples import (
+    bell_circuit,
+    run_noisy_counts_example,
+    run_qasm_counts_example,
+    run_statevector_example,
+)
 from quantumbridge.compat.qiskit_aer.noise_adapter import ADAPTER as noise_adapter
+from quantumbridge.compat.qiskit_aer.noise_adapter import (
+    apply_measurement_bitflip_noise,
+    create_bitflip_noise_model,
+    create_depolarizing_metadata,
+    validate_noise_model,
+)
+from quantumbridge.compat.qiskit_aer.qasm_simulator_adapter import (
+    run_noisy_qasm_simulator_native,
+    run_qasm_simulator_native,
+)
+from quantumbridge.compat.qiskit_aer.result_adapter import wrap_aer_result
+from quantumbridge.compat.qiskit_aer.statevector_simulator_adapter import (
+    run_statevector_simulator_native,
+)
 from quantumbridge.compat.qiskit_common import QiskitAdapterFacade
 
 ADAPTER = QiskitAdapterFacade(
@@ -38,8 +71,13 @@ validate_environment = ADAPTER.validate_environment
 __all__ = [
     "ADAPTER",
     "aer_adapter",
+    "apply_measurement_bitflip_noise",
+    "bell_circuit",
     "capability_level",
+    "create_bitflip_noise_model",
+    "create_depolarizing_metadata",
     "dependency_available",
+    "execute_basic_circuit_native",
     "get_dependency_report",
     "get_provenance",
     "get_public_object",
@@ -48,12 +86,28 @@ __all__ = [
     "list_public_api_inventory",
     "native_implementation",
     "noise_adapter",
+    "normalize_circuit_to_quantumbridge_ir",
     "passthrough_call",
     "passthrough_class",
     "production_ready",
+    "run_noisy_qasm_simulator_native",
+    "run_noisy_counts_example",
+    "run_noisy_upstream_aer",
+    "run_qasm_counts_example",
+    "run_qasm_simulator_native",
+    "run_qasm_upstream_aer",
+    "run_statevector_simulator_native",
+    "run_statevector_example",
+    "run_statevector_upstream_aer",
     "to_quantumbridge_schema",
     "unsupported",
+    "upstream_dependency_available",
+    "upstream_get_upstream_version",
     "upstream_required",
+    "validate_aer_dependencies",
     "validate_environment",
+    "validate_noise_model",
+    "wrap_aer_result",
     "wrap_result",
+    "wrap_upstream_aer_result",
 ]

@@ -45,7 +45,7 @@ Stage 7 planning defines function coverage by level:
 Current Qiskit ecosystem status:
 
 - Qiskit core: Level 0 inventory, Level 1 passthrough contract, and a reviewed Level 2 subset for basic circuits/results.
-- Qiskit Aer: Level 0 inventory, Level 1 passthrough contract, and Level 2 result schema wrapper when installed.
+- Qiskit Aer: Level 0/1 inventory and passthrough, Level 2 result wrapper, and a Stage 9F Level 3 educational native simulator subset for small statevector, qasm-style counts, and simple sampling-noise examples. Missing optional packages report unsupported metadata.
 - Qiskit Nature: Level 0 inventory, Level 1 passthrough contract, Level 2 result schema wrappers, and a Stage 9D Level 3 educational native executable H2 / LiH chemistry subset. Missing optional packages report unsupported metadata.
 - Qiskit Algorithms: Level 0/1 inventory and passthrough, Level 2 result wrappers, and a Stage 9C Level 3 educational native executable subset for VQE, QAOA-compatible MaxCut, and Grover examples. Missing optional packages report unsupported metadata.
 - Qiskit Finance: Level 0/1 inventory and passthrough, Level 2 result wrapper, and a Stage 9A Level 3 educational portfolio-optimization native subset for deterministic four-asset mean-variance examples. Missing optional packages report unsupported metadata.
@@ -75,7 +75,7 @@ Stage 7.2 expands installed-environment verification and adapter schemas. It rem
 | Qiskit Dynamics | Level 0/1 plus DynamicsResult Level 2 wrapper | `.[qiskit-dynamics]` | Verified: 0.6.0; advisory |
 | Qiskit Experiments | Level 0/1 plus ExperimentsResult Level 2 wrapper | `.[qiskit-experiments]` | Verified: 0.14.1; advisory and offline-only |
 | Qiskit Metal | Level 0 inventory plus MetalDesignResult schema | `.[qiskit-metal]` | Install failed on Python 3.12; advisory/unsupported |
-| Qiskit Aer | Level 0/1 plus AerResult Level 2 wrapper | `.[qiskit-aer]` | Verified: 0.17.2; no Aer parity claim |
+| Qiskit Aer | Level 0/1 plus AerResult Level 2 wrapper and Stage 9F educational native statevector / qasm counts / simple noise subset | `.[qiskit-aer]` | Verified: 0.17.2; native subset does not require upstream; no Aer parity claim |
 | PennyLane full | Level 0/1 plus PennyLaneResult Level 2 wrapper | `.[pennylane-full]` | Verified: 0.42.3; no complete replacement claim |
 
 Level 2 here means a QuantumBridge result-schema wrapper. It does not mean complete input conversion, behavioral parity, performance parity, or production equivalence.
@@ -124,6 +124,18 @@ Stage 9E adds Qiskit Machine Learning executable educational adapters:
 - `quantumbridge.schema.ml_results` result envelopes for native kernel, classifier, QNN, upstream passthrough, and comparison results.
 
 This is an educational QML slice, not production machine learning, not a complete Qiskit Machine Learning replacement, not suitable for medical, financial, employment, identity, safety, or other high-risk automated decisions, and not an IBM or Qiskit endorsement.
+
+Stage 9F adds Qiskit Aer-style executable educational simulator adapters:
+
+- `quantumbridge.compat.qiskit_aer.run_statevector_simulator_native()`
+- `quantumbridge.compat.qiskit_aer.run_qasm_simulator_native()`
+- `quantumbridge.compat.qiskit_aer.run_noisy_qasm_simulator_native()`
+- `quantumbridge.compat.qiskit_aer.execute_basic_circuit_native()`
+- deterministic small-circuit statevectors, seeded qasm-style counts, and simple educational measurement bit-flip noise;
+- optional local upstream passthrough paths when `qiskit-aer` is installed;
+- `quantumbridge.schema.aer_results` result envelopes for native, noisy, upstream, and comparison results.
+
+This is an educational simulator slice, not production simulator software, not a complete Qiskit Aer replacement, not Qiskit Aer noise-model parity, and not an IBM or Qiskit endorsement.
 
 ## IBM Quantum Ecosystem Clean-Room Parity
 
@@ -222,7 +234,7 @@ Do not commit third-party package source trees, local `site-packages`, downloade
 Stage 7 uses separate optional dependency lanes. Do not assume all optional dependencies can coexist in one environment.
 
 - `qiskit-core`: Qiskit core public API inventory and selected P1 adapters.
-- `qiskit-aer`: optional Aer simulator/noise passthrough scaffold.
+- `qiskit-aer`: optional Aer simulator/noise passthrough plus Stage 9F educational native statevector, qasm-counts, and simple sampling-noise slice.
 - `qiskit-finance`: optional finance application/data-provider/circuit inventory.
 - `qiskit-optimization`: optional optimization inventory and passthrough scaffold.
 - `qiskit-machine-learning`: optional QNN/kernel/classifier/Torch connector inventory.

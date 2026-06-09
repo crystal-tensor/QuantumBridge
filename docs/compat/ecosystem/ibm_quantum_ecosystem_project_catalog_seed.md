@@ -1,6 +1,6 @@
 # QuantumBridge Ecosystem Project Catalog Seed
 
-Status: Stage 9D manual seed
+Status: Stage 9F manual seed
 Source mode: manually curated clean-room compatibility target list.
 
 This seed uses project names only for compatibility identification. It does not
@@ -11,7 +11,7 @@ or branding.
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `torchquantum` | TorchQuantum | QML | `quantumbridge.compat.torchquantum` | planned | Inventory and QML bridge review. | P2 | Name only; no source copy. |
 | `qiskit-machine-learning` | Qiskit Machine Learning | QML | `quantumbridge.compat.qiskit_machine_learning` | executable subset | Expand beyond Stage 9E educational quantum kernel / kernel classifier / QNN classifier workflows. | P1 | Optional dependency; no production ML or full replacement claim. |
-| `qiskit-aer` | Qiskit Aer | simulator | `quantumbridge.compat.qiskit_aer` | passthrough/schema | Stage 9F executable simulator/noise slice. | P1 | Optional dependency; no Aer replacement claim. |
+| `qiskit-aer` | Qiskit Aer | simulator | `quantumbridge.compat.qiskit_aer` | executable subset | Expand beyond Stage 9F educational statevector / qasm counts / simple noise workflows. | P1 | Optional dependency; no Aer replacement claim. |
 | `mitiq` | Mitiq | error mitigation | `quantumbridge.compat.mitiq` | planned | Stage 9H error mitigation adapter. | P1 | Name only; no source copy. |
 | `qiskit-nature` | Qiskit Nature | chemistry | `quantumbridge.compat.qiskit_nature` | executable subset | Expand beyond educational H2 / LiH exact-diagonalization workflows. | P1 | Optional dependency; no production chemistry or materials claim. |
 | `qiskit-finance` | Qiskit Finance | finance | `quantumbridge.compat.qiskit_finance` | executable subset | Expand beyond portfolio example. | P1 | Not investment advice; no finance parity claim. |
@@ -61,3 +61,19 @@ educational QML slice:
 
 The slice is not production ML, not a high-risk decision system, and not a full
 Qiskit Machine Learning replacement.
+
+## Stage 9F Executable Proof
+
+The `qiskit-aer` catalog row now has a QuantumBridge-native Level 3
+educational simulator slice:
+
+- deterministic small-circuit statevector execution;
+- seeded qasm-style shot sampling;
+- simple educational measurement bit-flip noise;
+- QuantumBridge Circuit, QuantumBridge IR, IR dictionary, and basic Qiskit
+  QuantumCircuit input normalization;
+- serializable Aer result envelopes with warnings and provenance;
+- optional local upstream `qiskit-aer` passthrough when installed.
+
+The slice is not production simulator software, not Qiskit Aer noise-model
+parity, and not a full Qiskit Aer replacement.

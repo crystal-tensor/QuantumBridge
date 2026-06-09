@@ -32,7 +32,7 @@ This ledger records implementation mode and upstream source status for the curre
 | `quantumbridge/compiler/*` | P1 compiler PassManager and basic passes | Native Implementation | No | No | N/A | N/A | No | No | Native PassResult, analysis passes, cancellation pass, merge placeholder | N/A | Yes | Yes | Pending | Medium |
 | `quantumbridge/ecosystem/*` | Optional ecosystem dependency/version/inventory/provenance registry | Native Implementation | Public package names only | Public package names only | N/A | N/A | No | No | Independently implemented registry for optional dependency introspection and result provenance | N/A | Yes | Yes | Pending | Medium |
 | `quantumbridge/compat/qiskit_core/*` | Qiskit core inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Apache-2.0 dependency | No | No | Lazy imports public Qiskit modules when installed and wraps metadata | N/A | Yes | Yes | Pending | Medium |
-| `quantumbridge/compat/qiskit_aer/*` | Qiskit Aer inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Apache-2.0 dependency | No | No | Optional Aer and noise-model dependency lane | N/A | Yes | Yes | Pending | Medium |
+| `quantumbridge/compat/qiskit_aer/*` | Qiskit Aer inventory, passthrough scaffold, and educational native simulator/noise subset | Adapter Integration / Native Subset | API names only | No | N/A | Apache-2.0 dependency | No | No | Optional Aer objects plus independently implemented small statevector, qasm-counts, and simple sampling-noise workflows; no Aer parity or production simulator claim | N/A | Yes | Yes | Stage 9F partial executable | Medium |
 | `quantumbridge/compat/qiskit_runtime/*` | Qiskit IBM Runtime inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Upstream dependency | No | No | Optional runtime/backend/job dependency lane; no credentials or service emulation | N/A | Yes | Inventory smoke | Pending | High |
 | `quantumbridge/compat/qiskit_finance/*` | Qiskit Finance inventory, passthrough scaffold, FinanceResult wrapper, and educational native portfolio subset | Adapter Integration / Native Subset | API names only | No | N/A | Upstream dependency | No | No | Optional finance objects plus independently implemented deterministic mean-variance exact enumeration; no production finance claims | N/A | Yes | Yes | Pending | High |
 | `quantumbridge/compat/qiskit_optimization/*` | Qiskit Optimization inventory, passthrough scaffold, and educational native QuadraticProgram subset | Adapter Integration / Native Subset | API names only | No | N/A | Upstream dependency | No | No | Optional optimization objects plus independently implemented small binary QuadraticProgram exact enumeration; no parity or production optimizer claim | N/A | Yes | Yes | Pending | Medium |
@@ -123,7 +123,14 @@ The following implementation files mention upstream package names for optional d
 - `quantumbridge/compat/qiskit_core/transpiler_adapter.py`
 - `quantumbridge/compat/qiskit_aer/__init__.py`
 - `quantumbridge/compat/qiskit_aer/aer_adapter.py`
+- `quantumbridge/compat/qiskit_aer/aer_upstream_adapter.py`
+- `quantumbridge/compat/qiskit_aer/circuit_execution_adapter.py`
+- `quantumbridge/compat/qiskit_aer/examples.py`
 - `quantumbridge/compat/qiskit_aer/noise_adapter.py`
+- `quantumbridge/compat/qiskit_aer/qasm_simulator_adapter.py`
+- `quantumbridge/compat/qiskit_aer/simulator_native.py`
+- `quantumbridge/compat/qiskit_aer/statevector_simulator_adapter.py`
+- `quantumbridge/compat/qiskit_aer/warnings.py`
 - `quantumbridge/compat/qiskit_runtime/__init__.py`
 - `quantumbridge/compat/qiskit_runtime/backend_adapter.py`
 - `quantumbridge/compat/qiskit_runtime/job_adapter.py`
@@ -222,6 +229,7 @@ The following files are independently implemented adapter/schema modules. They r
 - `quantumbridge/schema/optimization_results.py`
 - `quantumbridge/compat/qiskit_experiments/result_adapter.py`
 - `quantumbridge/compat/qiskit_aer/result_adapter.py`
+- `quantumbridge/schema/aer_results.py`
 - `quantumbridge/compat/qiskit_runtime/result_adapter.py`
 - `quantumbridge/compat/qiskit_addons/result_adapter.py`
 - `quantumbridge/compat/pennylane_full/result_adapter.py`
