@@ -63,3 +63,11 @@ bridge and Bell-state equivalence proof. Full plugin replacement, full Qiskit
 or PennyLane parity, advanced device/transform/gradient semantics, cloud
 execution, token handling, hardware access, and production parity remain out of
 scope.
+
+## Stage 9I Application
+
+Qiskit Experiments and Qiskit Dynamics are promoted only for deterministic
+educational offline workflows: Rabi, T1, Ramsey, Z precession, Rabi drive, and
+dephasing metadata. Hardware calibration, production experiment analysis,
+production dynamics simulation, full upstream replacement, cloud execution,
+token handling, and hardware access remain out of scope.

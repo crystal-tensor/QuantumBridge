@@ -79,7 +79,7 @@ contract lives in `docs/compat/ecosystem/ibm_quantum_ecosystem_project_catalog_s
 | Stage 9F | Qiskit Aer | Statevector, qasm-style, and noise workflows. |
 | Stage 9G | Mitiq | Native educational ZNE and readout-mitigation workflows plus optional upstream passthrough metadata. |
 | Stage 9H | PennyLane-Qiskit | Native educational bidirectional bridge and Bell equivalence proof. |
-| Stage 9I | Qiskit Experiments / Dynamics | Offline advisory executable workflows. |
+| Stage 9I | Qiskit Experiments / Dynamics | Implemented educational offline executable workflows for Rabi, T1, Ramsey, Z precession, Rabi drive, and dephasing metadata; no hardware calibration or production dynamics claim. |
 | Stage 9J | TorchQuantum / QML | Exploratory QML bridge. |
 | Stage 9K | MQT Core / DDSIM / QMAP / QECC | Compatibility slices. |
 | Stage 9L | Azure Quantum | Advisory no-token/cloud compatibility slice. |

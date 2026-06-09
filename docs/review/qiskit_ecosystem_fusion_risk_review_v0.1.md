@@ -150,3 +150,19 @@ Mitigation:
 - tests verify no cloud, token, or hardware access;
 - no Qiskit, PennyLane, PennyLane-Qiskit, IBM, or Xanadu source or tutorial
   prose is copied.
+
+## Stage 9I Risk Disposition
+
+The main Stage 9I risk is overclaiming hardware calibration, production
+experiment analysis, or production dynamics simulation from educational
+offline workflows. Mitigation:
+
+- warnings state that Rabi, T1, and Ramsey data are deterministic synthetic
+  workflows;
+- schemas reject `production_ready=True` and `hardware_calibration=True`;
+- single-qubit dynamics are explicitly limited to educational Z precession,
+  Rabi drive, and dephasing metadata;
+- optional upstream handling is dependency metadata/passthrough only;
+- tests verify no cloud, token, or hardware access;
+- no Qiskit Experiments, Qiskit Dynamics, IBM, or Qiskit source or tutorial
+  prose is copied.

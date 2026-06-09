@@ -75,8 +75,8 @@ Stage 7.2 expands installed-environment verification and adapter schemas. It rem
 | Qiskit Algorithms | Level 0/1 plus AlgorithmsResult Level 2 wrapper and Stage 9C educational native VQE/QAOA/Grover subset | `.[qiskit-algorithms]` | Verified: 0.4.0; native subset does not require upstream |
 | Qiskit Machine Learning | Level 0/1 plus MLResult Level 2 wrapper and Stage 9E educational native quantum kernel / kernel classifier / QNN classifier subset | `.[qiskit-machine-learning]` | Verified: 0.9.0; native subset does not require upstream; not production ML |
 | Qiskit Optimization | Level 0/1 plus OptimizationResult Level 2 wrapper and Stage 9B educational native QuadraticProgram subset | `.[qiskit-optimization]` | Verified: 0.7.0; native subset does not require upstream |
-| Qiskit Dynamics | Level 0/1 plus DynamicsResult Level 2 wrapper | `.[qiskit-dynamics]` | Verified: 0.6.0; advisory |
-| Qiskit Experiments | Level 0/1 plus ExperimentsResult Level 2 wrapper | `.[qiskit-experiments]` | Verified: 0.14.1; advisory and offline-only |
+| Qiskit Dynamics | Level 3 educational offline one-qubit dynamics plus optional upstream boundary | `.[qiskit-dynamics]` | Z precession, Rabi drive, dephasing metadata; not production dynamics |
+| Qiskit Experiments | Level 3 educational offline experiments plus optional upstream boundary | `.[qiskit-experiments]` | Rabi, T1, Ramsey synthetic workflows; not hardware calibration |
 | Qiskit Metal | Level 0 inventory plus MetalDesignResult schema | `.[qiskit-metal]` | Install failed on Python 3.12; advisory/unsupported |
 | Qiskit Aer | Level 0/1 plus AerResult Level 2 wrapper and Stage 9F educational native statevector / qasm counts / simple noise subset | `.[qiskit-aer]` | Verified: 0.17.2; native subset does not require upstream; no Aer parity claim |
 | Mitiq / error mitigation | Stage 9G educational native ZNE and readout mitigation plus optional upstream Mitiq passthrough metadata | install upstream `mitiq` separately if needed | Native subset does not require upstream; not production error mitigation; no hardware calibration parity |
@@ -202,6 +202,18 @@ python -m pip install -c requirements/constraints-qiskit-metal.txt -e '.[qiskit-
 ```
 
 Use `python scripts/verify_ecosystem_installed_envs.py` to create isolated temporary verification environments. Do not install every optional extra together. Qiskit Runtime verification is offline-only: QuantumBridge does not request tokens or contact IBM Cloud. Finance, chemistry, ML, Experiments, Dynamics, and Metal coverage is experimental and not production-grade. Metal coverage does not imply chip fabrication readiness or external electromagnetic solver validation.
+
+### Qiskit Experiments / Dynamics Offline Slices
+
+Stage 9I adds executable educational offline workflows for:
+
+- Rabi, T1, and Ramsey synthetic experiments with deterministic fitting metadata.
+- Single-qubit Z precession, Rabi drive dynamics, and dephasing metadata simulation.
+- Optional upstream `qiskit-experiments` and `qiskit-dynamics` passthrough wrappers when those packages are installed.
+
+These paths do not access IBM Runtime, cloud services, tokens, or real hardware.
+They are not hardware calibration, production experiment analysis, production
+dynamics software, or full replacements for upstream projects.
 
 ## P1 Controlled Expansion
 

@@ -201,3 +201,11 @@ execution path.
 This bridge is intentionally bounded: it does not copy Qiskit, PennyLane, or
 PennyLane-Qiskit source; it does not claim full framework or plugin parity; and
 it does not access cloud services, tokens, or hardware.
+
+## 13. Stage 9I Experiments / Dynamics Offline Slice
+
+Stage 9I adds QuantumBridge-owned educational offline Rabi, T1, Ramsey, Z
+precession, Rabi drive, and dephasing metadata workflows. The slice feeds
+Result schemas for future Studio visualization, but it does not implement UI,
+hardware calibration, IBM Runtime access, production experiment analysis, or
+production dynamics simulation.

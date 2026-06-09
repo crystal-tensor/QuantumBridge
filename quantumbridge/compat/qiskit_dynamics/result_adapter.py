@@ -2,18 +2,6 @@
 # No source code from Qiskit or PennyLane was copied.
 """Qiskit Dynamics result schema adapter."""
 
-import warnings
-
-warnings.warn(
-    "This adapter is a SCAFFOLD adapter. "
-    "Full implementation is not yet available. "
-    "This adapter only provides the Result schema wrapper. "
-    "Level 0: inventory only; Level 1: passthrough; Level 2: schema wrapper. "
-    "Not production control-system.",
-    UserWarning,
-    stacklevel=2
-)
-
 try:
     from quantumbridge.compat.qiskit_dynamics.dependency import get_version
     upstream_version = get_version()
@@ -23,22 +11,20 @@ except ImportError:
 
 def wrap_dynamics_result(obj, metadata=None):
     """Wrap a Qiskit Dynamics result in QuantumBridge DynamicsResult schema."""
-    from quantumbridge.schema import DynamicsResult
-    return DynamicsResult(
-        ecosystem="qiskit",
+    from quantumbridge.schema.dynamics_results import UpstreamDynamicsResult
+    from quantumbridge.compat.qiskit_dynamics.warnings import upstream_provenance, upstream_warnings
+    return UpstreamDynamicsResult(
+        workflow="qiskit_dynamics_result_wrapper",
+        mode="upstream_passthrough",
         upstream_package="qiskit-dynamics",
         upstream_version=upstream_version,
         capability_level=2,
-        mode="scaffold",
+        native_implementation=False,
+        production_ready=False,
+        hardware_calibration=False,
         raw_type="dynamics",
-        data=obj,
+        data=repr(obj),
         metadata=metadata or {},
-        provenance={
-            "upstream_package": "qiskit-dynamics",
-            "adapter": "result_adapter",
-            "capability_level": 2,
-        },
-        warnings=[
-            "This is a scaffold adapter. Advisory: not production control-system."
-        ]
+        provenance=upstream_provenance("qiskit_dynamics_result_wrapper", upstream_version),
+        warnings=upstream_warnings("Wrapped result is not production dynamics evidence."),
     )

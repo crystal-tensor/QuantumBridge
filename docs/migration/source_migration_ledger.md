@@ -45,6 +45,8 @@ This ledger records implementation mode and upstream source status for the curre
 | `quantumbridge/ecosystem/catalog.py` | Clean-room ecosystem project catalog schema | Native Implementation | Public project names only | Public project names only | N/A | N/A | No | No | Manual catalog schema for compatibility targets; no website scraping or copied project-card text | N/A | Yes | Yes | Pending | Medium |
 | `quantumbridge/compat/qiskit_machine_learning/*` | Qiskit Machine Learning inventory, passthrough scaffold, and educational native QML subset | Adapter Integration / Native Subset | API names only | No | N/A | Upstream dependency | No | No | Optional ML objects plus independently implemented toy quantum kernel, kernel classifier, QNN forward, and QNN classifier; no production ML or high-risk decision claims | N/A | Yes | Yes | Stage 9E partial executable | High |
 | `quantumbridge/compat/qiskit_experiments/*` | Qiskit Experiments inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Upstream dependency | No | No | Optional experiments objects; no lab workflow guarantees | N/A | Yes | Inventory smoke | Pending | High |
+| `quantumbridge/compat/qiskit_experiments/*_native.py` | Stage 9I educational offline Rabi/T1/Ramsey workflows | Clean-room implementation | Public concept names only | No | N/A | QuantumBridge native | No | No | Synthetic data and educational fitting only; no hardware calibration | N/A | Yes | Native tests and examples | Complete | Medium |
+| `quantumbridge/compat/qiskit_dynamics/*_native.py` | Stage 9I educational offline one-qubit dynamics workflows | Clean-room implementation | Public concept names only | No | N/A | QuantumBridge native | No | No | Z precession, Rabi drive, dephasing metadata only; no production dynamics | N/A | Yes | Native tests and examples | Complete | Medium |
 | `quantumbridge/compat/qiskit_addons/*` | Qiskit Addons inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Upstream dependency | No | No | Optional addons inventory; no source migration | N/A | Yes | Inventory smoke | Pending | High |
 | `quantumbridge/compat/pennylane_full/*` | PennyLane full ecosystem inventory and passthrough scaffold | Adapter Integration | No | API names only | N/A | Apache-2.0 dependency | No | No | Optional PennyLane modules; no full plugin parity claim | N/A | Yes | Yes | Pending | High |
 | `scripts/inventory_*_api.py` | Runtime public-name inventory generation | Native Implementation | Public package names only | Public package names only | N/A | N/A | No | No | Generates QuantumBridge JSON/Markdown matrices from runtime introspection | N/A | Yes | Yes | Pending | Medium |
@@ -491,3 +493,30 @@ projects while stating that no upstream source was copied:
 - `examples/pennylane_qiskit_bridge_equivalence_quantumbridge.py`
 
 Stage 9H source port count remains zero.
+
+## Stage 9I Source Inventory
+
+The following Stage 9I files are clean-room QuantumBridge implementations or
+optional dependency boundaries; no upstream source, prose, wheels, dist-info,
+egg-info, site-packages trees, or virtual environments were copied:
+
+- `quantumbridge/compat/qiskit_experiments/dependency.py`
+- `quantumbridge/compat/qiskit_experiments/warnings.py`
+- `quantumbridge/compat/qiskit_experiments/calibration_fit_native.py`
+- `quantumbridge/compat/qiskit_experiments/experiment_data_native.py`
+- `quantumbridge/compat/qiskit_experiments/rabi_experiment_native.py`
+- `quantumbridge/compat/qiskit_experiments/t1_experiment_native.py`
+- `quantumbridge/compat/qiskit_experiments/ramsey_experiment_native.py`
+- `quantumbridge/compat/qiskit_experiments/experiments_upstream_adapter.py`
+- `quantumbridge/compat/qiskit_experiments/examples.py`
+- `quantumbridge/compat/qiskit_dynamics/dependency.py`
+- `quantumbridge/compat/qiskit_dynamics/warnings.py`
+- `quantumbridge/compat/qiskit_dynamics/hamiltonian_model_native.py`
+- `quantumbridge/compat/qiskit_dynamics/time_evolution_native.py`
+- `quantumbridge/compat/qiskit_dynamics/single_qubit_dynamics_native.py`
+- `quantumbridge/compat/qiskit_dynamics/dynamics_upstream_adapter.py`
+- `quantumbridge/compat/qiskit_dynamics/examples.py`
+- `quantumbridge/schema/experiments_results.py`
+- `quantumbridge/schema/dynamics_results.py`
+
+Stage 9I source port count remains zero.

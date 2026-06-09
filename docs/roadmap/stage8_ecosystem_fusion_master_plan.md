@@ -282,3 +282,23 @@ Stage 9H does not claim complete PennyLane-Qiskit plugin replacement, complete
 Qiskit parity, complete PennyLane parity, production parity, advanced
 device/transform/gradient support, cloud access, token access, hardware
 access, release readiness, tags, or UI implementation.
+
+## 6.8 Stage 9I Qiskit Experiments / Dynamics Snapshot
+
+Stage 9I promotes Qiskit Experiments and Qiskit Dynamics lanes from
+metadata/schema coverage to bounded executable educational offline workflows:
+
+- native educational Rabi synthetic experiment;
+- native educational T1 synthetic experiment;
+- native educational Ramsey synthetic experiment;
+- native educational Z precession;
+- native educational Rabi drive dynamics;
+- native educational dephasing metadata simulation;
+- optional upstream `qiskit-experiments` and `qiskit-dynamics` passthrough
+  wrappers;
+- serializable experiment and dynamics result schemas and executable examples.
+
+Stage 9I does not claim hardware calibration, production experiment analysis,
+production dynamics simulation, complete upstream replacement, IBM/Qiskit
+endorsement, cloud access, token access, hardware access, release readiness,
+tags, or UI implementation.

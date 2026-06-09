@@ -475,6 +475,10 @@ planning-only for Studio; no frontend implementation is included in Stage 9E.
 
 **Purpose**: Simulate quantum dynamics.
 
+Stage 9I supplies future Studio-ready API/schema data for educational offline
+single-qubit Z precession, Rabi drive, and dephasing metadata. This is not UI
+implementation and not production dynamics software.
+
 **Features**:
 1. **Hamiltonian Model**:
    - Time-dependent Hamiltonian
@@ -499,6 +503,10 @@ planning-only for Studio; no frontend implementation is included in Stage 9E.
 ### 3.13 Experiments Lab
 
 **Purpose**: Design and analyze quantum experiments.
+
+Stage 9I supplies future Studio-ready API/schema data for educational offline
+Rabi, T1, and Ramsey synthetic workflows. This is not UI implementation and not
+hardware calibration.
 
 **Features**:
 1. **Tomography**:

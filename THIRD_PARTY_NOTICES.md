@@ -147,6 +147,15 @@ source files, tests, documentation prose, comments, error strings, wheels,
 dist-info, egg-info, site-packages trees, virtual environments, or vendored
 package artifacts were copied into QuantumBridge.
 
+## Stage 9I Qiskit Experiments and Dynamics offline slices
+
+Stage 9I adds clean-room Qiskit Experiments and Qiskit Dynamics offline
+educational executable slices. They use public package names and optional
+dependency detection only. They do not copy IBM, Qiskit, Qiskit Experiments,
+Qiskit Dynamics, tutorial prose, UI, branding, or source code, and they do not
+claim hardware calibration, production dynamics, full replacement, or production
+parity.
+
 ## Stage 9B Qiskit Optimization native subset
 
 Stage 9B adds an independently implemented educational native binary

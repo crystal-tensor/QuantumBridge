@@ -1,5 +1,5 @@
 {
-  "status": "Stage 9H clean-room catalog seed",
+  "status": "Stage 9I clean-room catalog seed",
   "source_mode": "manually curated compatibility target names only",
   "projects": [
     {
@@ -64,6 +64,50 @@
         "not full Qiskit parity",
         "not full PennyLane parity",
         "no advanced device, transform, or gradient parity",
+        "no cloud/token/hardware access"
+      ],
+      "legal_boundary": "Project name only; no source, tutorial prose, UI, branding, or implementation copied."
+    },
+    {
+      "project_id": "qiskit-experiments",
+      "upstream_name": "Qiskit Experiments",
+      "category": "Experiments and calibration",
+      "adapter": "quantumbridge.compat.qiskit_experiments",
+      "current_status": "executable_subset",
+      "executable_slice_stage": "Stage 9I",
+      "executable_workflows": [
+        "native educational Rabi experiment",
+        "native educational T1 experiment",
+        "native educational Ramsey experiment",
+        "optional upstream qiskit-experiments passthrough"
+      ],
+      "studio_ready": "partial",
+      "limitations": [
+        "not full Qiskit Experiments replacement",
+        "not hardware calibration",
+        "not production experiment analysis",
+        "no cloud/token/hardware access"
+      ],
+      "legal_boundary": "Project name only; no source, tutorial prose, UI, branding, or implementation copied."
+    },
+    {
+      "project_id": "qiskit-dynamics",
+      "upstream_name": "Qiskit Dynamics",
+      "category": "Dynamics",
+      "adapter": "quantumbridge.compat.qiskit_dynamics",
+      "current_status": "executable_subset",
+      "executable_slice_stage": "Stage 9I",
+      "executable_workflows": [
+        "native educational Z precession",
+        "native educational Rabi drive dynamics",
+        "native educational dephasing metadata simulation",
+        "optional upstream qiskit-dynamics passthrough"
+      ],
+      "studio_ready": "partial",
+      "limitations": [
+        "not full Qiskit Dynamics replacement",
+        "not production dynamics",
+        "no full Lindblad solver",
         "no cloud/token/hardware access"
       ],
       "legal_boundary": "Project name only; no source, tutorial prose, UI, branding, or implementation copied."
