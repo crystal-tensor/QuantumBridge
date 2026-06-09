@@ -216,3 +216,21 @@ bounded executable workflow:
 Stage 9B does not claim complete Qiskit Optimization parity, production
 optimization, IBM/Qiskit endorsement, cloud access, token access, hardware
 access, release readiness, tags, or UI implementation.
+
+## 6.5 Stage 9D Implementation Snapshot
+
+Stage 9D promotes one Qiskit Nature lane from inventory/schema coverage to a
+bounded executable chemistry workflow:
+
+- native educational H2 and LiH molecular problem metadata;
+- deterministic small qubit Hamiltonians;
+- local exact diagonalization;
+- serializable chemistry result schemas;
+- optional local upstream Qiskit Nature passthrough when installed;
+- executable H2 and LiH examples;
+- warnings, provenance, unsupported metadata, and no-cloud/no-token tests.
+
+Stage 9D does not claim complete Qiskit Nature parity, production quantum
+chemistry, molecular design support, materials band-gap support, IBM/Qiskit
+endorsement, cloud access, token access, hardware access, release readiness,
+tags, or UI implementation.

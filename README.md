@@ -1,6 +1,8 @@
 # QuantumBridge SDK
 
-QuantumBridge is an experimental quantum SDK. The current repository keeps the P1 release-candidate baseline intact while Stage 8 hardens optional ecosystem inventory, adapter contracts, and schema wrappers.
+Clean-room ecosystem parity for experimental quantum workflows.
+
+QuantumBridge is an experimental quantum SDK. The current repository keeps the P1 release-candidate baseline intact while Stage 9 promotes selected ecosystem lanes from inventory/schema coverage to bounded executable slices.
 
 QuantumBridge is an independent project. It is not an official Qiskit, PennyLane, IBM, or Xanadu project, and it does not claim full feature parity or full replacement coverage.
 
@@ -44,7 +46,7 @@ Current Qiskit ecosystem status:
 
 - Qiskit core: Level 0 inventory, Level 1 passthrough contract, and a reviewed Level 2 subset for basic circuits/results.
 - Qiskit Aer: Level 0 inventory, Level 1 passthrough contract, and Level 2 result schema wrapper when installed.
-- Qiskit Nature: Level 0 inventory, Level 1 passthrough contract, and Level 2 result schema wrappers when installed.
+- Qiskit Nature: Level 0 inventory, Level 1 passthrough contract, Level 2 result schema wrappers, and a Stage 9D Level 3 educational native executable H2 / LiH chemistry subset. Missing optional packages report unsupported metadata.
 - Qiskit Algorithms: Level 0/1 inventory and passthrough, Level 2 result wrappers, and a Stage 9C Level 3 educational native executable subset for VQE, QAOA-compatible MaxCut, and Grover examples. Missing optional packages report unsupported metadata.
 - Qiskit Finance: Level 0/1 inventory and passthrough, Level 2 result wrapper, and a Stage 9A Level 3 educational portfolio-optimization native subset for deterministic four-asset mean-variance examples. Missing optional packages report unsupported metadata.
 - Qiskit Optimization: Level 0/1 inventory and passthrough, Level 2 result wrappers, and a Stage 9B Level 3 educational native `QuadraticProgram` subset for small binary optimization examples. Missing optional packages report unsupported metadata.
@@ -65,7 +67,7 @@ Stage 7.2 expands installed-environment verification and adapter schemas. It rem
 
 | Ecosystem | Current coverage | Install extra | Status |
 | --- | --- | --- | --- |
-| Qiskit Nature | Level 0/1 plus ChemistryResult Level 2 wrapper | `.[qiskit-nature]` | Verified: 0.8.0 |
+| Qiskit Nature | Level 0/1 plus ChemistryResult Level 2 wrapper and Stage 9D educational native H2 / LiH exact-diagonalization subset | `.[qiskit-nature]` | Verified: 0.8.0; native subset does not require upstream |
 | Qiskit Finance | Level 0/1 plus FinanceResult Level 2 wrapper and Stage 9A educational portfolio native subset | `.[qiskit-finance]` | Verified: 0.4.1; not production finance |
 | Qiskit Algorithms | Level 0/1 plus AlgorithmsResult Level 2 wrapper and Stage 9C educational native VQE/QAOA/Grover subset | `.[qiskit-algorithms]` | Verified: 0.4.0; native subset does not require upstream |
 | Qiskit Machine Learning | Level 0/1 plus MLResult Level 2 wrapper | `.[qiskit-machine-learning]` | Verified: 0.9.0; not production ML |
@@ -99,6 +101,17 @@ Stage 9C adds Qiskit Algorithms executable adapters:
 - `quantumbridge.schema.algorithms_results` result envelopes for native, upstream, and comparison results.
 
 This is not production algorithm software, not a complete Qiskit Algorithms replacement, and not an IBM or Qiskit endorsement.
+
+Stage 9D adds Qiskit Nature executable chemistry adapters:
+
+- `quantumbridge.compat.qiskit_nature.run_h2_native()`
+- `quantumbridge.compat.qiskit_nature.run_lih_native()`
+- `quantumbridge.compat.qiskit_nature.build_h2_problem()`
+- `quantumbridge.compat.qiskit_nature.build_lih_problem()`
+- optional local upstream smoke paths through `run_h2_upstream_passthrough()` and `run_lih_upstream_passthrough()` when Qiskit Nature and its local chemistry stack are installed;
+- `quantumbridge.schema.chemistry_results` result envelopes for molecular problems, qubit Hamiltonians, exact diagonalization, H2, LiH, upstream passthrough, and comparison results.
+
+This is an educational exact-diagonalization chemistry slice, not production quantum chemistry, not a complete Qiskit Nature replacement, not a materials band-gap workflow, and not an IBM or Qiskit endorsement.
 
 ## IBM Quantum Ecosystem Clean-Room Parity
 
@@ -177,6 +190,7 @@ Optional adapter extras:
 python -m pip install -e '.[qiskit]'
 python -m pip install -e '.[qiskit-core]'
 python -m pip install -e '.[qiskit-aer]'
+python -m pip install -e '.[qiskit-nature]'
 python -m pip install -e '.[qiskit-finance]'
 python -m pip install -e '.[qiskit-optimization]'
 python -m pip install -e '.[qiskit-machine-learning]'

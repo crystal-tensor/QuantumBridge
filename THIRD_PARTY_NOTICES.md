@@ -137,6 +137,20 @@ copied.
 The native subset is not a full Qiskit Algorithms replacement, not production
 algorithm software, and not endorsed by IBM or Qiskit maintainers.
 
+## Stage 9D Qiskit Nature native chemistry subset
+
+Stage 9D adds independently implemented educational H2 and LiH chemistry
+workflows with small QuantumBridge-owned qubit Hamiltonians and local exact
+diagonalization. Qiskit Nature, PySCF, and OpenFermion remain optional upstream
+dependencies for local passthrough or comparison paths when installed; no
+upstream source files, wheels, dist-info, egg-info, site-packages trees,
+virtual environments, documentation prose, website text, or examples were
+copied.
+
+The native subset is not a full Qiskit Nature replacement, not production
+quantum chemistry, not molecular design software, not a materials band-gap
+workflow, and not endorsed by IBM or Qiskit maintainers.
+
 ## IBM Quantum Ecosystem clean-room parity planning
 
 Stage 9C-Revision adds a QuantumBridge-owned ecosystem parity plan and catalog

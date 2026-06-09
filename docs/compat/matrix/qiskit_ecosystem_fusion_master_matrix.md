@@ -20,7 +20,7 @@
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Qiskit core | circuit / transpiler / primitives / quantum_info | Existing matrices present | Yes | Partial | Partial | Native core subset exists | dependency, version, inventory, object lookup, passthrough, wrap, schema, provenance, warnings | core + qiskit-extra | Medium | 8D |
 | Qiskit Aer | simulator / noise | Existing matrices present | Yes | Partial | Partial | No | same contract | qiskit-aer-extra | Medium | 8D |
-| Qiskit Nature | drivers / problems / mappers | Existing matrices present | Yes | Partial | Partial | No | same contract | qiskit-nature-extra, chemistry | High | 8D |
+| Qiskit Nature | drivers / problems / mappers | Existing matrices present | Yes | Partial | Partial | Stage 9D native H2/LiH chemistry subset | same contract plus executable chemistry result schema | qiskit-nature-extra, chemistry | High | 9D |
 | Qiskit Algorithms | VQE / QAOA / Grover / eigensolvers / optimizers | Existing matrices present | Yes | Partial | Partial | Stage 9C native VQE/QAOA/Grover subset | same contract plus executable algorithms result schema | qiskit-algorithms-extra, algorithms | Medium | 9C |
 | Qiskit Finance | applications / data providers / uncertainty | Existing matrices present | Yes | Partial | Partial | No | same contract | qiskit-finance-extra | High | 8D |
 | Qiskit Optimization | quadratic program / converters / optimizers | Existing matrices present | Yes | Partial | Partial | No | same contract | qiskit-optimization-extra | High | 8D |
@@ -100,3 +100,13 @@ coverage unless individually promoted by a later reviewed stage.
 This row is also the Algorithms slice for QuantumBridge's IBM Quantum Ecosystem
 clean-room parity plan. It does not copy IBM website content, Qiskit source, or
 third-party project source.
+
+## Stage 9D Update
+
+| Ecosystem | New executable subset | Native level | Upstream path | Production-ready | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Qiskit Nature | Minimal H2 and LiH molecular problems, qubit Hamiltonians, and exact diagonalization | Level 3 | Optional local `qiskit-nature` / PySCF smoke paths | No | Supports small educational workflows with chemistry result schemas, warnings, and provenance. Not full parity or production chemistry. |
+
+This row is the Qiskit Nature slice for QuantumBridge's IBM Quantum Ecosystem
+clean-room parity plan. It does not copy IBM website content, Qiskit Nature
+source, PySCF source, OpenFermion source, or third-party project source.

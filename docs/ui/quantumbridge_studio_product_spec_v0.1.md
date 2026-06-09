@@ -56,6 +56,12 @@ The experience should support:
 Studio must not use IBM branding, copy IBM page structure, copy IBM website
 text, or imply IBM endorsement.
 
+Stage 9D adds Studio-ready chemistry workflow metadata for the future catalog:
+H2 and LiH now have executable native example badges, upstream-comparison
+badges when local Qiskit Nature is installed, warning panels, provenance
+payloads, and JSON exportable result envelopes. This remains planning-only for
+Studio; no frontend implementation is included in Stage 9D.
+
 ---
 
 ## 2. Product Vision

@@ -37,6 +37,7 @@ This ledger records implementation mode and upstream source status for the curre
 | `quantumbridge/compat/qiskit_finance/*` | Qiskit Finance inventory, passthrough scaffold, FinanceResult wrapper, and educational native portfolio subset | Adapter Integration / Native Subset | API names only | No | N/A | Upstream dependency | No | No | Optional finance objects plus independently implemented deterministic mean-variance exact enumeration; no production finance claims | N/A | Yes | Yes | Pending | High |
 | `quantumbridge/compat/qiskit_optimization/*` | Qiskit Optimization inventory, passthrough scaffold, and educational native QuadraticProgram subset | Adapter Integration / Native Subset | API names only | No | N/A | Upstream dependency | No | No | Optional optimization objects plus independently implemented small binary QuadraticProgram exact enumeration; no parity or production optimizer claim | N/A | Yes | Yes | Pending | Medium |
 | `quantumbridge/compat/qiskit_algorithms/*` | Qiskit Algorithms inventory, passthrough scaffold, and educational native VQE/QAOA/Grover subset | Adapter Integration / Native Subset | API names only | No | N/A | Upstream dependency | No | No | Optional algorithms objects plus independently implemented small VQE, QAOA-compatible MaxCut, and Grover educational workflows; no parity or production algorithm claim | N/A | Yes | Yes | Pending | Medium |
+| `quantumbridge/compat/qiskit_nature/*` | Qiskit Nature inventory, passthrough scaffold, and educational native H2/LiH chemistry subset | Adapter Integration / Native Subset | API names only | No | N/A | Upstream dependency | No | No | Optional chemistry objects plus independently implemented small molecular problem metadata, qubit Hamiltonians, and exact diagonalization; no parity, production chemistry, or materials claim | N/A | Yes | Yes | Pending | High |
 | `quantumbridge/ecosystem/catalog.py` | Clean-room ecosystem project catalog schema | Native Implementation | Public project names only | Public project names only | N/A | N/A | No | No | Manual catalog schema for compatibility targets; no website scraping or copied project-card text | N/A | Yes | Yes | Pending | Medium |
 | `quantumbridge/compat/qiskit_machine_learning/*` | Qiskit Machine Learning inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Upstream dependency | No | No | Optional ML objects; no training or accuracy claims | N/A | Yes | Yes | Pending | High |
 | `quantumbridge/compat/qiskit_experiments/*` | Qiskit Experiments inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Upstream dependency | No | No | Optional experiments objects; no lab workflow guarantees | N/A | Yes | Inventory smoke | Pending | High |
@@ -333,6 +334,34 @@ capability metadata, warnings, risk labels, and provenance notes only. They do
 not contain upstream implementation source or vendored dependency artifacts.
 
 Stage 8D source port count remains zero.
+
+## Stage 9D exact path registration
+
+The following Stage 9D Qiskit Nature chemistry files mention upstream package
+names only for optional dependency discovery, provenance, warnings, schema
+metadata, or passthrough comparison labels. They are independently implemented
+and copy no upstream source, tests, documentation prose, examples, comments,
+error strings, wheels, dist-info, egg-info, site-packages trees, or virtual
+environments.
+
+- `quantumbridge/compat/qiskit_nature/chemistry_native.py`
+- `quantumbridge/compat/qiskit_nature/__init__.py`
+- `quantumbridge/compat/qiskit_nature/result_adapter.py`
+- `quantumbridge/schema/chemistry_results.py`
+- `quantumbridge/schema/__init__.py`
+- `examples/qiskit_nature_h2_quantumbridge.py`
+- `examples/qiskit_nature_lih_quantumbridge.py`
+- `tests/compat_qiskit_nature/test_h2_native_workflow.py`
+- `tests/compat_qiskit_nature/test_lih_native_workflow.py`
+- `tests/compat_qiskit_nature/test_qubit_hamiltonian_exact_solver.py`
+- `tests/compat_qiskit_nature/test_chemistry_result_schema.py`
+- `tests/compat_qiskit_nature/test_h2_upstream_passthrough.py`
+- `tests/compat_qiskit_nature/test_lih_upstream_passthrough.py`
+- `tests/compat_qiskit_nature/test_chemistry_no_cloud_no_token.py`
+- `tests/compat_qiskit_nature/test_chemistry_warnings_provenance.py`
+- `tests/compat_qiskit_nature/test_chemistry_examples.py`
+
+Stage 9D source port count remains zero.
 
 ## Stage 9C exact path registration
 

@@ -79,6 +79,16 @@ try:
         UpstreamAlgorithmResult,
         VQEResult,
     )
+    from quantumbridge.schema.chemistry_results import (
+        ChemistryComparisonResult,
+        ChemistryResult as NativeChemistrySchemaResult,
+        ExactDiagonalizationResult,
+        H2WorkflowResult,
+        LiHWorkflowResult,
+        MolecularProblemResult,
+        QubitHamiltonianResult,
+        UpstreamNatureResult,
+    )
     __all__ = [
         # P2 schema exports
         "RESULT_SCHEMA_VERSION",
@@ -138,12 +148,20 @@ try:
         "QUBOConversionResult",
         "UpstreamOptimizationResult",
         "AlgorithmComparisonResult",
+        "ChemistryComparisonResult",
         "EigensolverResult",
+        "ExactDiagonalizationResult",
         "GroverResult",
+        "H2WorkflowResult",
+        "LiHWorkflowResult",
+        "MolecularProblemResult",
         "NativeAlgorithmResult",
         "NativeAlgorithmsSchemaResult",
+        "NativeChemistrySchemaResult",
         "QAOAResult",
+        "QubitHamiltonianResult",
         "UpstreamAlgorithmResult",
+        "UpstreamNatureResult",
         "VQEResult",
     ]
 except ImportError:

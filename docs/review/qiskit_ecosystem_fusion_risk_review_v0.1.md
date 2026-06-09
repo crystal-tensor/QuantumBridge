@@ -85,3 +85,20 @@ domain overread and solver overclaim:
   Optimization replacement and not production optimization software.
 - Tests must continue to verify no cloud access, no token reads, and no real
   hardware access.
+
+## Stage 9D Risk Disposition
+
+Stage 9D introduces a bounded native chemistry subset for H2 and LiH. The
+primary risks are chemistry overclaim, upstream provenance confusion, and
+materials-science overread:
+
+- The native Hamiltonians are educational small-qubit models for exact
+  diagonalization tests and examples, not production electronic-structure
+  calculations.
+- Optional Qiskit Nature / PySCF execution is local upstream passthrough and
+  must remain labeled as upstream behavior.
+- The adapter must keep explicit warnings that this is not a full Qiskit Nature
+  replacement, not production quantum chemistry, and not a materials band-gap
+  workflow.
+- Tests must continue to verify no cloud access, no token reads, no hardware
+  access, clear provenance, and no vendored chemistry stack artifacts.

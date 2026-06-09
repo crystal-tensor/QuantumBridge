@@ -7,6 +7,20 @@ from quantumbridge.compat.qiskit_nature.driver_adapter import ADAPTER as driver_
 from quantumbridge.compat.qiskit_nature.openfermion_adapter import ADAPTER as openfermion_adapter
 from quantumbridge.compat.qiskit_nature.problem_adapter import ADAPTER as problem_adapter
 from quantumbridge.compat.qiskit_common import QiskitAdapterFacade
+from quantumbridge.compat.qiskit_nature.chemistry_native import (
+    MATERIAL_WARNING,
+    NATIVE_CHEMISTRY_WARNING,
+    QISKIT_NATURE_WARNING,
+    UPSTREAM_WARNING,
+    MinimalMolecularProblem,
+    build_h2_problem,
+    build_lih_problem,
+    chemistry_hamiltonian_to_vqe_problem_metadata,
+    run_h2_native,
+    run_h2_upstream_passthrough,
+    run_lih_native,
+    run_lih_upstream_passthrough,
+)
 
 ADAPTER = QiskitAdapterFacade(
     ecosystem="qiskit_nature",
@@ -36,6 +50,14 @@ validate_environment = ADAPTER.validate_environment
 
 __all__ = [
     "ADAPTER",
+    "MATERIAL_WARNING",
+    "NATIVE_CHEMISTRY_WARNING",
+    "QISKIT_NATURE_WARNING",
+    "UPSTREAM_WARNING",
+    "MinimalMolecularProblem",
+    "build_h2_problem",
+    "build_lih_problem",
+    "chemistry_hamiltonian_to_vqe_problem_metadata",
     "capability_level",
     "dependency_available",
     "driver_adapter",
@@ -52,6 +74,10 @@ __all__ = [
     "passthrough_class",
     "problem_adapter",
     "production_ready",
+    "run_h2_native",
+    "run_h2_upstream_passthrough",
+    "run_lih_native",
+    "run_lih_upstream_passthrough",
     "to_quantumbridge_schema",
     "unsupported",
     "upstream_required",

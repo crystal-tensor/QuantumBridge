@@ -1,6 +1,6 @@
 # QuantumBridge Ecosystem Project Catalog Seed
 
-Status: Stage 9C-Revision manual seed
+Status: Stage 9D manual seed
 Source mode: manually curated clean-room compatibility target list.
 
 This seed uses project names only for compatibility identification. It does not
@@ -13,7 +13,7 @@ or branding.
 | `qiskit-machine-learning` | Qiskit Machine Learning | QML | `quantumbridge.compat.qiskit_machine_learning` | inventory | Stage 9E executable QNN/kernel/classifier slice. | P1 | Optional dependency; no parity claim. |
 | `qiskit-aer` | Qiskit Aer | simulator | `quantumbridge.compat.qiskit_aer` | passthrough/schema | Stage 9F executable simulator/noise slice. | P1 | Optional dependency; no Aer replacement claim. |
 | `mitiq` | Mitiq | error mitigation | `quantumbridge.compat.mitiq` | planned | Stage 9H error mitigation adapter. | P1 | Name only; no source copy. |
-| `qiskit-nature` | Qiskit Nature | chemistry | `quantumbridge.compat.qiskit_nature` | inventory/schema | Stage 9D H2 / LiH executable workflows. | P1 | Optional dependency; no production chemistry claim. |
+| `qiskit-nature` | Qiskit Nature | chemistry | `quantumbridge.compat.qiskit_nature` | executable subset | Expand beyond educational H2 / LiH exact-diagonalization workflows. | P1 | Optional dependency; no production chemistry or materials claim. |
 | `qiskit-finance` | Qiskit Finance | finance | `quantumbridge.compat.qiskit_finance` | executable subset | Expand beyond portfolio example. | P1 | Not investment advice; no finance parity claim. |
 | `qiskit-optimization` | Qiskit Optimization | optimization | `quantumbridge.compat.qiskit_optimization` | executable subset | Connect QAOA-style solver helpers. | P1 | No production optimizer claim. |
 | `pennylane-qiskit` | PennyLane-Qiskit | bridge | `quantumbridge.compat.pennylane_full.qiskit_bridge` | partial bridge | Stage 9I bidirectional bridge hardening. | P1 | Compatibility only; no endorsement. |
@@ -27,3 +27,19 @@ or branding.
 | `benchpress` | Benchpress | benchmarking | `quantumbridge.compat.benchpress` | planned | Stage 9M benchmark metadata slice. | P2 | Name only; no source copy. |
 | `mqt-qmap` | MQT QMAP | compilation | `quantumbridge.compat.mqt_qmap` | planned | Stage 9K compilation compatibility review. | P2 | Name only; no source copy. |
 | `mqt-core` | MQT Core | compilation | `quantumbridge.compat.mqt_core` | planned | Stage 9K core compatibility review. | P2 | Name only; no source copy. |
+
+## Stage 9D Executable Proof
+
+The `qiskit-nature` catalog row now has a QuantumBridge-native Level 3
+educational chemistry slice:
+
+- H2 minimal molecular problem construction;
+- LiH minimal molecular problem construction;
+- deterministic qubit Hamiltonian construction;
+- exact diagonalization with NumPy;
+- serializable chemistry result envelopes with warnings and provenance;
+- optional local upstream passthrough when Qiskit Nature and a local chemistry
+  stack are installed.
+
+The slice is not production chemistry, not molecular design software, not a
+materials band-gap workflow, and not a full Qiskit Nature replacement.

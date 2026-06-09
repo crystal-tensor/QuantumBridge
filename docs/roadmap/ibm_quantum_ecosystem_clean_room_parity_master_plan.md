@@ -1,6 +1,6 @@
 # IBM Quantum Ecosystem Clean-Room Parity Master Plan
 
-Status: Stage 9C-Revision planning baseline
+Status: Stage 9D planning baseline
 Scope: QuantumBridge ecosystem parity, not IBM website replication.
 
 ## Goal
@@ -74,7 +74,7 @@ contract lives in `docs/compat/ecosystem/ibm_quantum_ecosystem_project_catalog_s
 | Stage | Slice | Required proof |
 | --- | --- | --- |
 | Stage 9C | Qiskit Algorithms | Native VQE, QAOA, Grover plus upstream passthrough. |
-| Stage 9D | Qiskit Nature | H2 / LiH executable chemistry workflows. |
+| Stage 9D | Qiskit Nature | Native educational H2 / LiH exact-diagonalization workflows plus optional local upstream passthrough. |
 | Stage 9E | Qiskit Machine Learning | QNN, kernel, classifier minimal workflows. |
 | Stage 9F | Qiskit Aer | Statevector, qasm-style, and noise workflows. |
 | Stage 9G | Qiskit Experiments / Dynamics | Offline advisory executable workflows. |
@@ -113,6 +113,23 @@ experience:
 - connect to Quafu and QOS-UQCI in future stages.
 
 No IBM branding, IBM page structure, or copied UI should be used.
+
+## Stage 9D Qiskit Nature Slice
+
+Stage 9D promotes Qiskit Nature from inventory/schema coverage to a bounded
+executable chemistry slice. The native path constructs QuantumBridge-owned H2
+and LiH molecular problem metadata, maps each problem to a small educational
+qubit Hamiltonian, diagonalizes that Hamiltonian locally, and emits chemistry
+result envelopes with provenance, warnings, and unsupported metadata.
+
+Optional upstream passthrough is allowed only when the relevant local Qiskit
+Nature chemistry stack is installed. That path records the upstream package and
+version and remains a passthrough comparison, not QuantumBridge-native
+ownership of upstream behavior.
+
+This slice deliberately excludes production quantum chemistry, molecular
+design, materials band-gap calculations, IBM Runtime, cloud execution, token
+handling, hardware access, and full Qiskit Nature parity.
 
 ## Release Gating
 

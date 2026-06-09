@@ -137,3 +137,21 @@ reviewed Level 3 educational native subset for small binary optimization
 examples. It does not claim full Qiskit Optimization parity, production
 optimization, cloud execution, token handling, hardware access, or IBM/Qiskit
 endorsement.
+
+## 10. Stage 9D Nature Executable Chemistry Subset
+
+Stage 9D adds a bounded Qiskit Nature executable lane:
+
+- QuantumBridge-native H2 and LiH molecular problem metadata;
+- deterministic small qubit Hamiltonians for educational exact diagonalization;
+- local NumPy diagonalization with energy, eigenvalue, particle-count, mapper,
+  basis, provenance, and warning metadata;
+- optional local upstream Qiskit Nature smoke execution when installed;
+- serializable chemistry schemas in `quantumbridge.schema.chemistry_results`;
+- example scripts for H2 and LiH.
+
+This stage moves Qiskit Nature beyond scaffold-only coverage for two small
+educational molecules, but it does not claim complete Qiskit Nature parity,
+production quantum chemistry, molecular design support, materials band-gap
+support, cloud execution, token handling, hardware access, or IBM/Qiskit
+endorsement.
