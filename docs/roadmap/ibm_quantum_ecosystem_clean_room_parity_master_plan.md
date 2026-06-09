@@ -85,8 +85,8 @@ contract lives in `docs/compat/ecosystem/ibm_quantum_ecosystem_project_catalog_s
 | Stage 9L | Azure Quantum | Advisory no-token/cloud compatibility slice. |
 | Stage 9M | Benchpress | Benchmarking slice. |
 | Stage 9N | RasQberry | Educational hardware advisory slice. |
-| Stage 10A | Quafu / pyquafu | Executable backend adapter. |
-| Stage 10B | QOS-UQCI | Offline job spec and mock runtime adapter. |
+| Stage 10A | QOS-UQCI / Quafu backend | Implemented offline job specs, clean-room payloads, mock runtime/backend execution, result schemas, and optional upstream boundaries. |
+| Stage 10B | Studio backend API | Planned unified backend API for executable slices. |
 | Stage 11A | Studio backend | Catalog and executable workflow API. |
 | Stage 11B | Studio frontend | Future UI prototype, separately authorized. |
 
@@ -217,6 +217,20 @@ not copy TorchQuantum or PyTorch source, tutorials, UI, or branding. It is not
 a full TorchQuantum replacement, not a full PyTorch replacement, not production
 QML training, and not suitable for high-risk automated decisions. No cloud,
 token, or hardware access is performed.
+
+## Stage 10A QOS-UQCI / Quafu Backend Slice
+
+Stage 10A promotes backend compatibility from planning to a bounded executable
+offline slice. QuantumBridge supports QuantumBridge IR to QOS-UQCI clean-room
+IR, QOS-UQCI job specs, DeviceSpec / CalSet / Manifest metadata, OpenQASM
+compatibility artifacts, and an offline mock runtime. It also supports
+QuantumBridge IR to Quafu-compatible payloads, Quafu job specs, and an offline
+mock backend.
+
+The slice is clean-room and educational. It does not copy QOS-UQCI, Quafu, or
+pyquafu source, tutorials, UI, or branding. It is not production QOS runtime
+support, not production backend support, and does not access cloud services,
+tokens, or real hardware.
 
 ## Release Gating
 

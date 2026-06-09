@@ -526,6 +526,24 @@ Access-Control-Allow-Origin: https://studio.quantumbridge.org
 
 ## 9. Versioning & Deprecation
 
+### 9.0 Future Backend Compatibility Endpoints
+
+Stage 10A prepares schema data for future Studio backend panels. No UI
+implementation is included in Stage 10A.
+
+Planned endpoints:
+
+```text
+POST /api/v0/backend/qos-uqci/job-spec
+POST /api/v0/backend/qos-uqci/mock-runtime
+POST /api/v0/backend/quafu/payload
+POST /api/v0/backend/quafu/mock-backend
+```
+
+Response payloads must include result schema JSON, counts/probabilities,
+warnings, provenance, and explicit flags for `cloud_access=false`,
+`token_read=false`, and `hardware_access=false`.
+
 ### 9.1 Versioning Strategy
 
 - **URL versioning**: `/api/v0/...`

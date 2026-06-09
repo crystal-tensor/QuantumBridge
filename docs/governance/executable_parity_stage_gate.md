@@ -93,3 +93,14 @@ warnings, provenance, examples, and tests.
 Full TorchQuantum replacement, PyTorch replacement, production QML training,
 high-risk automated decision support, official endorsement, cloud execution,
 token handling, and hardware access remain out of scope.
+
+## Stage 10A Application
+
+QOS-UQCI and Quafu compatibility is promoted only for offline mock backend
+execution. The accepted executable proof is QuantumBridge IR converted to
+QOS-UQCI job specs and Quafu-compatible payloads, then executed through
+QuantumBridge local simulation with result schemas, warnings, and provenance.
+
+Production QOS runtime, production backend execution, real cloud submission,
+token handling, real hardware access, and official endorsement claims are
+excluded.

@@ -2,7 +2,7 @@
 
 **Version**: v0.1  
 **Date**: 2026-06-09  
-**Status**: Stage 8A planning  
+**Status**: Stage 10A offline executable slice
 
 ## 1. Position
 
@@ -32,6 +32,10 @@ Therefore:
 | result adapter | Wrap pyquafu-like results in QuantumBridge schema. | 8F |
 | dependency adapter | Version and NumPy lane checks. | 8F |
 | warnings | No-token, no-cloud, no-production warnings. | 8F |
+
+Stage 10A implements the offline subset as `quantumbridge.compat.quafu` with a
+Quafu-compatible payload, job spec, mock backend, result schema, examples, and
+tests.
 
 ## 4. Token and Cloud Policy
 

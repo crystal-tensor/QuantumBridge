@@ -175,3 +175,15 @@ This row is the TorchQuantum/QML bridge compatibility slice for QuantumBridge's
 IBM Quantum Ecosystem clean-room parity plan. It does not copy IBM website
 content, TorchQuantum or PyTorch source, tutorials, UI, branding, or third-party
 project source.
+
+## Stage 10A Update
+
+| Ecosystem | New executable subset | Native level | Upstream path | Production-ready | Notes |
+| --- | --- | --- | --- | --- | --- |
+| QOS-UQCI | Offline QOS-UQCI clean-room IR, job spec, DeviceSpec / CalSet / Manifest, OpenQASM artifact, and mock runtime | Level 3 | Optional local QOS-UQCI package metadata passthrough | No | Supports small offline backend workflows with backend result schemas, warnings, provenance, and no cloud/token/hardware access. Not production QOS runtime. |
+| Quafu / pyquafu | Quafu-compatible clean-room payload, job spec, and offline mock backend | Level 3 | Optional local pyquafu package metadata passthrough | No | Supports small offline backend workflows with backend result schemas, warnings, provenance, and no cloud/token/hardware access. Not production backend or official endorsement. |
+
+These rows are the backend / QOS / Quafu compatibility slice for
+QuantumBridge's IBM Quantum Ecosystem clean-room parity plan. They do not copy
+IBM website content, QOS-UQCI source, Quafu source, pyquafu source, tutorials,
+UI, branding, or third-party project source.

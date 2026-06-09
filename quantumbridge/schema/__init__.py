@@ -160,6 +160,13 @@ try:
         TorchQuantumTrainingResult,
         UpstreamTorchQuantumResult,
     )
+    from quantumbridge.schema.backend_results import (
+        BackendCompatibilityResult,
+        QOSUQCIBackendResult,
+        QuafuBackendResult,
+        UpstreamQOSUQCIResult,
+        UpstreamQuafuResult,
+    )
     __all__ = [
         # P2 schema exports
         "RESULT_SCHEMA_VERSION",
@@ -288,6 +295,11 @@ try:
         "TorchQuantumComparisonResult",
         "TorchQuantumTrainingResult",
         "UpstreamTorchQuantumResult",
+        "BackendCompatibilityResult",
+        "QOSUQCIBackendResult",
+        "QuafuBackendResult",
+        "UpstreamQOSUQCIResult",
+        "UpstreamQuafuResult",
     ]
 except ImportError:
     # Fallback when ecosystem extras not installed

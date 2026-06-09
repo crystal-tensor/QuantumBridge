@@ -57,8 +57,8 @@ forcing incompatible dependency stacks into one environment.
 | Qiskit Metal | Advisory chip-design inventory. | Not EM simulation or fabrication support. |
 | Qiskit Runtime | Offline-only metadata and adapter planning. | No IBM Cloud access, token reads, or credential storage. |
 | PennyLane | Differentiable quantum programming, QNode, tape, operations, transforms. | Optional dependency, not a PennyLane replacement. |
-| Quafu / pyquafu | Chinese ecosystem compatibility path and backend result planning. | Separate NumPy <2 lane, no cloud token storage. |
-| QOS-UQCI | Canonical UQCI IR compatibility planning. | External optional project, no runtime or hardware claim. |
+| Quafu / pyquafu | Stage 10A Quafu-compatible payload, job spec, and offline mock backend. | Separate optional pyquafu lane, no cloud token storage, not production backend. |
+| QOS-UQCI | Stage 10A QOS-UQCI clean-room IR, job spec, DeviceSpec / CalSet / Manifest, and offline mock runtime. | External optional project, no production runtime or hardware claim. |
 | QuantumBridge Studio | Future visual workflow layer. | Planning only until adapter contracts stabilize. |
 
 ## 5. Stage Split
@@ -339,5 +339,22 @@ bounded executable slice:
 
 Stage 9K does not claim complete TorchQuantum replacement, PyTorch replacement,
 production QML training, suitability for high-risk automated decisions,
+official endorsement, cloud access, token access, hardware access, release
+readiness, tags, or UI implementation.
+
+## 6.11 Stage 10A Backend / QOS / Quafu Snapshot
+
+Stage 10A promotes QOS-UQCI and Quafu backend compatibility from planning to a
+bounded executable offline slice:
+
+- QuantumBridge IR to QOS-UQCI clean-room IR and job spec;
+- DeviceSpec, CalSet, Manifest, and OpenQASM compatibility artifacts;
+- QOS-UQCI offline mock runtime;
+- QuantumBridge IR to Quafu-compatible payload and job spec;
+- Quafu offline mock backend;
+- optional QOS-UQCI and pyquafu upstream boundary metadata;
+- serializable backend result schemas and executable examples.
+
+Stage 10A does not claim production QOS runtime, production backend support,
 official endorsement, cloud access, token access, hardware access, release
 readiness, tags, or UI implementation.

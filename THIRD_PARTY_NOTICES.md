@@ -189,6 +189,21 @@ The native subset is not a full TorchQuantum replacement, not a full PyTorch
 replacement, not production QML training, not for high-risk automated decisions,
 and not endorsed by TorchQuantum, PyTorch, IBM, or Qiskit maintainers.
 
+## Stage 10A QOS-UQCI / Quafu backend compatibility slice
+
+Stage 10A adds clean-room offline QOS-UQCI and Quafu-compatible backend
+workflows. It uses public project/package names only and QuantumBridge-owned
+job specs, payloads, mock runtime/backend execution, result schemas, examples,
+and tests.
+
+No QOS-UQCI, Quafu, or pyquafu source code, tutorial implementation, website
+text, UI, branding, wheels, dist-info, egg-info, site-packages trees, virtual
+environments, or vendored package artifacts are copied into QuantumBridge.
+
+The native subset is not production QOS runtime support, not production Quafu
+backend support, does not access cloud services, does not read tokens, does not
+execute real hardware, and is not endorsed by QOS-UQCI or Quafu maintainers.
+
 ## Stage 9B Qiskit Optimization native subset
 
 Stage 9B adds an independently implemented educational native binary

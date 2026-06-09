@@ -58,6 +58,7 @@ Current Qiskit ecosystem status:
 - PennyLane-Qiskit bridge: Stage 9H Level 3 educational native bidirectional bridge for a basic-gate subset, including Qiskit circuit to PennyLane executable spec, PennyLane operation/tape metadata to Qiskit circuit, and Bell-state equivalence proof. This is not a full PennyLane-Qiskit plugin replacement and not full Qiskit or PennyLane parity.
 - MQT Core / DDSIM / QMAP compatibility: Stage 9J Level 3 educational native circuit/IR compatibility, DDSIM-like small-circuit simulation, decision-diagram-inspired metadata, and QMAP-like topology routing with SWAP insertion. This is not a full MQT replacement, not decision-diagram parity, and not production compiler/simulator/mapper parity.
 - TorchQuantum / PyTorch-style QML compatibility: Stage 9K Level 3 educational native quantum layer, tensor/batch forward, deterministic toy classifier training, optional torch tensor path, and optional upstream TorchQuantum boundary. This is not a full TorchQuantum or PyTorch replacement, not production QML, and not for high-risk automated decisions.
+- QOS-UQCI / Quafu backend compatibility: Stage 10A Level 3 offline job specs, clean-room payloads, mock backend execution, result schemas, and optional upstream package boundaries. This is not production runtime or real hardware execution and does not access cloud services or tokens.
 
 Current PennyLane ecosystem status:
 
@@ -85,6 +86,7 @@ Stage 7.2 expands installed-environment verification and adapter schemas. It rem
 | PennyLane-Qiskit bridge | Stage 9H educational native bidirectional bridge and Bell equivalence proof plus optional upstream plugin metadata | install upstream `pennylane-qiskit` separately if needed | Native subset does not require upstream; not full plugin parity; no cloud/token/hardware |
 | MQT Core / DDSIM / QMAP | Stage 9J educational native MQT Core-like circuit dict/QASM subset, DDSIM-like statevector/counts, and QMAP-like routing | install upstream MQT packages separately if needed | Native subset does not require upstream; not full MQT replacement; no decision-diagram or optimal-mapper parity |
 | TorchQuantum / PyTorch-style QML | Stage 9K educational native TorchQuantum-like layer, tensor/batch forward, and classifier training | torch is optional for tensor interop; TorchQuantum is optional for upstream boundary metadata | Native subset does not require TorchQuantum; not full TorchQuantum/PyTorch replacement; not production QML or high-risk ML |
+| QOS-UQCI / Quafu backends | Stage 10A offline QOS-UQCI job spec, DeviceSpec / CalSet / Manifest, Quafu-compatible payload, and mock execution | QOS-UQCI and pyquafu are optional upstream boundaries | No production runtime, no cloud/token/hardware access, no official endorsement |
 | PennyLane full | Level 0/1 plus PennyLaneResult Level 2 wrapper | `.[pennylane-full]` | Verified: 0.42.3; no complete replacement claim |
 
 Level 2 here means a QuantumBridge result-schema wrapper. It does not mean complete input conversion, behavioral parity, performance parity, or production equivalence.
@@ -249,6 +251,21 @@ replacement, not production QML training, and not suitable for medical,
 financial, employment, identity, safety, or other high-risk automated
 decisions. It does not access cloud services, tokens, or real hardware.
 
+### QOS-UQCI / Quafu Backend Compatibility Slice
+
+Stage 10A adds clean-room offline backend execution workflows:
+
+- QuantumBridge IR to QOS-UQCI clean-room IR and job spec;
+- QOS-UQCI DeviceSpec, CalSet, Manifest, and OpenQASM compatibility artifact;
+- QOS-UQCI offline mock runtime returning QuantumBridge result schemas;
+- QuantumBridge IR to Quafu-compatible payload and job spec;
+- Quafu offline mock backend returning QuantumBridge result schemas;
+- optional QOS-UQCI and pyquafu upstream boundary metadata.
+
+This slice is not production QOS runtime support, not production Quafu backend
+support, not real hardware execution, and not official endorsement. It does not
+read tokens or access cloud services by default.
+
 ## P1 Controlled Expansion
 
 Stage 5 adds controlled P1 subset coverage:
@@ -268,6 +285,8 @@ Stage 5 adds controlled P1 subset coverage:
 - Full Qiskit Nature / Algorithms / Finance / Optimization / Machine Learning / Aer / Runtime / Experiments parity.
 - Full MQT Core / DDSIM / QMAP parity.
 - Full TorchQuantum or PyTorch parity, production QML, or high-risk ML decision support.
+- Production QOS runtime, production Quafu backend, real quantum cloud access,
+  token handling, or real hardware execution.
 - Full OpenQASM grammar.
 - Hardware cloud providers.
 - Production Qiskit Aer/noise integration.
@@ -317,6 +336,9 @@ Stage 7 uses separate optional dependency lanes. Do not assume all optional depe
 - `pennylane-qiskit`: no default extra; if installed separately, QuantumBridge records optional upstream plugin metadata while native Stage 9H bridge examples run without it.
 - `mqt`: no default extra; if installed separately, QuantumBridge records optional upstream MQT Core/DDSIM/QMAP passthrough metadata while native Stage 9J examples run without it.
 - `torchquantum`: no default extra; if installed separately, QuantumBridge records optional upstream TorchQuantum passthrough metadata while native Stage 9K examples run without it. `torch` is optional for tensor interop only.
+- `qos_uqci` / `quafu`: no default extra; if installed separately,
+  QuantumBridge records optional upstream boundary metadata while Stage 10A
+  native examples run offline without cloud, token, or hardware access.
 - `qiskit-finance`: optional finance application/data-provider/circuit inventory.
 - `qiskit-optimization`: optional optimization inventory and passthrough scaffold.
 - `qiskit-machine-learning`: optional QNN/kernel/classifier/Torch connector inventory.

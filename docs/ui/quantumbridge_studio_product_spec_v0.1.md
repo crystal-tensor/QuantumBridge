@@ -657,7 +657,9 @@ high-risk automated decisions.
    - QuantumBridge Simulator
    - Qiskit Aer (if installed)
    - PennyLane-Qiskit Bridge (native Stage 9H subset; optional upstream plugin metadata)
-   - Quafu (if installed)
+   - QOS-UQCI offline mock runtime (native Stage 10A subset)
+   - Quafu-compatible offline mock backend (native Stage 10A subset)
+   - Quafu / pyquafu optional upstream boundary metadata (if installed)
 
 2. **IBM Runtime Adapter**:
    - Adapter status (scaffold/Level 1)
@@ -677,7 +679,8 @@ high-risk automated decisions.
    - Error rates
 
 5. **Warning**:
-   - "No token storage. Offline only."
+   - "No token storage. Offline mock execution only."
+   - "Stage 10A QOS-UQCI / Quafu views are not production runtime or real hardware."
 
 ### 3.19 Result Center
 

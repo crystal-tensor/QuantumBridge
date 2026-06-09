@@ -51,6 +51,9 @@ This ledger records implementation mode and upstream source status for the curre
 | `quantumbridge/schema/mqt_results.py` | Stage 9J MQT compatibility result envelopes | Native Implementation | Public project names only | No | N/A | QuantumBridge native | No | No | QuantumBridge-owned schemas for native MQT Core-like, DDSIM-like, QMAP-like, upstream passthrough, routing, and comparison results | N/A | Yes | Yes | Complete | Low |
 | `quantumbridge/compat/torchquantum/*` | Stage 9K TorchQuantum/PyTorch-style QML clean-room compatibility slice | Clean-room implementation / optional upstream boundary | Public project and package names only | No | N/A | QuantumBridge native; torch and TorchQuantum optional if installed separately | No | No | Tensor adapters, native educational quantum layer, batch forward, deterministic toy classifier training, optional torch tensor path, and optional TorchQuantum upstream boundary; no full TorchQuantum/PyTorch or production QML claim | N/A | Yes | Native tests and examples | Complete | Medium |
 | `quantumbridge/schema/torchquantum_results.py` | Stage 9K TorchQuantum compatibility result envelopes | Native Implementation | Public project names only | No | N/A | QuantumBridge native | No | No | QuantumBridge-owned schemas for tensor, layer, batch, training, classifier, upstream passthrough, and comparison results | N/A | Yes | Yes | Complete | Low |
+| `quantumbridge/compat/qos_uqci/*` | Stage 10A QOS-UQCI clean-room backend executable slice | Clean-room implementation / optional upstream boundary | Public project and package names only | No | N/A | QuantumBridge native; QOS-UQCI optional if installed separately | No | No | UQCI IR, job spec, DeviceSpec, CalSet, Manifest, OpenQASM artifact, offline mock runtime, and optional upstream boundary; no production runtime, cloud, token, hardware, or endorsement claim | N/A | Yes | Native tests and examples | Complete | Medium |
+| `quantumbridge/compat/quafu/*` | Stage 10A Quafu / pyquafu clean-room backend executable slice | Clean-room implementation / optional upstream boundary | Public project and package names only | No | N/A | QuantumBridge native; pyquafu optional if installed separately | No | No | Quafu-compatible payload, job spec, offline mock backend, and optional pyquafu boundary; no full pyquafu replacement, production backend, cloud, token, hardware, or endorsement claim | N/A | Yes | Native tests and examples | Complete | Medium |
+| `quantumbridge/schema/backend_results.py` | Stage 10A backend compatibility result envelopes | Native Implementation | Public project names only | No | N/A | QuantumBridge native | No | No | QuantumBridge-owned schemas for QOS-UQCI mock runtime, Quafu mock backend, and upstream passthrough results | N/A | Yes | Yes | Complete | Low |
 | `quantumbridge/compat/qiskit_addons/*` | Qiskit Addons inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Upstream dependency | No | No | Optional addons inventory; no source migration | N/A | Yes | Inventory smoke | Pending | High |
 | `quantumbridge/compat/pennylane_full/*` | PennyLane full ecosystem inventory and passthrough scaffold | Adapter Integration | No | API names only | N/A | Apache-2.0 dependency | No | No | Optional PennyLane modules; no full plugin parity claim | N/A | Yes | Yes | Pending | High |
 | `scripts/inventory_*_api.py` | Runtime public-name inventory generation | Native Implementation | Public package names only | Public package names only | N/A | N/A | No | No | Generates QuantumBridge JSON/Markdown matrices from runtime introspection | N/A | Yes | Yes | Pending | Medium |
@@ -574,3 +577,40 @@ copied:
 - `examples/torchquantum_like_classifier_quantumbridge.py`
 
 Stage 9K source port count remains zero.
+
+## Stage 10A Source Inventory
+
+The following Stage 10A files are clean-room QuantumBridge implementations or
+optional dependency boundaries; no QOS-UQCI, Quafu, pyquafu, IBM, Qiskit,
+PennyLane, MQT, Mitiq, TorchQuantum, PyTorch, wheels, dist-info, egg-info,
+site-packages trees, or virtual environments were copied:
+
+- `quantumbridge/compat/qos_uqci/__init__.py`
+- `quantumbridge/compat/qos_uqci/dependency.py`
+- `quantumbridge/compat/qos_uqci/uqci_ir_adapter.py`
+- `quantumbridge/compat/qos_uqci/job_spec.py`
+- `quantumbridge/compat/qos_uqci/devicespec_adapter.py`
+- `quantumbridge/compat/qos_uqci/calset_adapter.py`
+- `quantumbridge/compat/qos_uqci/manifest_adapter.py`
+- `quantumbridge/compat/qos_uqci/openqasm_bridge.py`
+- `quantumbridge/compat/qos_uqci/mock_runtime.py`
+- `quantumbridge/compat/qos_uqci/upstream_adapter.py`
+- `quantumbridge/compat/qos_uqci/result_adapter.py`
+- `quantumbridge/compat/qos_uqci/warnings.py`
+- `quantumbridge/compat/qos_uqci/examples.py`
+- `quantumbridge/compat/quafu/__init__.py`
+- `quantumbridge/compat/quafu/dependency.py`
+- `quantumbridge/compat/quafu/payload_adapter.py`
+- `quantumbridge/compat/quafu/job_adapter.py`
+- `quantumbridge/compat/quafu/mock_backend.py`
+- `quantumbridge/compat/quafu/upstream_adapter.py`
+- `quantumbridge/compat/quafu/result_adapter.py`
+- `quantumbridge/compat/quafu/warnings.py`
+- `quantumbridge/compat/quafu/examples.py`
+- `quantumbridge/schema/backend_results.py`
+- `examples/qos_uqci_bell_job_quantumbridge.py`
+- `examples/qos_uqci_mock_runtime_quantumbridge.py`
+- `examples/quafu_bell_payload_quantumbridge.py`
+- `examples/quafu_mock_backend_quantumbridge.py`
+
+Stage 10A source port count remains zero.

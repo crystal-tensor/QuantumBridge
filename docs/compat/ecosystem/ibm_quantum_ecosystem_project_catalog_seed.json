@@ -1,5 +1,5 @@
 {
-  "status": "Stage 9K clean-room catalog seed",
+  "status": "Stage 10A clean-room catalog seed",
   "source_mode": "manually curated compatibility target names only",
   "projects": [
     {
@@ -200,6 +200,55 @@
         "no optimal mapping claim",
         "no production compiler parity",
         "no cloud/token/hardware access"
+      ],
+      "legal_boundary": "Project name only; no source, tutorial prose, UI, branding, or implementation copied."
+    },
+    {
+      "project_id": "qos-uqci",
+      "upstream_name": "QOS-UQCI",
+      "category": "Backend / QOS compatibility",
+      "adapter": "quantumbridge.compat.qos_uqci",
+      "current_status": "executable_subset",
+      "executable_slice_stage": "Stage 10A",
+      "executable_workflows": [
+        "QuantumBridge IR to UQCI IR",
+        "UQCI job spec",
+        "offline mock runtime",
+        "DeviceSpec / CalSet / Manifest",
+        "OpenQASM compatibility artifact",
+        "optional upstream QOS-UQCI passthrough boundary"
+      ],
+      "studio_ready": "partial",
+      "limitations": [
+        "not production QOS runtime",
+        "no cloud access",
+        "no token access",
+        "no hardware access",
+        "no official endorsement"
+      ],
+      "legal_boundary": "Project name only; no source, tutorial prose, UI, branding, or implementation copied."
+    },
+    {
+      "project_id": "quafu",
+      "upstream_name": "Quafu / pyquafu",
+      "category": "Backend compatibility",
+      "adapter": "quantumbridge.compat.quafu",
+      "current_status": "executable_subset",
+      "executable_slice_stage": "Stage 10A",
+      "executable_workflows": [
+        "QuantumBridge IR to Quafu-compatible payload",
+        "Quafu job spec",
+        "offline mock backend",
+        "optional pyquafu passthrough boundary"
+      ],
+      "studio_ready": "partial",
+      "limitations": [
+        "not full pyquafu replacement",
+        "not production backend",
+        "no cloud access",
+        "no token access",
+        "no hardware access",
+        "no official endorsement"
       ],
       "legal_boundary": "Project name only; no source, tutorial prose, UI, branding, or implementation copied."
     }
