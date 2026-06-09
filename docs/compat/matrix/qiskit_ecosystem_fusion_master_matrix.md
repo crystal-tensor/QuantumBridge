@@ -81,3 +81,12 @@ Each row exposes or documents:
 - No token reads or credential storage.
 - No production finance, ML, optimization, chemistry, experiments, dynamics,
   or chip design claim.
+
+## Stage 9B Update
+
+| Ecosystem | New executable subset | Native level | Upstream path | Production-ready | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Qiskit Optimization | Minimal binary `QuadraticProgram` exact enumeration | Level 3 | Optional `qiskit-optimization` + `qiskit-algorithms` exact passthrough | No | Supports small educational binary problems, QUBO metadata, and Ising metadata. Not full parity. |
+
+All other Qiskit Optimization APIs remain inventory, passthrough, or schema
+coverage unless individually promoted by a later reviewed stage.

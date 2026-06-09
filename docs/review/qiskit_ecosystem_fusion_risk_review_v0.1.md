@@ -70,3 +70,18 @@ Runtime and Metal remain high-sensitivity domains. Runtime tests must continue
 to verify no cloud calls, no token reads, and no credential storage. Metal tests
 must continue to verify advisory-only language and must not imply fabrication,
 simulation, or layout signoff capability.
+
+## Stage 9B Risk Disposition
+
+Stage 9B introduces a bounded native optimization subset. The primary risks are
+domain overread and solver overclaim:
+
+- The native solver is deterministic brute-force enumeration for small binary
+  problems only.
+- QUBO and Ising outputs are metadata, not production solver certification.
+- Optional upstream execution requires installed `qiskit-optimization` and
+  `qiskit-algorithms` packages.
+- The adapter must keep explicit warnings that this is not a full Qiskit
+  Optimization replacement and not production optimization software.
+- Tests must continue to verify no cloud access, no token reads, and no real
+  hardware access.

@@ -113,3 +113,14 @@ Runtime support is offline-only. QuantumBridge does not access IBM Cloud, read
 tokens, store credentials, or submit jobs. Qiskit Metal support is advisory
 only and does not provide chip fabrication, external electromagnetic
 simulation, or layout signoff capability.
+
+## Stage 9B Qiskit Optimization native subset
+
+Stage 9B adds an independently implemented educational native binary
+`QuadraticProgram` subset for small optimization examples. Qiskit Optimization
+remains an optional upstream dependency for passthrough execution when
+installed; no upstream source files, wheels, dist-info, egg-info, site-packages
+trees, virtual environments, documentation prose, or examples were copied.
+
+The native subset is not a full Qiskit Optimization replacement, not production
+optimization software, and not endorsed by IBM or Qiskit maintainers.

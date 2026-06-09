@@ -198,3 +198,21 @@ PennyLane bridge work:
 Stage 8D remains an adapter-hardening stage. It does not add cloud execution,
 token handling, hardware access, release artifacts, tags, UI implementation, or
 new production-domain claims.
+
+## 6.4 Stage 9B Implementation Snapshot
+
+Stage 9B promotes one Qiskit Optimization lane from scaffold-only coverage to a
+bounded executable workflow:
+
+- native minimal binary `QuadraticProgram`;
+- deterministic brute-force exact solver for small problems;
+- linear and quadratic objective evaluation;
+- linear equality and inequality constraint checking;
+- QUBO and Ising metadata generation;
+- optional upstream exact passthrough when the optional Qiskit Optimization
+  stack is installed;
+- serializable optimization result schemas and an executable example script.
+
+Stage 9B does not claim complete Qiskit Optimization parity, production
+optimization, IBM/Qiskit endorsement, cloud access, token access, hardware
+access, release readiness, tags, or UI implementation.

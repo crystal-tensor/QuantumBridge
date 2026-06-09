@@ -119,3 +119,21 @@ pretending support exists.
 Stage 8D does not introduce new Qiskit-native implementation. It strengthens the
 adapter contract and generated inventory records so later conversion work can
 start from explicit capability boundaries.
+
+## 9. Stage 9B Optimization Executable Subset
+
+Stage 9B adds the first bounded executable Qiskit Optimization workflow:
+
+- QuantumBridge-native minimal binary `QuadraticProgram`;
+- binary variables;
+- linear and quadratic objectives;
+- linear equality and inequality constraints;
+- deterministic brute-force exact solving for small problems;
+- QUBO and Ising metadata;
+- optional upstream `qiskit-optimization` / `qiskit-algorithms` passthrough.
+
+This stage moves Qiskit Optimization from inventory/schema-only status to a
+reviewed Level 3 educational native subset for small binary optimization
+examples. It does not claim full Qiskit Optimization parity, production
+optimization, cloud execution, token handling, hardware access, or IBM/Qiskit
+endorsement.

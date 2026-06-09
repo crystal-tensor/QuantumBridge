@@ -60,6 +60,15 @@ try:
         QiskitResult,
         RuntimeOfflineResult,
     )
+    from quantumbridge.schema.optimization_results import (
+        BruteForceOptimizationResult,
+        IsingConversionResult,
+        OptimizationComparisonResult,
+        OptimizationResult as NativeOptimizationSchemaResult,
+        QuadraticProgramResult,
+        QUBOConversionResult,
+        UpstreamOptimizationResult,
+    )
     __all__ = [
         # P2 schema exports
         "RESULT_SCHEMA_VERSION",
@@ -111,6 +120,13 @@ try:
         "QiskitOptimizationResult",
         "QiskitResult",
         "RuntimeOfflineResult",
+        "BruteForceOptimizationResult",
+        "IsingConversionResult",
+        "NativeOptimizationSchemaResult",
+        "OptimizationComparisonResult",
+        "QuadraticProgramResult",
+        "QUBOConversionResult",
+        "UpstreamOptimizationResult",
     ]
 except ImportError:
     # Fallback when ecosystem extras not installed

@@ -46,7 +46,8 @@ Current Qiskit ecosystem status:
 - Qiskit Aer: Level 0 inventory, Level 1 passthrough contract, and Level 2 result schema wrapper when installed.
 - Qiskit Nature and Algorithms: Level 0 inventory, Level 1 passthrough contract, and Level 2 result schema wrappers when installed.
 - Qiskit Finance: Level 0/1 inventory and passthrough, Level 2 result wrapper, and a Stage 9A Level 3 educational portfolio-optimization native subset for deterministic four-asset mean-variance examples. Missing optional packages report unsupported metadata.
-- Qiskit Optimization and Machine Learning: Level 0 inventory and contract metadata; missing optional packages report unsupported metadata.
+- Qiskit Optimization: Level 0/1 inventory and passthrough, Level 2 result wrappers, and a Stage 9B Level 3 educational native `QuadraticProgram` subset for small binary optimization examples. Missing optional packages report unsupported metadata.
+- Qiskit Machine Learning: Level 0 inventory and contract metadata; missing optional packages report unsupported metadata.
 - Qiskit Dynamics, Experiments, Metal, Runtime, and Addons: advisory or offline-only contracts with explicit warnings.
 - Qiskit Runtime remains offline-only: no IBM Cloud access, no token reads, no credential storage, and no job submission.
 - Qiskit Metal remains advisory: no chip fabrication, external EM simulation, or layout signoff support is claimed.
@@ -67,7 +68,7 @@ Stage 7.2 expands installed-environment verification and adapter schemas. It rem
 | Qiskit Finance | Level 0/1 plus FinanceResult Level 2 wrapper and Stage 9A educational portfolio native subset | `.[qiskit-finance]` | Verified: 0.4.1; not production finance |
 | Qiskit Algorithms | Level 0/1 plus AlgorithmsResult Level 2 wrapper | `.[qiskit-algorithms]` | Verified: 0.4.0 |
 | Qiskit Machine Learning | Level 0/1 plus MLResult Level 2 wrapper | `.[qiskit-machine-learning]` | Verified: 0.9.0; not production ML |
-| Qiskit Optimization | Level 0/1 plus OptimizationResult Level 2 wrapper | `.[qiskit-optimization]` | Verified: 0.7.0 |
+| Qiskit Optimization | Level 0/1 plus OptimizationResult Level 2 wrapper and Stage 9B educational native QuadraticProgram subset | `.[qiskit-optimization]` | Verified: 0.7.0; native subset does not require upstream |
 | Qiskit Dynamics | Level 0/1 plus DynamicsResult Level 2 wrapper | `.[qiskit-dynamics]` | Verified: 0.6.0; advisory |
 | Qiskit Experiments | Level 0/1 plus ExperimentsResult Level 2 wrapper | `.[qiskit-experiments]` | Verified: 0.14.1; advisory and offline-only |
 | Qiskit Metal | Level 0 inventory plus MetalDesignResult schema | `.[qiskit-metal]` | Install failed on Python 3.12; advisory/unsupported |
@@ -77,6 +78,16 @@ Stage 7.2 expands installed-environment verification and adapter schemas. It rem
 Level 2 here means a QuantumBridge result-schema wrapper. It does not mean complete input conversion, behavioral parity, performance parity, or production equivalence.
 
 Stage 9A adds `quantumbridge.compat.qiskit_finance.run_portfolio_optimization_native()` for a deterministic, educational four-asset mean-variance portfolio example and optional upstream calls through installed Qiskit Finance / Qiskit Optimization / Qiskit Algorithms packages. This is not investment advice, production portfolio optimization, real market-data support, or a complete Qiskit Finance replacement.
+
+Stage 9B adds a Qiskit Optimization `QuadraticProgram` executable adapter:
+
+- `quantumbridge.compat.qiskit_optimization.create_quadratic_program_native()`
+- binary variables, linear/quadratic objectives, and linear constraints;
+- deterministic brute-force exact solving for small educational problems;
+- QUBO and Ising metadata generation;
+- optional upstream exact passthrough when `qiskit-optimization` and `qiskit-algorithms` are installed.
+
+This is not production optimization software, not a complete Qiskit Optimization replacement, and not an IBM or Qiskit endorsement.
 
 ## Stage 8D Qiskit Adapter Contract Hardening
 
