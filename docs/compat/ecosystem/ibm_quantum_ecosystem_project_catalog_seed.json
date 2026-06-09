@@ -1,0 +1,28 @@
+{
+  "status": "Stage 9E clean-room catalog seed",
+  "source_mode": "manually curated compatibility target names only",
+  "projects": [
+    {
+      "project_id": "qiskit-machine-learning",
+      "upstream_name": "Qiskit Machine Learning",
+      "category": "QML",
+      "adapter": "quantumbridge.compat.qiskit_machine_learning",
+      "current_status": "executable_subset",
+      "executable_slice_stage": "Stage 9E",
+      "executable_workflows": [
+        "native educational quantum kernel",
+        "native educational kernel classifier",
+        "native educational QNN classifier",
+        "optional upstream qiskit-machine-learning passthrough"
+      ],
+      "studio_ready": "partial",
+      "limitations": [
+        "not full Qiskit Machine Learning replacement",
+        "not production ML",
+        "no high-risk decision use",
+        "no cloud/token/hardware access"
+      ],
+      "legal_boundary": "Project name only; no source, tutorial prose, UI, branding, or implementation copied."
+    }
+  ]
+}

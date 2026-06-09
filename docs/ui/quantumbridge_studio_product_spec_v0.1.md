@@ -62,6 +62,14 @@ badges when local Qiskit Nature is installed, warning panels, provenance
 payloads, and JSON exportable result envelopes. This remains planning-only for
 Studio; no frontend implementation is included in Stage 9D.
 
+Stage 9E adds Studio-ready QML workflow metadata for the future catalog:
+quantum kernel, kernel classifier, QNN forward, and QNN classifier workflows
+now have executable native example badges, optional upstream-introspection
+badges when local Qiskit Machine Learning is installed, toy-dataset summaries,
+feature-map metadata, kernel matrices, weights, predictions, accuracy, warning
+panels, provenance payloads, and JSON exportable result envelopes. This remains
+planning-only for Studio; no frontend implementation is included in Stage 9E.
+
 ---
 
 ## 2. Product Vision

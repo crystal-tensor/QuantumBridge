@@ -1,6 +1,6 @@
 # Executable Parity Stage Gate
 
-Status: Stage 9D governance baseline
+Status: Stage 9E governance baseline
 
 This gate defines when a QuantumBridge ecosystem lane may move from inventory,
 passthrough, or schema coverage to a documented executable subset.
@@ -34,3 +34,10 @@ Promotion to an executable subset does not imply:
 Qiskit Nature is promoted only for educational H2 and LiH exact-diagonalization
 workflows. Production chemistry, molecular design, materials band-gap
 calculation, and full Qiskit Nature parity remain out of scope.
+
+## Stage 9E Application
+
+Qiskit Machine Learning is promoted only for educational toy-dataset quantum
+kernel, kernel classifier, QNN forward, and QNN classifier workflows. Production
+ML, high-risk automated decisions, training-performance guarantees, and full
+Qiskit Machine Learning parity remain out of scope.

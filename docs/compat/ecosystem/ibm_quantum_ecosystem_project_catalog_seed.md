@@ -10,7 +10,7 @@ or branding.
 | Project ID | Upstream name | Category | Proposed QuantumBridge adapter | Current status | Next action | Priority | Legal boundary |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `torchquantum` | TorchQuantum | QML | `quantumbridge.compat.torchquantum` | planned | Inventory and QML bridge review. | P2 | Name only; no source copy. |
-| `qiskit-machine-learning` | Qiskit Machine Learning | QML | `quantumbridge.compat.qiskit_machine_learning` | inventory | Stage 9E executable QNN/kernel/classifier slice. | P1 | Optional dependency; no parity claim. |
+| `qiskit-machine-learning` | Qiskit Machine Learning | QML | `quantumbridge.compat.qiskit_machine_learning` | executable subset | Expand beyond Stage 9E educational quantum kernel / kernel classifier / QNN classifier workflows. | P1 | Optional dependency; no production ML or full replacement claim. |
 | `qiskit-aer` | Qiskit Aer | simulator | `quantumbridge.compat.qiskit_aer` | passthrough/schema | Stage 9F executable simulator/noise slice. | P1 | Optional dependency; no Aer replacement claim. |
 | `mitiq` | Mitiq | error mitigation | `quantumbridge.compat.mitiq` | planned | Stage 9H error mitigation adapter. | P1 | Name only; no source copy. |
 | `qiskit-nature` | Qiskit Nature | chemistry | `quantumbridge.compat.qiskit_nature` | executable subset | Expand beyond educational H2 / LiH exact-diagonalization workflows. | P1 | Optional dependency; no production chemistry or materials claim. |
@@ -43,3 +43,21 @@ educational chemistry slice:
 
 The slice is not production chemistry, not molecular design software, not a
 materials band-gap workflow, and not a full Qiskit Nature replacement.
+
+## Stage 9E Executable Proof
+
+The `qiskit-machine-learning` catalog row now has a QuantumBridge-native Level 3
+educational QML slice:
+
+- deterministic toy binary datasets;
+- native angle feature maps backed by QuantumBridge circuits;
+- state-fidelity quantum kernel matrices;
+- nearest-kernel classifier execution;
+- minimal QNN forward pass;
+- deterministic QNN grid-search classifier execution;
+- serializable ML result envelopes with warnings and provenance;
+- optional local upstream `qiskit-machine-learning` runtime introspection when
+  installed.
+
+The slice is not production ML, not a high-risk decision system, and not a full
+Qiskit Machine Learning replacement.

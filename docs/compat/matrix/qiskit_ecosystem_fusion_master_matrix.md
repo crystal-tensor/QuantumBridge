@@ -24,7 +24,7 @@
 | Qiskit Algorithms | VQE / QAOA / Grover / eigensolvers / optimizers | Existing matrices present | Yes | Partial | Partial | Stage 9C native VQE/QAOA/Grover subset | same contract plus executable algorithms result schema | qiskit-algorithms-extra, algorithms | Medium | 9C |
 | Qiskit Finance | applications / data providers / uncertainty | Existing matrices present | Yes | Partial | Partial | No | same contract | qiskit-finance-extra | High | 8D |
 | Qiskit Optimization | quadratic program / converters / optimizers | Existing matrices present | Yes | Partial | Partial | No | same contract | qiskit-optimization-extra | High | 8D |
-| Qiskit Machine Learning | QNN / kernels / classifiers / regressors | Existing matrices present | Yes | Partial | Partial | No | same contract | qiskit-machine-learning-extra | High | 8D |
+| Qiskit Machine Learning | QNN / kernels / classifiers / regressors | Existing matrices present | Yes | Partial | Partial | Stage 9E native quantum kernel / kernel classifier / QNN classifier subset | same contract plus executable ML result schema | qiskit-machine-learning-extra | High | 9E |
 | Qiskit Dynamics | models / signals / solver / backend | Existing matrices present | Yes | Advisory | Advisory | No | same contract plus advisory warnings | qiskit-dynamics-extra | High | 8D |
 | Qiskit Experiments | experiments / calibration / tomography / RB | Existing matrices present | Yes | Advisory | Advisory | No | same contract plus advisory warnings | qiskit-experiments-extra | High | 8D |
 | Qiskit Metal | design / components / renderers / simulation | Existing matrices present | Yes | Advisory | Advisory | No | same contract plus chip-design disclaimer | qiskit-metal-extra | High | 8D |
@@ -110,3 +110,14 @@ third-party project source.
 This row is the Qiskit Nature slice for QuantumBridge's IBM Quantum Ecosystem
 clean-room parity plan. It does not copy IBM website content, Qiskit Nature
 source, PySCF source, OpenFermion source, or third-party project source.
+
+## Stage 9E Update
+
+| Ecosystem | New executable subset | Native level | Upstream path | Production-ready | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Qiskit Machine Learning | Native toy quantum kernel, kernel classifier, QNN forward, and QNN classifier | Level 3 | Optional local `qiskit-machine-learning` runtime introspection | No | Supports small educational QML workflows with ML result schemas, warnings, and provenance. Not full parity, production ML, or high-risk decision software. |
+
+This row is the Qiskit Machine Learning slice for QuantumBridge's IBM Quantum
+Ecosystem clean-room parity plan. It does not copy IBM website content, Qiskit
+Machine Learning source, tutorial code, UI, branding, or third-party project
+source.

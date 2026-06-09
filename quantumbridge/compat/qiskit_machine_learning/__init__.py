@@ -12,6 +12,59 @@ from quantumbridge.compat.qiskit_machine_learning.qnn_adapter import ADAPTER as 
 from quantumbridge.compat.qiskit_machine_learning.regressor_adapter import ADAPTER as regressor_adapter
 from quantumbridge.compat.qiskit_machine_learning.torch_connector_adapter import ADAPTER as torch_connector_adapter
 from quantumbridge.compat.qiskit_common import QiskitAdapterFacade
+from quantumbridge.compat.qiskit_machine_learning.examples import (
+    run_kernel_classifier_example,
+    run_qnn_classifier_example,
+    run_quantum_kernel_example,
+)
+from quantumbridge.compat.qiskit_machine_learning.feature_map_native import (
+    build_angle_feature_map,
+    describe_feature_map,
+    feature_map_statevector,
+    feature_map_to_quantumbridge_ir,
+)
+from quantumbridge.compat.qiskit_machine_learning.kernel_classifier_native import (
+    NativeKernelClassifierModel,
+    predict_kernel_classifier_native,
+    run_kernel_classifier_native,
+    score_kernel_classifier_native,
+    train_kernel_classifier_native,
+)
+from quantumbridge.compat.qiskit_machine_learning.qml_dataset_native import (
+    dataset_summary,
+    make_toy_binary_classification_dataset,
+    make_xor_dataset,
+    normalize_features_for_angles,
+    split_toy_dataset,
+)
+from quantumbridge.compat.qiskit_machine_learning.qnn_classifier_native import (
+    NativeQNNClassifierModel,
+    predict_qnn_classifier_native,
+    run_qnn_classifier_native,
+    score_qnn_classifier_native,
+    train_qnn_classifier_grid_search_native,
+)
+from quantumbridge.compat.qiskit_machine_learning.qnn_native import (
+    NativeQNNAnsatz,
+    build_qnn_ansatz,
+    qnn_expectation_z,
+    qnn_forward_native,
+)
+from quantumbridge.compat.qiskit_machine_learning.quantum_kernel_native import (
+    compute_quantum_kernel_matrix,
+    compute_state_fidelity,
+    quantum_kernel_result_to_dict,
+    run_quantum_kernel_native,
+)
+from quantumbridge.compat.qiskit_machine_learning.upstream_adapter import (
+    dependency_available as upstream_dependency_available,
+    get_upstream_version as upstream_get_upstream_version,
+    run_upstream_classifier_if_available,
+    run_upstream_qnn_if_available,
+    run_upstream_quantum_kernel_if_available,
+    validate_ml_dependencies,
+    wrap_upstream_ml_result,
+)
 
 ADAPTER = QiskitAdapterFacade(
     ecosystem="qiskit_machine_learning",
@@ -41,10 +94,21 @@ validate_environment = ADAPTER.validate_environment
 
 __all__ = [
     "ADAPTER",
+    "NativeKernelClassifierModel",
+    "NativeQNNAnsatz",
+    "NativeQNNClassifierModel",
     "capability_level",
+    "build_angle_feature_map",
+    "build_qnn_ansatz",
     "classifier_adapter",
+    "compute_quantum_kernel_matrix",
+    "compute_state_fidelity",
+    "dataset_summary",
     "dataset_adapter",
     "dependency_available",
+    "describe_feature_map",
+    "feature_map_statevector",
+    "feature_map_to_quantumbridge_ir",
     "get_dependency_report",
     "get_provenance",
     "get_public_object",
@@ -52,16 +116,42 @@ __all__ = [
     "get_warnings",
     "kernel_adapter",
     "list_public_api_inventory",
+    "make_toy_binary_classification_dataset",
+    "make_xor_dataset",
     "native_implementation",
+    "normalize_features_for_angles",
     "passthrough_call",
     "passthrough_class",
+    "predict_kernel_classifier_native",
+    "predict_qnn_classifier_native",
     "production_ready",
+    "qnn_expectation_z",
     "qnn_adapter",
+    "qnn_forward_native",
+    "quantum_kernel_result_to_dict",
     "regressor_adapter",
+    "run_kernel_classifier_example",
+    "run_kernel_classifier_native",
+    "run_qnn_classifier_example",
+    "run_qnn_classifier_native",
+    "run_quantum_kernel_example",
+    "run_quantum_kernel_native",
+    "run_upstream_classifier_if_available",
+    "run_upstream_qnn_if_available",
+    "run_upstream_quantum_kernel_if_available",
+    "score_kernel_classifier_native",
+    "score_qnn_classifier_native",
+    "split_toy_dataset",
+    "train_kernel_classifier_native",
+    "train_qnn_classifier_grid_search_native",
     "to_quantumbridge_schema",
     "torch_connector_adapter",
     "unsupported",
+    "upstream_dependency_available",
+    "upstream_get_upstream_version",
     "upstream_required",
     "validate_environment",
+    "validate_ml_dependencies",
     "wrap_result",
+    "wrap_upstream_ml_result",
 ]

@@ -89,6 +89,15 @@ try:
         QubitHamiltonianResult,
         UpstreamNatureResult,
     )
+    from quantumbridge.schema.ml_results import (
+        KernelClassifierResult,
+        MachineLearningResult as NativeMachineLearningSchemaResult,
+        MLComparisonResult,
+        QNNClassifierResult,
+        QNNForwardResult,
+        QuantumKernelResult,
+        UpstreamMLResult,
+    )
     __all__ = [
         # P2 schema exports
         "RESULT_SCHEMA_VERSION",
@@ -163,6 +172,13 @@ try:
         "UpstreamAlgorithmResult",
         "UpstreamNatureResult",
         "VQEResult",
+        "KernelClassifierResult",
+        "MLComparisonResult",
+        "NativeMachineLearningSchemaResult",
+        "QNNClassifierResult",
+        "QNNForwardResult",
+        "QuantumKernelResult",
+        "UpstreamMLResult",
     ]
 except ImportError:
     # Fallback when ecosystem extras not installed

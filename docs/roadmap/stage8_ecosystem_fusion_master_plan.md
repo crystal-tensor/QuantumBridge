@@ -234,3 +234,22 @@ Stage 9D does not claim complete Qiskit Nature parity, production quantum
 chemistry, molecular design support, materials band-gap support, IBM/Qiskit
 endorsement, cloud access, token access, hardware access, release readiness,
 tags, or UI implementation.
+
+## 6.6 Stage 9E Implementation Snapshot
+
+Stage 9E promotes one Qiskit Machine Learning lane from inventory/schema
+coverage to a bounded executable educational QML workflow:
+
+- deterministic toy binary datasets;
+- native QuantumBridge angle feature maps;
+- native state-fidelity quantum kernel matrices;
+- native nearest-kernel classifier;
+- native minimal QNN forward pass;
+- native deterministic QNN grid-search classifier;
+- optional local upstream `qiskit-machine-learning` introspection;
+- serializable ML result schemas and executable example scripts.
+
+Stage 9E does not claim complete Qiskit Machine Learning parity, production ML,
+training-performance guarantees, high-risk decision suitability, IBM/Qiskit
+endorsement, cloud access, token access, hardware access, release readiness,
+tags, or UI implementation.

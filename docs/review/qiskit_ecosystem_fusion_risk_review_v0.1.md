@@ -102,3 +102,22 @@ materials-science overread:
   workflow.
 - Tests must continue to verify no cloud access, no token reads, no hardware
   access, clear provenance, and no vendored chemistry stack artifacts.
+
+## Stage 9E Risk Disposition
+
+Stage 9E introduces a bounded native educational QML subset for toy datasets,
+quantum kernels, kernel classifiers, QNN forward passes, and QNN classifiers.
+The primary risks are ML-performance overclaim, production-readiness overclaim,
+and high-risk automated-decision overread:
+
+- The native workflows use deterministic toy datasets only, not real user data.
+- The native kernel and QNN classifiers are educational small workflows, not
+  production ML systems.
+- Optional Qiskit Machine Learning execution is runtime introspection or clear
+  unsupported metadata, not upstream behavior ownership.
+- The adapter must keep explicit warnings that this is not a full Qiskit
+  Machine Learning replacement, not production ML, and not intended for
+  medical, financial, employment, identity, safety, or other high-risk
+  automated decisions.
+- Tests must continue to verify no cloud access, no token reads, no hardware
+  access, clear provenance, and no vendored ML stack artifacts.

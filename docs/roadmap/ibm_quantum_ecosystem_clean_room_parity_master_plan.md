@@ -1,6 +1,6 @@
 # IBM Quantum Ecosystem Clean-Room Parity Master Plan
 
-Status: Stage 9D planning baseline
+Status: Stage 9E planning baseline
 Scope: QuantumBridge ecosystem parity, not IBM website replication.
 
 ## Goal
@@ -75,7 +75,7 @@ contract lives in `docs/compat/ecosystem/ibm_quantum_ecosystem_project_catalog_s
 | --- | --- | --- |
 | Stage 9C | Qiskit Algorithms | Native VQE, QAOA, Grover plus upstream passthrough. |
 | Stage 9D | Qiskit Nature | Native educational H2 / LiH exact-diagonalization workflows plus optional local upstream passthrough. |
-| Stage 9E | Qiskit Machine Learning | QNN, kernel, classifier minimal workflows. |
+| Stage 9E | Qiskit Machine Learning | Native educational quantum kernel, kernel classifier, QNN forward, QNN classifier, plus optional upstream introspection. |
 | Stage 9F | Qiskit Aer | Statevector, qasm-style, and noise workflows. |
 | Stage 9G | Qiskit Experiments / Dynamics | Offline advisory executable workflows. |
 | Stage 9H | Mitiq | Error mitigation executable adapter. |
@@ -130,6 +130,24 @@ ownership of upstream behavior.
 This slice deliberately excludes production quantum chemistry, molecular
 design, materials band-gap calculations, IBM Runtime, cloud execution, token
 handling, hardware access, and full Qiskit Nature parity.
+
+## Stage 9E Qiskit Machine Learning Slice
+
+Stage 9E promotes Qiskit Machine Learning from inventory/schema coverage to a
+bounded executable educational QML slice. The native path creates
+QuantumBridge-owned deterministic toy datasets, builds angle feature-map
+circuits, computes state-fidelity quantum kernels, runs a nearest-kernel
+classifier, runs a minimal QNN forward pass, and trains a deterministic
+grid-search QNN classifier.
+
+Optional upstream passthrough is allowed only when the local
+`qiskit-machine-learning` stack is installed. That path uses runtime
+introspection and clear unsupported reasons, not QuantumBridge ownership of
+upstream behavior.
+
+This slice deliberately excludes production ML, high-risk automated decisions,
+training-performance guarantees, IBM Runtime, cloud execution, token handling,
+hardware access, and full Qiskit Machine Learning parity.
 
 ## Release Gating
 

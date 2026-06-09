@@ -151,6 +151,21 @@ The native subset is not a full Qiskit Nature replacement, not production
 quantum chemistry, not molecular design software, not a materials band-gap
 workflow, and not endorsed by IBM or Qiskit maintainers.
 
+## Stage 9E Qiskit Machine Learning native QML subset
+
+Stage 9E adds independently implemented educational quantum-kernel, kernel
+classifier, QNN forward, and QNN classifier workflows. The implementation uses
+QuantumBridge-native circuits, NumPy math, deterministic toy datasets, and
+optional runtime introspection of installed `qiskit-machine-learning` objects.
+
+No Qiskit Machine Learning source code, tutorial implementation, IBM website
+copy, IBM branding, model weights, training data, wheels, dist-info,
+site-packages, or virtual environments are vendored. Project and package names
+are used only to identify optional compatibility targets.
+
+This subset is not a full Qiskit Machine Learning replacement, not production
+machine learning software, and not intended for high-risk automated decisions.
+
 ## IBM Quantum Ecosystem clean-room parity planning
 
 Stage 9C-Revision adds a QuantumBridge-owned ecosystem parity plan and catalog

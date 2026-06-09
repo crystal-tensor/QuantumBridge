@@ -39,7 +39,7 @@ This ledger records implementation mode and upstream source status for the curre
 | `quantumbridge/compat/qiskit_algorithms/*` | Qiskit Algorithms inventory, passthrough scaffold, and educational native VQE/QAOA/Grover subset | Adapter Integration / Native Subset | API names only | No | N/A | Upstream dependency | No | No | Optional algorithms objects plus independently implemented small VQE, QAOA-compatible MaxCut, and Grover educational workflows; no parity or production algorithm claim | N/A | Yes | Yes | Pending | Medium |
 | `quantumbridge/compat/qiskit_nature/*` | Qiskit Nature inventory, passthrough scaffold, and educational native H2/LiH chemistry subset | Adapter Integration / Native Subset | API names only | No | N/A | Upstream dependency | No | No | Optional chemistry objects plus independently implemented small molecular problem metadata, qubit Hamiltonians, and exact diagonalization; no parity, production chemistry, or materials claim | N/A | Yes | Yes | Pending | High |
 | `quantumbridge/ecosystem/catalog.py` | Clean-room ecosystem project catalog schema | Native Implementation | Public project names only | Public project names only | N/A | N/A | No | No | Manual catalog schema for compatibility targets; no website scraping or copied project-card text | N/A | Yes | Yes | Pending | Medium |
-| `quantumbridge/compat/qiskit_machine_learning/*` | Qiskit Machine Learning inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Upstream dependency | No | No | Optional ML objects; no training or accuracy claims | N/A | Yes | Yes | Pending | High |
+| `quantumbridge/compat/qiskit_machine_learning/*` | Qiskit Machine Learning inventory, passthrough scaffold, and educational native QML subset | Adapter Integration / Native Subset | API names only | No | N/A | Upstream dependency | No | No | Optional ML objects plus independently implemented toy quantum kernel, kernel classifier, QNN forward, and QNN classifier; no production ML or high-risk decision claims | N/A | Yes | Yes | Stage 9E partial executable | High |
 | `quantumbridge/compat/qiskit_experiments/*` | Qiskit Experiments inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Upstream dependency | No | No | Optional experiments objects; no lab workflow guarantees | N/A | Yes | Inventory smoke | Pending | High |
 | `quantumbridge/compat/qiskit_addons/*` | Qiskit Addons inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Upstream dependency | No | No | Optional addons inventory; no source migration | N/A | Yes | Inventory smoke | Pending | High |
 | `quantumbridge/compat/pennylane_full/*` | PennyLane full ecosystem inventory and passthrough scaffold | Adapter Integration | No | API names only | N/A | Apache-2.0 dependency | No | No | Optional PennyLane modules; no full plugin parity claim | N/A | Yes | Yes | Pending | High |
@@ -362,6 +362,43 @@ environments.
 - `tests/compat_qiskit_nature/test_chemistry_examples.py`
 
 Stage 9D source port count remains zero.
+
+## Stage 9E exact path registration
+
+The following Stage 9E files mention Qiskit Machine Learning, IBM Quantum
+Ecosystem, or ecosystem project names only for optional dependency,
+compatibility target, clean-room catalog, provenance, warning, test, or
+documentation purposes. They are independently implemented and copy no upstream
+source, tests, documentation prose, website text, UI, screenshots, icons, logos,
+error strings, wheels, dist-info, egg-info, site-packages trees, or virtual
+environments.
+
+- `quantumbridge/compat/qiskit_machine_learning/qml_dataset_native.py`
+- `quantumbridge/compat/qiskit_machine_learning/feature_map_native.py`
+- `quantumbridge/compat/qiskit_machine_learning/quantum_kernel_native.py`
+- `quantumbridge/compat/qiskit_machine_learning/kernel_classifier_native.py`
+- `quantumbridge/compat/qiskit_machine_learning/qnn_native.py`
+- `quantumbridge/compat/qiskit_machine_learning/qnn_classifier_native.py`
+- `quantumbridge/compat/qiskit_machine_learning/upstream_adapter.py`
+- `quantumbridge/compat/qiskit_machine_learning/examples.py`
+- `quantumbridge/compat/qiskit_machine_learning/warnings.py`
+- `quantumbridge/schema/ml_results.py`
+- `examples/qiskit_ml_quantum_kernel_quantumbridge.py`
+- `examples/qiskit_ml_kernel_classifier_quantumbridge.py`
+- `examples/qiskit_ml_qnn_classifier_quantumbridge.py`
+- `tests/compat_qiskit_machine_learning/test_qml_dataset_native.py`
+- `tests/compat_qiskit_machine_learning/test_quantum_feature_map_native.py`
+- `tests/compat_qiskit_machine_learning/test_quantum_kernel_native.py`
+- `tests/compat_qiskit_machine_learning/test_kernel_classifier_native.py`
+- `tests/compat_qiskit_machine_learning/test_qnn_forward_native.py`
+- `tests/compat_qiskit_machine_learning/test_qnn_classifier_native.py`
+- `tests/compat_qiskit_machine_learning/test_ml_result_schema.py`
+- `tests/compat_qiskit_machine_learning/test_ml_upstream_passthrough.py`
+- `tests/compat_qiskit_machine_learning/test_ml_no_cloud_no_token.py`
+- `tests/compat_qiskit_machine_learning/test_ml_warnings_provenance.py`
+- `tests/compat_qiskit_machine_learning/test_ml_examples.py`
+
+Stage 9E source port count remains zero.
 
 ## Stage 9C exact path registration
 

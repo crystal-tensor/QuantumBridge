@@ -70,7 +70,7 @@ Stage 7.2 expands installed-environment verification and adapter schemas. It rem
 | Qiskit Nature | Level 0/1 plus ChemistryResult Level 2 wrapper and Stage 9D educational native H2 / LiH exact-diagonalization subset | `.[qiskit-nature]` | Verified: 0.8.0; native subset does not require upstream |
 | Qiskit Finance | Level 0/1 plus FinanceResult Level 2 wrapper and Stage 9A educational portfolio native subset | `.[qiskit-finance]` | Verified: 0.4.1; not production finance |
 | Qiskit Algorithms | Level 0/1 plus AlgorithmsResult Level 2 wrapper and Stage 9C educational native VQE/QAOA/Grover subset | `.[qiskit-algorithms]` | Verified: 0.4.0; native subset does not require upstream |
-| Qiskit Machine Learning | Level 0/1 plus MLResult Level 2 wrapper | `.[qiskit-machine-learning]` | Verified: 0.9.0; not production ML |
+| Qiskit Machine Learning | Level 0/1 plus MLResult Level 2 wrapper and Stage 9E educational native quantum kernel / kernel classifier / QNN classifier subset | `.[qiskit-machine-learning]` | Verified: 0.9.0; native subset does not require upstream; not production ML |
 | Qiskit Optimization | Level 0/1 plus OptimizationResult Level 2 wrapper and Stage 9B educational native QuadraticProgram subset | `.[qiskit-optimization]` | Verified: 0.7.0; native subset does not require upstream |
 | Qiskit Dynamics | Level 0/1 plus DynamicsResult Level 2 wrapper | `.[qiskit-dynamics]` | Verified: 0.6.0; advisory |
 | Qiskit Experiments | Level 0/1 plus ExperimentsResult Level 2 wrapper | `.[qiskit-experiments]` | Verified: 0.14.1; advisory and offline-only |
@@ -112,6 +112,18 @@ Stage 9D adds Qiskit Nature executable chemistry adapters:
 - `quantumbridge.schema.chemistry_results` result envelopes for molecular problems, qubit Hamiltonians, exact diagonalization, H2, LiH, upstream passthrough, and comparison results.
 
 This is an educational exact-diagonalization chemistry slice, not production quantum chemistry, not a complete Qiskit Nature replacement, not a materials band-gap workflow, and not an IBM or Qiskit endorsement.
+
+Stage 9E adds Qiskit Machine Learning executable educational adapters:
+
+- `quantumbridge.compat.qiskit_machine_learning.run_quantum_kernel_native()`
+- `quantumbridge.compat.qiskit_machine_learning.run_kernel_classifier_native()`
+- `quantumbridge.compat.qiskit_machine_learning.run_qnn_classifier_native()`
+- `quantumbridge.compat.qiskit_machine_learning.qnn_forward_native()`
+- deterministic toy datasets, angle feature maps, state-fidelity kernel matrices, nearest-kernel classifier, and deterministic QNN grid-search classifier;
+- optional local upstream introspection paths when `qiskit-machine-learning` is installed;
+- `quantumbridge.schema.ml_results` result envelopes for native kernel, classifier, QNN, upstream passthrough, and comparison results.
+
+This is an educational QML slice, not production machine learning, not a complete Qiskit Machine Learning replacement, not suitable for medical, financial, employment, identity, safety, or other high-risk automated decisions, and not an IBM or Qiskit endorsement.
 
 ## IBM Quantum Ecosystem Clean-Room Parity
 

@@ -22,7 +22,7 @@ No official IBM, Qiskit, or package maintainer endorsement is claimed.
 | Qiskit Algorithms | VQE, QAOA, eigensolver, optimizer bridge. | Optional algorithms lane, not full algorithm parity. |
 | Qiskit Finance | Portfolio/data-provider result wrappers. | Not production finance or trading. |
 | Qiskit Optimization | Quadratic program and optimizer bridge. | Not production optimization. |
-| Qiskit Machine Learning | QNN, kernel, classifier/regressor wrappers. | Not production ML. |
+| Qiskit Machine Learning | Stage 9E native educational quantum kernel, kernel classifier, QNN forward, QNN classifier, plus optional passthrough introspection. | Not production ML or high-risk decision software. |
 | Qiskit Dynamics | Advisory dynamics model/solver bridge. | Not lab-grade dynamics validation. |
 | Qiskit Experiments | Advisory experiment/calibration inventory. | Not calibration or lab operations support. |
 | Qiskit Metal | Advisory design inventory. | Not chip fabrication, EM simulation, or layout signoff. |
@@ -155,3 +155,21 @@ educational molecules, but it does not claim complete Qiskit Nature parity,
 production quantum chemistry, molecular design support, materials band-gap
 support, cloud execution, token handling, hardware access, or IBM/Qiskit
 endorsement.
+
+## 11. Stage 9E Machine Learning Executable QML Subset
+
+Stage 9E adds a bounded Qiskit Machine Learning lane:
+
+- deterministic toy datasets without network access or real user data;
+- QuantumBridge-native angle feature-map circuits;
+- native state-fidelity quantum kernel matrices;
+- native nearest-kernel classifier;
+- native QNN forward pass;
+- native deterministic QNN grid-search classifier;
+- optional upstream `qiskit-machine-learning` runtime introspection.
+
+This stage moves Qiskit Machine Learning beyond scaffold-only coverage for
+small educational QML workflows, but it does not claim complete Qiskit Machine
+Learning parity, production ML, high-risk decision suitability, training
+performance, cloud execution, token handling, hardware access, UI
+implementation, or IBM/Qiskit endorsement.
