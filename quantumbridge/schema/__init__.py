@@ -106,6 +106,13 @@ try:
         StatevectorSimulationResult,
         UpstreamAerResult,
     )
+    from quantumbridge.schema.error_mitigation_results import (
+        ErrorMitigationComparisonResult,
+        ErrorMitigationResult,
+        ReadoutMitigationResult,
+        UpstreamMitiqResult,
+        ZNEResult,
+    )
     __all__ = [
         # P2 schema exports
         "RESULT_SCHEMA_VERSION",
@@ -192,6 +199,11 @@ try:
         "SimulatorComparisonResult",
         "StatevectorSimulationResult",
         "UpstreamAerResult",
+        "ErrorMitigationComparisonResult",
+        "ErrorMitigationResult",
+        "ReadoutMitigationResult",
+        "UpstreamMitiqResult",
+        "ZNEResult",
     ]
 except ImportError:
     # Fallback when ecosystem extras not installed

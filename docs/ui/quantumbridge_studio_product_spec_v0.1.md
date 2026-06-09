@@ -142,6 +142,7 @@ planning-only for Studio; no frontend implementation is included in Stage 9E.
 1. **Tree View**:
    - Qiskit Core → circuit, transpiler, quantum_info, etc.
    - Qiskit Aer → AerSimulator, noise models, etc.
+   - Mitiq / Error Mitigation → ZNE, readout mitigation, optional upstream metadata
    - Qiskit Nature → drivers, problems, mappers, etc.
    - PennyLane → operations, measurements, QNode, etc.
    - QuantumBridge → core, algorithms, primitives, etc.

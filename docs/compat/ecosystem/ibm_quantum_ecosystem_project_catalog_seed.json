@@ -1,5 +1,5 @@
 {
-  "status": "Stage 9E clean-room catalog seed",
+  "status": "Stage 9G clean-room catalog seed",
   "source_mode": "manually curated compatibility target names only",
   "projects": [
     {
@@ -20,6 +20,27 @@
         "not full Qiskit Machine Learning replacement",
         "not production ML",
         "no high-risk decision use",
+        "no cloud/token/hardware access"
+      ],
+      "legal_boundary": "Project name only; no source, tutorial prose, UI, branding, or implementation copied."
+    },
+    {
+      "project_id": "mitiq",
+      "upstream_name": "Mitiq",
+      "category": "Error mitigation",
+      "adapter": "quantumbridge.compat.mitiq",
+      "current_status": "executable_subset",
+      "executable_slice_stage": "Stage 9G",
+      "executable_workflows": [
+        "native educational ZNE",
+        "native educational readout mitigation",
+        "optional upstream mitiq passthrough"
+      ],
+      "studio_ready": "partial",
+      "limitations": [
+        "not full Mitiq replacement",
+        "not production error mitigation",
+        "no hardware calibration parity",
         "no cloud/token/hardware access"
       ],
       "legal_boundary": "Project name only; no source, tutorial prose, UI, branding, or implementation copied."

@@ -1,6 +1,6 @@
 # Executable Parity Stage Gate
 
-Status: Stage 9E governance baseline
+Status: Stage 9G governance baseline
 
 This gate defines when a QuantumBridge ecosystem lane may move from inventory,
 passthrough, or schema coverage to a documented executable subset.
@@ -41,3 +41,17 @@ Qiskit Machine Learning is promoted only for educational toy-dataset quantum
 kernel, kernel classifier, QNN forward, and QNN classifier workflows. Production
 ML, high-risk automated decisions, training-performance guarantees, and full
 Qiskit Machine Learning parity remain out of scope.
+
+## Stage 9F Application
+
+Qiskit Aer-style support is promoted only for educational small-circuit
+statevector, qasm-style counts, and simple sampling-noise workflows. Production
+simulation, Aer noise-model parity, cloud execution, token handling, and full
+Qiskit Aer parity remain out of scope.
+
+## Stage 9G Application
+
+Mitiq / error mitigation is promoted only for educational native zero-noise
+extrapolation and readout-mitigation workflows over small simulated circuits.
+Production error mitigation, hardware calibration parity, cloud execution,
+token handling, hardware access, and full Mitiq parity remain out of scope.

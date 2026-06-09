@@ -114,6 +114,20 @@ tokens, store credentials, or submit jobs. Qiskit Metal support is advisory
 only and does not provide chip fabrication, external electromagnetic
 simulation, or layout signoff capability.
 
+## Stage 9G Mitiq optional ecosystem
+
+Stage 9G adds optional Mitiq dependency detection and independently
+implemented educational native error-mitigation workflows. Mitiq remains an
+upstream project and is not vendored into this repository.
+
+Usage mode: optional dependency detection, upstream passthrough metadata,
+QuantumBridge result-schema wrapping, warnings, provenance, and independently
+implemented native educational ZNE/readout workflows.
+
+Source port status: no Mitiq source files, tests, documentation prose, comments,
+error strings, wheels, dist-info, egg-info, site-packages trees, or virtual
+environments were copied into QuantumBridge.
+
 ## Stage 9B Qiskit Optimization native subset
 
 Stage 9B adds an independently implemented educational native binary

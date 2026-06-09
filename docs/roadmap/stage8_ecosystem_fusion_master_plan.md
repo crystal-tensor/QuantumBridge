@@ -50,6 +50,7 @@ forcing incompatible dependency stacks into one environment.
 | Qiskit Aer | Simulator and noise model bridge. | Optional; production equivalence not claimed. |
 | Qiskit Nature / Algorithms | Chemistry and algorithm passthrough/adapters. | Optional chemistry-compatible lane. |
 | Qiskit Finance / Optimization / ML | Domain adapters and result schemas. | Not production finance, optimization, or ML. |
+| Mitiq / error mitigation | Stage 9G educational ZNE and readout-mitigation workflows over simulated counts. | Not production error mitigation or hardware calibration parity. |
 | Qiskit Dynamics / Experiments | Advisory and installed-environment smoke paths. | No lab or calibration production claim. |
 | Qiskit Metal | Advisory chip-design inventory. | Not EM simulation or fabrication support. |
 | Qiskit Runtime | Offline-only metadata and adapter planning. | No IBM Cloud access, token reads, or credential storage. |
@@ -153,6 +154,18 @@ Stage 8B adds the first executable PennyLane full API bridge foundation:
 Stage 8B remains bounded. It does not claim full native PennyLane support,
 production equivalence, QOS-UQCI runtime execution, real cloud access, hardware
 access, release readiness, or UI implementation.
+
+## 6.1.1 Stage 9G Error-Mitigation Snapshot
+
+Stage 9G adds a clean-room executable Mitiq / error-mitigation slice:
+
+- native educational zero-noise extrapolation over Stage 9F simulator counts;
+- native educational readout mitigation with calibration-matrix inversion;
+- optional upstream Mitiq dependency detection and passthrough metadata;
+- `ErrorMitigationResult`, `ZNEResult`, `ReadoutMitigationResult`, and
+  `UpstreamMitiqResult` schemas;
+- examples and tests proving local execution without cloud, tokens, hardware,
+  vendor source, release, tag, or UI implementation.
 
 ## 6.2 Stage 8C Implementation Snapshot
 

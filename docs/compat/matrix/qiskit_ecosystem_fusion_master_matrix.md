@@ -19,7 +19,7 @@
 | Ecosystem | API group | Inventory status | Level 0 | Level 1 | Level 2 | Level 3 | Required adapter functions | Tests | Risk | Next stage |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Qiskit core | circuit / transpiler / primitives / quantum_info | Existing matrices present | Yes | Partial | Partial | Native core subset exists | dependency, version, inventory, object lookup, passthrough, wrap, schema, provenance, warnings | core + qiskit-extra | Medium | 8D |
-| Qiskit Aer | simulator / noise | Existing matrices present | Yes | Partial | Partial | No | same contract | qiskit-aer-extra | Medium | 8D |
+| Qiskit Aer | simulator / noise | Existing matrices present | Yes | Partial | Partial | Stage 9F native statevector/qasm/noise educational subset | same contract plus executable Aer result schema | qiskit-aer-extra | Medium | 9F |
 | Qiskit Nature | drivers / problems / mappers | Existing matrices present | Yes | Partial | Partial | Stage 9D native H2/LiH chemistry subset | same contract plus executable chemistry result schema | qiskit-nature-extra, chemistry | High | 9D |
 | Qiskit Algorithms | VQE / QAOA / Grover / eigensolvers / optimizers | Existing matrices present | Yes | Partial | Partial | Stage 9C native VQE/QAOA/Grover subset | same contract plus executable algorithms result schema | qiskit-algorithms-extra, algorithms | Medium | 9C |
 | Qiskit Finance | applications / data providers / uncertainty | Existing matrices present | Yes | Partial | Partial | No | same contract | qiskit-finance-extra | High | 8D |
@@ -30,6 +30,7 @@
 | Qiskit Metal | design / components / renderers / simulation | Existing matrices present | Yes | Advisory | Advisory | No | same contract plus chip-design disclaimer | qiskit-metal-extra | High | 8D |
 | Qiskit Runtime | backend / job / result / runtime | Existing matrices present | Yes | Offline-only | Offline-only | No | same contract plus no-token policy | qiskit-runtime-extra | High | 8D |
 | Qiskit Addons | sqd / mpf / aqc / obp | Existing matrices present | Yes | Advisory | Advisory | No | same contract plus addon warnings | qiskit-addons-extra | Medium | 8D |
+| Mitiq | error mitigation | Manual Stage 9G catalog row | Yes | Optional passthrough metadata | ErrorMitigationResult wrapper | Stage 9G native ZNE/readout educational subset | dependency, upstream metadata, native ZNE/readout workflows, schema, provenance, warnings | compat_mitiq | Medium | 9G |
 
 ## Stage 8D Inventory Snapshot
 
@@ -120,4 +121,21 @@ source, PySCF source, OpenFermion source, or third-party project source.
 This row is the Qiskit Machine Learning slice for QuantumBridge's IBM Quantum
 Ecosystem clean-room parity plan. It does not copy IBM website content, Qiskit
 Machine Learning source, tutorial code, UI, branding, or third-party project
+source.
+
+## Stage 9F Update
+
+| Ecosystem | New executable subset | Native level | Upstream path | Production-ready | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Qiskit Aer | Native statevector, qasm-style counts, and simple measurement bit-flip noise | Level 3 | Optional local `qiskit-aer` passthrough | No | Supports small educational simulator workflows with Aer result schemas, warnings, and provenance. Not full parity or production simulation. |
+
+## Stage 9G Update
+
+| Ecosystem | New executable subset | Native level | Upstream path | Production-ready | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Mitiq | Native educational ZNE and readout mitigation | Level 3 | Optional local `mitiq` dependency metadata / passthrough boundary | No | Supports small simulated error-mitigation workflows with ErrorMitigationResult schemas, warnings, and provenance. Not full Mitiq parity, production error mitigation, or hardware calibration parity. |
+
+This row is the Mitiq / error-mitigation slice for QuantumBridge's IBM Quantum
+Ecosystem clean-room parity plan. It does not copy IBM website content, Mitiq
+source, Qiskit source, tutorial code, UI, branding, or third-party project
 source.

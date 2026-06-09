@@ -121,3 +121,19 @@ and high-risk automated-decision overread:
   automated decisions.
 - Tests must continue to verify no cloud access, no token reads, no hardware
   access, clear provenance, and no vendored ML stack artifacts.
+
+## Stage 9G Risk Disposition
+
+Stage 9G introduces a bounded native educational error-mitigation subset. The
+primary risks are production-readiness overclaim, Mitiq parity confusion,
+hardware calibration overread, and statistical-performance overclaim:
+
+- Native ZNE uses small simulated circuits and simple extrapolation only.
+- Native readout mitigation uses educational calibration matrices, not hardware
+  calibration data.
+- Optional Mitiq handling is dependency detection and clearly labeled upstream
+  passthrough metadata unless the caller supplies a real local executor.
+- The adapter must keep explicit warnings that this is not a full Mitiq
+  replacement and not production error-mitigation software.
+- Tests must continue to verify no cloud access, no token reads, no hardware
+  access, clear provenance, and no vendored Mitiq or Qiskit artifacts.

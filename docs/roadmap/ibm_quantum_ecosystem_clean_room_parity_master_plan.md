@@ -1,6 +1,6 @@
 # IBM Quantum Ecosystem Clean-Room Parity Master Plan
 
-Status: Stage 9E planning baseline
+Status: Stage 9G planning baseline
 Scope: QuantumBridge ecosystem parity, not IBM website replication.
 
 ## Goal
@@ -77,9 +77,9 @@ contract lives in `docs/compat/ecosystem/ibm_quantum_ecosystem_project_catalog_s
 | Stage 9D | Qiskit Nature | Native educational H2 / LiH exact-diagonalization workflows plus optional local upstream passthrough. |
 | Stage 9E | Qiskit Machine Learning | Native educational quantum kernel, kernel classifier, QNN forward, QNN classifier, plus optional upstream introspection. |
 | Stage 9F | Qiskit Aer | Statevector, qasm-style, and noise workflows. |
-| Stage 9G | Qiskit Experiments / Dynamics | Offline advisory executable workflows. |
-| Stage 9H | Mitiq | Error mitigation executable adapter. |
-| Stage 9I | PennyLane-Qiskit | Bidirectional bridge slice. |
+| Stage 9G | Mitiq | Native educational ZNE and readout-mitigation workflows plus optional upstream passthrough metadata. |
+| Stage 9H | PennyLane-Qiskit | Bidirectional bridge slice. |
+| Stage 9I | Qiskit Experiments / Dynamics | Offline advisory executable workflows. |
 | Stage 9J | TorchQuantum / QML | Exploratory QML bridge. |
 | Stage 9K | MQT Core / DDSIM / QMAP / QECC | Compatibility slices. |
 | Stage 9L | Azure Quantum | Advisory no-token/cloud compatibility slice. |
@@ -148,6 +148,31 @@ upstream behavior.
 This slice deliberately excludes production ML, high-risk automated decisions,
 training-performance guarantees, IBM Runtime, cloud execution, token handling,
 hardware access, and full Qiskit Machine Learning parity.
+
+## Stage 9F Qiskit Aer Slice
+
+Stage 9F promotes Qiskit Aer-style simulator coverage to a bounded educational
+native executable slice. The native path runs small statevector simulations,
+seeded qasm-style counts, and simple measurement bit-flip sampling noise using
+QuantumBridge-owned code and result schemas.
+
+Optional upstream passthrough is allowed only when `qiskit-aer` is installed.
+This slice deliberately excludes production simulator validation, Qiskit Aer
+noise-model parity, IBM Runtime, cloud execution, token handling, hardware
+access, and full Qiskit Aer parity.
+
+## Stage 9G Mitiq Error-Mitigation Slice
+
+Stage 9G promotes Mitiq / error mitigation from catalog planning to a bounded
+educational executable slice. The native path connects Stage 9F simulator
+counts to noisy expectation values, linear zero-noise extrapolation, and a
+calibration-matrix readout-mitigation workflow.
+
+Optional upstream Mitiq passthrough records dependency availability and
+unsupported reasons unless the caller supplies the upstream execution context.
+This slice deliberately excludes production error mitigation, statistical
+parity with Mitiq, hardware calibration parity, IBM Runtime, cloud execution,
+token handling, hardware access, and full Mitiq parity.
 
 ## Release Gating
 

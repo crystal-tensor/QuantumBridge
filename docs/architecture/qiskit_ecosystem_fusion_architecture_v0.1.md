@@ -28,6 +28,7 @@ No official IBM, Qiskit, or package maintainer endorsement is claimed.
 | Qiskit Metal | Advisory design inventory. | Not chip fabrication, EM simulation, or layout signoff. |
 | Qiskit IBM Runtime | Offline-only runtime metadata planning. | No IBM Cloud access, token reads, or credential storage. |
 | Qiskit Addons | Inventory/advisory unless installed and verified. | No production addon support claim. |
+| Mitiq / error mitigation | Stage 9G native educational ZNE and readout-mitigation workflows plus optional upstream Mitiq metadata. | Not production error mitigation, not hardware calibration parity, not full Mitiq replacement. |
 
 ## 3. Adapter Contract per Ecosystem
 
@@ -119,6 +120,19 @@ pretending support exists.
 Stage 8D does not introduce new Qiskit-native implementation. It strengthens the
 adapter contract and generated inventory records so later conversion work can
 start from explicit capability boundaries.
+
+## 8.1 Stage 9G Error-Mitigation Architecture Note
+
+Stage 9G adds an IBM Quantum Ecosystem-adjacent error-mitigation lane for
+Mitiq-style workflows. The native path consumes QuantumBridge circuits,
+delegates simulation to the Stage 9F educational Aer-style simulator, computes
+noisy expectation values, applies simple zero-noise extrapolation, and emits
+QuantumBridge error-mitigation result schemas.
+
+The readout-mitigation path builds an educational calibration matrix, applies
+simulated measurement bit-flip errors, inverts the calibration matrix with
+numerical safeguards, and returns mitigated probabilities. It is not hardware
+calibration, production mitigation, or Mitiq parity.
 
 ## 9. Stage 9B Optimization Executable Subset
 
