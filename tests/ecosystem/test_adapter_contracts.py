@@ -6,6 +6,7 @@ from quantumbridge.compat.contracts import (
     CapabilityLevel,
     UnsupportedCapability,
 )
+from quantumbridge.compat.qiskit_common import normalize_qiskit_inventory_record
 
 
 def test_capability_levels_are_stable_integers():
@@ -56,3 +57,27 @@ def test_unsupported_capability_has_structured_reason_warning_and_provenance():
     assert payload["reason"] == "No cloud access is allowed in Stage 8A."
     assert payload["warnings"][0]["code"] == "offline-only"
     assert payload["provenance"]["ecosystem"] == "qiskit-runtime"
+
+
+def test_qiskit_module_imported_inventory_row_is_not_passthrough_supported():
+    class Facade:
+        ecosystem = "qiskit_experiments"
+        advisory = True
+
+    class Adapter:
+        package_key = "qiskit_experiments"
+
+    row = normalize_qiskit_inventory_record(
+        Facade(),
+        Adapter(),
+        {
+            "module": "qiskit_experiments",
+            "public_api": "module-imported",
+            "api_type": "module-status",
+            "notes": "module imported; no class/function exported",
+        },
+    )
+
+    assert row["supported"] is False
+    assert row["importable"] is False
+    assert row["unsupported_reason"] == "module imported; no class/function exported"

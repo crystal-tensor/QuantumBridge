@@ -172,7 +172,7 @@ class QiskitAdapterFacade:
 def normalize_qiskit_inventory_record(facade: QiskitAdapterFacade, adapter: Any, record: Any) -> dict[str, Any]:
     payload = record.to_dict() if hasattr(record, "to_dict") else dict(record)
     api_name = payload.get("public_api") or payload.get("name") or "unknown"
-    unavailable = api_name in {"dependency-not-installed", "import-failed"}
+    unavailable = api_name in {"dependency-not-installed", "import-failed", "module-imported"}
     return {
         "ecosystem": facade.ecosystem,
         "module": payload.get("module"),
