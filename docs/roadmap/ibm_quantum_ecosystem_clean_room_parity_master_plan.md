@@ -83,10 +83,10 @@ contract lives in `docs/compat/ecosystem/ibm_quantum_ecosystem_project_catalog_s
 | Stage 9J | MQT Core / DDSIM / QMAP | Implemented clean-room educational compatibility workflows for Core-like IR/QASM, DDSIM-like simulation metadata, and QMAP-like routing; no production parity claim. |
 | Stage 9K | TorchQuantum / QML | Implemented clean-room educational TorchQuantum-like layer, tensor/batch forward, and toy classifier training; no production QML or high-risk ML claim. |
 | Stage 9L | Azure Quantum | Advisory no-token/cloud compatibility slice. |
-| Stage 9M | Benchpress | Benchmarking slice. |
+| Stage 9M | Benchpress | Superseded by Stage 10B executable benchmarking slice. |
 | Stage 9N | RasQberry | Educational hardware advisory slice. |
 | Stage 10A | QOS-UQCI / Quafu backend | Implemented offline job specs, clean-room payloads, mock runtime/backend execution, result schemas, and optional upstream boundaries. |
-| Stage 10B | Studio backend API | Planned unified backend API for executable slices. |
+| Stage 10B | Benchpress / Benchmarking | Implemented clean-room local benchmark registry, runner, suites, reports, result schemas, and optional upstream boundary. |
 | Stage 11A | Studio backend | Catalog and executable workflow API. |
 | Stage 11B | Studio frontend | Future UI prototype, separately authorized. |
 
@@ -231,6 +231,20 @@ The slice is clean-room and educational. It does not copy QOS-UQCI, Quafu, or
 pyquafu source, tutorials, UI, or branding. It is not production QOS runtime
 support, not production backend support, and does not access cloud services,
 tokens, or real hardware.
+
+## Stage 10B Benchpress / Benchmarking Slice
+
+Stage 10B promotes benchmarking compatibility from planning to a bounded
+executable local slice. QuantumBridge supports a clean-room benchmark case
+registry, default benchmark suites, deterministic local runner, metrics,
+serializable benchmark result schemas, JSON reports, Markdown reports, and
+optional upstream Benchpress boundary metadata.
+
+The default suites cover basic circuits, simulators, algorithms, finance /
+optimization, chemistry, QML, mitigation, backend mock execution, and bridge
+workflows. The slice is not a full Benchpress replacement, not official
+benchmark output, not production performance ranking, and does not access cloud
+services, tokens, or real hardware.
 
 ## Release Gating
 

@@ -141,6 +141,9 @@ section "qos-uqci-compat"
 section "quafu-compat"
 "$PYTEST_BIN" -q -rs tests/compat_quafu
 
+section "benchpress-compat"
+"$PYTEST_BIN" -q -rs tests/compat_benchpress
+
 section "ecosystem-inventory"
 "$PYTHON_BIN" scripts/inventory_qiskit_core_api.py
 "$PYTHON_BIN" scripts/inventory_qiskit_aer_api.py

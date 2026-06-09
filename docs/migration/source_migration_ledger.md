@@ -54,6 +54,8 @@ This ledger records implementation mode and upstream source status for the curre
 | `quantumbridge/compat/qos_uqci/*` | Stage 10A QOS-UQCI clean-room backend executable slice | Clean-room implementation / optional upstream boundary | Public project and package names only | No | N/A | QuantumBridge native; QOS-UQCI optional if installed separately | No | No | UQCI IR, job spec, DeviceSpec, CalSet, Manifest, OpenQASM artifact, offline mock runtime, and optional upstream boundary; no production runtime, cloud, token, hardware, or endorsement claim | N/A | Yes | Native tests and examples | Complete | Medium |
 | `quantumbridge/compat/quafu/*` | Stage 10A Quafu / pyquafu clean-room backend executable slice | Clean-room implementation / optional upstream boundary | Public project and package names only | No | N/A | QuantumBridge native; pyquafu optional if installed separately | No | No | Quafu-compatible payload, job spec, offline mock backend, and optional pyquafu boundary; no full pyquafu replacement, production backend, cloud, token, hardware, or endorsement claim | N/A | Yes | Native tests and examples | Complete | Medium |
 | `quantumbridge/schema/backend_results.py` | Stage 10A backend compatibility result envelopes | Native Implementation | Public project names only | No | N/A | QuantumBridge native | No | No | QuantumBridge-owned schemas for QOS-UQCI mock runtime, Quafu mock backend, and upstream passthrough results | N/A | Yes | Yes | Complete | Low |
+| `quantumbridge/compat/benchpress/*` | Stage 10B Benchpress / benchmarking clean-room executable slice | Clean-room implementation / optional upstream boundary | Public project and package names only | No | N/A | QuantumBridge native; Benchpress optional if installed separately | No | No | Local benchmark registry, runner, suites, metrics, JSON / Markdown reports, and optional upstream boundary; no official benchmark or production performance ranking claim | N/A | Yes | Native tests and examples | Complete | Medium |
+| `quantumbridge/schema/benchmark_results.py` | Stage 10B benchmark result envelopes | Native Implementation | Public project names only | No | N/A | QuantumBridge native | No | No | QuantumBridge-owned schemas for benchmark case, suite, comparison, and upstream passthrough results | N/A | Yes | Yes | Complete | Low |
 | `quantumbridge/compat/qiskit_addons/*` | Qiskit Addons inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Upstream dependency | No | No | Optional addons inventory; no source migration | N/A | Yes | Inventory smoke | Pending | High |
 | `quantumbridge/compat/pennylane_full/*` | PennyLane full ecosystem inventory and passthrough scaffold | Adapter Integration | No | API names only | N/A | Apache-2.0 dependency | No | No | Optional PennyLane modules; no full plugin parity claim | N/A | Yes | Yes | Pending | High |
 | `scripts/inventory_*_api.py` | Runtime public-name inventory generation | Native Implementation | Public package names only | Public package names only | N/A | N/A | No | No | Generates QuantumBridge JSON/Markdown matrices from runtime introspection | N/A | Yes | Yes | Pending | Medium |
@@ -614,3 +616,31 @@ site-packages trees, or virtual environments were copied:
 - `examples/quafu_mock_backend_quantumbridge.py`
 
 Stage 10A source port count remains zero.
+
+## Stage 10B Source Inventory
+
+The following Stage 10B files are clean-room QuantumBridge implementations or
+optional dependency boundaries; no IBM, Qiskit, Benchpress, QOS-UQCI, Quafu,
+pyquafu, PennyLane, MQT, Mitiq, TorchQuantum, PyTorch, wheels, dist-info,
+egg-info, site-packages, or virtual environments are vendored:
+
+- `quantumbridge/compat/benchpress/__init__.py`
+- `quantumbridge/compat/benchpress/benchmark_case.py`
+- `quantumbridge/compat/benchpress/benchmark_registry.py`
+- `quantumbridge/compat/benchpress/benchmark_runner.py`
+- `quantumbridge/compat/benchpress/benchmark_suites.py`
+- `quantumbridge/compat/benchpress/dependency.py`
+- `quantumbridge/compat/benchpress/examples.py`
+- `quantumbridge/compat/benchpress/metrics.py`
+- `quantumbridge/compat/benchpress/reporting.py`
+- `quantumbridge/compat/benchpress/result_adapter.py`
+- `quantumbridge/compat/benchpress/upstream_adapter.py`
+- `quantumbridge/compat/benchpress/warnings.py`
+- `quantumbridge/schema/benchmark_results.py`
+- `examples/benchpress_*_quantumbridge.py`
+- `tests/compat_benchpress/*`
+- `docs/compat/benchpress_benchmarking_strategy.md`
+- `docs/implementation/stage10b_benchpress_benchmarking_executable_slice_report.md`
+- `docs/tutorials/benchpress_*_quantumbridge.md`
+
+Stage 10B source port count remains zero.

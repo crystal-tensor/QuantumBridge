@@ -204,6 +204,23 @@ The native subset is not production QOS runtime support, not production Quafu
 backend support, does not access cloud services, does not read tokens, does not
 execute real hardware, and is not endorsed by QOS-UQCI or Quafu maintainers.
 
+## Stage 10B Benchpress / Benchmarking compatibility slice
+
+Stage 10B adds a clean-room local benchmarking adapter for QuantumBridge-owned
+small educational workloads. It provides a benchmark case registry, local
+runner, default suites, result schemas, JSON / Markdown reports, and optional
+upstream Benchpress boundary metadata when installed separately.
+
+No IBM, Qiskit, or Benchpress source code, tutorial implementation, website
+text, UI, branding, benchmark methodology, wheels, dist-info, egg-info,
+site-packages trees, virtual environments, or vendored package artifacts are
+copied into QuantumBridge.
+
+The native subset is not a full Benchpress replacement, not official benchmark
+output, not a production performance ranking system, does not access cloud
+services, does not read tokens, does not execute real hardware, and is not
+endorsed by IBM, Qiskit, or Benchpress maintainers.
+
 ## Stage 9B Qiskit Optimization native subset
 
 Stage 9B adds an independently implemented educational native binary

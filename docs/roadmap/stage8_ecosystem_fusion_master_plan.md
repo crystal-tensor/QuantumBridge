@@ -59,6 +59,7 @@ forcing incompatible dependency stacks into one environment.
 | PennyLane | Differentiable quantum programming, QNode, tape, operations, transforms. | Optional dependency, not a PennyLane replacement. |
 | Quafu / pyquafu | Stage 10A Quafu-compatible payload, job spec, and offline mock backend. | Separate optional pyquafu lane, no cloud token storage, not production backend. |
 | QOS-UQCI | Stage 10A QOS-UQCI clean-room IR, job spec, DeviceSpec / CalSet / Manifest, and offline mock runtime. | External optional project, no production runtime or hardware claim. |
+| Benchpress / Benchmarking | Stage 10B local benchmark registry, runner, suites, and reports. | Not official Benchpress output or production performance ranking. |
 | QuantumBridge Studio | Future visual workflow layer. | Planning only until adapter contracts stabilize. |
 
 ## 5. Stage Split
@@ -358,3 +359,20 @@ bounded executable offline slice:
 Stage 10A does not claim production QOS runtime, production backend support,
 official endorsement, cloud access, token access, hardware access, release
 readiness, tags, or UI implementation.
+
+## 6.12 Stage 10B Benchpress / Benchmarking Snapshot
+
+Stage 10B promotes Benchpress / benchmarking compatibility from planning to a
+bounded executable local slice:
+
+- benchmark case registry and default suites;
+- deterministic local benchmark runner and metrics;
+- basic circuit, simulator, algorithms, finance / optimization, chemistry,
+  QML, mitigation, backend, and bridge cases;
+- JSON and Markdown reports;
+- optional upstream Benchpress dependency boundary;
+- serializable benchmark result schemas and executable examples.
+
+Stage 10B does not claim complete Benchpress replacement, official benchmark
+output, production performance ranking, official endorsement, cloud access,
+token access, hardware access, release readiness, tags, or UI implementation.

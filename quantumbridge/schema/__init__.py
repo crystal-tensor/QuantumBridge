@@ -167,6 +167,13 @@ try:
         UpstreamQOSUQCIResult,
         UpstreamQuafuResult,
     )
+    from quantumbridge.schema.benchmark_results import (
+        BenchmarkCaseResult,
+        BenchmarkComparisonResult,
+        BenchmarkResult,
+        BenchmarkSuiteResult,
+        UpstreamBenchpressResult,
+    )
     __all__ = [
         # P2 schema exports
         "RESULT_SCHEMA_VERSION",
@@ -300,6 +307,11 @@ try:
         "QuafuBackendResult",
         "UpstreamQOSUQCIResult",
         "UpstreamQuafuResult",
+        "BenchmarkCaseResult",
+        "BenchmarkComparisonResult",
+        "BenchmarkResult",
+        "BenchmarkSuiteResult",
+        "UpstreamBenchpressResult",
     ]
 except ImportError:
     # Fallback when ecosystem extras not installed

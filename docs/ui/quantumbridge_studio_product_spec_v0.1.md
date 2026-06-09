@@ -949,7 +949,17 @@ Workflows are serializable representations of user actions:
 | **Level 3** | Native subset (independent implementation) |
 | **Scaffold** | Framework without actual implementation |
 
-### 10.2 References
+### 10.2 Stage 10B Benchmarking Panel Readiness
+
+Stage 10B prepares future Studio benchmark panels. The future UI can read
+QuantumBridge benchmark case metadata, suite summaries, pass/fail metrics,
+JSON reports, and Markdown report text from the backend API.
+
+This is planning only. Stage 10B does not implement frontend UI, does not
+claim official Benchpress output, does not rank machines for production
+performance, and does not access cloud services, tokens, or real hardware.
+
+### 10.3 References
 
 - [QuantumBridge SDK Documentation](../README.md)
 - [Full Ecosystem Coverage Policy](../compat/full_ecosystem_coverage_policy_v0.1.md)

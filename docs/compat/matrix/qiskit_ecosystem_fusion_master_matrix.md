@@ -187,3 +187,14 @@ These rows are the backend / QOS / Quafu compatibility slice for
 QuantumBridge's IBM Quantum Ecosystem clean-room parity plan. They do not copy
 IBM website content, QOS-UQCI source, Quafu source, pyquafu source, tutorials,
 UI, branding, or third-party project source.
+
+## Stage 10B Update
+
+| Ecosystem | New executable subset | Native level | Upstream path | Production-ready | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Benchpress / Benchmarking | Local benchmark registry, default suites, deterministic runner, metrics, JSON / Markdown reports | Level 3 | Optional local Benchpress package metadata passthrough | No | Supports small educational QuantumBridge workloads with benchmark result schemas, warnings, provenance, and no cloud/token/hardware access. Not official Benchpress output or production performance ranking. |
+
+This row is the Benchpress / benchmarking slice for QuantumBridge's IBM Quantum
+Ecosystem clean-room parity plan. It does not copy IBM website content,
+Benchpress source, Qiskit source, benchmark methodology, tutorials, UI,
+branding, or third-party project source.

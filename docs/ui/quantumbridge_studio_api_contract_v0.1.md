@@ -564,6 +564,20 @@ warnings, provenance, and explicit flags for `cloud_access=false`,
 
 ## 10. Open Questions
 
+### 10.0 Stage 10B Benchmark API Planning
+
+Future backend endpoints may expose Stage 10B benchmark suites:
+
+- `GET /api/v0/benchmarks/cases`
+- `GET /api/v0/benchmarks/suites`
+- `POST /api/v0/benchmarks/run`
+- `GET /api/v0/benchmarks/reports/{id}`
+
+These endpoints are planning notes only. Stage 10B does not implement UI,
+does not expose production benchmark ranking, does not claim official
+Benchpress output, and does not access cloud services, tokens, or real
+hardware.
+
 1. **REST or GraphQL?**
    - Current: REST (simpler for MVP)
    - Future: Consider GraphQL for flexible queries

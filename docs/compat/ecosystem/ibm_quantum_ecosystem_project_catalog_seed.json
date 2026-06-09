@@ -1,5 +1,5 @@
 {
-  "status": "Stage 10A clean-room catalog seed",
+  "status": "Stage 10B clean-room catalog seed",
   "source_mode": "manually curated compatibility target names only",
   "projects": [
     {
@@ -251,6 +251,38 @@
         "no official endorsement"
       ],
       "legal_boundary": "Project name only; no source, tutorial prose, UI, branding, or implementation copied."
+    },
+    {
+      "project_id": "benchpress",
+      "upstream_name": "Benchpress",
+      "category": "Benchmarking",
+      "adapter": "quantumbridge.compat.benchpress",
+      "current_status": "executable_subset",
+      "executable_slice_stage": "Stage 10B",
+      "executable_workflows": [
+        "basic circuit benchmark suite",
+        "simulator benchmark suite",
+        "algorithms benchmark suite",
+        "finance / optimization benchmark suite",
+        "chemistry benchmark suite",
+        "qml benchmark suite",
+        "mitigation benchmark suite",
+        "backend benchmark suite",
+        "bridge benchmark suite",
+        "JSON / Markdown report generation",
+        "optional upstream Benchpress passthrough boundary"
+      ],
+      "studio_ready": "partial",
+      "limitations": [
+        "not full Benchpress replacement",
+        "not official benchmark",
+        "not production performance ranking",
+        "no cloud access",
+        "no token access",
+        "no hardware access",
+        "no official endorsement"
+      ],
+      "legal_boundary": "Project name only; no source, tutorial prose, UI, branding, methodology, or implementation copied."
     }
   ]
 }

@@ -104,3 +104,14 @@ QuantumBridge local simulation with result schemas, warnings, and provenance.
 Production QOS runtime, production backend execution, real cloud submission,
 token handling, real hardware access, and official endorsement claims are
 excluded.
+
+## Stage 10B Application
+
+Benchpress / benchmarking compatibility is promoted only for deterministic
+local validation benchmarks over QuantumBridge-owned educational workloads. The
+accepted executable proof is a benchmark registry, default suites, runner,
+metrics, result schemas, JSON / Markdown reports, examples, and tests.
+
+Full Benchpress replacement, official benchmark claims, production performance
+ranking, cloud execution, token handling, real hardware access, and official
+endorsement claims are excluded.
