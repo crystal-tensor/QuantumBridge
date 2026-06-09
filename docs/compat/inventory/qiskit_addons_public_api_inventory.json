@@ -1,0 +1,84 @@
+{
+  "records": [
+    {
+      "adapter": "qiskit_addon_sqd",
+      "advisory": true,
+      "callable": false,
+      "ecosystem": "qiskit_addons",
+      "importable": false,
+      "module": "qiskit_addon_sqd",
+      "name": "dependency-not-installed",
+      "notes": "Optional dependency is not installed in this environment.",
+      "object_type": "dependency",
+      "quantumbridge_level": 0,
+      "risk": "LOW",
+      "supported": false,
+      "unsupported_reason": "Optional dependency is not installed in this environment.",
+      "upstream_required": true
+    },
+    {
+      "adapter": "qiskit_addon_mpf",
+      "advisory": true,
+      "callable": false,
+      "ecosystem": "qiskit_addons",
+      "importable": false,
+      "module": "qiskit_addon_mpf",
+      "name": "dependency-not-installed",
+      "notes": "Optional dependency is not installed in this environment.",
+      "object_type": "dependency",
+      "quantumbridge_level": 0,
+      "risk": "LOW",
+      "supported": false,
+      "unsupported_reason": "Optional dependency is not installed in this environment.",
+      "upstream_required": true
+    },
+    {
+      "adapter": "qiskit_addon_aqc",
+      "advisory": true,
+      "callable": false,
+      "ecosystem": "qiskit_addons",
+      "importable": false,
+      "module": "qiskit_addon_aqc_tensor",
+      "name": "dependency-not-installed",
+      "notes": "Optional dependency is not installed in this environment.",
+      "object_type": "dependency",
+      "quantumbridge_level": 0,
+      "risk": "LOW",
+      "supported": false,
+      "unsupported_reason": "Optional dependency is not installed in this environment.",
+      "upstream_required": true
+    },
+    {
+      "adapter": "qiskit_addon_obp",
+      "advisory": true,
+      "callable": false,
+      "ecosystem": "qiskit_addons",
+      "importable": false,
+      "module": "qiskit_addon_obp",
+      "name": "dependency-not-installed",
+      "notes": "Optional dependency is not installed in this environment.",
+      "object_type": "dependency",
+      "quantumbridge_level": 0,
+      "risk": "LOW",
+      "supported": false,
+      "unsupported_reason": "Optional dependency is not installed in this environment.",
+      "upstream_required": true
+    }
+  ],
+  "summary": {
+    "advisory": true,
+    "dependency_available": false,
+    "ecosystem": "qiskit_addons",
+    "level_counts": {
+      "0": 4,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    },
+    "offline_only": false,
+    "records": 4,
+    "unsupported": 4,
+    "upstream_package": "qiskit-addons",
+    "upstream_version": null
+  }
+}

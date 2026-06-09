@@ -2,7 +2,7 @@
 
 **Version**: v0.1  
 **Date**: 2026-06-09  
-**Status**: Stage 8A planning  
+**Status**: Stage 8D adapter contract hardening
 
 ## 1. Position
 
@@ -31,20 +31,25 @@ No official IBM, Qiskit, or package maintainer endorsement is claimed.
 
 ## 3. Adapter Contract per Ecosystem
 
-Every Qiskit ecosystem adapter should converge on this surface:
+Every Qiskit ecosystem adapter now converges on this surface:
 
-1. `dependency_available`;
-2. `get_upstream_version`;
-3. `list_public_api_inventory`;
-4. `get_public_object`;
-5. `passthrough_class`;
-6. `passthrough_function`;
-7. `wrap_result`;
-8. `to_quantumbridge_schema`;
-9. `get_provenance`;
-10. `unsupported(reason)`;
-11. `get_warnings`;
-12. tests for installed and unavailable environments.
+1. `capability_level`;
+2. `production_ready`;
+3. `native_implementation`;
+4. `upstream_required`;
+5. `dependency_available`;
+6. `get_upstream_version`;
+7. `get_dependency_report`;
+8. `list_public_api_inventory`;
+9. `get_public_object`;
+10. `passthrough_call`;
+11. `passthrough_class`;
+12. `wrap_result`;
+13. `to_quantumbridge_schema`;
+14. `get_warnings`;
+15. `get_provenance`;
+16. `unsupported(reason)`;
+17. `validate_environment`.
 
 ## 4. Data Flow
 
@@ -90,3 +95,27 @@ Required tests:
 - offline-only runtime behavior;
 - advisory package `continue-on-error` behavior in workflow matrix where
   appropriate.
+
+## 8. Stage 8D Implementation Snapshot
+
+Stage 8D hardens the Qiskit ecosystem contract across core, Aer, Nature,
+Algorithms, Finance, Optimization, Machine Learning, Dynamics, Experiments,
+Metal, Runtime, and Addons.
+
+The implementation uses a shared QuantumBridge facade for dependency checks,
+public-object lookup, passthrough, schema wrapping, warnings, provenance, and
+environment validation. The result envelope lives in
+`quantumbridge.schema.qiskit_results` and records upstream package, upstream
+version, capability level, mode, raw type, warnings, provenance, advisory
+status, and offline-only status.
+
+Runtime remains offline-only: no IBM Cloud access, no token reads, no token
+storage, and no job submission. Metal remains advisory: no executable chip
+design, EM simulation, layout signoff, or fabrication support is claimed.
+Dynamics, Experiments, Runtime, Metal, and Addons expose advisory warnings where
+appropriate. Missing optional packages report unsupported metadata instead of
+pretending support exists.
+
+Stage 8D does not introduce new Qiskit-native implementation. It strengthens the
+adapter contract and generated inventory records so later conversion work can
+start from explicit capability boundaries.

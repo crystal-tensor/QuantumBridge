@@ -1,0 +1,84 @@
+{
+  "records": [
+    {
+      "adapter": "qiskit_finance_applications",
+      "advisory": false,
+      "callable": false,
+      "ecosystem": "qiskit_finance",
+      "importable": false,
+      "module": "qiskit_finance.applications",
+      "name": "dependency-not-installed",
+      "notes": "Optional dependency is not installed in this environment.",
+      "object_type": "dependency",
+      "quantumbridge_level": 0,
+      "risk": "LOW",
+      "supported": false,
+      "unsupported_reason": "Optional dependency is not installed in this environment.",
+      "upstream_required": true
+    },
+    {
+      "adapter": "qiskit_finance_data_provider",
+      "advisory": false,
+      "callable": false,
+      "ecosystem": "qiskit_finance",
+      "importable": false,
+      "module": "qiskit_finance.data_providers",
+      "name": "dependency-not-installed",
+      "notes": "Optional dependency is not installed in this environment.",
+      "object_type": "dependency",
+      "quantumbridge_level": 0,
+      "risk": "LOW",
+      "supported": false,
+      "unsupported_reason": "Optional dependency is not installed in this environment.",
+      "upstream_required": true
+    },
+    {
+      "adapter": "qiskit_finance_circuits",
+      "advisory": false,
+      "callable": false,
+      "ecosystem": "qiskit_finance",
+      "importable": false,
+      "module": "qiskit_finance.circuit.library",
+      "name": "dependency-not-installed",
+      "notes": "Optional dependency is not installed in this environment.",
+      "object_type": "dependency",
+      "quantumbridge_level": 0,
+      "risk": "LOW",
+      "supported": false,
+      "unsupported_reason": "Optional dependency is not installed in this environment.",
+      "upstream_required": true
+    },
+    {
+      "adapter": "qiskit_finance_uncertainty",
+      "advisory": false,
+      "callable": false,
+      "ecosystem": "qiskit_finance",
+      "importable": false,
+      "module": "qiskit_finance.circuit.library",
+      "name": "dependency-not-installed",
+      "notes": "Optional dependency is not installed in this environment.",
+      "object_type": "dependency",
+      "quantumbridge_level": 0,
+      "risk": "LOW",
+      "supported": false,
+      "unsupported_reason": "Optional dependency is not installed in this environment.",
+      "upstream_required": true
+    }
+  ],
+  "summary": {
+    "advisory": false,
+    "dependency_available": false,
+    "ecosystem": "qiskit_finance",
+    "level_counts": {
+      "0": 4,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    },
+    "offline_only": false,
+    "records": 4,
+    "unsupported": 4,
+    "upstream_package": "qiskit-finance",
+    "upstream_version": null
+  }
+}

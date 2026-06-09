@@ -251,3 +251,65 @@ source, tests, documentation prose, comments, or error strings.
 - `quantumbridge/schema/pennylane_results.py`
 
 Stage 8B source port count remains zero.
+
+## Stage 8D exact path registration
+
+The following Stage 8D Qiskit ecosystem adapter contract, schema, inventory,
+and test files mention upstream package names only for optional dependency
+discovery, runtime public API introspection, passthrough metadata, provenance,
+warnings, schema metadata, or unsupported/advisory labels. They are
+independently implemented and copy no upstream source, tests, documentation
+prose, comments, or error strings.
+
+- `quantumbridge/compat/qiskit_common.py`
+- `quantumbridge/compat/qiskit_contract_helpers.py`
+- `quantumbridge/compat/qiskit_adapter.py`
+- `quantumbridge/compat/qiskit_core/__init__.py`
+- `quantumbridge/compat/qiskit_core/circuit_adapter.py`
+- `quantumbridge/compat/qiskit_aer/__init__.py`
+- `quantumbridge/compat/qiskit_nature/__init__.py`
+- `quantumbridge/compat/qiskit_algorithms/__init__.py`
+- `quantumbridge/compat/qiskit_finance/__init__.py`
+- `quantumbridge/compat/qiskit_optimization/__init__.py`
+- `quantumbridge/compat/qiskit_machine_learning/__init__.py`
+- `quantumbridge/compat/qiskit_dynamics/__init__.py`
+- `quantumbridge/compat/qiskit_experiments/__init__.py`
+- `quantumbridge/compat/qiskit_metal/__init__.py`
+- `quantumbridge/compat/qiskit_runtime/__init__.py`
+- `quantumbridge/compat/qiskit_addons/__init__.py`
+- `quantumbridge/schema/qiskit_results.py`
+- `scripts/qiskit_inventory_common.py`
+- `scripts/inventory_qiskit_core_api.py`
+- `scripts/inventory_qiskit_aer_api.py`
+- `scripts/inventory_qiskit_nature_api.py`
+- `scripts/inventory_qiskit_algorithms_api.py`
+- `scripts/inventory_qiskit_finance_api.py`
+- `scripts/inventory_qiskit_optimization_api.py`
+- `scripts/inventory_qiskit_machine_learning_api.py`
+- `scripts/inventory_qiskit_dynamics_api.py`
+- `scripts/inventory_qiskit_experiments_api.py`
+- `scripts/inventory_qiskit_metal_api.py`
+- `scripts/inventory_qiskit_ibm_runtime_api.py`
+- `scripts/inventory_qiskit_addons_api.py`
+- `tests/compat_qiskit_core/test_qiskit_core_contract.py`
+- `tests/compat_qiskit_aer/test_qiskit_aer_contract.py`
+- `tests/compat_qiskit_nature/test_qiskit_nature_contract.py`
+- `tests/compat_qiskit_algorithms/test_qiskit_algorithms_contract.py`
+- `tests/compat_qiskit_finance/test_qiskit_finance_contract.py`
+- `tests/compat_qiskit_optimization/test_qiskit_optimization_contract.py`
+- `tests/compat_qiskit_machine_learning/test_qiskit_ml_contract.py`
+- `tests/compat_qiskit_dynamics/test_qiskit_dynamics_contract.py`
+- `tests/compat_qiskit_experiments/test_qiskit_experiments_contract.py`
+- `tests/compat_qiskit_metal/test_qiskit_metal_advisory_contract.py`
+- `tests/compat_qiskit_runtime/test_qiskit_runtime_offline_contract.py`
+- `tests/compat_qiskit_addons/test_qiskit_addons_contract.py`
+- `tests/ecosystem/test_qiskit_ecosystem_contract_coverage.py`
+- `tests/ecosystem/test_qiskit_result_schema.py`
+- `tests/ecosystem/test_qiskit_no_vendor_no_token.py`
+
+Stage 8D generated inventory JSON and coverage matrix Markdown files under
+`docs/compat/inventory/` and `docs/compat/matrix/` contain public API names,
+capability metadata, warnings, risk labels, and provenance notes only. They do
+not contain upstream implementation source or vendored dependency artifacts.
+
+Stage 8D source port count remains zero.

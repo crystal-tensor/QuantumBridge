@@ -1,6 +1,6 @@
 # QuantumBridge SDK
 
-QuantumBridge is an experimental quantum SDK. The current repository keeps the P1 release-candidate baseline intact while Stage 7 planning adds optional ecosystem inventory and adapter scaffolds.
+QuantumBridge is an experimental quantum SDK. The current repository keeps the P1 release-candidate baseline intact while Stage 8 hardens optional ecosystem inventory, adapter contracts, and schema wrappers.
 
 QuantumBridge is an independent project. It is not an official Qiskit, PennyLane, IBM, or Xanadu project, and it does not claim full feature parity or full replacement coverage.
 
@@ -42,13 +42,13 @@ Stage 7 planning defines function coverage by level:
 
 Current Qiskit ecosystem status:
 
-- Qiskit core: Level 0 inventory across core modules, Level 1 passthrough scaffold, existing P1 Level 2 subset for basic circuits/results.
-- Qiskit Aer: Level 0 inventory and Level 1 passthrough scaffold; no Aer-native parity claim.
-- Qiskit Finance: Level 0 inventory and Level 1 scaffold when installed; not production finance.
-- Qiskit Optimization: Level 0 inventory and Level 1 scaffold when installed; no full optimizer parity.
-- Qiskit Machine Learning: Level 0 inventory and Level 1 scaffold when installed; not production ML.
-- Qiskit IBM Runtime / Experiments / Addons: inventory-first planning; no hardware, service, experiment, or addon parity claims.
-- Qiskit Nature / Algorithms / PySCF / OpenFermion: handled by the separate P2 dual-track branch and remain optional upstream dependencies.
+- Qiskit core: Level 0 inventory, Level 1 passthrough contract, and a reviewed Level 2 subset for basic circuits/results.
+- Qiskit Aer: Level 0 inventory, Level 1 passthrough contract, and Level 2 result schema wrapper when installed.
+- Qiskit Nature and Algorithms: Level 0 inventory, Level 1 passthrough contract, and Level 2 result schema wrappers when installed.
+- Qiskit Finance, Optimization, and Machine Learning: Level 0 inventory and contract metadata; missing optional packages report unsupported metadata.
+- Qiskit Dynamics, Experiments, Metal, Runtime, and Addons: advisory or offline-only contracts with explicit warnings.
+- Qiskit Runtime remains offline-only: no IBM Cloud access, no token reads, no credential storage, and no job submission.
+- Qiskit Metal remains advisory: no chip fabrication, external EM simulation, or layout signoff support is claimed.
 
 Current PennyLane ecosystem status:
 
@@ -74,6 +74,18 @@ Stage 7.2 expands installed-environment verification and adapter schemas. It rem
 | PennyLane full | Level 0/1 plus PennyLaneResult Level 2 wrapper | `.[pennylane-full]` | Verified: 0.42.3; no complete replacement claim |
 
 Level 2 here means a QuantumBridge result-schema wrapper. It does not mean complete input conversion, behavioral parity, performance parity, or production equivalence.
+
+## Stage 8D Qiskit Adapter Contract Hardening
+
+Stage 8D adds a uniform contract across the Qiskit ecosystem lanes:
+
+- capability metadata: `capability_level`, `production_ready`, `native_implementation`, and `upstream_required`;
+- dependency and version reporting;
+- generated public API inventory;
+- public-object lookup, passthrough call/class helpers, result wrapping, schema conversion, warnings, provenance, unsupported metadata, and environment validation;
+- Qiskit result schema envelopes for core, Aer, Nature, Algorithms, Finance, Optimization, Machine Learning, Dynamics, Experiments, Metal, Runtime, Addons, and conversions.
+
+Generated Qiskit inventory snapshots live in `docs/compat/inventory/`, with summary matrices in `docs/compat/matrix/`. These snapshots are public-name inventories and do not copy upstream source or documentation prose.
 
 Install one lane per environment:
 

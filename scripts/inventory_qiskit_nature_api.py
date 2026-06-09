@@ -7,9 +7,12 @@
 
 from __future__ import annotations
 
+from qiskit_inventory_common import write_public_api_inventory
 import importlib
 import inspect
 from pathlib import Path
+
+from quantumbridge.compat import qiskit_nature as QISKIT_NATURE
 
 
 MODULES = [
@@ -73,3 +76,14 @@ def write_markdown(rows, unavailable):
 
 if __name__ == "__main__":
     write_markdown(*inventory())
+    inventory_path, matrix_path, summary = write_public_api_inventory(
+        ecosystem="qiskit_nature",
+        facade=QISKIT_NATURE.ADAPTER,
+        adapters=(
+            QISKIT_NATURE.nature_adapter,
+            QISKIT_NATURE.driver_adapter,
+            QISKIT_NATURE.problem_adapter,
+            QISKIT_NATURE.openfermion_adapter,
+        ),
+    )
+    print(f"wrote {inventory_path} and {matrix_path} ({summary['records']} records)")

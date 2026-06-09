@@ -2,7 +2,7 @@
 
 **Version**: v0.1  
 **Date**: 2026-06-09  
-**Status**: Stage 8A planning matrix  
+**Status**: Stage 8D adapter contract matrix
 
 ## Capability Levels
 
@@ -31,16 +31,41 @@
 | Qiskit Runtime | backend / job / result / runtime | Existing matrices present | Yes | Offline-only | Offline-only | No | same contract plus no-token policy | qiskit-runtime-extra | High | 8D |
 | Qiskit Addons | sqd / mpf / aqc / obp | Existing matrices present | Yes | Advisory | Advisory | No | same contract plus addon warnings | qiskit-addons-extra | Medium | 8D |
 
+## Stage 8D Inventory Snapshot
+
+Generated inventory files live under `docs/compat/inventory/`. They are runtime
+public-name snapshots and copy no upstream source.
+
+| Ecosystem | Records | Level 0 | Level 1 | Level 2 | Level 3 | Unsupported | Advisory | Offline-only | Local dependency |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- |
+| Qiskit core | 311 | 311 | 0 | 0 | 0 | 0 | No | No | qiskit 2.4.1 |
+| Qiskit Aer | 24 | 24 | 0 | 0 | 0 | 0 | No | No | qiskit-aer 0.17.2 |
+| Qiskit Nature | 221 | 221 | 0 | 0 | 0 | 0 | No | No | qiskit-nature 0.8.0 |
+| Qiskit Algorithms | 145 | 145 | 0 | 0 | 0 | 0 | No | No | qiskit-algorithms 0.4.0 |
+| Qiskit Finance | 4 | 4 | 0 | 0 | 0 | 4 | No | No | not installed |
+| Qiskit Optimization | 5 | 5 | 0 | 0 | 0 | 5 | No | No | not installed |
+| Qiskit Machine Learning | 6 | 6 | 0 | 0 | 0 | 6 | No | No | not installed |
+| Qiskit Dynamics | 6 | 6 | 0 | 0 | 0 | 6 | Yes | No | not installed |
+| Qiskit Experiments | 4 | 4 | 0 | 0 | 0 | 4 | Yes | Yes | not installed |
+| Qiskit Metal | 5 | 5 | 0 | 0 | 0 | 5 | Yes | No | not installed |
+| Qiskit Runtime | 3 | 3 | 0 | 0 | 0 | 3 | Yes | Yes | not installed |
+| Qiskit Addons | 4 | 4 | 0 | 0 | 0 | 4 | Yes | No | not installed |
+
 ## Required Function Checklist
 
-Each row must eventually expose or document:
+Each row exposes or documents:
 
+- `capability_level`;
+- `production_ready`;
+- `native_implementation`;
+- `upstream_required`;
 - `dependency_available`;
 - `get_upstream_version`;
+- `get_dependency_report`;
 - `list_public_api_inventory`;
 - `get_public_object`;
 - `passthrough_class`;
-- `passthrough_function`;
+- `passthrough_call`;
 - `wrap_result`;
 - `to_quantumbridge_schema`;
 - `get_provenance`;
@@ -50,8 +75,8 @@ Each row must eventually expose or document:
 
 ## Non-Goals
 
-- No full Qiskit replacement.
-- No production parity.
+- No native replacement for Qiskit.
+- No production-equivalence claim.
 - No IBM Cloud access.
 - No token reads or credential storage.
 - No production finance, ML, optimization, chemistry, experiments, dynamics,

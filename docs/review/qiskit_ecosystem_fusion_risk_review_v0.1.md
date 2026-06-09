@@ -2,7 +2,7 @@
 
 **Version**: v0.1  
 **Date**: 2026-06-09  
-**Status**: Stage 8A risk review  
+**Status**: Stage 8D risk review
 
 ## Summary
 
@@ -22,6 +22,8 @@ boundaries.
 | Advisory package failures | Medium | Advisory workflow lanes may continue on error when clearly labeled. |
 | Result semantic mismatch | Medium | Schema wrappers must include raw type, mode, warnings, and provenance. |
 | Upstream endorsement implication | High | No official endorsement claim. |
+| Optional package absence | Medium | Contract returns dependency reports and unsupported metadata. |
+| Inventory misread as support | Medium | Inventory records include supported, unsupported_reason, advisory, risk, and notes fields. |
 
 ## Required Warnings
 
@@ -49,3 +51,22 @@ design, EM simulation, layout signoff, or fabrication support.
 - Advisory lanes do not imply production support.
 - Runtime lanes verify offline-only behavior.
 - Result wrappers validate schema fields and provenance.
+
+## Stage 8D Risk Disposition
+
+Stage 8D reduces adapter contract risk by adding one shared facade across the
+Qiskit ecosystem adapters. Every adapter now reports capability level,
+production-readiness status, native-implementation status, upstream dependency
+status, warnings, provenance, and environment validation through the same
+surface.
+
+The largest remaining risks are dependency drift and domain overread. Generated
+inventory should be treated as public-name coverage, not as evidence of runnable
+QuantumBridge behavior. The Stage 8D schema wrappers preserve raw type,
+upstream package, upstream version, warnings, and unsupported reasons so callers
+can see the boundary explicitly.
+
+Runtime and Metal remain high-sensitivity domains. Runtime tests must continue
+to verify no cloud calls, no token reads, and no credential storage. Metal tests
+must continue to verify advisory-only language and must not imply fabrication,
+simulation, or layout signoff capability.

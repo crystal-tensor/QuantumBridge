@@ -1,0 +1,84 @@
+{
+  "records": [
+    {
+      "adapter": "qiskit_experiments",
+      "advisory": true,
+      "callable": false,
+      "ecosystem": "qiskit_experiments",
+      "importable": false,
+      "module": "qiskit_experiments",
+      "name": "dependency-not-installed",
+      "notes": "Optional dependency is not installed in this environment.",
+      "object_type": "dependency",
+      "quantumbridge_level": 0,
+      "risk": "LOW",
+      "supported": false,
+      "unsupported_reason": "Optional dependency is not installed in this environment.",
+      "upstream_required": true
+    },
+    {
+      "adapter": "qiskit_experiments_tomography",
+      "advisory": true,
+      "callable": false,
+      "ecosystem": "qiskit_experiments",
+      "importable": false,
+      "module": "qiskit_experiments.library.tomography",
+      "name": "dependency-not-installed",
+      "notes": "Optional dependency is not installed in this environment.",
+      "object_type": "dependency",
+      "quantumbridge_level": 0,
+      "risk": "LOW",
+      "supported": false,
+      "unsupported_reason": "Optional dependency is not installed in this environment.",
+      "upstream_required": true
+    },
+    {
+      "adapter": "qiskit_experiments_rb",
+      "advisory": true,
+      "callable": false,
+      "ecosystem": "qiskit_experiments",
+      "importable": false,
+      "module": "qiskit_experiments.library.randomized_benchmarking",
+      "name": "dependency-not-installed",
+      "notes": "Optional dependency is not installed in this environment.",
+      "object_type": "dependency",
+      "quantumbridge_level": 0,
+      "risk": "LOW",
+      "supported": false,
+      "unsupported_reason": "Optional dependency is not installed in this environment.",
+      "upstream_required": true
+    },
+    {
+      "adapter": "qiskit_experiments_calibration",
+      "advisory": true,
+      "callable": false,
+      "ecosystem": "qiskit_experiments",
+      "importable": false,
+      "module": "qiskit_experiments.calibration_management",
+      "name": "dependency-not-installed",
+      "notes": "Optional dependency is not installed in this environment.",
+      "object_type": "dependency",
+      "quantumbridge_level": 0,
+      "risk": "LOW",
+      "supported": false,
+      "unsupported_reason": "Optional dependency is not installed in this environment.",
+      "upstream_required": true
+    }
+  ],
+  "summary": {
+    "advisory": true,
+    "dependency_available": false,
+    "ecosystem": "qiskit_experiments",
+    "level_counts": {
+      "0": 4,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    },
+    "offline_only": true,
+    "records": 4,
+    "unsupported": 4,
+    "upstream_package": "qiskit-experiments",
+    "upstream_version": null
+  }
+}

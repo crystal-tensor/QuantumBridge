@@ -44,6 +44,22 @@ try:
         TemplateResult,
         TransformResult,
     )
+    from quantumbridge.schema.qiskit_results import (
+        AddonsAdvisoryResult,
+        AerResult as QiskitAerResult,
+        AlgorithmsResult as QiskitAlgorithmsResult,
+        DynamicsResult as QiskitDynamicsResult,
+        ExperimentsResult as QiskitExperimentsResult,
+        FinanceResult as QiskitFinanceResult,
+        MachineLearningResult,
+        MetalAdvisoryResult,
+        NatureResult,
+        OptimizationResult as QiskitOptimizationResult,
+        QiskitConversionResult,
+        QiskitCoreResult,
+        QiskitResult,
+        RuntimeOfflineResult,
+    )
     __all__ = [
         # P2 schema exports
         "RESULT_SCHEMA_VERSION",
@@ -81,6 +97,20 @@ try:
         "TapeBridgeResult",
         "TemplateResult",
         "TransformResult",
+        "AddonsAdvisoryResult",
+        "MachineLearningResult",
+        "MetalAdvisoryResult",
+        "NatureResult",
+        "QiskitAerResult",
+        "QiskitAlgorithmsResult",
+        "QiskitConversionResult",
+        "QiskitCoreResult",
+        "QiskitDynamicsResult",
+        "QiskitExperimentsResult",
+        "QiskitFinanceResult",
+        "QiskitOptimizationResult",
+        "QiskitResult",
+        "RuntimeOfflineResult",
     ]
 except ImportError:
     # Fallback when ecosystem extras not installed

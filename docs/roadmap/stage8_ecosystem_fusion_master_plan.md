@@ -177,3 +177,24 @@ Stage 8C remains bounded. It does not claim full native PennyLane support,
 production equivalence, real QOS-UQCI runtime execution, real cloud access,
 hardware access, token reads, token storage, release readiness, tag creation,
 or UI implementation.
+
+## 6.3 Stage 8D Implementation Snapshot
+
+Stage 8D hardens the Qiskit ecosystem adapter contract after the Stage 8C
+PennyLane bridge work:
+
+- shared Qiskit adapter facade for dependency reports, public-object lookup,
+  passthrough calls/classes, result wrapping, warnings, provenance, unsupported
+  metadata, and environment validation;
+- Qiskit result schema envelopes for core, Aer, Nature, Algorithms, Finance,
+  Optimization, Machine Learning, Dynamics, Experiments, Metal, Runtime,
+  Addons, and conversion outputs;
+- generated public API inventories and coverage matrices for the twelve Qiskit
+  ecosystem lanes;
+- per-lane contract tests plus ecosystem-level tests for schema behavior,
+  no-token policy, and no vendored dependency artifacts;
+- bounded Qiskit circuit bridge additions for phase, cnot alias, and swap.
+
+Stage 8D remains an adapter-hardening stage. It does not add cloud execution,
+token handling, hardware access, release artifacts, tags, UI implementation, or
+new production-domain claims.

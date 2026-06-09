@@ -12,7 +12,7 @@ from quantumbridge.core import Circuit
 from quantumbridge.results import Result
 
 
-SUPPORTED_IMPORT = {"x", "y", "z", "h", "rx", "ry", "rz", "cx", "cz", "measure"}
+SUPPORTED_IMPORT = {"x", "y", "z", "h", "rx", "ry", "rz", "p", "phase", "cx", "cnot", "cz", "swap", "measure"}
 
 
 def _require_qiskit():
@@ -36,8 +36,13 @@ def circuit_from_qiskit(qiskit_circuit) -> Circuit:
             getattr(qb, name)(qubits[0])
         elif name in {"rx", "ry", "rz"}:
             getattr(qb, name)(params[0], qubits[0])
-        elif name in {"cx", "cz"}:
-            getattr(qb, name)(qubits[0], qubits[1])
+        elif name in {"p", "phase"}:
+            qb.phase(params[0], qubits[0])
+        elif name in {"cx", "cnot", "cz"}:
+            gate = "cx" if name in {"cx", "cnot"} else "cz"
+            getattr(qb, gate)(qubits[0], qubits[1])
+        elif name == "swap":
+            qb.swap(qubits[0], qubits[1])
         elif name == "measure":
             qb.measure(qubits[0], clbits[0])
     return qb
@@ -55,8 +60,12 @@ def circuit_to_qiskit(circuit: Circuit):
             getattr(qc, op.name)(op.targets[0])
         elif op.name in {"rx", "ry", "rz"}:
             getattr(qc, op.name)(float(op.params[0]), op.targets[0])
+        elif op.name == "phase":
+            qc.p(float(op.params[0]), op.targets[0])
         elif op.name in {"cx", "cz"}:
             getattr(qc, op.name)(op.controls[0], op.targets[0])
+        elif op.name == "swap":
+            qc.swap(op.targets[0], op.targets[1])
         else:
             raise ValueError(f"QuantumBridge Qiskit export does not support operation {op.name!r}.")
     for meas in circuit.measurements:
@@ -71,8 +80,12 @@ def circuit_from_ir(program) -> Circuit:
             getattr(circuit, instruction.op)(instruction.targets[0])
         elif instruction.op in {"rx", "ry", "rz"}:
             getattr(circuit, instruction.op)(instruction.params[0], instruction.targets[0])
+        elif instruction.op == "phase":
+            circuit.phase(instruction.params[0], instruction.targets[0])
         elif instruction.op in {"cx", "cz"}:
             getattr(circuit, instruction.op)(instruction.controls[0], instruction.targets[0])
+        elif instruction.op == "swap":
+            circuit.swap(instruction.targets[0], instruction.targets[1])
         else:
             raise ValueError(f"QuantumBridge IR to Qiskit bridge does not support operation {instruction.op!r}.")
     for measurement in program.measurements:

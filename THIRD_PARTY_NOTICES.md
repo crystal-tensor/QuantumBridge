@@ -1,7 +1,7 @@
 # Third-party Notices
 
-Status: Stage 7 planning update
-Date: 2026-06-05
+Status: Stage 8D adapter contract update
+Date: 2026-06-09
 
 QuantumBridge is an independent project. References to Qiskit and PennyLane are for attribution, compatibility, and optional adapter documentation only and do not imply endorsement.
 
@@ -83,3 +83,33 @@ PySCF, or OpenFermion maintainers.
 Stage 7.2 adds optional inventory, passthrough, and result-schema adapters for Qiskit Nature, Qiskit Algorithms, Qiskit Dynamics, Qiskit Metal, PySCF, and OpenFermion, and expands the existing Finance, Optimization, Machine Learning, Experiments, Aer, and PennyLane coverage.
 
 These upstream packages are not distributed inside QuantumBridge. Each package is installed into an isolated optional environment for verification. Qiskit Metal coverage is advisory and does not imply chip fabrication or electromagnetic simulation capability.
+
+## Stage 8D Qiskit ecosystem adapter contracts
+
+Stage 8D hardens optional adapter contracts for:
+
+- Qiskit core;
+- Qiskit Aer;
+- Qiskit Nature;
+- Qiskit Algorithms;
+- Qiskit Finance;
+- Qiskit Optimization;
+- Qiskit Machine Learning;
+- Qiskit Dynamics;
+- Qiskit Experiments;
+- Qiskit Metal;
+- Qiskit IBM Runtime;
+- Qiskit Addons.
+
+Usage mode: optional dependency discovery, runtime public API inventory,
+upstream passthrough where installed, QuantumBridge result-schema wrapping,
+warnings, provenance, unsupported metadata, and environment validation.
+
+Source port status: no Stage 8D Qiskit ecosystem source files, tests,
+documentation prose, comments, error strings, wheels, dist-info, egg-info,
+site-packages trees, or virtual environments were copied into QuantumBridge.
+
+Runtime support is offline-only. QuantumBridge does not access IBM Cloud, read
+tokens, store credentials, or submit jobs. Qiskit Metal support is advisory
+only and does not provide chip fabrication, external electromagnetic
+simulation, or layout signoff capability.

@@ -1,0 +1,100 @@
+{
+  "records": [
+    {
+      "adapter": "qiskit_optimization_quadratic_program",
+      "advisory": false,
+      "callable": false,
+      "ecosystem": "qiskit_optimization",
+      "importable": false,
+      "module": "qiskit_optimization",
+      "name": "dependency-not-installed",
+      "notes": "Optional dependency is not installed in this environment.",
+      "object_type": "dependency",
+      "quantumbridge_level": 0,
+      "risk": "LOW",
+      "supported": false,
+      "unsupported_reason": "Optional dependency is not installed in this environment.",
+      "upstream_required": true
+    },
+    {
+      "adapter": "qiskit_optimization_quadratic_program",
+      "advisory": false,
+      "callable": false,
+      "ecosystem": "qiskit_optimization",
+      "importable": false,
+      "module": "qiskit_optimization.problems",
+      "name": "dependency-not-installed",
+      "notes": "Optional dependency is not installed in this environment.",
+      "object_type": "dependency",
+      "quantumbridge_level": 0,
+      "risk": "LOW",
+      "supported": false,
+      "unsupported_reason": "Optional dependency is not installed in this environment.",
+      "upstream_required": true
+    },
+    {
+      "adapter": "qiskit_optimization_optimizer",
+      "advisory": false,
+      "callable": false,
+      "ecosystem": "qiskit_optimization",
+      "importable": false,
+      "module": "qiskit_optimization.algorithms",
+      "name": "dependency-not-installed",
+      "notes": "Optional dependency is not installed in this environment.",
+      "object_type": "dependency",
+      "quantumbridge_level": 0,
+      "risk": "LOW",
+      "supported": false,
+      "unsupported_reason": "Optional dependency is not installed in this environment.",
+      "upstream_required": true
+    },
+    {
+      "adapter": "qiskit_optimization_converter",
+      "advisory": false,
+      "callable": false,
+      "ecosystem": "qiskit_optimization",
+      "importable": false,
+      "module": "qiskit_optimization.converters",
+      "name": "dependency-not-installed",
+      "notes": "Optional dependency is not installed in this environment.",
+      "object_type": "dependency",
+      "quantumbridge_level": 0,
+      "risk": "LOW",
+      "supported": false,
+      "unsupported_reason": "Optional dependency is not installed in this environment.",
+      "upstream_required": true
+    },
+    {
+      "adapter": "qiskit_optimization_applications",
+      "advisory": false,
+      "callable": false,
+      "ecosystem": "qiskit_optimization",
+      "importable": false,
+      "module": "qiskit_optimization.applications",
+      "name": "dependency-not-installed",
+      "notes": "Optional dependency is not installed in this environment.",
+      "object_type": "dependency",
+      "quantumbridge_level": 0,
+      "risk": "LOW",
+      "supported": false,
+      "unsupported_reason": "Optional dependency is not installed in this environment.",
+      "upstream_required": true
+    }
+  ],
+  "summary": {
+    "advisory": false,
+    "dependency_available": false,
+    "ecosystem": "qiskit_optimization",
+    "level_counts": {
+      "0": 5,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    },
+    "offline_only": false,
+    "records": 5,
+    "unsupported": 5,
+    "upstream_package": "qiskit-optimization",
+    "upstream_version": null
+  }
+}
