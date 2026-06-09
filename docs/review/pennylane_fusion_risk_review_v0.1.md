@@ -40,6 +40,25 @@ Additional Stage 8A controls:
 4. Keep QOS-UQCI support in planning/offline/mock mode only.
 5. Keep UI work in product/spec/API planning only.
 
+### Stage 8B Status Update
+
+Stage 8B adds a first lightweight implementation layer for PennyLane public API
+inventory and adapter contracts. The risk posture remains MEDIUM because the
+new bridge intentionally covers metadata, passthrough, schema wrapping, and
+basic gate conversion only.
+
+Stage 8B controls:
+
+1. PennyLane remains an optional dependency.
+2. Generic passthrough does not copy source and does not alter upstream object
+   semantics.
+3. Result wrappers always include warnings and provenance.
+4. QOS-UQCI output is an offline experimental job-spec scaffold only.
+5. Unsupported gates and unavailable dependencies produce structured warnings
+   or unavailable responses rather than silent success.
+6. No UI, release, tag, full replacement claim, or production parity claim is
+   introduced.
+
 ---
 
 ## 2. False Claim Risk

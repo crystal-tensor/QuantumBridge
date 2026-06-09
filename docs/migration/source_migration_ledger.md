@@ -217,3 +217,37 @@ copied.
 - `quantumbridge/compat/contracts.py`
 
 Stage 8A source port count remains zero.
+
+## Stage 8B exact path registration
+
+The following Stage 8B PennyLane full API inventory, adapter, bridge, and schema
+files mention upstream package names only for optional dependency discovery,
+public API introspection, provenance, warnings, schema metadata, or conversion
+scaffold labels. They are independently implemented and copy no upstream
+source, tests, documentation prose, comments, or error strings.
+
+- `quantumbridge/compat/pennylane_full/data_adapter.py`
+- `quantumbridge/compat/pennylane_full/dependency.py`
+- `quantumbridge/compat/pennylane_full/interface_adapter.py`
+- `quantumbridge/compat/pennylane_full/inventory.py`
+- `quantumbridge/compat/pennylane_full/io_adapter.py`
+- `quantumbridge/compat/pennylane_full/kernels_adapter.py`
+- `quantumbridge/compat/pennylane_full/math_adapter.py`
+- `quantumbridge/compat/pennylane_full/measurements_adapter.py`
+- `quantumbridge/compat/pennylane_full/observables_adapter.py`
+- `quantumbridge/compat/pennylane_full/operations_adapter.py`
+- `quantumbridge/compat/pennylane_full/passthrough.py`
+- `quantumbridge/compat/pennylane_full/qaoa_adapter.py`
+- `quantumbridge/compat/pennylane_full/qcut_adapter.py`
+- `quantumbridge/compat/pennylane_full/qiskit_bridge.py`
+- `quantumbridge/compat/pennylane_full/qnn_adapter.py`
+- `quantumbridge/compat/pennylane_full/qnode_adapter.py`
+- `quantumbridge/compat/pennylane_full/qos_uqci_bridge.py`
+- `quantumbridge/compat/pennylane_full/registry.py`
+- `quantumbridge/compat/pennylane_full/result_adapter.py`
+- `quantumbridge/compat/pennylane_full/shadows_adapter.py`
+- `quantumbridge/compat/pennylane_full/tape_adapter.py`
+- `quantumbridge/compat/pennylane_full/warnings.py`
+- `quantumbridge/schema/pennylane_results.py`
+
+Stage 8B source port count remains zero.

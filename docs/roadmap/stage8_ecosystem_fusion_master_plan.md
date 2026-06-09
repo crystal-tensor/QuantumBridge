@@ -63,7 +63,7 @@ forcing incompatible dependency stacks into one environment.
 | Stage | Scope | Output |
 | --- | --- | --- |
 | 8A | Ecosystem fusion planning and interface hardening. | Master plan, contracts, risk docs, light tests. |
-| 8B | PennyLane full API inventory and adapter contracts. | Inventory generation, adapter contract tests. |
+| 8B | PennyLane full API inventory and adapter contracts. | Runtime inventory, optional dependency checks, generic passthrough, schema wrappers, basic metadata adapters, minimal bridge scaffolds. |
 | 8C | PennyLane operation / measurement / QNode / tape bridge. | Narrow bridge slices with provenance. |
 | 8D | Qiskit ecosystem adapter contract hardening. | Consistent adapter functions and warnings. |
 | 8E | Qiskit / PennyLane bidirectional IR bridge. | Reviewed conversion paths and roundtrip tests. |
@@ -136,3 +136,20 @@ Before any Stage 8 release candidate:
 4. THIRD_PARTY_NOTICES and source migration ledger must be reviewed.
 5. No vendored dependency artifacts may be present.
 6. Owner must explicitly authorize tag and release creation.
+
+## 6.1 Stage 8B Implementation Snapshot
+
+Stage 8B adds the first executable PennyLane full API bridge foundation:
+
+- runtime full public API inventory and generated feature coverage matrix;
+- optional dependency reporting without auto-install, token reads, or network
+  access;
+- generic public-object passthrough and safe object description;
+- PennyLane result schema wrappers with provenance and warnings;
+- basic operation, measurement, QNode, and tape metadata adapters;
+- minimal PennyLane-to-QuantumBridge IR, Qiskit circuit, and QOS-UQCI job-spec
+  scaffolds.
+
+Stage 8B remains bounded. It does not claim full native PennyLane support,
+production equivalence, QOS-UQCI runtime execution, real cloud access, hardware
+access, release readiness, or UI implementation.

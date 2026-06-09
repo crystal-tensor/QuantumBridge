@@ -23,7 +23,21 @@ try:
         MLResult,
         MetalDesignResult,
         OptimizationResult,
+    )
+    from quantumbridge.schema.pennylane_results import (
+        ConversionResult,
+        DeviceResult,
+        GradientResult,
+        MeasurementResult,
         PennyLaneResult,
+        QChemResult,
+        QCutResult,
+        QNNResult,
+        QNodeResult,
+        ResourceResult,
+        ShadowResult,
+        TemplateResult,
+        TransformResult,
     )
     __all__ = [
         # P2 schema exports
@@ -45,6 +59,18 @@ try:
         "MetalDesignResult",
         "OptimizationResult",
         "PennyLaneResult",
+        "ConversionResult",
+        "DeviceResult",
+        "GradientResult",
+        "MeasurementResult",
+        "QChemResult",
+        "QCutResult",
+        "QNNResult",
+        "QNodeResult",
+        "ResourceResult",
+        "ShadowResult",
+        "TemplateResult",
+        "TransformResult",
     ]
 except ImportError:
     # Fallback when ecosystem extras not installed

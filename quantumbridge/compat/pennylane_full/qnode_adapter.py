@@ -6,6 +6,9 @@ Design source: docs/compat/strategy/pennylane_full_coverage_strategy.md.
 """
 
 from quantumbridge.ecosystem.registry import EcosystemAdapter
+from quantumbridge.compat.contracts import CapabilityLevel
+from quantumbridge.compat.pennylane_full.result_adapter import wrap_qnode_result as _result_wrap_qnode_result
+from quantumbridge.compat.pennylane_full.warnings import adapter_metadata
 
 ADAPTER = EcosystemAdapter("pennylane", "pennylane", ("pennylane",), "pennylane-full", "pennylane_qnode")
 
@@ -18,3 +21,21 @@ wrap_result = ADAPTER.wrap_result
 to_quantumbridge_schema = ADAPTER.to_quantumbridge_schema
 provenance_metadata = ADAPTER.provenance_metadata
 warn_unsupported = ADAPTER.warn_unsupported
+
+
+def describe_qnode(qnode) -> dict:
+    return {
+        "name": getattr(qnode, "__name__", type(qnode).__name__),
+        "callable": callable(qnode),
+        "device": repr(getattr(qnode, "device", None)),
+        "metadata_only": True,
+        **adapter_metadata(CapabilityLevel.SCHEMA_ADAPTER),
+    }
+
+
+def run_qnode_passthrough(qnode, *args, **kwargs):
+    return _result_wrap_qnode_result(qnode(*args, **kwargs), metadata={"adapter": "qnode_adapter"})
+
+
+def wrap_qnode_result(raw):
+    return _result_wrap_qnode_result(raw, metadata={"adapter": "qnode_adapter"})

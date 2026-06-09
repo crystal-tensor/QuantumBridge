@@ -19,6 +19,14 @@ interface hardening only. It does not authorize full PennyLane implementation,
 UI implementation, release creation, tag creation, vendoring, or production
 parity claims.
 
+Stage 8B status: QuantumBridge now includes a first executable foundation for
+PennyLane full API inventory, optional dependency checks, generic passthrough,
+schema wrappers, basic operation/measurement/QNode/tape metadata adapters, and
+minimal Qiskit/QOS-UQCI bridge scaffolds. This remains an optional
+passthrough/schema bridge. It does not implement a full native PennyLane
+replacement, production parity, real QOS-UQCI runtime, real hardware access, or
+product UI.
+
 ```
 PennyLane ──[adapter]──► QuantumBridge ──[adapter]──► Qiskit
 PennyLane ──[adapter]──► QuantumBridge ──[adapter]──► QOS
