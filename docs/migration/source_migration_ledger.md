@@ -34,7 +34,7 @@ This ledger records implementation mode and upstream source status for the curre
 | `quantumbridge/compat/qiskit_core/*` | Qiskit core inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Apache-2.0 dependency | No | No | Lazy imports public Qiskit modules when installed and wraps metadata | N/A | Yes | Yes | Pending | Medium |
 | `quantumbridge/compat/qiskit_aer/*` | Qiskit Aer inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Apache-2.0 dependency | No | No | Optional Aer and noise-model dependency lane | N/A | Yes | Yes | Pending | Medium |
 | `quantumbridge/compat/qiskit_runtime/*` | Qiskit IBM Runtime inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Upstream dependency | No | No | Optional runtime/backend/job dependency lane; no credentials or service emulation | N/A | Yes | Inventory smoke | Pending | High |
-| `quantumbridge/compat/qiskit_finance/*` | Qiskit Finance inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Upstream dependency | No | No | Optional finance objects; no production finance claims | N/A | Yes | Yes | Pending | High |
+| `quantumbridge/compat/qiskit_finance/*` | Qiskit Finance inventory, passthrough scaffold, FinanceResult wrapper, and educational native portfolio subset | Adapter Integration / Native Subset | API names only | No | N/A | Upstream dependency | No | No | Optional finance objects plus independently implemented deterministic mean-variance exact enumeration; no production finance claims | N/A | Yes | Yes | Pending | High |
 | `quantumbridge/compat/qiskit_optimization/*` | Qiskit Optimization inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Upstream dependency | No | No | Optional optimization objects; no parity claim | N/A | Yes | Yes | Pending | Medium |
 | `quantumbridge/compat/qiskit_machine_learning/*` | Qiskit Machine Learning inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Upstream dependency | No | No | Optional ML objects; no training or accuracy claims | N/A | Yes | Yes | Pending | High |
 | `quantumbridge/compat/qiskit_experiments/*` | Qiskit Experiments inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Upstream dependency | No | No | Optional experiments objects; no lab workflow guarantees | N/A | Yes | Inventory smoke | Pending | High |
@@ -129,6 +129,10 @@ The following implementation files mention upstream package names for optional d
 - `quantumbridge/compat/qiskit_finance/applications_adapter.py`
 - `quantumbridge/compat/qiskit_finance/circuits_adapter.py`
 - `quantumbridge/compat/qiskit_finance/data_provider_adapter.py`
+- `quantumbridge/compat/qiskit_finance/portfolio_examples.py`
+- `quantumbridge/compat/qiskit_finance/portfolio_native.py`
+- `quantumbridge/compat/qiskit_finance/portfolio_optimization_adapter.py`
+- `quantumbridge/compat/qiskit_finance/portfolio_result.py`
 - `quantumbridge/compat/qiskit_finance/uncertainty_adapter.py`
 - `quantumbridge/compat/qiskit_optimization/__init__.py`
 - `quantumbridge/compat/qiskit_optimization/converter_adapter.py`
