@@ -81,6 +81,19 @@ Stage 8C remains an optional dependency bridge. It does not provide a native
 PennyLane implementation, production parity, real QOS-UQCI execution, cloud
 access, token storage, hardware access, release, tag, or UI implementation.
 
+### Stage 9H PennyLane-Qiskit Bridge Snapshot
+
+Stage 9H promotes the PennyLane-Qiskit bridge from metadata-only planning to a
+bounded educational executable slice:
+
+| Area | Stage 9H status |
+|---|---|
+| Qiskit to PennyLane | Level 3 native bridge for a basic-gate subset: Qiskit circuit -> QuantumBridge IR -> PennyLane executable spec. |
+| PennyLane to Qiskit | Level 3 native bridge for PennyLane operation/tape/QNode metadata -> QuantumBridge IR -> Qiskit circuit. |
+| Equivalence proof | Bell-state statevector probabilities match through both directions over the QuantumBridge native simulator. |
+| Upstream plugin | Optional dependency metadata for `pennylane-qiskit` when installed; not required by native examples. |
+| Boundaries | Not full PennyLane-Qiskit replacement, not full Qiskit/PennyLane parity, no advanced device/transform/gradient parity, no cloud/token/hardware. |
+
 ---
 
 ## Module Matrix

@@ -31,6 +31,7 @@
 | Qiskit Runtime | backend / job / result / runtime | Existing matrices present | Yes | Offline-only | Offline-only | No | same contract plus no-token policy | qiskit-runtime-extra | High | 8D |
 | Qiskit Addons | sqd / mpf / aqc / obp | Existing matrices present | Yes | Advisory | Advisory | No | same contract plus addon warnings | qiskit-addons-extra | Medium | 8D |
 | Mitiq | error mitigation | Manual Stage 9G catalog row | Yes | Optional passthrough metadata | ErrorMitigationResult wrapper | Stage 9G native ZNE/readout educational subset | dependency, upstream metadata, native ZNE/readout workflows, schema, provenance, warnings | compat_mitiq | Medium | 9G |
+| PennyLane-Qiskit bridge | framework bridge | Manual Stage 9H catalog row | Yes | Optional upstream plugin metadata | PennyLaneQiskitBridgeResult wrapper | Stage 9H native bidirectional bridge educational subset | dependency, bridge conversion, executable proof, schema, provenance, warnings | compat_pennylane_qiskit | Medium | 9H |
 
 ## Stage 8D Inventory Snapshot
 
@@ -139,3 +140,14 @@ This row is the Mitiq / error-mitigation slice for QuantumBridge's IBM Quantum
 Ecosystem clean-room parity plan. It does not copy IBM website content, Mitiq
 source, Qiskit source, tutorial code, UI, branding, or third-party project
 source.
+
+## Stage 9H Update
+
+| Ecosystem | New executable subset | Native level | Upstream path | Production-ready | Notes |
+| --- | --- | --- | --- | --- | --- |
+| PennyLane-Qiskit bridge | Qiskit circuit to PennyLane spec, PennyLane operations/tape metadata to Qiskit circuit, and Bell equivalence proof | Level 3 | Optional local `pennylane-qiskit` metadata passthrough | No | Supports a basic educational gate subset with bridge result schemas, warnings, provenance, and no cloud/token/hardware access. Not full plugin parity. |
+
+This row is the PennyLane-Qiskit bridge slice for QuantumBridge's IBM Quantum
+Ecosystem clean-room parity plan. It does not copy IBM website content,
+Qiskit source, PennyLane source, PennyLane-Qiskit source, tutorial code, UI,
+branding, or third-party project source.

@@ -55,3 +55,11 @@ Mitiq / error mitigation is promoted only for educational native zero-noise
 extrapolation and readout-mitigation workflows over small simulated circuits.
 Production error mitigation, hardware calibration parity, cloud execution,
 token handling, hardware access, and full Mitiq parity remain out of scope.
+
+## Stage 9H Application
+
+PennyLane-Qiskit is promoted only for an educational bidirectional basic-gate
+bridge and Bell-state equivalence proof. Full plugin replacement, full Qiskit
+or PennyLane parity, advanced device/transform/gradient semantics, cloud
+execution, token handling, hardware access, and production parity remain out of
+scope.

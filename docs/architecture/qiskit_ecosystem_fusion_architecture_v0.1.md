@@ -187,3 +187,17 @@ small educational QML workflows, but it does not claim complete Qiskit Machine
 Learning parity, production ML, high-risk decision suitability, training
 performance, cloud execution, token handling, hardware access, UI
 implementation, or IBM/Qiskit endorsement.
+
+## 12. Stage 9H PennyLane-Qiskit Bridge
+
+The Stage 9H bridge connects Qiskit and PennyLane through QuantumBridge-owned
+IR and schemas. The Qiskit direction accepts a basic `QuantumCircuit` subset,
+normalizes it to QuantumBridge IR, emits a PennyLane executable spec, and runs
+the native simulator for proof. The PennyLane direction accepts operation,
+tape, or QNode metadata, normalizes it to QuantumBridge IR, emits a Qiskit
+`QuantumCircuit`, and compares Bell-state probabilities through the same native
+execution path.
+
+This bridge is intentionally bounded: it does not copy Qiskit, PennyLane, or
+PennyLane-Qiskit source; it does not claim full framework or plugin parity; and
+it does not access cloud services, tokens, or hardware.

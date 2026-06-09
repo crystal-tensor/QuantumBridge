@@ -113,6 +113,15 @@ try:
         UpstreamMitiqResult,
         ZNEResult,
     )
+    from quantumbridge.schema.pennylane_qiskit_bridge_results import (
+        BridgeEquivalenceResult,
+        BridgeExecutionResult,
+        BridgeIRResult,
+        PennyLaneQiskitBridgeResult,
+        PennyLaneToQiskitResult,
+        QiskitToPennyLaneResult,
+        UpstreamPennyLaneQiskitResult,
+    )
     __all__ = [
         # P2 schema exports
         "RESULT_SCHEMA_VERSION",
@@ -204,6 +213,13 @@ try:
         "ReadoutMitigationResult",
         "UpstreamMitiqResult",
         "ZNEResult",
+        "BridgeEquivalenceResult",
+        "BridgeExecutionResult",
+        "BridgeIRResult",
+        "PennyLaneQiskitBridgeResult",
+        "PennyLaneToQiskitResult",
+        "QiskitToPennyLaneResult",
+        "UpstreamPennyLaneQiskitResult",
     ]
 except ImportError:
     # Fallback when ecosystem extras not installed

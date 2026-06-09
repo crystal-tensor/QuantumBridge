@@ -137,3 +137,16 @@ hardware calibration overread, and statistical-performance overclaim:
   replacement and not production error-mitigation software.
 - Tests must continue to verify no cloud access, no token reads, no hardware
   access, clear provenance, and no vendored Mitiq or Qiskit artifacts.
+
+## Stage 9H Risk Disposition
+
+The main Stage 9H risk is overclaiming full Qiskit, PennyLane, or
+PennyLane-Qiskit plugin parity from a deliberately small executable bridge.
+Mitigation:
+
+- warnings state that only a basic-gate educational subset is supported;
+- schemas record `production_ready=False` and no plugin parity claim;
+- optional upstream plugin handling is dependency metadata/passthrough only;
+- tests verify no cloud, token, or hardware access;
+- no Qiskit, PennyLane, PennyLane-Qiskit, IBM, or Xanadu source or tutorial
+  prose is copied.

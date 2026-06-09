@@ -266,3 +266,19 @@ Stage 9E does not claim complete Qiskit Machine Learning parity, production ML,
 training-performance guarantees, high-risk decision suitability, IBM/Qiskit
 endorsement, cloud access, token access, hardware access, release readiness,
 tags, or UI implementation.
+
+## 6.7 Stage 9H PennyLane-Qiskit Bridge Snapshot
+
+Stage 9H promotes the PennyLane-Qiskit bridge lane from metadata/schema
+coverage to a bounded executable educational workflow:
+
+- Qiskit circuit -> QuantumBridge IR -> PennyLane executable spec;
+- PennyLane operation/tape/QNode metadata -> QuantumBridge IR -> Qiskit circuit;
+- bidirectional Bell-state equivalence proof over the native simulator;
+- optional upstream `pennylane-qiskit` dependency metadata;
+- serializable bridge result schemas and executable example scripts.
+
+Stage 9H does not claim complete PennyLane-Qiskit plugin replacement, complete
+Qiskit parity, complete PennyLane parity, production parity, advanced
+device/transform/gradient support, cloud access, token access, hardware
+access, release readiness, tags, or UI implementation.

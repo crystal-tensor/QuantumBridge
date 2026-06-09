@@ -545,3 +545,16 @@ qc.cx(1, 0)  # Flip wire indices
 **Document Version**: v0.1  
 **Last Updated**: 2026-06-06  
 **Author**: OpenClaw (QuantumBridge 24-hour R&D Chief of Staff)
+
+## Stage 9H Risk Update
+
+Stage 9H delivers a separate `quantumbridge.compat.pennylane_qiskit`
+executable slice for basic Qiskit/PennyLane bridge workflows. It reduces the
+metadata-only risk of earlier bridge planning by adding runnable Bell-state
+proofs, but it remains intentionally bounded:
+
+- no full PennyLane-Qiskit plugin replacement claim;
+- no full PennyLane or Qiskit parity claim;
+- no advanced device, transform, gradient, or custom-unitary parity claim;
+- no cloud, token, or hardware access;
+- no copied Qiskit, PennyLane, PennyLane-Qiskit, IBM, or Xanadu source.

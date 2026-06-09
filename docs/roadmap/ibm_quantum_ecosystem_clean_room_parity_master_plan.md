@@ -1,6 +1,6 @@
 # IBM Quantum Ecosystem Clean-Room Parity Master Plan
 
-Status: Stage 9G planning baseline
+Status: Stage 9H planning baseline
 Scope: QuantumBridge ecosystem parity, not IBM website replication.
 
 ## Goal
@@ -78,7 +78,7 @@ contract lives in `docs/compat/ecosystem/ibm_quantum_ecosystem_project_catalog_s
 | Stage 9E | Qiskit Machine Learning | Native educational quantum kernel, kernel classifier, QNN forward, QNN classifier, plus optional upstream introspection. |
 | Stage 9F | Qiskit Aer | Statevector, qasm-style, and noise workflows. |
 | Stage 9G | Mitiq | Native educational ZNE and readout-mitigation workflows plus optional upstream passthrough metadata. |
-| Stage 9H | PennyLane-Qiskit | Bidirectional bridge slice. |
+| Stage 9H | PennyLane-Qiskit | Native educational bidirectional bridge and Bell equivalence proof. |
 | Stage 9I | Qiskit Experiments / Dynamics | Offline advisory executable workflows. |
 | Stage 9J | TorchQuantum / QML | Exploratory QML bridge. |
 | Stage 9K | MQT Core / DDSIM / QMAP / QECC | Compatibility slices. |
@@ -173,6 +173,20 @@ unsupported reasons unless the caller supplies the upstream execution context.
 This slice deliberately excludes production error mitigation, statistical
 parity with Mitiq, hardware calibration parity, IBM Runtime, cloud execution,
 token handling, hardware access, and full Mitiq parity.
+
+## Stage 9H PennyLane-Qiskit Bridge Slice
+
+Stage 9H promotes PennyLane-Qiskit bridge coverage to a bounded educational
+executable slice. The native path converts Qiskit circuits through
+QuantumBridge IR into a PennyLane executable spec, converts PennyLane
+operation/tape/QNode metadata through QuantumBridge IR into a Qiskit circuit,
+and proves Bell-state equivalence through the QuantumBridge native simulator.
+
+Optional upstream PennyLane-Qiskit passthrough records dependency availability
+and provenance only. This stage excludes full plugin replacement, full Qiskit
+or PennyLane parity, advanced device/transform/gradient parity, cloud
+execution, token handling, hardware access, UI implementation, tags, releases,
+and vendored third-party source.
 
 ## Release Gating
 

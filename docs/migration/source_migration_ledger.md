@@ -35,6 +35,8 @@ This ledger records implementation mode and upstream source status for the curre
 | `quantumbridge/compat/qiskit_aer/*` | Qiskit Aer inventory, passthrough scaffold, and educational native simulator/noise subset | Adapter Integration / Native Subset | API names only | No | N/A | Apache-2.0 dependency | No | No | Optional Aer objects plus independently implemented small statevector, qasm-counts, and simple sampling-noise workflows; no Aer parity or production simulator claim | N/A | Yes | Yes | Stage 9F partial executable | Medium |
 | `quantumbridge/compat/mitiq/*` | Mitiq optional dependency metadata plus educational native ZNE/readout mitigation subset | Adapter Integration / Native Subset | API names only through optional ecosystem context | No | N/A | Upstream dependency if installed separately | No | No | Optional Mitiq dependency detection plus independently implemented small zero-noise extrapolation and readout calibration-matrix workflows; no Mitiq parity, production error-mitigation, or hardware calibration claim | N/A | Yes | Yes | Stage 9G partial executable | Medium |
 | `quantumbridge/schema/error_mitigation_results.py` | Error mitigation result envelopes | Native Implementation | No | No | N/A | N/A | No | No | QuantumBridge-owned schemas for native ZNE, readout mitigation, upstream passthrough, and comparison results | N/A | Yes | Yes | Stage 9G partial executable | Low |
+| `quantumbridge/compat/pennylane_qiskit/*` | PennyLane-Qiskit optional dependency metadata plus educational native bidirectional bridge subset | Adapter Integration / Native Subset | API names only through optional ecosystem context | No | N/A | Upstream dependency if installed separately | No | No | Optional PennyLane-Qiskit dependency detection plus independently implemented Qiskit/PennyLane bridge workflows; no plugin parity, production parity, cloud, token, or hardware claim | N/A | Yes | Yes | Stage 9H partial executable | Medium |
+| `quantumbridge/schema/pennylane_qiskit_bridge_results.py` | PennyLane-Qiskit bridge result envelopes | Native Implementation | No | No | N/A | N/A | No | No | QuantumBridge-owned schemas for native bridge, upstream passthrough, IR summary, execution, and equivalence results | N/A | Yes | Yes | Stage 9H partial executable | Low |
 | `quantumbridge/compat/qiskit_runtime/*` | Qiskit IBM Runtime inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Upstream dependency | No | No | Optional runtime/backend/job dependency lane; no credentials or service emulation | N/A | Yes | Inventory smoke | Pending | High |
 | `quantumbridge/compat/qiskit_finance/*` | Qiskit Finance inventory, passthrough scaffold, FinanceResult wrapper, and educational native portfolio subset | Adapter Integration / Native Subset | API names only | No | N/A | Upstream dependency | No | No | Optional finance objects plus independently implemented deterministic mean-variance exact enumeration; no production finance claims | N/A | Yes | Yes | Pending | High |
 | `quantumbridge/compat/qiskit_optimization/*` | Qiskit Optimization inventory, passthrough scaffold, and educational native QuadraticProgram subset | Adapter Integration / Native Subset | API names only | No | N/A | Upstream dependency | No | No | Optional optimization objects plus independently implemented small binary QuadraticProgram exact enumeration; no parity or production optimizer claim | N/A | Yes | Yes | Pending | Medium |
@@ -470,3 +472,22 @@ projects while stating that no upstream source was copied:
 - `quantumbridge/compat/mitiq/zne_native.py`
 
 Stage 9G source port count remains zero.
+
+## Stage 9H source-file coverage path index
+
+The following Stage 9H files are explicitly indexed for ledger completeness
+tests because their clean-room comments or adapter text mention upstream
+projects while stating that no upstream source was copied:
+
+- `quantumbridge/compat/pennylane_qiskit/__init__.py`
+- `quantumbridge/compat/pennylane_qiskit/bridge_native.py`
+- `quantumbridge/compat/pennylane_qiskit/dependency.py`
+- `quantumbridge/compat/pennylane_qiskit/examples.py`
+- `quantumbridge/compat/pennylane_qiskit/upstream_adapter.py`
+- `quantumbridge/compat/pennylane_qiskit/warnings.py`
+- `quantumbridge/schema/pennylane_qiskit_bridge_results.py`
+- `examples/pennylane_qiskit_qiskit_to_pennylane_quantumbridge.py`
+- `examples/pennylane_qiskit_pennylane_to_qiskit_quantumbridge.py`
+- `examples/pennylane_qiskit_bridge_equivalence_quantumbridge.py`
+
+Stage 9H source port count remains zero.

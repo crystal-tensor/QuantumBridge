@@ -1083,3 +1083,17 @@ All PennyLane-related files must include:
 **Document Version**: v0.1  
 **Last Updated**: 2026-06-06  
 **Author**: OpenClaw (QuantumBridge 24-hour R&D Chief of Staff)
+
+## Stage 9H PennyLane-Qiskit Bridge Slice
+
+Stage 9H adds a bounded executable bridge slice outside the earlier
+metadata-only `pennylane_full.qiskit_bridge` path:
+
+- Qiskit circuit -> QuantumBridge IR -> PennyLane executable spec;
+- PennyLane operation/tape/QNode metadata -> QuantumBridge IR -> Qiskit circuit;
+- Bell-state equivalence proof over the QuantumBridge native simulator;
+- optional upstream `pennylane-qiskit` metadata when installed.
+
+The Stage 9H bridge is not full PennyLane-Qiskit plugin parity, not full
+PennyLane or Qiskit parity, not a production gradient/device/transform bridge,
+and does not access cloud services, tokens, or hardware.

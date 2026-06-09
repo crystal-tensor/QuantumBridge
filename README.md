@@ -55,11 +55,13 @@ Current Qiskit ecosystem status:
 - Qiskit Runtime remains offline-only: no IBM Cloud access, no token reads, no credential storage, and no job submission.
 - Qiskit Metal remains advisory: no chip fabrication, external EM simulation, or layout signoff support is claimed.
 - Mitiq / error mitigation: Stage 9G Level 3 educational native zero-noise extrapolation and readout mitigation, plus optional upstream Mitiq dependency metadata when installed. This is not production error mitigation and not a complete Mitiq replacement.
+- PennyLane-Qiskit bridge: Stage 9H Level 3 educational native bidirectional bridge for a basic-gate subset, including Qiskit circuit to PennyLane executable spec, PennyLane operation/tape metadata to Qiskit circuit, and Bell-state equivalence proof. This is not a full PennyLane-Qiskit plugin replacement and not full Qiskit or PennyLane parity.
 
 Current PennyLane ecosystem status:
 
 - Operations, measurements, QNode, devices, qchem, transforms, gradients, templates, resources, and plugin-adjacent APIs: Level 0 inventory and Level 1 scaffold when PennyLane is installed.
 - Existing P1 PennyLane tape/observable support remains a small reviewed Level 2 subset.
+- PennyLane-Qiskit bridge: Stage 9H Level 3 educational bidirectional executable slice for H/X/Y/Z/RX/RY/RZ/Phase/CNOT/CZ/SWAP-style workflows, result schemas, warnings, provenance, and optional upstream plugin metadata.
 - Full plugin ecosystem, Catalyst bridge, TensorFlow interface parity, and production qchem workflows are not implemented.
 
 ## Stage 7.2 Full Function Coverage
@@ -78,6 +80,7 @@ Stage 7.2 expands installed-environment verification and adapter schemas. It rem
 | Qiskit Metal | Level 0 inventory plus MetalDesignResult schema | `.[qiskit-metal]` | Install failed on Python 3.12; advisory/unsupported |
 | Qiskit Aer | Level 0/1 plus AerResult Level 2 wrapper and Stage 9F educational native statevector / qasm counts / simple noise subset | `.[qiskit-aer]` | Verified: 0.17.2; native subset does not require upstream; no Aer parity claim |
 | Mitiq / error mitigation | Stage 9G educational native ZNE and readout mitigation plus optional upstream Mitiq passthrough metadata | install upstream `mitiq` separately if needed | Native subset does not require upstream; not production error mitigation; no hardware calibration parity |
+| PennyLane-Qiskit bridge | Stage 9H educational native bidirectional bridge and Bell equivalence proof plus optional upstream plugin metadata | install upstream `pennylane-qiskit` separately if needed | Native subset does not require upstream; not full plugin parity; no cloud/token/hardware |
 | PennyLane full | Level 0/1 plus PennyLaneResult Level 2 wrapper | `.[pennylane-full]` | Verified: 0.42.3; no complete replacement claim |
 
 Level 2 here means a QuantumBridge result-schema wrapper. It does not mean complete input conversion, behavioral parity, performance parity, or production equivalence.
@@ -150,6 +153,19 @@ Stage 9G adds Mitiq-style executable educational error mitigation adapters:
 - `quantumbridge.schema.error_mitigation_results` result envelopes for native ZNE, native readout mitigation, upstream passthrough, and comparison results.
 
 This is an educational error mitigation slice, not production error mitigation, not a complete Mitiq replacement, not hardware calibration parity, and not an IBM, Qiskit, or Mitiq endorsement.
+
+Stage 9H adds PennyLane-Qiskit bridge executable educational adapters:
+
+- `quantumbridge.compat.pennylane_qiskit.run_qiskit_to_pennylane_bridge()`
+- `quantumbridge.compat.pennylane_qiskit.run_pennylane_to_qiskit_bridge()`
+- `quantumbridge.compat.pennylane_qiskit.run_bidirectional_bridge_equivalence()`
+- Qiskit `QuantumCircuit` to QuantumBridge IR to PennyLane executable spec for a basic gate subset;
+- PennyLane operation/tape/QNode metadata to QuantumBridge IR to Qiskit `QuantumCircuit`;
+- Bell-state bidirectional equivalence proof over the native simulator;
+- optional local upstream PennyLane-Qiskit plugin metadata when `pennylane-qiskit` is installed;
+- `quantumbridge.schema.pennylane_qiskit_bridge_results` result envelopes for native bridge, upstream passthrough, IR summary, execution, and equivalence results.
+
+This is an educational bridge slice, not a complete PennyLane-Qiskit plugin replacement, not full Qiskit or PennyLane parity, not production parity, and not an IBM, Qiskit, PennyLane, Xanadu, or PennyLane-Qiskit endorsement.
 
 ## IBM Quantum Ecosystem Clean-Room Parity
 
@@ -250,6 +266,7 @@ Stage 7 uses separate optional dependency lanes. Do not assume all optional depe
 - `qiskit-core`: Qiskit core public API inventory and selected P1 adapters.
 - `qiskit-aer`: optional Aer simulator/noise passthrough plus Stage 9F educational native statevector, qasm-counts, and simple sampling-noise slice.
 - `mitiq`: no default extra; if installed separately, QuantumBridge records optional upstream Mitiq passthrough metadata while native Stage 9G ZNE/readout examples run without it.
+- `pennylane-qiskit`: no default extra; if installed separately, QuantumBridge records optional upstream plugin metadata while native Stage 9H bridge examples run without it.
 - `qiskit-finance`: optional finance application/data-provider/circuit inventory.
 - `qiskit-optimization`: optional optimization inventory and passthrough scaffold.
 - `qiskit-machine-learning`: optional QNN/kernel/classifier/Torch connector inventory.

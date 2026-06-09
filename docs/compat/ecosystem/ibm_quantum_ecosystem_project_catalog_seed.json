@@ -1,5 +1,5 @@
 {
-  "status": "Stage 9G clean-room catalog seed",
+  "status": "Stage 9H clean-room catalog seed",
   "source_mode": "manually curated compatibility target names only",
   "projects": [
     {
@@ -41,6 +41,29 @@
         "not full Mitiq replacement",
         "not production error mitigation",
         "no hardware calibration parity",
+        "no cloud/token/hardware access"
+      ],
+      "legal_boundary": "Project name only; no source, tutorial prose, UI, branding, or implementation copied."
+    },
+    {
+      "project_id": "pennylane-qiskit",
+      "upstream_name": "PennyLane-Qiskit",
+      "category": "Framework bridge",
+      "adapter": "quantumbridge.compat.pennylane_qiskit",
+      "current_status": "executable_subset",
+      "executable_slice_stage": "Stage 9H",
+      "executable_workflows": [
+        "Qiskit to QuantumBridge IR to PennyLane executable spec",
+        "PennyLane operation/tape metadata to QuantumBridge IR to Qiskit QuantumCircuit",
+        "bidirectional Bell circuit equivalence proof",
+        "optional upstream pennylane-qiskit passthrough metadata"
+      ],
+      "studio_ready": "partial",
+      "limitations": [
+        "not full PennyLane-Qiskit replacement",
+        "not full Qiskit parity",
+        "not full PennyLane parity",
+        "no advanced device, transform, or gradient parity",
         "no cloud/token/hardware access"
       ],
       "legal_boundary": "Project name only; no source, tutorial prose, UI, branding, or implementation copied."

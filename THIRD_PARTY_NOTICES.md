@@ -128,6 +128,25 @@ Source port status: no Mitiq source files, tests, documentation prose, comments,
 error strings, wheels, dist-info, egg-info, site-packages trees, or virtual
 environments were copied into QuantumBridge.
 
+## Stage 9H PennyLane-Qiskit optional ecosystem
+
+Stage 9H adds optional PennyLane-Qiskit plugin dependency detection and
+independently implemented educational native bidirectional bridge workflows.
+PennyLane-Qiskit remains an optional upstream package and is not required by
+the native Stage 9H examples.
+
+Implemented by QuantumBridge:
+
+- Qiskit circuit to QuantumBridge IR to PennyLane executable spec;
+- PennyLane operation/tape/QNode metadata to QuantumBridge IR to Qiskit circuit;
+- bidirectional Bell-state equivalence proof over QuantumBridge's native simulator;
+- result schemas, warnings, provenance, and no-cloud/no-token metadata.
+
+Source port status: no PennyLane-Qiskit, Qiskit, PennyLane, IBM, or Xanadu
+source files, tests, documentation prose, comments, error strings, wheels,
+dist-info, egg-info, site-packages trees, virtual environments, or vendored
+package artifacts were copied into QuantumBridge.
+
 ## Stage 9B Qiskit Optimization native subset
 
 Stage 9B adds an independently implemented educational native binary
