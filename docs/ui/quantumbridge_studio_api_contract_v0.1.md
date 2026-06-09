@@ -101,6 +101,40 @@ hardware, token, or product UI implementation is authorized by this document.
 }
 ```
 
+#### `GET /api/v0/ecosystem/catalog`
+
+**Description**: Return the QuantumBridge clean-room ecosystem project catalog.
+The response is owned by QuantumBridge and must not be a scraped copy of IBM
+Quantum Ecosystem.
+
+**Response** (200 OK):
+```json
+{
+  "catalog_version": "0.1",
+  "source_mode": "manual-clean-room",
+  "official_endorsement": false,
+  "projects": [
+    {
+      "project_id": "qiskit-algorithms",
+      "display_name": "QuantumBridge Algorithms Slice",
+      "upstream_name": "Qiskit Algorithms",
+      "category": "algorithms",
+      "capability_level": 3,
+      "clean_room_status": "executable",
+      "official_endorsement": false
+    }
+  ]
+}
+```
+
+#### `GET /api/v0/ecosystem/catalog/search`
+
+**Description**: Search the QuantumBridge catalog by query, category, tag,
+capability level, executable workflow status, or install extra.
+
+The endpoint must return QuantumBridge catalog fields, warnings, and provenance
+only. It must not proxy IBM website content or copy IBM UI text.
+
 ---
 
 ### 3.2 Circuit Builder

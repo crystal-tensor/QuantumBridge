@@ -18,6 +18,7 @@ capability levels, warnings, and provenance.
 | Area | Purpose | Required backend contract |
 | --- | --- | --- |
 | Ecosystem Explorer | Browse installed, advisory, and unavailable ecosystems. | Inventory, dependency, warnings, provenance. |
+| All Projects Catalog | Browse QuantumBridge clean-room ecosystem compatibility targets. | Ecosystem catalog schema, capability levels, warnings, provenance. |
 | Circuit Builder | Build and inspect circuits visually. | QuantumBridge IR and QASM import/export. |
 | QASM Lab | Edit QASM, parse AST, roundtrip. | QASM parser/exporter and validation. |
 | Simulator Lab | Run local simulators and optional Aer paths. | Backend/result schema and provenance. |
@@ -51,3 +52,20 @@ Each page must be able to show:
 
 Stage 8A does not publish a Studio product version. It only defines the future
 navigation, backend contracts, and warnings model.
+
+## 5. Ecosystem Parity Experience
+
+The All Projects Catalog is a QuantumBridge-owned experience inspired by the
+need to discover ecosystem capabilities, not a copy of IBM Quantum Ecosystem.
+It should expose:
+
+- category filters;
+- search;
+- capability level and executable workflow status;
+- install extra and dependency availability;
+- provenance and legal boundary notes;
+- native/upstream comparison readiness;
+- visualization readiness.
+
+No IBM UI, branding, text, iconography, screenshots, or endorsement should be
+used.

@@ -33,6 +33,29 @@ product release.
 6. ✅ **Exportable workflows** - Every workflow can be exported as code
 7. ✅ **Contract-gated UI** - UI work waits for stable adapter and result contracts
 
+## Ecosystem Parity Experience
+
+Stage 9C-Revision expands the Studio planning target from a Qiskit/PennyLane
+explorer into a QuantumBridge-owned ecosystem parity experience. This remains
+planning only; no frontend implementation is authorized here.
+
+The experience should support:
+
+- All Projects catalog powered by QuantumBridge's clean-room catalog schema;
+- category filters and search;
+- capability-level badges;
+- install-extra and dependency status badges;
+- executable workflow badges;
+- backend compatibility badges;
+- warning and provenance panels;
+- run-example actions routed through QuantumBridge adapters;
+- export Python, notebook, JSON, QASM, or IR when available;
+- compare upstream and native paths;
+- future Quafu and QOS-UQCI connection surfaces.
+
+Studio must not use IBM branding, copy IBM page structure, copy IBM website
+text, or imply IBM endorsement.
+
 ---
 
 ## 2. Product Vision

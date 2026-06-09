@@ -36,6 +36,8 @@ This ledger records implementation mode and upstream source status for the curre
 | `quantumbridge/compat/qiskit_runtime/*` | Qiskit IBM Runtime inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Upstream dependency | No | No | Optional runtime/backend/job dependency lane; no credentials or service emulation | N/A | Yes | Inventory smoke | Pending | High |
 | `quantumbridge/compat/qiskit_finance/*` | Qiskit Finance inventory, passthrough scaffold, FinanceResult wrapper, and educational native portfolio subset | Adapter Integration / Native Subset | API names only | No | N/A | Upstream dependency | No | No | Optional finance objects plus independently implemented deterministic mean-variance exact enumeration; no production finance claims | N/A | Yes | Yes | Pending | High |
 | `quantumbridge/compat/qiskit_optimization/*` | Qiskit Optimization inventory, passthrough scaffold, and educational native QuadraticProgram subset | Adapter Integration / Native Subset | API names only | No | N/A | Upstream dependency | No | No | Optional optimization objects plus independently implemented small binary QuadraticProgram exact enumeration; no parity or production optimizer claim | N/A | Yes | Yes | Pending | Medium |
+| `quantumbridge/compat/qiskit_algorithms/*` | Qiskit Algorithms inventory, passthrough scaffold, and educational native VQE/QAOA/Grover subset | Adapter Integration / Native Subset | API names only | No | N/A | Upstream dependency | No | No | Optional algorithms objects plus independently implemented small VQE, QAOA-compatible MaxCut, and Grover educational workflows; no parity or production algorithm claim | N/A | Yes | Yes | Pending | Medium |
+| `quantumbridge/ecosystem/catalog.py` | Clean-room ecosystem project catalog schema | Native Implementation | Public project names only | Public project names only | N/A | N/A | No | No | Manual catalog schema for compatibility targets; no website scraping or copied project-card text | N/A | Yes | Yes | Pending | Medium |
 | `quantumbridge/compat/qiskit_machine_learning/*` | Qiskit Machine Learning inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Upstream dependency | No | No | Optional ML objects; no training or accuracy claims | N/A | Yes | Yes | Pending | High |
 | `quantumbridge/compat/qiskit_experiments/*` | Qiskit Experiments inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Upstream dependency | No | No | Optional experiments objects; no lab workflow guarantees | N/A | Yes | Inventory smoke | Pending | High |
 | `quantumbridge/compat/qiskit_addons/*` | Qiskit Addons inventory and passthrough scaffold | Adapter Integration | API names only | No | N/A | Upstream dependency | No | No | Optional addons inventory; no source migration | N/A | Yes | Inventory smoke | Pending | High |
@@ -183,7 +185,15 @@ The following files are independently implemented adapter/schema modules. They r
 - `quantumbridge/compat/qiskit_nature/result_adapter.py`
 - `quantumbridge/compat/qiskit_algorithms/__init__.py`
 - `quantumbridge/compat/qiskit_algorithms/eigensolver_adapter.py`
+- `quantumbridge/compat/qiskit_algorithms/algorithms_native.py`
+- `quantumbridge/compat/qiskit_algorithms/examples.py`
+- `quantumbridge/compat/qiskit_algorithms/grover_adapter.py`
 - `quantumbridge/compat/qiskit_algorithms/minimum_eigensolver_adapter.py`
+- `quantumbridge/compat/qiskit_algorithms/optimizer_adapter.py`
+- `quantumbridge/compat/qiskit_algorithms/qaoa_adapter.py`
+- `quantumbridge/compat/qiskit_algorithms/result_adapter.py`
+- `quantumbridge/compat/qiskit_algorithms/vqe_adapter.py`
+- `quantumbridge/compat/qiskit_algorithms/warnings.py`
 - `quantumbridge/compat/qiskit_algorithms/amplitude_adapter.py`
 - `quantumbridge/compat/qiskit_algorithms/grover_adapter.py`
 - `quantumbridge/compat/qiskit_algorithms/optimizer_adapter.py`
@@ -323,3 +333,49 @@ capability metadata, warnings, risk labels, and provenance notes only. They do
 not contain upstream implementation source or vendored dependency artifacts.
 
 Stage 8D source port count remains zero.
+
+## Stage 9C exact path registration
+
+The following Stage 9C files mention Qiskit Algorithms, IBM Quantum Ecosystem,
+or ecosystem project names only for optional dependency, compatibility target,
+clean-room catalog, provenance, warning, test, or documentation purposes. They
+are independently implemented and copy no upstream source, tests,
+documentation prose, website text, UI, screenshots, icons, logos, error
+strings, wheels, dist-info, egg-info, site-packages trees, or virtual
+environments.
+
+- `quantumbridge/compat/qiskit_algorithms/algorithms_native.py`
+- `quantumbridge/compat/qiskit_algorithms/vqe_adapter.py`
+- `quantumbridge/compat/qiskit_algorithms/qaoa_adapter.py`
+- `quantumbridge/compat/qiskit_algorithms/grover_adapter.py`
+- `quantumbridge/compat/qiskit_algorithms/examples.py`
+- `quantumbridge/compat/qiskit_algorithms/eigensolver_adapter.py`
+- `quantumbridge/compat/qiskit_algorithms/optimizer_adapter.py`
+- `quantumbridge/compat/qiskit_algorithms/result_adapter.py`
+- `quantumbridge/compat/qiskit_algorithms/warnings.py`
+- `quantumbridge/schema/algorithms_results.py`
+- `quantumbridge/ecosystem/catalog.py`
+- `examples/qiskit_algorithms_vqe_quantumbridge.py`
+- `examples/qiskit_algorithms_qaoa_quantumbridge.py`
+- `examples/qiskit_algorithms_grover_quantumbridge.py`
+- `tests/compat_qiskit_algorithms/test_vqe_native.py`
+- `tests/compat_qiskit_algorithms/test_qaoa_native.py`
+- `tests/compat_qiskit_algorithms/test_grover_native.py`
+- `tests/compat_qiskit_algorithms/test_algorithms_result_schema.py`
+- `tests/compat_qiskit_algorithms/test_vqe_upstream_passthrough.py`
+- `tests/compat_qiskit_algorithms/test_qaoa_upstream_passthrough.py`
+- `tests/compat_qiskit_algorithms/test_grover_upstream_passthrough.py`
+- `tests/compat_qiskit_algorithms/test_algorithms_no_cloud_no_token.py`
+- `tests/compat_qiskit_algorithms/test_algorithms_warnings_provenance.py`
+- `tests/compat_qiskit_algorithms/test_algorithms_examples.py`
+- `tests/ecosystem/test_ecosystem_catalog_schema.py`
+- `docs/implementation/stage9c_qiskit_algorithms_executable_adapter_report.md`
+- `docs/tutorials/qiskit_algorithms_vqe_quantumbridge.md`
+- `docs/tutorials/qiskit_algorithms_qaoa_quantumbridge.md`
+- `docs/tutorials/qiskit_algorithms_grover_quantumbridge.md`
+- `docs/roadmap/ibm_quantum_ecosystem_clean_room_parity_master_plan.md`
+- `docs/compat/ecosystem/ibm_quantum_ecosystem_project_catalog_schema.md`
+- `docs/compat/ecosystem/ibm_quantum_ecosystem_project_catalog_seed.md`
+- `docs/legal/ibm_quantum_ecosystem_clean_room_boundary.md`
+
+Stage 9C source port count remains zero.

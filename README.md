@@ -44,7 +44,8 @@ Current Qiskit ecosystem status:
 
 - Qiskit core: Level 0 inventory, Level 1 passthrough contract, and a reviewed Level 2 subset for basic circuits/results.
 - Qiskit Aer: Level 0 inventory, Level 1 passthrough contract, and Level 2 result schema wrapper when installed.
-- Qiskit Nature and Algorithms: Level 0 inventory, Level 1 passthrough contract, and Level 2 result schema wrappers when installed.
+- Qiskit Nature: Level 0 inventory, Level 1 passthrough contract, and Level 2 result schema wrappers when installed.
+- Qiskit Algorithms: Level 0/1 inventory and passthrough, Level 2 result wrappers, and a Stage 9C Level 3 educational native executable subset for VQE, QAOA-compatible MaxCut, and Grover examples. Missing optional packages report unsupported metadata.
 - Qiskit Finance: Level 0/1 inventory and passthrough, Level 2 result wrapper, and a Stage 9A Level 3 educational portfolio-optimization native subset for deterministic four-asset mean-variance examples. Missing optional packages report unsupported metadata.
 - Qiskit Optimization: Level 0/1 inventory and passthrough, Level 2 result wrappers, and a Stage 9B Level 3 educational native `QuadraticProgram` subset for small binary optimization examples. Missing optional packages report unsupported metadata.
 - Qiskit Machine Learning: Level 0 inventory and contract metadata; missing optional packages report unsupported metadata.
@@ -66,7 +67,7 @@ Stage 7.2 expands installed-environment verification and adapter schemas. It rem
 | --- | --- | --- | --- |
 | Qiskit Nature | Level 0/1 plus ChemistryResult Level 2 wrapper | `.[qiskit-nature]` | Verified: 0.8.0 |
 | Qiskit Finance | Level 0/1 plus FinanceResult Level 2 wrapper and Stage 9A educational portfolio native subset | `.[qiskit-finance]` | Verified: 0.4.1; not production finance |
-| Qiskit Algorithms | Level 0/1 plus AlgorithmsResult Level 2 wrapper | `.[qiskit-algorithms]` | Verified: 0.4.0 |
+| Qiskit Algorithms | Level 0/1 plus AlgorithmsResult Level 2 wrapper and Stage 9C educational native VQE/QAOA/Grover subset | `.[qiskit-algorithms]` | Verified: 0.4.0; native subset does not require upstream |
 | Qiskit Machine Learning | Level 0/1 plus MLResult Level 2 wrapper | `.[qiskit-machine-learning]` | Verified: 0.9.0; not production ML |
 | Qiskit Optimization | Level 0/1 plus OptimizationResult Level 2 wrapper and Stage 9B educational native QuadraticProgram subset | `.[qiskit-optimization]` | Verified: 0.7.0; native subset does not require upstream |
 | Qiskit Dynamics | Level 0/1 plus DynamicsResult Level 2 wrapper | `.[qiskit-dynamics]` | Verified: 0.6.0; advisory |
@@ -88,6 +89,29 @@ Stage 9B adds a Qiskit Optimization `QuadraticProgram` executable adapter:
 - optional upstream exact passthrough when `qiskit-optimization` and `qiskit-algorithms` are installed.
 
 This is not production optimization software, not a complete Qiskit Optimization replacement, and not an IBM or Qiskit endorsement.
+
+Stage 9C adds Qiskit Algorithms executable adapters:
+
+- `quantumbridge.compat.qiskit_algorithms.run_vqe_native()`
+- `quantumbridge.compat.qiskit_algorithms.run_qaoa_native_maxcut()`
+- `quantumbridge.compat.qiskit_algorithms.run_grover_native()`
+- optional local upstream smoke paths through `run_vqe_upstream()`, `run_qaoa_upstream()`, and `run_grover_upstream()` when `qiskit-algorithms` is installed;
+- `quantumbridge.schema.algorithms_results` result envelopes for native, upstream, and comparison results.
+
+This is not production algorithm software, not a complete Qiskit Algorithms replacement, and not an IBM or Qiskit endorsement.
+
+## IBM Quantum Ecosystem Clean-Room Parity
+
+QuantumBridge's long-term ecosystem goal is clean-room functional parity for
+the capability areas represented across IBM Quantum Ecosystem project listings:
+project discovery, capability cataloging, optional adapters, executable
+examples, result schemas, provenance, warnings, tests, and future Studio
+visualization readiness.
+
+This does not mean copying IBM's website, brand presentation, text, images,
+icons, page layout, source code, or third-party project implementations.
+Project names are used only to identify compatibility targets. The planning
+baseline lives in `docs/roadmap/ibm_quantum_ecosystem_clean_room_parity_master_plan.md`.
 
 ## Stage 8D Qiskit Adapter Contract Hardening
 

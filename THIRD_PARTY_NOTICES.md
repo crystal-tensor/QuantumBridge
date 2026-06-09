@@ -124,3 +124,24 @@ trees, virtual environments, documentation prose, or examples were copied.
 
 The native subset is not a full Qiskit Optimization replacement, not production
 optimization software, and not endorsed by IBM or Qiskit maintainers.
+
+## Stage 9C Qiskit Algorithms native subset
+
+Stage 9C adds independently implemented educational native VQE, QAOA-compatible
+MaxCut, and Grover workflows for small examples. Qiskit Algorithms remains an
+optional upstream dependency for local passthrough execution when installed; no
+upstream source files, wheels, dist-info, egg-info, site-packages trees,
+virtual environments, documentation prose, website text, or examples were
+copied.
+
+The native subset is not a full Qiskit Algorithms replacement, not production
+algorithm software, and not endorsed by IBM or Qiskit maintainers.
+
+## IBM Quantum Ecosystem clean-room parity planning
+
+Stage 9C-Revision adds a QuantumBridge-owned ecosystem parity plan and catalog
+schema. It uses public project names only for compatibility identification and
+does not copy IBM Quantum Ecosystem website text, layout, images, icons,
+branding, screenshots, or source. QuantumBridge is independent and does not
+claim IBM, Qiskit, PennyLane, Azure Quantum, MQT, Mitiq, TorchQuantum, or other
+third-party endorsement.

@@ -21,7 +21,7 @@
 | Qiskit core | circuit / transpiler / primitives / quantum_info | Existing matrices present | Yes | Partial | Partial | Native core subset exists | dependency, version, inventory, object lookup, passthrough, wrap, schema, provenance, warnings | core + qiskit-extra | Medium | 8D |
 | Qiskit Aer | simulator / noise | Existing matrices present | Yes | Partial | Partial | No | same contract | qiskit-aer-extra | Medium | 8D |
 | Qiskit Nature | drivers / problems / mappers | Existing matrices present | Yes | Partial | Partial | No | same contract | qiskit-nature-extra, chemistry | High | 8D |
-| Qiskit Algorithms | VQE / QAOA / eigensolvers / optimizers | Existing matrices present | Yes | Partial | Partial | Native algorithm subset exists | same contract | qiskit-algorithms-extra, algorithms | Medium | 8D |
+| Qiskit Algorithms | VQE / QAOA / Grover / eigensolvers / optimizers | Existing matrices present | Yes | Partial | Partial | Stage 9C native VQE/QAOA/Grover subset | same contract plus executable algorithms result schema | qiskit-algorithms-extra, algorithms | Medium | 9C |
 | Qiskit Finance | applications / data providers / uncertainty | Existing matrices present | Yes | Partial | Partial | No | same contract | qiskit-finance-extra | High | 8D |
 | Qiskit Optimization | quadratic program / converters / optimizers | Existing matrices present | Yes | Partial | Partial | No | same contract | qiskit-optimization-extra | High | 8D |
 | Qiskit Machine Learning | QNN / kernels / classifiers / regressors | Existing matrices present | Yes | Partial | Partial | No | same contract | qiskit-machine-learning-extra | High | 8D |
@@ -90,3 +90,13 @@ Each row exposes or documents:
 
 All other Qiskit Optimization APIs remain inventory, passthrough, or schema
 coverage unless individually promoted by a later reviewed stage.
+
+## Stage 9C Update
+
+| Ecosystem | New executable subset | Native level | Upstream path | Production-ready | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Qiskit Algorithms | Minimal VQE, QAOA-compatible MaxCut, and Grover workflows | Level 3 | Optional local `qiskit-algorithms` passthrough smoke paths | No | Supports small educational workflows with result schemas, warnings, and provenance. Not full parity. |
+
+This row is also the Algorithms slice for QuantumBridge's IBM Quantum Ecosystem
+clean-room parity plan. It does not copy IBM website content, Qiskit source, or
+third-party project source.

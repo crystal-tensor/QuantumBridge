@@ -69,6 +69,16 @@ try:
         QUBOConversionResult,
         UpstreamOptimizationResult,
     )
+    from quantumbridge.schema.algorithms_results import (
+        AlgorithmComparisonResult,
+        AlgorithmsResult as NativeAlgorithmsSchemaResult,
+        EigensolverResult,
+        GroverResult,
+        NativeAlgorithmResult,
+        QAOAResult,
+        UpstreamAlgorithmResult,
+        VQEResult,
+    )
     __all__ = [
         # P2 schema exports
         "RESULT_SCHEMA_VERSION",
@@ -127,6 +137,14 @@ try:
         "QuadraticProgramResult",
         "QUBOConversionResult",
         "UpstreamOptimizationResult",
+        "AlgorithmComparisonResult",
+        "EigensolverResult",
+        "GroverResult",
+        "NativeAlgorithmResult",
+        "NativeAlgorithmsSchemaResult",
+        "QAOAResult",
+        "UpstreamAlgorithmResult",
+        "VQEResult",
     ]
 except ImportError:
     # Fallback when ecosystem extras not installed
