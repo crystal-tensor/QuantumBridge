@@ -221,6 +221,24 @@ output, not a production performance ranking system, does not access cloud
 services, does not read tokens, does not execute real hardware, and is not
 endorsed by IBM, Qiskit, or Benchpress maintainers.
 
+## Stage 10C QuantumBridge Studio backend API slice
+
+Stage 10C adds a QuantumBridge-owned local backend API layer for future Studio
+experiences. It provides catalog, workflow registry, input schema, local
+execution, result store, export, benchmark, provenance/warning, and REST-like
+local router services. It does not implement a frontend UI, does not start a
+production server, and does not open network ports.
+
+No IBM, Qiskit, PennyLane, Benchpress, QOS-UQCI, Quafu, MQT, Mitiq,
+TorchQuantum, PyTorch, FastAPI, or other third-party source code, website text,
+tutorial prose, UI, branding, wheels, dist-info, egg-info, site-packages trees,
+or virtual environments are copied into QuantumBridge. Project and package
+names are used only to identify optional compatibility targets.
+
+This backend API slice is not an official service, not endorsed by upstream
+maintainers, not a full replacement, not production API software, and does not
+access cloud services, tokens, credentials, or real hardware.
+
 ## Stage 9B Qiskit Optimization native subset
 
 Stage 9B adds an independently implemented educational native binary

@@ -246,6 +246,18 @@ workflows. The slice is not a full Benchpress replacement, not official
 benchmark output, not production performance ranking, and does not access cloud
 services, tokens, or real hardware.
 
+## Stage 10C QuantumBridge Studio Backend API Slice
+
+Stage 10C adds the first local backend API layer for future QuantumBridge
+Studio frontends. It groups existing executable slices behind catalog,
+workflow registry, input schema, execution, result store, export, benchmark,
+provenance/warning, and REST-like local router services.
+
+This is not a frontend UI, not a production API server, and not a cloud
+service. The default router is in-process Python only and does not open ports.
+The optional FastAPI adapter is an availability boundary and does not add
+FastAPI as a required dependency or start a server.
+
 ## Release Gating
 
 Do not tag or release based on catalog planning alone. A release candidate

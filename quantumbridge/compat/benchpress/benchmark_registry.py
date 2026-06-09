@@ -33,4 +33,5 @@ def list_default_benchmark_suites() -> dict[str, list[BenchmarkCase]]:
         "mitigation": suite_by_name("mitigation"),
         "backend": suite_by_name("backend"),
         "bridge": suite_by_name("bridge"),
+        "full_smoke": suite_by_name("full_smoke"),
     }

@@ -144,6 +144,9 @@ section "quafu-compat"
 section "benchpress-compat"
 "$PYTEST_BIN" -q -rs tests/compat_benchpress
 
+section "studio-backend-api"
+"$PYTEST_BIN" -q -rs tests/studio
+
 section "ecosystem-inventory"
 "$PYTHON_BIN" scripts/inventory_qiskit_core_api.py
 "$PYTHON_BIN" scripts/inventory_qiskit_aer_api.py

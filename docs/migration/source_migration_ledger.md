@@ -644,3 +644,36 @@ egg-info, site-packages, or virtual environments are vendored:
 - `docs/tutorials/benchpress_*_quantumbridge.md`
 
 Stage 10B source port count remains zero.
+
+## Stage 10C Source Inventory
+
+The following Stage 10C files are clean-room QuantumBridge implementations or
+local backend API documentation; no IBM, Qiskit, PennyLane, Benchpress,
+QOS-UQCI, Quafu, MQT, Mitiq, TorchQuantum, PyTorch, FastAPI, wheels,
+dist-info, egg-info, site-packages, or virtual environments are vendored:
+
+- `quantumbridge/studio/__init__.py`
+- `quantumbridge/studio/api_models.py`
+- `quantumbridge/studio/catalog_service.py`
+- `quantumbridge/studio/workflow_registry.py`
+- `quantumbridge/studio/workflow_inputs.py`
+- `quantumbridge/studio/execution_service.py`
+- `quantumbridge/studio/result_store.py`
+- `quantumbridge/studio/export_service.py`
+- `quantumbridge/studio/benchmark_service.py`
+- `quantumbridge/studio/provenance_service.py`
+- `quantumbridge/studio/warning_service.py`
+- `quantumbridge/studio/local_router.py`
+- `quantumbridge/studio/fastapi_adapter.py`
+- `quantumbridge/studio/warnings.py`
+- `quantumbridge/studio/examples.py`
+- `examples/studio_catalog_api_quantumbridge.py`
+- `examples/studio_workflow_execution_quantumbridge.py`
+- `examples/studio_benchmark_api_quantumbridge.py`
+- `examples/studio_export_api_quantumbridge.py`
+- `tests/studio/*`
+- `docs/studio/*`
+- `docs/implementation/stage10c_quantumbridge_studio_backend_api_slice_report.md`
+- `docs/tutorials/studio_*_quantumbridge.md`
+
+Stage 10C source port count remains zero.

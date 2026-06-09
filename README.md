@@ -60,6 +60,7 @@ Current Qiskit ecosystem status:
 - TorchQuantum / PyTorch-style QML compatibility: Stage 9K Level 3 educational native quantum layer, tensor/batch forward, deterministic toy classifier training, optional torch tensor path, and optional upstream TorchQuantum boundary. This is not a full TorchQuantum or PyTorch replacement, not production QML, and not for high-risk automated decisions.
 - QOS-UQCI / Quafu backend compatibility: Stage 10A Level 3 offline job specs, clean-room payloads, mock backend execution, result schemas, and optional upstream package boundaries. This is not production runtime or real hardware execution and does not access cloud services or tokens.
 - Benchpress / Benchmarking compatibility: Stage 10B Level 3 clean-room local benchmark registry, runner, default suites, JSON / Markdown reports, and optional upstream Benchpress boundary. This is not official Benchpress output, not a full Benchpress replacement, and not production performance ranking.
+- QuantumBridge Studio backend API: Stage 10C local service layer for catalog, workflow registry, input schema, execution, result store, export, benchmark, warnings/provenance, and REST-like local router. This is not a frontend UI, not a production API server, and does not access cloud services, tokens, or hardware.
 
 Current PennyLane ecosystem status:
 
@@ -89,6 +90,7 @@ Stage 7.2 expands installed-environment verification and adapter schemas. It rem
 | TorchQuantum / PyTorch-style QML | Stage 9K educational native TorchQuantum-like layer, tensor/batch forward, and classifier training | torch is optional for tensor interop; TorchQuantum is optional for upstream boundary metadata | Native subset does not require TorchQuantum; not full TorchQuantum/PyTorch replacement; not production QML or high-risk ML |
 | QOS-UQCI / Quafu backends | Stage 10A offline QOS-UQCI job spec, DeviceSpec / CalSet / Manifest, Quafu-compatible payload, and mock execution | QOS-UQCI and pyquafu are optional upstream boundaries | No production runtime, no cloud/token/hardware access, no official endorsement |
 | Benchpress / Benchmarking | Stage 10B local benchmark registry, runner, default suites, and JSON / Markdown reports | Benchpress is optional for upstream boundary metadata | Not official Benchpress output, not production performance ranking, no cloud/token/hardware access |
+| QuantumBridge Studio Backend API | Stage 10C local catalog, workflow, execution, result, export, benchmark, and local router services | No heavy dependency; optional FastAPI boundary only | Backend-only, no frontend UI, no production server, no cloud/token/hardware access |
 | PennyLane full | Level 0/1 plus PennyLaneResult Level 2 wrapper | `.[pennylane-full]` | Verified: 0.42.3; no complete replacement claim |
 
 Level 2 here means a QuantumBridge result-schema wrapper. It does not mean complete input conversion, behavioral parity, performance parity, or production equivalence.
@@ -283,6 +285,23 @@ This slice is not a full Benchpress replacement, not official benchmark output,
 not a production performance ranking system, and does not access cloud services,
 tokens, or real hardware.
 
+### QuantumBridge Studio Backend API Slice
+
+Stage 10C adds a local backend API executable slice for future QuantumBridge
+Studio frontends:
+
+- catalog API over QuantumBridge-owned ecosystem metadata;
+- workflow registry and input schema API for executable slices;
+- local execution service and in-memory result store;
+- JSON, Markdown, Python snippet, and notebook-stub exports;
+- benchmark service wrapping the Stage 10B local benchmark runner;
+- REST-like local router without starting an HTTP server;
+- optional FastAPI adapter boundary when FastAPI is installed separately.
+
+This slice is backend-only. It is not a frontend UI, not a production API
+server, not an official IBM / Qiskit / PennyLane / Benchpress service, and does
+not access cloud services, tokens, credentials, or real hardware.
+
 ## P1 Controlled Expansion
 
 Stage 5 adds controlled P1 subset coverage:
@@ -306,6 +325,8 @@ Stage 5 adds controlled P1 subset coverage:
   token handling, or real hardware execution.
 - Full Benchpress replacement, official benchmark claims, or production
   performance ranking.
+- QuantumBridge Studio frontend UI, production API server claims, cloud service
+  execution, token handling, or real hardware execution.
 - Full OpenQASM grammar.
 - Hardware cloud providers.
 - Production Qiskit Aer/noise integration.

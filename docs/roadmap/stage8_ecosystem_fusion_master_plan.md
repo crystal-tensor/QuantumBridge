@@ -376,3 +376,12 @@ bounded executable local slice:
 Stage 10B does not claim complete Benchpress replacement, official benchmark
 output, production performance ranking, official endorsement, cloud access,
 token access, hardware access, release readiness, tags, or UI implementation.
+
+## 6.13 Stage 10C Studio Backend API Snapshot
+
+Stage 10C adds a local Studio backend API executable slice that can list
+catalog projects, list workflows, validate input schemas, execute representative
+workflows, store results in memory, export JSON / Markdown / Python snippets,
+run benchmark suites, and route REST-like local paths. It is not a frontend UI,
+not a production API server, and does not access cloud services, tokens, or
+hardware.

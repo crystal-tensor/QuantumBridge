@@ -1,5 +1,14 @@
 # QuantumBridge Studio Information Architecture v0.1
 
+## Stage 10C Backend Information Architecture
+
+The first backend API slice organizes Studio data around catalog projects,
+workflows, input schemas, executions, results, exports, benchmarks, warnings,
+and provenance.
+
+The architecture is local-only and backend-only. It prepares future frontend
+screens without implementing UI components or copying third-party UI/branding.
+
 **Version**: v0.1  
 **Date**: 2026-06-09  
 **Status**: Stage 8A planning only  

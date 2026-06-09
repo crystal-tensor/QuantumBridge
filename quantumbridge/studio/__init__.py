@@ -1,0 +1,83 @@
+# This file is independently implemented for QuantumBridge SDK.
+"""QuantumBridge Studio local backend API executable slice."""
+
+from .api_models import (
+    StudioAPIResponse,
+    StudioBenchmarkReport,
+    StudioCatalogItem,
+    StudioError,
+    StudioExecutionRequest,
+    StudioExecutionResult,
+    StudioExportResult,
+    StudioInputField,
+    StudioInputSchema,
+    StudioProvenance,
+    StudioWarning,
+    StudioWorkflowDetail,
+    StudioWorkflowSummary,
+)
+from .catalog_service import (
+    filter_ecosystem_projects,
+    get_clean_room_boundary_notice,
+    get_ecosystem_project,
+    get_project_status_summary,
+    list_ecosystem_projects,
+    list_project_workflows,
+    search_ecosystem_projects,
+)
+from .execution_service import (
+    dry_run_workflow,
+    execute_batch_workflows,
+    execute_workflow,
+    execute_workflow_by_request,
+    get_execution_result,
+    get_execution_status,
+)
+from .local_router import list_routes, route_request
+from .workflow_registry import (
+    filter_workflows,
+    get_workflow,
+    get_workflow_examples,
+    get_workflow_input_schema,
+    list_workflows,
+    search_workflows,
+    validate_workflow_request,
+)
+
+__all__ = [
+    "StudioAPIResponse",
+    "StudioBenchmarkReport",
+    "StudioCatalogItem",
+    "StudioError",
+    "StudioExecutionRequest",
+    "StudioExecutionResult",
+    "StudioExportResult",
+    "StudioInputField",
+    "StudioInputSchema",
+    "StudioProvenance",
+    "StudioWarning",
+    "StudioWorkflowDetail",
+    "StudioWorkflowSummary",
+    "dry_run_workflow",
+    "execute_batch_workflows",
+    "execute_workflow",
+    "execute_workflow_by_request",
+    "filter_ecosystem_projects",
+    "filter_workflows",
+    "get_clean_room_boundary_notice",
+    "get_ecosystem_project",
+    "get_execution_result",
+    "get_execution_status",
+    "get_project_status_summary",
+    "get_workflow",
+    "get_workflow_examples",
+    "get_workflow_input_schema",
+    "list_ecosystem_projects",
+    "list_project_workflows",
+    "list_routes",
+    "list_workflows",
+    "route_request",
+    "search_ecosystem_projects",
+    "search_workflows",
+    "validate_workflow_request",
+]

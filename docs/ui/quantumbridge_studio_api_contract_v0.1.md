@@ -564,6 +564,28 @@ warnings, provenance, and explicit flags for `cloud_access=false`,
 
 ## 10. Open Questions
 
+### 10.1 Stage 10C Local Backend API Executable Slice
+
+Stage 10C implements the first local Python service layer matching the planned
+Studio API shape:
+
+- `GET /catalog/projects`
+- `GET /workflows`
+- `GET /workflows/{workflow_id}`
+- `GET /workflows/{workflow_id}/schema`
+- `POST /execute/{workflow_id}`
+- `GET /results/{execution_id}`
+- `GET /benchmarks`
+- `POST /benchmarks/{suite_id}`
+- `GET /export/catalog`
+- `GET /export/workflows`
+
+These are handled by `quantumbridge.studio.local_router.route_request` without
+starting an HTTP server or opening ports. Results are local-only, include
+warnings/provenance, and explicitly avoid cloud, token, credential, and real
+hardware access. This is backend API preparation, not frontend UI
+implementation and not a production API claim.
+
 ### 10.0 Stage 10B Benchmark API Planning
 
 Future backend endpoints may expose Stage 10B benchmark suites:
