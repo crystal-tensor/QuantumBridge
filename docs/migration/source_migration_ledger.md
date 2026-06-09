@@ -206,3 +206,14 @@ The following files are independently implemented adapter/schema modules. They r
 - `quantumbridge/compat/pennylane_full/result_adapter.py`
 
 Stage 7.2 source port count remains zero.
+
+## Stage 8A exact path registration
+
+The following Stage 8A contract file mentions upstream package names only to
+define independent QuantumBridge adapter metadata, provenance, and warnings.
+No upstream source, tests, documentation prose, comments, or error strings were
+copied.
+
+- `quantumbridge/compat/contracts.py`
+
+Stage 8A source port count remains zero.

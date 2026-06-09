@@ -26,6 +26,20 @@ PennyLane Full Fusion into QuantumBridge is **design-complete** but has signific
 10. 🔴 **QOS backend semantic inconsistency risk** - Undefined QOS API
 11. 🔴 **Qiskit ↔ PennyLane qubit ordering risk** - CRITICAL (reversed ordering)
 
+### Stage 8A Status Update
+
+Stage 8A is a planning and interface-hardening step. It does not implement full
+PennyLane coverage, does not copy or vendor PennyLane source code, and does not
+claim full replacement or production parity.
+
+Additional Stage 8A controls:
+
+1. Use the common ecosystem adapter contract before expanding adapters.
+2. Keep PennyLane as an optional dependency.
+3. Require warnings and provenance for all passthrough and schema-wrapped paths.
+4. Keep QOS-UQCI support in planning/offline/mock mode only.
+5. Keep UI work in product/spec/API planning only.
+
 ---
 
 ## 2. False Claim Risk

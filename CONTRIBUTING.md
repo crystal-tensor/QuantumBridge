@@ -6,11 +6,16 @@ full replacement claims for Qiskit or PennyLane.
 
 ## Development Flow
 
+The current owner-directed workflow uses direct pushes to `main`. Treat direct
+push as a high-trust path with the same discipline normally expected from a
+reviewed pull request:
+
 1. Work from the repository design, roadmap, review, and implementation records.
-2. Keep P1 maintenance changes small and reviewable.
-3. Do not enter P2 feature implementation unless a P2 task is explicitly opened.
+2. Keep changes small, scoped, and easy to audit.
+3. Do not include unrelated drafts, local experiments, or generated dependency artifacts.
 4. Run the local test suite before handoff.
 5. Record meaningful engineering or compliance changes in the relevant docs.
+6. Push `main` only after local validation passes, then confirm the latest GitHub Actions run.
 
 ## Tests
 
@@ -28,6 +33,22 @@ bash scripts/run_local_matrix.sh
 
 Optional dependency tests should either pass when the dependency is installed or
 skip/report unavailable with a clear reason.
+
+## Mainline Gates
+
+Before committing or pushing to `main`:
+
+```bash
+git pull --ff-only origin main
+git status
+pytest -q -rs
+```
+
+Run `pytest --cov=quantumbridge` and `bash scripts/run_local_matrix.sh` for CI,
+compatibility, or ecosystem-scope changes.
+
+Do not commit tokens, credentials, `site-packages`, wheels, `dist-info`,
+`egg-info`, virtual environments, or vendored third-party source code.
 
 ## Optional Dependencies
 

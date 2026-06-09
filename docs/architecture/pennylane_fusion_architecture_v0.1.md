@@ -14,6 +14,11 @@
 **QuantumBridge is NOT a PennyLane replacement.**  
 **QuantumBridge is a unified bridging layer that exposes PennyLane capabilities alongside Qiskit and QOS capabilities.**
 
+Stage 8A status: this document is used as architecture input for planning and
+interface hardening only. It does not authorize full PennyLane implementation,
+UI implementation, release creation, tag creation, vendoring, or production
+parity claims.
+
 ```
 PennyLane ──[adapter]──► QuantumBridge ──[adapter]──► Qiskit
 PennyLane ──[adapter]──► QuantumBridge ──[adapter]──► QOS

@@ -11,6 +11,10 @@
 
 QuantumBridge Studio is a **visual frontend** for QuantumBridge SDK that enables users to interact with quantum computing workflows **without writing code**. It provides a graphical interface to build circuits, run simulations, explore ecosystem capabilities, and export workflows as Python code or QASM.
 
+Stage 8A note: this is a product planning document only. It does not implement
+frontend code, connect to real cloud tokens, access real hardware, or publish a
+product release.
+
 ### Key Value Propositions
 
 1. **No-code quantum computing** - Build and run quantum circuits visually
@@ -27,6 +31,7 @@ QuantumBridge Studio is a **visual frontend** for QuantumBridge SDK that enables
 4. ✅ **Backend via adapter** - All calls go through QuantumBridge adapters
 5. ✅ **Provenance by default** - All results include source tracking
 6. ✅ **Exportable workflows** - Every workflow can be exported as code
+7. ✅ **Contract-gated UI** - UI work waits for stable adapter and result contracts
 
 ---
 

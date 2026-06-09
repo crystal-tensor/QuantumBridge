@@ -11,6 +11,9 @@
 
 This document defines the **API contract** between QuantumBridge Studio (frontend) and QuantumBridge SDK (backend). All interactions must go through these APIs.
 
+Stage 8A note: this remains a planning contract only. No Next.js, React, cloud,
+hardware, token, or product UI implementation is authorized by this document.
+
 ### Key Principles
 
 1. ❌ **No direct upstream package calls** - Frontend calls QuantumBridge adapters only
@@ -18,6 +21,7 @@ This document defines the **API contract** between QuantumBridge Studio (fronten
 3. ✅ **Graceful degradation** - Uninstalled packages return clear errors
 4. ✅ **Schema validation** - All requests/responses validated against JSON schema
 5. ✅ **No token storage** - IBM Cloud tokens never stored
+6. ✅ **Adapter contract first** - Studio pages depend on stable adapter and result contracts
 
 ---
 

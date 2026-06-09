@@ -247,6 +247,36 @@ This matrix tracks QuantumBridge's fusion of PennyLane's full capability set.
 
 ---
 
+## Stage 8A Contract Matrix
+
+Stage 8A keeps PennyLane as an optional dependency and tightens the adapter
+contract before expanding implementation. No PennyLane source code is copied or
+vendored, and no full replacement or production parity is claimed.
+
+| Module | API group | Inventory status | Level 0 | Level 1 | Level 2 | Level 3 | Qiskit bridge | QOS-UQCI bridge | Tests | Risk | Next stage |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| qml top-level | device, qnode, execution helpers | Existing inventory | Required | Planned passthrough | Planned schema wrappers | Limited native subset only | Planned IR bridge | Planned via UQCI IR | inventory, qnode smoke | Medium | 8B |
+| operations | gates and operator metadata | Existing inventory | Required | Planned passthrough | Planned operation schema | Limited native subset only | Planned circuit bridge | Planned IR mapping | operations adapter tests | Medium | 8C |
+| observables | Pauli, Hamiltonian, composite ops | Existing inventory | Required | Planned passthrough | Planned observable schema | Limited native subset only | Planned SparsePauli bridge | Deferred | observable schema tests | Medium | 8C |
+| measurements | expval, probs, counts, sample, state | Existing inventory | Required | Planned passthrough | Planned result schema | No broad native claim | Planned result bridge | Planned result bridge | measurement result tests | Medium | 8C |
+| QNode | decorators and callable workflows | Existing inventory | Required | Planned passthrough | Planned QNode result wrapper | No broad native claim | Planned circuit/tape bridge | Planned UQCI export | qnode smoke | High | 8C |
+| devices | default and plugin devices | Existing inventory | Required | Advisory passthrough | Planned device metadata | No device replacement | Aer bridge planned | Mock only | dependency/offline tests | High | 8C |
+| tape | tape capture and conversion | Existing inventory | Required | Planned passthrough | Planned tape schema | No broad native claim | Planned bidirectional IR | Planned UQCI IR | tape contract tests | High | 8C |
+| workflow | execution and transforms workflow | Existing inventory | Required | Planned passthrough | Planned workflow metadata | No broad native claim | Deferred | Deferred | workflow smoke | Medium | 8B |
+| transforms | transform functions | Existing inventory | Required | Planned passthrough | Selected metadata wrappers | No broad native claim | Deferred | Deferred | transform smoke | High | 8B |
+| gradients | param-shift, adjoint, finite diff | Existing inventory | Required | Planned passthrough | Selected result wrappers | No broad native claim | Deferred | Deferred | gradient smoke | High | 8B |
+| templates | templates and embeddings | Existing inventory | Required | Planned passthrough | Selected template metadata | Existing native templates remain scoped | Circuit bridge | Deferred | templates smoke | Medium | 8B |
+| qchem / fermi / bose | chemistry operators and workflows | Existing inventory | Required | Optional passthrough | Selected schema wrappers | No production chemistry | Nature bridge planned | Deferred | qchem optional tests | High | 8B |
+| qaoa / qnn / kernels | algorithm and QML helpers | Existing inventory | Required | Optional passthrough | Selected result wrappers | No production ML claim | Algorithms/ML bridge | Deferred | optional smoke | High | 8B |
+| resource / qcut / shadows | analysis and advanced workflows | Existing inventory | Required | Advisory passthrough | Selected metadata wrappers | No broad native claim | Deferred | Deferred | advisory tests | High | 8B |
+| data / math / numpy | datasets and math backend helpers | Existing inventory | Required | Optional passthrough | Selected schema wrappers | Limited native math only | Deferred | Deferred | import smoke | Medium | 8B |
+| pauli / spin / fourier / liealg | algebraic helpers | Existing inventory | Required | Optional passthrough | Selected schema wrappers | Limited native operators only | Planned operator bridge | Deferred | operator smoke | Medium | 8B |
+| pulse / noise | pulse and noise objects | Existing inventory | Required | Advisory passthrough | Selected metadata wrappers | No production hardware/noise claim | Dynamics/Aer bridge | Deferred | advisory tests | High | 8B |
+| io / converters | import/export helpers | Existing inventory | Required | Optional passthrough | Selected conversion schemas | No broad native claim | Planned IR bridge | Planned UQCI bridge | roundtrip tests | Medium | 8C |
+| interfaces / plugins | Torch/JAX/TF/plugins | Existing inventory | Required | Advisory passthrough | Selected metadata wrappers | No plugin replacement | Deferred | Deferred | dependency tests | High | 8B |
+
+---
+
 **Document Version**: v0.1  
 **Last Updated**: 2026-06-06  
 **Author**: OpenClaw (QuantumBridge 24-hour R&D Chief of Staff)
