@@ -59,6 +59,27 @@ Stage 8B controls:
 6. No UI, release, tag, full replacement claim, or production parity claim is
    introduced.
 
+### Stage 8C Status Update
+
+Stage 8C deepens a narrow PennyLane bridge slice for operations,
+measurements, QNodes, tapes, Qiskit conversion, and QOS-UQCI job-spec payloads.
+The risk posture remains MEDIUM because these adapters intentionally expose
+metadata/schema behavior and basic conversion paths only.
+
+Stage 8C controls:
+
+1. Supported operation conversion is limited to a documented basic-gate subset.
+2. Unsupported operations produce structured warnings and unsupported metadata.
+3. Measurement handling is metadata/result-fragment only and does not claim
+   production statistical equivalence.
+4. QNode introspection requires sample arguments for dynamic QNodes and remains
+   a schema adapter.
+5. Qiskit bridge output is basic circuit construction for supported gates only.
+6. QOS-UQCI output is offline job-spec metadata only; no cloud access, token
+   reads, token storage, or hardware execution is introduced.
+7. No UI, release, tag, vendored source, full replacement claim, or production
+   parity claim is introduced.
+
 ---
 
 ## 2. False Claim Risk

@@ -153,3 +153,27 @@ Stage 8B adds the first executable PennyLane full API bridge foundation:
 Stage 8B remains bounded. It does not claim full native PennyLane support,
 production equivalence, QOS-UQCI runtime execution, real cloud access, hardware
 access, release readiness, or UI implementation.
+
+## 6.2 Stage 8C Implementation Snapshot
+
+Stage 8C deepens the PennyLane bridge foundation without leaving the adapter
+scope:
+
+- operation sequence to QuantumBridge IR conversion for a bounded basic-gate
+  set;
+- structured unsupported metadata for out-of-scope PennyLane operations;
+- measurement metadata and result fragments for common PennyLane measurement
+  process types;
+- QNode workflow metadata and sample-argument tape introspection;
+- tape to QuantumBridge IR and metadata-only IR to tape specs;
+- basic supported-gate PennyLane tape to Qiskit circuit conversion;
+- Qiskit circuit to basic PennyLane operation-spec metadata;
+- QOS-UQCI offline job-spec payloads with explicit no-cloud, no-token, and
+  no-hardware fields;
+- Stage 8C result schema classes for operation, measurement, tape, Qiskit,
+  QOS-UQCI, and conversion outputs.
+
+Stage 8C remains bounded. It does not claim full native PennyLane support,
+production equivalence, real QOS-UQCI runtime execution, real cloud access,
+hardware access, token reads, token storage, release readiness, tag creation,
+or UI implementation.

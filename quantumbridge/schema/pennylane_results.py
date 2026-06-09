@@ -108,3 +108,23 @@ class ShadowResult(PennyLaneResult):
 
 class ConversionResult(PennyLaneResult):
     pass
+
+
+class OperationBridgeResult(PennyLaneResult):
+    pass
+
+
+class MeasurementBridgeResult(PennyLaneResult):
+    pass
+
+
+class TapeBridgeResult(PennyLaneResult):
+    pass
+
+
+class QiskitBridgeResult(PennyLaneResult):
+    pass
+
+
+class QOSUQCIJobSpecResult(PennyLaneResult):
+    pass

@@ -62,6 +62,25 @@ Stage 8B inventory is generated from runtime public API introspection. No
 PennyLane source, tests, comments, documentation prose, wheels, dist-info,
 egg-info, site-packages, or vendored package files are copied.
 
+### Stage 8C Bridge Deepening Snapshot
+
+Generated on 2026-06-09 as a bounded implementation slice.
+
+| Area | Stage 8C status |
+|---|---|
+| Operation IR bridge | Level 2 metadata/schema adapter for H/Hadamard, X/PauliX, Y/PauliY, Z/PauliZ, RX, RY, RZ, PhaseShift/Phase, CNOT/CX, CZ, and SWAP. |
+| Unsupported operations | Structured unsupported metadata and warnings; no silent production claim. |
+| Measurement bridge | Level 2 metadata/result fragments for expval, probs, sample, counts, state, density_matrix, var, vn_entropy, and mutual_info. |
+| QNode bridge | Sample-argument introspection path to QuantumBridge IR with QNode workflow metadata. |
+| Tape bridge | QuantumBridge IR schema with operations, measurements, wires, parameters, shots, unsupported operations, warnings, and provenance. |
+| Qiskit bridge | Basic PennyLane tape to Qiskit circuit conversion for supported gates; metadata-only reverse spec. |
+| QOS-UQCI bridge | Offline canonical job-spec payload and OpenQASM compatibility metadata only. |
+| New result schemas | OperationBridgeResult, MeasurementBridgeResult, TapeBridgeResult, QiskitBridgeResult, QOSUQCIJobSpecResult, and ConversionResult coverage. |
+
+Stage 8C remains an optional dependency bridge. It does not provide a native
+PennyLane implementation, production parity, real QOS-UQCI execution, cloud
+access, token storage, hardware access, release, tag, or UI implementation.
+
 ---
 
 ## Module Matrix

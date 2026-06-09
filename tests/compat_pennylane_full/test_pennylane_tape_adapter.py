@@ -13,4 +13,5 @@ def test_pennylane_tape_adapter_extracts_metadata_and_ir():
     assert describe_tape(tape)["operation_count"] == 2
     assert len(tape_to_operation_metadata(tape)) == 2
     ir = tape_to_quantumbridge_ir(tape)
-    assert hasattr(ir, "to_dict") or ir["supported"] is False
+    assert ir["ecosystem"] == "pennylane"
+    assert [op["op"] for op in ir["operations"]] == ["h", "cx"]

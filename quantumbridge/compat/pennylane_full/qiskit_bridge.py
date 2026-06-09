@@ -6,29 +6,30 @@ from __future__ import annotations
 
 from quantumbridge.compat.contracts import CapabilityLevel
 
-from .operations_adapter import operation_to_quantumbridge_ir_fragment
-from .warnings import unsupported
+from .operations_adapter import operation_sequence_to_quantumbridge_ir
+from .warnings import adapter_metadata, unsupported
 
 
 def pennylane_operations_to_quantumbridge_ir(operations) -> dict:
-    instructions = []
-    warnings = []
-    max_wire = -1
-    for op in operations:
-        fragment = operation_to_quantumbridge_ir_fragment(op)
-        if isinstance(fragment, dict) and fragment.get("supported") is False:
-            warnings.append(fragment)
-            continue
-        instructions.append(fragment)
-        for wire in fragment.get("targets", []) + fragment.get("controls", []):
-            max_wire = max(max_wire, int(wire))
-    return {
-        "ir_version": "qb-ir-v0.1",
-        "registers": {"quantum": {"size": max_wire + 1 if max_wire >= 0 else 1}, "classical": {"size": 0}},
-        "instructions": instructions,
-        "measurements": [],
-        "metadata": {"source": "pennylane", "warnings": warnings},
-    }
+    ir = operation_sequence_to_quantumbridge_ir(operations)
+    wires = [wire for instruction in ir["instructions"] for wire in instruction.get("wires", [])]
+    numeric_wires = [wire for wire in wires if isinstance(wire, int)]
+    size = max(numeric_wires) + 1 if numeric_wires else max(len(set(wires)), 1)
+    ir["registers"] = {"quantum": {"size": size}, "classical": {"size": 0}}
+    ir["metadata"] = {"source": "pennylane", "warnings": ir.get("warnings", [])}
+    return ir
+
+
+def pennylane_tape_to_quantumbridge_ir(tape) -> dict:
+    from .tape_adapter import tape_to_quantumbridge_ir
+
+    ir = tape_to_quantumbridge_ir(tape)
+    wires = ir.get("wires", [])
+    numeric_wires = [wire for wire in wires if isinstance(wire, int)]
+    size = max(numeric_wires) + 1 if numeric_wires else max(len(set(wires)), 1)
+    ir["registers"] = {"quantum": {"size": size}, "classical": {"size": 0}}
+    ir["metadata"] = {"source": "pennylane_tape", "warnings": ir.get("warnings", [])}
+    return ir
 
 
 def quantumbridge_ir_to_qiskit_circuit(ir):
@@ -39,10 +40,16 @@ def quantumbridge_ir_to_qiskit_circuit(ir):
 
     payload = ir.to_dict() if hasattr(ir, "to_dict") else ir
     registers = payload.get("registers", {}) if isinstance(payload, dict) else {}
-    num_qubits = registers.get("quantum", {}).get("size", getattr(ir, "num_qubits", 1))
+    operations = payload.get("instructions") or payload.get("operations", [])
+    if registers:
+        num_qubits = registers.get("quantum", {}).get("size", getattr(ir, "num_qubits", 1))
+    else:
+        wires = [wire for instruction in operations for wire in instruction.get("wires", [])]
+        numeric_wires = [wire for wire in wires if isinstance(wire, int)]
+        num_qubits = max(numeric_wires) + 1 if numeric_wires else max(len(set(wires)), 1)
     circuit = QuantumCircuit(num_qubits)
     warnings = []
-    for instruction in payload.get("instructions", []):
+    for instruction in operations:
         op = instruction.get("op")
         targets = instruction.get("targets", [])
         controls = instruction.get("controls", [])
@@ -77,3 +84,58 @@ def quantumbridge_ir_to_qiskit_circuit(ir):
     if warnings:
         circuit.metadata = {"quantumbridge_warnings": warnings}
     return circuit
+
+
+def pennylane_tape_to_qiskit_circuit(tape):
+    return quantumbridge_ir_to_qiskit_circuit(pennylane_tape_to_quantumbridge_ir(tape))
+
+
+def qiskit_circuit_to_basic_pennylane_spec(circuit) -> dict:
+    gate_map = {
+        "h": "Hadamard",
+        "x": "PauliX",
+        "y": "PauliY",
+        "z": "PauliZ",
+        "rx": "RX",
+        "ry": "RY",
+        "rz": "RZ",
+        "p": "PhaseShift",
+        "phase": "PhaseShift",
+        "cx": "CNOT",
+        "cnot": "CNOT",
+        "cz": "CZ",
+        "swap": "SWAP",
+    }
+    operations = []
+    warnings = []
+    for instruction in getattr(circuit, "data", []):
+        operation = instruction.operation
+        name = operation.name
+        pennylane_name = gate_map.get(name)
+        wires = [circuit.find_bit(qubit).index for qubit in instruction.qubits]
+        if pennylane_name is None:
+            warnings.append(f"Unsupported Qiskit operation for PennyLane spec: {name}")
+            continue
+        operations.append(
+            {
+                "operation": pennylane_name,
+                "wires": wires,
+                "parameters": [_jsonable_parameter(param) for param in getattr(operation, "params", [])],
+                "metadata_only": True,
+            }
+        )
+    return {
+        "schema_version": "0.1",
+        "ecosystem": "pennylane",
+        "source": "qiskit",
+        "operations": operations,
+        "warnings": warnings,
+        "provenance": adapter_metadata(CapabilityLevel.SCHEMA_ADAPTER)["provenance"],
+    }
+
+
+def _jsonable_parameter(parameter):
+    try:
+        return float(parameter)
+    except (TypeError, ValueError):
+        return repr(parameter)

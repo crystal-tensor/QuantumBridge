@@ -27,6 +27,19 @@ passthrough/schema bridge. It does not implement a full native PennyLane
 replacement, production parity, real QOS-UQCI runtime, real hardware access, or
 product UI.
 
+Stage 8C status: QuantumBridge deepens the PennyLane bridge for a bounded
+operation, measurement, QNode, tape, Qiskit-circuit, and QOS-UQCI job-spec
+slice. The supported operation mapping covers H/Hadamard, X/PauliX,
+Y/PauliY, Z/PauliZ, RX, RY, RZ, PhaseShift/Phase, CNOT/CX, CZ, and SWAP.
+The measurement metadata slice covers expval, probs, sample, counts, state,
+density_matrix, var, vn_entropy, and mutual_info. QNode and tape conversion
+remain metadata/schema adapters with explicit warnings and provenance. Qiskit
+conversion is limited to basic circuit construction for supported gates.
+QOS-UQCI output is a canonical offline job-spec payload and OpenQASM
+compatibility artifact metadata only. Stage 8C does not claim production
+equivalence, real cloud/runtime execution, token access, hardware access, or
+full PennyLane replacement.
+
 ```
 PennyLane ──[adapter]──► QuantumBridge ──[adapter]──► Qiskit
 PennyLane ──[adapter]──► QuantumBridge ──[adapter]──► QOS
