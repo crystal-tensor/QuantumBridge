@@ -5,6 +5,19 @@
 # Design source: docs/mvp/api_contract_v0.1.md.
 
 from quantumbridge.algorithms import maxcut_hamiltonian, qaoa_circuit, run_qaoa, run_vqe
+from quantumbridge.circuit_library import (
+    amplitude_encoding,
+    basis_state,
+    efficient_su2,
+    initialize,
+    integer_comparator,
+    qft,
+    real_amplitudes,
+    standard_gate,
+    two_local,
+    weighted_adder,
+    zz_feature_map,
+)
 from quantumbridge.compat import circuit_from_openqasm, circuit_from_qiskit, circuit_to_qiskit
 from quantumbridge.core import Circuit, Measurement, Operation, Parameter
 from quantumbridge.devices import ShotSampler, StatevectorDevice
@@ -42,10 +55,21 @@ __all__ = [
     "circuit_from_openqasm",
     "circuit_from_qiskit",
     "circuit_to_qiskit",
+    "amplitude_encoding",
+    "basis_state",
+    "efficient_su2",
     "finite_difference",
+    "initialize",
+    "integer_comparator",
     "maxcut_hamiltonian",
     "parameter_shift",
+    "qft",
     "qaoa_circuit",
+    "real_amplitudes",
     "run_qaoa",
     "run_vqe",
+    "standard_gate",
+    "two_local",
+    "weighted_adder",
+    "zz_feature_map",
 ]

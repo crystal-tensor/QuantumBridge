@@ -22,6 +22,8 @@ PAULI_Z = np.array([[1, 0], [0, -1]], dtype=complex)
 
 
 def gate_matrix(name: str, params: tuple[Real, ...] = (), metadata: Optional[dict] = None) -> np.ndarray:
+    if name in {"id", "i"}:
+        return I2
     if name == "x":
         return PAULI_X
     if name == "y":
@@ -30,6 +32,10 @@ def gate_matrix(name: str, params: tuple[Real, ...] = (), metadata: Optional[dic
         return PAULI_Z
     if name == "h":
         return np.array([[1, 1], [1, -1]], dtype=complex) / sqrt(2)
+    if name == "sx":
+        return 0.5 * np.array([[1 + 1j, 1 - 1j], [1 - 1j, 1 + 1j]], dtype=complex)
+    if name == "sxdg":
+        return 0.5 * np.array([[1 - 1j, 1 + 1j], [1 + 1j, 1 - 1j]], dtype=complex)
     if name == "s":
         return np.array([[1, 0], [0, 1j]], dtype=complex)
     if name == "sdg":
@@ -57,6 +63,20 @@ def gate_matrix(name: str, params: tuple[Real, ...] = (), metadata: Optional[dic
         )
     if name == "cz":
         return np.diag([1, 1, 1, -1]).astype(complex)
+    if name in {"crx", "cry", "crz", "cphase", "cp"}:
+        target_name = {"crx": "rx", "cry": "ry", "crz": "rz", "cphase": "phase", "cp": "phase"}[name]
+        target = gate_matrix(target_name, params)
+        out = np.eye(4, dtype=complex)
+        out[2:4, 2:4] = target
+        return out
+    if name in {"rxx", "ryy", "rzz"}:
+        theta = float(params[0])
+        pauli = {
+            "rxx": np.kron(PAULI_X, PAULI_X),
+            "ryy": np.kron(PAULI_Y, PAULI_Y),
+            "rzz": np.kron(PAULI_Z, PAULI_Z),
+        }[name]
+        return cos(theta / 2) * np.eye(4, dtype=complex) - 1j * sin(theta / 2) * pauli
     if name == "swap":
         return np.array([[1, 0, 0, 0], [0, 0, 1, 0], [0, 1, 0, 0], [0, 0, 0, 1]], dtype=complex)
     if name == "iswap":

@@ -75,6 +75,9 @@ class Circuit:
     def x(self, q: int) -> "Circuit":
         return self.append("x", (q,))
 
+    def id(self, q: int) -> "Circuit":
+        return self.append("id", (q,))
+
     def y(self, q: int) -> "Circuit":
         return self.append("y", (q,))
 
@@ -83,6 +86,12 @@ class Circuit:
 
     def h(self, q: int) -> "Circuit":
         return self.append("h", (q,))
+
+    def sx(self, q: int) -> "Circuit":
+        return self.append("sx", (q,))
+
+    def sxdg(self, q: int) -> "Circuit":
+        return self.append("sxdg", (q,))
 
     def s(self, q: int) -> "Circuit":
         return self.append("s", (q,))
@@ -111,11 +120,35 @@ class Circuit:
     def cx(self, control: int, target: int) -> "Circuit":
         return self.append("cx", (target,), controls=(control,))
 
+    def crx(self, theta: ParameterValue, control: int, target: int) -> "Circuit":
+        return self.append("crx", (target,), controls=(control,), params=(theta,))
+
+    def cry(self, theta: ParameterValue, control: int, target: int) -> "Circuit":
+        return self.append("cry", (target,), controls=(control,), params=(theta,))
+
+    def crz(self, theta: ParameterValue, control: int, target: int) -> "Circuit":
+        return self.append("crz", (target,), controls=(control,), params=(theta,))
+
+    def cp(self, theta: ParameterValue, control: int, target: int) -> "Circuit":
+        return self.append("cp", (target,), controls=(control,), params=(theta,))
+
+    def cphase(self, theta: ParameterValue, control: int, target: int) -> "Circuit":
+        return self.cp(theta, control, target)
+
     def cz(self, control: int, target: int) -> "Circuit":
         return self.append("cz", (target,), controls=(control,))
 
     def swap(self, a: int, b: int) -> "Circuit":
         return self.append("swap", (a, b))
+
+    def rxx(self, theta: ParameterValue, a: int, b: int) -> "Circuit":
+        return self.append("rxx", (a, b), params=(theta,))
+
+    def ryy(self, theta: ParameterValue, a: int, b: int) -> "Circuit":
+        return self.append("ryy", (a, b), params=(theta,))
+
+    def rzz(self, theta: ParameterValue, a: int, b: int) -> "Circuit":
+        return self.append("rzz", (a, b), params=(theta,))
 
     def iswap(self, a: int, b: int) -> "Circuit":
         return self.append("iswap", (a, b), metadata={"experimental": True})
@@ -301,12 +334,12 @@ def _operation_with_metadata(op: Operation, metadata: Mapping[str, Any]) -> Oper
 
 
 def _inverse_operation(op: Operation) -> Operation:
-    if op.name in {"x", "y", "z", "h", "cx", "cz", "swap", "ccx"}:
+    if op.name in {"id", "i", "x", "y", "z", "h", "cx", "cz", "swap", "ccx"}:
         return _operation_with_metadata(op, {})
-    inverse_name = {"s": "sdg", "sdg": "s", "t": "tdg", "tdg": "t"}.get(op.name)
+    inverse_name = {"s": "sdg", "sdg": "s", "sx": "sxdg", "sxdg": "sx", "t": "tdg", "tdg": "t"}.get(op.name)
     if inverse_name:
         return Operation(inverse_name, op.targets, op.controls, op.params, deepcopy(op.metadata))
-    if op.name in {"rx", "ry", "rz", "phase"}:
+    if op.name in {"rx", "ry", "rz", "phase", "crx", "cry", "crz", "cp", "cphase", "rxx", "ryy", "rzz"}:
         return Operation(op.name, op.targets, op.controls, (-op.params[0],), deepcopy(op.metadata))
     matrix = op.metadata.get("matrix")
     if matrix is not None:
