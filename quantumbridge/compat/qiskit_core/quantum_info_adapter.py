@@ -18,3 +18,27 @@ wrap_result = ADAPTER.wrap_result
 to_quantumbridge_schema = ADAPTER.to_quantumbridge_schema
 provenance_metadata = ADAPTER.provenance_metadata
 warn_unsupported = ADAPTER.warn_unsupported
+
+
+def get_native_quantum_info_symbols() -> dict[str, object]:
+    from quantumbridge.information import DensityMatrix, Operator, Statevector, partial_trace, state_fidelity
+    from quantumbridge.operators import Pauli, PauliList, SparsePauliOp, SparsePauliOperator
+
+    return {
+        "DensityMatrix": DensityMatrix,
+        "Operator": Operator,
+        "Pauli": Pauli,
+        "PauliList": PauliList,
+        "SparsePauliOp": SparsePauliOp,
+        "SparsePauliOperator": SparsePauliOperator,
+        "Statevector": Statevector,
+        "partial_trace": partial_trace,
+        "state_fidelity": state_fidelity,
+    }
+
+
+def native_class(name: str):
+    try:
+        return get_native_quantum_info_symbols()[name]
+    except KeyError as exc:
+        raise KeyError(f"QuantumBridge has no native qiskit.quantum_info symbol {name!r}.") from exc

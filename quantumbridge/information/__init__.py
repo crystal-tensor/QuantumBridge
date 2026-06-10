@@ -6,8 +6,8 @@
 from .density_matrix import DensityMatrix
 from .entropy import von_neumann_entropy
 from .fidelity import state_fidelity
+from .operator import Operator
 from .partial_trace import partial_trace
 from .statevector import Statevector
 
-__all__ = ["DensityMatrix", "Statevector", "partial_trace", "state_fidelity", "von_neumann_entropy"]
-
+__all__ = ["DensityMatrix", "Operator", "Statevector", "partial_trace", "state_fidelity", "von_neumann_entropy"]

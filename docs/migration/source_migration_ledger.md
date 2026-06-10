@@ -14,7 +14,7 @@ This ledger records implementation mode and upstream source status for the curre
 | `quantumbridge/legal/attribution.py` | Attribution file validation | Native Implementation | Filename/check only | Filename/check only | N/A | N/A | No | No | Checks required license and notice files exist | N/A | Yes | Yes | Pending | Low |
 | `quantumbridge/compat/qasm_adapter.py` | OpenQASM subset import | Native Implementation | No | No | N/A | N/A | No | No | Native parser for QuantumBridge supported subset | N/A | Yes | Yes | Pending | Low |
 | `quantumbridge/operators/*` | Pauli and sparse Pauli-like operators | Native Implementation | No | No | N/A | N/A | No | No | Native data structures | N/A | Yes | Yes | Pending | Low |
-| `quantumbridge/information/*` | Statevector and DensityMatrix | Native Implementation | No | No | N/A | N/A | No | No | Native linear algebra wrappers | N/A | Yes | Yes | Pending | Low |
+| `quantumbridge/information/*` | Statevector, DensityMatrix, and Operator native quantum-information wrappers | Native Implementation | API naming only where compatibility docs mention Qiskit | No | N/A | N/A | No | No | Native linear algebra wrappers; no upstream source copied | N/A | Yes | Yes | Pending | Low |
 | `quantumbridge/primitives/*` | Sampler and Estimator | Native Implementation | No | No | N/A | N/A | No | No | Native wrappers over QuantumBridge device/runtime | N/A | Yes | Yes | Pending | Low |
 | `quantumbridge/qml/*` | QNode/Tape/templates | Native Implementation | No | Conceptual workflow only | N/A | N/A | No | No | Native minimal QML API | N/A | Yes | Yes | Pending | Medium |
 | `quantumbridge/interfaces/*` | NumPy/Torch/JAX interfaces | Adapter Integration | No | No | N/A | Various optional dependencies | No | No | Optional array conversion adapters | N/A | Yes | Yes | Pending | Low |
@@ -250,6 +250,20 @@ The following files are independently implemented adapter/schema modules. They r
 - `quantumbridge/compat/pennylane_full/result_adapter.py`
 
 Stage 7.2 source port count remains zero.
+
+## Stage 11A quantum_info native parity path registration
+
+The following files are independently implemented QuantumBridge native
+linear-algebra and operator modules. They use public compatibility names such
+as Qiskit `quantum_info` only as API targets. No upstream source, tests,
+documentation prose, comments, or error strings were copied.
+
+- `quantumbridge/information/operator.py`
+- `quantumbridge/operators/pauli_list.py`
+- `quantumbridge/compat/qiskit_core/quantum_info_adapter.py`
+- `tests/compat_qiskit_core/test_quantum_info_native.py`
+
+Stage 11A source port count remains zero.
 
 ## Stage 8A exact path registration
 
