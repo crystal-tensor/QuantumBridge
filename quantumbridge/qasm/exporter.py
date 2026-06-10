@@ -27,14 +27,26 @@ def dumps(circuit) -> str:
             lines.append(f"// delay({_format_param(op.params[0])} {unit}) q[{op.targets[0]}];")
         elif op.name in {"x", "y", "z", "h", "s", "sdg", "t", "tdg"}:
             lines.append(f"{op.name} q[{op.targets[0]}];")
-        elif op.name in {"rx", "ry", "rz", "phase"}:
+        elif op.name in {"rx", "ry", "rz"}:
             lines.append(f"{op.name}({_format_param(op.params[0])}) q[{op.targets[0]}];")
-        elif op.name in {"cx", "cz"}:
+        elif op.name == "phase":
+            lines.append(f"phase({_format_param(op.params[0])}) q[{op.targets[0]}];")
+        elif op.name in {"p", "u1"}:
+            lines.append(f"u1({_format_param(op.params[0])}) q[{op.targets[0]}];")
+        elif op.name == "u2":
+            lines.append(f"u2({_format_param(op.params[0])},{_format_param(op.params[1])}) q[{op.targets[0]}];")
+        elif op.name in {"u", "u3"}:
+            lines.append(
+                f"u3({_format_param(op.params[0])},{_format_param(op.params[1])},{_format_param(op.params[2])}) q[{op.targets[0]}];"
+            )
+        elif op.name in {"cx", "cy", "cz", "ch"}:
             lines.append(f"{op.name} q[{op.controls[0]}],q[{op.targets[0]}];")
         elif op.name == "swap":
             lines.append(f"swap q[{op.targets[0]}],q[{op.targets[1]}];")
         elif op.name == "ccx":
             lines.append(f"ccx q[{op.controls[0]}],q[{op.controls[1]}],q[{op.targets[0]}];")
+        elif op.name == "cswap":
+            lines.append(f"cswap q[{op.controls[0]}],q[{op.targets[0]}],q[{op.targets[1]}];")
         else:
             raise ValueError(f"QuantumBridge QASM export does not support operation {op.name!r}.")
     for measurement in circuit.measurements:

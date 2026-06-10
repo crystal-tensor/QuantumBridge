@@ -53,22 +53,32 @@ def gate_matrix(name: str, params: tuple[Real, ...] = (), metadata: Optional[dic
     if name == "rz":
         theta = float(params[0])
         return np.array([[np.exp(-0.5j * theta), 0], [0, np.exp(0.5j * theta)]], dtype=complex)
-    if name == "phase":
+    if name in {"phase", "p", "u1"}:
         theta = float(params[0])
         return np.array([[1, 0], [0, np.exp(1j * theta)]], dtype=complex)
+    if name == "u2":
+        return _u_matrix(np.pi / 2, float(params[0]), float(params[1]))
+    if name in {"u", "u3"}:
+        return _u_matrix(float(params[0]), float(params[1]), float(params[2]))
     if name == "cx":
         return np.array(
             [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 1], [0, 0, 1, 0]],
             dtype=complex,
         )
+    if name == "cy":
+        return _controlled_one_qubit_matrix(PAULI_Y)
     if name == "cz":
         return np.diag([1, 1, 1, -1]).astype(complex)
+    if name == "ch":
+        return _controlled_one_qubit_matrix(gate_matrix("h"))
+    if name == "csx":
+        return _controlled_one_qubit_matrix(gate_matrix("sx"))
+    if name == "csxdg":
+        return _controlled_one_qubit_matrix(gate_matrix("sxdg"))
     if name in {"crx", "cry", "crz", "cphase", "cp"}:
         target_name = {"crx": "rx", "cry": "ry", "crz": "rz", "cphase": "phase", "cp": "phase"}[name]
         target = gate_matrix(target_name, params)
-        out = np.eye(4, dtype=complex)
-        out[2:4, 2:4] = target
-        return out
+        return _controlled_one_qubit_matrix(target)
     if name in {"rxx", "ryy", "rzz"}:
         theta = float(params[0])
         pauli = {
@@ -79,6 +89,16 @@ def gate_matrix(name: str, params: tuple[Real, ...] = (), metadata: Optional[dic
         return cos(theta / 2) * np.eye(4, dtype=complex) - 1j * sin(theta / 2) * pauli
     if name == "swap":
         return np.array([[1, 0, 0, 0], [0, 0, 1, 0], [0, 1, 0, 0], [0, 0, 0, 1]], dtype=complex)
+    if name == "dcx":
+        return _reverse_control_cx_matrix() @ gate_matrix("cx")
+    if name == "ecr":
+        return (
+            np.array(
+                [[0, 0, 1, 1j], [0, 0, 1j, 1], [1, -1j, 0, 0], [-1j, 1, 0, 0]],
+                dtype=complex,
+            )
+            / sqrt(2)
+        )
     if name == "iswap":
         return np.array([[1, 0, 0, 0], [0, 0, 1j, 0], [0, 1j, 0, 0], [0, 0, 0, 1]], dtype=complex)
     if name == "ccx":
@@ -88,9 +108,39 @@ def gate_matrix(name: str, params: tuple[Real, ...] = (), metadata: Optional[dic
         matrix[6, 7] = 1
         matrix[7, 6] = 1
         return matrix
+    if name == "cswap":
+        matrix = np.eye(8, dtype=complex)
+        matrix[5, 5] = 0
+        matrix[6, 6] = 0
+        matrix[5, 6] = 1
+        matrix[6, 5] = 1
+        return matrix
     if metadata and "matrix" in metadata:
         return np.asarray(metadata["matrix"], dtype=complex)
     raise ValueError(f"QuantumBridge operation {name!r} is not supported by the MVP simulator.")
+
+
+def _u_matrix(theta: float, phi: float, lam: float) -> np.ndarray:
+    return np.array(
+        [
+            [cos(theta / 2), -np.exp(1j * lam) * sin(theta / 2)],
+            [np.exp(1j * phi) * sin(theta / 2), np.exp(1j * (phi + lam)) * cos(theta / 2)],
+        ],
+        dtype=complex,
+    )
+
+
+def _controlled_one_qubit_matrix(target: np.ndarray) -> np.ndarray:
+    out = np.eye(4, dtype=complex)
+    out[2:4, 2:4] = np.asarray(target, dtype=complex)
+    return out
+
+
+def _reverse_control_cx_matrix() -> np.ndarray:
+    return np.array(
+        [[1, 0, 0, 0], [0, 0, 0, 1], [0, 0, 1, 0], [0, 1, 0, 0]],
+        dtype=complex,
+    )
 
 
 def bit_at(index: int, wire: int, num_qubits: int) -> int:

@@ -186,8 +186,35 @@ class Circuit:
     def phase(self, theta: ParameterValue, q: int) -> "Circuit":
         return self.append("phase", (q,), params=(theta,))
 
+    def p(self, theta: ParameterValue, q: int) -> "Circuit":
+        return self.phase(theta, q)
+
+    def u(self, theta: ParameterValue, phi: ParameterValue, lam: ParameterValue, q: int) -> "Circuit":
+        return self.append("u", (q,), params=(theta, phi, lam))
+
+    def u1(self, lam: ParameterValue, q: int) -> "Circuit":
+        return self.append("u1", (q,), params=(lam,))
+
+    def u2(self, phi: ParameterValue, lam: ParameterValue, q: int) -> "Circuit":
+        return self.append("u2", (q,), params=(phi, lam))
+
+    def u3(self, theta: ParameterValue, phi: ParameterValue, lam: ParameterValue, q: int) -> "Circuit":
+        return self.append("u3", (q,), params=(theta, phi, lam))
+
     def cx(self, control: int, target: int) -> "Circuit":
         return self.append("cx", (target,), controls=(control,))
+
+    def cy(self, control: int, target: int) -> "Circuit":
+        return self.append("cy", (target,), controls=(control,))
+
+    def ch(self, control: int, target: int) -> "Circuit":
+        return self.append("ch", (target,), controls=(control,))
+
+    def csx(self, control: int, target: int) -> "Circuit":
+        return self.append("csx", (target,), controls=(control,))
+
+    def csxdg(self, control: int, target: int) -> "Circuit":
+        return self.append("csxdg", (target,), controls=(control,))
 
     def crx(self, theta: ParameterValue, control: int, target: int) -> "Circuit":
         return self.append("crx", (target,), controls=(control,), params=(theta,))
@@ -210,6 +237,12 @@ class Circuit:
     def swap(self, a: int, b: int) -> "Circuit":
         return self.append("swap", (a, b))
 
+    def dcx(self, a: int, b: int) -> "Circuit":
+        return self.append("dcx", (a, b))
+
+    def ecr(self, a: int, b: int) -> "Circuit":
+        return self.append("ecr", (a, b))
+
     def rxx(self, theta: ParameterValue, a: int, b: int) -> "Circuit":
         return self.append("rxx", (a, b), params=(theta,))
 
@@ -224,6 +257,12 @@ class Circuit:
 
     def ccx(self, c0: int, c1: int, target: int) -> "Circuit":
         return self.append("ccx", (target,), controls=(c0, c1))
+
+    def cswap(self, control: int, a: int, b: int) -> "Circuit":
+        return self.append("cswap", (a, b), controls=(control,))
+
+    def fredkin(self, control: int, a: int, b: int) -> "Circuit":
+        return self.cswap(control, a, b)
 
     def barrier(self, *qubits: int) -> "Circuit":
         wires = tuple(range(self.num_qubits)) if not qubits else tuple(int(wire) for wire in qubits)
@@ -603,13 +642,19 @@ def _normalize_condition(condition: Union[dict[str, Any], tuple[Union[int, Seque
 
 
 def _inverse_operation(op: Operation) -> Operation:
-    if op.name in {"id", "i", "x", "y", "z", "h", "cx", "cz", "swap", "ccx"}:
+    if op.name in {"id", "i", "x", "y", "z", "h", "cx", "cy", "cz", "ch", "swap", "dcx", "ecr", "ccx", "cswap"}:
         return _operation_with_metadata(op, {})
-    inverse_name = {"s": "sdg", "sdg": "s", "sx": "sxdg", "sxdg": "sx", "t": "tdg", "tdg": "t"}.get(op.name)
+    inverse_name = {"s": "sdg", "sdg": "s", "sx": "sxdg", "sxdg": "sx", "t": "tdg", "tdg": "t", "csx": "csxdg", "csxdg": "csx"}.get(op.name)
     if inverse_name:
         return Operation(inverse_name, op.targets, op.controls, op.params, deepcopy(op.metadata))
-    if op.name in {"rx", "ry", "rz", "phase", "crx", "cry", "crz", "cp", "cphase", "rxx", "ryy", "rzz"}:
+    if op.name in {"rx", "ry", "rz", "phase", "p", "u1", "crx", "cry", "crz", "cp", "cphase", "rxx", "ryy", "rzz"}:
         return Operation(op.name, op.targets, op.controls, (-op.params[0],), deepcopy(op.metadata))
+    if op.name in {"u", "u3"}:
+        theta, phi, lam = op.params
+        return Operation(op.name, op.targets, op.controls, (-theta, -lam, -phi), deepcopy(op.metadata))
+    if op.name == "u2":
+        phi, lam = op.params
+        return Operation("u", op.targets, op.controls, (-np.pi / 2, -lam, -phi), deepcopy(op.metadata))
     matrix = op.metadata.get("matrix")
     if matrix is not None:
         metadata = deepcopy(op.metadata)

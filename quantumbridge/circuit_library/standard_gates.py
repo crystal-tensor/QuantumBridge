@@ -8,9 +8,28 @@ from __future__ import annotations
 from quantumbridge.core import Circuit
 
 
-_ONE_QUBIT = {"id", "x", "y", "z", "h", "s", "sdg", "sx", "sxdg", "t", "tdg", "rx", "ry", "rz", "phase"}
-_TWO_QUBIT = {"cx", "cz", "swap", "iswap", "crx", "cry", "crz", "cp", "cphase", "rxx", "ryy", "rzz"}
-_THREE_QUBIT = {"ccx"}
+_ONE_QUBIT = {"id", "x", "y", "z", "h", "s", "sdg", "sx", "sxdg", "t", "tdg", "rx", "ry", "rz", "phase", "p", "u", "u1", "u2", "u3"}
+_TWO_QUBIT = {
+    "cx",
+    "cy",
+    "cz",
+    "ch",
+    "csx",
+    "csxdg",
+    "swap",
+    "dcx",
+    "ecr",
+    "iswap",
+    "crx",
+    "cry",
+    "crz",
+    "cp",
+    "cphase",
+    "rxx",
+    "ryy",
+    "rzz",
+}
+_THREE_QUBIT = {"ccx", "cswap", "fredkin"}
 
 
 def standard_gate(name: str, *params, num_qubits: int | None = None) -> Circuit:
@@ -27,24 +46,35 @@ def standard_gate(name: str, *params, num_qubits: int | None = None) -> Circuit:
         return circuit
     if gate in _THREE_QUBIT:
         circuit = Circuit(num_qubits or 3)
-        circuit.ccx(0, 1, 2)
+        if gate == "ccx":
+            circuit.ccx(0, 1, 2)
+        else:
+            circuit.cswap(0, 1, 2)
         return circuit
     raise ValueError(f"QuantumBridge standard gate {name!r} is not registered.")
 
 
 def _append_one_qubit(circuit: Circuit, gate: str, params: tuple, wire: int) -> None:
-    if gate in {"rx", "ry", "rz", "phase"}:
+    if gate in {"rx", "ry", "rz", "phase", "p", "u1"}:
         if not params:
             raise ValueError(f"QuantumBridge {gate} requires one parameter.")
         getattr(circuit, gate)(params[0], wire)
+    elif gate == "u2":
+        if len(params) != 2:
+            raise ValueError("QuantumBridge u2 requires two parameters.")
+        circuit.u2(params[0], params[1], wire)
+    elif gate in {"u", "u3"}:
+        if len(params) != 3:
+            raise ValueError(f"QuantumBridge {gate} requires three parameters.")
+        getattr(circuit, gate)(params[0], params[1], params[2], wire)
     else:
         getattr(circuit, gate)(wire)
 
 
 def _append_two_qubit(circuit: Circuit, gate: str, params: tuple, left: int, right: int) -> None:
-    if gate in {"cx", "cz"}:
+    if gate in {"cx", "cy", "cz", "ch", "csx", "csxdg"}:
         getattr(circuit, gate)(left, right)
-    elif gate in {"swap", "iswap"}:
+    elif gate in {"swap", "dcx", "ecr", "iswap"}:
         getattr(circuit, gate)(left, right)
     elif gate in {"crx", "cry", "crz", "cp", "cphase"}:
         if not params:

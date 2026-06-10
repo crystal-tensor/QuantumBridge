@@ -28,6 +28,43 @@ def test_standard_gate_factory_and_extended_circuit_gates_are_executable():
     assert probabilities["11"] == 1.0
 
 
+def test_standard_parameterized_u_family_matches_circuit_methods():
+    theta, phi, lam = 0.31, -0.2, 0.7
+
+    np.testing.assert_allclose(
+        Operator.from_circuit(standard_gate("u", theta, phi, lam)).to_matrix(),
+        Operator.from_circuit(Circuit(1).u(theta, phi, lam, 0)).to_matrix(),
+        atol=1e-12,
+    )
+    np.testing.assert_allclose(
+        Operator.from_circuit(standard_gate("u1", lam)).to_matrix(),
+        Operator.from_circuit(Circuit(1).p(lam, 0)).to_matrix(),
+        atol=1e-12,
+    )
+    np.testing.assert_allclose(
+        Operator.from_circuit(standard_gate("u2", phi, lam)).to_matrix(),
+        Operator.from_circuit(Circuit(1).u(np.pi / 2, phi, lam, 0)).to_matrix(),
+        atol=1e-12,
+    )
+
+
+def test_standard_controlled_and_hardware_basis_gates_are_executable():
+    cy = StatevectorDevice().probabilities(Circuit(2).x(0).cy(0, 1))
+    ch = StatevectorDevice().probabilities(Circuit(2).x(0).ch(0, 1))
+    csx = Circuit(2).x(0).csx(0, 1).csx(0, 1)
+    cswap = Circuit(3).x(0).x(1).cswap(0, 1, 2)
+    dcx = Circuit(2).x(0).dcx(0, 1)
+    ecr = standard_gate("ecr")
+
+    assert cy["11"] == 1.0
+    assert abs(ch["10"] - 0.5) < 1e-12
+    assert abs(ch["11"] - 0.5) < 1e-12
+    assert StatevectorDevice().probabilities(csx)["11"] == 1.0
+    assert StatevectorDevice().probabilities(cswap)["101"] == 1.0
+    assert StatevectorDevice().probabilities(dcx)["01"] == 1.0
+    assert Operator.from_circuit(ecr).is_unitary()
+
+
 def test_rzz_inverse_and_qft_inverse_are_unitary_identities():
     rzz_identity = Circuit(2).rzz(0.3, 0, 1).compose(Circuit(2).rzz(0.3, 0, 1).inverse())
     np.testing.assert_allclose(Operator.from_circuit(rzz_identity).to_matrix(), np.eye(4), atol=1e-12)
