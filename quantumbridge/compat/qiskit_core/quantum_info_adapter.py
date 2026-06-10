@@ -21,19 +21,51 @@ warn_unsupported = ADAPTER.warn_unsupported
 
 
 def get_native_quantum_info_symbols() -> dict[str, object]:
-    from quantumbridge.information import DensityMatrix, Operator, Statevector, partial_trace, state_fidelity
+    from quantumbridge.information import (
+        Chi,
+        Choi,
+        Clifford,
+        DensityMatrix,
+        Kraus,
+        Operator,
+        Statevector,
+        SuperOp,
+        average_gate_fidelity,
+        partial_trace,
+        process_fidelity,
+        purity,
+        random_density_matrix,
+        random_statevector,
+        random_unitary,
+        state_fidelity,
+        state_fidelity_general,
+        trace_distance,
+    )
     from quantumbridge.operators import Pauli, PauliList, SparsePauliOp, SparsePauliOperator
 
     return {
+        "Chi": Chi,
+        "Choi": Choi,
+        "Clifford": Clifford,
         "DensityMatrix": DensityMatrix,
+        "Kraus": Kraus,
         "Operator": Operator,
         "Pauli": Pauli,
         "PauliList": PauliList,
         "SparsePauliOp": SparsePauliOp,
         "SparsePauliOperator": SparsePauliOperator,
         "Statevector": Statevector,
+        "SuperOp": SuperOp,
+        "average_gate_fidelity": average_gate_fidelity,
         "partial_trace": partial_trace,
+        "process_fidelity": process_fidelity,
+        "purity": purity,
+        "random_density_matrix": random_density_matrix,
+        "random_statevector": random_statevector,
+        "random_unitary": random_unitary,
         "state_fidelity": state_fidelity,
+        "state_fidelity_general": state_fidelity_general,
+        "trace_distance": trace_distance,
     }
 
 

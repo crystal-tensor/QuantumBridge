@@ -259,6 +259,10 @@ as Qiskit `quantum_info` only as API targets. No upstream source, tests,
 documentation prose, comments, or error strings were copied.
 
 - `quantumbridge/information/operator.py`
+- `quantumbridge/information/channels.py`
+- `quantumbridge/information/clifford.py`
+- `quantumbridge/information/metrics.py`
+- `quantumbridge/information/random.py`
 - `quantumbridge/operators/pauli_list.py`
 - `quantumbridge/compat/qiskit_core/quantum_info_adapter.py`
 - `tests/compat_qiskit_core/test_quantum_info_native.py`
