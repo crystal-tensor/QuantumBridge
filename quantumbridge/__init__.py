@@ -25,7 +25,7 @@ from quantumbridge.diff import parameter_shift
 from quantumbridge.information import DensityMatrix, Statevector
 from quantumbridge.operators import Pauli, SparsePauliOperator
 from quantumbridge.primitives import DataBin, Estimator, PrimitiveResult, PubResult, Sampler
-from quantumbridge.providers import Backend, Job, Provider
+from quantumbridge.providers import Backend, BackendV2, Job, JobError, JobStatus, JobTimeoutError, Options, Provider, QiskitBackendNotFoundError
 from quantumbridge.results import Result
 from quantumbridge.transforms import finite_difference
 from quantumbridge.utils.math import Hamiltonian, PauliString, PauliX, PauliY, PauliZ
@@ -33,20 +33,26 @@ from quantumbridge.utils.math import Hamiltonian, PauliString, PauliX, PauliY, P
 __all__ = [
     "Circuit",
     "Backend",
+    "BackendV2",
     "DensityMatrix",
     "DataBin",
     "Estimator",
     "Hamiltonian",
     "Job",
+    "JobError",
+    "JobStatus",
+    "JobTimeoutError",
     "Measurement",
     "Operation",
     "Parameter",
+    "Options",
     "Pauli",
     "PauliString",
     "PauliX",
     "PauliY",
     "PauliZ",
     "Provider",
+    "QiskitBackendNotFoundError",
     "PrimitiveResult",
     "PubResult",
     "Result",

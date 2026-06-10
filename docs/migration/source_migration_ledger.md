@@ -75,6 +75,12 @@ their headers or adapter text mention upstream projects while stating that no
 upstream source was copied:
 
 - `quantumbridge/__init__.py`
+- `quantumbridge/providers/__init__.py`
+- `quantumbridge/providers/backend.py`
+- `quantumbridge/providers/exceptions.py`
+- `quantumbridge/providers/job.py`
+- `quantumbridge/providers/options.py`
+- `quantumbridge/providers/provider.py`
 - `quantumbridge/algorithms/__init__.py`
 - `quantumbridge/algorithms/adapters/__init__.py`
 - `quantumbridge/algorithms/adapters/qiskit_algorithms_adapter.py`
