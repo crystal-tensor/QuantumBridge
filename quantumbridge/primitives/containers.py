@@ -113,6 +113,7 @@ class PrimitiveResult:
 
     pub_results: Sequence[PubResult]
     metadata: Mapping[str, Any] = field(default_factory=dict)
+    _job_id: str | None = None
 
     def __iter__(self) -> Iterator[PubResult]:
         return iter(self.pub_results)
@@ -125,6 +126,26 @@ class PrimitiveResult:
 
     def tolist(self) -> list[PubResult]:
         return list(self.pub_results)
+
+    def result(self, timeout: float | None = None) -> "PrimitiveResult":
+        if timeout is not None and timeout < 0:
+            raise TimeoutError("QuantumBridge primitive result timeout must be non-negative.")
+        return self
+
+    def status(self) -> str:
+        return "DONE"
+
+    def done(self) -> bool:
+        return True
+
+    def cancelled(self) -> bool:
+        return False
+
+    def running(self) -> bool:
+        return False
+
+    def job_id(self) -> str:
+        return self._job_id or str(self.metadata.get("job_id", "quantumbridge-primitive-result"))
 
     def to_dict(self) -> dict[str, Any]:
         return {

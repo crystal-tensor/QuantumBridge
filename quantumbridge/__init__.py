@@ -25,7 +25,20 @@ from quantumbridge.devices import ShotSampler, StatevectorDevice
 from quantumbridge.diff import parameter_shift
 from quantumbridge.information import DensityMatrix, Statevector
 from quantumbridge.operators import Pauli, SparsePauliOperator
-from quantumbridge.primitives import BitArray, DataBin, Estimator, PrimitiveResult, PubResult, Sampler, StatevectorEstimator, StatevectorSampler
+from quantumbridge.primitives import (
+    BackendEstimator,
+    BackendEstimatorV2,
+    BackendSampler,
+    BackendSamplerV2,
+    BitArray,
+    DataBin,
+    Estimator,
+    PrimitiveResult,
+    PubResult,
+    Sampler,
+    StatevectorEstimator,
+    StatevectorSampler,
+)
 from quantumbridge.providers import Backend, BackendV2, Job, JobError, JobStatus, JobTimeoutError, Options, Provider, QiskitBackendNotFoundError
 from quantumbridge.results import Result
 from quantumbridge.transforms import finite_difference, metric_tensor, qng_step, spsa_gradient
@@ -34,6 +47,10 @@ from quantumbridge.utils.math import Hamiltonian, PauliString, PauliX, PauliY, P
 __all__ = [
     "Circuit",
     "Backend",
+    "BackendEstimator",
+    "BackendEstimatorV2",
+    "BackendSampler",
+    "BackendSamplerV2",
     "BackendV2",
     "BitArray",
     "DensityMatrix",

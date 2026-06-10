@@ -8,7 +8,19 @@ from math import cos, pi
 import numpy as np
 
 from quantumbridge import Circuit, Parameter
-from quantumbridge.primitives import BitArray, DataBin, Estimator, PrimitiveResult, PubResult, Sampler, StatevectorEstimator, StatevectorSampler
+from quantumbridge.primitives import (
+    BackendEstimator,
+    BackendSampler,
+    BitArray,
+    DataBin,
+    Estimator,
+    PrimitiveResult,
+    PubResult,
+    Sampler,
+    StatevectorEstimator,
+    StatevectorSampler,
+)
+from quantumbridge.providers import Backend
 from quantumbridge.utils.math import PauliX, PauliZ
 
 
@@ -72,6 +84,27 @@ def test_sampler_v2_accepts_qiskit_style_numpy_parameter_values_and_alias():
     assert result[0].metadata["num_parameter_sets"] == 2
 
 
+def test_sampler_v2_result_is_job_like_for_qiskit_style_result_call():
+    result = StatevectorSampler(shots=12, seed=5).run([(Circuit(1).x(0),)])
+
+    assert result.result() is result
+    assert result.done()
+    assert result.status() == "DONE"
+    assert not result.running()
+    assert not result.cancelled()
+    assert result.job_id() == "quantumbridge-primitive-result"
+    assert result.result()[0].data.meas.get_counts() == {"1": 12}
+
+
+def test_backend_sampler_v2_uses_backend_execution_model():
+    backend = Backend(name="primitive_backend", max_qubits=1)
+
+    result = BackendSampler(backend, options={"shots": 16, "seed_simulator": 2}).run([(Circuit(1).x(0),)]).result()
+
+    assert result[0].data.counts == {"1": 16}
+    assert result[0].data.meas.get_counts() == {"1": 16}
+
+
 def test_estimator_v2_accepts_observable_batches_parameter_batches_and_precision():
     theta = Parameter("theta")
     circuit = Circuit(1).ry(theta, 0)
@@ -106,6 +139,14 @@ def test_estimator_v2_accepts_numpy_parameter_values_nested_observables_and_alia
     assert abs(result[0].data.evs[1][1][0] - 1.0) < 1e-12
     assert result[0].metadata["precision"] == 0.02
     assert result[0].metadata["num_parameter_sets"] == 2
+
+
+def test_backend_estimator_v2_uses_backend_execution_model():
+    backend = Backend(name="primitive_backend", max_qubits=1)
+
+    result = BackendEstimator(backend).run([(Circuit(1).x(0), PauliZ(0))]).result()
+
+    assert abs(result[0].data.evs + 1.0) < 1e-12
 
 
 def test_legacy_primitive_calls_still_return_result_objects():
