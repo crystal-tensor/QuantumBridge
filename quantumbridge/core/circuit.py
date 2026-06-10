@@ -7,6 +7,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping as ABCMapping
 from copy import deepcopy
 from numbers import Real
 from typing import Any, Mapping, Optional, Sequence, Union
@@ -15,7 +16,7 @@ import numpy as np
 
 from .measurements import Measurement
 from .operations import Instruction, Operation
-from .parameters import Parameter, ParameterValue, resolve_parameter
+from .parameters import Parameter, ParameterValue, parameter_set, resolve_parameter
 from quantumbridge.utils.math import gate_matrix
 
 
@@ -375,13 +376,41 @@ class Circuit:
         circuit.append(instruction, range(instruction.num_qubits), clbits=range(instruction.num_bits))
         return circuit
 
-    def bind(self, mapping: Mapping[Union[Parameter, str], Real]) -> "Circuit":
+    @property
+    def parameters(self) -> tuple[Parameter, ...]:
+        found: set[Parameter] = set()
+        for op in self.operations:
+            found.update(parameter_set(op.params))
+        return tuple(sorted(found, key=lambda parameter: parameter.name))
+
+    @property
+    def num_parameters(self) -> int:
+        return len(self.parameters)
+
+    def assign_parameters(
+        self,
+        parameters: Union[Mapping[Union[Parameter, str], ParameterValue], Sequence[ParameterValue]],
+        inplace: bool = False,
+        strict: bool = True,
+    ) -> "Circuit":
+        mapping = _parameter_mapping_from_values(self.parameters, parameters, strict=strict)
         bound = Circuit(self.num_qubits, self.num_bits, self.name, self.metadata)
         for op in self.operations:
-            params = tuple(resolve_parameter(param, mapping) for param in op.params)
-            bound.operations.append(Operation(op.name, op.targets, op.controls, params, dict(op.metadata)))
+            params = tuple(resolve_parameter(param, mapping, allow_partial=not strict) for param in op.params)
+            bound.operations.append(Operation(op.name, op.targets, op.controls, params, deepcopy(op.metadata)))
         bound.measurements = list(self.measurements)
-        return bound
+        return _replace_self(self, bound) if inplace else bound
+
+    def bind_parameters(
+        self,
+        parameters: Union[Mapping[Union[Parameter, str], ParameterValue], Sequence[ParameterValue]],
+        inplace: bool = False,
+        strict: bool = True,
+    ) -> "Circuit":
+        return self.assign_parameters(parameters, inplace=inplace, strict=strict)
+
+    def bind(self, mapping: Mapping[Union[Parameter, str], Real]) -> "Circuit":
+        return self.assign_parameters(mapping, strict=True)
 
     def to_ir(self):
         from quantumbridge.ir.qb_ir import IRProgram
@@ -461,3 +490,22 @@ def _replace_self(original: Circuit, replacement: Circuit) -> Circuit:
 def _calibration_key(name: str, qubits: tuple[int, ...], params: tuple[ParameterValue, ...]) -> str:
     param_key = ",".join(repr(param) for param in params)
     return f"{name}|{','.join(str(wire) for wire in qubits)}|{param_key}"
+
+
+def _parameter_mapping_from_values(
+    ordered_parameters: Sequence[Parameter],
+    parameters: Union[Mapping[Union[Parameter, str], ParameterValue], Sequence[ParameterValue]],
+    strict: bool,
+) -> dict[Union[Parameter, str], ParameterValue]:
+    if isinstance(parameters, ABCMapping):
+        mapping = dict(parameters)
+        if strict:
+            known = set(ordered_parameters) | {parameter.name for parameter in ordered_parameters}
+            unknown = sorted(str(key) for key in mapping if key not in known)
+            if unknown:
+                raise ValueError(f"QuantumBridge received unknown parameter bindings: {', '.join(unknown)}")
+        return mapping
+    values = tuple(parameters)
+    if len(values) != len(ordered_parameters):
+        raise ValueError("QuantumBridge sequence parameter binding length must match circuit.num_parameters.")
+    return {parameter: value for parameter, value in zip(ordered_parameters, values)}

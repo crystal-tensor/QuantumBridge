@@ -10,12 +10,17 @@ from dataclasses import dataclass, field
 from numbers import Real
 from typing import Any, Optional
 
-from quantumbridge.core.parameters import Parameter
+from quantumbridge.core.parameters import Parameter, ParameterExpression
 
 
 def _param_to_ir(value: Any) -> Any:
     if isinstance(value, Parameter):
         return {"parameter": value.name}
+    if isinstance(value, ParameterExpression):
+        return {
+            "expression": str(value),
+            "parameters": sorted(parameter.name for parameter in value.parameters),
+        }
     if isinstance(value, Real):
         return float(value)
     return value
