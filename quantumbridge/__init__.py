@@ -20,6 +20,7 @@ from quantumbridge.circuit_library import (
 )
 from quantumbridge.compat import circuit_from_openqasm, circuit_from_qiskit, circuit_to_qiskit
 from quantumbridge.core import Circuit, Instruction, Measurement, Operation, Parameter, ParameterExpression, ParameterVector
+from quantumbridge.compiler import transpile
 from quantumbridge.devices import ShotSampler, StatevectorDevice
 from quantumbridge.diff import parameter_shift
 from quantumbridge.information import DensityMatrix, Statevector
@@ -85,6 +86,7 @@ __all__ = [
     "spsa_gradient",
     "standard_gate",
     "two_local",
+    "transpile",
     "weighted_adder",
     "zz_feature_map",
 ]

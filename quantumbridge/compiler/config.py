@@ -11,6 +11,6 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class PassManagerConfig:
-    basis_gates: tuple[str, ...] = ("x", "y", "z", "h", "rx", "ry", "rz", "cx", "cz")
+    basis_gates: tuple[str, ...] = ("id", "x", "y", "z", "h", "rx", "ry", "rz", "cx", "cz")
     optimization_level: int = 1
     coupling_map: object | None = None

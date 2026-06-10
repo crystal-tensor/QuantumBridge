@@ -15,6 +15,7 @@ from .pass_manager import PassManager
 from .report import CompilerReport
 from .routing import BasicRoutingPass, SwapInsertionPass
 from .target import Target
+from .transpile import generate_preset_pass_manager, pass_manager_config_from_options, transpile
 
 __all__ = [
     "AnalysisPass",
@@ -42,4 +43,7 @@ __all__ = [
     "TransformationPass",
     "TwoQubitCountAnalysisPass",
     "TwoQubitGateReductionPass",
+    "generate_preset_pass_manager",
+    "pass_manager_config_from_options",
+    "transpile",
 ]

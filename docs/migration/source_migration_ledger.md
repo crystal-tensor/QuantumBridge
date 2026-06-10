@@ -111,6 +111,7 @@ upstream source was copied:
 - `quantumbridge/compat/pennylane_adapter.py`
 - `quantumbridge/compat/qiskit_adapter.py`
 - `quantumbridge/compiler/config.py`
+- `quantumbridge/compiler/transpile.py`
 - `quantumbridge/compiler/report.py`
 - `quantumbridge/legal/attribution.py`
 - `quantumbridge/noise/execution.py`
