@@ -9,6 +9,50 @@ from dataclasses import dataclass, field
 from typing import Any, Iterator, Mapping, Sequence
 
 
+@dataclass(frozen=True)
+class BitArray:
+    """Compact bitstring sample container compatible with common Sampler V2 access."""
+
+    bitstrings: tuple[str, ...] = ()
+    num_bits: int | None = None
+
+    @classmethod
+    def from_counts(cls, counts: Mapping[str, int], num_bits: int | None = None) -> "BitArray":
+        bitstrings: list[str] = []
+        for label, count in sorted(counts.items()):
+            bitstrings.extend([str(label)] * int(count))
+        if num_bits is None and bitstrings:
+            num_bits = len(bitstrings[0])
+        return cls(tuple(bitstrings), num_bits)
+
+    @property
+    def num_shots(self) -> int:
+        return len(self.bitstrings)
+
+    def __len__(self) -> int:
+        return len(self.bitstrings)
+
+    def __iter__(self) -> Iterator[str]:
+        return iter(self.bitstrings)
+
+    def __getitem__(self, index: int) -> str:
+        return self.bitstrings[index]
+
+    def get_counts(self) -> dict[str, int]:
+        counts: dict[str, int] = {}
+        for bitstring in self.bitstrings:
+            counts[bitstring] = counts.get(bitstring, 0) + 1
+        return counts
+
+    def to_bool_array(self):
+        import numpy as np
+
+        return np.asarray([[char == "1" for char in bitstring] for bitstring in self.bitstrings], dtype=bool)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {"bitstrings": list(self.bitstrings), "num_bits": self.num_bits, "num_shots": self.num_shots}
+
+
 @dataclass
 class DataBin:
     """Attribute and mapping-style primitive data container."""
@@ -32,6 +76,9 @@ class DataBin:
 
     def __iter__(self) -> Iterator[str]:
         return iter(self._fields)
+
+    def __len__(self) -> int:
+        return len(self._fields)
 
     def keys(self):
         return self._fields.keys()
@@ -76,6 +123,9 @@ class PrimitiveResult:
     def __getitem__(self, index: int) -> PubResult:
         return self.pub_results[index]
 
+    def tolist(self) -> list[PubResult]:
+        return list(self.pub_results)
+
     def to_dict(self) -> dict[str, Any]:
         return {
             "results": [result.to_dict() for result in self.pub_results],
@@ -85,6 +135,8 @@ class PrimitiveResult:
 
 def _to_plain_dict(value: Any) -> Any:
     if isinstance(value, DataBin):
+        return value.to_dict()
+    if isinstance(value, BitArray):
         return value.to_dict()
     if isinstance(value, Mapping):
         return {str(key): _to_plain_dict(item) for key, item in value.items()}

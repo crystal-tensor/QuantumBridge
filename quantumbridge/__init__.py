@@ -25,7 +25,7 @@ from quantumbridge.devices import ShotSampler, StatevectorDevice
 from quantumbridge.diff import parameter_shift
 from quantumbridge.information import DensityMatrix, Statevector
 from quantumbridge.operators import Pauli, SparsePauliOperator
-from quantumbridge.primitives import DataBin, Estimator, PrimitiveResult, PubResult, Sampler
+from quantumbridge.primitives import BitArray, DataBin, Estimator, PrimitiveResult, PubResult, Sampler, StatevectorEstimator, StatevectorSampler
 from quantumbridge.providers import Backend, BackendV2, Job, JobError, JobStatus, JobTimeoutError, Options, Provider, QiskitBackendNotFoundError
 from quantumbridge.results import Result
 from quantumbridge.transforms import finite_difference, metric_tensor, qng_step, spsa_gradient
@@ -35,6 +35,7 @@ __all__ = [
     "Circuit",
     "Backend",
     "BackendV2",
+    "BitArray",
     "DensityMatrix",
     "DataBin",
     "Estimator",
@@ -63,7 +64,9 @@ __all__ = [
     "Sampler",
     "ShotSampler",
     "SparsePauliOperator",
+    "StatevectorEstimator",
     "StatevectorDevice",
+    "StatevectorSampler",
     "Statevector",
     "circuit_from_openqasm",
     "circuit_from_qiskit",

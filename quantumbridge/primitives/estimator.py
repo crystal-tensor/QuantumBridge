@@ -44,19 +44,23 @@ class Estimator:
         for index, pub in enumerate(pub_sequence):
             circuit, observables, pub_parameters, pub_precision = _parse_estimator_pub(pub)
             effective_precision = _resolve_precision(pub_precision, precision, self.default_precision)
-            parameter_sets = _resolve_parameter_sets(pub_parameters, parameter_values)
-            observable_values = _as_observable_sequence(observables)
+            parameter_sets = _resolve_parameter_sets(circuit, pub_parameters, parameter_values)
+            observable_values, observable_shape = _flatten_observables(observables)
             ev_batches = []
             std_batches = []
             for params in parameter_sets:
                 evs = [float(self.device.expectation(circuit, observable, parameters=params)) for observable in observable_values]
-                ev_batches.append(evs[0] if len(evs) == 1 else evs)
-                std_batches.append(0.0 if len(evs) == 1 else [0.0 for _ in evs])
+                shaped_evs = _restore_shape(list(evs), observable_shape)
+                shaped_stds = _restore_shape([0.0 for _ in evs], observable_shape)
+                ev_batches.append(shaped_evs)
+                std_batches.append(shaped_stds)
             data = DataBin(
                 evs=ev_batches[0] if len(ev_batches) == 1 else ev_batches,
                 stds=std_batches[0] if len(std_batches) == 1 else std_batches,
                 parameter_values=parameter_sets[0] if len(parameter_sets) == 1 else parameter_sets,
                 num_observables=len(observable_values),
+                observables=observables,
+                observable_shape=observable_shape,
             )
             pub_results.append(
                 PubResult(
@@ -120,28 +124,71 @@ def _parse_estimator_pub(pub) -> tuple[Circuit, Any, Optional[Any], Optional[flo
     raise TypeError("Unsupported QuantumBridge estimator pub.")
 
 
-def _as_observable_sequence(observables) -> list[Any]:
+def _flatten_observables(observables) -> tuple[list[Any], Any]:
     if isinstance(observables, np.ndarray):
-        return [observables]
+        return [observables], ()
     if isinstance(observables, (list, tuple)):
         if not observables:
             raise ValueError("QuantumBridge estimator pubs require at least one observable.")
-        return list(observables)
-    return [observables]
+        flat: list[Any] = []
+        shape = _collect_observables(observables, flat)
+        return flat, shape
+    return [observables], ()
 
 
-def _resolve_parameter_sets(pub_parameters, run_parameters) -> list[Mapping[Union[Parameter, str], Real]]:
+def _collect_observables(value, flat: list[Any]):
+    if isinstance(value, np.ndarray):
+        flat.append(value)
+        return ()
+    if isinstance(value, (list, tuple)):
+        shape = []
+        for item in value:
+            shape.append(_collect_observables(item, flat))
+        return tuple(shape)
+    flat.append(value)
+    return ()
+
+
+def _restore_shape(values: list[float], shape):
+    if shape == ():
+        return values.pop(0)
+    return [_restore_shape(values, item) for item in shape]
+
+
+def _resolve_parameter_sets(circuit: Circuit, pub_parameters, run_parameters) -> list[Mapping[Union[Parameter, str], Real]]:
     parameters = pub_parameters if pub_parameters is not None else run_parameters
     if parameters is None:
         return [{}]
     if isinstance(parameters, Mapping):
         return [dict(parameters)]
-    if isinstance(parameters, Sequence):
+    if isinstance(parameters, Sequence) and not isinstance(parameters, (str, bytes)):
         if not parameters:
             return [{}]
         if all(isinstance(item, Mapping) for item in parameters):
             return [dict(item) for item in parameters]
-    raise TypeError("QuantumBridge estimator parameters must be a mapping or a sequence of mappings.")
+        return _parameter_array_to_mappings(circuit, parameters)
+    try:
+        return _parameter_array_to_mappings(circuit, parameters)
+    except Exception as exc:
+        raise TypeError("QuantumBridge estimator parameters must be a mapping, sequence of mappings, or numeric array.") from exc
+
+
+StatevectorEstimator = Estimator
+
+
+def _parameter_array_to_mappings(circuit: Circuit, values) -> list[Mapping[Union[Parameter, str], Real]]:
+    params = tuple(circuit.parameters)
+    arr = np.asarray(values, dtype=object)
+    if arr.ndim == 0:
+        arr = arr.reshape(1, 1)
+    elif arr.ndim == 1:
+        arr = arr.reshape(1, -1)
+    if arr.shape[-1] != len(params):
+        raise ValueError(
+            "QuantumBridge estimator parameter value rows must match circuit.num_parameters "
+            f"({arr.shape[-1]} values for {len(params)} parameters)."
+        )
+    return [dict(zip(params, row.tolist())) for row in arr.reshape(-1, len(params))]
 
 
 def _resolve_precision(pub_precision: Optional[float], run_precision: Optional[float], default_precision: Optional[float]) -> Optional[float]:

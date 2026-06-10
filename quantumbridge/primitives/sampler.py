@@ -11,7 +11,7 @@ from typing import Any, Optional, Union
 
 from quantumbridge.core import Circuit, Parameter
 from quantumbridge.devices import ShotSampler
-from quantumbridge.primitives.containers import DataBin, PrimitiveResult, PubResult
+from quantumbridge.primitives.containers import BitArray, DataBin, PrimitiveResult, PubResult
 from quantumbridge.results import Result
 
 
@@ -42,17 +42,22 @@ class Sampler:
         for index, pub in enumerate(pub_sequence):
             circuit, pub_parameters, pub_shots = _parse_sampler_pub(pub)
             effective_shots = _resolve_shots(pub_shots, shots, self.shots)
-            parameter_sets = _resolve_parameter_sets(pub_parameters, parameter_values)
+            parameter_sets = _resolve_parameter_sets(circuit, pub_parameters, parameter_values)
             counts_batch = []
             quasi_batch = []
+            samples_batch = []
             for params in parameter_sets:
                 result = self._run_legacy(circuit, shots=effective_shots, parameters=params)
                 counts = result.counts() or {}
+                samples = BitArray.from_counts(counts, num_bits=circuit.num_qubits)
                 counts_batch.append(counts)
                 quasi_batch.append({label: count / effective_shots for label, count in counts.items()})
+                samples_batch.append(samples)
             data = DataBin(
                 counts=counts_batch[0] if len(counts_batch) == 1 else counts_batch,
                 quasi_dists=quasi_batch[0] if len(quasi_batch) == 1 else quasi_batch,
+                samples=samples_batch[0] if len(samples_batch) == 1 else samples_batch,
+                meas=samples_batch[0] if len(samples_batch) == 1 else samples_batch,
                 num_shots=effective_shots,
                 parameter_values=parameter_sets[0] if len(parameter_sets) == 1 else parameter_sets,
             )
@@ -123,18 +128,42 @@ def _resolve_shots(pub_shots: Optional[int], run_shots: Optional[int], default_s
     return shots
 
 
-def _resolve_parameter_sets(pub_parameters, run_parameters) -> list[Mapping[Union[Parameter, str], Real]]:
+def _resolve_parameter_sets(circuit: Circuit, pub_parameters, run_parameters) -> list[Mapping[Union[Parameter, str], Real]]:
     parameters = pub_parameters if pub_parameters is not None else run_parameters
     if parameters is None:
         return [{}]
     if isinstance(parameters, Mapping):
         return [dict(parameters)]
-    if isinstance(parameters, Sequence):
+    if isinstance(parameters, Sequence) and not isinstance(parameters, (str, bytes)):
         if not parameters:
             return [{}]
         if all(isinstance(item, Mapping) for item in parameters):
             return [dict(item) for item in parameters]
-    raise TypeError("QuantumBridge sampler parameters must be a mapping or a sequence of mappings.")
+        return _parameter_array_to_mappings(circuit, parameters)
+    try:
+        return _parameter_array_to_mappings(circuit, parameters)
+    except Exception as exc:
+        raise TypeError("QuantumBridge sampler parameters must be a mapping, sequence of mappings, or numeric array.") from exc
+
+
+StatevectorSampler = Sampler
+
+
+def _parameter_array_to_mappings(circuit: Circuit, values) -> list[Mapping[Union[Parameter, str], Real]]:
+    import numpy as np
+
+    params = tuple(circuit.parameters)
+    arr = np.asarray(values, dtype=object)
+    if arr.ndim == 0:
+        arr = arr.reshape(1, 1)
+    elif arr.ndim == 1:
+        arr = arr.reshape(1, -1)
+    if arr.shape[-1] != len(params):
+        raise ValueError(
+            "QuantumBridge sampler parameter value rows must match circuit.num_parameters "
+            f"({arr.shape[-1]} values for {len(params)} parameters)."
+        )
+    return [dict(zip(params, row.tolist())) for row in arr.reshape(-1, len(params))]
 
 
 def _single_parameter_mapping(parameters):

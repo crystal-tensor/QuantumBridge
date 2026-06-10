@@ -3,8 +3,17 @@
 # This file is part of QuantumBridge SDK.
 # This implementation is developed for the QuantumBridge native architecture.
 
-from .containers import DataBin, PrimitiveResult, PubResult
-from .estimator import Estimator
-from .sampler import Sampler
+from .containers import BitArray, DataBin, PrimitiveResult, PubResult
+from .estimator import Estimator, StatevectorEstimator
+from .sampler import Sampler, StatevectorSampler
 
-__all__ = ["DataBin", "Estimator", "PrimitiveResult", "PubResult", "Sampler"]
+__all__ = [
+    "BitArray",
+    "DataBin",
+    "Estimator",
+    "PrimitiveResult",
+    "PubResult",
+    "Sampler",
+    "StatevectorEstimator",
+    "StatevectorSampler",
+]
