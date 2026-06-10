@@ -593,6 +593,27 @@ uses a local JS seed data module and a mock execution client. Future server
 adapters may connect to the Stage 10C local router or optional FastAPI adapter,
 but this prototype does not start a server or open ports.
 
+### 10.3 Stage 10E Backend/Frontend Seed Contract
+
+Stage 10E makes `quantumbridge.studio.frontend_contract` the canonical backend
+to frontend bridge. The generated bundle includes catalog, workflow summaries,
+workflow details, representative sample results, benchmark report, export
+samples, and schema version metadata.
+
+The frontend local client exposes:
+
+- `listCatalogProjects()`
+- `listWorkflows()`
+- `getWorkflowDetail(workflowId)`
+- `getInputSchema(workflowId)`
+- `getSampleResult(workflowId)`
+- `runMockWorkflow(workflowId, inputs)`
+- `getBenchmarkReport()`
+- `exportResult(format)`
+
+All calls remain local-only and return structured responses with warnings,
+provenance, and no cloud/token/hardware access.
+
 ### 10.0 Stage 10B Benchmark API Planning
 
 Future backend endpoints may expose Stage 10B benchmark suites:

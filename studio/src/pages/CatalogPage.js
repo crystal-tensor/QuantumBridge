@@ -7,6 +7,7 @@ export function CatalogPage({ state, navigate }) {
   const category = state.catalogCategory || "";
   const ready = state.catalogReady || "";
   const categories = unique(state.data.catalog.projects.map((item) => item.category));
+  const executableWorkflowCount = state.data.workflows.workflows.filter((item) => item.executable).length;
   const items = state.data.catalog.projects.filter((item) => {
     const matchesQuery = !query || `${item.project_id} ${item.title} ${item.category}`.toLowerCase().includes(query);
     const matchesCategory = !category || item.category === category;
@@ -21,6 +22,10 @@ export function CatalogPage({ state, navigate }) {
           <h2>Ecosystem Catalog</h2>
           <p>${items.length} visible projects from local clean-room metadata.</p>
         </div>
+        <div class="metrics-inline">
+          <span><strong>${state.data.catalog.projects.length}</strong> project count</span>
+          <span><strong>${executableWorkflowCount}</strong> executable workflow count</span>
+        </div>
         <div class="toolbar">
           <input class="input" data-search="catalogSearch" value="${escapeHtml(state.catalogSearch || "")}" placeholder="Search projects" />
           <select class="input" data-filter="catalogCategory">
@@ -33,6 +38,7 @@ export function CatalogPage({ state, navigate }) {
           </select>
         </div>
       </div>
+      <div class="notice-line">Clean-room notice: ${escapeHtml(state.data.catalog.clean_room_notice || "local metadata only; no official endorsement.")}</div>
       <div class="catalog-grid">
         ${items.map((item) => Card(`
           <div class="card-header">

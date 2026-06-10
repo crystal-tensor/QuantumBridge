@@ -33,6 +33,24 @@ from .execution_service import (
     get_execution_result,
     get_execution_status,
 )
+from .export_service import (
+    export_catalog_json,
+    export_result_json,
+    export_result_markdown,
+    export_workflow_notebook_stub,
+    export_workflow_python_snippet,
+    export_workflow_registry_json,
+    export_workflow_sample,
+)
+from .frontend_contract import (
+    build_frontend_seed_bundle,
+    load_frontend_seed_bundle,
+    validate_frontend_result_coverage,
+    validate_frontend_seed_bundle,
+    validate_frontend_workflow_coverage,
+    validate_no_branding_or_secrets_in_seed,
+    write_frontend_seed_bundle,
+)
 from .local_router import list_routes, route_request
 from .workflow_registry import (
     filter_workflows,
@@ -62,8 +80,16 @@ __all__ = [
     "execute_batch_workflows",
     "execute_workflow",
     "execute_workflow_by_request",
+    "export_catalog_json",
+    "export_result_json",
+    "export_result_markdown",
+    "export_workflow_notebook_stub",
+    "export_workflow_python_snippet",
+    "export_workflow_registry_json",
+    "export_workflow_sample",
     "filter_ecosystem_projects",
     "filter_workflows",
+    "build_frontend_seed_bundle",
     "get_clean_room_boundary_notice",
     "get_ecosystem_project",
     "get_execution_result",
@@ -76,8 +102,14 @@ __all__ = [
     "list_project_workflows",
     "list_routes",
     "list_workflows",
+    "load_frontend_seed_bundle",
     "route_request",
     "search_ecosystem_projects",
     "search_workflows",
+    "validate_frontend_result_coverage",
+    "validate_frontend_seed_bundle",
+    "validate_frontend_workflow_coverage",
+    "validate_no_branding_or_secrets_in_seed",
     "validate_workflow_request",
+    "write_frontend_seed_bundle",
 ]

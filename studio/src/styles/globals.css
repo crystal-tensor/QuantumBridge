@@ -142,11 +142,25 @@ p {
 
 .topbar-badges,
 .meta-row,
-.toolbar {
+.toolbar,
+.metrics-inline,
+.button-row {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   align-items: center;
+}
+
+.metrics-inline span {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: #ffffff;
+  color: var(--muted);
+}
+
+.metrics-inline strong {
+  color: var(--ink);
 }
 
 .badge {
@@ -198,6 +212,15 @@ p {
   background: #eef7f8;
   border-radius: 8px;
   color: #23404a;
+}
+
+.notice-line {
+  margin-bottom: 16px;
+  padding: 10px 12px;
+  border: 1px solid #d5deca;
+  border-radius: 8px;
+  background: #f5faf1;
+  color: #354a28;
 }
 
 .page-section {
@@ -277,6 +300,15 @@ p {
 
 .input.wide {
   min-width: min(520px, 100%);
+}
+
+.schema-details {
+  margin: 14px 0;
+}
+
+.schema-details summary {
+  cursor: pointer;
+  font-weight: 700;
 }
 
 .table-wrap {

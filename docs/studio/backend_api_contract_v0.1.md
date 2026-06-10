@@ -17,3 +17,14 @@ Primary modules:
 
 Every response uses JSON-safe payloads, warnings, provenance, and explicit
 clean-room boundaries.
+
+## Stage 10E Frontend Contract
+
+Stage 10E adds `quantumbridge.studio.frontend_contract` as the canonical bridge
+from backend services to static frontend seed data. It builds and validates the
+catalog, workflow summaries, workflow details, sample results, benchmark report,
+exports, and schema metadata consumed by the local frontend prototype.
+
+Stage 10E also adds `python -m quantumbridge.studio` for local structured JSON
+commands. The CLI uses the same services and does not start a server, access
+cloud services, read tokens, or execute hardware.

@@ -62,6 +62,7 @@ Current Qiskit ecosystem status:
 - Benchpress / Benchmarking compatibility: Stage 10B Level 3 clean-room local benchmark registry, runner, default suites, JSON / Markdown reports, and optional upstream Benchpress boundary. This is not official Benchpress output, not a full Benchpress replacement, and not production performance ranking.
 - QuantumBridge Studio backend API: Stage 10C local service layer for catalog, workflow registry, input schema, execution, result store, export, benchmark, warnings/provenance, and REST-like local router. This is not a frontend UI, not a production API server, and does not access cloud services, tokens, or hardware.
 - QuantumBridge Studio frontend prototype: Stage 10D static local prototype for catalog, workflow registry, workflow detail, mock local execution, results, warnings, provenance, benchmarks, and exports over Stage 10C seed data. This is not a production UI, not a production API server, and does not access cloud services, tokens, or hardware.
+- QuantumBridge Studio backend/frontend integration: Stage 10E hardens the backend registry to frontend seed contract, static frontend client, representative sample results, benchmark/export samples, and local CLI. This is not a production UI or server and does not access cloud services, tokens, or hardware.
 
 Current PennyLane ecosystem status:
 
@@ -93,6 +94,7 @@ Stage 7.2 expands installed-environment verification and adapter schemas. It rem
 | Benchpress / Benchmarking | Stage 10B local benchmark registry, runner, default suites, and JSON / Markdown reports | Benchpress is optional for upstream boundary metadata | Not official Benchpress output, not production performance ranking, no cloud/token/hardware access |
 | QuantumBridge Studio Backend API | Stage 10C local catalog, workflow, execution, result, export, benchmark, and local router services | No heavy dependency; optional FastAPI boundary only | Backend-only, no frontend UI, no production server, no cloud/token/hardware access |
 | QuantumBridge Studio Frontend Prototype | Stage 10D static local UI over generated Stage 10C seed data | No Node dependency required | Prototype-only, no production UI, no server, no cloud/token/hardware access |
+| QuantumBridge Studio Integration | Stage 10E backend/frontend seed contract, 36 workflow details, 10+ sample results, benchmark/export samples, and local CLI | No heavy dependency; no Node install required | Local prototype integration only, no production UI/server, no cloud/token/hardware access |
 | PennyLane full | Level 0/1 plus PennyLaneResult Level 2 wrapper | `.[pennylane-full]` | Verified: 0.42.3; no complete replacement claim |
 
 Level 2 here means a QuantumBridge result-schema wrapper. It does not mean complete input conversion, behavioral parity, performance parity, or production equivalence.
@@ -326,6 +328,23 @@ node studio/scripts/smoke-check.mjs
 The prototype uses generated Stage 10C seed data and does not start a server,
 open ports, access cloud services, read credentials, access real hardware, copy
 third-party UI/branding/prose, or claim production UI readiness.
+
+### QuantumBridge Studio Backend/Frontend Integration
+
+Stage 10E hardens the local Studio loop:
+
+- backend workflow registry is the canonical frontend data source;
+- seed generation writes catalog, workflows, workflow details, sample results,
+  benchmark report, exports, and schema version metadata;
+- frontend local clients expose catalog, workflows, workflow detail, input
+  schema, sample results, mock execution, benchmark report, and exports through
+  one response shape;
+- `python -m quantumbridge.studio` provides local JSON commands for seed
+  generation, workflow listing, local execution, benchmark, and export.
+
+Stage 10E remains a local prototype. It does not claim production readiness or
+official endorsement. It is not a full replacement and makes no production
+parity claim.
 
 ## P1 Controlled Expansion
 

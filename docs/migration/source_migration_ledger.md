@@ -726,3 +726,47 @@ copied prose, logos, or virtual environments are vendored:
 - `docs/tutorials/studio_frontend_local_prototype_quantumbridge.md`
 
 Stage 10D source port count remains zero.
+
+## Stage 10E Source Inventory
+
+The following Stage 10E files are clean-room QuantumBridge implementations,
+generated local seed data from QuantumBridge-owned APIs, or local integration
+hardening documentation. No IBM, Qiskit, PennyLane, Benchpress, QOS-UQCI,
+Quafu, MQT, Mitiq, TorchQuantum, PyTorch, React, Vite, Carbon, wheels,
+dist-info, egg-info, site-packages, `node_modules`, build outputs, copied UI,
+copied prose, logos, or virtual environments are vendored:
+
+- `quantumbridge/studio/frontend_contract.py`
+- `quantumbridge/studio/__main__.py`
+- `quantumbridge/studio/export_service.py`
+- `examples/studio_generate_frontend_seed_data_quantumbridge.py`
+- `studio/src/api/studioClient.js`
+- `studio/src/api/mockStudioClient.js`
+- `studio/src/api/localJsonClient.js`
+- `studio/src/pages/BenchmarksPage.js`
+- `studio/src/pages/CatalogPage.js`
+- `studio/src/pages/ExecutePage.js`
+- `studio/src/pages/ExportsPage.js`
+- `studio/src/pages/ResultsPage.js`
+- `studio/src/pages/WorkflowDetailPage.js`
+- `studio/src/pages/WorkflowsPage.js`
+- `studio/src/styles/globals.css`
+- `studio/scripts/smoke-check.mjs`
+- `studio/src/data/sampleCatalog.json`
+- `studio/src/data/sampleWorkflows.json`
+- `studio/src/data/sampleWorkflowDetails.json`
+- `studio/src/data/sampleResults.json`
+- `studio/src/data/sampleBenchmarkReport.json`
+- `studio/src/data/sampleExports.json`
+- `studio/src/data/studioSchemaVersion.json`
+- `studio/src/data/seedData.js`
+- `tests/studio/test_backend_frontend_contract_coverage.py`
+- `tests/studio/test_frontend_seed_contract.py`
+- `tests/studio/test_frontend_seed_no_branding_no_secrets.py`
+- `tests/studio/test_studio_cli.py`
+- `docs/implementation/stage10e_studio_backend_frontend_integration_hardening_report.md`
+- `docs/studio/backend_frontend_contract_v0.1.md`
+- `docs/studio/studio_cli_contract_v0.1.md`
+- `docs/tutorials/studio_generate_seed_and_execute_workflow_quantumbridge.md`
+
+Stage 10E source port count remains zero.

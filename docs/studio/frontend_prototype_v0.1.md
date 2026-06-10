@@ -21,3 +21,11 @@ does not claim production readiness or official endorsement.
 3. The mock client renders catalog, workflows, execution, results, and exports.
 
 No server, cloud service, credential, or hardware is used.
+
+## Stage 10E Hardening
+
+Stage 10E makes the Python backend registry the canonical frontend data source.
+The seed bundle now includes workflow details for every registered workflow,
+representative sample results, benchmark reports, export samples, and schema
+version metadata. Frontend filters and panels read this generated bundle rather
+than duplicating workflow metadata by hand.

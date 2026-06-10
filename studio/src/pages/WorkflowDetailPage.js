@@ -31,10 +31,22 @@ export function WorkflowDetailPage({ state }) {
               </div>
             `).join("") : "<p>No required inputs.</p>"}
           </div>
+          <h3>Default Inputs</h3>
+          ${JsonViewer(detail.default_inputs || detail.input_schema?.defaults || {})}
           <h3>Output Schema</h3>
           ${JsonViewer(detail.output_schema || {})}
+          <h3>Result Schema</h3>
+          <p><code>${escapeHtml(detail.result_schema || "QuantumBridgeResult")}</code></p>
+          <h3>Unsupported Limitations</h3>
+          <ul class="compact-list">
+            ${(detail.unsupported_limitations || [detail.unsupported_reason || "local prototype only"]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
         </section>
         <div>
+          <section class="panel-block">
+            <h3>Clean-room notice</h3>
+            <p>${escapeHtml(detail.clean_room_notice || state.data.workflowDetails.clean_room_notice || "Generated from QuantumBridge-owned local backend services.")}</p>
+          </section>
           ${WarningPanel(detail.warnings || [])}
           ${ProvenancePanel(detail.provenance || {})}
         </div>

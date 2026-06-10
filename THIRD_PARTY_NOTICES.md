@@ -256,6 +256,25 @@ This frontend prototype is not an official service, not endorsed by upstream
 maintainers, not a full replacement, not production UI software, and does not
 access cloud services, tokens, credentials, or real hardware.
 
+## Stage 10E QuantumBridge Studio backend/frontend integration hardening
+
+Stage 10E adds a QuantumBridge-owned frontend seed contract, static local
+frontend client hardening, representative sample result generation, export seed
+generation, benchmark seed generation, and `argparse` CLI over the local Studio
+backend services.
+
+No IBM, Qiskit, PennyLane, Benchpress, QOS-UQCI, Quafu, MQT, Mitiq,
+TorchQuantum, PyTorch, FastAPI, React, Vite, Carbon, or other third-party
+source code, website text, tutorial prose, UI, branding, logos, wheels,
+dist-info, egg-info, site-packages trees, `node_modules`, build outputs, or
+virtual environments are copied into QuantumBridge. Project and package names
+are used only to identify optional compatibility targets.
+
+This integration hardening is local-only, not an official service, not
+endorsed by upstream maintainers, not a full replacement, not production UI or
+production API software, and does not access cloud services, tokens,
+credentials, or real hardware.
+
 ## Stage 9B Qiskit Optimization native subset
 
 Stage 9B adds an independently implemented educational native binary

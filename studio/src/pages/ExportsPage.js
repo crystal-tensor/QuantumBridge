@@ -11,7 +11,7 @@ export function ExportsPage({ state }) {
         </div>
         ${Badge("local files only", "green")}
       </div>
-      ${ExportPanel(state.data.results.exports || {})}
+      ${ExportPanel(state.data.exports.exports || state.data.results.exports || {})}
     </section>
   `;
 }

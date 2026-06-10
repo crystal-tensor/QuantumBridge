@@ -270,6 +270,21 @@ cloud service. It does not copy IBM or third-party UI, prose, source, logos, or
 branding, and it does not access cloud services, tokens, credentials, or real
 hardware.
 
+## Stage 10E QuantumBridge Studio Backend/Frontend Integration Hardening
+
+Stage 10E hardens the local Studio integration loop. The Python backend
+workflow registry becomes the canonical frontend data source, the seed generator
+writes workflow details for every registered workflow, representative local
+sample results, benchmark report payloads, export payloads, and schema metadata,
+and the static frontend client/pages consume that contract.
+
+This stage also adds a local `argparse` CLI for seed generation, workflow
+listing, local execution, benchmark, and export. It remains a local prototype
+and does not start a production server, access cloud services, read tokens,
+access hardware, copy upstream UI/prose/branding, or claim official
+endorsement, full replacement, or production UI readiness, and it makes no
+production parity claim.
+
 ## Release Gating
 
 Do not tag or release based on catalog planning alone. A release candidate

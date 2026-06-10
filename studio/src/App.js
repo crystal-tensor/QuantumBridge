@@ -58,6 +58,9 @@ function wireEvents(root, state, client, navigate, render) {
   root.querySelectorAll("[data-execute-workflow]").forEach((button) => {
     button.addEventListener("click", () => navigate("execute", { selectedWorkflowId: button.dataset.executeWorkflow }));
   });
+  root.querySelectorAll("[data-result-id]").forEach((button) => {
+    button.addEventListener("click", () => navigate("results", { selectedResultId: button.dataset.resultId }));
+  });
   root.querySelectorAll("[data-search]").forEach((input) => {
     input.addEventListener("input", () => {
       state[input.dataset.search] = input.value;

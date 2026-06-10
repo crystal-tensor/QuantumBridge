@@ -1,11 +1,7 @@
 {
-  "notices": [
-    "QuantumBridge Studio is an independent local prototype.",
-    "No official endorsement is claimed.",
-    "Local-only: no cloud execution, credential reading, or hardware access.",
-    "Third-party package names are used only for compatibility identification.",
-    "This prototype is not production-ready."
-  ],
+  "backend_schema_version": "quantumbridge-studio-api-v0.1",
+  "clean_room_notice": "QuantumBridge Studio seed data is generated from QuantumBridge local backend services. Third-party project names identify compatibility targets only; no official endorsement, copied upstream UI, copied prose, cloud access, token access, hardware access, or production readiness is claimed.",
+  "generated_at": "2026-06-10T01:36:50+00:00",
   "projects": [
     {
       "capability_level": 3,
@@ -542,8 +538,23 @@
       ]
     }
   ],
+  "provenance": {
+    "cloud_access": false,
+    "copied_upstream_source": false,
+    "copied_upstream_ui": false,
+    "hardware_access": false,
+    "official_endorsement": false,
+    "production_ready": false,
+    "source": "quantumbridge.studio.backend",
+    "token_access": false
+  },
+  "quantumbridge_version": "0.1.0rc1",
+  "schema_version": "quantumbridge-studio-frontend-seed-v0.1",
+  "section": "catalog",
+  "source": "quantumbridge.studio.backend",
   "summary": {
     "cloud_access": false,
+    "executable_workflow_count": 59,
     "hardware_access": false,
     "official_endorsement": false,
     "project_count": 12,
@@ -551,5 +562,11 @@
       "partial": 12
     },
     "token_access": false
-  }
+  },
+  "warnings": [
+    "Local prototype seed data only.",
+    "No production UI claim.",
+    "No cloud execution, credential reading, or hardware access.",
+    "Compatibility names are inventory identifiers, not endorsement claims."
+  ]
 }

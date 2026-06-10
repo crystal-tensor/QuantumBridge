@@ -396,3 +396,15 @@ export payloads.
 Stage 10D is not a production UI, does not start a server, does not access
 cloud services, tokens, or hardware, and does not copy third-party UI, prose,
 source, logos, or branding.
+
+## 6.15 Stage 10E Studio Backend/Frontend Integration Snapshot
+
+Stage 10E hardens the local Studio backend/frontend contract. The backend
+workflow registry is the canonical source for generated seed data, every
+registered workflow has frontend detail data, representative workflows have
+sample execution results, benchmark and export samples are backend-generated,
+and `python -m quantumbridge.studio` exposes local JSON commands.
+
+Stage 10E is not a production UI or server, does not start public services,
+does not access cloud services, tokens, or hardware, and does not copy
+third-party UI, prose, source, logos, or branding.

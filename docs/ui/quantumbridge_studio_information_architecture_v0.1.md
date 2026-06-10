@@ -15,6 +15,24 @@ The Stage 10D prototype adds Catalog, Workflows, Workflow Detail, Execute,
 Benchmarks, Results, and Exports views. Each view is backed by generated Stage
 10C local seed data and exposes clean-room warnings and provenance.
 
+## Stage 10E Backend/Frontend Integration Architecture
+
+Stage 10E makes the backend registry the canonical source for Studio frontend
+data. The local seed bundle contains catalog, workflow summaries, workflow
+details, sample results, benchmark report, export samples, and schema metadata.
+
+The frontend information flow is:
+
+1. Python backend services build and validate the seed bundle.
+2. Static seed JSON and `seedData.js` are written under `studio/src/data/`.
+3. The local JS client exposes catalog, workflow, detail, input schema, sample
+   result, mock execution, benchmark, and export calls.
+4. Catalog, Workflows, Detail, Execute, Benchmarks, Results, and Exports pages
+   render the same generated contract.
+
+No production server, cloud endpoint, token, hardware route, copied third-party
+UI/prose/branding, or official endorsement claim is introduced.
+
 **Version**: v0.1  
 **Date**: 2026-06-09  
 **Status**: Stage 8A planning only  

@@ -1,4 +1,6 @@
 import { Badge, escapeHtml } from "../components/Badge.js";
+import { ExportPanel } from "../components/ExportPanel.js";
+import { JsonViewer } from "../components/JsonViewer.js";
 import { ResultPanel } from "../components/ResultPanel.js";
 
 export function ExecutePage({ state }) {
@@ -18,7 +20,7 @@ export function ExecutePage({ state }) {
           ${Badge("Stage 10C backend source", "green")}
         </div>
       </div>
-      <section class="execute-panel">
+      <section class="execute-panel" data-contract="warnings provenance export">
         <label>
           <span>Workflow</span>
           <select class="input wide" data-workflow-select>
@@ -28,9 +30,14 @@ export function ExecutePage({ state }) {
         <div class="form-grid">
           ${fields.length ? fields.map((field) => inputField(field)).join("") : "<p>No input form fields for this workflow.</p>"}
         </div>
+        <details class="schema-details" open>
+          <summary>Input schema and default inputs</summary>
+          ${JsonViewer({ input_schema: detail.input_schema || {}, default_inputs: detail.default_inputs || detail.input_schema?.defaults || {} })}
+        </details>
         <button class="button primary" data-run-local>Run Local</button>
       </section>
       ${ResultPanel(result)}
+      ${ExportPanel(state.data.exports.exports || state.data.results.exports || {})}
     </section>
   `;
 }

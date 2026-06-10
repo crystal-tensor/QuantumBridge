@@ -994,3 +994,15 @@ export payloads using generated Stage 10C seed data.
 This is a frontend prototype, not a production UI. It does not copy IBM or
 third-party UI, prose, logos, or branding; does not start a production server;
 and does not access cloud services, tokens, credentials, or real hardware.
+
+## Stage 10E Backend/Frontend Integration Hardening
+
+QuantumBridge Studio now has a local backend/frontend integration proof. The
+backend workflow registry is the canonical data source, seed data is generated
+from local backend services, frontend pages consume the same schema, and a
+small local CLI can list workflows, execute a workflow, run a benchmark, export
+a sample, and regenerate seed data.
+
+This is not a production UI or production server. It does not copy IBM or
+third-party UI, prose, logos, or branding; does not start public services; and
+does not access cloud services, tokens, credentials, or real hardware.
