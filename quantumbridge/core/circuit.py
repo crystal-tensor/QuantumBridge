@@ -10,7 +10,7 @@ from __future__ import annotations
 from collections.abc import Mapping as ABCMapping
 from copy import deepcopy
 from numbers import Real
-from typing import Any, Mapping, Optional, Sequence, Union
+from typing import Any, Callable, Mapping, Optional, Sequence, Union
 
 import numpy as np
 
@@ -225,6 +225,27 @@ class Circuit:
     def ccx(self, c0: int, c1: int, target: int) -> "Circuit":
         return self.append("ccx", (target,), controls=(c0, c1))
 
+    def barrier(self, *qubits: int) -> "Circuit":
+        wires = tuple(range(self.num_qubits)) if not qubits else tuple(int(wire) for wire in qubits)
+        if len(set(wires)) != len(wires):
+            raise ValueError("QuantumBridge barrier qubits must be distinct.")
+        for wire in wires:
+            self._check_wire(wire)
+        self.operations.append(Operation("barrier", wires, metadata={"directive": True}))
+        return self
+
+    def delay(self, duration: ParameterValue, q: int, unit: str = "dt") -> "Circuit":
+        self._check_wire(q)
+        self.operations.append(
+            Operation(
+                "delay",
+                (q,),
+                params=(duration,),
+                metadata={"directive": True, "duration": duration, "unit": str(unit)},
+            )
+        )
+        return self
+
     def unitary(self, matrix: Any, wires: Sequence[int], name: str = "unitary") -> "Circuit":
         arr = np.asarray(matrix, dtype=complex)
         dim = 1 << len(tuple(wires))
@@ -259,6 +280,64 @@ class Circuit:
             target.operations.extend(mapped_ops)
             target.measurements.extend(mapped_measurements)
         return target
+
+    def if_else(
+        self,
+        condition: Union[dict[str, Any], tuple[Union[int, Sequence[int]], int]],
+        true_body: "Circuit",
+        false_body: Optional["Circuit"] = None,
+        qubits: Optional[Sequence[int]] = None,
+        clbits: Optional[Sequence[int]] = None,
+        inplace: bool = False,
+    ) -> "Circuit":
+        """Append lightweight Qiskit-style conditional circuit blocks.
+
+        QuantumBridge records if/else structure as operation metadata and applies
+        the matching classical condition to the branch operations. Dynamic
+        runtime branching is intentionally left to backend implementations.
+        """
+
+        if not isinstance(true_body, Circuit):
+            raise TypeError("QuantumBridge Circuit.if_else true_body must be a Circuit.")
+        if false_body is not None and not isinstance(false_body, Circuit):
+            raise TypeError("QuantumBridge Circuit.if_else false_body must be a Circuit.")
+        normalized = _normalize_condition(condition)
+        for bit in normalized["bits"]:
+            self._check_bit(bit)
+        target = self if inplace else self.copy()
+        true_block = _circuit_with_operation_metadata(
+            true_body,
+            {
+                "condition": deepcopy(normalized),
+                "control_flow": {"type": "if_else", "branch": "true", "condition": deepcopy(normalized)},
+            },
+        )
+        target.compose(true_block, qubits=qubits, clbits=clbits, inplace=True)
+        if false_body is not None:
+            false_block = _circuit_with_operation_metadata(
+                false_body,
+                {"control_flow": {"type": "if_else", "branch": "false", "condition": deepcopy(normalized)}},
+            )
+            target.compose(false_block, qubits=qubits, clbits=clbits, inplace=True)
+        target.metadata.setdefault("control_flow", []).append(
+            {
+                "type": "if_else",
+                "condition": deepcopy(normalized),
+                "true_body": true_body.name,
+                "false_body": None if false_body is None else false_body.name,
+            }
+        )
+        return target
+
+    def if_test(
+        self,
+        condition: Union[dict[str, Any], tuple[Union[int, Sequence[int]], int]],
+        body: "Circuit",
+        qubits: Optional[Sequence[int]] = None,
+        clbits: Optional[Sequence[int]] = None,
+        inplace: bool = False,
+    ) -> "Circuit":
+        return self.if_else(condition, body, qubits=qubits, clbits=clbits, inplace=inplace)
 
     def inverse(self, inplace: bool = False) -> "Circuit":
         if self.measurements:
@@ -349,6 +428,58 @@ class Circuit:
         self._check_bit(bit)
         self.measurements.append(Measurement(wire=q, bit=bit))
         return self
+
+    def measure_all(self) -> "Circuit":
+        if self.num_bits < self.num_qubits:
+            self.num_bits = self.num_qubits
+        for wire in range(self.num_qubits):
+            self.measure(wire, wire)
+        return self
+
+    def remove_final_measurements(self, inplace: bool = False) -> "Circuit":
+        target = self if inplace else self.copy()
+        target.measurements = []
+        return target
+
+    def copy_empty_like(self, name: Optional[str] = None) -> "Circuit":
+        return Circuit(self.num_qubits, self.num_bits, name if name is not None else self.name, deepcopy(self.metadata))
+
+    def size(self, filter_function: Optional[Callable[[Any], bool]] = None) -> int:
+        items = list(self.operations) + list(self.measurements)
+        if filter_function is None:
+            return len(items)
+        return sum(1 for item in items if filter_function(item))
+
+    def count_ops(self) -> dict[str, int]:
+        counts: dict[str, int] = {}
+        for op in self.operations:
+            counts[op.name] = counts.get(op.name, 0) + 1
+        for measurement in self.measurements:
+            counts["measure"] = counts.get("measure", 0) + 1
+        return counts
+
+    def depth(self, filter_function: Optional[Callable[[Any], bool]] = None) -> int:
+        qubit_layers = [0] * self.num_qubits
+        bit_layers = [0] * self.num_bits
+        max_layer = 0
+        for op in self.operations:
+            if filter_function is not None and not filter_function(op):
+                continue
+            if op.metadata.get("directive"):
+                continue
+            wires = op.controls + op.targets
+            layer = 1 + max((qubit_layers[wire] for wire in wires), default=0)
+            for wire in wires:
+                qubit_layers[wire] = layer
+            max_layer = max(max_layer, layer)
+        for measurement in self.measurements:
+            if filter_function is not None and not filter_function(measurement):
+                continue
+            layer = 1 + max(qubit_layers[measurement.wire], bit_layers[measurement.bit])
+            qubit_layers[measurement.wire] = layer
+            bit_layers[measurement.bit] = layer
+            max_layer = max(max_layer, layer)
+        return max_layer
 
     def copy(self) -> "Circuit":
         return deepcopy(self)
@@ -453,6 +584,24 @@ def _operation_with_metadata(op: Operation, metadata: Mapping[str, Any]) -> Oper
     return Operation(op.name, op.targets, op.controls, op.params, merged)
 
 
+def _circuit_with_operation_metadata(circuit: Circuit, metadata: Mapping[str, Any]) -> Circuit:
+    out = circuit.copy()
+    out.operations = [_operation_with_metadata(op, metadata) for op in out.operations]
+    return out
+
+
+def _normalize_condition(condition: Union[dict[str, Any], tuple[Union[int, Sequence[int]], int]]) -> dict[str, Any]:
+    if isinstance(condition, dict):
+        bits = condition.get("bits", condition.get("clbits"))
+        value = condition.get("value")
+    else:
+        bits, value = condition
+    bits_tuple = (bits,) if isinstance(bits, int) else tuple(bits)
+    if not bits_tuple:
+        raise ValueError("QuantumBridge conditional blocks require at least one classical bit.")
+    return {"bits": [int(bit) for bit in bits_tuple], "value": int(value)}
+
+
 def _inverse_operation(op: Operation) -> Operation:
     if op.name in {"id", "i", "x", "y", "z", "h", "cx", "cz", "swap", "ccx"}:
         return _operation_with_metadata(op, {})
@@ -481,6 +630,9 @@ def _controlled_matrix(base: np.ndarray, num_ctrl_qubits: int, ctrl_state: int) 
 
 
 def _replace_self(original: Circuit, replacement: Circuit) -> Circuit:
+    original.num_qubits = replacement.num_qubits
+    original.num_bits = replacement.num_bits
+    original.name = replacement.name
     original.operations = replacement.operations
     original.measurements = replacement.measurements
     original.metadata = replacement.metadata

@@ -113,6 +113,8 @@ class Operator:
             state = np.zeros(size, dtype=complex)
             state[col] = 1.0
             for op in circuit.operations:
+                if op.metadata.get("directive") and op.name in {"barrier", "delay"}:
+                    continue
                 gate = gate_matrix(op.name, op.params, op.metadata)
                 state = apply_unitary(state, gate, op.controls + op.targets, circuit.num_qubits)
             matrix[:, col] = state

@@ -53,3 +53,28 @@ def test_circuit_condition_and_calibration_are_preserved_in_ir_metadata():
 
     assert ir["instructions"][0]["metadata"]["condition"] == {"bits": [0], "value": 1}
     assert circuit.get_calibration("x", [0]) == {"pulse": "drag"}
+
+
+def test_circuit_metrics_barrier_delay_and_measurement_helpers():
+    circuit = Circuit(2).h(0).barrier().delay(4, 1).cx(0, 1).measure_all()
+
+    assert circuit.size() == 6
+    assert circuit.count_ops() == {"h": 1, "barrier": 1, "delay": 1, "cx": 1, "measure": 2}
+    assert circuit.depth() == 3
+
+    probabilities = StatevectorDevice().probabilities(circuit.remove_final_measurements())
+    assert abs(probabilities["00"] - 0.5) < 1e-12
+    assert abs(probabilities["11"] - 0.5) < 1e-12
+
+
+def test_circuit_if_else_records_condition_and_branch_metadata_in_ir():
+    true_body = Circuit(1, 1, name="true").x(0)
+    false_body = Circuit(1, 1, name="false").z(0)
+    circuit = Circuit(1, 1).if_else((0, 1), true_body, false_body, inplace=False)
+
+    ir = circuit.to_ir().to_dict()
+
+    assert circuit.metadata["control_flow"][0]["type"] == "if_else"
+    assert ir["instructions"][0]["metadata"]["condition"] == {"bits": [0], "value": 1}
+    assert ir["instructions"][0]["metadata"]["control_flow"]["branch"] == "true"
+    assert ir["instructions"][1]["metadata"]["control_flow"]["branch"] == "false"

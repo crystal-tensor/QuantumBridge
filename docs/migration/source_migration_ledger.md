@@ -81,6 +81,7 @@ upstream source was copied:
 - `quantumbridge/providers/job.py`
 - `quantumbridge/providers/options.py`
 - `quantumbridge/providers/provider.py`
+- `quantumbridge/core/circuit.py`
 - `quantumbridge/core/operations.py`
 - `quantumbridge/algorithms/__init__.py`
 - `quantumbridge/algorithms/adapters/__init__.py`

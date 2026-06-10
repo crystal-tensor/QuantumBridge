@@ -20,7 +20,12 @@ def dumps(circuit) -> str:
     if circuit.num_bits:
         lines.append(f"creg c[{circuit.num_bits}];")
     for op in circuit.operations:
-        if op.name in {"x", "y", "z", "h", "s", "sdg", "t", "tdg"}:
+        if op.name == "barrier":
+            lines.append("barrier " + ",".join(f"q[{wire}]" for wire in op.targets) + ";")
+        elif op.name == "delay":
+            unit = op.metadata.get("unit", "dt")
+            lines.append(f"// delay({_format_param(op.params[0])} {unit}) q[{op.targets[0]}];")
+        elif op.name in {"x", "y", "z", "h", "s", "sdg", "t", "tdg"}:
             lines.append(f"{op.name} q[{op.targets[0]}];")
         elif op.name in {"rx", "ry", "rz", "phase"}:
             lines.append(f"{op.name}({_format_param(op.params[0])}) q[{op.targets[0]}];")

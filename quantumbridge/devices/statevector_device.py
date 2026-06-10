@@ -32,6 +32,8 @@ class StatevectorDevice:
         state = np.zeros(1 << circuit.num_qubits, dtype=complex)
         state[0] = 1.0
         for op in circuit.operations:
+            if op.metadata.get("directive") and op.name in {"barrier", "delay"}:
+                continue
             matrix = gate_matrix(op.name, op.params, op.metadata)
             wires = op.controls + op.targets
             state = apply_unitary(state, matrix, wires, circuit.num_qubits)
