@@ -1,0 +1,416 @@
+:root {
+  color-scheme: light;
+  --ink: #172033;
+  --muted: #5d6677;
+  --line: #d8dde7;
+  --panel: #ffffff;
+  --surface: #f4f6f9;
+  --nav: #101820;
+  --nav-muted: #b8c2d0;
+  --green: #1f7a4d;
+  --blue: #245b9f;
+  --purple: #70449a;
+  --amber: #94611a;
+  --gray: #596273;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--ink);
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.studio-shell {
+  display: grid;
+  grid-template-columns: 272px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background: var(--nav);
+  color: #f7f9fc;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.brand-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid #526070;
+  border-radius: 8px;
+  font-weight: 800;
+}
+
+.brand-title {
+  font-weight: 750;
+}
+
+.brand-subtitle,
+.sidebar-note {
+  color: var(--nav-muted);
+  font-size: 13px;
+}
+
+.nav-list {
+  display: grid;
+  gap: 6px;
+}
+
+.nav-item {
+  width: 100%;
+  border: 0;
+  border-radius: 8px;
+  text-align: left;
+  padding: 10px 12px;
+  color: var(--nav-muted);
+  background: transparent;
+  cursor: pointer;
+}
+
+.nav-item.active,
+.nav-item:hover {
+  color: #ffffff;
+  background: #243141;
+}
+
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+  background: #40c77a;
+}
+
+.studio-main {
+  min-width: 0;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 28px 32px 16px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--line);
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: 28px;
+}
+
+h2 {
+  font-size: 22px;
+}
+
+h3 {
+  font-size: 16px;
+}
+
+p {
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+.topbar-badges,
+.meta-row,
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 2px 9px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.badge-green {
+  color: var(--green);
+  background: #e7f6ee;
+  border-color: #a8dabb;
+}
+
+.badge-blue {
+  color: var(--blue);
+  background: #e8f1fd;
+  border-color: #b5cfed;
+}
+
+.badge-purple {
+  color: var(--purple);
+  background: #f0e9f7;
+  border-color: #d7bce8;
+}
+
+.badge-amber {
+  color: var(--amber);
+  background: #fff4df;
+  border-color: #e5c685;
+}
+
+.badge-gray {
+  color: var(--gray);
+  background: #edf0f5;
+  border-color: #d1d7e2;
+}
+
+.notice-band {
+  margin: 16px 32px 0;
+  padding: 12px 14px;
+  border: 1px solid #c7d6df;
+  background: #eef7f8;
+  border-radius: 8px;
+  color: #23404a;
+}
+
+.page-section {
+  padding: 24px 32px 36px;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.card,
+.panel-block,
+.execute-panel {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.compact-list {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  color: var(--muted);
+}
+
+.button,
+.link-button {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--ink);
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.button.primary {
+  color: #ffffff;
+  background: #245b9f;
+  border-color: #245b9f;
+}
+
+.button.compact {
+  padding: 6px 9px;
+}
+
+.link-button {
+  border: 0;
+  color: var(--blue);
+  padding: 0;
+  display: block;
+}
+
+.input {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 8px 10px;
+  min-width: 150px;
+}
+
+.input.wide {
+  min-width: min(520px, 100%);
+}
+
+.table-wrap {
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px;
+}
+
+.data-table th,
+.data-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.data-table th {
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.split-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.json-viewer,
+.export-item pre {
+  overflow: auto;
+  max-height: 430px;
+  border-radius: 8px;
+  padding: 12px;
+  background: #111827;
+  color: #e7eef8;
+  line-height: 1.45;
+  font-size: 12px;
+}
+
+.field-list,
+.form-grid,
+.metrics-grid,
+.export-grid,
+.results-strip {
+  display: grid;
+  gap: 10px;
+}
+
+.form-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin: 14px 0;
+}
+
+.field-row,
+.metric,
+.result-chip,
+.export-item {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  background: #ffffff;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 110px 1fr;
+  gap: 10px;
+}
+
+.input-field {
+  display: grid;
+  gap: 6px;
+}
+
+.metrics-grid {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  margin-bottom: 16px;
+}
+
+.metric span {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.metric strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 22px;
+}
+
+.result-chip {
+  text-align: left;
+  cursor: pointer;
+}
+
+.result-chip span {
+  display: block;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+@media (max-width: 860px) {
+  .studio-shell,
+  .split-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+  }
+
+  .topbar,
+  .section-heading {
+    flex-direction: column;
+  }
+
+  .page-section,
+  .topbar {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .notice-band {
+    margin-left: 18px;
+    margin-right: 18px;
+  }
+}

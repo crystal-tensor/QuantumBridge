@@ -1,0 +1,340 @@
+{
+  "exports": {
+    "json": {
+      "content": "{\n  \"error\": null,\n  \"execution_id\": \"studio-exec-000001\",\n  \"provenance\": {\n    \"cloud_access\": false,\n    \"copied_upstream_source\": false,\n    \"hardware_access\": false,\n    \"metadata\": {\n      \"api_layer\": \"quantumbridge.studio\",\n      \"frontend_ui_implementation\": false,\n      \"local_router\": true\n    },\n    \"official_endorsement\": false,\n    \"production_ready\": false,\n    \"project_id\": \"qiskit-aer\",\n    \"result_provenance\": {\n      \"adapter\": \"quantumbridge.compat.qiskit_aer\",\n      \"cloud_access\": false,\n      \"hardware_access\": false,\n      \"ibm_branding_copied\": false,\n      \"official_endorsement\": false,\n      \"source_code_copied\": false,\n      \"stage\": \"9F\",\n      \"token_read\": false,\n      \"upstream_source_copied\": false,\n      \"workflow\": \"qasm_simulator_native\"\n    },\n    \"source\": \"quantumbridge\",\n    \"token_access\": false,\n    \"workflow_id\": \"aer.qasm_counts_native\"\n  },\n  \"result\": {\n    \"backend\": \"qasm\",\n    \"capability_level\": 3,\n    \"counts\": {\n      \"00\": 32,\n      \"11\": 32\n    },\n    \"data\": null,\n    \"ecosystem\": \"quantumbridge_native_simulator\",\n    \"final_statevector\": [],\n    \"metadata\": {\n      \"backend\": \"qasm\",\n      \"cloud_access\": false,\n      \"hardware_access\": false,\n      \"measurement_count\": 2,\n      \"operation_count\": 2,\n      \"production_simulator\": false,\n      \"qiskit_aer_parity_claim\": false,\n      \"supported_gates\": [\n        \"cx\",\n        \"cz\",\n        \"h\",\n        \"phase\",\n        \"rx\",\n        \"ry\",\n        \"rz\",\n        \"swap\",\n        \"x\",\n        \"y\",\n        \"z\"\n      ],\n      \"token_read\": false\n    },\n    \"mode\": \"native_minimal\",\n    \"native_implementation\": true,\n    \"noise_model\": null,\n    \"num_qubits\": 2,\n    \"probabilities\": {\n      \"00\": 0.5,\n      \"11\": 0.5\n    },\n    \"production_ready\": false,\n    \"provenance\": {\n      \"adapter\": \"quantumbridge.compat.qiskit_aer\",\n      \"cloud_access\": false,\n      \"hardware_access\": false,\n      \"ibm_branding_copied\": false,\n      \"official_endorsement\": false,\n      \"source_code_copied\": false,\n      \"stage\": \"9F\",\n      \"token_read\": false,\n      \"upstream_source_copied\": false,\n      \"workflow\": \"qasm_simulator_native\"\n    },\n    \"quantumbridge_version\": null,\n    \"raw_type\": \"QuantumBridgeQasmCounts\",\n    \"schema_version\": \"0.1\",\n    \"seed\": 5,\n    \"shots\": 64,\n    \"unsupported_reason\": null,\n    \"upstream_package\": null,\n    \"upstream_version\": null,\n    \"warnings\": [\n      \"QuantumBridge Qiskit Aer support is an optional passthrough/schema bridge plus minimal educational native simulator workflows. It is not a full Qiskit Aer replacement and is not production simulator software.\",\n      \"Native simulator support is a minimal deterministic educational simulator for small circuits.\"\n    ],\n    \"workflow\": \"qasm_simulator_native\"\n  },\n  \"schema_version\": \"quantumbridge-studio-api-v0.1\",\n  \"status\": \"succeeded\",\n  \"unsupported_reason\": null,\n  \"warnings\": [\n    \"QuantumBridge Studio backend API is a local executable service layer. It is not a production API server, not a frontend UI, and not an official IBM, Qiskit, PennyLane, Benchpress, Quafu, QOS-UQCI, MQT, Mitiq, or TorchQuantum service.\",\n    \"Studio workflows are local-only by default and do not access cloud services, tokens, credentials, or real hardware.\",\n    \"This Studio API slice uses QuantumBridge-owned clean-room metadata and execution wrappers; no third-party source, UI, tutorial prose, or branding is copied.\",\n    \"This slice does not claim full replacement, production parity, official benchmark status, or official endorsement.\",\n    \"QuantumBridge Studio uses clean-room local metadata for qiskit-aer; no third-party source, UI, prose, or branding is copied.\",\n    \"Studio workflow aer.qasm_counts_native is local-only: no cloud, token, credential, or hardware access.\",\n    \"QuantumBridge Qiskit Aer support is an optional passthrough/schema bridge plus minimal educational native simulator workflows. It is not a full Qiskit Aer replacement and is not production simulator software.\",\n    \"Native simulator support is a minimal deterministic educational simulator for small circuits.\"\n  ],\n  \"workflow_id\": \"aer.qasm_counts_native\"\n}",
+      "execution_id": null,
+      "export_type": "json",
+      "provenance": {},
+      "schema_version": "quantumbridge-studio-api-v0.1",
+      "unsupported_reason": null,
+      "warnings": [],
+      "workflow_id": null
+    },
+    "markdown": {
+      "content": "# QuantumBridge Studio Result\\n\\n- execution_id: `studio-exec-000001`\\n- workflow_id: `aer.qasm_counts_native`\\n\\n```json\\n{\n  \"error\": null,\n  \"execution_id\": \"studio-exec-000001\",\n  \"provenance\": {\n    \"cloud_access\": false,\n    \"copied_upstream_source\": false,\n    \"hardware_access\": false,\n    \"metadata\": {\n      \"api_layer\": \"quantumbridge.studio\",\n      \"frontend_ui_implementation\": false,\n      \"local_router\": true\n    },\n    \"official_endorsement\": false,\n    \"production_ready\": false,\n    \"project_id\": \"qiskit-aer\",\n    \"result_provenance\": {\n      \"adapter\": \"quantumbridge.compat.qiskit_aer\",\n      \"cloud_access\": false,\n      \"hardware_access\": false,\n      \"ibm_branding_copied\": false,\n      \"official_endorsement\": false,\n      \"source_code_copied\": false,\n      \"stage\": \"9F\",\n      \"token_read\": false,\n      \"upstream_source_copied\": false,\n      \"workflow\": \"qasm_simulator_native\"\n    },\n    \"source\": \"quantumbridge\",\n    \"token_access\": false,\n    \"workflow_id\": \"aer.qasm_counts_native\"\n  },\n  \"result\": {\n    \"backend\": \"qasm\",\n    \"capability_level\": 3,\n    \"counts\": {\n      \"00\": 32,\n      \"11\": 32\n    },\n    \"data\": null,\n    \"ecosystem\": \"quantumbridge_native_simulator\",\n    \"final_statevector\": [],\n    \"metadata\": {\n      \"backend\": \"qasm\",\n      \"cloud_access\": false,\n      \"hardware_access\": false,\n      \"measurement_count\": 2,\n      \"operation_count\": 2,\n      \"production_simulator\": false,\n      \"qiskit_aer_parity_claim\": false,\n      \"supported_gates\": [\n        \"cx\",\n        \"cz\",\n        \"h\",\n        \"phase\",\n        \"rx\",\n        \"ry\",\n        \"rz\",\n        \"swap\",\n        \"x\",\n        \"y\",\n        \"z\"\n      ],\n      \"token_read\": false\n    },\n    \"mode\": \"native_minimal\",\n    \"native_implementation\": true,\n    \"noise_model\": null,\n    \"num_qubits\": 2,\n    \"probabilities\": {\n      \"00\": 0.5,\n      \"11\": 0.5\n    },\n    \"production_ready\": false,\n    \"provenance\": {\n      \"adapter\": \"quantumbridge.compat.qiskit_aer\",\n      \"cloud_access\": false,\n      \"hardware_access\": false,\n      \"ibm_branding_copied\": false,\n      \"official_endorsement\": false,\n      \"source_code_copied\": false,\n      \"stage\": \"9F\",\n      \"token_read\": false,\n      \"upstream_source_copied\": false,\n      \"workflow\": \"qasm_simulator_native\"\n    },\n    \"quantumbridge_version\": null,\n    \"raw_type\": \"QuantumBridgeQasmCounts\",\n    \"schema_version\": \"0.1\",\n    \"seed\": 5,\n    \"shots\": 64,\n    \"unsupported_reason\": null,\n    \"upstream_package\": null,\n    \"upstream_version\": null,\n    \"warnings\": [\n      \"QuantumBridge Qiskit Aer support is an optional passthrough/schema bridge plus minimal educational native simulator workflows. It is not a full Qiskit Aer replacement and is not production simulator software.\",\n      \"Native simulator support is a minimal deterministic educational simulator for small circuits.\"\n    ],\n    \"workflow\": \"qasm_simulator_native\"\n  },\n  \"schema_version\": \"quantumbridge-studio-api-v0.1\",\n  \"status\": \"succeeded\",\n  \"unsupported_reason\": null,\n  \"warnings\": [\n    \"QuantumBridge Studio backend API is a local executable service layer. It is not a production API server, not a frontend UI, and not an official IBM, Qiskit, PennyLane, Benchpress, Quafu, QOS-UQCI, MQT, Mitiq, or TorchQuantum service.\",\n    \"Studio workflows are local-only by default and do not access cloud services, tokens, credentials, or real hardware.\",\n    \"This Studio API slice uses QuantumBridge-owned clean-room metadata and execution wrappers; no third-party source, UI, tutorial prose, or branding is copied.\",\n    \"This slice does not claim full replacement, production parity, official benchmark status, or official endorsement.\",\n    \"QuantumBridge Studio uses clean-room local metadata for qiskit-aer; no third-party source, UI, prose, or branding is copied.\",\n    \"Studio workflow aer.qasm_counts_native is local-only: no cloud, token, credential, or hardware access.\",\n    \"QuantumBridge Qiskit Aer support is an optional passthrough/schema bridge plus minimal educational native simulator workflows. It is not a full Qiskit Aer replacement and is not production simulator software.\",\n    \"Native simulator support is a minimal deterministic educational simulator for small circuits.\"\n  ],\n  \"workflow_id\": \"aer.qasm_counts_native\"\n}\\n```\\n",
+      "execution_id": "studio-exec-000001",
+      "export_type": "markdown",
+      "provenance": {},
+      "schema_version": "quantumbridge-studio-api-v0.1",
+      "unsupported_reason": null,
+      "warnings": [],
+      "workflow_id": "aer.qasm_counts_native"
+    },
+    "notebook_stub": {
+      "content": "{\n  \"metadata\": {\n    \"quantumbridge\": \"studio-notebook-stub-v0.1\"\n  },\n  \"cells\": [\n    {\n      \"cell_type\": \"markdown\",\n      \"source\": [\n        \"# QuantumBridge Studio workflow: aer.qasm_counts_native\\\\n\"\n      ]\n    },\n    {\n      \"cell_type\": \"code\",\n      \"source\": [\n        \"from quantumbridge.studio.execution_service import execute_workflow\\\\n\\\\nresult = execute_workflow('aer.qasm_counts_native', inputs={'shots': 64, 'seed': 5})\\\\nprint(result.to_json())\\\\n\"\n      ],\n      \"outputs\": []\n    }\n  ],\n  \"nbformat\": 4,\n  \"nbformat_minor\": 5\n}",
+      "execution_id": null,
+      "export_type": "notebook_stub",
+      "provenance": {},
+      "schema_version": "quantumbridge-studio-api-v0.1",
+      "unsupported_reason": null,
+      "warnings": [],
+      "workflow_id": "aer.qasm_counts_native"
+    },
+    "python": {
+      "content": "from quantumbridge.studio.execution_service import execute_workflow\\n\\nresult = execute_workflow('aer.qasm_counts_native', inputs={'shots': 64, 'seed': 5})\\nprint(result.to_json())\\n",
+      "execution_id": null,
+      "export_type": "python",
+      "provenance": {},
+      "schema_version": "quantumbridge-studio-api-v0.1",
+      "unsupported_reason": null,
+      "warnings": [],
+      "workflow_id": "aer.qasm_counts_native"
+    }
+  },
+  "notices": [
+    "QuantumBridge Studio is an independent local prototype.",
+    "No official endorsement is claimed.",
+    "Local-only: no cloud execution, credential reading, or hardware access.",
+    "Third-party package names are used only for compatibility identification.",
+    "This prototype is not production-ready."
+  ],
+  "results": [
+    {
+      "error": null,
+      "execution_id": "studio-exec-000001",
+      "provenance": {
+        "cloud_access": false,
+        "copied_upstream_source": false,
+        "hardware_access": false,
+        "metadata": {
+          "api_layer": "quantumbridge.studio",
+          "frontend_ui_implementation": false,
+          "local_router": true
+        },
+        "official_endorsement": false,
+        "production_ready": false,
+        "project_id": "qiskit-aer",
+        "result_provenance": {
+          "adapter": "quantumbridge.compat.qiskit_aer",
+          "cloud_access": false,
+          "hardware_access": false,
+          "ibm_branding_copied": false,
+          "official_endorsement": false,
+          "source_code_copied": false,
+          "stage": "9F",
+          "token_read": false,
+          "upstream_source_copied": false,
+          "workflow": "qasm_simulator_native"
+        },
+        "source": "quantumbridge",
+        "token_access": false,
+        "workflow_id": "aer.qasm_counts_native"
+      },
+      "result": {
+        "backend": "qasm",
+        "capability_level": 3,
+        "counts": {
+          "00": 32,
+          "11": 32
+        },
+        "data": null,
+        "ecosystem": "quantumbridge_native_simulator",
+        "final_statevector": [],
+        "metadata": {
+          "backend": "qasm",
+          "cloud_access": false,
+          "hardware_access": false,
+          "measurement_count": 2,
+          "operation_count": 2,
+          "production_simulator": false,
+          "qiskit_aer_parity_claim": false,
+          "supported_gates": [
+            "cx",
+            "cz",
+            "h",
+            "phase",
+            "rx",
+            "ry",
+            "rz",
+            "swap",
+            "x",
+            "y",
+            "z"
+          ],
+          "token_read": false
+        },
+        "mode": "native_minimal",
+        "native_implementation": true,
+        "noise_model": null,
+        "num_qubits": 2,
+        "probabilities": {
+          "00": 0.5,
+          "11": 0.5
+        },
+        "production_ready": false,
+        "provenance": {
+          "adapter": "quantumbridge.compat.qiskit_aer",
+          "cloud_access": false,
+          "hardware_access": false,
+          "ibm_branding_copied": false,
+          "official_endorsement": false,
+          "source_code_copied": false,
+          "stage": "9F",
+          "token_read": false,
+          "upstream_source_copied": false,
+          "workflow": "qasm_simulator_native"
+        },
+        "quantumbridge_version": null,
+        "raw_type": "QuantumBridgeQasmCounts",
+        "schema_version": "0.1",
+        "seed": 5,
+        "shots": 64,
+        "unsupported_reason": null,
+        "upstream_package": null,
+        "upstream_version": null,
+        "warnings": [
+          "QuantumBridge Qiskit Aer support is an optional passthrough/schema bridge plus minimal educational native simulator workflows. It is not a full Qiskit Aer replacement and is not production simulator software.",
+          "Native simulator support is a minimal deterministic educational simulator for small circuits."
+        ],
+        "workflow": "qasm_simulator_native"
+      },
+      "schema_version": "quantumbridge-studio-api-v0.1",
+      "status": "succeeded",
+      "unsupported_reason": null,
+      "warnings": [
+        "QuantumBridge Studio backend API is a local executable service layer. It is not a production API server, not a frontend UI, and not an official IBM, Qiskit, PennyLane, Benchpress, Quafu, QOS-UQCI, MQT, Mitiq, or TorchQuantum service.",
+        "Studio workflows are local-only by default and do not access cloud services, tokens, credentials, or real hardware.",
+        "This Studio API slice uses QuantumBridge-owned clean-room metadata and execution wrappers; no third-party source, UI, tutorial prose, or branding is copied.",
+        "This slice does not claim full replacement, production parity, official benchmark status, or official endorsement.",
+        "QuantumBridge Studio uses clean-room local metadata for qiskit-aer; no third-party source, UI, prose, or branding is copied.",
+        "Studio workflow aer.qasm_counts_native is local-only: no cloud, token, credential, or hardware access.",
+        "QuantumBridge Qiskit Aer support is an optional passthrough/schema bridge plus minimal educational native simulator workflows. It is not a full Qiskit Aer replacement and is not production simulator software.",
+        "Native simulator support is a minimal deterministic educational simulator for small circuits."
+      ],
+      "workflow_id": "aer.qasm_counts_native"
+    },
+    {
+      "error": null,
+      "execution_id": "studio-exec-000002",
+      "provenance": {
+        "cloud_access": false,
+        "copied_upstream_source": false,
+        "hardware_access": false,
+        "metadata": {
+          "api_layer": "quantumbridge.studio",
+          "frontend_ui_implementation": false,
+          "local_router": true
+        },
+        "official_endorsement": false,
+        "production_ready": false,
+        "project_id": "qiskit-finance",
+        "result_provenance": {
+          "adapter_package": "qiskit-finance",
+          "copied_upstream_source": false,
+          "native_subset": "binary mean-variance exact enumeration",
+          "official_endorsement": false
+        },
+        "source": "quantumbridge",
+        "token_access": false,
+        "workflow_id": "finance.portfolio_optimization_native"
+      },
+      "result": {
+        "budget": 2,
+        "covariances": [
+          [
+            0.001,
+            0.0002,
+            0.0001,
+            0.0001
+          ],
+          [
+            0.0002,
+            0.0015,
+            0.0002,
+            0.0001
+          ],
+          [
+            0.0001,
+            0.0002,
+            0.0011,
+            0.0003
+          ],
+          [
+            0.0001,
+            0.0001,
+            0.0003,
+            0.0012
+          ]
+        ],
+        "expected_returns": [
+          0.014,
+          0.0008,
+          0.0001,
+          0.015
+        ],
+        "metadata": {
+          "constraint": "sum(selection) == budget",
+          "example": "tutorial-synthetic-four-asset",
+          "input_source": "deterministic synthetic data unless explicitly provided",
+          "objective": "minimize risk_factor * x^T Sigma x - expected_returns^T x"
+        },
+        "method": "exact-enumeration",
+        "objective_value": -0.0278,
+        "path": "quantumbridge-native",
+        "probabilities": {
+          "1001": 1.0
+        },
+        "provenance": {
+          "adapter_package": "qiskit-finance",
+          "copied_upstream_source": false,
+          "native_subset": "binary mean-variance exact enumeration",
+          "official_endorsement": false
+        },
+        "risk_factor": 0.5,
+        "samples": [
+          {
+            "bitstring": "1001",
+            "feasible": true,
+            "objective_value": -0.0278,
+            "selection": [
+              1,
+              0,
+              0,
+              1
+            ]
+          },
+          {
+            "bitstring": "0101",
+            "feasible": true,
+            "objective_value": -0.014349999999999998,
+            "selection": [
+              0,
+              1,
+              0,
+              1
+            ]
+          },
+          {
+            "bitstring": "0011",
+            "feasible": true,
+            "objective_value": -0.013649999999999999,
+            "selection": [
+              0,
+              0,
+              1,
+              1
+            ]
+          },
+          {
+            "bitstring": "1100",
+            "feasible": true,
+            "objective_value": -0.01335,
+            "selection": [
+              1,
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "bitstring": "1010",
+            "feasible": true,
+            "objective_value": -0.01295,
+            "selection": [
+              1,
+              0,
+              1,
+              0
+            ]
+          },
+          {
+            "bitstring": "0110",
+            "feasible": true,
+            "objective_value": 0.0006,
+            "selection": [
+              0,
+              1,
+              1,
+              0
+            ]
+          }
+        ],
+        "schema_version": "0.1",
+        "selection": [
+          1,
+          0,
+          0,
+          1
+        ],
+        "upstream_package": "qiskit-finance",
+        "upstream_version": null,
+        "warnings": [
+          "This is an educational portfolio-optimization compatibility path. It is not production finance, investment advice, pricing support, or a complete Qiskit Finance replacement."
+        ]
+      },
+      "schema_version": "quantumbridge-studio-api-v0.1",
+      "status": "succeeded",
+      "unsupported_reason": null,
+      "warnings": [
+        "QuantumBridge Studio backend API is a local executable service layer. It is not a production API server, not a frontend UI, and not an official IBM, Qiskit, PennyLane, Benchpress, Quafu, QOS-UQCI, MQT, Mitiq, or TorchQuantum service.",
+        "Studio workflows are local-only by default and do not access cloud services, tokens, credentials, or real hardware.",
+        "This Studio API slice uses QuantumBridge-owned clean-room metadata and execution wrappers; no third-party source, UI, tutorial prose, or branding is copied.",
+        "This slice does not claim full replacement, production parity, official benchmark status, or official endorsement.",
+        "QuantumBridge Studio uses clean-room local metadata for qiskit-finance; no third-party source, UI, prose, or branding is copied.",
+        "Studio workflow finance.portfolio_optimization_native is local-only: no cloud, token, credential, or hardware access.",
+        "This is an educational portfolio-optimization compatibility path. It is not production finance, investment advice, pricing support, or a complete Qiskit Finance replacement."
+      ],
+      "workflow_id": "finance.portfolio_optimization_native"
+    }
+  ]
+}

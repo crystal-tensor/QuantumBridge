@@ -7,6 +7,14 @@ htmlcov/
 .ruff_cache/
 dist/
 build/
+node_modules/
+coverage/
+.vite/
+studio/node_modules/
+studio/dist/
+studio/build/
+studio/coverage/
+studio/.vite/
 *.egg-info/
 .venv/
 venv/

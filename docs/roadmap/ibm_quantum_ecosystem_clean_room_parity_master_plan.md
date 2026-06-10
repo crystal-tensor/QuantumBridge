@@ -258,6 +258,18 @@ service. The default router is in-process Python only and does not open ports.
 The optional FastAPI adapter is an availability boundary and does not add
 FastAPI as a required dependency or start a server.
 
+## Stage 10D QuantumBridge Studio Frontend Prototype
+
+Stage 10D adds the first static local QuantumBridge Studio frontend prototype.
+It visualizes catalog projects, workflow registry entries, workflow details,
+mock local execution, result JSON, warnings, provenance, benchmark reports, and
+exports using generated Stage 10C seed data.
+
+This is not a production UI, not an official ecosystem replacement, and not a
+cloud service. It does not copy IBM or third-party UI, prose, source, logos, or
+branding, and it does not access cloud services, tokens, credentials, or real
+hardware.
+
 ## Release Gating
 
 Do not tag or release based on catalog planning alone. A release candidate

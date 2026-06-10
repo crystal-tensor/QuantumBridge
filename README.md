@@ -61,6 +61,7 @@ Current Qiskit ecosystem status:
 - QOS-UQCI / Quafu backend compatibility: Stage 10A Level 3 offline job specs, clean-room payloads, mock backend execution, result schemas, and optional upstream package boundaries. This is not production runtime or real hardware execution and does not access cloud services or tokens.
 - Benchpress / Benchmarking compatibility: Stage 10B Level 3 clean-room local benchmark registry, runner, default suites, JSON / Markdown reports, and optional upstream Benchpress boundary. This is not official Benchpress output, not a full Benchpress replacement, and not production performance ranking.
 - QuantumBridge Studio backend API: Stage 10C local service layer for catalog, workflow registry, input schema, execution, result store, export, benchmark, warnings/provenance, and REST-like local router. This is not a frontend UI, not a production API server, and does not access cloud services, tokens, or hardware.
+- QuantumBridge Studio frontend prototype: Stage 10D static local prototype for catalog, workflow registry, workflow detail, mock local execution, results, warnings, provenance, benchmarks, and exports over Stage 10C seed data. This is not a production UI, not a production API server, and does not access cloud services, tokens, or hardware.
 
 Current PennyLane ecosystem status:
 
@@ -91,6 +92,7 @@ Stage 7.2 expands installed-environment verification and adapter schemas. It rem
 | QOS-UQCI / Quafu backends | Stage 10A offline QOS-UQCI job spec, DeviceSpec / CalSet / Manifest, Quafu-compatible payload, and mock execution | QOS-UQCI and pyquafu are optional upstream boundaries | No production runtime, no cloud/token/hardware access, no official endorsement |
 | Benchpress / Benchmarking | Stage 10B local benchmark registry, runner, default suites, and JSON / Markdown reports | Benchpress is optional for upstream boundary metadata | Not official Benchpress output, not production performance ranking, no cloud/token/hardware access |
 | QuantumBridge Studio Backend API | Stage 10C local catalog, workflow, execution, result, export, benchmark, and local router services | No heavy dependency; optional FastAPI boundary only | Backend-only, no frontend UI, no production server, no cloud/token/hardware access |
+| QuantumBridge Studio Frontend Prototype | Stage 10D static local UI over generated Stage 10C seed data | No Node dependency required | Prototype-only, no production UI, no server, no cloud/token/hardware access |
 | PennyLane full | Level 0/1 plus PennyLaneResult Level 2 wrapper | `.[pennylane-full]` | Verified: 0.42.3; no complete replacement claim |
 
 Level 2 here means a QuantumBridge result-schema wrapper. It does not mean complete input conversion, behavioral parity, performance parity, or production equivalence.
@@ -302,6 +304,29 @@ This slice is backend-only. It is not a frontend UI, not a production API
 server, not an official IBM / Qiskit / PennyLane / Benchpress service, and does
 not access cloud services, tokens, credentials, or real hardware.
 
+### QuantumBridge Studio Frontend Prototype
+
+Stage 10D adds a static local frontend prototype under `studio/`:
+
+- ecosystem catalog view;
+- workflow registry view;
+- workflow detail view with input/output schema;
+- mock local execution panel;
+- result JSON, warning, and provenance viewers;
+- benchmark report panel;
+- JSON, Markdown, Python snippet, and notebook-stub export display.
+
+Generate local seed data and run the frontend smoke check:
+
+```bash
+python3 examples/studio_generate_frontend_seed_data_quantumbridge.py
+node studio/scripts/smoke-check.mjs
+```
+
+The prototype uses generated Stage 10C seed data and does not start a server,
+open ports, access cloud services, read credentials, access real hardware, copy
+third-party UI/branding/prose, or claim production UI readiness.
+
 ## P1 Controlled Expansion
 
 Stage 5 adds controlled P1 subset coverage:
@@ -325,8 +350,8 @@ Stage 5 adds controlled P1 subset coverage:
   token handling, or real hardware execution.
 - Full Benchpress replacement, official benchmark claims, or production
   performance ranking.
-- QuantumBridge Studio frontend UI, production API server claims, cloud service
-  execution, token handling, or real hardware execution.
+- QuantumBridge Studio production UI, production API server claims, cloud
+  service execution, token handling, or real hardware execution.
 - Full OpenQASM grammar.
 - Hardware cloud providers.
 - Production Qiskit Aer/noise integration.

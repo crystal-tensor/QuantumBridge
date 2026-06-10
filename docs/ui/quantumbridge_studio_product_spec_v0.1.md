@@ -983,3 +983,14 @@ routing.
 This is not a frontend UI implementation. It does not copy IBM or third-party
 UI, prose, or branding; does not start a production server; and does not access
 cloud services, tokens, credentials, or real hardware.
+
+## Stage 10D Frontend Prototype
+
+QuantumBridge Studio now has a static local frontend prototype under `studio/`.
+It displays catalog projects, workflow registry entries, workflow detail, mock
+local execution, result JSON, warnings, provenance, benchmark reports, and
+export payloads using generated Stage 10C seed data.
+
+This is a frontend prototype, not a production UI. It does not copy IBM or
+third-party UI, prose, logos, or branding; does not start a production server;
+and does not access cloud services, tokens, credentials, or real hardware.

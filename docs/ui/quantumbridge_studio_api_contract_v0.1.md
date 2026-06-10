@@ -586,6 +586,13 @@ warnings/provenance, and explicitly avoid cloud, token, credential, and real
 hardware access. This is backend API preparation, not frontend UI
 implementation and not a production API claim.
 
+### 10.2 Stage 10D Frontend Local Data Contract
+
+Stage 10D consumes generated local data from `studio/src/data/`. The frontend
+uses a local JS seed data module and a mock execution client. Future server
+adapters may connect to the Stage 10C local router or optional FastAPI adapter,
+but this prototype does not start a server or open ports.
+
 ### 10.0 Stage 10B Benchmark API Planning
 
 Future backend endpoints may expose Stage 10B benchmark suites:

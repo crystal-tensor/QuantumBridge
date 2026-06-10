@@ -385,3 +385,14 @@ workflows, store results in memory, export JSON / Markdown / Python snippets,
 run benchmark suites, and route REST-like local paths. It is not a frontend UI,
 not a production API server, and does not access cloud services, tokens, or
 hardware.
+
+## 6.14 Stage 10D Studio Frontend Prototype Snapshot
+
+Stage 10D adds a static local Studio frontend prototype over generated Stage
+10C seed data. It displays catalog projects, workflows, workflow details, mock
+local execution, result JSON, warnings, provenance, benchmark reports, and
+export payloads.
+
+Stage 10D is not a production UI, does not start a server, does not access
+cloud services, tokens, or hardware, and does not copy third-party UI, prose,
+source, logos, or branding.

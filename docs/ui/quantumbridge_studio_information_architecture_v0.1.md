@@ -9,6 +9,12 @@ and provenance.
 The architecture is local-only and backend-only. It prepares future frontend
 screens without implementing UI components or copying third-party UI/branding.
 
+## Stage 10D Frontend Information Architecture
+
+The Stage 10D prototype adds Catalog, Workflows, Workflow Detail, Execute,
+Benchmarks, Results, and Exports views. Each view is backed by generated Stage
+10C local seed data and exposes clean-room warnings and provenance.
+
 **Version**: v0.1  
 **Date**: 2026-06-09  
 **Status**: Stage 8A planning only  

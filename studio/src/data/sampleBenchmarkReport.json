@@ -1,0 +1,608 @@
+{
+  "benchmark": {
+    "provenance": {
+      "adapter_package": "benchpress",
+      "clean_room": true,
+      "cloud_access": false,
+      "copied_upstream_source": false,
+      "copied_upstream_text": false,
+      "hardware_access": false,
+      "official_benchmark": false,
+      "official_endorsement": false,
+      "production_benchmark_parity": false,
+      "token_access": false
+    },
+    "report_json": "{\"capability_level\": 2, \"case_id\": \"studio_circuit_basic\", \"case_name\": \"studio_circuit_basic\", \"category\": \"suite\", \"ecosystem\": \"quantumbridge_native_benchmarking\", \"elapsed_seconds\": 0.0006572080000069036, \"expected_summary\": {\"case_count\": 3}, \"metadata\": {}, \"metrics\": {\"failed\": 0, \"passed\": 3, \"skipped\": 0, \"total\": 3, \"unsupported\": 0}, \"mode\": \"native_minimal\", \"native_implementation\": true, \"output_summary\": {\"cases\": [{\"capability_level\": 2, \"case_id\": \"circuit_basic.h_circuit_statevector\", \"case_name\": \"H circuit statevector\", \"category\": \"circuit_basic\", \"ecosystem\": \"quantumbridge_native_benchmarking\", \"elapsed_seconds\": 0.00017137500000785622, \"expected_summary\": {\"0\": 0.5, \"1\": 0.5}, \"metadata\": {\"case\": {\"case_id\": \"circuit_basic.h_circuit_statevector\", \"category\": \"circuit_basic\", \"deterministic\": true, \"expected_summary\": {\"probabilities\": {\"0\": 0.5, \"1\": 0.5}}, \"input_summary\": {\"circuit\": \"single-qubit H\", \"runner\": \"Stage 9F statevector\"}, \"metadata\": {\"cloud_access\": false, \"hardware_access\": false, \"official_benchmark_claim\": false, \"production_benchmark_parity_claim\": false, \"token_access\": false}, \"name\": \"H circuit statevector\", \"production_ready\": false, \"provenance\": {\"adapter_package\": \"benchpress\", \"clean_room\": true, \"cloud_access\": false, \"copied_upstream_source\": false, \"copied_upstream_text\": false, \"hardware_access\": false, \"official_benchmark\": false, \"official_endorsement\": false, \"production_benchmark_parity\": false, \"token_access\": false}, \"runner\": \"_run_h_statevector_case\", \"seed\": 7, \"tags\": [\"circuit\", \"statevector\"], \"timeout_seconds\": 10.0, \"warnings\": [\"QuantumBridge Benchpress compatibility support is a clean-room educational benchmarking adapter. It is not a full Benchpress replacement and does not provide production benchmark parity.\", \"QuantumBridge benchmark results are deterministic local validation results for small educational workloads, not official performance rankings.\"], \"workload_type\": \"callable\"}}, \"metrics\": {\"max_probability_delta\": 1.1102230246251565e-16}, \"mode\": \"native_minimal\", \"native_implementation\": true, \"output_summary\": {\"backend\": \"statevector\", \"capability_level\": 3, \"counts\": {}, \"data\": null, \"ecosystem\": \"quantumbridge_native_simulator\", \"final_statevector\": [{\"imag\": 0.0, \"real\": 0.7071067811865475}, {\"imag\": 0.0, \"real\": 0.7071067811865475}], \"metadata\": {\"backend\": \"statevector\", \"cloud_access\": false, \"hardware_access\": false, \"measurement_count\": 0, \"operation_count\": 1, \"production_simulator\": false, \"qiskit_aer_parity_claim\": false, \"supported_gates\": [\"cx\", \"cz\", \"h\", \"phase\", \"rx\", \"ry\", \"rz\", \"swap\", \"x\", \"y\", \"z\"], \"token_read\": false}, \"mode\": \"native_minimal\", \"native_implementation\": true, \"noise_model\": null, \"num_qubits\": 1, \"probabilities\": {\"0\": 0.4999999999999999, \"1\": 0.4999999999999999}, \"production_ready\": false, \"provenance\": {\"adapter\": \"quantumbridge.compat.qiskit_aer\", \"cloud_access\": false, \"hardware_access\": false, \"ibm_branding_copied\": false, \"official_endorsement\": false, \"source_code_copied\": false, \"stage\": \"9F\", \"token_read\": false, \"upstream_source_copied\": false, \"workflow\": \"statevector_simulator_native\"}, \"quantumbridge_version\": null, \"raw_type\": \"QuantumBridgeStatevector\", \"schema_version\": \"0.1\", \"seed\": null, \"shots\": null, \"unsupported_reason\": null, \"upstream_package\": null, \"upstream_version\": null, \"warnings\": [\"QuantumBridge Qiskit Aer support is an optional passthrough/schema bridge plus minimal educational native simulator workflows. It is not a full Qiskit Aer replacement and is not production simulator software.\", \"Native simulator support is a minimal deterministic educational simulator for small circuits.\"], \"workflow\": \"statevector_simulator_native\"}, \"passed\": true, \"production_ready\": false, \"provenance\": {\"adapter_package\": \"benchpress\", \"clean_room\": true, \"cloud_access\": false, \"copied_upstream_source\": false, \"copied_upstream_text\": false, \"hardware_access\": false, \"official_benchmark\": false, \"official_endorsement\": false, \"production_benchmark_parity\": false, \"token_access\": false}, \"quantumbridge_version\": null, \"raw_type\": \"dict\", \"report\": {}, \"schema_version\": \"0.1\", \"skipped\": false, \"status\": \"passed\", \"tags\": [\"circuit\", \"statevector\"], \"unsupported\": false, \"unsupported_reason\": null, \"upstream_package\": null, \"upstream_version\": null, \"warnings\": [\"QuantumBridge Benchpress compatibility support is a clean-room educational benchmarking adapter. It is not a full Benchpress replacement and does not provide production benchmark parity.\", \"QuantumBridge benchmark results are deterministic local validation results for small educational workloads, not official performance rankings.\"], \"workflow\": \"benchmark_case\"}, {\"capability_level\": 2, \"case_id\": \"circuit_basic.bell_qasm_counts\", \"case_name\": \"Bell qasm counts\", \"category\": \"circuit_basic\", \"ecosystem\": \"quantumbridge_native_benchmarking\", \"elapsed_seconds\": 0.00029324999999857937, \"expected_summary\": {}, \"metadata\": {\"case\": {\"case_id\": \"circuit_basic.bell_qasm_counts\", \"category\": \"circuit_basic\", \"deterministic\": true, \"expected_summary\": {\"allowed_counts\": [\"00\", \"11\"]}, \"input_summary\": {\"circuit\": \"Bell measured\", \"shots\": 128}, \"metadata\": {\"cloud_access\": false, \"hardware_access\": false, \"official_benchmark_claim\": false, \"production_benchmark_parity_claim\": false, \"token_access\": false}, \"name\": \"Bell qasm counts\", \"production_ready\": false, \"provenance\": {\"adapter_package\": \"benchpress\", \"clean_room\": true, \"cloud_access\": false, \"copied_upstream_source\": false, \"copied_upstream_text\": false, \"hardware_access\": false, \"official_benchmark\": false, \"official_endorsement\": false, \"production_benchmark_parity\": false, \"token_access\": false}, \"runner\": \"_run_bell_counts_case\", \"seed\": 7, \"tags\": [\"circuit\", \"counts\"], \"timeout_seconds\": 10.0, \"warnings\": [\"QuantumBridge Benchpress compatibility support is a clean-room educational benchmarking adapter. It is not a full Benchpress replacement and does not provide production benchmark parity.\", \"QuantumBridge benchmark results are deterministic local validation results for small educational workloads, not official performance rankings.\"], \"workload_type\": \"callable\"}}, \"metrics\": {\"shot_count\": 128}, \"mode\": \"native_minimal\", \"native_implementation\": true, \"output_summary\": {\"backend\": \"qasm\", \"capability_level\": 3, \"counts\": {\"00\": 61, \"11\": 67}, \"data\": null, \"ecosystem\": \"quantumbridge_native_simulator\", \"final_statevector\": [], \"metadata\": {\"backend\": \"qasm\", \"cloud_access\": false, \"hardware_access\": false, \"measurement_count\": 2, \"operation_count\": 2, \"production_simulator\": false, \"qiskit_aer_parity_claim\": false, \"supported_gates\": [\"cx\", \"cz\", \"h\", \"phase\", \"rx\", \"ry\", \"rz\", \"swap\", \"x\", \"y\", \"z\"], \"token_read\": false}, \"mode\": \"native_minimal\", \"native_implementation\": true, \"noise_model\": null, \"num_qubits\": 2, \"probabilities\": {\"00\": 0.4765625, \"11\": 0.5234375}, \"production_ready\": false, \"provenance\": {\"adapter\": \"quantumbridge.compat.qiskit_aer\", \"cloud_access\": false, \"hardware_access\": false, \"ibm_branding_copied\": false, \"official_endorsement\": false, \"source_code_copied\": false, \"stage\": \"9F\", \"token_read\": false, \"upstream_source_copied\": false, \"workflow\": \"qasm_simulator_native\"}, \"quantumbridge_version\": null, \"raw_type\": \"QuantumBridgeQasmCounts\", \"schema_version\": \"0.1\", \"seed\": 7, \"shots\": 128, \"unsupported_reason\": null, \"upstream_package\": null, \"upstream_version\": null, \"warnings\": [\"QuantumBridge Qiskit Aer support is an optional passthrough/schema bridge plus minimal educational native simulator workflows. It is not a full Qiskit Aer replacement and is not production simulator software.\", \"Native simulator support is a minimal deterministic educational simulator for small circuits.\"], \"workflow\": \"qasm_simulator_native\"}, \"passed\": true, \"production_ready\": false, \"provenance\": {\"adapter_package\": \"benchpress\", \"clean_room\": true, \"cloud_access\": false, \"copied_upstream_source\": false, \"copied_upstream_text\": false, \"hardware_access\": false, \"official_benchmark\": false, \"official_endorsement\": false, \"production_benchmark_parity\": false, \"token_access\": false}, \"quantumbridge_version\": null, \"raw_type\": \"dict\", \"report\": {}, \"schema_version\": \"0.1\", \"skipped\": false, \"status\": \"passed\", \"tags\": [\"circuit\", \"counts\"], \"unsupported\": false, \"unsupported_reason\": null, \"upstream_package\": null, \"upstream_version\": null, \"warnings\": [\"QuantumBridge Benchpress compatibility support is a clean-room educational benchmarking adapter. It is not a full Benchpress replacement and does not provide production benchmark parity.\", \"QuantumBridge benchmark results are deterministic local validation results for small educational workloads, not official performance rankings.\"], \"workflow\": \"benchmark_case\"}, {\"capability_level\": 2, \"case_id\": \"circuit_basic.parameterized_rx_ry_statevector\", \"case_name\": \"Parameterized RX RY statevector\", \"category\": \"circuit_basic\", \"ecosystem\": \"quantumbridge_native_benchmarking\", \"elapsed_seconds\": 0.00012441699999499178, \"expected_summary\": {}, \"metadata\": {\"case\": {\"case_id\": \"circuit_basic.parameterized_rx_ry_statevector\", \"category\": \"circuit_basic\", \"deterministic\": true, \"expected_summary\": {\"probability_sum\": 1.0}, \"input_summary\": {\"circuit\": \"RX/RY\", \"parameters\": [0.7853981633974483, 0.5235987755982988]}, \"metadata\": {\"cloud_access\": false, \"hardware_access\": false, \"official_benchmark_claim\": false, \"production_benchmark_parity_claim\": false, \"token_access\": false}, \"name\": \"Parameterized RX RY statevector\", \"production_ready\": false, \"provenance\": {\"adapter_package\": \"benchpress\", \"clean_room\": true, \"cloud_access\": false, \"copied_upstream_source\": false, \"copied_upstream_text\": false, \"hardware_access\": false, \"official_benchmark\": false, \"official_endorsement\": false, \"production_benchmark_parity\": false, \"token_access\": false}, \"runner\": \"_run_parameterized_case\", \"seed\": 7, \"tags\": [\"circuit\", \"parameters\"], \"timeout_seconds\": 10.0, \"warnings\": [\"QuantumBridge Benchpress compatibility support is a clean-room educational benchmarking adapter. It is not a full Benchpress replacement and does not provide production benchmark parity.\", \"QuantumBridge benchmark results are deterministic local validation results for small educational workloads, not official performance rankings.\"], \"workload_type\": \"callable\"}}, \"metrics\": {\"probability_sum\": 1.0}, \"mode\": \"native_minimal\", \"native_implementation\": true, \"output_summary\": {\"backend\": \"statevector\", \"capability_level\": 3, \"counts\": {}, \"data\": null, \"ecosystem\": \"quantumbridge_native_simulator\", \"final_statevector\": [{\"imag\": 0.09904576054128762, \"real\": 0.8923991008325228}, {\"imag\": -0.3696438106143861, \"real\": 0.23911761839433449}], \"metadata\": {\"backend\": \"statevector\", \"cloud_access\": false, \"hardware_access\": false, \"measurement_count\": 0, \"operation_count\": 2, \"production_simulator\": false, \"qiskit_aer_parity_claim\": false, \"supported_gates\": [\"cx\", \"cz\", \"h\", \"phase\", \"rx\", \"ry\", \"rz\", \"swap\", \"x\", \"y\", \"z\"], \"token_read\": false}, \"mode\": \"native_minimal\", \"native_implementation\": true, \"noise_model\": null, \"num_qubits\": 1, \"probabilities\": {\"0\": 0.8061862178478973, \"1\": 0.1938137821521027}, \"production_ready\": false, \"provenance\": {\"adapter\": \"quantumbridge.compat.qiskit_aer\", \"cloud_access\": false, \"hardware_access\": false, \"ibm_branding_copied\": false, \"official_endorsement\": false, \"source_code_copied\": false, \"stage\": \"9F\", \"token_read\": false, \"upstream_source_copied\": false, \"workflow\": \"statevector_simulator_native\"}, \"quantumbridge_version\": null, \"raw_type\": \"QuantumBridgeStatevector\", \"schema_version\": \"0.1\", \"seed\": null, \"shots\": null, \"unsupported_reason\": null, \"upstream_package\": null, \"upstream_version\": null, \"warnings\": [\"QuantumBridge Qiskit Aer support is an optional passthrough/schema bridge plus minimal educational native simulator workflows. It is not a full Qiskit Aer replacement and is not production simulator software.\", \"Native simulator support is a minimal deterministic educational simulator for small circuits.\"], \"workflow\": \"statevector_simulator_native\"}, \"passed\": true, \"production_ready\": false, \"provenance\": {\"adapter_package\": \"benchpress\", \"clean_room\": true, \"cloud_access\": false, \"copied_upstream_source\": false, \"copied_upstream_text\": false, \"hardware_access\": false, \"official_benchmark\": false, \"official_endorsement\": false, \"production_benchmark_parity\": false, \"token_access\": false}, \"quantumbridge_version\": null, \"raw_type\": \"dict\", \"report\": {}, \"schema_version\": \"0.1\", \"skipped\": false, \"status\": \"passed\", \"tags\": [\"circuit\", \"parameters\"], \"unsupported\": false, \"unsupported_reason\": null, \"upstream_package\": null, \"upstream_version\": null, \"warnings\": [\"QuantumBridge Benchpress compatibility support is a clean-room educational benchmarking adapter. It is not a full Benchpress replacement and does not provide production benchmark parity.\", \"QuantumBridge benchmark results are deterministic local validation results for small educational workloads, not official performance rankings.\"], \"workflow\": \"benchmark_case\"}]}, \"passed\": true, \"production_ready\": false, \"provenance\": {\"adapter_package\": \"benchpress\", \"clean_room\": true, \"cloud_access\": false, \"copied_upstream_source\": false, \"copied_upstream_text\": false, \"hardware_access\": false, \"official_benchmark\": false, \"official_endorsement\": false, \"production_benchmark_parity\": false, \"token_access\": false}, \"quantumbridge_version\": null, \"raw_type\": null, \"report\": {\"summary\": {\"failed\": 0, \"passed\": 3, \"skipped\": 0, \"total\": 3, \"unsupported\": 0}}, \"schema_version\": \"0.1\", \"skipped\": false, \"status\": \"passed\", \"tags\": [\"benchpress\", \"suite\"], \"unsupported\": false, \"unsupported_reason\": null, \"upstream_package\": null, \"upstream_version\": null, \"warnings\": [\"QuantumBridge Benchpress compatibility support is a clean-room educational benchmarking adapter. It is not a full Benchpress replacement and does not provide production benchmark parity.\", \"QuantumBridge benchmark results are deterministic local validation results for small educational workloads, not official performance rankings.\"], \"workflow\": \"studio_circuit_basic\"}",
+    "report_markdown": "# QuantumBridge Studio Benchmark Report\n\n- workflow: studio_circuit_basic\n- status: passed\n- passed: True\n- elapsed_seconds: 0.0006572080000069036\n\n## Boundaries\n\n- not official Benchpress output\n- not production performance ranking\n- no cloud/token/hardware access\n",
+    "result": {
+      "capability_level": 2,
+      "case_id": "studio_circuit_basic",
+      "case_name": "studio_circuit_basic",
+      "category": "suite",
+      "ecosystem": "quantumbridge_native_benchmarking",
+      "elapsed_seconds": 0.0006572080000069036,
+      "expected_summary": {
+        "case_count": 3
+      },
+      "metadata": {},
+      "metrics": {
+        "failed": 0,
+        "passed": 3,
+        "skipped": 0,
+        "total": 3,
+        "unsupported": 0
+      },
+      "mode": "native_minimal",
+      "native_implementation": true,
+      "output_summary": {
+        "cases": [
+          {
+            "capability_level": 2,
+            "case_id": "circuit_basic.h_circuit_statevector",
+            "case_name": "H circuit statevector",
+            "category": "circuit_basic",
+            "ecosystem": "quantumbridge_native_benchmarking",
+            "elapsed_seconds": 0.00017137500000785622,
+            "expected_summary": {
+              "0": 0.5,
+              "1": 0.5
+            },
+            "metadata": {
+              "case": {
+                "case_id": "circuit_basic.h_circuit_statevector",
+                "category": "circuit_basic",
+                "deterministic": true,
+                "expected_summary": {
+                  "probabilities": {
+                    "0": 0.5,
+                    "1": 0.5
+                  }
+                },
+                "input_summary": {
+                  "circuit": "single-qubit H",
+                  "runner": "Stage 9F statevector"
+                },
+                "metadata": {
+                  "cloud_access": false,
+                  "hardware_access": false,
+                  "official_benchmark_claim": false,
+                  "production_benchmark_parity_claim": false,
+                  "token_access": false
+                },
+                "name": "H circuit statevector",
+                "production_ready": false,
+                "provenance": {
+                  "adapter_package": "benchpress",
+                  "clean_room": true,
+                  "cloud_access": false,
+                  "copied_upstream_source": false,
+                  "copied_upstream_text": false,
+                  "hardware_access": false,
+                  "official_benchmark": false,
+                  "official_endorsement": false,
+                  "production_benchmark_parity": false,
+                  "token_access": false
+                },
+                "runner": "_run_h_statevector_case",
+                "seed": 7,
+                "tags": [
+                  "circuit",
+                  "statevector"
+                ],
+                "timeout_seconds": 10.0,
+                "warnings": [
+                  "QuantumBridge Benchpress compatibility support is a clean-room educational benchmarking adapter. It is not a full Benchpress replacement and does not provide production benchmark parity.",
+                  "QuantumBridge benchmark results are deterministic local validation results for small educational workloads, not official performance rankings."
+                ],
+                "workload_type": "callable"
+              }
+            },
+            "metrics": {
+              "max_probability_delta": 1.1102230246251565e-16
+            },
+            "mode": "native_minimal",
+            "native_implementation": true,
+            "output_summary": {
+              "backend": "statevector",
+              "capability_level": 3,
+              "counts": {},
+              "data": null,
+              "ecosystem": "quantumbridge_native_simulator",
+              "final_statevector": [
+                {
+                  "imag": 0.0,
+                  "real": 0.7071067811865475
+                },
+                {
+                  "imag": 0.0,
+                  "real": 0.7071067811865475
+                }
+              ],
+              "metadata": {
+                "backend": "statevector",
+                "cloud_access": false,
+                "hardware_access": false,
+                "measurement_count": 0,
+                "operation_count": 1,
+                "production_simulator": false,
+                "qiskit_aer_parity_claim": false,
+                "supported_gates": [
+                  "cx",
+                  "cz",
+                  "h",
+                  "phase",
+                  "rx",
+                  "ry",
+                  "rz",
+                  "swap",
+                  "x",
+                  "y",
+                  "z"
+                ],
+                "token_read": false
+              },
+              "mode": "native_minimal",
+              "native_implementation": true,
+              "noise_model": null,
+              "num_qubits": 1,
+              "probabilities": {
+                "0": 0.4999999999999999,
+                "1": 0.4999999999999999
+              },
+              "production_ready": false,
+              "provenance": {
+                "adapter": "quantumbridge.compat.qiskit_aer",
+                "cloud_access": false,
+                "hardware_access": false,
+                "ibm_branding_copied": false,
+                "official_endorsement": false,
+                "source_code_copied": false,
+                "stage": "9F",
+                "token_read": false,
+                "upstream_source_copied": false,
+                "workflow": "statevector_simulator_native"
+              },
+              "quantumbridge_version": null,
+              "raw_type": "QuantumBridgeStatevector",
+              "schema_version": "0.1",
+              "seed": null,
+              "shots": null,
+              "unsupported_reason": null,
+              "upstream_package": null,
+              "upstream_version": null,
+              "warnings": [
+                "QuantumBridge Qiskit Aer support is an optional passthrough/schema bridge plus minimal educational native simulator workflows. It is not a full Qiskit Aer replacement and is not production simulator software.",
+                "Native simulator support is a minimal deterministic educational simulator for small circuits."
+              ],
+              "workflow": "statevector_simulator_native"
+            },
+            "passed": true,
+            "production_ready": false,
+            "provenance": {
+              "adapter_package": "benchpress",
+              "clean_room": true,
+              "cloud_access": false,
+              "copied_upstream_source": false,
+              "copied_upstream_text": false,
+              "hardware_access": false,
+              "official_benchmark": false,
+              "official_endorsement": false,
+              "production_benchmark_parity": false,
+              "token_access": false
+            },
+            "quantumbridge_version": null,
+            "raw_type": "dict",
+            "report": {},
+            "schema_version": "0.1",
+            "skipped": false,
+            "status": "passed",
+            "tags": [
+              "circuit",
+              "statevector"
+            ],
+            "unsupported": false,
+            "unsupported_reason": null,
+            "upstream_package": null,
+            "upstream_version": null,
+            "warnings": [
+              "QuantumBridge Benchpress compatibility support is a clean-room educational benchmarking adapter. It is not a full Benchpress replacement and does not provide production benchmark parity.",
+              "QuantumBridge benchmark results are deterministic local validation results for small educational workloads, not official performance rankings."
+            ],
+            "workflow": "benchmark_case"
+          },
+          {
+            "capability_level": 2,
+            "case_id": "circuit_basic.bell_qasm_counts",
+            "case_name": "Bell qasm counts",
+            "category": "circuit_basic",
+            "ecosystem": "quantumbridge_native_benchmarking",
+            "elapsed_seconds": 0.00029324999999857937,
+            "expected_summary": {},
+            "metadata": {
+              "case": {
+                "case_id": "circuit_basic.bell_qasm_counts",
+                "category": "circuit_basic",
+                "deterministic": true,
+                "expected_summary": {
+                  "allowed_counts": [
+                    "00",
+                    "11"
+                  ]
+                },
+                "input_summary": {
+                  "circuit": "Bell measured",
+                  "shots": 128
+                },
+                "metadata": {
+                  "cloud_access": false,
+                  "hardware_access": false,
+                  "official_benchmark_claim": false,
+                  "production_benchmark_parity_claim": false,
+                  "token_access": false
+                },
+                "name": "Bell qasm counts",
+                "production_ready": false,
+                "provenance": {
+                  "adapter_package": "benchpress",
+                  "clean_room": true,
+                  "cloud_access": false,
+                  "copied_upstream_source": false,
+                  "copied_upstream_text": false,
+                  "hardware_access": false,
+                  "official_benchmark": false,
+                  "official_endorsement": false,
+                  "production_benchmark_parity": false,
+                  "token_access": false
+                },
+                "runner": "_run_bell_counts_case",
+                "seed": 7,
+                "tags": [
+                  "circuit",
+                  "counts"
+                ],
+                "timeout_seconds": 10.0,
+                "warnings": [
+                  "QuantumBridge Benchpress compatibility support is a clean-room educational benchmarking adapter. It is not a full Benchpress replacement and does not provide production benchmark parity.",
+                  "QuantumBridge benchmark results are deterministic local validation results for small educational workloads, not official performance rankings."
+                ],
+                "workload_type": "callable"
+              }
+            },
+            "metrics": {
+              "shot_count": 128
+            },
+            "mode": "native_minimal",
+            "native_implementation": true,
+            "output_summary": {
+              "backend": "qasm",
+              "capability_level": 3,
+              "counts": {
+                "00": 61,
+                "11": 67
+              },
+              "data": null,
+              "ecosystem": "quantumbridge_native_simulator",
+              "final_statevector": [],
+              "metadata": {
+                "backend": "qasm",
+                "cloud_access": false,
+                "hardware_access": false,
+                "measurement_count": 2,
+                "operation_count": 2,
+                "production_simulator": false,
+                "qiskit_aer_parity_claim": false,
+                "supported_gates": [
+                  "cx",
+                  "cz",
+                  "h",
+                  "phase",
+                  "rx",
+                  "ry",
+                  "rz",
+                  "swap",
+                  "x",
+                  "y",
+                  "z"
+                ],
+                "token_read": false
+              },
+              "mode": "native_minimal",
+              "native_implementation": true,
+              "noise_model": null,
+              "num_qubits": 2,
+              "probabilities": {
+                "00": 0.4765625,
+                "11": 0.5234375
+              },
+              "production_ready": false,
+              "provenance": {
+                "adapter": "quantumbridge.compat.qiskit_aer",
+                "cloud_access": false,
+                "hardware_access": false,
+                "ibm_branding_copied": false,
+                "official_endorsement": false,
+                "source_code_copied": false,
+                "stage": "9F",
+                "token_read": false,
+                "upstream_source_copied": false,
+                "workflow": "qasm_simulator_native"
+              },
+              "quantumbridge_version": null,
+              "raw_type": "QuantumBridgeQasmCounts",
+              "schema_version": "0.1",
+              "seed": 7,
+              "shots": 128,
+              "unsupported_reason": null,
+              "upstream_package": null,
+              "upstream_version": null,
+              "warnings": [
+                "QuantumBridge Qiskit Aer support is an optional passthrough/schema bridge plus minimal educational native simulator workflows. It is not a full Qiskit Aer replacement and is not production simulator software.",
+                "Native simulator support is a minimal deterministic educational simulator for small circuits."
+              ],
+              "workflow": "qasm_simulator_native"
+            },
+            "passed": true,
+            "production_ready": false,
+            "provenance": {
+              "adapter_package": "benchpress",
+              "clean_room": true,
+              "cloud_access": false,
+              "copied_upstream_source": false,
+              "copied_upstream_text": false,
+              "hardware_access": false,
+              "official_benchmark": false,
+              "official_endorsement": false,
+              "production_benchmark_parity": false,
+              "token_access": false
+            },
+            "quantumbridge_version": null,
+            "raw_type": "dict",
+            "report": {},
+            "schema_version": "0.1",
+            "skipped": false,
+            "status": "passed",
+            "tags": [
+              "circuit",
+              "counts"
+            ],
+            "unsupported": false,
+            "unsupported_reason": null,
+            "upstream_package": null,
+            "upstream_version": null,
+            "warnings": [
+              "QuantumBridge Benchpress compatibility support is a clean-room educational benchmarking adapter. It is not a full Benchpress replacement and does not provide production benchmark parity.",
+              "QuantumBridge benchmark results are deterministic local validation results for small educational workloads, not official performance rankings."
+            ],
+            "workflow": "benchmark_case"
+          },
+          {
+            "capability_level": 2,
+            "case_id": "circuit_basic.parameterized_rx_ry_statevector",
+            "case_name": "Parameterized RX RY statevector",
+            "category": "circuit_basic",
+            "ecosystem": "quantumbridge_native_benchmarking",
+            "elapsed_seconds": 0.00012441699999499178,
+            "expected_summary": {},
+            "metadata": {
+              "case": {
+                "case_id": "circuit_basic.parameterized_rx_ry_statevector",
+                "category": "circuit_basic",
+                "deterministic": true,
+                "expected_summary": {
+                  "probability_sum": 1.0
+                },
+                "input_summary": {
+                  "circuit": "RX/RY",
+                  "parameters": [
+                    0.7853981633974483,
+                    0.5235987755982988
+                  ]
+                },
+                "metadata": {
+                  "cloud_access": false,
+                  "hardware_access": false,
+                  "official_benchmark_claim": false,
+                  "production_benchmark_parity_claim": false,
+                  "token_access": false
+                },
+                "name": "Parameterized RX RY statevector",
+                "production_ready": false,
+                "provenance": {
+                  "adapter_package": "benchpress",
+                  "clean_room": true,
+                  "cloud_access": false,
+                  "copied_upstream_source": false,
+                  "copied_upstream_text": false,
+                  "hardware_access": false,
+                  "official_benchmark": false,
+                  "official_endorsement": false,
+                  "production_benchmark_parity": false,
+                  "token_access": false
+                },
+                "runner": "_run_parameterized_case",
+                "seed": 7,
+                "tags": [
+                  "circuit",
+                  "parameters"
+                ],
+                "timeout_seconds": 10.0,
+                "warnings": [
+                  "QuantumBridge Benchpress compatibility support is a clean-room educational benchmarking adapter. It is not a full Benchpress replacement and does not provide production benchmark parity.",
+                  "QuantumBridge benchmark results are deterministic local validation results for small educational workloads, not official performance rankings."
+                ],
+                "workload_type": "callable"
+              }
+            },
+            "metrics": {
+              "probability_sum": 1.0
+            },
+            "mode": "native_minimal",
+            "native_implementation": true,
+            "output_summary": {
+              "backend": "statevector",
+              "capability_level": 3,
+              "counts": {},
+              "data": null,
+              "ecosystem": "quantumbridge_native_simulator",
+              "final_statevector": [
+                {
+                  "imag": 0.09904576054128762,
+                  "real": 0.8923991008325228
+                },
+                {
+                  "imag": -0.3696438106143861,
+                  "real": 0.23911761839433449
+                }
+              ],
+              "metadata": {
+                "backend": "statevector",
+                "cloud_access": false,
+                "hardware_access": false,
+                "measurement_count": 0,
+                "operation_count": 2,
+                "production_simulator": false,
+                "qiskit_aer_parity_claim": false,
+                "supported_gates": [
+                  "cx",
+                  "cz",
+                  "h",
+                  "phase",
+                  "rx",
+                  "ry",
+                  "rz",
+                  "swap",
+                  "x",
+                  "y",
+                  "z"
+                ],
+                "token_read": false
+              },
+              "mode": "native_minimal",
+              "native_implementation": true,
+              "noise_model": null,
+              "num_qubits": 1,
+              "probabilities": {
+                "0": 0.8061862178478973,
+                "1": 0.1938137821521027
+              },
+              "production_ready": false,
+              "provenance": {
+                "adapter": "quantumbridge.compat.qiskit_aer",
+                "cloud_access": false,
+                "hardware_access": false,
+                "ibm_branding_copied": false,
+                "official_endorsement": false,
+                "source_code_copied": false,
+                "stage": "9F",
+                "token_read": false,
+                "upstream_source_copied": false,
+                "workflow": "statevector_simulator_native"
+              },
+              "quantumbridge_version": null,
+              "raw_type": "QuantumBridgeStatevector",
+              "schema_version": "0.1",
+              "seed": null,
+              "shots": null,
+              "unsupported_reason": null,
+              "upstream_package": null,
+              "upstream_version": null,
+              "warnings": [
+                "QuantumBridge Qiskit Aer support is an optional passthrough/schema bridge plus minimal educational native simulator workflows. It is not a full Qiskit Aer replacement and is not production simulator software.",
+                "Native simulator support is a minimal deterministic educational simulator for small circuits."
+              ],
+              "workflow": "statevector_simulator_native"
+            },
+            "passed": true,
+            "production_ready": false,
+            "provenance": {
+              "adapter_package": "benchpress",
+              "clean_room": true,
+              "cloud_access": false,
+              "copied_upstream_source": false,
+              "copied_upstream_text": false,
+              "hardware_access": false,
+              "official_benchmark": false,
+              "official_endorsement": false,
+              "production_benchmark_parity": false,
+              "token_access": false
+            },
+            "quantumbridge_version": null,
+            "raw_type": "dict",
+            "report": {},
+            "schema_version": "0.1",
+            "skipped": false,
+            "status": "passed",
+            "tags": [
+              "circuit",
+              "parameters"
+            ],
+            "unsupported": false,
+            "unsupported_reason": null,
+            "upstream_package": null,
+            "upstream_version": null,
+            "warnings": [
+              "QuantumBridge Benchpress compatibility support is a clean-room educational benchmarking adapter. It is not a full Benchpress replacement and does not provide production benchmark parity.",
+              "QuantumBridge benchmark results are deterministic local validation results for small educational workloads, not official performance rankings."
+            ],
+            "workflow": "benchmark_case"
+          }
+        ]
+      },
+      "passed": true,
+      "production_ready": false,
+      "provenance": {
+        "adapter_package": "benchpress",
+        "clean_room": true,
+        "cloud_access": false,
+        "copied_upstream_source": false,
+        "copied_upstream_text": false,
+        "hardware_access": false,
+        "official_benchmark": false,
+        "official_endorsement": false,
+        "production_benchmark_parity": false,
+        "token_access": false
+      },
+      "quantumbridge_version": null,
+      "raw_type": null,
+      "report": {
+        "summary": {
+          "failed": 0,
+          "passed": 3,
+          "skipped": 0,
+          "total": 3,
+          "unsupported": 0
+        }
+      },
+      "schema_version": "0.1",
+      "skipped": false,
+      "status": "passed",
+      "tags": [
+        "benchpress",
+        "suite"
+      ],
+      "unsupported": false,
+      "unsupported_reason": null,
+      "upstream_package": null,
+      "upstream_version": null,
+      "warnings": [
+        "QuantumBridge Benchpress compatibility support is a clean-room educational benchmarking adapter. It is not a full Benchpress replacement and does not provide production benchmark parity.",
+        "QuantumBridge benchmark results are deterministic local validation results for small educational workloads, not official performance rankings."
+      ],
+      "workflow": "studio_circuit_basic"
+    },
+    "schema_version": "quantumbridge-studio-api-v0.1",
+    "suite_id": "circuit_basic",
+    "unsupported_reason": null,
+    "warnings": [
+      "QuantumBridge Benchpress compatibility support is a clean-room educational benchmarking adapter. It is not a full Benchpress replacement and does not provide production benchmark parity.",
+      "QuantumBridge benchmark results are deterministic local validation results for small educational workloads, not official performance rankings."
+    ]
+  },
+  "notices": [
+    "QuantumBridge Studio is an independent local prototype.",
+    "No official endorsement is claimed.",
+    "Local-only: no cloud execution, credential reading, or hardware access.",
+    "Third-party package names are used only for compatibility identification.",
+    "This prototype is not production-ready."
+  ]
+}

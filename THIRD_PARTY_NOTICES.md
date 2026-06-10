@@ -239,6 +239,23 @@ This backend API slice is not an official service, not endorsed by upstream
 maintainers, not a full replacement, not production API software, and does not
 access cloud services, tokens, credentials, or real hardware.
 
+## Stage 10D QuantumBridge Studio frontend prototype
+
+Stage 10D adds a QuantumBridge-owned static local frontend prototype over the
+Stage 10C backend API seed data. Its UI, layout, CSS, local data client, and
+smoke checks are independently implemented for QuantumBridge.
+
+No IBM, Qiskit, PennyLane, Benchpress, QOS-UQCI, Quafu, MQT, Mitiq,
+TorchQuantum, PyTorch, FastAPI, React, Vite, Carbon, or other third-party
+source code, website text, tutorial prose, UI, branding, logos, wheels,
+dist-info, egg-info, site-packages trees, `node_modules`, build outputs, or
+virtual environments are copied into QuantumBridge. Project and package names
+are used only to identify optional compatibility targets.
+
+This frontend prototype is not an official service, not endorsed by upstream
+maintainers, not a full replacement, not production UI software, and does not
+access cloud services, tokens, credentials, or real hardware.
+
 ## Stage 9B Qiskit Optimization native subset
 
 Stage 9B adds an independently implemented educational native binary

@@ -1,0 +1,13 @@
+{
+  "name": "quantumbridge-studio-prototype",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/smoke-check.mjs",
+    "test": "node scripts/smoke-check.mjs",
+    "smoke": "node scripts/smoke-check.mjs"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

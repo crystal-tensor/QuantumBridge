@@ -677,3 +677,52 @@ dist-info, egg-info, site-packages, or virtual environments are vendored:
 - `docs/tutorials/studio_*_quantumbridge.md`
 
 Stage 10C source port count remains zero.
+
+## Stage 10D Source Inventory
+
+The following Stage 10D files are clean-room QuantumBridge implementations,
+generated local seed data from QuantumBridge-owned APIs, or local frontend
+prototype documentation. No IBM, Qiskit, PennyLane, Benchpress, QOS-UQCI,
+Quafu, MQT, Mitiq, TorchQuantum, PyTorch, React, Vite, Carbon, wheels,
+dist-info, egg-info, site-packages, `node_modules`, build outputs, copied UI,
+copied prose, logos, or virtual environments are vendored:
+
+- `examples/studio_generate_frontend_seed_data_quantumbridge.py`
+- `studio/package.json`
+- `studio/index.html`
+- `studio/src/main.js`
+- `studio/src/App.js`
+- `studio/src/api/studioClient.js`
+- `studio/src/api/mockStudioClient.js`
+- `studio/src/api/localJsonClient.js`
+- `studio/src/components/Badge.js`
+- `studio/src/components/Card.js`
+- `studio/src/components/ExportPanel.js`
+- `studio/src/components/Header.js`
+- `studio/src/components/JsonViewer.js`
+- `studio/src/components/Layout.js`
+- `studio/src/components/ProvenancePanel.js`
+- `studio/src/components/ResultPanel.js`
+- `studio/src/components/Sidebar.js`
+- `studio/src/components/WarningPanel.js`
+- `studio/src/pages/BenchmarksPage.js`
+- `studio/src/pages/CatalogPage.js`
+- `studio/src/pages/ExecutePage.js`
+- `studio/src/pages/ExportsPage.js`
+- `studio/src/pages/ResultsPage.js`
+- `studio/src/pages/WorkflowDetailPage.js`
+- `studio/src/pages/WorkflowsPage.js`
+- `studio/src/styles/globals.css`
+- `studio/scripts/smoke-check.mjs`
+- `studio/src/data/sampleCatalog.json`
+- `studio/src/data/sampleWorkflows.json`
+- `studio/src/data/sampleResults.json`
+- `studio/src/data/sampleBenchmarkReport.json`
+- `studio/src/data/seedData.js`
+- `docs/implementation/stage10d_quantumbridge_studio_frontend_prototype_report.md`
+- `docs/studio/frontend_prototype_v0.1.md`
+- `docs/studio/frontend_local_data_contract_v0.1.md`
+- `docs/studio/frontend_security_boundary_v0.1.md`
+- `docs/tutorials/studio_frontend_local_prototype_quantumbridge.md`
+
+Stage 10D source port count remains zero.

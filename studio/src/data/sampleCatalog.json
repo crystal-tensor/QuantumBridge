@@ -1,0 +1,555 @@
+{
+  "notices": [
+    "QuantumBridge Studio is an independent local prototype.",
+    "No official endorsement is claimed.",
+    "Local-only: no cloud execution, credential reading, or hardware access.",
+    "Third-party package names are used only for compatibility identification.",
+    "This prototype is not production-ready."
+  ],
+  "projects": [
+    {
+      "capability_level": 3,
+      "category": "QML",
+      "executable_workflows": [
+        "native educational quantum kernel",
+        "native educational kernel classifier",
+        "native educational QNN classifier",
+        "optional upstream qiskit-machine-learning passthrough"
+      ],
+      "project_id": "qiskit-machine-learning",
+      "provenance": {
+        "cloud_access": false,
+        "copied_upstream_source": false,
+        "hardware_access": false,
+        "metadata": {
+          "api_layer": "quantumbridge.studio",
+          "frontend_ui_implementation": false,
+          "local_router": true
+        },
+        "official_endorsement": false,
+        "production_ready": false,
+        "project_id": "qiskit-machine-learning",
+        "source": "quantumbridge",
+        "token_access": false,
+        "workflow_id": null
+      },
+      "schema_version": "quantumbridge-studio-api-v0.1",
+      "studio_ready": "partial",
+      "title": "Qiskit Machine Learning",
+      "unsupported_reason": null,
+      "warnings": [
+        "QuantumBridge Studio backend API is a local executable service layer. It is not a production API server, not a frontend UI, and not an official IBM, Qiskit, PennyLane, Benchpress, Quafu, QOS-UQCI, MQT, Mitiq, or TorchQuantum service.",
+        "Studio workflows are local-only by default and do not access cloud services, tokens, credentials, or real hardware.",
+        "This Studio API slice uses QuantumBridge-owned clean-room metadata and execution wrappers; no third-party source, UI, tutorial prose, or branding is copied.",
+        "This slice does not claim full replacement, production parity, official benchmark status, or official endorsement.",
+        "QuantumBridge Studio uses clean-room local metadata for qiskit-machine-learning; no third-party source, UI, prose, or branding is copied.",
+        "Studio workflow is local-only: no cloud, token, credential, or hardware access.",
+        "not full Qiskit Machine Learning replacement",
+        "not production ML",
+        "no high-risk decision use",
+        "no cloud/token/hardware access"
+      ]
+    },
+    {
+      "capability_level": 3,
+      "category": "QML",
+      "executable_workflows": [
+        "TorchQuantum-like native educational quantum layer",
+        "tensor and batch forward",
+        "native educational classifier training",
+        "optional torch tensor compatibility",
+        "optional upstream TorchQuantum passthrough"
+      ],
+      "project_id": "torchquantum",
+      "provenance": {
+        "cloud_access": false,
+        "copied_upstream_source": false,
+        "hardware_access": false,
+        "metadata": {
+          "api_layer": "quantumbridge.studio",
+          "frontend_ui_implementation": false,
+          "local_router": true
+        },
+        "official_endorsement": false,
+        "production_ready": false,
+        "project_id": "torchquantum",
+        "source": "quantumbridge",
+        "token_access": false,
+        "workflow_id": null
+      },
+      "schema_version": "quantumbridge-studio-api-v0.1",
+      "studio_ready": "partial",
+      "title": "TorchQuantum",
+      "unsupported_reason": null,
+      "warnings": [
+        "QuantumBridge Studio backend API is a local executable service layer. It is not a production API server, not a frontend UI, and not an official IBM, Qiskit, PennyLane, Benchpress, Quafu, QOS-UQCI, MQT, Mitiq, or TorchQuantum service.",
+        "Studio workflows are local-only by default and do not access cloud services, tokens, credentials, or real hardware.",
+        "This Studio API slice uses QuantumBridge-owned clean-room metadata and execution wrappers; no third-party source, UI, tutorial prose, or branding is copied.",
+        "This slice does not claim full replacement, production parity, official benchmark status, or official endorsement.",
+        "QuantumBridge Studio uses clean-room local metadata for torchquantum; no third-party source, UI, prose, or branding is copied.",
+        "Studio workflow is local-only: no cloud, token, credential, or hardware access.",
+        "not full TorchQuantum replacement",
+        "not full PyTorch replacement",
+        "not production QML",
+        "no high-risk ML decision use",
+        "no cloud/token/hardware access"
+      ]
+    },
+    {
+      "capability_level": 3,
+      "category": "Error mitigation",
+      "executable_workflows": [
+        "native educational ZNE",
+        "native educational readout mitigation",
+        "optional upstream mitiq passthrough"
+      ],
+      "project_id": "mitiq",
+      "provenance": {
+        "cloud_access": false,
+        "copied_upstream_source": false,
+        "hardware_access": false,
+        "metadata": {
+          "api_layer": "quantumbridge.studio",
+          "frontend_ui_implementation": false,
+          "local_router": true
+        },
+        "official_endorsement": false,
+        "production_ready": false,
+        "project_id": "mitiq",
+        "source": "quantumbridge",
+        "token_access": false,
+        "workflow_id": null
+      },
+      "schema_version": "quantumbridge-studio-api-v0.1",
+      "studio_ready": "partial",
+      "title": "Mitiq",
+      "unsupported_reason": null,
+      "warnings": [
+        "QuantumBridge Studio backend API is a local executable service layer. It is not a production API server, not a frontend UI, and not an official IBM, Qiskit, PennyLane, Benchpress, Quafu, QOS-UQCI, MQT, Mitiq, or TorchQuantum service.",
+        "Studio workflows are local-only by default and do not access cloud services, tokens, credentials, or real hardware.",
+        "This Studio API slice uses QuantumBridge-owned clean-room metadata and execution wrappers; no third-party source, UI, tutorial prose, or branding is copied.",
+        "This slice does not claim full replacement, production parity, official benchmark status, or official endorsement.",
+        "QuantumBridge Studio uses clean-room local metadata for mitiq; no third-party source, UI, prose, or branding is copied.",
+        "Studio workflow is local-only: no cloud, token, credential, or hardware access.",
+        "not full Mitiq replacement",
+        "not production error mitigation",
+        "no hardware calibration parity",
+        "no cloud/token/hardware access"
+      ]
+    },
+    {
+      "capability_level": 3,
+      "category": "Framework bridge",
+      "executable_workflows": [
+        "Qiskit to QuantumBridge IR to PennyLane executable spec",
+        "PennyLane operation/tape metadata to QuantumBridge IR to Qiskit QuantumCircuit",
+        "bidirectional Bell circuit equivalence proof",
+        "optional upstream pennylane-qiskit passthrough metadata"
+      ],
+      "project_id": "pennylane-qiskit",
+      "provenance": {
+        "cloud_access": false,
+        "copied_upstream_source": false,
+        "hardware_access": false,
+        "metadata": {
+          "api_layer": "quantumbridge.studio",
+          "frontend_ui_implementation": false,
+          "local_router": true
+        },
+        "official_endorsement": false,
+        "production_ready": false,
+        "project_id": "pennylane-qiskit",
+        "source": "quantumbridge",
+        "token_access": false,
+        "workflow_id": null
+      },
+      "schema_version": "quantumbridge-studio-api-v0.1",
+      "studio_ready": "partial",
+      "title": "PennyLane-Qiskit",
+      "unsupported_reason": null,
+      "warnings": [
+        "QuantumBridge Studio backend API is a local executable service layer. It is not a production API server, not a frontend UI, and not an official IBM, Qiskit, PennyLane, Benchpress, Quafu, QOS-UQCI, MQT, Mitiq, or TorchQuantum service.",
+        "Studio workflows are local-only by default and do not access cloud services, tokens, credentials, or real hardware.",
+        "This Studio API slice uses QuantumBridge-owned clean-room metadata and execution wrappers; no third-party source, UI, tutorial prose, or branding is copied.",
+        "This slice does not claim full replacement, production parity, official benchmark status, or official endorsement.",
+        "QuantumBridge Studio uses clean-room local metadata for pennylane-qiskit; no third-party source, UI, prose, or branding is copied.",
+        "Studio workflow is local-only: no cloud, token, credential, or hardware access.",
+        "not full PennyLane-Qiskit replacement",
+        "not full Qiskit parity",
+        "not full PennyLane parity",
+        "no advanced device, transform, or gradient parity",
+        "no cloud/token/hardware access"
+      ]
+    },
+    {
+      "capability_level": 3,
+      "category": "Experiments and calibration",
+      "executable_workflows": [
+        "native educational Rabi experiment",
+        "native educational T1 experiment",
+        "native educational Ramsey experiment",
+        "optional upstream qiskit-experiments passthrough"
+      ],
+      "project_id": "qiskit-experiments",
+      "provenance": {
+        "cloud_access": false,
+        "copied_upstream_source": false,
+        "hardware_access": false,
+        "metadata": {
+          "api_layer": "quantumbridge.studio",
+          "frontend_ui_implementation": false,
+          "local_router": true
+        },
+        "official_endorsement": false,
+        "production_ready": false,
+        "project_id": "qiskit-experiments",
+        "source": "quantumbridge",
+        "token_access": false,
+        "workflow_id": null
+      },
+      "schema_version": "quantumbridge-studio-api-v0.1",
+      "studio_ready": "partial",
+      "title": "Qiskit Experiments",
+      "unsupported_reason": null,
+      "warnings": [
+        "QuantumBridge Studio backend API is a local executable service layer. It is not a production API server, not a frontend UI, and not an official IBM, Qiskit, PennyLane, Benchpress, Quafu, QOS-UQCI, MQT, Mitiq, or TorchQuantum service.",
+        "Studio workflows are local-only by default and do not access cloud services, tokens, credentials, or real hardware.",
+        "This Studio API slice uses QuantumBridge-owned clean-room metadata and execution wrappers; no third-party source, UI, tutorial prose, or branding is copied.",
+        "This slice does not claim full replacement, production parity, official benchmark status, or official endorsement.",
+        "QuantumBridge Studio uses clean-room local metadata for qiskit-experiments; no third-party source, UI, prose, or branding is copied.",
+        "Studio workflow is local-only: no cloud, token, credential, or hardware access.",
+        "not full Qiskit Experiments replacement",
+        "not hardware calibration",
+        "not production experiment analysis",
+        "no cloud/token/hardware access"
+      ]
+    },
+    {
+      "capability_level": 3,
+      "category": "Dynamics",
+      "executable_workflows": [
+        "native educational Z precession",
+        "native educational Rabi drive dynamics",
+        "native educational dephasing metadata simulation",
+        "optional upstream qiskit-dynamics passthrough"
+      ],
+      "project_id": "qiskit-dynamics",
+      "provenance": {
+        "cloud_access": false,
+        "copied_upstream_source": false,
+        "hardware_access": false,
+        "metadata": {
+          "api_layer": "quantumbridge.studio",
+          "frontend_ui_implementation": false,
+          "local_router": true
+        },
+        "official_endorsement": false,
+        "production_ready": false,
+        "project_id": "qiskit-dynamics",
+        "source": "quantumbridge",
+        "token_access": false,
+        "workflow_id": null
+      },
+      "schema_version": "quantumbridge-studio-api-v0.1",
+      "studio_ready": "partial",
+      "title": "Qiskit Dynamics",
+      "unsupported_reason": null,
+      "warnings": [
+        "QuantumBridge Studio backend API is a local executable service layer. It is not a production API server, not a frontend UI, and not an official IBM, Qiskit, PennyLane, Benchpress, Quafu, QOS-UQCI, MQT, Mitiq, or TorchQuantum service.",
+        "Studio workflows are local-only by default and do not access cloud services, tokens, credentials, or real hardware.",
+        "This Studio API slice uses QuantumBridge-owned clean-room metadata and execution wrappers; no third-party source, UI, tutorial prose, or branding is copied.",
+        "This slice does not claim full replacement, production parity, official benchmark status, or official endorsement.",
+        "QuantumBridge Studio uses clean-room local metadata for qiskit-dynamics; no third-party source, UI, prose, or branding is copied.",
+        "Studio workflow is local-only: no cloud, token, credential, or hardware access.",
+        "not full Qiskit Dynamics replacement",
+        "not production dynamics",
+        "no full Lindblad solver",
+        "no cloud/token/hardware access"
+      ]
+    },
+    {
+      "capability_level": 3,
+      "category": "Circuit / IR compatibility",
+      "executable_workflows": [
+        "QuantumBridge IR to MQT Core-like circuit dict",
+        "MQT Core-like dict to QuantumBridge IR",
+        "QASM subset compatibility artifact",
+        "optional upstream MQT Core passthrough boundary"
+      ],
+      "project_id": "mqt-core",
+      "provenance": {
+        "cloud_access": false,
+        "copied_upstream_source": false,
+        "hardware_access": false,
+        "metadata": {
+          "api_layer": "quantumbridge.studio",
+          "frontend_ui_implementation": false,
+          "local_router": true
+        },
+        "official_endorsement": false,
+        "production_ready": false,
+        "project_id": "mqt-core",
+        "source": "quantumbridge",
+        "token_access": false,
+        "workflow_id": null
+      },
+      "schema_version": "quantumbridge-studio-api-v0.1",
+      "studio_ready": "partial",
+      "title": "MQT Core",
+      "unsupported_reason": null,
+      "warnings": [
+        "QuantumBridge Studio backend API is a local executable service layer. It is not a production API server, not a frontend UI, and not an official IBM, Qiskit, PennyLane, Benchpress, Quafu, QOS-UQCI, MQT, Mitiq, or TorchQuantum service.",
+        "Studio workflows are local-only by default and do not access cloud services, tokens, credentials, or real hardware.",
+        "This Studio API slice uses QuantumBridge-owned clean-room metadata and execution wrappers; no third-party source, UI, tutorial prose, or branding is copied.",
+        "This slice does not claim full replacement, production parity, official benchmark status, or official endorsement.",
+        "QuantumBridge Studio uses clean-room local metadata for mqt-core; no third-party source, UI, prose, or branding is copied.",
+        "Studio workflow is local-only: no cloud, token, credential, or hardware access.",
+        "not full MQT Core replacement",
+        "no official MQT endorsement",
+        "no cloud/token/hardware access"
+      ]
+    },
+    {
+      "capability_level": 3,
+      "category": "Simulation",
+      "executable_workflows": [
+        "native DDSIM-like statevector simulation",
+        "native DDSIM-like counts simulation",
+        "decision-diagram-inspired metadata",
+        "optional upstream MQT DDSIM passthrough boundary"
+      ],
+      "project_id": "mqt-ddsim",
+      "provenance": {
+        "cloud_access": false,
+        "copied_upstream_source": false,
+        "hardware_access": false,
+        "metadata": {
+          "api_layer": "quantumbridge.studio",
+          "frontend_ui_implementation": false,
+          "local_router": true
+        },
+        "official_endorsement": false,
+        "production_ready": false,
+        "project_id": "mqt-ddsim",
+        "source": "quantumbridge",
+        "token_access": false,
+        "workflow_id": null
+      },
+      "schema_version": "quantumbridge-studio-api-v0.1",
+      "studio_ready": "partial",
+      "title": "MQT DDSIM",
+      "unsupported_reason": null,
+      "warnings": [
+        "QuantumBridge Studio backend API is a local executable service layer. It is not a production API server, not a frontend UI, and not an official IBM, Qiskit, PennyLane, Benchpress, Quafu, QOS-UQCI, MQT, Mitiq, or TorchQuantum service.",
+        "Studio workflows are local-only by default and do not access cloud services, tokens, credentials, or real hardware.",
+        "This Studio API slice uses QuantumBridge-owned clean-room metadata and execution wrappers; no third-party source, UI, tutorial prose, or branding is copied.",
+        "This slice does not claim full replacement, production parity, official benchmark status, or official endorsement.",
+        "QuantumBridge Studio uses clean-room local metadata for mqt-ddsim; no third-party source, UI, prose, or branding is copied.",
+        "Studio workflow is local-only: no cloud, token, credential, or hardware access.",
+        "not full DDSIM replacement",
+        "no full decision diagram parity",
+        "no production simulator parity",
+        "no cloud/token/hardware access"
+      ]
+    },
+    {
+      "capability_level": 3,
+      "category": "Mapping / routing",
+      "executable_workflows": [
+        "topology validation",
+        "greedy routing",
+        "SWAP insertion",
+        "mapping cost",
+        "original vs mapped simulation comparison",
+        "optional upstream MQT QMAP passthrough boundary"
+      ],
+      "project_id": "mqt-qmap",
+      "provenance": {
+        "cloud_access": false,
+        "copied_upstream_source": false,
+        "hardware_access": false,
+        "metadata": {
+          "api_layer": "quantumbridge.studio",
+          "frontend_ui_implementation": false,
+          "local_router": true
+        },
+        "official_endorsement": false,
+        "production_ready": false,
+        "project_id": "mqt-qmap",
+        "source": "quantumbridge",
+        "token_access": false,
+        "workflow_id": null
+      },
+      "schema_version": "quantumbridge-studio-api-v0.1",
+      "studio_ready": "partial",
+      "title": "MQT QMAP",
+      "unsupported_reason": null,
+      "warnings": [
+        "QuantumBridge Studio backend API is a local executable service layer. It is not a production API server, not a frontend UI, and not an official IBM, Qiskit, PennyLane, Benchpress, Quafu, QOS-UQCI, MQT, Mitiq, or TorchQuantum service.",
+        "Studio workflows are local-only by default and do not access cloud services, tokens, credentials, or real hardware.",
+        "This Studio API slice uses QuantumBridge-owned clean-room metadata and execution wrappers; no third-party source, UI, tutorial prose, or branding is copied.",
+        "This slice does not claim full replacement, production parity, official benchmark status, or official endorsement.",
+        "QuantumBridge Studio uses clean-room local metadata for mqt-qmap; no third-party source, UI, prose, or branding is copied.",
+        "Studio workflow is local-only: no cloud, token, credential, or hardware access.",
+        "not full QMAP replacement",
+        "no optimal mapping claim",
+        "no production compiler parity",
+        "no cloud/token/hardware access"
+      ]
+    },
+    {
+      "capability_level": 3,
+      "category": "Backend / QOS compatibility",
+      "executable_workflows": [
+        "QuantumBridge IR to UQCI IR",
+        "UQCI job spec",
+        "offline mock runtime",
+        "DeviceSpec / CalSet / Manifest",
+        "OpenQASM compatibility artifact",
+        "optional upstream QOS-UQCI passthrough boundary"
+      ],
+      "project_id": "qos-uqci",
+      "provenance": {
+        "cloud_access": false,
+        "copied_upstream_source": false,
+        "hardware_access": false,
+        "metadata": {
+          "api_layer": "quantumbridge.studio",
+          "frontend_ui_implementation": false,
+          "local_router": true
+        },
+        "official_endorsement": false,
+        "production_ready": false,
+        "project_id": "qos-uqci",
+        "source": "quantumbridge",
+        "token_access": false,
+        "workflow_id": null
+      },
+      "schema_version": "quantumbridge-studio-api-v0.1",
+      "studio_ready": "partial",
+      "title": "QOS-UQCI",
+      "unsupported_reason": null,
+      "warnings": [
+        "QuantumBridge Studio backend API is a local executable service layer. It is not a production API server, not a frontend UI, and not an official IBM, Qiskit, PennyLane, Benchpress, Quafu, QOS-UQCI, MQT, Mitiq, or TorchQuantum service.",
+        "Studio workflows are local-only by default and do not access cloud services, tokens, credentials, or real hardware.",
+        "This Studio API slice uses QuantumBridge-owned clean-room metadata and execution wrappers; no third-party source, UI, tutorial prose, or branding is copied.",
+        "This slice does not claim full replacement, production parity, official benchmark status, or official endorsement.",
+        "QuantumBridge Studio uses clean-room local metadata for qos-uqci; no third-party source, UI, prose, or branding is copied.",
+        "Studio workflow is local-only: no cloud, token, credential, or hardware access.",
+        "not production QOS runtime",
+        "no cloud access",
+        "no token access",
+        "no hardware access",
+        "no official endorsement"
+      ]
+    },
+    {
+      "capability_level": 3,
+      "category": "Backend compatibility",
+      "executable_workflows": [
+        "QuantumBridge IR to Quafu-compatible payload",
+        "Quafu job spec",
+        "offline mock backend",
+        "optional pyquafu passthrough boundary"
+      ],
+      "project_id": "quafu",
+      "provenance": {
+        "cloud_access": false,
+        "copied_upstream_source": false,
+        "hardware_access": false,
+        "metadata": {
+          "api_layer": "quantumbridge.studio",
+          "frontend_ui_implementation": false,
+          "local_router": true
+        },
+        "official_endorsement": false,
+        "production_ready": false,
+        "project_id": "quafu",
+        "source": "quantumbridge",
+        "token_access": false,
+        "workflow_id": null
+      },
+      "schema_version": "quantumbridge-studio-api-v0.1",
+      "studio_ready": "partial",
+      "title": "Quafu / pyquafu",
+      "unsupported_reason": null,
+      "warnings": [
+        "QuantumBridge Studio backend API is a local executable service layer. It is not a production API server, not a frontend UI, and not an official IBM, Qiskit, PennyLane, Benchpress, Quafu, QOS-UQCI, MQT, Mitiq, or TorchQuantum service.",
+        "Studio workflows are local-only by default and do not access cloud services, tokens, credentials, or real hardware.",
+        "This Studio API slice uses QuantumBridge-owned clean-room metadata and execution wrappers; no third-party source, UI, tutorial prose, or branding is copied.",
+        "This slice does not claim full replacement, production parity, official benchmark status, or official endorsement.",
+        "QuantumBridge Studio uses clean-room local metadata for quafu; no third-party source, UI, prose, or branding is copied.",
+        "Studio workflow is local-only: no cloud, token, credential, or hardware access.",
+        "not full pyquafu replacement",
+        "not production backend",
+        "no cloud access",
+        "no token access",
+        "no hardware access",
+        "no official endorsement"
+      ]
+    },
+    {
+      "capability_level": 3,
+      "category": "Benchmarking",
+      "executable_workflows": [
+        "basic circuit benchmark suite",
+        "simulator benchmark suite",
+        "algorithms benchmark suite",
+        "finance / optimization benchmark suite",
+        "chemistry benchmark suite",
+        "qml benchmark suite",
+        "mitigation benchmark suite",
+        "backend benchmark suite",
+        "bridge benchmark suite",
+        "JSON / Markdown report generation",
+        "optional upstream Benchpress passthrough boundary"
+      ],
+      "project_id": "benchpress",
+      "provenance": {
+        "cloud_access": false,
+        "copied_upstream_source": false,
+        "hardware_access": false,
+        "metadata": {
+          "api_layer": "quantumbridge.studio",
+          "frontend_ui_implementation": false,
+          "local_router": true
+        },
+        "official_endorsement": false,
+        "production_ready": false,
+        "project_id": "benchpress",
+        "source": "quantumbridge",
+        "token_access": false,
+        "workflow_id": null
+      },
+      "schema_version": "quantumbridge-studio-api-v0.1",
+      "studio_ready": "partial",
+      "title": "Benchpress",
+      "unsupported_reason": null,
+      "warnings": [
+        "QuantumBridge Studio backend API is a local executable service layer. It is not a production API server, not a frontend UI, and not an official IBM, Qiskit, PennyLane, Benchpress, Quafu, QOS-UQCI, MQT, Mitiq, or TorchQuantum service.",
+        "Studio workflows are local-only by default and do not access cloud services, tokens, credentials, or real hardware.",
+        "This Studio API slice uses QuantumBridge-owned clean-room metadata and execution wrappers; no third-party source, UI, tutorial prose, or branding is copied.",
+        "This slice does not claim full replacement, production parity, official benchmark status, or official endorsement.",
+        "QuantumBridge Studio uses clean-room local metadata for benchpress; no third-party source, UI, prose, or branding is copied.",
+        "Studio workflow is local-only: no cloud, token, credential, or hardware access.",
+        "not full Benchpress replacement",
+        "not official benchmark",
+        "not production performance ranking",
+        "no cloud access",
+        "no token access",
+        "no hardware access",
+        "no official endorsement"
+      ]
+    }
+  ],
+  "summary": {
+    "cloud_access": false,
+    "hardware_access": false,
+    "official_endorsement": false,
+    "project_count": 12,
+    "studio_ready": {
+      "partial": 12
+    },
+    "token_access": false
+  }
+}
