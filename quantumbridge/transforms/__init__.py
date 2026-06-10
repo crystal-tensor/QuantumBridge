@@ -3,7 +3,6 @@
 # This file is part of QuantumBridge SDK.
 # This implementation is developed for the QuantumBridge native architecture.
 
-from .gradient_transforms import finite_difference
+from .gradient_transforms import finite_difference, metric_tensor, qng_step, spsa_gradient
 
-__all__ = ["finite_difference"]
-
+__all__ = ["finite_difference", "metric_tensor", "qng_step", "spsa_gradient"]

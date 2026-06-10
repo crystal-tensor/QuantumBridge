@@ -27,7 +27,7 @@ from quantumbridge.operators import Pauli, SparsePauliOperator
 from quantumbridge.primitives import DataBin, Estimator, PrimitiveResult, PubResult, Sampler
 from quantumbridge.providers import Backend, BackendV2, Job, JobError, JobStatus, JobTimeoutError, Options, Provider, QiskitBackendNotFoundError
 from quantumbridge.results import Result
-from quantumbridge.transforms import finite_difference
+from quantumbridge.transforms import finite_difference, metric_tensor, qng_step, spsa_gradient
 from quantumbridge.utils.math import Hamiltonian, PauliString, PauliX, PauliY, PauliZ
 
 __all__ = [
@@ -74,12 +74,15 @@ __all__ = [
     "initialize",
     "integer_comparator",
     "maxcut_hamiltonian",
+    "metric_tensor",
     "parameter_shift",
+    "qng_step",
     "qft",
     "qaoa_circuit",
     "real_amplitudes",
     "run_qaoa",
     "run_vqe",
+    "spsa_gradient",
     "standard_gate",
     "two_local",
     "weighted_adder",
