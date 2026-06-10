@@ -227,3 +227,47 @@ def expectation_hamiltonian(state: np.ndarray, num_qubits: int, hamiltonian: Uni
     if isinstance(hamiltonian, PauliString):
         return expectation_pauli_string(state, num_qubits, hamiltonian)
     return float(sum(coeff * expectation_pauli_string(state, num_qubits, pauli) for coeff, pauli in hamiltonian.terms))
+
+
+def observable_matrix(observable, num_qubits: int) -> np.ndarray:
+    if isinstance(observable, PauliString):
+        return observable.matrix(num_qubits)
+    if isinstance(observable, Hamiltonian):
+        out = np.zeros((1 << num_qubits, 1 << num_qubits), dtype=complex)
+        for coeff, pauli in observable.terms:
+            out += coeff * pauli.matrix(num_qubits)
+        return out
+    if hasattr(observable, "to_hamiltonian"):
+        return observable_matrix(observable.to_hamiltonian(), num_qubits)
+    if hasattr(observable, "to_matrix"):
+        try:
+            matrix = observable.to_matrix(num_qubits)
+        except TypeError:
+            matrix = observable.to_matrix()
+        return np.asarray(matrix, dtype=complex)
+    if hasattr(observable, "matrix"):
+        try:
+            matrix = observable.matrix(num_qubits=num_qubits)
+        except TypeError:
+            matrix = observable.matrix()
+        return np.asarray(matrix, dtype=complex)
+    return np.asarray(observable, dtype=complex)
+
+
+def expectation_observable(state: np.ndarray, num_qubits: int, observable) -> complex:
+    if isinstance(observable, (Hamiltonian, PauliString)) or hasattr(observable, "to_hamiltonian"):
+        hamiltonian = observable.to_hamiltonian() if hasattr(observable, "to_hamiltonian") else observable
+        return complex(expectation_hamiltonian(state, num_qubits, hamiltonian))
+    matrix = observable_matrix(observable, num_qubits)
+    if matrix.shape != (1 << num_qubits, 1 << num_qubits):
+        raise ValueError("QuantumBridge observable matrix shape does not match state dimension.")
+    return np.vdot(state, matrix @ state)
+
+
+def variance_observable(state: np.ndarray, num_qubits: int, observable) -> float:
+    matrix = observable_matrix(observable, num_qubits)
+    if matrix.shape != (1 << num_qubits, 1 << num_qubits):
+        raise ValueError("QuantumBridge observable matrix shape does not match state dimension.")
+    mean = np.vdot(state, matrix @ state)
+    second_moment = np.vdot(state, matrix @ (matrix @ state))
+    return float(np.real_if_close(second_moment - mean * mean))

@@ -12,6 +12,8 @@ class Tape:
         self.observable = None
         self.measurement = None
         self.measurement_wires = None
+        self.measurement_shots = None
+        self.measurement_seed = None
 
     def x(self, wire: int):
         self.circuit.x(wire)
@@ -56,16 +58,34 @@ class Tape:
         self.measurement = "expval"
         return observable
 
+    def var(self, observable):
+        self.observable = observable
+        self.measurement = "var"
+        return observable
+
     def probs(self, wires=None):
         self.measurement = "probs"
         self.measurement_wires = None if wires is None else tuple(wires)
         return self.measurement
 
-    def sample(self, wires=None):
+    def sample(self, wires=None, shots=None, seed=None):
         self.measurement = "sample"
         self.measurement_wires = None if wires is None else tuple(wires)
+        self.measurement_shots = shots
+        self.measurement_seed = seed
+        return self.measurement
+
+    def counts(self, wires=None, shots=None, seed=None):
+        self.measurement = "counts"
+        self.measurement_wires = None if wires is None else tuple(wires)
+        self.measurement_shots = shots
+        self.measurement_seed = seed
         return self.measurement
 
     def state(self):
         self.measurement = "state"
+        return self.measurement
+
+    def density_matrix(self):
+        self.measurement = "density_matrix"
         return self.measurement

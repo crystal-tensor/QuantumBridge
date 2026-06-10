@@ -13,7 +13,7 @@ import numpy as np
 
 from quantumbridge.core.parameters import Parameter
 from quantumbridge.results import Result
-from quantumbridge.utils.math import apply_unitary, expectation_hamiltonian, gate_matrix, probabilities_from_state
+from quantumbridge.utils.math import apply_unitary, expectation_observable, gate_matrix, probabilities_from_state, variance_observable
 
 
 class StatevectorDevice:
@@ -43,12 +43,47 @@ class StatevectorDevice:
 
     def expectation(self, circuit, observable, parameters: Optional[Mapping[Union[Parameter, str], Real]] = None) -> float:
         state = self.statevector(circuit, parameters)
-        return expectation_hamiltonian(state, circuit.num_qubits, observable)
+        value = expectation_observable(state, circuit.num_qubits, observable)
+        return float(np.real_if_close(value))
+
+    def variance(self, circuit, observable, parameters: Optional[Mapping[Union[Parameter, str], Real]] = None) -> float:
+        state = self.statevector(circuit, parameters)
+        return variance_observable(state, circuit.num_qubits, observable)
+
+    def density_matrix(self, circuit, parameters: Optional[Mapping[Union[Parameter, str], Real]] = None) -> np.ndarray:
+        state = self.statevector(circuit, parameters)
+        return np.outer(state, np.conjugate(state))
+
+    def sample(
+        self,
+        circuit,
+        wires=None,
+        shots: int = 1,
+        seed: int | None = None,
+        parameters: Optional[Mapping[Union[Parameter, str], Real]] = None,
+    ) -> list[str]:
+        from quantumbridge.information import Statevector
+
+        state = Statevector(self.statevector(circuit, parameters))
+        return state.sample_memory(shots, qargs=wires, seed=seed)
+
+    def counts(
+        self,
+        circuit,
+        wires=None,
+        shots: int = 1024,
+        seed: int | None = None,
+        parameters: Optional[Mapping[Union[Parameter, str], Real]] = None,
+    ) -> dict[str, int]:
+        counts: dict[str, int] = {}
+        for bitstring in self.sample(circuit, wires=wires, shots=shots, seed=seed, parameters=parameters):
+            counts[bitstring] = counts.get(bitstring, 0) + 1
+        return counts
 
     def run(self, circuit, parameters: Optional[Mapping[Union[Parameter, str], Real]] = None, observable=None) -> Result:
         state = self.statevector(circuit, parameters)
         probs = probabilities_from_state(state, circuit.num_qubits)
-        expectation = None if observable is None else expectation_hamiltonian(state, circuit.num_qubits, observable)
+        expectation = None if observable is None else float(np.real_if_close(expectation_observable(state, circuit.num_qubits, observable)))
         return Result(
             state=state,
             probabilities_data=probs,
