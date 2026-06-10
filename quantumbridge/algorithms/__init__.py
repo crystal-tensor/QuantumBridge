@@ -7,14 +7,24 @@
 from .qaoa import maxcut_hamiltonian, qaoa_circuit, run_qaoa
 from .vqe import run_vqe
 from .adapters import QiskitAlgorithmsAdapter
+from .amplitude import AmplitudeEstimationResult, PhaseEstimationResult, estimate_amplitude, estimate_phase
+from .eigensolvers import EigensolverResult, NumPyEigensolver, eigensolver_result
 from .minimum_eigensolvers import ExactDiagonalizationSolver, NumPyMinimumEigensolver
-from .optimizers import GradientDescentOptimizer
+from .optimizers import GradientDescentOptimizer, OptimizerResult
 
 __all__ = [
+    "AmplitudeEstimationResult",
+    "EigensolverResult",
     "ExactDiagonalizationSolver",
     "GradientDescentOptimizer",
+    "NumPyEigensolver",
     "NumPyMinimumEigensolver",
+    "OptimizerResult",
+    "PhaseEstimationResult",
     "QiskitAlgorithmsAdapter",
+    "eigensolver_result",
+    "estimate_amplitude",
+    "estimate_phase",
     "maxcut_hamiltonian",
     "qaoa_circuit",
     "run_qaoa",

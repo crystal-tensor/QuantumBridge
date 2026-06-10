@@ -4,7 +4,21 @@
 # This implementation is developed for the QuantumBridge native architecture.
 # Design source: docs/mvp/api_contract_v0.1.md.
 
-from quantumbridge.algorithms import maxcut_hamiltonian, qaoa_circuit, run_qaoa, run_vqe
+from quantumbridge.algorithms import (
+    AmplitudeEstimationResult,
+    EigensolverResult,
+    GradientDescentOptimizer,
+    NumPyEigensolver,
+    OptimizerResult,
+    PhaseEstimationResult,
+    estimate_amplitude,
+    estimate_phase,
+    eigensolver_result,
+    maxcut_hamiltonian,
+    qaoa_circuit,
+    run_qaoa,
+    run_vqe,
+)
 from quantumbridge.circuit_library import (
     amplitude_encoding,
     basis_state,
@@ -45,6 +59,7 @@ from quantumbridge.transforms import finite_difference, metric_tensor, qng_step,
 from quantumbridge.utils.math import Hamiltonian, PauliString, PauliX, PauliY, PauliZ
 
 __all__ = [
+    "AmplitudeEstimationResult",
     "Circuit",
     "Backend",
     "BackendEstimator",
@@ -55,7 +70,9 @@ __all__ = [
     "BitArray",
     "DensityMatrix",
     "DataBin",
+    "EigensolverResult",
     "Estimator",
+    "GradientDescentOptimizer",
     "Hamiltonian",
     "Instruction",
     "Job",
@@ -68,12 +85,15 @@ __all__ = [
     "ParameterExpression",
     "ParameterVector",
     "Options",
+    "OptimizerResult",
+    "NumPyEigensolver",
     "Pauli",
     "PauliString",
     "PauliX",
     "PauliY",
     "PauliZ",
     "Provider",
+    "PhaseEstimationResult",
     "QiskitBackendNotFoundError",
     "PrimitiveResult",
     "PubResult",
@@ -90,6 +110,9 @@ __all__ = [
     "circuit_to_qiskit",
     "amplitude_encoding",
     "basis_state",
+    "estimate_amplitude",
+    "estimate_phase",
+    "eigensolver_result",
     "efficient_su2",
     "finite_difference",
     "initialize",
