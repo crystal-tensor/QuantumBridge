@@ -24,7 +24,7 @@ from quantumbridge.devices import ShotSampler, StatevectorDevice
 from quantumbridge.diff import parameter_shift
 from quantumbridge.information import DensityMatrix, Statevector
 from quantumbridge.operators import Pauli, SparsePauliOperator
-from quantumbridge.primitives import Estimator, Sampler
+from quantumbridge.primitives import DataBin, Estimator, PrimitiveResult, PubResult, Sampler
 from quantumbridge.providers import Backend, Job, Provider
 from quantumbridge.results import Result
 from quantumbridge.transforms import finite_difference
@@ -34,6 +34,7 @@ __all__ = [
     "Circuit",
     "Backend",
     "DensityMatrix",
+    "DataBin",
     "Estimator",
     "Hamiltonian",
     "Job",
@@ -46,6 +47,8 @@ __all__ = [
     "PauliY",
     "PauliZ",
     "Provider",
+    "PrimitiveResult",
+    "PubResult",
     "Result",
     "Sampler",
     "ShotSampler",
