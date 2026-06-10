@@ -8,7 +8,15 @@ from .clifford import Clifford
 from .density_matrix import DensityMatrix
 from .entropy import von_neumann_entropy
 from .fidelity import state_fidelity
-from .metrics import average_gate_fidelity, process_fidelity, purity, state_fidelity_general, trace_distance
+from .metrics import (
+    average_gate_fidelity,
+    hellinger_distance,
+    hellinger_fidelity,
+    process_fidelity,
+    purity,
+    state_fidelity_general,
+    trace_distance,
+)
 from .operator import Operator
 from .partial_trace import partial_trace
 from .random import random_density_matrix, random_statevector, random_unitary
@@ -24,6 +32,8 @@ __all__ = [
     "Statevector",
     "SuperOp",
     "average_gate_fidelity",
+    "hellinger_distance",
+    "hellinger_fidelity",
     "partial_trace",
     "process_fidelity",
     "purity",

@@ -31,6 +31,17 @@ def trace_distance(a, b) -> float:
     return float(0.5 * np.sum(singular_values))
 
 
+def hellinger_fidelity(a: dict[str, float], b: dict[str, float]) -> float:
+    keys = set(a) | set(b)
+    value = sum(np.sqrt(float(a.get(key, 0.0)) * float(b.get(key, 0.0))) for key in keys)
+    return float(value * value)
+
+
+def hellinger_distance(a: dict[str, float], b: dict[str, float]) -> float:
+    fidelity = np.clip(hellinger_fidelity(a, b), 0.0, 1.0)
+    return float(np.sqrt(1.0 - np.sqrt(fidelity)))
+
+
 def process_fidelity(channel_a, channel_b=None) -> float:
     a = _as_matrix(channel_a)
     b = np.eye(a.shape[0], dtype=complex) if channel_b is None else _as_matrix(channel_b)
@@ -52,8 +63,12 @@ def state_fidelity_general(a, b) -> float:
 
     if isinstance(a, Statevector) and isinstance(b, Statevector):
         return float(abs(np.vdot(a.data, b.data)) ** 2)
-    rho = DensityMatrix.from_statevector(a).data if isinstance(a, Statevector) else _as_matrix(a)
-    sigma = DensityMatrix.from_statevector(b).data if isinstance(b, Statevector) else _as_matrix(b)
+    a_matrix = _as_matrix(a)
+    b_matrix = _as_matrix(b)
+    if a_matrix.ndim == 1 and b_matrix.ndim == 1:
+        return float(abs(np.vdot(a_matrix, b_matrix)) ** 2)
+    rho = DensityMatrix.from_statevector(a_matrix).data if a_matrix.ndim == 1 else a_matrix
+    sigma = DensityMatrix.from_statevector(b_matrix).data if b_matrix.ndim == 1 else b_matrix
     root = _matrix_sqrt_psd(rho)
     inner = root @ sigma @ root
     return float(np.real_if_close(np.trace(_matrix_sqrt_psd(inner)) ** 2))

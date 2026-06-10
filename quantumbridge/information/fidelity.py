@@ -7,7 +7,6 @@ import numpy as np
 
 
 def state_fidelity(a, b) -> float:
-    va = np.asarray(a, dtype=complex)
-    vb = np.asarray(b, dtype=complex)
-    return float(abs(np.vdot(va, vb)) ** 2)
+    from quantumbridge.information.metrics import state_fidelity_general
 
+    return state_fidelity_general(a, b)

@@ -189,6 +189,25 @@ class Statevector:
 
         return Operator(np.outer(self.data, np.conjugate(self.data)))
 
+    def to_density_matrix(self):
+        from quantumbridge.information.density_matrix import DensityMatrix
+
+        return DensityMatrix.from_statevector(self)
+
+    def partial_trace(self, keep: tuple[int, ...] | list[int]):
+        from quantumbridge.information.density_matrix import DensityMatrix
+
+        return DensityMatrix.from_statevector(self).partial_trace(keep)
+
+    def conjugate(self) -> "Statevector":
+        return Statevector(np.conjugate(self.data))
+
+    def transpose(self) -> "Statevector":
+        return self.copy()
+
+    def adjoint(self) -> np.ndarray:
+        return np.conjugate(self.data).reshape(1, -1)
+
     def copy(self) -> "Statevector":
         return Statevector(np.array(self.data, copy=True))
 

@@ -54,6 +54,14 @@ class DensityMatrix:
         return cls(np.outer(vector, np.conjugate(vector)))
 
     @classmethod
+    def from_int(cls, index: int, dims) -> "DensityMatrix":
+        return cls.from_statevector(Statevector.from_int(index, dims))
+
+    @classmethod
+    def from_label(cls, label: str) -> "DensityMatrix":
+        return cls.from_statevector(Statevector.from_label(label))
+
+    @classmethod
     def from_circuit(cls, circuit) -> "DensityMatrix":
         return cls.from_statevector(Statevector.from_circuit(circuit))
 
@@ -72,6 +80,11 @@ class DensityMatrix:
 
     def purity(self) -> float:
         return float(np.real_if_close(np.trace(self.data @ self.data)))
+
+    def partial_trace(self, keep: tuple[int, ...] | list[int]) -> "DensityMatrix":
+        from quantumbridge.information.partial_trace import partial_trace
+
+        return DensityMatrix(partial_trace(self.data, tuple(keep), self.num_qubits))
 
     def probabilities(self, wires=None) -> dict[str, float]:
         selected = tuple(range(self.num_qubits) if wires is None else wires)
@@ -150,6 +163,20 @@ class DensityMatrix:
 
     def copy(self) -> "DensityMatrix":
         return DensityMatrix(np.array(self.data, copy=True))
+
+    def conjugate(self) -> "DensityMatrix":
+        return DensityMatrix(np.conjugate(self.data))
+
+    def transpose(self) -> "DensityMatrix":
+        return DensityMatrix(self.data.T)
+
+    def adjoint(self) -> "DensityMatrix":
+        return DensityMatrix(self.data.conj().T)
+
+    def to_operator(self):
+        from quantumbridge.information.operator import Operator
+
+        return Operator(self.data)
 
     def to_statevector(self, atol: float = 1e-10) -> Statevector:
         values, vectors = np.linalg.eigh(self.data)
