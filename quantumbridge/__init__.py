@@ -19,7 +19,7 @@ from quantumbridge.circuit_library import (
     zz_feature_map,
 )
 from quantumbridge.compat import circuit_from_openqasm, circuit_from_qiskit, circuit_to_qiskit
-from quantumbridge.core import Circuit, Measurement, Operation, Parameter
+from quantumbridge.core import Circuit, Instruction, Measurement, Operation, Parameter
 from quantumbridge.devices import ShotSampler, StatevectorDevice
 from quantumbridge.diff import parameter_shift
 from quantumbridge.information import DensityMatrix, Statevector
@@ -38,6 +38,7 @@ __all__ = [
     "DataBin",
     "Estimator",
     "Hamiltonian",
+    "Instruction",
     "Job",
     "JobError",
     "JobStatus",

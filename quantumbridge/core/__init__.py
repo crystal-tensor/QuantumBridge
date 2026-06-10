@@ -6,8 +6,7 @@
 
 from .circuit import Circuit
 from .measurements import Measurement
-from .operations import Operation
+from .operations import Instruction, Operation
 from .parameters import Parameter
 
-__all__ = ["Circuit", "Measurement", "Operation", "Parameter"]
-
+__all__ = ["Circuit", "Instruction", "Measurement", "Operation", "Parameter"]

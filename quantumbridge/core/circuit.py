@@ -14,7 +14,7 @@ from typing import Any, Mapping, Optional, Sequence, Union
 import numpy as np
 
 from .measurements import Measurement
-from .operations import Operation
+from .operations import Instruction, Operation
 from .parameters import Parameter, ParameterValue, resolve_parameter
 from quantumbridge.utils.math import gate_matrix
 
@@ -50,12 +50,15 @@ class Circuit:
 
     def append(
         self,
-        name: str,
+        name: Union[str, Instruction],
         targets: Sequence[int],
         controls: Sequence[int] = (),
         params: Sequence[ParameterValue] = (),
         metadata: Optional[Mapping[str, Any]] = None,
+        clbits: Optional[Sequence[int]] = None,
     ) -> "Circuit":
+        if isinstance(name, Instruction):
+            return self._append_instruction(name, targets=targets, controls=controls, params=params, metadata=metadata, clbits=clbits)
         targets_tuple = tuple(targets)
         controls_tuple = tuple(controls)
         all_wires = controls_tuple + targets_tuple
@@ -65,6 +68,71 @@ class Circuit:
             raise ValueError("QuantumBridge operations require distinct wires.")
         self.operations.append(
             Operation(name=name, targets=targets_tuple, controls=controls_tuple, params=tuple(params), metadata=dict(metadata or {}))
+        )
+        return self
+
+    def _append_instruction(
+        self,
+        instruction: Instruction,
+        targets: Sequence[int],
+        controls: Sequence[int] = (),
+        params: Sequence[ParameterValue] = (),
+        metadata: Optional[Mapping[str, Any]] = None,
+        clbits: Optional[Sequence[int]] = None,
+    ) -> "Circuit":
+        targets_tuple = tuple(int(wire) for wire in targets)
+        controls_tuple = tuple(int(wire) for wire in controls)
+        clbits_tuple = tuple(range(instruction.num_bits)) if clbits is None else tuple(int(bit) for bit in clbits)
+        if len(targets_tuple) != instruction.num_qubits:
+            raise ValueError("QuantumBridge instruction append target count must match instruction.num_qubits.")
+        if len(clbits_tuple) != instruction.num_bits:
+            raise ValueError("QuantumBridge instruction append clbit count must match instruction.num_bits.")
+        for wire in controls_tuple + targets_tuple:
+            self._check_wire(wire)
+        for bit in clbits_tuple:
+            self._check_bit(bit)
+        if len(set(controls_tuple + targets_tuple)) != len(controls_tuple + targets_tuple):
+            raise ValueError("QuantumBridge instruction append requires distinct qubits.")
+
+        merged_metadata = deepcopy(instruction.metadata)
+        merged_metadata.update(dict(metadata or {}))
+        effective_params = tuple(params) if params else instruction.params
+        effective_instruction = (
+            instruction
+            if not controls_tuple
+            else instruction.control(num_ctrl_qubits=len(controls_tuple), ctrl_state=merged_metadata.get("ctrl_state"))
+        )
+        qubit_map = {source: target for source, target in enumerate((controls_tuple + targets_tuple) if controls_tuple else targets_tuple)}
+        clbit_map = {source: target for source, target in enumerate(clbits_tuple)}
+
+        if effective_instruction.definition is not None:
+            for op in effective_instruction.definition.operations:
+                mapped = _remap_operation(op, qubit_map)
+                mapped_metadata = deepcopy(mapped.metadata)
+                mapped_metadata.setdefault(
+                    "instruction",
+                    {
+                        "name": instruction.name,
+                        "params": list(effective_params),
+                        "controlled": bool(controls_tuple),
+                    },
+                )
+                mapped_metadata.update(merged_metadata)
+                self.operations.append(Operation(mapped.name, mapped.targets, mapped.controls, mapped.params, mapped_metadata))
+            for measurement in effective_instruction.definition.measurements:
+                self.measurements.append(
+                    Measurement(kind=measurement.kind, wire=qubit_map[measurement.wire], bit=clbit_map[measurement.bit])
+                )
+            return self
+
+        self.operations.append(
+            Operation(
+                name=effective_instruction.name,
+                targets=targets_tuple,
+                controls=controls_tuple,
+                params=effective_params,
+                metadata=merged_metadata,
+            )
         )
         return self
 
@@ -283,6 +351,29 @@ class Circuit:
 
     def copy(self) -> "Circuit":
         return deepcopy(self)
+
+    def to_instruction(self, name: Optional[str] = None, label: Optional[str] = None) -> Instruction:
+        instruction_name = name or label or self.name or "circuit"
+        metadata = deepcopy(self.metadata)
+        metadata.setdefault("definition_name", self.name)
+        return Instruction(
+            name=instruction_name,
+            num_qubits=self.num_qubits,
+            num_bits=self.num_bits,
+            params=(),
+            definition=self.copy(),
+            metadata=metadata,
+        )
+
+    @classmethod
+    def from_instruction(cls, instruction: Instruction) -> "Circuit":
+        if not isinstance(instruction, Instruction):
+            raise TypeError("QuantumBridge Circuit.from_instruction expects an Instruction.")
+        if instruction.definition is not None:
+            return instruction.definition.copy()
+        circuit = cls(instruction.num_qubits, instruction.num_bits, instruction.name, instruction.metadata)
+        circuit.append(instruction, range(instruction.num_qubits), clbits=range(instruction.num_bits))
+        return circuit
 
     def bind(self, mapping: Mapping[Union[Parameter, str], Real]) -> "Circuit":
         bound = Circuit(self.num_qubits, self.num_bits, self.name, self.metadata)
