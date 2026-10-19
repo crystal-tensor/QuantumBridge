@@ -7,6 +7,13 @@ QuantumBridge is an independent project. References to Qiskit and PennyLane are 
 
 ## Native Clifford And Stabilizer Verification
 
+Stage 11J independently implements typed classical expressions/storage,
+structured dynamic control flow and a native interpreter over vector, density,
+MPS and supported tableau states. Optional public Qiskit/Aer and PennyLane APIs
+are black-box test oracles only. No upstream source, tests or documentation
+wording was copied into the implementation. Public references and remaining
+semantic differences are recorded in the Stage 11J implementation report.
+
 Stage 11I independently implements QR/SVD matrix-product-state tensors, local
 gate contraction and nonlocal swap networks, native CPTP ensembles/trajectories,
 compressed result serialization and device/backend/QNode integration. Installed

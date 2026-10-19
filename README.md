@@ -32,6 +32,27 @@ QuantumBridge is an independent project. It is not an official Qiskit, PennyLane
 - NumPy/Torch/JAX array interface helpers, with Torch and JAX optional.
 - Minimal QNode-like wrapper and QML templates.
 
+## Native Dynamic Control Flow
+
+Native circuits now execute typed Bool/Bit/UInt expressions, runtime storage,
+structured if/else, for/while, switch and loop break/continue on the native
+statevector, density, MPS and supported Clifford tableau paths. Native Tape
+also provides mid-circuit measure/reset and conditional callbacks. Examples:
+
+```bash
+python -m examples.native_dynamic_control_flow
+python -m examples.native_measurement_feedforward
+python -m examples.native_mps_dynamic_100_qubits
+```
+
+ExecutionLimits bounds loops, executed instructions, control depth, branches
+and shots. UInt arithmetic wraps modulo its width; symbolic conditions cannot
+silently become Python constants. Structured IR preserves executable expression
+trees. Dynamic routing/scheduling and complete PennyLane capture/autodiff remain
+open; unsupported compilation is rejected explicitly. See the
+[Stage 11J report](docs/implementation/stage11j_native_dynamic_control_flow_report.md)
+and [core parity ledger](docs/compat/core_parity_ledger.md).
+
 ## Native Matrix Product State Simulation
 
 `MatrixProductStateDevice` and `MatrixProductStateBackend` execute native

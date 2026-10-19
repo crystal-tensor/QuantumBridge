@@ -24,7 +24,7 @@ class DensityMatrixDevice:
     simulation = "exact_density_matrix"
     supports_classical_control = True
 
-    def __init__(self, max_qubits=None, noise_model=None, initial_state=None, max_branches=4096, max_memory_mb=1024):
+    def __init__(self, max_qubits=None, noise_model=None, initial_state=None, max_branches=4096, max_memory_mb=1024, execution_limits=None):
         if max_qubits is not None and (not isinstance(max_qubits, Integral) or max_qubits < 1):
             raise ValueError("QuantumBridge density max_qubits must be a positive integer.")
         if not isinstance(max_branches, Integral) or max_branches < 1:
@@ -36,12 +36,13 @@ class DensityMatrixDevice:
         self.initial_state = initial_state
         self.max_branches = int(max_branches)
         self.max_memory_mb = max_memory_mb
+        self.execution_limits = execution_limits
 
     def with_noise_model(self, noise_model):
-        return DensityMatrixDevice(self.max_qubits, noise_model, self.initial_state, self.max_branches, self.max_memory_mb)
+        return DensityMatrixDevice(self.max_qubits, noise_model, self.initial_state, self.max_branches, self.max_memory_mb, self.execution_limits)
 
     def with_initial_state(self, initial_state):
-        return DensityMatrixDevice(self.max_qubits, self.noise_model, initial_state, self.max_branches, self.max_memory_mb)
+        return DensityMatrixDevice(self.max_qubits, self.noise_model, initial_state, self.max_branches, self.max_memory_mb, self.execution_limits)
 
     def _check_memory(self, width, branches=1):
         estimated = 16 * (1 << (2 * width)) * (6 + 2 * branches)
@@ -112,6 +113,9 @@ class DensityMatrixDevice:
         return [(value / weight, bits, decisions, weight) for value, bits, decisions, weight in grouped.values()]
 
     def _branches(self, circuit, program):
+        if circuit.has_structured_control_flow:
+            from quantumbridge.execution.control_flow_engine import dynamic_branches
+            return dynamic_branches(self, circuit)
         width = circuit.num_qubits
         branches = [(self._initial(width), [0] * circuit.num_bits, {}, 1.0)]
         live = decision_liveness(program)
@@ -144,6 +148,10 @@ class DensityMatrixDevice:
         return branches
 
     def _trajectories(self, circuit, program, shots, seed):
+        if circuit.has_structured_control_flow:
+            from quantumbridge.execution.control_flow_engine import DynamicExecutionEngine
+            yield from DynamicExecutionEngine(self, circuit).trajectories(shots, seed)
+            return
         rng = np.random.default_rng(seed)
         width = circuit.num_qubits
         prefix, offset = self._initial(width), 0
@@ -179,6 +187,16 @@ class DensityMatrixDevice:
 
     state = density_matrix
 
+    def reduced_density_matrix(self, circuit, wires=None, parameters=None):
+        selected = validate_wires(wires, circuit.num_qubits)
+        remaining = tuple(wire for wire in range(circuit.num_qubits) if wire not in selected)
+        order = selected + remaining
+        axes = order + tuple(circuit.num_qubits + wire for wire in order)
+        tensor = self.density_matrix(circuit, parameters).reshape((2,) * (2 * circuit.num_qubits)).transpose(axes)
+        size = 1 << len(selected)
+        rest = 1 << len(remaining)
+        return np.trace(tensor.reshape(size, rest, size, rest), axis1=1, axis2=3)
+
     def statevector(self, circuit, parameters=None):
         from quantumbridge.information.density_matrix import DensityMatrix
 
@@ -213,6 +231,9 @@ class DensityMatrixDevice:
     def sample(self, circuit, wires=None, shots=1, seed=None, parameters=None):
         self._shots(shots, allow_zero=True)
         bound, program = self._prepare(circuit, parameters)
+        if bound.has_structured_control_flow:
+            from quantumbridge.execution.control_flow_engine import DynamicExecutionEngine
+            return DynamicExecutionEngine(self, bound).quantum_samples(wires, shots, seed)
         selected = validate_wires(wires, bound.num_qubits)
         if not bound.measurements:
             density = sum(weight * state for state, _, _, weight in self._branches(bound, program))
@@ -247,6 +268,9 @@ class DensityMatrixDevice:
                 "noise_model_metadata": {} if self.noise_model is None else self.noise_model.summary()}
 
     def run_shots(self, circuit, shots=1024, seed=None, parameters=None, memory=False):
+        if circuit.has_structured_control_flow:
+            from quantumbridge.execution.control_flow_engine import dynamic_shots
+            return dynamic_shots(self, circuit, shots, seed, parameters, memory)
         self._shots(shots)
         bound, program = self._prepare(circuit, parameters)
         if bound.measurements:
@@ -267,11 +291,12 @@ class DensityMatrixDevice:
         expectation = None
         if observable is not None:
             expectation = float(np.trace(density @ self._observable(observable, bound.num_qubits)).real)
-        if bound.measurements:
+        if bound.has_measurements:
             probabilities = {}
             for _, bits, _, weight in branches:
                 label = "".join(map(str, bits))
                 probabilities[label] = probabilities.get(label, 0.0) + weight
         else:
             probabilities = apply_readout_distribution(self._probabilities(density, range(bound.num_qubits), bound.num_qubits), self.noise_model, range(bound.num_qubits))
-        return Result(density=density, probabilities_data=probabilities, expectation_data=expectation, metadata_data=self._metadata(bound))
+        return Result(density=density, probabilities_data=probabilities, expectation_data=expectation,
+                      metadata_data={**self._metadata(bound), **getattr(branches, "metadata", {})})

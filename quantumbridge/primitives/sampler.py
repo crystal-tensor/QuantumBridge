@@ -46,8 +46,11 @@ class Sampler:
             counts_batch = []
             quasi_batch = []
             samples_batch = []
+            execution_metadata = []
             for params in parameter_sets:
                 result = self._run_legacy(circuit, shots=effective_shots, parameters=params)
+                if result.metadata().get("dynamic_control_flow"):
+                    execution_metadata.append({key: value for key, value in result.metadata().items() if key not in {"memory", "classical_memory"}})
                 counts = result.counts() or {}
                 num_bits = result.metadata_data.get("num_bits", circuit.num_qubits)
                 memory = result.memory()
@@ -73,6 +76,7 @@ class Sampler:
                         "seed": self.seed,
                         "num_parameter_sets": len(parameter_sets),
                         "circuit_metadata": dict(getattr(circuit, "metadata", {}) or {}),
+                        **({"execution_metadata": execution_metadata} if execution_metadata else {}),
                     },
                 )
             )

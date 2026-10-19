@@ -5,6 +5,23 @@ Date: 2026-06-05
 
 This ledger records implementation mode and upstream source status for the current P1 release-candidate baseline. Current work uses Native Implementation, Adapter Integration, and Upstream Dependency. No new upstream source migration was introduced during Stage 5.5. No Source Port with Attribution was performed.
 
+## Stage 11J Native Dynamic Control Flow
+
+Native Implementation only; no third-party source or tests copied, no vendored
+packages/environments. Public API/mathematical behavior is the reference.
+Review is pending. Resource exhaustion, numeric approximation and differing
+SDK interfaces remain documented risks; this is not a full replacement claim.
+
+| Files | Native behavior | Evidence |
+| --- | --- | --- |
+| `quantumbridge/core/classical.py` | Typed immutable expressions, UInt wrapping, register order, initialized lexical storage and JSON | tests/circuit/test_classical_expressions_native.py |
+| `quantumbridge/core/control_flow.py`, `quantumbridge/core/circuit.py` | Structured blocks, scoped variables, binding/remapping, runtime assignments and execution budgets | 43 distinct control-flow tests |
+| `quantumbridge/execution/control_flow_engine.py` | Native runtime interpreter, branching/trajectories, reset, CPTP, feedback and limits | Same suite, 100-qubit non-dense test, optional SDK comparisons |
+| `quantumbridge/devices/*`, `quantumbridge/providers/backend.py`, `quantumbridge/primitives/estimator.py` | Incremental dynamic vector/density/MPS/tableau and Job/V2 integration | Existing suites plus dynamic execution tests |
+| `quantumbridge/ir/qb_ir.py` | Executable structured IR and parameter AST roundtrips | Native nested JSON/remapping tests |
+| `quantumbridge/qml/tape.py` | Native mid-circuit measurement/reset and conditional callback | Native and PennyLane black-box comparisons |
+| `examples/native_dynamic_control_flow.py`, `examples/native_measurement_feedforward.py`, `examples/native_mps_dynamic_100_qubits.py` | Runnable SDK-free workflows | Clean isolated environment |
+
 ## Stage 11I Native MPS Execution
 
 All paths below use Native Implementation. No upstream source/test files or

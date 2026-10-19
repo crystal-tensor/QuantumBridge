@@ -20,7 +20,7 @@ class StabilizerDevice:
     simulation = "exact_stabilizer"
     supports_classical_control = True
 
-    def __init__(self, max_qubits=None, noise_model=None, max_branches=100000):
+    def __init__(self, max_qubits=None, noise_model=None, max_branches=100000, execution_limits=None):
         if max_qubits is not None and (not isinstance(max_qubits, Integral) or max_qubits < 1):
             raise ValueError("QuantumBridge stabilizer max_qubits must be a positive integer.")
         if not isinstance(max_branches, Integral) or max_branches < 1:
@@ -28,6 +28,7 @@ class StabilizerDevice:
         self.max_qubits = max_qubits
         self.noise_model = noise_model
         self.max_branches = int(max_branches)
+        self.execution_limits = execution_limits
 
     def _prepare(self, circuit, parameters=None):
         from quantumbridge.information.clifford import Clifford
@@ -37,6 +38,8 @@ class StabilizerDevice:
         bound = circuit.bind(parameters) if parameters else circuit
         if self.max_qubits is not None and bound.num_qubits > self.max_qubits:
             raise ValueError("QuantumBridge circuit exceeds this device qubit limit.")
+        if bound.has_structured_control_flow:
+            return bound, [("structured", bound, None, {})]
         program = []
         noise = self._noise_instructions(bound.num_qubits)
         inserted_noise = False
@@ -73,7 +76,7 @@ class StabilizerDevice:
     _enabled = staticmethod(condition_enabled)
 
     def with_noise_model(self, noise_model):
-        return StabilizerDevice(self.max_qubits, noise_model, self.max_branches)
+        return StabilizerDevice(self.max_qubits, noise_model, self.max_branches, self.execution_limits)
 
     def _noise_instructions(self, num_qubits):
         from quantumbridge.information.clifford import Clifford
@@ -132,6 +135,9 @@ class StabilizerDevice:
     _wires = staticmethod(validate_wires)
 
     def _ensemble(self, circuit, program):
+        if circuit.has_structured_control_flow:
+            from quantumbridge.execution.control_flow_engine import dynamic_branches
+            return dynamic_branches(self, circuit)
         branches = [(self._initial(circuit.num_qubits), [0] * circuit.num_bits, {}, 1.0)]
         for kind, value, args, metadata in program:
             updated = []
@@ -170,6 +176,10 @@ class StabilizerDevice:
         return branches
 
     def _trajectories(self, circuit, program, shots, seed):
+        if circuit.has_structured_control_flow:
+            from quantumbridge.execution.control_flow_engine import DynamicExecutionEngine
+            yield from DynamicExecutionEngine(self, circuit).trajectories(shots, seed)
+            return
         rng = np.random.default_rng(seed)
         prefix = self._initial(circuit.num_qubits)
         offset = 0
@@ -295,6 +305,9 @@ class StabilizerDevice:
                 "noise_model_metadata": {} if self.noise_model is None else self.noise_model.summary()}
 
     def run_shots(self, circuit, shots=1024, seed=None, parameters=None, memory=False):
+        if circuit.has_structured_control_flow:
+            from quantumbridge.execution.control_flow_engine import dynamic_shots
+            return dynamic_shots(self, circuit, shots, seed, parameters, memory)
         if not isinstance(shots, Integral) or shots < 1:
             raise ValueError("QuantumBridge stabilizer shots must be a positive integer.")
         bound, program = self._prepare(circuit, parameters)
@@ -312,12 +325,14 @@ class StabilizerDevice:
     def run(self, circuit, parameters=None, observable=None):
         bound, program = self._prepare(circuit, parameters)
         metadata = self._metadata(bound)
+        records = self._ensemble(bound, program) if bound.has_structured_control_flow else None
+        if records is not None: metadata.update(records.metadata)
         if observable is not None:
             value = self.expectation(bound, observable)
             return Result(expectation_data=value, metadata_data=metadata)
-        if bound.measurements:
+        if bound.has_measurements:
             probabilities = {}
-            for _, bits, _, weight in self._ensemble(bound, program):
+            for _, bits, _, weight in records if records is not None else self._ensemble(bound, program):
                 label = "".join(map(str, bits))
                 probabilities[label] = probabilities.get(label, 0.0) + weight
         else:

@@ -132,14 +132,19 @@ class Backend:
     ):
         circuit_sequence = _as_circuit_sequence(circuits)
         parameter_sets = _parameter_sets_for_circuits(parameter_values, len(circuit_sequence))
+        device = self.device
+        if "execution_limits" in options:
+            from copy import copy
+            device = copy(device)
+            device.execution_limits = options.get("execution_limits")
         results = []
         for circuit, parameters in zip(circuit_sequence, parameter_sets):
             self._validate_circuit(circuit)
             shots = options.get("shots")
             if shots is None:
-                result = self.device.run(circuit, parameters=parameters, observable=observable)
+                result = device.run(circuit, parameters=parameters, observable=observable)
             else:
-                result = ShotSampler(shots, seed=options.get("seed_simulator"), base_device=self.device, memory=options.get("memory", False)).run(circuit, parameters=parameters)
+                result = ShotSampler(shots, seed=options.get("seed_simulator"), base_device=device, memory=options.get("memory", False)).run(circuit, parameters=parameters)
                 result.metadata_data.setdefault("backend_name", self.name)
             results.append(result)
         return results[0] if isinstance(circuits, Circuit) else results
@@ -157,7 +162,12 @@ class BackendV2(Backend):
 
 class _SimulatorBackend(BackendV2):
     def _configured_device(self, options):
-        return self.device.with_noise_model(options.get("noise_model")) if "noise_model" in options else self.device
+        device = self.device.with_noise_model(options.get("noise_model")) if "noise_model" in options else self.device
+        if "execution_limits" in options:
+            from copy import copy
+            device = copy(device)
+            device.execution_limits = options.get("execution_limits")
+        return device
 
     def _execute(self, circuits, options, parameter_values=None, observable=None):
         sequence = _as_circuit_sequence(circuits)

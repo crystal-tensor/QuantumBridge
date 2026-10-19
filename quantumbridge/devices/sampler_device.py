@@ -29,11 +29,17 @@ class ShotSampler:
         self.memory = bool(memory)
 
     def run(self, circuit, parameters: Optional[Mapping[Union[Parameter, str], Real]] = None) -> Result:
-        if hasattr(self.base_device, "run_shots"):
+        device = self.base_device
+        if self.noise_model is not None:
+            from quantumbridge.noise.execution import _device_with_noise
+
+            device = _device_with_noise(device, self.noise_model)
+        if hasattr(device, "run_shots"):
+            result = device.run_shots(circuit, shots=self.shots, seed=self.seed, parameters=parameters, memory=self.memory)
             if self.noise_model is not None:
-                raise ValueError("Configure stabilizer noise on its device before sampling.")
-            return self.base_device.run_shots(circuit, shots=self.shots, seed=self.seed, parameters=parameters, memory=self.memory)
-        probabilities = self.base_device.probabilities(circuit, parameters=parameters)
+                result.metadata_data["noise_model"] = self.noise_model.summary()
+            return result
+        probabilities = device.probabilities(circuit, parameters=parameters)
         labels = sorted(probabilities)
         weights = np.array([probabilities[label] for label in labels], dtype=float)
         weights = weights / weights.sum()

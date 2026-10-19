@@ -112,7 +112,7 @@ class Circuit:
         if effective_instruction.definition is not None:
             offset = len(self.operations)
             for op in effective_instruction.definition.operations:
-                mapped = _remap_operation(op, qubit_map, clbit_map)
+                mapped = _remap_operation(op, qubit_map, clbit_map, self.num_qubits, self.num_bits)
                 mapped_metadata = deepcopy(mapped.metadata)
                 mapped_metadata.setdefault(
                     "instruction",
@@ -333,7 +333,7 @@ class Circuit:
         qubit_map = _index_map(other.num_qubits, target.num_qubits, qubits, "qubits")
         clbit_map = _index_map(other.num_bits, target.num_bits, clbits, "clbits")
         offset = 0 if front else len(target.operations)
-        mapped_ops = [_remap_operation(op, qubit_map, clbit_map) for op in other.operations]
+        mapped_ops = [_remap_operation(op, qubit_map, clbit_map, target.num_qubits, target.num_bits) for op in other.operations]
         mapped_measurements = [
             _remap_measurement(measurement, qubit_map, clbit_map, offset, len(other.operations))
             for measurement in other.measurements
@@ -351,6 +351,69 @@ class Circuit:
             target.operations.extend(mapped_ops)
             target.measurements.extend(mapped_measurements)
         return target
+
+    @property
+    def has_structured_control_flow(self):
+        return any("control_node" in op.metadata for op in self.operations)
+
+    @property
+    def has_measurements(self):
+        return bool(self.measurements) or any(body.has_measurements for op in self.operations
+            if "control_node" in op.metadata for body in op.metadata["control_node"].bodies)
+
+    def _control(self, node, inplace=True):
+        target = self if inplace else self.copy()
+        target.append("control_flow", (), metadata={"control_node": node})
+        return target
+
+    def add_var(self, name, dtype, initial=None):
+        from .classical import variable, lift
+        from .control_flow import ControlBlock
+        target = variable(name, dtype)
+        self._control(ControlBlock("declare", {"target": target, "initial": None if initial is None else lift(initial, dtype)}))
+        return target
+
+    def store(self, target, value):
+        from .classical import lift
+        from .control_flow import ControlBlock
+        return self._control(ControlBlock("store", {"target": target, "value": lift(value, target.dtype)}))
+
+    def _mapped_body(self, body, qubits=None, clbits=None):
+        return self.copy_empty_like().compose(body, qubits=qubits, clbits=clbits)
+
+    def for_loop(self, values, loop_parameter=None, body=None, *, variable=None, qubits=None, clbits=None, inplace=False):
+        from .control_flow import ControlBlock
+        if isinstance(loop_parameter, Circuit) and body is None:
+            body, loop_parameter = loop_parameter, None
+        if isinstance(values, range) and len(values) > 1000000:
+            raise ValueError("QuantumBridge loop value sets exceed the construction budget.")
+        from itertools import islice
+        values = tuple(islice(iter(values), 1000001))
+        if len(values) > 1000000:
+            raise ValueError("QuantumBridge loop value sets exceed the construction budget.")
+        return self._control(ControlBlock("for", {"values": values, "parameter": loop_parameter, "variable": variable,
+            "body": self._mapped_body(body, qubits, clbits)}), inplace)
+
+    def while_loop(self, condition, body, qubits=None, clbits=None, inplace=False):
+        from .control_flow import ControlBlock, condition_expression
+        return self._control(ControlBlock("while", {"condition": condition_expression(condition),
+            "body": self._mapped_body(body, qubits, clbits)}), inplace)
+
+    def switch(self, selector, cases, default=None, *, qubits=None, clbits=None, inplace=False):
+        from .classical import lift
+        from .control_flow import ControlBlock
+        entries = cases.items() if isinstance(cases, ABCMapping) else cases
+        mapped = tuple(((value,) if isinstance(value, int) else tuple(value), self._mapped_body(body, qubits, clbits)) for value, body in entries)
+        return self._control(ControlBlock("switch", {"selector": lift(selector), "cases": mapped,
+            "default": None if default is None else self._mapped_body(default, qubits, clbits)}), inplace)
+
+    def break_loop(self):
+        from .control_flow import ControlBlock
+        return self._control(ControlBlock("break", {}))
+
+    def continue_loop(self):
+        from .control_flow import ControlBlock
+        return self._control(ControlBlock("continue", {}))
 
     def if_else(
         self,
@@ -372,6 +435,12 @@ class Circuit:
             raise TypeError("QuantumBridge Circuit.if_else true_body must be a Circuit.")
         if false_body is not None and not isinstance(false_body, Circuit):
             raise TypeError("QuantumBridge Circuit.if_else false_body must be a Circuit.")
+        from .classical import ClassicalExpression
+        from .control_flow import ControlBlock, condition_expression
+        if isinstance(condition, (ClassicalExpression, bool)) or true_body.has_structured_control_flow or false_body is not None and false_body.has_structured_control_flow:
+            return self._control(ControlBlock("if", {"condition": condition_expression(condition),
+                "body": self._mapped_body(true_body, qubits, clbits),
+                "alternate": None if false_body is None else self._mapped_body(false_body, qubits, clbits)}), inplace)
         normalized = _normalize_condition(condition)
         for bit in normalized["bits"]:
             self._check_bit(bit)
@@ -536,7 +605,7 @@ class Circuit:
             or any(key in item.metadata for key in ("condition", "control_flow", "control_flow_stack"))
             for item in self.measurements
         ) or any(
-            op.name in {"reset", "measure", "kraus"}
+            op.name in {"reset", "measure", "kraus", "control_flow"}
             or any(key in op.metadata for key in ("condition", "control_flow", "control_flow_stack"))
             for op in self.operations
         )
@@ -559,6 +628,9 @@ class Circuit:
         return counts
 
     def depth(self, filter_function: Optional[Callable[[Any], bool]] = None) -> int:
+        if self.has_structured_control_flow:
+            from .classical import UnsupportedFeature
+            raise UnsupportedFeature("structured_depth", "QuantumBridge dynamic depth depends on the runtime execution path.")
         qubit_layers = [0] * self.num_qubits
         bit_layers = [0] * self.num_bits
         max_layer = 0
@@ -614,6 +686,8 @@ class Circuit:
         found: set[Parameter] = set()
         for op in self.operations:
             found.update(parameter_set(op.params))
+            if "control_node" in op.metadata:
+                found.update(op.metadata["control_node"].parameters)
         return tuple(sorted(found, key=lambda parameter: parameter.name))
 
     @property
@@ -630,7 +704,10 @@ class Circuit:
         bound = Circuit(self.num_qubits, self.num_bits, self.name, self.metadata)
         for op in self.operations:
             params = tuple(resolve_parameter(param, mapping, allow_partial=not strict) for param in op.params)
-            bound.operations.append(Operation(op.name, op.targets, op.controls, params, deepcopy(op.metadata)))
+            metadata = deepcopy(op.metadata)
+            if "control_node" in metadata:
+                metadata["control_node"] = metadata["control_node"].bind(mapping)
+            bound.operations.append(Operation(op.name, op.targets, op.controls, params, metadata))
         bound.measurements = list(self.measurements)
         return _replace_self(self, bound) if inplace else bound
 
@@ -688,13 +765,18 @@ def _remap_measurement(measurement, qubit_map, clbit_map, offset, source_size):
     return Measurement(qubit_map[measurement.wire], clbit_map[measurement.bit], measurement.kind, metadata)
 
 
-def _remap_operation(op: Operation, qubit_map: Mapping[int, int], clbit_map=None) -> Operation:
+def _remap_operation(op: Operation, qubit_map: Mapping[int, int], clbit_map=None, target_width=None, target_bits=None) -> Operation:
+    metadata = _remap_metadata(op.metadata, clbit_map)
+    if "control_node" in metadata:
+        metadata["control_node"] = metadata["control_node"].remap(qubit_map, clbit_map,
+            target_width or max(qubit_map.values()) + 1,
+            target_bits if target_bits is not None else max(clbit_map.values(), default=-1) + 1)
     return Operation(
         name=op.name,
         targets=tuple(qubit_map[wire] for wire in op.targets),
         controls=tuple(qubit_map[wire] for wire in op.controls),
         params=op.params,
-        metadata=_remap_metadata(op.metadata, clbit_map),
+        metadata=metadata,
     )
 
 

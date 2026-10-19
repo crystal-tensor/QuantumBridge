@@ -9,6 +9,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from numbers import Real
 from typing import Any, Optional
+import json
 
 from quantumbridge.core.parameters import Parameter, ParameterExpression
 
@@ -30,6 +31,9 @@ def decode_instruction_metadata(metadata):
         result["matrix"] = matrix_from_ir(result["matrix"])
     if "kraus" in result:
         result["kraus"] = tuple(matrix_from_ir(value) for value in result["kraus"])
+    if "control_node" in result and isinstance(result["control_node"], dict):
+        from quantumbridge.core.control_flow import ControlBlock
+        result["control_node"] = ControlBlock.from_dict(result["control_node"])
     return result
 
 
@@ -45,10 +49,23 @@ def _param_to_ir(value: Any) -> Any:
         return {
             "expression": str(value),
             "parameters": sorted(parameter.name for parameter in value.parameters),
+            "parameter_ast": {"op": value.op, "args": [_param_to_ir(arg) for arg in value.args]},
         }
     if isinstance(value, Real):
         return float(value)
     return value
+
+
+def param_from_ir(value):
+    if not isinstance(value, dict): return value
+    if set(value) == {"parameter"}: return Parameter(value["parameter"])
+    if "parameter_ast" in value:
+        tree = value["parameter_ast"]
+        if tree["op"] not in {"const", "parameter", "neg", "+", "-", "*", "/", "**"}:
+            raise ValueError("Unknown executable QuantumBridge parameter AST.")
+        args = tuple(param_from_ir(arg) for arg in tree["args"])
+        return ParameterExpression(tree["op"], args)
+    raise ValueError("QuantumBridge parameter expressions require an executable AST, not text.")
 
 
 @dataclass(frozen=True)
@@ -65,6 +82,8 @@ class IRInstruction:
             metadata["matrix"] = _matrix_to_ir(self.metadata["matrix"])
         if "kraus" in self.metadata:
             metadata["kraus"] = [_matrix_to_ir(value) for value in self.metadata["kraus"]]
+        if "control_node" in self.metadata:
+            metadata["control_node"] = self.metadata["control_node"].to_dict()
         return {
             "op": self.op,
             "targets": list(self.targets),
@@ -97,6 +116,29 @@ class IRProgram:
     measurements: tuple[IRMeasurement, ...] = ()
     name: Optional[str] = None
     metadata: dict[str, Any] = field(default_factory=dict)
+
+    @classmethod
+    def from_dict(cls, data, validate=True):
+        if data.get("ir_version") != "qb-ir-v0.1": raise ValueError("Unknown QuantumBridge IR version.")
+        registers = data["registers"]
+        result = cls(data["ir_version"], registers["quantum"]["size"], registers["classical"]["size"],
+            tuple(IRInstruction(item["op"], tuple(item["targets"]), tuple(item.get("controls", ())),
+                tuple(param_from_ir(value) for value in item.get("params", ())), decode_instruction_metadata(item.get("metadata", {}))) for item in data["instructions"]),
+            tuple(IRMeasurement(item["kind"], item["wires"][0], item["bits"][0], dict(item.get("metadata", {}))) for item in data.get("measurements", ())), data.get("name"), dict(data.get("metadata", {})))
+        if validate: result.validate()
+        return result
+
+    @classmethod
+    def from_json(cls, text): return cls.from_dict(json.loads(text))
+
+    def to_json(self): return json.dumps(self.to_dict(), sort_keys=True)
+
+    def validate(self):
+        from quantumbridge.compat.qiskit_adapter import circuit_from_ir
+        from quantumbridge.core.control_flow import validate_control_flow
+        if self.ir_version != "qb-ir-v0.1": raise ValueError("Unknown QuantumBridge IR version.")
+        validate_control_flow(circuit_from_ir(self))
+        return True
 
     @classmethod
     def from_circuit(cls, circuit) -> "IRProgram":

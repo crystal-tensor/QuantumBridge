@@ -78,7 +78,7 @@ class Estimator:
                         "num_parameter_sets": len(parameter_sets),
                         "num_observables": len(observable_values),
                         "circuit_metadata": dict(getattr(circuit, "metadata", {}) or {}),
-                        "simulation": getattr(self.device, "simulation", "exact_statevector"),
+                        "simulation": evaluations[0].metadata().get("simulation", getattr(self.device, "simulation", "exact_statevector")) if evaluations else getattr(self.device, "simulation", "exact_statevector"),
                         **({"mps_truncation": mps_statistics} if mps_statistics else {}),
                     },
                 )

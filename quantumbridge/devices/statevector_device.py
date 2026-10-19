@@ -19,8 +19,27 @@ from quantumbridge.utils.math import apply_unitary, expectation_observable, gate
 class StatevectorDevice:
     """Exact pure-state simulator for QuantumBridge MVP circuits."""
 
-    def __init__(self, max_qubits: Optional[int] = None) -> None:
+    def __init__(self, max_qubits: Optional[int] = None, execution_limits=None, max_memory_mb=1024) -> None:
         self.max_qubits = max_qubits
+        self.execution_limits = execution_limits
+        self.max_memory_mb = max_memory_mb
+        if max_memory_mb is not None and (isinstance(max_memory_mb, bool) or not isinstance(max_memory_mb, Real) or not np.isfinite(max_memory_mb) or max_memory_mb <= 0):
+            raise ValueError("QuantumBridge max_memory_mb must be positive or None.")
+
+    def _guard_density(self, width):
+        if self.max_memory_mb is not None and 16 * (1 << (2 * width)) * 4 > self.max_memory_mb * 1024 ** 2:
+            raise MemoryError("QuantumBridge dynamic dense output exceeds max_memory_mb.")
+
+    def _initial(self, width):
+        if self.max_memory_mb is not None and 16 * (1 << width) * 8 > self.max_memory_mb * 1024 ** 2:
+            raise MemoryError("QuantumBridge dynamic statevector exceeds max_memory_mb.")
+        state = np.zeros(1 << width, dtype=complex)
+        state[0] = 1
+        return state
+
+    def _dynamic_branches(self, circuit, parameters=None):
+        from quantumbridge.execution.control_flow_engine import dynamic_branches
+        return dynamic_branches(self, circuit, parameters)
 
     def _bound_circuit(self, circuit, parameters: Optional[Mapping[Union[Parameter, str], Real]]):
         return circuit.bind(parameters) if parameters else circuit
@@ -31,8 +50,7 @@ class StatevectorDevice:
             raise ValueError("QuantumBridge StatevectorDevice requires unitary operations and terminal measurements; use StabilizerDevice for dynamic Clifford circuits.")
         if self.max_qubits is not None and circuit.num_qubits > self.max_qubits:
             raise ValueError("QuantumBridge circuit exceeds this device qubit limit.")
-        state = np.zeros(1 << circuit.num_qubits, dtype=complex)
-        state[0] = 1.0
+        state = self._initial(circuit.num_qubits)
         for op in circuit.operations:
             if op.metadata.get("directive") and op.name in {"barrier", "delay"}:
                 continue
@@ -42,19 +60,38 @@ class StatevectorDevice:
         return state
 
     def probabilities(self, circuit, wires=None, parameters: Optional[Mapping[Union[Parameter, str], Real]] = None) -> dict[str, float]:
+        if circuit.has_dynamic_operations:
+            probabilities = {}
+            for state, _, _, weight in self._dynamic_branches(circuit, parameters):
+                for label, probability in probabilities_from_state(state, circuit.num_qubits, wires).items():
+                    probabilities[label] = probabilities.get(label, 0.0) + weight * probability
+            return probabilities
         state = self.statevector(circuit, parameters)
         return probabilities_from_state(state, circuit.num_qubits, wires)
 
     def expectation(self, circuit, observable, parameters: Optional[Mapping[Union[Parameter, str], Real]] = None) -> float:
+        if circuit.has_dynamic_operations:
+            return float(sum(weight * expectation_observable(state, circuit.num_qubits, observable).real for state, _, _, weight in self._dynamic_branches(circuit, parameters)))
         state = self.statevector(circuit, parameters)
         value = expectation_observable(state, circuit.num_qubits, observable)
         return float(np.real_if_close(value))
 
     def variance(self, circuit, observable, parameters: Optional[Mapping[Union[Parameter, str], Real]] = None) -> float:
+        if circuit.has_dynamic_operations:
+            from quantumbridge.utils.math import observable_matrix
+            self._guard_density(circuit.num_qubits)
+            matrix = observable_matrix(observable, circuit.num_qubits)
+            branches = self._dynamic_branches(circuit, parameters)
+            first = sum(weight * np.vdot(state, matrix @ state).real for state, _, _, weight in branches)
+            second = sum(weight * np.vdot(state, matrix @ matrix @ state).real for state, _, _, weight in branches)
+            return max(0.0, float(second - first ** 2))
         state = self.statevector(circuit, parameters)
         return variance_observable(state, circuit.num_qubits, observable)
 
     def density_matrix(self, circuit, parameters: Optional[Mapping[Union[Parameter, str], Real]] = None) -> np.ndarray:
+        self._guard_density(circuit.num_qubits)
+        if circuit.has_dynamic_operations:
+            return sum(weight * np.outer(state, state.conj()) for state, _, _, weight in self._dynamic_branches(circuit, parameters))
         state = self.statevector(circuit, parameters)
         return np.outer(state, np.conjugate(state))
 
@@ -66,6 +103,9 @@ class StatevectorDevice:
         seed: int | None = None,
         parameters: Optional[Mapping[Union[Parameter, str], Real]] = None,
     ) -> list[str]:
+        if circuit.has_dynamic_operations:
+            from quantumbridge.execution.control_flow_engine import DynamicExecutionEngine
+            return DynamicExecutionEngine(self, circuit, parameters).quantum_samples(wires, shots, seed)
         from quantumbridge.information import Statevector
 
         state = Statevector(self.statevector(circuit, parameters))
@@ -85,6 +125,20 @@ class StatevectorDevice:
         return counts
 
     def run(self, circuit, parameters: Optional[Mapping[Union[Parameter, str], Real]] = None, observable=None) -> Result:
+        if circuit.has_dynamic_operations:
+            branches = self._dynamic_branches(circuit, parameters)
+            if observable is not None:
+                return Result(expectation_data=float(sum(weight * expectation_observable(state, circuit.num_qubits, observable).real for state, _, _, weight in branches)),
+                    metadata_data={"device": "StatevectorDevice", "simulation": "statevector_branch_ensemble", **getattr(branches, "metadata", {})})
+            probabilities = {}
+            for state, bits, _, weight in branches:
+                values = {"".join(map(str, bits)): 1} if circuit.has_measurements else probabilities_from_state(state, circuit.num_qubits)
+                for label, probability in values.items(): probabilities[label] = probabilities.get(label, 0.0) + weight * probability
+            self._guard_density(circuit.num_qubits)
+            density = sum(weight * np.outer(state, state.conj()) for state, _, _, weight in branches)
+            return Result(density=density, probabilities_data=probabilities,
+                expectation_data=None if observable is None else self.expectation(circuit, observable, parameters),
+                metadata_data={"device": "StatevectorDevice", "simulation": "statevector_branch_ensemble", **getattr(branches, "metadata", {})})
         state = self.statevector(circuit, parameters)
         probs = probabilities_from_state(state, circuit.num_qubits)
         expectation = None if observable is None else float(np.real_if_close(expectation_observable(state, circuit.num_qubits, observable)))
@@ -98,3 +152,12 @@ class StatevectorDevice:
                 "num_qubits": circuit.num_qubits,
             },
         )
+
+    def run_shots(self, circuit, shots=1024, seed=None, parameters=None, memory=False):
+        if circuit.has_dynamic_operations:
+            from quantumbridge.execution.control_flow_engine import dynamic_shots
+            return dynamic_shots(self, circuit, shots, seed, parameters, memory)
+        from types import SimpleNamespace
+        from .sampler_device import ShotSampler
+
+        return ShotSampler(shots, seed, base_device=SimpleNamespace(probabilities=self.probabilities), memory=memory).run(circuit, parameters)

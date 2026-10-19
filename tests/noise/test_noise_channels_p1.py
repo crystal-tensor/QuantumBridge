@@ -9,6 +9,7 @@ import pytest
 from quantumbridge import Circuit
 from quantumbridge.noise import BitFlipChannel, DepolarizingChannel, NoiseModel, PhaseFlipChannel, ReadoutError
 from quantumbridge.primitives import Sampler
+from quantumbridge.devices import ShotSampler, StatevectorDevice
 
 
 def test_noise_channels_and_model_metadata():
@@ -29,3 +30,23 @@ def test_invalid_noise_probability():
         BitFlipChannel(-0.1)
     with pytest.raises(ValueError, match="between 0 and 1"):
         ReadoutError(0.1, 1.2)
+
+
+def test_legacy_sampler_applies_quantum_noise_and_retains_memory():
+    model = NoiseModel().add_channel(BitFlipChannel(1), wires=[0])
+    result = ShotSampler(12, seed=9, noise_model=model, memory=True).run(Circuit(1))
+    assert result.counts() == {"1": 12}
+    assert result.metadata()["memory"] == ["1"] * 12
+    assert result.metadata()["noise_model"] == model.summary()
+
+
+def test_legacy_sampler_applies_readout_noise():
+    model = NoiseModel().add_readout_error(0, ReadoutError(1, 1))
+    assert Sampler(shots=12, seed=9, noise_model=model).run(Circuit(1)).counts() == {"1": 12}
+
+
+def test_noisy_statevector_sampling_preserves_resource_limits():
+    model = NoiseModel().add_channel(BitFlipChannel(1), wires=[0])
+    device = StatevectorDevice(max_memory_mb=.0001)
+    with pytest.raises(MemoryError, match="max_memory_mb"):
+        ShotSampler(1, base_device=device, noise_model=model).run(Circuit(2))

@@ -23,7 +23,7 @@ class MatrixProductStateDevice:
     supports_classical_control = True
 
     def __init__(self, max_qubits=None, max_bond_dim=None, cutoff=1e-16, max_memory_mb=1024,
-                 max_branches=4096, noise_model=None, initial_state=None):
+                 max_branches=4096, noise_model=None, initial_state=None, execution_limits=None):
         if max_qubits is not None and (isinstance(max_qubits, bool) or not isinstance(max_qubits, Integral) or max_qubits < 1):
             raise ValueError("QuantumBridge MPS max_qubits must be a positive integer or None.")
         if isinstance(max_branches, bool) or not isinstance(max_branches, Integral) or max_branches < 1:
@@ -33,10 +33,11 @@ class MatrixProductStateDevice:
         self.max_branches = int(max_branches)
         self.state_options = dict(max_bond_dim=validated.max_bond_dim, cutoff=validated.cutoff, max_memory_mb=validated.max_memory_mb)
         self.noise_model, self.initial_state = noise_model, initial_state
+        self.execution_limits = execution_limits
 
     def _configured(self, **changes):
         options = dict(self.state_options, max_qubits=self.max_qubits, max_branches=self.max_branches,
-                       noise_model=self.noise_model, initial_state=self.initial_state)
+                       noise_model=self.noise_model, initial_state=self.initial_state, execution_limits=self.execution_limits)
         options.update(changes)
         return MatrixProductStateDevice(**options)
 
@@ -70,6 +71,9 @@ class MatrixProductStateDevice:
         return [(p, operator) for p, operator in zip(probabilities, operators) if p > 0]
 
     def _branches(self, circuit, program):
+        if circuit.has_structured_control_flow:
+            from quantumbridge.execution.control_flow_engine import dynamic_branches
+            return dynamic_branches(self, circuit)
         branches = [(self._initial(circuit.num_qubits), [0] * circuit.num_bits, {}, 1.0)]
         live = decision_liveness(program)
         for index, (kind, value, wires, metadata) in enumerate(program):
@@ -108,6 +112,10 @@ class MatrixProductStateDevice:
         state._guard(sum(tensor.size for tensor in state._tensors) * (count + 2))
 
     def _trajectories(self, circuit, program, shots, seed):
+        if circuit.has_structured_control_flow:
+            from quantumbridge.execution.control_flow_engine import DynamicExecutionEngine
+            yield from DynamicExecutionEngine(self, circuit).trajectories(shots, seed)
+            return
         rng, prefix, offset = np.random.default_rng(seed), self._initial(circuit.num_qubits), 0
         for kind, value, wires, metadata in program:
             if kind != "gate" or metadata.get("condition") or metadata.get("control_flow_stack"):
@@ -255,6 +263,9 @@ class MatrixProductStateDevice:
                 "noise_model_metadata": {} if self.noise_model is None else self.noise_model.summary()}
 
     def run_shots(self, circuit, shots=1024, seed=None, parameters=None, memory=False):
+        if circuit.has_structured_control_flow:
+            from quantumbridge.execution.control_flow_engine import dynamic_shots
+            return dynamic_shots(self, circuit, shots, seed, parameters, memory)
         self._shots(shots)
         bound, program = self._prepare(circuit, parameters)
         samples, max_bond, discarded = [], 1, 0.0
@@ -279,12 +290,12 @@ class MatrixProductStateDevice:
         bound, program = self._prepare(circuit, parameters)
         branches = self._branches(bound, program)
         probabilities = None
-        if bound.measurements:
+        if bound.has_measurements:
             probabilities = {}
             for _, bits, _, weight in branches:
                 label = "".join(map(str, bits))
                 probabilities[label] = probabilities.get(label, 0.0) + weight
-        metadata = self._metadata(bound, [state for state, _, _, _ in branches])
+        metadata = {**self._metadata(bound, [state for state, _, _, _ in branches]), **getattr(branches, "metadata", {})}
         pure = branches[0][0] if len(branches) == 1 else None
         if pure is None:
             metadata["mps_ensemble"] = [{"weight": weight, "classical_bits": bits, "state": state.to_dict()} for state, bits, _, weight in branches]

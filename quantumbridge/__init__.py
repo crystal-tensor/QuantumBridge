@@ -34,6 +34,8 @@ from quantumbridge.circuit_library import (
 )
 from quantumbridge.compat import circuit_from_openqasm, circuit_from_qiskit, circuit_to_qiskit
 from quantumbridge.core import Circuit, Instruction, Measurement, Operation, Parameter, ParameterExpression, ParameterVector
+from quantumbridge.core.control_flow import ExecutionLimits
+from quantumbridge.core.classical import UnsupportedFeature
 from quantumbridge.compiler import transpile
 from quantumbridge.devices import ShotSampler, StatevectorDevice, StabilizerDevice, DensityMatrixDevice, MatrixProductStateDevice
 from quantumbridge.diff import parameter_shift
@@ -62,6 +64,8 @@ from quantumbridge.utils.math import Hamiltonian, PauliString, PauliX, PauliY, P
 __all__ = [
     "AmplitudeEstimationResult",
     "Circuit",
+    "ExecutionLimits",
+    "UnsupportedFeature",
     "Backend",
     "BackendEstimator",
     "BackendEstimatorV2",

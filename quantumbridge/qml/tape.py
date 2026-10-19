@@ -64,6 +64,36 @@ class Tape:
     def swap(self, a: int, b: int):
         self.circuit.swap(a, b)
 
+    def measure(self, wire, reset=False):
+        from quantumbridge.core.classical import bit
+        position = self.circuit.num_bits
+        self.circuit.num_bits += 1
+        self.circuit.measure(wire, position)
+        if reset: self.circuit.reset(wire)
+        return bit(position)
+
+    def cond(self, condition, true_fn, false_fn=None):
+        from quantumbridge.core.classical import ClassicalExpression
+        if not isinstance(condition, ClassicalExpression):
+            raise TypeError("QuantumBridge Tape.cond requires a runtime classical expression.")
+        def record(fn):
+            if fn is None: return None
+            branch = Tape(self.circuit.num_qubits)
+            branch.circuit.num_bits = self.circuit.num_bits
+            fn(branch)
+            if branch.measurements:
+                raise ValueError("QuantumBridge conditional Tape callbacks cannot return terminal measurements.")
+            self.circuit.num_bits = max(self.circuit.num_bits, branch.circuit.num_bits)
+            return branch.circuit
+        true, false = record(true_fn), record(false_fn)
+        if true is None: raise TypeError("QuantumBridge Tape.cond requires a true callback.")
+        true.num_bits = self.circuit.num_bits
+        if false is not None: false.num_bits = self.circuit.num_bits
+        self.circuit.if_else(condition, true, false, inplace=True)
+
+    def reset(self, wire):
+        self.circuit.reset(wire)
+
     def kraus(self, operators, wires):
         self.circuit.kraus(operators, normalize_wires(wires))
 

@@ -18,7 +18,12 @@ def _device_with_noise(base_device, noise_model):
     if hasattr(base_device, "with_noise_model"):
         return base_device.with_noise_model(noise_model)
     if type(base_device) is StatevectorDevice:
-        return DensityMatrixDevice(max_qubits=base_device.max_qubits, noise_model=noise_model)
+        return DensityMatrixDevice(
+            max_qubits=base_device.max_qubits,
+            noise_model=noise_model,
+            max_memory_mb=base_device.max_memory_mb,
+            execution_limits=base_device.execution_limits,
+        )
     raise TypeError("QuantumBridge noisy execution needs a device with native noise configuration support.")
 
 

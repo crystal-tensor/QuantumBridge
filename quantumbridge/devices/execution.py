@@ -17,6 +17,8 @@ def prepare_program(circuit, parameters=None, max_qubits=None, noise_model=None)
     bound = circuit.bind(parameters) if parameters else circuit
     if max_qubits is not None and bound.num_qubits > max_qubits:
         raise ValueError("QuantumBridge circuit exceeds this device qubit limit.")
+    if bound.has_structured_control_flow:
+        return bound, [("structured", bound, None, {})]
     noise = []
     if noise_model is not None:
         if not hasattr(noise_model, "channels") or not hasattr(noise_model, "readout_errors"):

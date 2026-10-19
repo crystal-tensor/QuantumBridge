@@ -17,6 +17,9 @@ class PassManager:
         self.passes = list(passes or [])
 
     def run(self, circuit):
+        if circuit.has_structured_control_flow:
+            from quantumbridge.core.classical import UnsupportedFeature
+            raise UnsupportedFeature("structured_transpilation", "QuantumBridge cannot yet route/schedule structured dynamic blocks; execute the native circuit directly.")
         if circuit.has_dynamic_operations:
             return self._run_ordered(circuit)
         input_operations = len(circuit.operations)
