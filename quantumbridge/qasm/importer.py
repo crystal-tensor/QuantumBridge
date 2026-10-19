@@ -69,9 +69,13 @@ def circuit_from_ast(program: QASMProgram) -> Circuit:
             else:
                 raise QASMParseError("measurement must use either two indexed refs or two whole registers")
         elif isinstance(statement, Barrier):
-            continue
+            circuit.barrier(*[_resolve(ref,qregs,"quantum") for ref in statement.qubits])
     return circuit
 
 
 def loads(text: str) -> Circuit:
-    return circuit_from_ast(parse(text))
+    from quantumbridge.serialization import qasm2_loads
+    from quantumbridge.serialization.errors import SerializationError
+    try: return qasm2_loads(text,strict=False)
+    except SerializationError as exc:
+        raise QASMParseError(str(exc),exc.line,exc.column) from exc

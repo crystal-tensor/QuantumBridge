@@ -19,6 +19,6 @@ def test_qasm_roundtrip_strict_structure():
 
 
 def test_qasm_import_rejects_unsupported_syntax_with_clear_error():
-    text = "OPENQASM 2.0;\nqreg q[1];\nu3(0,0,0) q[0];\n"
-    with pytest.raises(ValueError, match="does not support line"):
+    text = "OPENQASM 2.0;\nqreg q[1];\nunknown_gate(0,0,0) q[0];\n"
+    with pytest.raises(ValueError, match="does not support gate"):
         circuit_from_openqasm(text)

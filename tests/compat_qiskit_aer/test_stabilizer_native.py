@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from quantumbridge import Circuit, StabilizerDevice, transpile
+from quantumbridge import Circuit, StabilizerDevice, transpile, circuit_from_openqasm
 from quantumbridge.compat.qiskit_adapter import circuit_from_qiskit, circuit_to_qiskit
 from quantumbridge.compat.qiskit_aer import execute_basic_circuit_native, run_stabilizer_simulator_native
 from quantumbridge.schema.aer_results import QasmSimulationResult
@@ -45,8 +45,8 @@ def test_dynamic_routing_and_unsupported_exports_are_not_silently_changed():
     assert StabilizerDevice().run(compiled).probabilities() == StabilizerDevice().run(circuit).probabilities()
     assert compiled.metadata["transpile"]["analyses"]["target_validated"]
     conditional = Circuit(1, 1).x(0).c_if(0, 1)
-    with pytest.raises(ValueError, match="conditional"):
-        conditional.to_openqasm()
+    restored = circuit_from_openqasm(conditional.to_openqasm())
+    assert StabilizerDevice().run(restored).probabilities() == StabilizerDevice().run(conditional).probabilities()
 
 
 def test_qiskit_import_export_preserves_midcircuit_read_order():

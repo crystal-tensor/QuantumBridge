@@ -326,6 +326,19 @@ endorsed by upstream maintainers, not a full replacement, not production UI or
 production API software, and does not access cloud services, tokens,
 credentials, or real hardware.
 
+## Stage 11M Native Serialization
+
+OpenQASM 2/3 and QPY version 13 are implemented independently from public
+format specifications. Qiskit public reader/writer calls are optional
+interoperability oracles, not the native implementation. No upstream source,
+tests, package artifacts or environments were copied or vendored. Source
+port count remains zero. Existing attribution and licenses are retained.
+
+Public references: [OpenQASM specification](https://openqasm.com/) and
+[QPY format documentation](https://quantum.cloud.ibm.com/docs/en/api/qiskit/qpy).
+The tested subset and unsupported protocol branches are documented in the
+Stage 11M report; this checkpoint does not imply complete SDK replacement.
+
 ## Stage 11L Native Transpiler
 
 The dependency DAG, scoped compilation, algebraic gate translation,

@@ -280,7 +280,10 @@ class QuafuCloudBackend:
     ) -> QuafuCloudJob:
         shots = _validate_shots(shots)
         prepared = _prepare_circuit(circuit, auto_measure=auto_measure)
-        openqasm = prepared.to_openqasm()
+        from quantumbridge.serialization import serialize_circuit
+        # The remote protocol carries source only; job name remains a separate field.
+        artifact = serialize_circuit(prepared,"qasm2",metadata_policy="external")
+        openqasm = artifact.data
         job_name = name or prepared.name or "quantumbridge-job"
         task_id = self._transport.submit(
             openqasm,

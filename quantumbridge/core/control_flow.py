@@ -183,11 +183,11 @@ def validate_control_flow(circuit, environment=None, limits=None, depth=0, loop_
             if data["parameter"] is not None and not isinstance(data["parameter"], Parameter): raise TypeError("Invalid loop parameter.")
             var = data["variable"]
             if var is not None:
-                if not isinstance(var, ClassicalExpression) or var.op != "var" or var.dtype.kind != "uint": raise TypeError("QuantumBridge loop variable must be UInt storage.")
+                if not isinstance(var, ClassicalExpression) or var.op != "var" or var.dtype.kind not in {"uint","int"}: raise TypeError("QuantumBridge loop variable must be integer storage.")
                 local[var.value[0]] = var.dtype
                 for value in data["values"]: var.dtype.normalize(value)
         if node.kind == "switch":
-            if data["selector"].dtype.kind not in {"uint", "bit"}: raise TypeError("QuantumBridge switch selectors require Bit/UInt.")
+            if data["selector"].dtype.kind not in {"uint", "bit", "int"}: raise TypeError("QuantumBridge switch selectors require integer types.")
             seen = set()
             for values, _ in data["cases"]:
                 for value in values:

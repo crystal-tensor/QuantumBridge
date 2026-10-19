@@ -39,11 +39,11 @@ class ClassicalType:
         return hash((self.kind, self.width))
 
     def __post_init__(self):
-        if self.kind not in {"bool", "bit", "uint"}:
+        if self.kind not in {"bool", "bit", "uint", "int"}:
             raise UnsupportedFeature("classical_type", f"Unsupported classical type {self.kind!r}.")
         if isinstance(self.width, bool) or not isinstance(self.width, Integral) or not 1 <= self.width <= 4096:
             raise ValueError("QuantumBridge classical widths must be integers in [1, 4096].")
-        if self.kind != "uint" and self.width != 1:
+        if self.kind not in {"uint","int"} and self.width != 1:
             raise ValueError("QuantumBridge Bool/Bit have width one.")
 
     def normalize(self, value, *, wrap=False):
@@ -53,9 +53,11 @@ class ClassicalType:
             return value
         if isinstance(value, bool) or not isinstance(value, Integral):
             raise TypeError("QuantumBridge bit/UInt values require integers, not booleans.")
-        if not wrap and not 0 <= value < (1 << self.width):
+        lower,upper = (-(1 << (self.width-1)),1 << (self.width-1)) if self.kind == "int" else (0,1 << self.width)
+        if not wrap and not lower <= value < upper:
             raise ValueError("QuantumBridge classical value does not fit its declared width.")
-        return int(value) & ((1 << self.width) - 1)
+        result = int(value) & ((1 << self.width) - 1)
+        return result-(1 << self.width) if self.kind == "int" and result >= upper else result
 
     def to_dict(self):
         return {"kind": self.kind, "width": int(self.width)}
@@ -74,6 +76,10 @@ class Bit(ClassicalType):
 class UInt(ClassicalType):
     def __init__(self, width):
         super().__init__("uint", width)
+
+
+class Int(ClassicalType):
+    def __init__(self,width=32): super().__init__("int",width)
 
 
 @dataclass(frozen=True, eq=False)
@@ -187,10 +193,10 @@ def binary(op, left, right):
     right = lift(right, left.dtype) if not isinstance(right, ClassicalExpression) else right
     if left.dtype.kind != right.dtype.kind:
         raise TypeError("QuantumBridge classical operands require matching kinds; use explicit casts.")
-    if left.dtype.kind == "uint" and left.dtype.width != right.dtype.width:
-        common = UInt(max(left.dtype.width, right.dtype.width))
+    if left.dtype.kind in {"uint","int"} and left.dtype.width != right.dtype.width:
+        common = ClassicalType(left.dtype.kind,max(left.dtype.width, right.dtype.width))
         left, right = cast(left, common), cast(right, common)
-    if op in {"add", "sub", "mul", "shl", "shr", "lt", "le", "gt", "ge"} and left.dtype.kind != "uint":
+    if op in {"add", "sub", "mul", "shl", "shr", "lt", "le", "gt", "ge"} and left.dtype.kind not in {"uint","int"}:
         raise TypeError("QuantumBridge arithmetic/ordering requires UInt operands.")
     dtype = Bool() if op in {"eq", "ne", "lt", "le", "gt", "ge"} else left.dtype
     return ClassicalExpression(op, dtype, (left, right))

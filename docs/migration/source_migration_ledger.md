@@ -5,6 +5,28 @@ Date: 2026-06-05
 
 This ledger records implementation mode and upstream source status for the current P1 release-candidate baseline. Current work uses Native Implementation, Adapter Integration, and Upstream Dependency. No new upstream source migration was introduced during Stage 5.5. No Source Port with Attribution was performed.
 
+## Stage 11M Native Serialization
+
+Native Implementation; source port count zero. Public OpenQASM and QPY format
+documentation and public SDK reader/writer calls are references, not copied
+implementations or runtime dependencies. No upstream source/tests, package
+artifacts, environment, credentials or hardware submissions are included.
+Full format/SDK parity is not claimed; supported protocol branches and explicit
+rejections are recorded in the Stage 11M report.
+
+| Files | Independent behavior | Evidence |
+| --- | --- | --- |
+| `quantumbridge/serialization/__init__.py`, `quantumbridge/serialization/errors.py`, `quantumbridge/serialization/limits.py`, `quantumbridge/serialization/common.py` | Native public API, structured errors, bounded I/O and register maps | Native malformed/resource/file tests |
+| `quantumbridge/serialization/text_ast.py`, `quantumbridge/serialization/text_lexer.py`, `quantumbridge/serialization/text_parser.py` | Tokenization, typed syntax tree and recursive grammar | QASM2/3 source programs and hostile input |
+| `quantumbridge/serialization/text_lowering.py`, `quantumbridge/serialization/text_exporter.py`, `quantumbridge/serialization/text_api.py`, `quantumbridge/serialization/control_normalization.py` | Source/Circuit semantics, runtime blocks, branch snapshots, standard phase and explicit Qiskit dialect | Actual native execution and public optional comparisons |
+| `quantumbridge/serialization/qpy.py`, `quantumbridge/serialization/qpy_expressions.py` | Actual QPY v13 binary protocol and arithmetic replay | Real binary bilateral loading, multiple circuits, parameters and corruption tests |
+| `quantumbridge/serialization/interchange.py` | Standard-format conversion and explicitly external provenance sidecars | Compiler/layout, QNode gradients, IR and 100-qubit MPS |
+| `quantumbridge/core/classical.py`, `quantumbridge/core/control_flow.py`, `quantumbridge/core/parameters.py`, `quantumbridge/ir/qb_ir.py` | Signed classical storage, loop types and optional parameter UUID preservation | Existing native regressions and new serialization tests |
+| `quantumbridge/qasm/importer.py`, `quantumbridge/qasm/exporter.py`, `quantumbridge/qml/qnode.py` | Existing source API integration and native restored-circuit differentiation | Existing QASM and gradient regressions |
+| `quantumbridge/compat/qos_uqci/openqasm_bridge.py`, `quantumbridge/compat/quafu/cloud_backend.py` | Existing source-only adapter integration uses explicit external metadata policy | Offline/mock regressions only; no hardware job or token access |
+| `tests/serialization/`, `tests/compat/test_native_serialization_differential.py` | Independently authored native and optional public black-box tests | Three isolated environments, no source copying |
+| `examples/native_qasm2_roundtrip.py`, `examples/native_qasm3_dynamic_roundtrip.py`, `examples/native_qpy_binary_roundtrip.py`, `examples/native_format_interchange.py`, `examples/native_serialization_compiled_circuit.py` | SDK-free callable workflows | Native execution; optional SDK codec only |
+
 ## Stage 11L Native Compiler
 
 Native Implementation only; zero source ports. Public SDK black-box behavior

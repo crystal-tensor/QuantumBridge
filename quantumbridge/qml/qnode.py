@@ -55,6 +55,26 @@ class QNode:
         result.compiler_options, result.last_metadata = dict(options), {}
         return result
 
+    @classmethod
+    def from_circuit(cls,circuit,observable,**options):
+        """Execute a native parameterized Circuit; Python callables are not serialized."""
+        from quantumbridge.diff.qnode_engine import AngleRecorder
+        from quantumbridge.diff.compiled_parameters import record_compiled_parameters
+        parameters = circuit.parameters
+        def program(tape,*values):
+            if len(values) == 1 and isinstance(values[0],(tuple,list)):
+                values = tuple(values[0])
+            elif len(values) == 1 and hasattr(values[0],"shape") and values[0].shape:
+                values = tuple(values[0].reshape(-1))
+            if len(values) != len(parameters): raise ValueError("Circuit QNode argument count must match its free parameter count.")
+            source = AngleRecorder()
+            source.parameters,source.angles = list(parameters),list(values)
+            prepared,recorded = record_compiled_parameters(circuit,source)
+            mapping = {parameter:tape.parameter_transform(value) for parameter,value in zip(recorded.parameters,recorded.angles)}
+            tape.circuit = prepared.assign_parameters(mapping)
+            return tape.expval(observable)
+        return cls(program,circuit.num_qubits,**options)
+
     def __call__(self, *args, **kwargs):
         from quantumbridge.interfaces.qnode_autodiff import execute_interface, infer_interface
         interface = infer_interface(args, kwargs) if self.interface == "auto" else self.interface

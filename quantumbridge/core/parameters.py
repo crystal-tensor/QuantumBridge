@@ -6,7 +6,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from numbers import Real
 from typing import Any, Iterator, Mapping, Sequence, Union
 
@@ -16,10 +16,14 @@ class Parameter:
     """Named scalar parameter used by QuantumBridge circuits."""
 
     name: str
+    uuid: str | None = field(default=None, compare=False, repr=False)
 
     def __post_init__(self) -> None:
         if not isinstance(self.name, str) or not self.name:
             raise ValueError("QuantumBridge parameter names must be non-empty strings.")
+        if self.uuid is not None:
+            from uuid import UUID
+            object.__setattr__(self,"uuid",str(UUID(self.uuid)))
 
     def __repr__(self) -> str:
         return f"Parameter({self.name!r})"

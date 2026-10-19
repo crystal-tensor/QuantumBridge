@@ -23,7 +23,7 @@ def test_qasm_p1_bell_comments_include_barrier_and_whole_measure():
     circuit = circuit_from_openqasm(text)
     assert circuit.num_qubits == 2
     assert circuit.num_bits == 2
-    assert [op.name for op in circuit.operations] == ["h", "cx"]
+    assert [op.name for op in circuit.operations] == ["h", "barrier", "cx"]
     assert [(m.wire, m.bit) for m in circuit.measurements] == [(0, 0), (1, 1)]
 
 
@@ -51,7 +51,7 @@ def test_qasm_p1_parameterized_and_multi_registers():
 
 def test_qasm_p1_unsupported_and_malformed():
     with pytest.raises(ValueError, match="does not support"):
-        circuit_from_openqasm("OPENQASM 2.0;\nqreg q[1];\nu3(0,0,0) q[0];\n")
+        circuit_from_openqasm("OPENQASM 2.0;\nqreg q[1];\nunknown_gate(0,0,0) q[0];\n")
     with pytest.raises(ValueError, match="qreg"):
         circuit_from_openqasm("OPENQASM 2.0;\nh q[0];\n")
 

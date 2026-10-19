@@ -665,6 +665,26 @@ Quafu verification. Studio remains deferred.
 See [Stage 11L report](docs/implementation/stage11l_native_transpiler_report.md)
 and the SDK-free `examples/native_transpile_*.py` workflows.
 
+## Native Serialization Checkpoint
+
+`quantumbridge.serialization` provides native QASM2/QASM3 string/file APIs,
+typed runtime-source execution, real public QPY v13 binary I/O and explicit
+cross-format conversion. Existing Circuit/IR, compiler, native QNode gradients
+and MPS execution are reused, not replaced by upstream SDK execution.
+
+Default export rejects unsupported semantic loss. Optional external sidecars
+preserve native layout/schedule/provenance metadata, but are not standard QPY
+fields. QPY dynamic/custom/layout branches, non-dt delays, other QPY versions,
+OpenPulse/calibration, general arrays/types and complete symbolic protocols
+remain unsupported. QASM3 uses standard U phase semantics; importing Qiskit
+2.4/2.6 source with its U3 convention requires explicit `dialect="qiskit"`.
+
+See the [Stage 11M report](docs/implementation/stage11m_native_qasm_qpy_serialization_report.md),
+[current parity ledger](docs/compat/core_parity_ledger.md), and
+`examples/native_qasm*_roundtrip.py` / `examples/native_qpy_binary_roundtrip.py`.
+Full Qiskit/PennyLane replacement and real hardware verification remain
+incomplete. Studio remains deferred.
+
 ## Legal and Attribution
 
 - Apache-2.0 plan: [docs/legal/apache2_compliance_plan.md](docs/legal/apache2_compliance_plan.md)

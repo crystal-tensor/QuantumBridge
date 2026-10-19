@@ -1,84 +1,90 @@
 # Core Functional Parity Ledger
 
-## Stage 11L Compiler Checkpoint (2026-10-19)
+Updated: 2026-10-19, Stage 11M tested checkpoint, starting from published `45fe338`.
+This is the single current-status view. Full Qiskit/PennyLane functional
+replacement remains **incomplete**. Line coverage, inventories, passthrough and
+green CI are not proof of complete API coverage.
 
-| Capability | Evidence/status | Remaining gap |
+NATIVE_IMPLEMENTED means executable native code exists; NATIVE_TESTED adds
+independent behavioral tests; UPSTREAM_DIFFERENTIAL_TESTED adds public black-box
+evidence for the stated scenarios only. PARTIAL/UNSUPPORTED/NOT_STARTED describe
+remaining scope. Stage 11M passes the three clean tracked-tree local gates;
+publication/exact-SHA CI is a separate receipt, not inferred from prior CI.
+
+## Current Core Status
+
+| Capability | Current evidence/status | Remaining functional work |
 | --- | --- | --- |
-| Native DAG/mutation/roundtrip | native implemented/tested | Full graph API/noncontiguous contraction partial |
-| PassManager/PropertySet/stages | native implemented/tested | Full DAG-pass/flow-controller/plugin protocol partial |
-| Target/CouplingMap/Layout | native implemented/tested | Full backend/calibration schema partial |
-| Algebraic basis translation | native tested + 12 public differential scenarios | Arbitrary synthesis/all gates unsupported |
-| Directed routing/permutation | native tested | Optimal/stochastic routing search not started |
-| Safe local optimization | native tested | General commutation synthesis not started |
-| ASAP/ALAP static scheduling | native tested | Pulse/calibration/dynamic global timing unsupported |
-| Dynamic block compilation | native tested for if/for/while/switch/store/break/continue | Dynamic global schedule unsupported |
-| Parameter AST/compiled QNode | native/Torch/Autograd tested | Restored identity layout/equal width only; JAX/TF/higher-order gaps unchanged |
-| Compiled 100-qubit MPS | native tested with dense calls disabled | Arbitrary entanglement efficiency not claimed |
-| QOS-UQCI/Quafu-style target | offline configuration tested | Real cloud/hardware verification not performed |
+| QuantumCircuit | NATIVE_TESTED; PARTIAL: typed storage, parameters, arithmetic, compose/control/inverse/power and runtime blocks | Complete builders/signatures, all types/scopes, calibrations and instruction schedules |
+| Circuit library | NATIVE_TESTED; PARTIAL: standard gates, bounded ansatz/arithmetic/encoding | All library families and edge cases |
+| Quantum information | NATIVE_TESTED; PARTIAL: vector/density/operators/Pauli/channels/metrics/random/Clifford/MPS | Full dimensional, subsystem, synthesis and general-map contracts |
+| DAG/mutation/roundtrip | NATIVE_TESTED; PARTIAL: actual wire/classical dependencies and validation | Full graph API and noncontiguous contraction |
+| PassManager/PropertySet | NATIVE_TESTED; PARTIAL: analysis lifetime, invalidation, prerequisites, callbacks, stages and limits | Full DAG-pass/flow-controller/plugin protocol |
+| Target/CouplingMap/Layout | NATIVE_TESTED; PARTIAL: properties, directed paths, initial/final mapping | Full backend/calibration schema and optimal search |
+| Basis translation/routing | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: exact phase, directed routing and permutation tracking | Arbitrary/all-gate synthesis and optimal/stochastic routing |
+| Optimization | NATIVE_TESTED; PARTIAL: safe cancellation/identity/rotation merging | General commutation and synthesis methods |
+| Static ASAP/ALAP | NATIVE_TESTED; PARTIAL: real configured durations, dependencies and alignment | Pulse/calibration and global dynamic timing UNSUPPORTED |
+| Structured dynamic compilation | NATIVE_TESTED; PARTIAL: if/for/while/switch/store/break/continue actually compile and execute | Remaining branch/layout combinations and dynamic timing |
+| Primitives V2 | NATIVE_TESTED; PARTIAL: native Job/PUB/counts/observables and dynamic results | Full broadcasting, precision/shots/containers/error protocol |
+| Provider/Backend/Job | NATIVE_TESTED; PARTIAL: native local backends and jobs | Complete discovery/options/async/cancellation/remote contracts |
+| Aer methods/noise/save | NATIVE_TESTED; PARTIAL: vector/density/tableau/MPS and CPTP/noise execution | Complete save/set/noise/method/option semantics |
+| Algorithms | NATIVE_TESTED; PARTIAL: bounded eigen/estimation and VQE/QAOA/Grover | All algorithm families, optimizers and result contracts |
+| Nature/Finance/Optimization/ML/Experiments/Dynamics | PARTIAL: native executable slices and separate optional adapters | Complete independent industry functions; upstream passthrough is not parity |
+| IBM Runtime | PARTIAL: offline/optional adapters | Authorized real service execution and complete runtime contracts |
+| QNode/device/measurement | NATIVE_TESTED; PARTIAL: native vector/density/MPS/tableau, typed trees and dynamic measurements | Complete constructor/plugins/devices/operations/measurement protocols |
+| Native parameter-shift/adjoint | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: actual first-order algorithms and classical chain rule | All generators/transforms, reused parameterized loops and mixed/MPS adjoint |
+| VJP/JVP/execute derivatives | NATIVE_TESTED; PARTIAL | Current explicit Jacobian products are not full derivative-device contracts |
+| Torch/Autograd | NATIVE_TESTED; PARTIAL: CPU framework graphs with native quantum VJP | GPU, higher order and full interface/device contracts |
+| JAX/TF/backprop/capture | NOT_STARTED or UNSUPPORTED as documented | Full end-to-end implementations; array conversion is not autodiff |
+| Shot vectors/dynamic gradients/MPS gradients | NATIVE_TESTED; PARTIAL: actual sampling/branches, native shift and finite difference | Complete stochastic/loop/postselection contracts; numerical truncation risk |
+| Higher-order derivatives | UNSUPPORTED | First-order guards remain active |
+| Compiled QNode gradients | NATIVE_TESTED; PARTIAL: expressions, shared inputs, Torch/Autograd and native gradients | Restored identity/equal-width only; general measurement remapping |
+| Templates/qchem/math/resources/kernels/qnn/qcut/shadows | PARTIAL: bounded executable workflows | Full library and differentiation contracts |
+| Compiled 100-qubit MPS | NATIVE_TESTED for GHZ-chain with dense APIs disabled | No arbitrary-entanglement efficiency claim |
+| Quafu/QOS-UQCI/industry taxonomy | PARTIAL: offline target/configuration and existing adapters, four categories/19 subdomains | Real authorized backend/job evidence and complete industry workflows |
 
-Full replacement/full parity remains **incomplete**. Stage 11K and earlier
-remaining gaps are not erased by compiler progress. See the Stage 11L report.
+## Serialization Status
 
-Updated: 2026-10-19, Stage 11K. Full replacement/full functional parity is the
-objective, not an achieved status. Inventory counts and line coverage are not
-API/functionality coverage. Every row below remains PARTIAL or OPEN.
-
-| Requirement | Current native evidence | Remaining functional work |
+| Capability | Stage 11M current status | Remaining gate |
 | --- | --- | --- |
-| QuantumCircuit API | Parameters/expressions, compose/control/inverse/power, ordered reads, Stage 11J typed variables and runtime if/for/while/switch/break/continue/store | Complete signatures/builders, all classical types/expressions/scopes, calibration/schedule semantics and SDK equivalence |
-| Circuit library | Existing standard-gate, ansatz, arithmetic, encoding tests | Full library families, parameters, decompositions and edge cases |
-| Quantum information | Native states/operators/Pauli/channels/metrics/random/Clifford plus MPS; Stage 11B-I reports | All APIs/subsystem conventions, synthesis methods and dimensional/general-map contracts |
-| Transpiler | Existing pass manager/target/routing subsets | Full DAG/layout/basis/scheduling/optimization; structured dynamic transpilation explicitly rejected pending implementation |
-| Primitives V2 | Native Job/PUB/counts/observable workflows; exact dynamic branch expectations and finite-shot records | Complete broadcasting, precision/shot semantics, containers and error contracts |
-| Provider/Backend/Job | Local native backends with dynamic execution | All discovery/options/async/cancellation/remote/provider contracts |
-| QPY/QASM2/QASM3 | Existing QASM subset; executable native structured IR JSON with nested parameters | Complete standards, QPY interchange, dynamic source import/export and version coverage |
-| Aer methods/noise/save | Vector/density/tableau/MPS execution and native noise/CPTP paths | Full AerSimulator interface, save/set snapshots, gate-attached noise, all methods/options and errors |
-| Algorithms | Existing VQE/QAOA/Grover and bounded eigensolver/estimation paths | Complete algorithm families, result semantics and optimizers |
-| Nature/Finance/Optimization/ML/Experiments/Dynamics | Mixed native executable slices and optional adapters; inspect per-project reports | Independent complete functions, industry workflows and behavioral parity; passthrough is not native parity |
-| IBM Runtime | Offline/optional adapter work only | Authorized real service path and matching runtime contracts; no token/hardware evidence in Stage 11J |
-| QNode execution | Native Tape callbacks, dynamic measure/cond/reset and multiple measurement types | Complete PennyLane QNode constructor/interfaces, shots/capture/executors/transforms and returned-tree protocols |
-| PennyLane devices/plugins | Native vector/density/MPS/tableau devices and bridges | Full default/plugin/device API, all operations and device families |
-| Observables/measurements | Native Pauli/Hamiltonian, state/probability/density/shadow subsets and dynamic measurements | Complete sparse/operator algebra and all measurement protocols |
-| Transforms/gradients/interfaces | Existing finite-difference/shift/SPSA/QNG and interface subsets | Full native adjoint/backprop/gradient transforms and Torch/JAX/Autograd/TF end-to-end autodiff |
-| Templates/qchem/math | Existing bounded templates and chemistry workflows | Complete templates, qchem, multi-interface math and differentiation contracts |
-| Resources/kernels/qnn/qcut/shadows | Existing executable subsets only | Full resource estimation, kernels, QNN, cutting and shadow APIs |
-| Quafu/QOS-UQCI and industries | Existing adapters/taxonomy; four categories/19 subdomains unchanged | Real authorized hardware validation and complete cross-domain workflows, separate from simulation evidence |
+| QASM2 parsing/exporting/files/strings | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: 27 native + 10 bilateral public scenarios | Full language/object API is not claimed |
+| QASM2 custom gates | NATIVE_TESTED via budgeted semantic expansion | Full definition-object identity/opaque execution not claimed |
+| QASM2 conditional subset | NATIVE_TESTED for complete-register equality | Nonrepresentable dynamic/phase/delay objects explicitly reject |
+| QASM3 typed AST/source lowering | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: typed source executes, 10 bilateral public scenarios | Complete language types/functions/arrays remain partial; standard U vs SDK dialect explicit |
+| QASM3 control flow | NATIVE_TESTED: 14 independent dynamic sources + 3 legacy snapshot cases | Full types/capture/subroutine behavior remains partial |
+| QASM3 timing/custom definitions | NATIVE_TESTED subset: real delay units/expanded definitions | Full timing algebra and object fidelity partial |
+| QASM3 OpenPulse/defcal/stretch/extern/complex arrays | UNSUPPORTED | Must reject without deleting statements |
+| QPY native reader/writer | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: 18 native binary + 10 bilateral public + multicircuit cases | Real public version 13 binary, not an IR envelope; unsupported branches below |
+| QPY format versions | Version 13 only; all other versions UNSUPPORTED | Version is distinct from source SDK version |
+| QPY parameters/global phase | UPSTREAM_DIFFERENTIAL_TESTED: UUIDs, arithmetic replay, symbolic/numeric phase | Full symbolic function/vector/object encoding partial; native equality remains name-based |
+| QPY dynamic circuits/custom instructions/layout | UNSUPPORTED at this checkpoint | Do not infer completion from static QPY success |
+| QPY non-dt Delay | UNSUPPORTED | Tested v13 SDK payload loses units; native export rejects; QASM3 retains units |
+| Cross-format interchange | NATIVE_TESTED; PARTIAL | Default lossless semantics or rejection; explicit external root metadata only |
+| Serialization gradient/compiler/MPS preservation | NATIVE_TESTED: six gradient scenarios in two formats, compiled routing/phase/order, 100-qubit non-dense MPS | Does not serialize Python callables or promise arbitrary MPS efficiency |
+| Parsing security/limits | NATIVE_TESTED: hostile includes/code-like source, lengths/flags/versions/replay/identity/numeric budgets | Full protocol and all source types remain partial |
 
-Primary Stage 11J evidence: tests/circuit (52 native scenarios),
-tests/compat/test_dynamic_control_flow_differential.py (six optional black-box
-comparisons), and docs/implementation/stage11j_native_dynamic_control_flow_report.md.
-SDK-free tests prohibit upstream execution; the MPS 100-qubit test prohibits
-dense expansion. Neither narrow proof establishes the full objective.
+No QPY or serialization subsystem is marked complete merely because a file has
+the correct header. Actual independent readers/writers and both SDK versions
+must load and execute the resulting circuits. Hardware/cloud work and Studio
+are outside this serialization batch.
 
-Priority after Stage 11J: native QNode/autodiff, complete transpilation, complete
-serialization, full simulator noise/save/set and templates/qchem expansion.
-Studio remains deferred until the core objective and hardware work are handled.
+## Evidence History
 
-## Stage 11K Differentiation Evidence
+The obsolete pre-reconciliation text is preserved verbatim in
+[Stage 11L ledger snapshot](history/core_parity_ledger_stage11l_snapshot.md);
+it is historical, not a second current status table.
 
-Status is scoped to the tested native subset, never an entire upstream module.
-NATIVE_IMPLEMENTED means code executes; NATIVE_TESTED means independent
-behavioral tests pass; UPSTREAM_DIFFERENTIAL_TESTED adds public black-box evidence.
+- [Stage 11J dynamic execution report](../implementation/stage11j_native_dynamic_control_flow_report.md)
+- [Stage 11K differentiation report](../implementation/stage11k_native_qnode_autodiff_report.md)
+- [Stage 11L compiler report](../implementation/stage11l_native_transpiler_report.md)
+- [Stage 11M gap audit](../implementation/stage11m_serialization_gap_audit.md)
+- [Stage 11M implementation/test report](../implementation/stage11m_native_qasm_qpy_serialization_report.md)
 
-| Capability | Status | Evidence / remaining gap |
-| --- | --- | --- |
-| QNode forward / nested measurement trees | NATIVE_TESTED; PARTIAL | Existing/new QNode tests; full signatures/plugins/broadcasting/executors still open |
-| Gate-occurrence parameter shift / shared input chain | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Native math and fourteen public gradient scenarios; full generator family/loop recipes open |
-| Finite difference | NATIVE_TESTED; PARTIAL | Convergence against analytic derivatives; not a surrogate for adjoint/backprop |
-| Pure vector analytic adjoint | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Actual inverse-state/reverse-cotangent algorithm and public oracle comparisons; mixed/MPS/stochastic adjoint unsupported |
-| Simulator-level backprop | NOT_STARTED / UNSUPPORTED | Framework native VJP is not simulator backprop |
-| VJP / JVP / execute-and-derivative methods | NATIVE_TESTED; PARTIAL | Shape/tree/numerical tests; currently explicit Jacobian products, not complete device derivative protocols |
-| Torch backward / gradcheck / optimizer | NATIVE_TESTED; PARTIAL | True CPU tensor graph with native quantum VJP; GPU/higher order/open device contracts unsupported |
-| JAX grad / jacrev / JIT / VMAP | NOT_STARTED / UNSUPPORTED | Array helper is not differentiable QNode integration |
-| Autograd grad / jacobian / optimizer | NATIVE_TESTED; PARTIAL | Real primitive VJP plus classical preprocessing; higher order unsupported |
-| TensorFlow GradientTape | NOT_STARTED / UNSUPPORTED | No fake gradient helper; future optional isolated framework verification required |
-| Shot vectors | NATIVE_TESTED; PARTIAL | None/int/partitions/copies, actual sampled statistics and per-measurement metadata; full upstream shot contracts open |
-| Dynamic QNode gradients | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Full branch probabilities and conditional angles; nonsmooth thresholds/postselection/reused loop angles unsupported |
-| MPS gradients | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Tensor-native shift/finite-diff and no-dense 100-qubit local gradient; truncation warning/resource profiles retained |
-| Higher-order derivatives | UNSUPPORTED | Explicit first-order guards in native/Torch/Autograd paths |
-| Capture | NOT_STARTED | No capture/Catalyst parity claim |
-| Complete gradient/transform execution | PARTIAL | Existing transforms plus QNode derivatives; complete transform/batch/plugin contracts remain open |
-
-Implementation detail: docs/implementation/stage11k_native_qnode_autodiff_report.md.
-The original full core ledger remains authoritative; none of these narrow tests
-establish full Qiskit/PennyLane replacement.
+Stage 11L exact-SHA CI: 39259350086, 22/22 success. Its clean local runs:
+SDK-free 899 passed/116 skipped, installed 1090/4, alternate 1054/40, measured
+line coverage 87.5253299%, local matrix exit 0. These are Stage 11M baselines,
+not proof that new serialization changes pass. Stage 11M local results are
+1030/117 SDK-free, 1252/4 installed, 1216/40 alternate; 162 new serialization
+cases pass in each SDK environment; coverage 87.8801865%. Next work remains
+remaining serialization branches, Aer save/set/noise, complete templates/qchem/transforms and
+JAX/TF/capture/higher-order autodiff. Studio stays last.

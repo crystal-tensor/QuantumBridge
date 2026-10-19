@@ -44,7 +44,7 @@ def _matrix_to_ir(value):
 
 def _param_to_ir(value: Any) -> Any:
     if isinstance(value, Parameter):
-        return {"parameter": value.name}
+        return {"parameter": value.name, **({"parameter_uuid": value.uuid} if value.uuid is not None else {})}
     if isinstance(value, ParameterExpression):
         return {
             "expression": str(value),
@@ -58,7 +58,7 @@ def _param_to_ir(value: Any) -> Any:
 
 def param_from_ir(value):
     if not isinstance(value, dict): return value
-    if set(value) == {"parameter"}: return Parameter(value["parameter"])
+    if set(value) in ({"parameter"}, {"parameter","parameter_uuid"}): return Parameter(value["parameter"],value.get("parameter_uuid"))
     if "parameter_ast" in value:
         tree = value["parameter_ast"]
         if tree["op"] not in {"const", "parameter", "neg", "+", "-", "*", "/", "**"}:
