@@ -10,6 +10,11 @@ from .mappings import JordanWignerMapper
 from .qubit_hamiltonian import QubitHamiltonian
 from .result import ChemistryResult, DriverResult
 from .solvers import ExactDiagonalizationSolver, VQEChemistrySolver
+from .integrals import ElectronicIntegrals, molecular_integrals
+from .limits import QChemLimits
+from .scf import SCFResult, SCFConvergenceError, run_restricted_hartree_fock
+from .molecular_hamiltonian import MolecularHamiltonian, electron_integrals, build_fermionic_hamiltonian, molecular_hamiltonian_native
+from .excitations import hf_state, excitations, excitations_to_wires, apply_fermionic_excitation
 
 __all__ = [
     "ChemistryResult",
@@ -20,4 +25,8 @@ __all__ = [
     "Molecule",
     "QubitHamiltonian",
     "VQEChemistrySolver",
+    "ElectronicIntegrals", "molecular_integrals", "QChemLimits", "SCFResult", "SCFConvergenceError",
+    "run_restricted_hartree_fock", "MolecularHamiltonian", "electron_integrals",
+    "build_fermionic_hamiltonian", "molecular_hamiltonian_native", "hf_state", "excitations",
+    "excitations_to_wires", "apply_fermionic_excitation",
 ]

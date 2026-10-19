@@ -1,6 +1,6 @@
 # Core Functional Parity Ledger
 
-Updated: 2026-10-20, Stage 11N locally tested checkpoint, starting from local `76ea077`.
+Updated: 2026-10-20, Stage 11O-C native chemistry checkpoint validation, starting from local `0d00362`.
 This is the single current-status view. Full Qiskit/PennyLane functional
 replacement remains **incomplete**. Line coverage, inventories, passthrough and
 green CI are not proof of complete API coverage.
@@ -39,7 +39,7 @@ publication/exact-SHA CI is a separate receipt, not inferred from prior CI.
 | Shot vectors/dynamic gradients/MPS gradients | NATIVE_TESTED; PARTIAL: actual sampling/branches, native shift and finite difference | Complete stochastic/loop/postselection contracts; numerical truncation risk |
 | Higher-order derivatives | UNSUPPORTED | First-order guards remain active |
 | Compiled QNode gradients | NATIVE_TESTED; PARTIAL: expressions, shared inputs, Torch/Autograd and native gradients | Restored identity/equal-width only; general measurement remapping |
-| Templates/qchem/math/resources/kernels/qnn/qcut/shadows | PARTIAL: bounded executable workflows | Full library and differentiation contracts |
+| Templates/qchem/math/resources/kernels/qnn/qcut/shadows | PARTIAL: native geometry-derived hydrogen electronic structure now added; other bounded workflows remain | Full library/transform/template and differentiation contracts |
 | Compiled 100-qubit MPS | NATIVE_TESTED for GHZ-chain with dense APIs disabled | No arbitrary-entanglement efficiency claim |
 | Quafu/QOS-UQCI/industry taxonomy | PARTIAL: offline target/configuration and existing adapters, four categories/19 subdomains | Real authorized backend/job evidence and complete industry workflows |
 
@@ -117,6 +117,32 @@ or public comparison passed. The status applies only to the supported subset.
 | MPS non-dense execution | NATIVE_TESTED; PARTIAL | 100-wire GHZ saves, later phase gate, local density/amplitudes/shots |
 | noisy gradients | NATIVE_TESTED; PARTIAL | Fixed noise shift/finite difference; noisy adjoint rejects |
 
+## Stage 11O Chemistry Progress
+
+This is a scoped scientific checkpoint, not whole Stage 11O completion.
+Templates and the real multi-Tape Transform Program remain required unfinished
+work. Existing pedagogical fixed H2/LiH models are not native molecular integrals.
+
+| API | Current evidence/status | Remaining work |
+| --- | --- | --- |
+| Molecule | NATIVE_TESTED; PARTIAL: elements/electrons/spin/units and validated real geometry | Complete molecular API and all electronic models |
+| Gaussian basis | NATIVE_TESTED; PARTIAL: normalized H STO-3G s shells | Other elements/contractions/angular shells and basis catalogue |
+| overlap/kinetic/nuclear attraction | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: actual analytic s-Gaussian AO integrals | General angular momentum, derivatives and complete dimensional contracts |
+| electron repulsion | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: actual chemist ERI tensor | General angular recurrence and derivatives |
+| RHF | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: actual closed-shell iterations and explicit convergence failure | Open-shell/robust general SCF/differentiable response |
+| electron_integrals | NATIVE_TESTED; PARTIAL: real RHF AO-to-MO tensor transformation | General orbital/active-space/differentiability contracts |
+| FermionicOp | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: CAR signs/contractions, products/adjoint and independent Fock matrix | Complete algebra/API and advanced encodings |
+| Jordan-Wigner | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: bounded general complex ladder words and parity strings | Complete mapper family/options/resource scaling |
+| molecular_hamiltonian | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: actual geometry -> RHF -> fermionic -> untapered 4-qubit H2 | All molecules/bases/mappings and differentiable construction |
+| hf_state | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: occupation representation | Other encodings and complete interface |
+| excitations | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: spin-selected singles/doubles | Full excitation families/options |
+| excitations_to_wires | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: ordered ranges/custom wire labels | Complete shape/index/interface contracts |
+| Excitation circuit and VQE | NATIVE_TESTED; PARTIAL: exact commuting-Pauli single/double circuit, native shift/adjoint/Torch/Autograd | Complete UCCSD and general optimization guarantees |
+| active_space/tapering | NOT_STARTED for new native molecular workflow | Actual active-space transformation and symmetry handling |
+| geometry derivatives | PARTIAL: central finite-difference consistency test only | Native analytic integral/SCF derivatives |
+| differentiable HF | NOT_STARTED | Full end-to-end differentiable integrals and SCF |
+| molecular properties/larger elements and bases | NOT_STARTED beyond stated subset | Full native chemistry library |
+
 ## Serialization Status
 
 | Capability | Stage 11M current status | Remaining gate |
@@ -155,6 +181,8 @@ it is historical, not a second current status table.
 - [Stage 11M implementation/test report](../implementation/stage11m_native_qasm_qpy_serialization_report.md)
 - [Stage 11N gap audit](../implementation/stage11n_aer_native_gap_audit.md)
 - [Stage 11N implementation/test report](../implementation/stage11n_native_aer_report.md)
+- [Stage 11O initial gap audit](../implementation/stage11o_pennylane_native_gap_audit.md)
+- [Stage 11O chemistry checkpoint](../implementation/stage11o_native_qchem_report.md)
 
 Stage 11L exact-SHA CI: 39259350086, 22/22 success. Its clean local runs:
 SDK-free 899 passed/116 skipped, installed 1090/4, alternate 1054/40, measured

@@ -687,6 +687,26 @@ first; quantum-error matrices use little-endian qargs. SDK-native object
 shapes/signatures are not universally interchangeable. See the
 [Stage 11N report](docs/implementation/stage11n_native_aer_report.md).
 
+## Native Molecular Chemistry Checkpoint
+
+`quantumbridge.qchem` now computes a bounded hydrogen/STO-3G s-shell workflow
+from actual geometry: normalized Gaussian integrals, iterative closed-shell
+RHF, spin-orbital fermionic Hamiltonian, Jordan-Wigner and number-sector exact
+energy. H2 uses four untapered qubits. Native excitation circuits support
+first-order shift/adjoint and optional Torch/Autograd VQE parameter gradients.
+
+```bash
+python -m examples.native_qchem_h2_integrals
+python -m examples.native_qchem_h2_scf
+python -m examples.native_qchem_h2_vqe
+```
+
+This is not the legacy fixed-coefficient H2/LiH demo, and is not complete
+PennyLane qchem: other elements/bases, open-shell solvers, active spaces,
+properties and fully differentiable molecular geometry/SCF are not implemented.
+Template and multi-Tape transform work in Stage 11O is still in progress.
+See the [chemistry checkpoint report](docs/implementation/stage11o_native_qchem_report.md).
+
 ## Native Serialization Checkpoint
 
 `quantumbridge.serialization` provides native QASM2/QASM3 string/file APIs,

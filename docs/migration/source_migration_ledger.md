@@ -5,6 +5,27 @@ Date: 2026-06-05
 
 This ledger records implementation mode and upstream source status for the current P1 release-candidate baseline. Current work uses Native Implementation, Adapter Integration, and Upstream Dependency. No new upstream source migration was introduced during Stage 5.5. No Source Port with Attribution was performed.
 
+## Stage 11O-C Native Molecular Electronic Structure Checkpoint
+
+Native Implementation, zero implementation/test source ports. Six numerical
+hydrogen STO-3G parameters are scientific input data from MolSSI BSE v1, with
+source and license boundary in `LICENSES/BSE_DATA_NOTICE.txt`; no BSE software
+or environment is included. Native computation uses only NumPy/standard math.
+Public PennyLane/PySCF calls are optional test oracles, not runtime chemistry
+dependencies. Templates and multi-Tape transforms remain unfinished Stage 11O
+work; neither whole Stage 11O nor complete qchem is marked complete.
+
+| Files | Native computation | Evidence |
+| --- | --- | --- |
+| `quantumbridge/chemistry/fermion.py`, `quantumbridge/chemistry/mappings.py`, `quantumbridge/chemistry/qubit_hamiltonian.py` | CAR contractions/signs, independent occupation action, complex general Jordan-Wigner mapping and bounded matrices | Native algebra and public operator comparisons |
+| `quantumbridge/chemistry/molecule.py`, `quantumbridge/chemistry/limits.py`, `quantumbridge/chemistry/basis.py` | Validated elements/electrons/spin/units, native resource budgets and normalized H s shells | Native invalid/input/unit and numerical tests |
+| `quantumbridge/chemistry/gaussian_integrals.py`, `quantumbridge/chemistry/integrals.py` | Analytic Gaussian overlap/kinetic/attraction/ERI/Boys, AO tensors and nuclear geometry | Mathematical tests and independent public AO integrals |
+| `quantumbridge/chemistry/scf.py`, `quantumbridge/chemistry/molecular_hamiltonian.py` | Actual RHF iterations, MO tensor transform, fermionic Hamiltonian, JW and electron-sector exact energy | Multiple geometries, HF/FCI energy and public comparisons |
+| `quantumbridge/chemistry/excitations.py`, `quantumbridge/chemistry/__init__.py`, `quantumbridge/qchem.py` | Concrete API exports, HF occupations/excitations and exact commuting-Pauli native excitation circuits | Matrix exponential, native shift/adjoint, Torch/Autograd and VQE |
+| `tests/qchem/test_native_fermionic_algebra.py`, `tests/qchem/test_native_hydrogen_electronic_structure.py`, `tests/compat/test_native_qchem_differential.py` | Independently authored mathematical/runtime/optional public tests | SDK-free and two pinned public SDK versions |
+| `tests/chemistry/test_pyscf_driver_optional.py` | Existing availability test now specifies the physical hydrogen doublet | Full installed regression; no native open-shell claim |
+| `examples/native_qchem_h2_integrals.py`, `examples/native_qchem_h2_scf.py`, `examples/native_qchem_h2_vqe.py` | Geometry-based SDK-free integral/RHF/VQE workflows | Actual computation, not fixed Hamiltonian lookup |
+
 ## Stage 11N Native Simulator And Noise
 
 Native Implementation; source port count zero. Public SDK behavior is tested

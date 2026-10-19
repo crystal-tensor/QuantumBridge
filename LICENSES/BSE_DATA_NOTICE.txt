@@ -1,0 +1,41 @@
+Hydrogen STO-3G Numerical Parameter Attribution
+
+Only three exponents and three contraction coefficients, as scientific data,
+are included. No Basis Set Exchange software, algorithms or tests are included.
+Source: MolSSI Basis Set Exchange, STO-3G version 1, revision 2018-06-19.
+https://www.basissetexchange.org/api/basis/sto-3g/format/json/?elements=1
+Original scientific reference: W. J. Hehre, R. F. Stewart and J. A. Pople,
+Self-Consistent Molecular-Orbital Methods. I. Use of Gaussian Expansions of
+Slater-Type Atomic Orbitals, J. Chem. Phys. 51, 2657 (1969).
+DOI: 10.1063/1.1672392.
+
+Basis Set Exchange project license notice is retained conservatively below.
+It is not a claim that scientific numerical facts are copyrighted software.
+https://github.com/MolSSI-BSE/basis_set_exchange/blob/master/LICENSE
+
+Copyright (c) 2020 The Molecular Sciences Software Institute, Virginia Tech
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+1. Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+3. Neither the name of the copyright holder nor the names of its
+   contributors may be used to endorse or promote products derived
+   from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.

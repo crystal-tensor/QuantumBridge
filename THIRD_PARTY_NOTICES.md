@@ -5,6 +5,17 @@ Date: 2026-06-09
 
 QuantumBridge is an independent project. References to Qiskit and PennyLane are for attribution, compatibility, and optional adapter documentation only and do not imply endorsement.
 
+## Native Molecular Electronic Structure
+
+Stage 11O-C independently implements bounded s-Gaussian integrals, closed-shell
+RHF, molecular fermionic/Jordan-Wigner construction and excitation circuits.
+Only six hydrogen STO-3G numerical basis parameters from MolSSI BSE version 1
+are included, with provenance and a conservatively retained project license
+notice in `LICENSES/BSE_DATA_NOTICE.txt`. No BSE software is included. Public
+PennyLane/PySCF calls are optional black-box oracles, not native solvers.
+Geometry-to-Hamiltonian computation is native; complete qchem parity is not
+claimed. See the Stage 11O chemistry checkpoint report for restrictions.
+
 ## Native Clifford And Stabilizer Verification
 
 Stage 11N independently implements intermediate Save/Set execution, bounded

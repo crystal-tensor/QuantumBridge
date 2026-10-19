@@ -8,34 +8,33 @@ from __future__ import annotations
 
 from quantumbridge.utils.math import Hamiltonian, PauliString
 
-from .fermion import FermionicOp
+from .fermion import FermionicOp, _tokens
 from .qubit_hamiltonian import QubitHamiltonian
 
 
 class JordanWignerMapper:
     mode = "Native Core"
 
-    def map(self, operator: FermionicOp) -> QubitHamiltonian:
-        terms = []
-        for label, coeff in operator.terms:
-            tokens = label.split()
-            if label in {"", "I"}:
-                terms.append((float(coeff.real), PauliString([])))
-            elif len(tokens) == 2 and tokens[0].startswith("+_") and tokens[1].startswith("-_") and tokens[0][2:] == tokens[1][2:]:
-                wire = int(tokens[0][2:])
-                terms.append((0.5 * float(coeff.real), PauliString([])))
-                terms.append((-0.5 * float(coeff.real), PauliString([(wire, "Z")])))
-            elif len(tokens) == 1 and tokens[0].startswith("+_"):
-                wire = int(tokens[0][2:])
-                terms.append((0.5 * float(coeff.real), PauliString([(wire, "X")])))
-                terms.append((-0.5 * float(coeff.imag or 1.0), PauliString([(wire, "Y")])))
-            elif len(tokens) == 1 and tokens[0].startswith("-_"):
-                wire = int(tokens[0][2:])
-                terms.append((0.5 * float(coeff.real), PauliString([(wire, "X")])))
-                terms.append((0.5 * float(coeff.imag or 1.0), PauliString([(wire, "Y")])))
-            else:
-                raise ValueError(f"QuantumBridge minimal Jordan-Wigner mapper does not support fermion label {label!r}.")
-        return QubitHamiltonian(Hamiltonian(terms))
+    def map(self, operator: FermionicOp, *, max_terms=100000) -> QubitHamiltonian:
+        from numbers import Integral
+        from quantumbridge.operators import SparsePauliOperator
+        if not isinstance(operator, FermionicOp):
+            raise TypeError("Jordan-Wigner mapping requires native FermionicOp.")
+        if isinstance(max_terms, bool) or not isinstance(max_terms, Integral) or max_terms < 1:
+            raise ValueError("Mapping term budget must be positive.")
+        width, terms = operator.register_length, []
+        for word, coefficient in operator.terms:
+            product = SparsePauliOperator([("I" * width, coefficient)])
+            for sign, mode in _tokens(word):
+                x = "Z" * mode + "X" + "I" * (width - mode - 1)
+                y = "Z" * mode + "Y" + "I" * (width - mode - 1)
+                if 2 * len(product.terms) > max_terms:
+                    raise MemoryError("Jordan-Wigner product exceeds Pauli term budget.")
+                product = product.dot(SparsePauliOperator([(x, .5), (y, -.5j if sign == "+" else .5j)]))
+            terms.extend(product.terms)
+            if len(terms) > max_terms:
+                raise MemoryError("Jordan-Wigner sum exceeds Pauli term budget.")
+        return QubitHamiltonian(SparsePauliOperator(terms).simplify(), num_qubits=width)
 
 
 class ParityMapper:
