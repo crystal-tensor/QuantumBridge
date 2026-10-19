@@ -319,9 +319,12 @@ class DynamicExecutionEngine:
         if isinstance(shots, bool) or not isinstance(shots, (int, np.integer)) or not 0 < shots <= self.limits.max_shots:
             raise ValueError("QuantumBridge dynamic shots must be positive and within max_shots.")
         rng, samples, stores, peak, discarded, steps, loops = np.random.default_rng(seed), [], [], 1, 0.0, 0, 0
+        bond_profile = [1] * max(0, self.circuit.num_qubits - 1)
         for _ in range(shots):
             branches = self._walk(self._program(self.circuit, top=True), [Branch(self.adapter.initial(), ClassicalStore(self.circuit.num_bits))], rng)
             branch = branches[0]
+            if self.adapter.kind == "matrix_product_state":
+                bond_profile = [max(old, current) for old, current in zip(bond_profile, branch.state.bond_dimensions)]
             label = "".join(map(str, branch.store.bits)) if self.circuit.has_measurements else self.adapter.sample(branch.state, rng)
             samples.append(label)
             if memory: stores.append(branch.store.to_dict())
@@ -335,7 +338,8 @@ class DynamicExecutionEngine:
             "shots": int(shots), "seed": seed, "num_bits": self.circuit.num_bits if self.circuit.has_measurements else self.circuit.num_qubits,
             "max_instruction_executions_observed": steps, "max_loop_iterations_observed": loops,
             "qubit_order": "q0-first bitstrings", "classical_order": "c0-first bitstrings"}
-        if self.adapter.kind == "matrix_product_state": metadata.update(max_bond_observed=peak, max_discarded_weight=discarded, **self.device.state_options)
+        if self.adapter.kind == "matrix_product_state": metadata.update(max_bond_observed=peak, max_discarded_weight=discarded,
+            max_bond_dimensions_observed=bond_profile, **self.device.state_options)
         if memory: metadata.update(memory=samples, classical_memory=stores)
         return Result(counts_data=counts, probabilities_data={key: count / shots for key, count in counts.items()}, metadata_data=metadata)
 

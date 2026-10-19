@@ -32,6 +32,36 @@ QuantumBridge is an independent project. It is not an official Qiskit, PennyLane
 - NumPy/Torch/JAX array interface helpers, with Torch and JAX optional.
 - Minimal QNode-like wrapper and QML templates.
 
+## Native QNode Differentiation
+
+`quantumbridge.qml.NativeQNode` is the existing `QNode` with native first-order
+`gradient`, `jacobian`, VJP/JVP and execute-and-derivative methods. Gate-occurrence
+parameter-shift and pure-vector adjoint preserve shared-input/classical chain
+rules. Torch backward and Autograd grad use QuantumBridge quantum derivatives,
+not PennyLane execution. Shot vectors run separate seeded sampled partitions.
+
+```python
+from quantumbridge import PauliZ
+from quantumbridge.qml import NativeQNode
+
+def program(tape, theta):
+    tape.ry(theta, 0)
+    tape.ry(theta, 0)
+    return tape.expval(PauliZ(0))
+
+node = NativeQNode(program, 1, diff_method="adjoint")
+value, gradient = node.execute_and_compute_derivatives(0.4)
+```
+
+See [native training](examples/native_qnode_gradient.py),
+[Torch training](examples/native_qnode_torch_training.py),
+[shot partitions](examples/native_qnode_shot_vectors.py) and the
+[Stage 11K report](docs/implementation/stage11k_native_qnode_autodiff_report.md).
+Full autodiff parity is not complete: simulator backprop, JAX/TF, higher order,
+capture and unsupported dynamic/adjoint cases remain explicit gaps. MPS gradients
+retain tensor execution and truncation/resource warnings. Legacy mixed analytic
+state plus sampled queries emit a warning and record actual measurement shots.
+
 ## Native Dynamic Control Flow
 
 Native circuits now execute typed Bool/Bit/UInt expressions, runtime storage,

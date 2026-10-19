@@ -8,8 +8,9 @@ from .measurements import MeasurementRequest, normalize_wires
 
 
 class Tape:
-    def __init__(self, num_qubits: int):
+    def __init__(self, num_qubits: int, parameter_transform=None):
         self.circuit = Circuit(num_qubits)
+        self.parameter_transform = parameter_transform or (lambda value: value)
         self.observable = None
         self.measurement = None
         self.measurement_wires = None
@@ -39,21 +40,42 @@ class Tape:
         self.circuit.h(wire)
 
     def rx(self, theta, wire: int):
-        self.circuit.rx(theta, wire)
+        self.circuit.rx(self.parameter_transform(theta), wire)
 
     def ry(self, theta, wire: int):
-        self.circuit.ry(theta, wire)
+        self.circuit.ry(self.parameter_transform(theta), wire)
 
     def rz(self, theta, wire: int):
-        self.circuit.rz(theta, wire)
+        self.circuit.rz(self.parameter_transform(theta), wire)
 
     def phase(self, theta, wire: int):
-        self.circuit.phase(theta, wire)
+        self.circuit.phase(self.parameter_transform(theta), wire)
 
     def rot(self, phi, theta, omega, wire: int):
-        self.circuit.rz(phi, wire)
-        self.circuit.ry(theta, wire)
-        self.circuit.rz(omega, wire)
+        self.rz(phi, wire)
+        self.ry(theta, wire)
+        self.rz(omega, wire)
+
+    def crx(self, theta, control, target):
+        self.circuit.crx(self.parameter_transform(theta), control, target)
+
+    def cry(self, theta, control, target):
+        self.circuit.cry(self.parameter_transform(theta), control, target)
+
+    def crz(self, theta, control, target):
+        self.circuit.crz(self.parameter_transform(theta), control, target)
+
+    def cp(self, theta, control, target):
+        self.circuit.cp(self.parameter_transform(theta), control, target)
+
+    def rxx(self, theta, a, b):
+        self.circuit.rxx(self.parameter_transform(theta), a, b)
+
+    def ryy(self, theta, a, b):
+        self.circuit.ryy(self.parameter_transform(theta), a, b)
+
+    def rzz(self, theta, a, b):
+        self.circuit.rzz(self.parameter_transform(theta), a, b)
 
     def cx(self, control: int, target: int):
         self.circuit.cx(control, target)
@@ -78,7 +100,7 @@ class Tape:
             raise TypeError("QuantumBridge Tape.cond requires a runtime classical expression.")
         def record(fn):
             if fn is None: return None
-            branch = Tape(self.circuit.num_qubits)
+            branch = Tape(self.circuit.num_qubits, self.parameter_transform)
             branch.circuit.num_bits = self.circuit.num_bits
             fn(branch)
             if branch.measurements:

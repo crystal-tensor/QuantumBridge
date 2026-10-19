@@ -1,6 +1,6 @@
 # Core Functional Parity Ledger
 
-Updated: 2026-10-19, Stage 11J. Full replacement/full functional parity is the
+Updated: 2026-10-19, Stage 11K. Full replacement/full functional parity is the
 objective, not an achieved status. Inventory counts and line coverage are not
 API/functionality coverage. Every row below remains PARTIAL or OPEN.
 
@@ -34,3 +34,32 @@ dense expansion. Neither narrow proof establishes the full objective.
 Priority after Stage 11J: native QNode/autodiff, complete transpilation, complete
 serialization, full simulator noise/save/set and templates/qchem expansion.
 Studio remains deferred until the core objective and hardware work are handled.
+
+## Stage 11K Differentiation Evidence
+
+Status is scoped to the tested native subset, never an entire upstream module.
+NATIVE_IMPLEMENTED means code executes; NATIVE_TESTED means independent
+behavioral tests pass; UPSTREAM_DIFFERENTIAL_TESTED adds public black-box evidence.
+
+| Capability | Status | Evidence / remaining gap |
+| --- | --- | --- |
+| QNode forward / nested measurement trees | NATIVE_TESTED; PARTIAL | Existing/new QNode tests; full signatures/plugins/broadcasting/executors still open |
+| Gate-occurrence parameter shift / shared input chain | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Native math and fourteen public gradient scenarios; full generator family/loop recipes open |
+| Finite difference | NATIVE_TESTED; PARTIAL | Convergence against analytic derivatives; not a surrogate for adjoint/backprop |
+| Pure vector analytic adjoint | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Actual inverse-state/reverse-cotangent algorithm and public oracle comparisons; mixed/MPS/stochastic adjoint unsupported |
+| Simulator-level backprop | NOT_STARTED / UNSUPPORTED | Framework native VJP is not simulator backprop |
+| VJP / JVP / execute-and-derivative methods | NATIVE_TESTED; PARTIAL | Shape/tree/numerical tests; currently explicit Jacobian products, not complete device derivative protocols |
+| Torch backward / gradcheck / optimizer | NATIVE_TESTED; PARTIAL | True CPU tensor graph with native quantum VJP; GPU/higher order/open device contracts unsupported |
+| JAX grad / jacrev / JIT / VMAP | NOT_STARTED / UNSUPPORTED | Array helper is not differentiable QNode integration |
+| Autograd grad / jacobian / optimizer | NATIVE_TESTED; PARTIAL | Real primitive VJP plus classical preprocessing; higher order unsupported |
+| TensorFlow GradientTape | NOT_STARTED / UNSUPPORTED | No fake gradient helper; future optional isolated framework verification required |
+| Shot vectors | NATIVE_TESTED; PARTIAL | None/int/partitions/copies, actual sampled statistics and per-measurement metadata; full upstream shot contracts open |
+| Dynamic QNode gradients | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Full branch probabilities and conditional angles; nonsmooth thresholds/postselection/reused loop angles unsupported |
+| MPS gradients | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Tensor-native shift/finite-diff and no-dense 100-qubit local gradient; truncation warning/resource profiles retained |
+| Higher-order derivatives | UNSUPPORTED | Explicit first-order guards in native/Torch/Autograd paths |
+| Capture | NOT_STARTED | No capture/Catalyst parity claim |
+| Complete gradient/transform execution | PARTIAL | Existing transforms plus QNode derivatives; complete transform/batch/plugin contracts remain open |
+
+Implementation detail: docs/implementation/stage11k_native_qnode_autodiff_report.md.
+The original full core ledger remains authoritative; none of these narrow tests
+establish full Qiskit/PennyLane replacement.

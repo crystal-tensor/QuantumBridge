@@ -7,8 +7,11 @@ from .embeddings import amplitude_embedding, angle_embedding
 from .measurements import ClassicalShadowResult, MeasurementRequest
 from .observables import Hadamard, Hamiltonian, Identity, PauliX, PauliY, PauliZ, SparseHamiltonian
 from .qnode import QNode
+from .shot_vector import ShotSpec, ShotVector
 from .tape import Tape
 from .templates import basic_entangler, basic_entangler_layers, hardware_efficient_ansatz, strongly_entangling_layers
+
+NativeQNode = QNode
 
 __all__ = [
     "Hadamard",
@@ -20,6 +23,9 @@ __all__ = [
     "PauliY",
     "PauliZ",
     "QNode",
+    "NativeQNode",
+    "ShotSpec",
+    "ShotVector",
     "SparseHamiltonian",
     "Tape",
     "amplitude_embedding",

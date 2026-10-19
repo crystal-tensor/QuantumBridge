@@ -7,6 +7,13 @@ QuantumBridge is an independent project. References to Qiskit and PennyLane are 
 
 ## Native Clifford And Stabilizer Verification
 
+Stage 11K independently implements classical first-order tracing, gate-occurrence
+parameter-shift, inverse-state/reverse-cotangent adjoint, Jacobian products and
+shot partitions. Optional Torch/Autograd supply classical graphs/optimizers;
+QuantumBridge supplies quantum execution and derivatives. Public PennyLane APIs
+are optional black-box test oracles only. No third-party implementation, tests,
+package artifacts or environments were copied or vendored.
+
 Stage 11J independently implements typed classical expressions/storage,
 structured dynamic control flow and a native interpreter over vector, density,
 MPS and supported tableau states. Optional public Qiskit/Aer and PennyLane APIs

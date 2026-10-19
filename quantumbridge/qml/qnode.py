@@ -14,24 +14,108 @@ from .tape import Tape
 
 
 class QNode:
-    def __init__(self, fn, num_qubits: int, device=None, shots: int | None = None, seed: int | None = None):
+    def __init__(self, fn, num_qubits: int, device=None, shots=None, seed: int | None = None,
+                 interface="auto", diff_method="best", gradient_kwargs=None, max_diff=1):
         self.fn = fn
         self.num_qubits = num_qubits
         self.device = device or StatevectorDevice()
         self.shots = shots
         self.seed = seed
+        self.interface, self.diff_method = interface, diff_method
+        self.gradient_kwargs = dict(gradient_kwargs or {})
+        self.max_diff = max_diff
+        self.last_metadata = {}
+        from .shot_vector import ShotSpec
+        ShotSpec.parse(shots)
+        if interface not in {None, "auto", "numpy", "torch", "autograd", "jax", "tf", "tensorflow"}:
+            raise ValueError("Unknown QuantumBridge QNode interface.")
+
+    def _construct(self, args, kwargs):
+        from quantumbridge.diff.qnode_engine import AngleRecorder, ExecutionPlan, measurement_tree
+        recorder = AngleRecorder()
+        tape = Tape(self.num_qubits, recorder)
+        returned = self.fn(tape, *args, **kwargs)
+        plan = ExecutionPlan(self, tape, measurement_tree(returned, tape), recorder)
+        plan.input_values = (args, kwargs)
+        return plan
 
     def __call__(self, *args, **kwargs):
-        tape = Tape(self.num_qubits)
-        returned = self.fn(tape, *args, **kwargs)
-        requests = _returned_measurements(returned) or tuple(tape.measurements)
-        if requests:
-            results = tuple(self._execute_measurement(tape, request) for request in requests)
-            return results[0] if len(results) == 1 else results
-        observable = tape.observable if tape.observable is not None else returned
-        if tape.measurement == "var":
-            return self.device.variance(tape.circuit, observable)
-        return self.device.expectation(tape.circuit, observable)
+        from quantumbridge.interfaces.qnode_autodiff import execute_interface, infer_interface
+        interface = infer_interface(args, kwargs) if self.interface == "auto" else self.interface
+        plan = self._construct(args, kwargs)
+        if interface in {None, "numpy"}:
+            result = plan.evaluate(plan.recorder.native_values())
+        else: result = execute_interface(plan, interface)
+        self.last_metadata = plan.metadata
+        return result
+
+    def _differentiate(self, args, kwargs, argnums=0, argnames=(), method=None):
+        from quantumbridge.core.classical import UnsupportedFeature
+        from quantumbridge.diff.trace import trace_arguments
+        if self.max_diff != 1: raise UnsupportedFeature("higher_order_derivatives", "Native QNode currently validates first derivatives only.")
+        if isinstance(argnums, str): argnames, argnums = (argnums,), ()
+        if argnums == 0 and not args and not argnames:
+            import inspect
+            name = next(iter(tuple(inspect.signature(self.fn).parameters)[1:]), None)
+            if name not in kwargs: raise ValueError("No first trainable QNode argument was supplied.")
+            argnames, argnums = (name,), ()
+        traced_args, traced_kwargs, layout, single, size = trace_arguments(args, kwargs, argnums, argnames)
+        plan = self._construct(traced_args, traced_kwargs)
+        base, matrix, spec = plan.jacobian(plan.recorder.native_values(), method, **self.gradient_kwargs)
+        classical = plan.recorder.classical_jacobian(size)
+        matrix = matrix @ classical
+        self.last_metadata = {**plan.metadata, "classical_chain_rule": True, "input_parameter_count": size,
+                              "gate_parameter_count": len(plan.recorder.parameters),
+                              "trainable_gate_occurrences": np.flatnonzero(np.any(classical != 0, axis=1)).tolist()}
+        return base, matrix, spec, layout, single
+
+    @staticmethod
+    def _input_results(values, layout, single):
+        results = [values[indices].reshape(shape) for shape, indices in layout]
+        results = [value.item() if not value.shape else value for value in results]
+        return results[0] if single else tuple(results)
+
+    def compute_jacobian(self, *args, argnums=0, argnames=(), method=None, **kwargs):
+        from quantumbridge.diff.trace import unflatten_tree
+        _, matrix, spec, layout, single = self._differentiate(args, kwargs, argnums, argnames, method)
+        result = [unflatten_tree(matrix[:, indices], spec, shape) for shape, indices in layout]
+        return result[0] if single else tuple(result)
+
+    jacobian = compute_jacobian
+
+    def gradient(self, *args, argnums=0, argnames=(), method=None, **kwargs):
+        base, matrix, spec, layout, single = self._differentiate(args, kwargs, argnums, argnames, method)
+        if len(matrix) != 1: raise ValueError("QNode.gradient requires a scalar output; use jacobian for multiple outputs.")
+        return self._input_results(matrix[0], layout, single)
+
+    def compute_vjp(self, cotangent, *args, argnums=0, argnames=(), method=None, **kwargs):
+        return self.execute_and_compute_vjp(cotangent, *args, argnums=argnums, argnames=argnames, method=method, **kwargs)[1]
+
+    def execute_and_compute_vjp(self, cotangent, *args, argnums=0, argnames=(), method=None, **kwargs):
+        from quantumbridge.diff.trace import flatten_tree
+        base, matrix, spec, layout, single = self._differentiate(args, kwargs, argnums, argnames, method)
+        vector, cotangent_spec = flatten_tree(cotangent)
+        if spec != cotangent_spec: raise ValueError("Cotangent tree/shape must match the QNode output.")
+        return base, self._input_results(vector @ matrix, layout, single)
+
+    def compute_jvp(self, tangent, *args, argnums=0, argnames=(), method=None, **kwargs):
+        return self.execute_and_compute_jvp(tangent, *args, argnums=argnums, argnames=argnames, method=method, **kwargs)[1]
+
+    def execute_and_compute_jvp(self, tangent, *args, argnums=0, argnames=(), method=None, **kwargs):
+        from quantumbridge.diff.trace import unflatten_tree
+        base, matrix, spec, layout, single = self._differentiate(args, kwargs, argnums, argnames, method)
+        tangents = [tangent] if single else list(tangent)
+        if len(tangents) != len(layout) or any(np.asarray(value).shape != shape for value, (shape, _) in zip(tangents, layout)):
+            raise ValueError("Tangent shapes must match the trainable arguments.")
+        if any(np.iscomplexobj(value) for value in tangents): raise TypeError("Real inputs require real tangents.")
+        vector = np.concatenate([np.asarray(value, dtype=float).reshape(-1) for value in tangents])
+        return base, unflatten_tree(matrix @ vector, spec)
+
+    def execute_and_compute_derivatives(self, *args, argnums=0, argnames=(), method=None, **kwargs):
+        from quantumbridge.diff.trace import unflatten_tree
+        base, matrix, spec, layout, single = self._differentiate(args, kwargs, argnums, argnames, method)
+        result = [unflatten_tree(matrix[:, indices], spec, shape) for shape, indices in layout]
+        return base, result[0] if single else tuple(result)
 
     def _execute_measurement(self, tape: Tape, request: MeasurementRequest):
         wires = _validate_wires(request.wires, self.num_qubits)

@@ -14,7 +14,16 @@ import numpy as np
 
 
 def parameter_shift(objective: Callable[[np.ndarray], Real], parameters: Union[Sequence[Real], Real], shift: float = pi / 2):
-    """Evaluate MVP parameter-shift gradient for a scalar objective."""
+    """Differentiate a native QNode, or a known single-frequency scalar function.
+
+    Generic callables must have unit-frequency dependence on each input.
+    QNodes use gate-occurrence recipes and the classical chain rule instead.
+    """
+
+    if hasattr(objective, "compute_jacobian"):
+        return objective.compute_jacobian(parameters, method="parameter-shift")
+    if not np.isfinite(shift) or abs(np.sin(shift)) < 1e-12:
+        raise ValueError("Parameter shift requires a finite shift with non-zero sine.")
 
     scalar_input = isinstance(parameters, Real)
     values = np.array([parameters] if scalar_input else list(parameters), dtype=float)
@@ -24,5 +33,5 @@ def parameter_shift(objective: Callable[[np.ndarray], Real], parameters: Union[S
         minus = values.copy()
         plus[index] += shift
         minus[index] -= shift
-        gradient[index] = 0.5 * (float(objective(plus)) - float(objective(minus)))
+        gradient[index] = (float(objective(plus)) - float(objective(minus))) / (2 * np.sin(shift))
     return float(gradient[0]) if scalar_input else gradient

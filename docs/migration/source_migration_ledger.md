@@ -5,6 +5,25 @@ Date: 2026-06-05
 
 This ledger records implementation mode and upstream source status for the current P1 release-candidate baseline. Current work uses Native Implementation, Adapter Integration, and Upstream Dependency. No new upstream source migration was introduced during Stage 5.5. No Source Port with Attribution was performed.
 
+## Stage 11K Native QNode Differentiation
+
+Native Implementation, source port count zero. Optional Torch/Autograd provide
+classical framework integration, not quantum derivatives; installed PennyLane
+is a public black-box oracle only. No source/test copying, secret reading,
+vendored package or environment upload. Review remains pending. Numerical
+truncation, stochastic estimates, resource growth and unsupported higher-order,
+JAX/TF/backprop/capture semantics remain documented limitations.
+
+| Files | Native behavior | Evidence |
+| --- | --- | --- |
+| `quantumbridge/diff/trace.py`, `quantumbridge/diff/qnode_engine.py`, `quantumbridge/diff/parameter_shift.py` | First-order classical chain rule, recorded gate occurrences, native shift/finite-diff, shape/capability budgets | tests/gradients/test_native_qnode_derivatives.py |
+| `quantumbridge/diff/adjoint.py` | Forward vector and inverse-state/reverse-cotangent derivatives | Independent analytic and public oracle comparisons |
+| `quantumbridge/qml/qnode.py`, `quantumbridge/qml/tape.py`, `quantumbridge/qml/shot_vector.py` | Unified QNode forward/gradient/Jacobian/VJP/JVP and shot partitions | Native nested-output, shot, training and dynamic tests |
+| `quantumbridge/interfaces/qnode_autodiff.py` | Torch and Autograd native-quantum VJPs with framework classical graphs | tests/interfaces/test_native_qnode_autodiff.py |
+| `quantumbridge/devices/matrix_product_state_device.py`, `quantumbridge/execution/control_flow_engine.py` | Observed trajectory bond profiles retained without dense expansion | MPS/dynamic regressions and 100-qubit derivative test |
+| `tests/compat/test_native_autodiff_differential.py` | Fourteen meaningful public gradient scenarios and explicit upstream version difference | PL 0.44.1 and 0.42.3 environments |
+| `examples/native_qnode_*.py` | Native/Torch training, adjoint and shot partitions | SDK-free native examples; optional Torch example |
+
 ## Stage 11J Native Dynamic Control Flow
 
 Native Implementation only; no third-party source or tests copied, no vendored

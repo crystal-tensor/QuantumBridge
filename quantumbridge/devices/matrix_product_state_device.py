@@ -269,7 +269,9 @@ class MatrixProductStateDevice:
         self._shots(shots)
         bound, program = self._prepare(circuit, parameters)
         samples, max_bond, discarded = [], 1, 0.0
+        bond_profile = [1] * max(0, bound.num_qubits - 1)
         for state, bits, rng in self._trajectories(bound, program, shots, seed):
+            bond_profile = [max(old, current) for old, current in zip(bond_profile, state.bond_dimensions)]
             if not bound.measurements:
                 bits = []
                 for wire in range(bound.num_qubits):
@@ -281,7 +283,8 @@ class MatrixProductStateDevice:
             discarded = max(discarded, state.discarded_weight)
         counts = self._counts(samples)
         metadata = {**self._metadata(bound, []), "shots": int(shots), "seed": seed,
-                    "max_bond_observed": max_bond, "max_discarded_weight": discarded}
+                    "max_bond_observed": max_bond, "max_discarded_weight": discarded,
+                    "max_bond_dimensions_observed": bond_profile}
         if memory:
             metadata["memory"] = samples
         return Result(counts_data=counts, probabilities_data={key: value / shots for key, value in counts.items()}, metadata_data=metadata)
