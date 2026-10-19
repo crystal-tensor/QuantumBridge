@@ -1,11 +1,15 @@
 # This file is independently implemented for QuantumBridge SDK.
 # No source code from Qiskit, PennyLane, or PennyLane-Qiskit was copied.
 
+import pytest
+
 from quantumbridge.compat.pennylane_qiskit import (
     bridge_ir_to_qiskit_circuit,
     pennylane_operations_to_bridge_ir,
     run_pennylane_to_qiskit_bridge,
 )
+
+pytest.importorskip("qiskit", reason="optional dependency unavailable: qiskit")
 
 
 def test_pennylane_operations_convert_to_qiskit_circuit():

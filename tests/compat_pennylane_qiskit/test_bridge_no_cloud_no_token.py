@@ -1,7 +1,11 @@
 # This file is independently implemented for QuantumBridge SDK.
 # No source code from Qiskit, PennyLane, or PennyLane-Qiskit was copied.
 
+import pytest
+
 from quantumbridge.compat.pennylane_qiskit import run_pennylane_to_qiskit_bridge
+
+pytest.importorskip("qiskit", reason="optional dependency unavailable: qiskit")
 
 
 def test_bridge_metadata_never_claims_cloud_token_or_hardware():

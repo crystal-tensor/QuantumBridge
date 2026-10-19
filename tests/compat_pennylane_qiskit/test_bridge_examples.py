@@ -5,6 +5,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
 from quantumbridge.compat.pennylane_qiskit.examples import (
     run_bridge_equivalence_example,
     run_pennylane_to_qiskit_example,
@@ -12,6 +14,7 @@ from quantumbridge.compat.pennylane_qiskit.examples import (
 )
 
 ROOT = Path(__file__).resolve().parents[2]
+pytest.importorskip("qiskit", reason="optional dependency unavailable: qiskit")
 
 
 def test_bridge_examples_return_native_and_optional_upstream_results():

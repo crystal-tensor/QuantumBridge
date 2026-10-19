@@ -1,3 +1,5 @@
+import pytest
+
 from quantumbridge.studio.execution_service import dry_run_workflow, execute_batch_workflows, execute_workflow, get_execution_result, get_execution_status
 from quantumbridge.studio.result_store import clear_results
 
@@ -12,7 +14,6 @@ def test_representative_workflows_execute_successfully():
         "ml.quantum_kernel_native",
         "aer.qasm_counts_native",
         "mitiq.readout_mitigation_native",
-        "pennylane_qiskit.qiskit_to_pennylane",
         "experiments.rabi_native",
         "qos_uqci.mock_runtime",
     ]
@@ -20,6 +21,12 @@ def test_representative_workflows_execute_successfully():
     assert all(result.status == "succeeded" for result in results)
     assert get_execution_status(results[0].execution_id)["status"] == "succeeded"
     assert get_execution_result(results[0].execution_id).workflow_id == workflow_ids[0]
+
+
+def test_optional_bridge_workflow_executes_when_qiskit_is_installed():
+    pytest.importorskip("qiskit", reason="optional dependency unavailable: qiskit")
+    result = execute_workflow("pennylane_qiskit.qiskit_to_pennylane")
+    assert result.status == "succeeded"
 
 
 def test_dry_run_and_batch_execution():

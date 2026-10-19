@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import inspect
 import time
+from importlib.util import find_spec
 from typing import Any, Iterable
 
 from quantumbridge.schema.benchmark_results import BenchmarkCaseResult, BenchmarkComparisonResult, BenchmarkSuiteResult
@@ -19,6 +20,28 @@ def run_benchmark_case(case: BenchmarkCase, seed: int | None = None) -> Benchmar
     case.validate()
     start = time.perf_counter()
     chosen_seed = case.seed if seed is None else seed
+    missing_dependencies = _missing_dependencies(case)
+    if missing_dependencies:
+        elapsed = time.perf_counter() - start
+        reason = f"optional dependencies unavailable: {', '.join(missing_dependencies)}"
+        return BenchmarkCaseResult(
+            workflow="benchmark_case",
+            case_id=case.case_id,
+            case_name=case.name,
+            category=case.category,
+            tags=list(case.tags),
+            status="skipped",
+            elapsed_seconds=elapsed,
+            passed=False,
+            skipped=True,
+            metrics={"missing_dependency_count": len(missing_dependencies)},
+            output_summary={"missing_dependencies": missing_dependencies},
+            expected_summary=dict(case.expected),
+            metadata={"case": benchmark_case_to_dict(case)},
+            warnings=list(case.warnings),
+            provenance={**default_benchmark_provenance(), **dict(case.provenance)},
+            unsupported_reason=reason,
+        )
     try:
         if isinstance(case.runner, str):
             raise RuntimeError(f"benchmark runner is not callable: {case.runner}")
@@ -84,7 +107,7 @@ def run_benchmark_suite(
     for case in cases:
         result = run_benchmark_case(case, seed=seed)
         case_results.append(result)
-        if fail_fast and not result.passed:
+        if fail_fast and result.status in {"failed", "unsupported"}:
             break
     elapsed = time.perf_counter() - start
     summary = _summary(case_results)
@@ -140,6 +163,20 @@ def _normalize_runner_payload(raw: Any) -> dict[str, Any]:
     if hasattr(raw, "to_dict"):
         return {"output_summary": _to_plain(raw), "passed": True}
     return {"output_summary": {"value": _to_plain(raw)}, "passed": True}
+
+
+def _missing_dependencies(case: BenchmarkCase) -> list[str]:
+    required = case.metadata.get("required_dependencies", [])
+    missing: list[str] = []
+    for module_name in required:
+        normalized = str(module_name)
+        try:
+            available = find_spec(normalized) is not None
+        except (ImportError, ModuleNotFoundError, ValueError):
+            available = False
+        if not available:
+            missing.append(normalized)
+    return missing
 
 
 def _to_plain(value: Any) -> Any:

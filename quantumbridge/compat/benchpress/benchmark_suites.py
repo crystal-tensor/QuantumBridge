@@ -96,8 +96,20 @@ def backend_suite() -> list[BenchmarkCase]:
 
 def bridge_suite() -> list[BenchmarkCase]:
     return [
-        create_benchmark_case("Stage 9H Qiskit to PennyLane bridge", "bridge", runner=_run_qiskit_to_pennylane_case, tags=["bridge"]),
-        create_benchmark_case("Stage 9H PennyLane to Qiskit bridge", "bridge", runner=_run_pennylane_to_qiskit_case, tags=["bridge"]),
+        create_benchmark_case(
+            "Stage 9H Qiskit to PennyLane bridge",
+            "bridge",
+            runner=_run_qiskit_to_pennylane_case,
+            tags=["bridge"],
+            metadata={"required_dependencies": ["qiskit"]},
+        ),
+        create_benchmark_case(
+            "Stage 9H PennyLane to Qiskit bridge",
+            "bridge",
+            runner=_run_pennylane_to_qiskit_case,
+            tags=["bridge"],
+            metadata={"required_dependencies": ["qiskit"]},
+        ),
         create_benchmark_case("Stage 9J MQT-like mapping", "bridge", runner=_run_mqt_mapping_case, tags=["mqt", "mapping"]),
     ]
 

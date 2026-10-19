@@ -1,7 +1,11 @@
 # This file is independently implemented for QuantumBridge SDK.
 # No source code from Qiskit, PennyLane, or PennyLane-Qiskit was copied.
 
+import pytest
+
 from quantumbridge.compat.pennylane_qiskit import run_bidirectional_bridge_equivalence
+
+pytest.importorskip("qiskit", reason="optional dependency unavailable: qiskit")
 
 
 def test_bidirectional_bell_equivalence_proof():
