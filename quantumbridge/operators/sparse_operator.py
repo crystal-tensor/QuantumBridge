@@ -20,7 +20,7 @@ def _multiply_labels(left: str, right: str) -> tuple[complex, str]:
     phase = 1 + 0j
     label = []
     for a, b in zip(left, right):
-        local_phase, local_pauli = Pauli(a) @ Pauli(b)
+        local_phase, local_pauli = Pauli(a).multiply(Pauli(b))
         phase *= local_phase
         label.append(local_pauli.label)
     return phase, "".join(label)

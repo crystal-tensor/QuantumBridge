@@ -11,7 +11,7 @@ from quantumbridge.utils.math import Hamiltonian, PauliZ
 
 
 def test_p1_operator_hamiltonian_coverage():
-    phase, pauli = Pauli("Z") @ Pauli("X")
+    phase, pauli = Pauli("Z").multiply(Pauli("X"))
     assert phase == 1j
     assert pauli.label == "Y"
     assert PauliString([(0, "I")]).matrix().shape == (2, 2)

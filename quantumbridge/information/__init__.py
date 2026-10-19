@@ -36,11 +36,14 @@ from .random import (
     pauli_basis,
     random_density_matrix,
     random_hermitian,
+    random_pauli,
+    random_pauli_list,
     random_quantum_channel,
     random_statevector,
     random_unitary,
 )
 from .statevector import Statevector
+from quantumbridge.operators import Pauli, PauliList
 
 __all__ = [
     "Chi",
@@ -49,6 +52,8 @@ __all__ = [
     "DensityMatrix",
     "Kraus",
     "Operator",
+    "Pauli",
+    "PauliList",
     "PTM",
     "Statevector",
     "Stinespring",
@@ -71,6 +76,8 @@ __all__ = [
     "purity",
     "random_density_matrix",
     "random_hermitian",
+    "random_pauli",
+    "random_pauli_list",
     "random_quantum_channel",
     "random_statevector",
     "random_unitary",

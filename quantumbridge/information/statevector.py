@@ -87,7 +87,10 @@ class Statevector:
 
         if hasattr(observable, "to_hamiltonian"):
             return expectation_hamiltonian(self.data, self.num_qubits, observable.to_hamiltonian())
-        matrix = observable.data if hasattr(observable, "data") else np.asarray(observable, dtype=complex)
+        if hasattr(observable, "to_matrix"):
+            matrix = np.asarray(observable.to_matrix(), dtype=complex)
+        else:
+            matrix = observable.data if hasattr(observable, "data") else np.asarray(observable, dtype=complex)
         if qargs is not None:
             qargs_tuple = _validate_qargs(qargs, self.num_qubits)
             matrix = Operator(np.eye(len(self.data), dtype=complex)).compose(Operator(matrix), qargs=qargs_tuple).data
@@ -99,7 +102,7 @@ class Statevector:
         from quantumbridge.information.operator import Operator
 
         op = Operator.from_circuit(operator) if hasattr(operator, "operations") else operator
-        matrix = op.data if isinstance(op, Operator) else np.asarray(op, dtype=complex)
+        matrix = np.asarray(op.to_matrix(), dtype=complex) if hasattr(op, "to_matrix") else np.asarray(op, dtype=complex)
         if qargs is not None:
             qargs_tuple = _validate_qargs(qargs, self.num_qubits)
             dim = 1 << len(qargs_tuple)

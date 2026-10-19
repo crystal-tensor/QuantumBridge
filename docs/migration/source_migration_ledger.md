@@ -889,3 +889,34 @@ or virtual environments are copied or vendored:
 - `docs/implementation/stage11d_native_random_quantum_info_report.md`
 
 Stage 11D source port count remains zero.
+
+## Stage 11E Source Inventory
+
+The following files implement native phase-aware Pauli algebra, integrate
+matrix observables and verify behavior against optional installed packages.
+No upstream source, tests, package files, credentials or virtual environments
+are vendored:
+
+- `quantumbridge/operators/pauli.py`
+- `quantumbridge/operators/pauli_list.py`
+- `quantumbridge/operators/sparse_operator.py`
+- `quantumbridge/information/random.py`
+- `quantumbridge/information/statevector.py`
+- `quantumbridge/information/density_matrix.py`
+- `quantumbridge/information/__init__.py`
+- `quantumbridge/compat/qiskit_core/quantum_info_adapter.py`
+- `quantumbridge/utils/math.py`
+- `tests/operators/test_pauli_phase_algebra.py`
+- `tests/operators/test_pauli_algebra_extended.py`
+- `tests/operators/test_operator_hamiltonian_extended.py`
+- `tests/operators/test_p1_operator_coverage.py`
+- `tests/compat_qiskit_core/test_pauli_phase_parity.py`
+- `tests/compat_qiskit_core/test_quantum_info_native.py`
+- `tests/qml/test_native_pauli_pennylane_parity.py`
+- `examples/native_pauli_algebra_quantumbridge.py`
+- `docs/implementation/stage11e_native_pauli_algebra_report.md`
+- `docs/compat/matrix/qiskit_core_quantum_info_coverage_matrix.md`
+- `README.md`
+- `THIRD_PARTY_NOTICES.md`
+
+Stage 11E source port count remains zero.

@@ -11,7 +11,7 @@ from quantumbridge.information.density_matrix import DensityMatrix
 from quantumbridge.information.channels import Stinespring
 from quantumbridge.information.operator import Operator
 from quantumbridge.information.statevector import Statevector
-from quantumbridge.operators import PauliList
+from quantumbridge.operators import Pauli, PauliList
 
 
 def _dimension(dims: int | tuple[int, ...] | list[int]) -> int:
@@ -81,6 +81,36 @@ def pauli_basis(num_qubits: int, weight: bool = False) -> PauliList:
     if weight:
         labels.sort(key=lambda label: sum(char != "I" for char in label))
     return PauliList(labels)
+
+
+def random_pauli(
+    num_qubits: int,
+    group_phase: bool = False,
+    seed: int | np.random.Generator | None = None,
+) -> Pauli:
+    if not isinstance(num_qubits, int) or num_qubits < 0:
+        raise ValueError("QuantumBridge random_pauli requires a non-negative integer qubit count.")
+    rng = np.random.default_rng(seed)
+    z = rng.integers(2, size=num_qubits, dtype=bool)
+    x = rng.integers(2, size=num_qubits, dtype=bool)
+    phase = int(rng.integers(4)) if group_phase else 0
+    return Pauli((z, x, phase))
+
+
+def random_pauli_list(
+    num_qubits: int,
+    size: int = 1,
+    seed: int | np.random.Generator | None = None,
+    phase: bool = True,
+) -> PauliList:
+    if not isinstance(num_qubits, int) or num_qubits < 0:
+        raise ValueError("QuantumBridge random_pauli_list requires a non-negative integer qubit count.")
+    if not isinstance(size, int) or size < 0:
+        raise ValueError("QuantumBridge random_pauli_list size must be a non-negative integer.")
+    rng = np.random.default_rng(seed)
+    bits = rng.integers(2, size=(2, size, num_qubits))
+    phases = rng.integers(4, size=size) if phase else np.zeros(size, dtype=int)
+    return PauliList.from_symplectic(bits[0], bits[1], phases)
 
 
 def random_quantum_channel(

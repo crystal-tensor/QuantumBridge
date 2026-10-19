@@ -32,6 +32,30 @@ QuantumBridge is an independent project. It is not an official Qiskit, PennyLane
 - NumPy/Torch/JAX array interface helpers, with Torch and JAX optional.
 - Minimal QNode-like wrapper and QML templates.
 
+## Native Pauli Algebra
+
+The native `Pauli` and `PauliList` implementations now retain the full
+`1, -1, i, -i` phase, support multi-qubit operators and subsystem composition,
+and execute as observables in native state and QNode workflows. Seeded
+`random_pauli` and `random_pauli_list` are also available without installing
+Qiskit or PennyLane.
+
+Run the native example with:
+
+```bash
+python -m examples.native_pauli_algebra_quantumbridge
+```
+
+API migration: `Pauli("X") @ Pauli("Y")` now returns `Pauli("iZ")`.
+The previous tuple result remains available through
+`Pauli("X").multiply(Pauli("Y"))`. Pauli-list composition now broadcasts rows,
+retains phase, and uses Qiskit's multiplication order. Use
+`commutation_matrix()` for all pairwise relations and `commutes()` for
+broadcasted rows. Symplectic arrays and Pauli subsystem indices put qubit zero
+on the right; native Circuit/QML wire indices continue to put wire zero first.
+The executable scope and remaining gaps are recorded in the
+[Stage 11E report](docs/implementation/stage11e_native_pauli_algebra_report.md).
+
 ## Ecosystem Compatibility Status
 
 Stage 7 planning defines function coverage by level:

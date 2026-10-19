@@ -101,7 +101,10 @@ class DensityMatrix:
     def expectation_value(self, observable, qargs=None) -> complex:
         from quantumbridge.information.operator import Operator
 
-        matrix = observable.data if hasattr(observable, "data") else np.asarray(observable, dtype=complex)
+        if hasattr(observable, "to_matrix"):
+            matrix = np.asarray(observable.to_matrix(), dtype=complex)
+        else:
+            matrix = observable.data if hasattr(observable, "data") else np.asarray(observable, dtype=complex)
         if qargs is not None:
             qargs_tuple = _validate_qargs(qargs, self.num_qubits)
             matrix = Operator(np.eye(self.data.shape[0], dtype=complex)).compose(Operator(matrix), qargs=qargs_tuple).data
@@ -113,7 +116,7 @@ class DensityMatrix:
         from quantumbridge.information.operator import Operator
 
         op = Operator.from_circuit(operator) if hasattr(operator, "operations") else operator
-        matrix = op.data if isinstance(op, Operator) else np.asarray(op, dtype=complex)
+        matrix = np.asarray(op.to_matrix(), dtype=complex) if hasattr(op, "to_matrix") else np.asarray(op, dtype=complex)
         if qargs is not None:
             qargs_tuple = _validate_qargs(qargs, self.num_qubits)
             dim = 1 << len(qargs_tuple)

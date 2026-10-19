@@ -5,6 +5,14 @@ Date: 2026-06-09
 
 QuantumBridge is an independent project. References to Qiskit and PennyLane are for attribution, compatibility, and optional adapter documentation only and do not imply endorsement.
 
+## Native Pauli Algebra Verification
+
+Stage 11E independently implements phase-aware Pauli and Pauli-list algebra.
+The optional verification environment uses Qiskit 2.6.0 and PennyLane 0.42.3
+as behavioral references. Native execution requires NumPy; optional sparse
+matrix output uses an installed SciPy. No upstream source, tests, or package
+artifacts are copied into this repository.
+
 ## Qiskit attribution
 
 Qiskit is an open-source quantum computing SDK distributed under Apache License 2.0.

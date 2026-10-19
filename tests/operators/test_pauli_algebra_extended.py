@@ -12,9 +12,9 @@ def test_pauli_list_symplectic_commutation_weight_and_sorting():
 
     z, x = paulis.to_symplectic()
     np.testing.assert_array_equal(z, [[False, False], [True, True], [False, False]])
-    np.testing.assert_array_equal(x, [[True, False], [True, False], [False, False]])
+    np.testing.assert_array_equal(x, [[False, True], [False, True], [False, False]])
     np.testing.assert_array_equal(paulis.weight(), [1, 2, 0])
-    np.testing.assert_array_equal(paulis.commutes(PauliList(["ZI", "IX"])), [[False, True], [False, False], [True, True]])
+    np.testing.assert_array_equal(paulis.commutation_matrix(PauliList(["ZI", "IX"])), [[False, True], [False, False], [True, True]])
     assert paulis.sort(weight=True).to_labels() == ["II", "XI", "YZ"]
     assert paulis.delete([1]).to_labels() == ["XI", "II"]
     assert paulis.insert(1, PauliList(["ZZ"])).to_labels() == ["XI", "ZZ", "YZ", "II"]

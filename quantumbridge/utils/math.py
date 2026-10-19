@@ -291,7 +291,7 @@ def observable_matrix(observable, num_qubits: int) -> np.ndarray:
         return observable_matrix(observable.to_hamiltonian(), num_qubits)
     if hasattr(observable, "to_matrix"):
         try:
-            matrix = observable.to_matrix(num_qubits)
+            matrix = observable.to_matrix(num_qubits=num_qubits)
         except TypeError:
             matrix = observable.to_matrix()
         return np.asarray(matrix, dtype=complex)

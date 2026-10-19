@@ -13,7 +13,7 @@ from quantumbridge.operators import Pauli, PauliString, SparsePauliOperator
 
 
 def test_pauli_multiplication_pauli_string_matrix_and_tensor():
-    phase, product = Pauli("X") @ Pauli("Y")
+    phase, product = Pauli("X").multiply(Pauli("Y"))
     assert phase == 1j
     assert product.label == "Z"
     matrix = PauliString([(0, "X"), (1, "Z")]).matrix(num_qubits=2)

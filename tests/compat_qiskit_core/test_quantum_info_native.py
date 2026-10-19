@@ -87,7 +87,7 @@ def test_pauli_list_sparse_pauli_op_core_methods():
     assert paulis.num_qubits == 2
     assert paulis.to_labels() == ["XI", "ZZ"]
     assert len(paulis.to_matrix()) == 2
-    assert paulis.compose(PauliList(["XI"])).to_labels() == ["II", "YZ"]
+    assert paulis.compose(PauliList(["XI"])).to_labels() == ["II", "-iYZ"]
 
     op = SparsePauliOp.from_list([("Z", 1), ("Z", -1), ("X", 0.5)]).simplify()
     assert op.to_list() == [("X", 0.5 + 0j)]

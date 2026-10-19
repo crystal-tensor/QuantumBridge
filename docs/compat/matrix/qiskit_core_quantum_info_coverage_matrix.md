@@ -1,5 +1,24 @@
 # qiskit Coverage Matrix
 
+## Stage 11E Executable Update
+
+The inventory below is a historical package-name snapshot. The following
+native Pauli behavior is now verified against installed Qiskit 2.6.0:
+
+| Native API | Executed behavior | Evidence |
+| --- | --- | --- |
+| Pauli | Multi-qubit phase, symplectic arrays, matrix, compose/dot, tensor/expand, adjoint/conjugate/transpose, powers, integer insertion/deletion, subsystem indices | tests/operators/test_pauli_phase_algebra.py and tests/compat_qiskit_core/test_pauli_phase_parity.py |
+| PauliList | Phase-preserving row broadcasting, Cartesian tensor, commutation, sorting, uniqueness, row operations, greedy commuting groups | Same test suites; group correctness is checked without promising an identical coloring |
+| random_pauli | Seeded labels, phase and Generator inputs | Same test suites |
+| random_pauli_list | Seeded rows, phase and empty-list metadata | Same test suites |
+| Native QNode and state observables | Expectation, state evolution, matrix instructions and PennyLane expectation comparison | tests/operators/test_pauli_phase_algebra.py and tests/qml/test_native_pauli_pennylane_parity.py |
+
+This update is an executable subset, with unsupported Clifford evolution and
+layout contracts described in the Stage 11E report. It does not turn historical
+inventory rows into complete behavioral parity claims.
+
+## Historical Inventory
+
 Generated from runtime public-name introspection. No upstream source, tests, comments, or documentation text is copied.
 
 - Installed: True
