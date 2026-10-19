@@ -48,7 +48,10 @@ class MatrixProductStateDevice:
         return self._configured(initial_state=initial_state)
 
     def _prepare(self, circuit, parameters=None):
-        return prepare_program(circuit, parameters, self.max_qubits, self.noise_model)
+        bound, program = prepare_program(circuit, parameters, self.max_qubits, self.noise_model)
+        if not bound.has_structured_control_flow and bound.global_phase != 0:
+            program.insert(0, ("gate", np.exp(1j * float(bound.global_phase)) * np.eye(2), (0,), {}))
+        return bound, program
 
     def _initial(self, width):
         if self.initial_state is None:

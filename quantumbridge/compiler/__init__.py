@@ -11,13 +11,18 @@ from .decomposition import BasisGateConversionPass, GateDecompositionPass
 from .layout import Layout
 from .optimization import CancelAdjacentInversePass, CircuitOptimizationPass, RemoveIdentityPass, TwoQubitGateReductionPass
 from .pass_base import AnalysisPass, CompilerPass, PassResult, TransformationPass
-from .pass_manager import PassManager
+from .pass_manager import PassManager, PropertySet, StagedPassManager
 from .report import CompilerReport
 from .routing import BasicRoutingPass, SwapInsertionPass
-from .target import Target
-from .transpile import generate_preset_pass_manager, pass_manager_config_from_options, transpile
+from .target import Target, NativeTarget, InstructionProperties
+from .transpile import generate_preset_pass_manager, pass_manager_config_from_options, transpile, native_transpile
+from .dag import DAGCircuit, DAGNode, circuit_to_dag, dag_to_circuit
+from .limits import CompilationLimits
+from .scheduling import SchedulingPass
 
 __all__ = [
+    "PropertySet", "StagedPassManager", "NativeTarget", "InstructionProperties", "native_transpile",
+    "DAGCircuit", "DAGNode", "circuit_to_dag", "dag_to_circuit", "CompilationLimits", "SchedulingPass",
     "AnalysisPass",
     "CompilerPass",
     "CompilerReport",

@@ -653,6 +653,18 @@ v0.1.0-p1-rc1
 
 Do not create or push the release tag until remote CI has run and the release is explicitly approved.
 
+## Native Compiler Checkpoint
+
+The native compiler now includes a wire-dependency DAG, validated Target/Layout,
+directed shortest-path routing, exact-phase basis translation, scoped dynamic
+body compilation and static ASAP/ALAP scheduling. QNode.compile preserves the
+tested first-order native/Torch/Autograd derivatives. It is a tested subset,
+not full Qiskit/PennyLane parity, optimal routing, hardware scheduling or real
+Quafu verification. Studio remains deferred.
+
+See [Stage 11L report](docs/implementation/stage11l_native_transpiler_report.md)
+and the SDK-free `examples/native_transpile_*.py` workflows.
+
 ## Legal and Attribution
 
 - Apache-2.0 plan: [docs/legal/apache2_compliance_plan.md](docs/legal/apache2_compliance_plan.md)

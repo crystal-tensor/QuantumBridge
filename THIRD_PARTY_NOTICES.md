@@ -326,6 +326,16 @@ endorsed by upstream maintainers, not a full replacement, not production UI or
 production API software, and does not access cloud services, tokens,
 credentials, or real hardware.
 
+## Stage 11L Native Transpiler
+
+The dependency DAG, scoped compilation, algebraic gate translation,
+layout/permutation routing, static scheduler and compiled QNode chain rule are
+independent QuantumBridge implementations. Installed SDKs are optional public
+black-box test references, not native implementation dependencies. No upstream
+source/test files, package payload, environment, token or hardware job is used
+or copied. The supported subset is not full SDK parity, optimal compilation,
+certified physical scheduling or an endorsement by upstream maintainers.
+
 ## Stage 9B Qiskit Optimization native subset
 
 Stage 9B adds an independently implemented educational native binary

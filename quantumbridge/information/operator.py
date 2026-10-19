@@ -119,7 +119,7 @@ class Operator:
                     continue
                 gate = gate_matrix(op.name, op.params, op.metadata)
                 state = apply_unitary(state, gate, op.controls + op.targets, circuit.num_qubits)
-            matrix[:, col] = state
+            matrix[:, col] = np.exp(1j * float(circuit.global_phase)) * state
         return cls(matrix)
 
     def is_unitary(self, atol: float = 1e-10) -> bool:

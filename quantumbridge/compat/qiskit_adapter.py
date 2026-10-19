@@ -25,6 +25,7 @@ def _require_qiskit():
 
 def circuit_from_qiskit(qiskit_circuit) -> Circuit:
     qb = Circuit(qiskit_circuit.num_qubits, qiskit_circuit.num_clbits)
+    qb.global_phase = float(qiskit_circuit.global_phase)
     for item in qiskit_circuit.data:
         name = item.operation.name
         if name not in SUPPORTED_IMPORT:
@@ -70,6 +71,7 @@ def ir_from_qiskit(qiskit_circuit):
 def circuit_to_qiskit(circuit: Circuit):
     QuantumCircuit = _require_qiskit()
     qc = QuantumCircuit(circuit.num_qubits, circuit.num_bits)
+    qc.global_phase = float(circuit.global_phase)
     for op in circuit.iter_instructions():
         if any(key in op.metadata for key in ("condition", "control_flow", "control_flow_stack")):
             raise ValueError("QuantumBridge Qiskit export does not yet reconstruct conditional blocks.")

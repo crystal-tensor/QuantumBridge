@@ -244,7 +244,9 @@ def test_depth_scoping_and_malformed_ir_are_rejected():
     with pytest.raises(ValueError): ControlBlock.from_dict({"version": "bad", "kind": "if", "data": {}})
     with pytest.raises(UnsupportedFeature): ControlBlock("unknown", {})
     with pytest.raises(ValueError): IRProgram.from_dict({"ir_version": "wrong"})
-    with pytest.raises(UnsupportedFeature): transpile(c)
+    compiled = transpile(c)
+    assert compiled.has_structured_control_flow
+    assert DensityMatrixDevice().run(compiled).probabilities() == DensityMatrixDevice().run(c).probabilities()
     with pytest.raises(UnsupportedFeature): c.depth()
 
 

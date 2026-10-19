@@ -8,12 +8,10 @@ from .pass_base import AnalysisPass, PassResult
 
 class DepthAnalysisPass(AnalysisPass):
     def run(self, circuit):
-        wire_depth = [0] * circuit.num_qubits
-        for op in circuit.operations:
-            level = 1 + max(wire_depth[wire] for wire in op.wires)
-            for wire in op.wires:
-                wire_depth[wire] = level
-        return PassResult(circuit, {"depth": max(wire_depth, default=0)}, False)
+        from .dag import circuit_to_dag
+        depth = circuit_to_dag(circuit).depth(structural=True)
+        return PassResult(circuit, {"depth": None if circuit.has_structured_control_flow else depth,
+                                  "structural_depth": depth, "runtime_depth": "path-dependent" if circuit.has_structured_control_flow else depth}, False)
 
 
 class TwoQubitCountAnalysisPass(AnalysisPass):

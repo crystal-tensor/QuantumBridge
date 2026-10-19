@@ -5,6 +5,26 @@ Date: 2026-06-05
 
 This ledger records implementation mode and upstream source status for the current P1 release-candidate baseline. Current work uses Native Implementation, Adapter Integration, and Upstream Dependency. No new upstream source migration was introduced during Stage 5.5. No Source Port with Attribution was performed.
 
+## Stage 11L Native Compiler
+
+Native Implementation only; zero source ports. Public SDK black-box behavior
+is used in optional tests; neither SDK is used to compile native circuits.
+No new dependency, vendored package, credentials, cloud or hardware submission.
+Review pending; exact-phase, numeric tolerance, layout decoding and bounded
+resource growth are documented risks. Full parity remains incomplete.
+
+| Files | Native behavior | Evidence |
+| --- | --- | --- |
+| `quantumbridge/compiler/dag.py`, `quantumbridge/compiler/traversal.py`, `quantumbridge/compiler/limits.py` | Dependency graph, scope traversal and limits | tests/compiler/test_native_transpiler_engine.py |
+| `quantumbridge/compiler/pass_manager.py`, `quantumbridge/compiler/pass_base.py`, `quantumbridge/compiler/analysis.py` | Analysis lifetime, callbacks, staged bounded passes, structural/runtime distinction | Mutation, requirement, invalidation and runtime tests |
+| `quantumbridge/compiler/target.py`, `quantumbridge/compiler/coupling.py`, `quantumbridge/compiler/layout.py` | Target properties, directed paths and mapping | Capacity/qargs/duration/layout tests |
+| `quantumbridge/compiler/decomposition.py`, `quantumbridge/compiler/routing.py`, `quantumbridge/compiler/scheduling.py`, `quantumbridge/compiler/transpile.py`, `quantumbridge/compiler/cancellation.py`, `quantumbridge/compiler/__init__.py` | Exact-phase translation, real routing, static timing, symbolic optimization | Independent operators and public SDK comparison |
+| `quantumbridge/core/circuit.py`, `quantumbridge/ir/qb_ir.py`, `quantumbridge/information/operator.py`, `quantumbridge/devices/statevector_device.py`, `quantumbridge/utils/math.py` | Phase binding/composition/control/execution/IR | Exact operators, coherent control, IR and existing regressions |
+| `quantumbridge/devices/matrix_product_state_device.py`, `quantumbridge/execution/control_flow_engine.py`, `quantumbridge/compat/qiskit_adapter.py` | Phase in existing execution/adapter paths | MPS/dynamic/optional SDK tests |
+| `quantumbridge/diff/compiled_parameters.py`, `quantumbridge/qml/qnode.py` | First-order compiled parameter-expression chain rule | Native/Torch/Autograd gradient tests |
+| `tests/compat/test_native_transpiler_differential.py` | Twelve meaningful public operator scenarios | Optional Qiskit 2.4/2.6 oracle only |
+| `examples/native_transpile_*.py` | Static timing, runtime branch and offline DeviceSpec execution | SDK-free examples |
+
 ## Stage 11K Native QNode Differentiation
 
 Native Implementation, source port count zero. Optional Torch/Autograd provide

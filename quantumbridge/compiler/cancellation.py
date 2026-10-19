@@ -4,6 +4,7 @@
 # This implementation is developed for the QuantumBridge native architecture.
 
 from quantumbridge.core import Circuit
+from numbers import Real
 
 from .pass_base import PassResult, TransformationPass, copy_terminal_measurements
 
@@ -47,7 +48,7 @@ class RemoveZeroRotationPass(TransformationPass):
         out = Circuit(circuit.num_qubits, circuit.num_bits, circuit.name, circuit.metadata)
         changed = False
         for op in circuit.operations:
-            if op.name in {"rx", "ry", "rz", "phase"} and abs(float(op.params[0])) <= self.tolerance:
+            if op.name in {"rx", "ry", "rz", "phase"} and isinstance(op.params[0], Real) and abs(op.params[0]) <= self.tolerance:
                 changed = True
                 continue
             out.operations.append(op)
@@ -73,8 +74,8 @@ class MergeAdjacentRotationPass(TransformationPass):
                 and current.targets == nxt.targets
                 and current.controls == nxt.controls
             ):
-                angle = float(current.params[0]) + float(nxt.params[0])
-                if abs(angle) > self.tolerance:
+                angle = current.params[0] + nxt.params[0]
+                if not isinstance(angle, Real) or abs(angle) > self.tolerance:
                     getattr(out, current.name)(angle, current.targets[0])
                 changed = True
                 index += 2

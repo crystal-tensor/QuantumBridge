@@ -58,6 +58,7 @@ def apply_density_channel(density, operators, wires, num_qubits):
 
 
 def gate_matrix(name: str, params: tuple[Real, ...] = (), metadata: Optional[dict] = None) -> np.ndarray:
+    if name == "global_phase": return np.exp(1j * float(params[0])) * I2
     if name in {"id", "i"}:
         return I2
     if name == "x":

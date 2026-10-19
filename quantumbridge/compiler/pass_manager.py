@@ -1,88 +1,105 @@
 # Copyright 2026 QuantumBridge Contributors.
 # Licensed under the Apache License, Version 2.0.
-# This file is part of QuantumBridge SDK.
-# This implementation is developed for the QuantumBridge native architecture.
-
+# Bounded native analysis/transformation execution with versioned properties.
 
 from copy import deepcopy
+from time import perf_counter
 
-from quantumbridge.core import Measurement, Operation
-
-from .pass_base import CompilerPass, PassResult
+from .limits import CompilationLimits
+from .pass_base import CompilerPass, AnalysisPass, PassResult
 from .report import CompilerReport
 
 
-class PassManager:
-    def __init__(self, passes=None):
-        self.passes = list(passes or [])
+class PropertySet(dict):
+    def __init__(self):
+        super().__init__()
+        self.version = 0
 
-    def run(self, circuit):
-        if circuit.has_structured_control_flow:
-            from quantumbridge.core.classical import UnsupportedFeature
-            raise UnsupportedFeature("structured_transpilation", "QuantumBridge cannot yet route/schedule structured dynamic blocks; execute the native circuit directly.")
-        if circuit.has_dynamic_operations:
-            return self._run_ordered(circuit)
-        input_operations = len(circuit.operations)
-        current = circuit
-        analyses = {}
-        changed = False
-        for compiler_pass in self.passes:
-            if not isinstance(compiler_pass, CompilerPass):
-                raise TypeError("QuantumBridge PassManager entries must be CompilerPass instances.")
-            result = compiler_pass.run(current)
-            if not isinstance(result, PassResult):
-                raise TypeError("QuantumBridge compiler passes must return PassResult.")
-            current = result.circuit
-            analyses.update(result.analyses)
-            changed = changed or result.changed
-        analyses.setdefault("compiler_report", CompilerReport(input_operations, len(current.operations), analyses.copy(), changed).to_dict())
+    def invalidate(self, preserved=()):
+        keep = set(preserved)
+        for key in tuple(self):
+            if key not in keep: del self[key]
+        self.version += 1
+
+
+class PassManager:
+    def __init__(self, passes=None, *, limits=None, callback=None, seed=0, max_iterations=1):
+        self.passes = list(passes or [])
+        self.limits = limits or CompilationLimits()
+        if isinstance(max_iterations, bool) or not isinstance(max_iterations, int) or not 1 <= max_iterations <= self.limits.max_pass_iterations:
+            raise ValueError("Invalid bounded pass iteration count.")
+        self.callback, self.seed, self.max_iterations = callback, seed, max_iterations
+        self.property_set = PropertySet()
+
+    def run(self, circuit, callback=None):
+        from .dag import circuit_to_dag
+        from .traversal import transform_segments
+        circuit_to_dag(circuit, self.limits)
+        current = circuit.copy()
+        analyses, trace, changed = {}, [], False
+        self.property_set = PropertySet()
+        count = 0
+        self.metrics = []
+        for iteration in range(self.max_iterations):
+            iteration_changed = False
+            for compiler_pass in self.passes:
+                if count >= self.limits.max_pass_iterations: raise MemoryError("Compiler exceeds max_pass_iterations.")
+                if not isinstance(compiler_pass, CompilerPass): raise TypeError("PassManager entries must be CompilerPass instances.")
+                missing = set(getattr(compiler_pass, "requires", ())) - self.property_set.keys()
+                if missing: raise ValueError(f"Pass requirements are absent or invalidated: {sorted(missing)}.")
+                compiler_pass.property_set, compiler_pass.seed = self.property_set, self.seed
+                before = current.to_ir().to_json()
+                started = perf_counter()
+                if current.has_dynamic_operations and not getattr(compiler_pass, "handles_dynamic", False) and not isinstance(compiler_pass, AnalysisPass):
+                    results = []
+                    def transform(segment):
+                        result = compiler_pass.run(segment)
+                        if not isinstance(result, PassResult): raise TypeError("Compiler passes must return PassResult.")
+                        results.append(result)
+                        return result.circuit
+                    compiled = transform_segments(current, transform)
+                    result = PassResult(compiled, {"segment_analyses": [item.analyses for item in results]}, any(item.changed for item in results))
+                else:
+                    result = compiler_pass.run(current)
+                if not isinstance(result, PassResult): raise TypeError("Compiler passes must return PassResult.")
+                actual_change = before != result.circuit.to_ir().to_json()
+                if isinstance(compiler_pass, AnalysisPass) and (actual_change or before != current.to_ir().to_json() or result.changed):
+                    raise ValueError("AnalysisPass must not mutate the native circuit.")
+                current = result.circuit
+                circuit_to_dag(current, self.limits)
+                if actual_change:
+                    self.property_set.invalidate(getattr(compiler_pass, "preserves", ()))
+                self.property_set.update(result.analyses)
+                analyses.update(result.analyses)
+                changed |= actual_change
+                iteration_changed |= actual_change
+                duration = perf_counter() - started
+                entry = {"pass": type(compiler_pass).__name__, "iteration": iteration, "count": count,
+                         "changed": actual_change, "property_version": self.property_set.version}
+                trace.append(entry)
+                self.metrics.append({**entry, "duration_seconds": duration})
+                selected_callback = callback or self.callback
+                if selected_callback is not None:
+                    selected_callback(pass_=compiler_pass, circuit=current.copy(), property_set=deepcopy(self.property_set),
+                                      count=count, duration=duration)
+                count += 1
+            if not iteration_changed: break
+        analyses["pass_trace"] = trace
+        if circuit.has_dynamic_operations: analyses["dynamic_execution_order"] = True
+        analyses["current_properties"] = dict(self.property_set)
+        analyses["compiler_report"] = CompilerReport(len(circuit.operations), len(current.operations), analyses.copy(), changed).to_dict()
         return PassResult(current, analyses, changed)
 
-    def _run_ordered(self, circuit):
-        from .routing import SwapInsertionPass
 
-        if any(isinstance(item, SwapInsertionPass) for item in self.passes):
-            raise ValueError("QuantumBridge dynamic transpilation does not yet support coupling-map routing.")
-        out = circuit.copy_empty_like()
-        segment = circuit.copy_empty_like()
-        reports = []
-        changed = False
+class StagedPassManager:
+    def __init__(self, stages):
+        self.stages = dict(stages)
 
-        def flush():
-            nonlocal segment, changed
-            if segment.operations:
-                result = self.run(segment)
-                out.operations.extend(result.circuit.operations)
-                reports.append(result.analyses)
-                changed = changed or result.changed
-                segment = circuit.copy_empty_like()
-
-        for item in circuit.iter_instructions():
-            if isinstance(item, Measurement):
-                flush()
-                metadata = {**deepcopy(item.metadata), "operation_index": len(out.operations)}
-                out.measurements.append(Measurement(item.wire, item.bit, item.kind, metadata))
-            elif item.name in {"reset", "kraus"} or item.metadata.get("directive"):
-                flush()
-                out.operations.append(item)
-            elif any(key in item.metadata for key in ("condition", "control_flow", "control_flow_stack")):
-                flush()
-                unit = circuit.copy_empty_like()
-                metadata = {key: deepcopy(value) for key, value in item.metadata.items()
-                            if key not in {"condition", "control_flow", "control_flow_stack", "gate_condition"}}
-                unit.operations.append(Operation(item.name, item.targets, item.controls, item.params, metadata))
-                result = self.run(unit)
-                reports.append(result.analyses)
-                changed = changed or result.changed
-                for index, operation in enumerate(result.circuit.operations):
-                    restored = {**deepcopy(operation.metadata), **deepcopy(item.metadata)}
-                    if index:
-                        for frame in restored.get("control_flow_stack", []):
-                            frame["start"] = False
-                    out.operations.append(Operation(operation.name, operation.targets, operation.controls, operation.params, restored))
-            else:
-                segment.operations.append(item)
-        flush()
-        analyses = {"dynamic_execution_order": True, "segment_analyses": reports}
-        analyses["compiler_report"] = CompilerReport(len(circuit.operations), len(out.operations), analyses.copy(), changed).to_dict()
-        return PassResult(out, analyses, changed)
+    def run(self, circuit):
+        current, analyses, changed = circuit, {}, False
+        for name, manager in self.stages.items():
+            if not isinstance(manager, PassManager): raise TypeError("Stages must contain native PassManager objects.")
+            result = manager.run(current)
+            current, changed = result.circuit, changed or result.changed
+            analyses[name] = result.analyses
+        return PassResult(current, {"stages": analyses}, changed)

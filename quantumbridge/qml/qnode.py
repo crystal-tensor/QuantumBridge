@@ -25,6 +25,7 @@ class QNode:
         self.gradient_kwargs = dict(gradient_kwargs or {})
         self.max_diff = max_diff
         self.last_metadata = {}
+        self.compiler_options = None
         from .shot_vector import ShotSpec
         ShotSpec.parse(shots)
         if interface not in {None, "auto", "numpy", "torch", "autograd", "jax", "tf", "tensorflow"}:
@@ -35,9 +36,24 @@ class QNode:
         recorder = AngleRecorder()
         tape = Tape(self.num_qubits, recorder)
         returned = self.fn(tape, *args, **kwargs)
+        if self.compiler_options is not None:
+            from quantumbridge.compiler import native_transpile
+            from quantumbridge.diff.compiled_parameters import record_compiled_parameters
+            from quantumbridge.core.classical import UnsupportedFeature
+            compiled = native_transpile(tape.circuit, **self.compiler_options)
+            identity = dict(enumerate(range(self.num_qubits)))
+            if compiled.num_qubits != self.num_qubits or compiled.metadata.get("initial_layout") != identity or compiled.metadata.get("routing", {}).get("final_layout", identity) != identity:
+                raise UnsupportedFeature("compiled_qnode_layout", "QNode measurements currently require equal width and restored identity layout.")
+            tape.circuit, recorder = record_compiled_parameters(compiled, recorder)
         plan = ExecutionPlan(self, tape, measurement_tree(returned, tape), recorder)
         plan.input_values = (args, kwargs)
         return plan
+
+    def compile(self, **options):
+        from copy import copy
+        result = copy(self)
+        result.compiler_options, result.last_metadata = dict(options), {}
+        return result
 
     def __call__(self, *args, **kwargs):
         from quantumbridge.interfaces.qnode_autodiff import execute_interface, infer_interface

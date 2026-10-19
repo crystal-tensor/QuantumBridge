@@ -125,6 +125,8 @@ class IRProgram:
             tuple(IRInstruction(item["op"], tuple(item["targets"]), tuple(item.get("controls", ())),
                 tuple(param_from_ir(value) for value in item.get("params", ())), decode_instruction_metadata(item.get("metadata", {}))) for item in data["instructions"]),
             tuple(IRMeasurement(item["kind"], item["wires"][0], item["bits"][0], dict(item.get("metadata", {}))) for item in data.get("measurements", ())), data.get("name"), dict(data.get("metadata", {})))
+        if "global_phase" in result.metadata:
+            result.metadata["global_phase"] = param_from_ir(result.metadata["global_phase"])
         if validate: result.validate()
         return result
 
@@ -155,6 +157,8 @@ class IRProgram:
         )
 
     def to_dict(self) -> dict[str, Any]:
+        metadata = dict(self.metadata)
+        if "global_phase" in metadata: metadata["global_phase"] = _param_to_ir(metadata["global_phase"])
         return {
             "ir_version": self.ir_version,
             "name": self.name,
@@ -164,5 +168,5 @@ class IRProgram:
             },
             "instructions": [instruction.to_dict() for instruction in self.instructions],
             "measurements": [measurement.to_dict() for measurement in self.measurements],
-            "metadata": dict(self.metadata),
+            "metadata": metadata,
         }

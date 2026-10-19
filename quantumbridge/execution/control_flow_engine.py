@@ -128,6 +128,11 @@ class DynamicExecutionEngine:
 
     def _program(self, circuit, top=False):
         result, inserted = [], False
+        from quantumbridge.core import Operation
+        from numbers import Real
+        phase = circuit.global_phase
+        if not isinstance(phase, Real) or phase != 0:
+            result.append(Operation("global_phase", (0,), params=(phase,)))
         for item in circuit.iter_instructions():
             if top and isinstance(item, Measurement) and item.metadata.get("operation_index", len(circuit.operations)) == len(circuit.operations) and not inserted:
                 result.extend(self.noise)

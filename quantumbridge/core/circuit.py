@@ -42,6 +42,16 @@ class Circuit:
         self.operations: list[Operation] = []
         self.measurements: list[Measurement] = []
 
+    @property
+    def global_phase(self): return self.metadata.get("global_phase", 0.)
+
+    @global_phase.setter
+    def global_phase(self, phase):
+        if not isinstance(phase, (Real, Parameter)) and not hasattr(phase, "parameters"):
+            raise TypeError("Circuit global_phase requires a real or native parameter expression.")
+        if isinstance(phase, Real) and not np.isfinite(phase): raise ValueError("Circuit global_phase must be finite.")
+        self.metadata["global_phase"] = phase
+
     def _check_wire(self, wire: int) -> None:
         if not isinstance(wire, int) or not 0 <= wire < self.num_qubits:
             raise ValueError(f"QuantumBridge wire {wire!r} is outside this circuit.")
@@ -110,6 +120,7 @@ class Circuit:
         clbit_map = {source: target for source, target in enumerate(clbits_tuple)}
 
         if effective_instruction.definition is not None:
+            self.global_phase = self.global_phase + effective_instruction.definition.global_phase
             offset = len(self.operations)
             for op in effective_instruction.definition.operations:
                 mapped = _remap_operation(op, qubit_map, clbit_map, self.num_qubits, self.num_bits)
@@ -350,6 +361,7 @@ class Circuit:
         else:
             target.operations.extend(mapped_ops)
             target.measurements.extend(mapped_measurements)
+        target.global_phase = target.global_phase + other.global_phase
         return target
 
     @property
@@ -437,7 +449,7 @@ class Circuit:
             raise TypeError("QuantumBridge Circuit.if_else false_body must be a Circuit.")
         from .classical import ClassicalExpression
         from .control_flow import ControlBlock, condition_expression
-        if isinstance(condition, (ClassicalExpression, bool)) or true_body.has_structured_control_flow or false_body is not None and false_body.has_structured_control_flow:
+        if isinstance(condition, (ClassicalExpression, bool)) or true_body.has_structured_control_flow or _has_global_phase(true_body) or false_body is not None and (false_body.has_structured_control_flow or _has_global_phase(false_body)):
             return self._control(ControlBlock("if", {"condition": condition_expression(condition),
                 "body": self._mapped_body(true_body, qubits, clbits),
                 "alternate": None if false_body is None else self._mapped_body(false_body, qubits, clbits)}), inplace)
@@ -488,6 +500,7 @@ class Circuit:
             raise ValueError("QuantumBridge Circuit.inverse does not invert measured circuits.")
         target = Circuit(self.num_qubits, self.num_bits, self.name, self.metadata)
         target.operations = [_inverse_operation(op) for op in reversed(self.operations)]
+        target.global_phase = -self.global_phase
         return _replace_self(self, target) if inplace else target
 
     def power(self, exponent: int, inplace: bool = False) -> "Circuit":
@@ -497,6 +510,7 @@ class Circuit:
             raise ValueError("QuantumBridge Circuit.power does not repeat measured circuits.")
         unit = self.inverse() if exponent < 0 else self
         target = Circuit(self.num_qubits, self.num_bits, self.name, self.metadata)
+        target.global_phase = 0.
         for _ in range(abs(exponent)):
             target.compose(unit, inplace=True)
         return _replace_self(self, target) if inplace else target
@@ -515,7 +529,14 @@ class Circuit:
         if not 0 <= ctrl_state < (1 << num_ctrl_qubits):
             raise ValueError("QuantumBridge Circuit.control ctrl_state is outside the control register.")
         out = Circuit(num_ctrl_qubits + self.num_qubits, self.num_bits, label or self.name, self.metadata)
+        out.global_phase = 0.
         prefix = tuple(range(num_ctrl_qubits))
+        if _has_global_phase(self):
+            if not isinstance(self.global_phase, Real):
+                from .classical import UnsupportedFeature
+                raise UnsupportedFeature("symbolic_controlled_global_phase", "Bind the phase before coherently controlling this circuit.")
+            controlled_phase = _controlled_matrix(np.exp(1j * self.global_phase) * np.eye(2), num_ctrl_qubits, ctrl_state)
+            out.unitary(controlled_phase, prefix + (num_ctrl_qubits,), name="controlled_global_phase")
         for op in self.operations:
             base_wires = op.controls + op.targets
             mapped_wires = prefix + tuple(num_ctrl_qubits + wire for wire in base_wires)
@@ -611,7 +632,9 @@ class Circuit:
         )
 
     def copy_empty_like(self, name: Optional[str] = None) -> "Circuit":
-        return Circuit(self.num_qubits, self.num_bits, name if name is not None else self.name, deepcopy(self.metadata))
+        metadata = deepcopy(self.metadata)
+        metadata.pop("global_phase", None)
+        return Circuit(self.num_qubits, self.num_bits, name if name is not None else self.name, metadata)
 
     def size(self, filter_function: Optional[Callable[[Any], bool]] = None) -> int:
         items = list(self.operations) + list(self.measurements)
@@ -684,6 +707,7 @@ class Circuit:
     @property
     def parameters(self) -> tuple[Parameter, ...]:
         found: set[Parameter] = set()
+        found.update(parameter_set((self.global_phase,)))
         for op in self.operations:
             found.update(parameter_set(op.params))
             if "control_node" in op.metadata:
@@ -702,6 +726,8 @@ class Circuit:
     ) -> "Circuit":
         mapping = _parameter_mapping_from_values(self.parameters, parameters, strict=strict)
         bound = Circuit(self.num_qubits, self.num_bits, self.name, self.metadata)
+        if "global_phase" in self.metadata:
+            bound.global_phase = resolve_parameter(self.global_phase, mapping, allow_partial=not strict)
         for op in self.operations:
             params = tuple(resolve_parameter(param, mapping, allow_partial=not strict) for param in op.params)
             metadata = deepcopy(op.metadata)
@@ -731,6 +757,10 @@ class Circuit:
         from quantumbridge.qasm import dumps
 
         return dumps(self)
+
+
+def _has_global_phase(circuit):
+    return not isinstance(circuit.global_phase, Real) or circuit.global_phase != 0
 
 
 def _index_map(source_size: int, target_size: int, selected: Optional[Sequence[int]], label: str) -> dict[int, int]:

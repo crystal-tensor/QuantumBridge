@@ -16,6 +16,44 @@ from .optimization import CircuitOptimizationPass, RemoveIdentityPass, TwoQubitG
 from .pass_manager import PassManager
 from .routing import BasicRoutingPass, SwapInsertionPass
 from .target import Target
+from .limits import CompilationLimits
+from .layout import Layout, apply_layout, select_initial_layout
+from .pass_base import TransformationPass, AnalysisPass, PassResult
+from .scheduling import SchedulingPass
+
+
+class _LayoutPass(TransformationPass):
+    handles_dynamic = True
+    def __init__(self, target, initial_layout): self.target, self.initial_layout = target, initial_layout
+    def run(self, circuit):
+        layout = select_initial_layout(circuit, self.target) if self.initial_layout == "topology" else Layout.trivial(circuit.num_qubits) if self.initial_layout is None else self.initial_layout
+        out = apply_layout(circuit, layout, self.target)
+        return PassResult(out, {"initial_layout": out.metadata["initial_layout"]}, True)
+
+
+class _ValidateTargetPass(AnalysisPass):
+    handles_dynamic = True
+    def __init__(self, target): self.target = target
+    def run(self, circuit):
+        from quantumbridge.core import Measurement
+        from quantumbridge.core.classical import UnsupportedFeature
+        def walk(body):
+            for item in body.iter_instructions():
+                node = item.metadata.get("control_node")
+                if node is not None:
+                    if not self.target.conditional: raise UnsupportedFeature("target_control_flow", "Target does not declare classical control support.")
+                    for child in node.bodies: walk(child)
+                    continue
+                if any(key in item.metadata for key in ("condition", "gate_condition", "control_flow_stack")) and not self.target.conditional:
+                    raise UnsupportedFeature("target_conditional")
+                name, wires = ("measure", (item.wire,)) if isinstance(item, Measurement) else (item.name, item.wires)
+                if not self.target.instruction_supported(name, wires):
+                    raise UnsupportedFeature("target_instruction", f"Target does not support {name} on {wires}.")
+        walk(circuit)
+        initial = circuit.metadata.get("initial_layout", dict(enumerate(range(circuit.num_qubits))))
+        physical = circuit.metadata.get("routing", {}).get("final_layout", dict(enumerate(range(circuit.num_qubits))))
+        return PassResult(circuit, {"target_validated": True,
+                                   "logical_final_layout": {logical: physical[wire] for logical, wire in initial.items()}}, False)
 
 
 _DEFAULT_BASIS = (
@@ -52,6 +90,11 @@ def generate_preset_pass_manager(
     basis_gates: Sequence[str] | None = None,
     coupling_map: CouplingMap | Sequence[tuple[int, int]] | None = None,
     target: Target | None = None,
+    initial_layout=None,
+    restore_layout=True,
+    scheduling_method=None,
+    seed_transpiler=0,
+    limits=None,
 ) -> PassManager:
     """Build a small Qiskit-style preset pass manager.
 
@@ -60,15 +103,16 @@ def generate_preset_pass_manager(
     optimization passes.
     """
 
-    if not isinstance(optimization_level, int) or optimization_level < 0 or optimization_level > 3:
+    if isinstance(optimization_level, bool) or not isinstance(optimization_level, int) or optimization_level < 0 or optimization_level > 3:
         raise ValueError("QuantumBridge optimization_level must be an integer in [0, 3].")
     resolved_target = _resolve_target(target, basis_gates, coupling_map)
-    passes = []
+    limits = limits or CompilationLimits()
+    passes = [_LayoutPass(resolved_target, initial_layout)]
     passes.append(GateDecompositionPass(resolved_target.basis_gates))
     if resolved_target.coupling_map is not None:
         passes.append(BasicRoutingPass(resolved_target.coupling_map))
-        if optimization_level >= 1:
-            passes.append(SwapInsertionPass(resolved_target.coupling_map))
+        passes.append(SwapInsertionPass(resolved_target.coupling_map, restore_layout, resolved_target, limits))
+        passes.append(GateDecompositionPass(resolved_target.basis_gates))
     if optimization_level >= 1:
         passes.append(RemoveIdentityPass())
     if optimization_level >= 2:
@@ -76,8 +120,10 @@ def generate_preset_pass_manager(
     if optimization_level >= 3:
         passes.append(TwoQubitGateReductionPass())
         passes.append(CircuitOptimizationPass())
+    passes.append(_ValidateTargetPass(resolved_target))
+    if scheduling_method is not None: passes.append(SchedulingPass(resolved_target, scheduling_method, limits=limits))
     passes.extend([DepthAnalysisPass(), GateCountAnalysisPass(), TwoQubitCountAnalysisPass()])
-    manager = PassManager(passes)
+    manager = PassManager(passes, limits=limits, seed=seed_transpiler)
     manager.metadata = {
         "optimization_level": optimization_level,
         "basis_gates": list(resolved_target.basis_gates),
@@ -94,6 +140,11 @@ def transpile(
     optimization_level: int = 1,
     target: Target | None = None,
     return_report: bool = False,
+    initial_layout=None,
+    restore_layout=True,
+    scheduling_method=None,
+    seed_transpiler=0,
+    limits=None,
 ):
     """Transpile one circuit or a sequence of circuits with the native pipeline."""
 
@@ -104,6 +155,11 @@ def transpile(
         basis_gates=basis_gates,
         coupling_map=coupling_map,
         target=target,
+        initial_layout=initial_layout,
+        restore_layout=restore_layout,
+        scheduling_method=scheduling_method,
+        seed_transpiler=seed_transpiler,
+        limits=limits,
     )
     outputs = []
     reports = []
@@ -127,6 +183,9 @@ def transpile(
     return payload
 
 
+native_transpile = transpile
+
+
 def _resolve_target(target: Target | None, basis_gates, coupling_map) -> Target:
     if target is not None:
         if basis_gates is not None or coupling_map is not None:
@@ -135,7 +194,7 @@ def _resolve_target(target: Target | None, basis_gates, coupling_map) -> Target:
     normalized_coupling = None
     if coupling_map is not None:
         normalized_coupling = coupling_map if isinstance(coupling_map, CouplingMap) else CouplingMap(coupling_map)
-    return Target(num_qubits=0, basis_gates=tuple(basis_gates or _DEFAULT_BASIS), coupling_map=normalized_coupling)
+    return Target(num_qubits=0, basis_gates=tuple(basis_gates or _DEFAULT_BASIS), coupling_map=normalized_coupling, allow_channels=True)
 
 
 def pass_manager_config_from_options(**options: Any) -> PassManagerConfig:

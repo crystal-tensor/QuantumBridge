@@ -57,7 +57,7 @@ class StatevectorDevice:
             matrix = gate_matrix(op.name, op.params, op.metadata)
             wires = op.controls + op.targets
             state = apply_unitary(state, matrix, wires, circuit.num_qubits)
-        return state
+        return np.exp(1j * float(circuit.global_phase)) * state
 
     def probabilities(self, circuit, wires=None, parameters: Optional[Mapping[Union[Parameter, str], Real]] = None) -> dict[str, float]:
         if circuit.has_dynamic_operations:

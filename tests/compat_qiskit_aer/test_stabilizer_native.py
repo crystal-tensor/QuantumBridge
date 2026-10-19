@@ -41,8 +41,9 @@ def test_dynamic_transpile_preserves_measurement_boundaries_and_branch_entry(lev
 
 def test_dynamic_routing_and_unsupported_exports_are_not_silently_changed():
     circuit = Circuit(2, 1).h(0).measure(0, 0).cx(0, 1)
-    with pytest.raises(ValueError, match="routing"):
-        transpile(circuit, coupling_map=[(0, 1)])
+    compiled = transpile(circuit, coupling_map=[(0, 1)])
+    assert StabilizerDevice().run(compiled).probabilities() == StabilizerDevice().run(circuit).probabilities()
+    assert compiled.metadata["transpile"]["analyses"]["target_validated"]
     conditional = Circuit(1, 1).x(0).c_if(0, 1)
     with pytest.raises(ValueError, match="conditional"):
         conditional.to_openqasm()

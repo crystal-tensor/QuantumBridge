@@ -1,52 +1,109 @@
 # Copyright 2026 QuantumBridge Contributors.
 # Licensed under the Apache License, Version 2.0.
-# This file is part of QuantumBridge SDK.
-# This implementation is developed for the QuantumBridge native architecture.
+# Algebraic native basis translation, including exact global phase.
+
+from copy import deepcopy
+from dataclasses import replace
+from math import pi
+from numbers import Real
+
+from quantumbridge.core import Circuit, Operation, Measurement
+from quantumbridge.core.classical import UnsupportedFeature
+from .pass_base import PassResult, TransformationPass
+from .traversal import append_item, map_control_bodies
 
 
-def needs_decomposition(circuit, basis_gates) -> bool:
-    basis = set(basis_gates)
-    return any(op.name not in basis for op in circuit.operations)
-
-
-from quantumbridge.core import Circuit
-from .pass_base import PassResult, TransformationPass, copy_terminal_measurements
+def needs_decomposition(circuit, basis_gates):
+    return any(op.name not in set(basis_gates) for op in circuit.operations)
 
 
 class BasisGateConversionPass(TransformationPass):
-    def __init__(self, basis_gates):
-        self.basis_gates = set(basis_gates)
+    handles_dynamic = True
+    def __init__(self, basis_gates): self.basis_gates = set(basis_gates)
 
     def run(self, circuit):
         unsupported = sorted({op.name for op in circuit.operations if op.name not in self.basis_gates})
-        if unsupported:
-            raise ValueError(f"QuantumBridge basis conversion does not support operations outside basis: {unsupported}.")
+        if unsupported: raise ValueError(f"Operations outside basis: {unsupported}.")
         return PassResult(circuit, {"basis_gates": sorted(self.basis_gates)}, False)
 
 
 class GateDecompositionPass(TransformationPass):
+    handles_dynamic = True
+
     def __init__(self, basis_gates=None):
         self.basis_gates = set(basis_gates or {"x", "y", "z", "h", "rx", "ry", "rz", "cx", "cz", "swap"})
 
     def run(self, circuit):
-        out = Circuit(circuit.num_qubits, circuit.num_bits, circuit.name, circuit.metadata)
+        out = Circuit(circuit.num_qubits, circuit.num_bits, circuit.name, deepcopy(circuit.metadata))
         decomposed = []
-        for op in circuit.operations:
-            if op.name == "phase" and "rz" in self.basis_gates:
-                out.rz(op.params[0], op.targets[0])
-                decomposed.append("phase->rz-up-to-global-phase")
-            elif op.name == "sdg" and "s" in self.basis_gates:
-                out.s(op.targets[0])
-                out.s(op.targets[0])
-                out.s(op.targets[0])
-                decomposed.append("sdg->s,s,s")
-            elif op.name == "tdg" and "t" in self.basis_gates:
-                for _ in range(7):
-                    out.t(op.targets[0])
-                decomposed.append("tdg->t*7")
-            elif op.name in self.basis_gates:
-                out.operations.append(op)
+        def translate(op, depth=0):
+            if depth > 24: raise UnsupportedFeature("basis_translation", f"No algebraic route to basis for {op.name}.")
+            if op.name in self.basis_gates or op.metadata.get("directive") or op.name in {"reset", "kraus"}:
+                out.operations.append(deepcopy(op)); return
+            if op.metadata.get("control_node") is not None:
+                out.operations.append(map_control_bodies(op, lambda body: self.run(body).circuit)); return
+            name, wires, params = op.name, op.wires, op.params
+            phase, recipe = 0., []
+            a = wires[0] if wires else None
+            b = wires[1] if len(wires) > 1 else None
+            def one(gate, wire, *angles): recipe.append(Operation(gate, (wire,), params=angles))
+            def cx(left, right): recipe.append(Operation("cx", (right,), (left,)))
+            hardware = {"rz", "sx"} <= self.basis_gates
+            if name in {"id", "identity"}: pass
+            elif name in {"phase", "p", "u1", "s", "sdg", "t", "tdg", "z"}:
+                angle = params[0] if params else {"s": pi/2, "sdg": -pi/2, "t": pi/4, "tdg": -pi/4, "z": pi}[name]
+                if name == "sdg" and "s" in self.basis_gates:
+                    for _ in range(3): one("s", a)
+                elif name == "tdg" and "t" in self.basis_gates:
+                    for _ in range(7): one("t", a)
+                else: phase = angle / 2; one("rz", a, angle)
+            elif name == "h":
+                if hardware:
+                    phase = pi/4; one("rz", a, pi/2); one("sx", a); one("rz", a, pi/2)
+                else:
+                    phase = pi/2; one("ry", a, pi/2); one("rx", a, pi)
+            elif name == "x": phase = pi/2; one("rx", a, pi)
+            elif name == "y": phase = pi/2; one("ry", a, pi)
+            elif name in {"sx", "sxdg"}:
+                phase = pi/4 if name == "sx" else -pi/4; one("rx", a, pi/2 if name == "sx" else -pi/2)
+            elif name == "rx" and hardware:
+                phase = pi/2
+                one("rz", a, pi/2); one("sx", a); one("rz", a, params[0] + pi); one("sx", a); one("rz", a, pi/2)
+            elif name == "ry":
+                if hardware:
+                    phase = pi/2
+                    one("sx", a); one("rz", a, params[0] + pi); one("sx", a); one("rz", a, pi)
+                else:
+                    one("rz", a, -pi/2); one("rx", a, params[0]); one("rz", a, pi/2)
+            elif name in {"u", "u3", "u2"}:
+                theta, phi, lam = (pi/2, *params) if name == "u2" else params
+                phase = (phi + lam) / 2
+                one("rz", a, lam); one("ry", a, theta); one("rz", a, phi)
+            elif name == "cz": one("h", b); cx(a, b); one("h", b)
+            elif name == "cx" and "cz" in self.basis_gates:
+                one("h", b); recipe.append(Operation("cz", (b,), (a,))); one("h", b)
+            elif name == "swap": cx(a,b); cx(b,a); cx(a,b)
+            elif name in {"rzz", "rxx", "ryy"}:
+                if name == "rxx": one("h", a); one("h", b)
+                if name == "ryy": one("rx", a, pi/2); one("rx", b, pi/2)
+                cx(a,b); one("rz", b, params[0]); cx(a,b)
+                if name == "rxx": one("h", a); one("h", b)
+                if name == "ryy": one("rx", a, -pi/2); one("rx", b, -pi/2)
+            elif name in {"cry", "crz"}:
+                axis = name[1:]; one(axis, b, params[0]/2); cx(a,b); one(axis, b, -params[0]/2); cx(a,b)
+            elif name == "crx":
+                one("h", b); recipe.append(Operation("crz", (b,), (a,), params)); one("h", b)
+            elif name in {"cp", "cphase"}:
+                one("phase", a, params[0]/2); cx(a,b); one("phase", b, -params[0]/2); cx(a,b); one("phase", b, params[0]/2)
             else:
-                raise ValueError(f"QuantumBridge gate decomposition does not support operation {op.name!r}.")
-        copy_terminal_measurements(circuit, out)
-        return PassResult(out, {"decomposed": decomposed}, bool(decomposed))
+                raise UnsupportedFeature("basis_translation", f"No native algebraic decomposition for {name!r} into {sorted(self.basis_gates)}.")
+            if (not isinstance(phase, Real) or phase != 0) and any(key in op.metadata for key in ("condition", "gate_condition", "control_flow_stack", "control_flow")):
+                raise UnsupportedFeature("conditional_basis_phase", "Use a structured if body to preserve decomposition phase in its lexical scope.")
+            out.global_phase = out.global_phase + phase
+            decomposed.append(name)
+            for child in recipe:
+                translate(replace(child, metadata=deepcopy(op.metadata)), depth + 1)
+        for item in circuit.iter_instructions():
+            if isinstance(item, Measurement): append_item(out, item)
+            else: translate(item)
+        return PassResult(out, {"decomposed": decomposed, "global_phase_preserved": True}, bool(decomposed))

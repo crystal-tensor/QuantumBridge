@@ -1,5 +1,24 @@
 # Core Functional Parity Ledger
 
+## Stage 11L Compiler Checkpoint (2026-10-19)
+
+| Capability | Evidence/status | Remaining gap |
+| --- | --- | --- |
+| Native DAG/mutation/roundtrip | native implemented/tested | Full graph API/noncontiguous contraction partial |
+| PassManager/PropertySet/stages | native implemented/tested | Full DAG-pass/flow-controller/plugin protocol partial |
+| Target/CouplingMap/Layout | native implemented/tested | Full backend/calibration schema partial |
+| Algebraic basis translation | native tested + 12 public differential scenarios | Arbitrary synthesis/all gates unsupported |
+| Directed routing/permutation | native tested | Optimal/stochastic routing search not started |
+| Safe local optimization | native tested | General commutation synthesis not started |
+| ASAP/ALAP static scheduling | native tested | Pulse/calibration/dynamic global timing unsupported |
+| Dynamic block compilation | native tested for if/for/while/switch/store/break/continue | Dynamic global schedule unsupported |
+| Parameter AST/compiled QNode | native/Torch/Autograd tested | Restored identity layout/equal width only; JAX/TF/higher-order gaps unchanged |
+| Compiled 100-qubit MPS | native tested with dense calls disabled | Arbitrary entanglement efficiency not claimed |
+| QOS-UQCI/Quafu-style target | offline configuration tested | Real cloud/hardware verification not performed |
+
+Full replacement/full parity remains **incomplete**. Stage 11K and earlier
+remaining gaps are not erased by compiler progress. See the Stage 11L report.
+
 Updated: 2026-10-19, Stage 11K. Full replacement/full functional parity is the
 objective, not an achieved status. Inventory counts and line coverage are not
 API/functionality coverage. Every row below remains PARTIAL or OPEN.
