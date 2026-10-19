@@ -113,6 +113,48 @@ def random_pauli_list(
     return PauliList.from_symplectic(bits[0], bits[1], phases)
 
 
+def random_clifford(
+    num_qubits: int,
+    seed: int | np.random.Generator | None = None,
+):
+    from quantumbridge.information.clifford import Clifford, _gf2_basis, _symplectic_product
+
+    if not isinstance(num_qubits, int) or num_qubits < 0:
+        raise ValueError("QuantumBridge random_clifford requires a non-negative integer qubit count.")
+    rng = np.random.default_rng(seed)
+    basis = np.eye(2 * num_qubits, dtype=bool)
+    destabilizers = []
+    stabilizers = []
+    for _ in range(num_qubits):
+        while True:
+            coefficients = rng.integers(2, size=len(basis), dtype=bool)
+            if np.any(coefficients):
+                first = np.logical_xor.reduce(basis[coefficients], axis=0)
+                break
+        while True:
+            coefficients = rng.integers(2, size=len(basis), dtype=bool)
+            if not np.any(coefficients):
+                continue
+            second = np.logical_xor.reduce(basis[coefficients], axis=0)
+            if _symplectic_product(first, second):
+                break
+        destabilizers.append(first)
+        stabilizers.append(second)
+        # Project the remaining space onto the symplectic complement of this pair.
+        projected = basis.copy()
+        for index, row in enumerate(basis):
+            if _symplectic_product(row, second):
+                projected[index] ^= first
+            if _symplectic_product(row, first):
+                projected[index] ^= second
+        basis = _gf2_basis(projected)
+    if num_qubits == 0:
+        return Clifford.identity(0)
+    matrix = np.array(destabilizers + stabilizers, dtype=bool)
+    phases = rng.integers(2, size=2 * num_qubits, dtype=bool)
+    return Clifford(np.column_stack([matrix, phases]))
+
+
 def random_quantum_channel(
     input_dims: int | tuple[int, ...] | list[int] | None = None,
     output_dims: int | tuple[int, ...] | list[int] | None = None,

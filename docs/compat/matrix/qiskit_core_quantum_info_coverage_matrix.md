@@ -1,5 +1,21 @@
 # qiskit Coverage Matrix
 
+## Stage 11F Executable Update
+
+These native capabilities are independently executable without Qiskit. The
+optional behavioral oracle is Qiskit 2.6.0, not the historical inventory below.
+
+| Native API | Executed behavior | Evidence |
+| --- | --- | --- |
+| Clifford | Signed symplectic construction/validation, matrices, native circuits/instructions, composition/subsystems, adjoint/conjugate/transpose, tensor/expand, positive integer powers, circuit synthesis | tests/information/test_clifford_stabilizer_native.py and tests/compat_qiskit_core/test_clifford_stabilizer_parity.py |
+| Pauli/PauliList.evolve | Heisenberg and Schrodinger Clifford evolution with subsystem indices and retained phase | Same test suites |
+| StabilizerState | Stabilizer-list preparation, Clifford evolution, Pauli/sparse-Pauli expectations, probabilities, measurement/reset, seeded sampling, tensor products and explicit dense conversion | Same test suites |
+| random_clifford | Uniform symplectic-basis and independent sign sampling, deterministic native seeds, all 24 one-qubit group elements reached | Same test suites; seeded sequences are not promised identical to Qiskit |
+| Large tableau execution | 64-qubit GHZ construction, synthesis roundtrip, probabilities, expectation, reset and sampling, with dense conversions blocked | Native test suite and examples/native_clifford_stabilizer_quantumbridge.py |
+
+Remaining boundaries and intentional API differences are recorded in the
+Stage 11F report. These rows do not imply full quantum_info or Aer parity.
+
 ## Stage 11E Executable Update
 
 The inventory below is a historical package-name snapshot. The following
@@ -13,8 +29,8 @@ native Pauli behavior is now verified against installed Qiskit 2.6.0:
 | random_pauli_list | Seeded rows, phase and empty-list metadata | Same test suites |
 | Native QNode and state observables | Expectation, state evolution, matrix instructions and PennyLane expectation comparison | tests/operators/test_pauli_phase_algebra.py and tests/qml/test_native_pauli_pennylane_parity.py |
 
-This update is an executable subset, with unsupported Clifford evolution and
-layout contracts described in the Stage 11E report. It does not turn historical
+This update is an executable subset. Clifford evolution was added in Stage
+11F; layout contracts remain outside this slice. It does not turn historical
 inventory rows into complete behavioral parity claims.
 
 ## Historical Inventory

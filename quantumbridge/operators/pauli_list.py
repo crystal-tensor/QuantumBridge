@@ -193,6 +193,21 @@ class PauliList:
     def anticommutes(self, other, qargs=None) -> np.ndarray:
         return np.logical_not(self.commutes(other, qargs=qargs))
 
+    def evolve(self, other, qargs=None, frame: str = "h") -> "PauliList":
+        from quantumbridge.information.clifford import Clifford
+
+        if frame not in {"h", "s"}:
+            raise ValueError("QuantumBridge Pauli evolution frame must be h or s.")
+        clifford = other if isinstance(other, Clifford) else Clifford(other)
+        if qargs is not None:
+            clifford = clifford._embedded(qargs, self.num_qubits)
+        if frame == "h":
+            clifford = clifford.adjoint()
+        return PauliList._from_paulis(
+            [clifford.conjugate_pauli(pauli) for pauli in self._paulis],
+            self.num_qubits,
+        )
+
     def commutation_matrix(self, other) -> np.ndarray:
         """Return all pairwise commutation relations without row broadcasting."""
         operand = other if isinstance(other, PauliList) else PauliList(other)

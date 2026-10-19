@@ -56,6 +56,28 @@ on the right; native Circuit/QML wire indices continue to put wire zero first.
 The executable scope and remaining gaps are recorded in the
 [Stage 11E report](docs/implementation/stage11e_native_pauli_algebra_report.md).
 
+## Native Clifford And Stabilizer Execution
+
+`Clifford` now uses a signed binary symplectic tableau, validates that gates
+are Clifford, and supports composition, inverses, tensor products and native
+circuit synthesis. `StabilizerState` executes Clifford evolution, Pauli
+expectations, projective measurement, reset and sampling without allocating
+a dense statevector. `random_clifford` samples the Clifford group using native
+binary algebra. None of these require Qiskit or PennyLane at runtime.
+
+```bash
+python -m examples.native_clifford_stabilizer_quantumbridge
+```
+
+The example executes a 64-qubit GHZ state using a 16,512-byte tableau.
+Tableau and stabilizer subsystem indices use rightmost-qubit-zero ordering;
+native Circuit wires are translated from their existing wire-zero-first
+ordering. Dense conversion is explicit and exponential. Clifford composition
+now follows Qiskit's order: `a.compose(b)` represents `b * a`, while
+`a.dot(b)` represents `a * b`. Non-Clifford and classically controlled circuits
+are rejected. This is not full Aer stabilizer-backend parity or general noisy
+simulation. See the [Stage 11F report](docs/implementation/stage11f_native_clifford_stabilizer_report.md).
+
 ## Ecosystem Compatibility Status
 
 Stage 7 planning defines function coverage by level:

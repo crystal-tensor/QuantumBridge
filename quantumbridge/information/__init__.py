@@ -34,6 +34,7 @@ from .operator import Operator
 from .partial_trace import partial_trace
 from .random import (
     pauli_basis,
+    random_clifford,
     random_density_matrix,
     random_hermitian,
     random_pauli,
@@ -43,6 +44,7 @@ from .random import (
     random_unitary,
 )
 from .statevector import Statevector
+from .stabilizer_state import StabilizerState
 from quantumbridge.operators import Pauli, PauliList
 
 __all__ = [
@@ -56,6 +58,7 @@ __all__ = [
     "PauliList",
     "PTM",
     "Statevector",
+    "StabilizerState",
     "Stinespring",
     "SuperOp",
     "anti_commutator",
@@ -74,6 +77,7 @@ __all__ = [
     "partial_trace",
     "process_fidelity",
     "purity",
+    "random_clifford",
     "random_density_matrix",
     "random_hermitian",
     "random_pauli",

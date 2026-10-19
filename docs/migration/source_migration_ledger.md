@@ -920,3 +920,27 @@ are vendored:
 - `THIRD_PARTY_NOTICES.md`
 
 Stage 11E source port count remains zero.
+
+## Stage 11F Source Inventory
+
+The following files independently implement, integrate or verify native
+Clifford and pure stabilizer-state algebra. Installed Qiskit is used only as
+an optional behavioral oracle. No upstream source, tests, package artifacts,
+credentials or virtual environments are copied or vendored:
+
+- `quantumbridge/information/clifford.py`
+- `quantumbridge/information/stabilizer_state.py`
+- `quantumbridge/information/random.py`
+- `quantumbridge/information/__init__.py`
+- `quantumbridge/operators/pauli.py`
+- `quantumbridge/operators/pauli_list.py`
+- `quantumbridge/compat/qiskit_core/quantum_info_adapter.py`
+- `tests/information/test_clifford_stabilizer_native.py`
+- `tests/compat_qiskit_core/test_clifford_stabilizer_parity.py`
+- `examples/native_clifford_stabilizer_quantumbridge.py`
+- `docs/implementation/stage11f_native_clifford_stabilizer_report.md`
+- `docs/compat/matrix/qiskit_core_quantum_info_coverage_matrix.md`
+- `README.md`
+- `THIRD_PARTY_NOTICES.md`
+
+Stage 11F source port count remains zero.

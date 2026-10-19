@@ -201,6 +201,18 @@ class Pauli:
     def anticommutes(self, other, qargs=None):
         return np.logical_not(self.commutes(other, qargs=qargs))
 
+    def evolve(self, other, qargs=None, frame: str = "h") -> "Pauli":
+        from quantumbridge.information.clifford import Clifford
+
+        if frame not in {"h", "s"}:
+            raise ValueError("QuantumBridge Pauli evolution frame must be h or s.")
+        clifford = other if isinstance(other, Clifford) else Clifford(other)
+        if qargs is not None:
+            clifford = clifford._embedded(qargs, self.num_qubits)
+        if frame == "h":
+            clifford = clifford.adjoint()
+        return clifford.conjugate_pauli(self)
+
     def adjoint(self) -> "Pauli":
         result = self.copy()
         result.phase = -self.phase

@@ -5,6 +5,16 @@ Date: 2026-06-09
 
 QuantumBridge is an independent project. References to Qiskit and PennyLane are for attribution, compatibility, and optional adapter documentation only and do not imply endorsement.
 
+## Native Clifford And Stabilizer Verification
+
+Stage 11F independently implements signed binary symplectic Clifford algebra,
+circuit synthesis, random Clifford sampling and pure stabilizer-state
+execution. The mathematical basis is the published stabilizer formalism;
+Qiskit 2.6.0 is an optional behavioral test reference, not a runtime dependency
+for these implementations. No upstream source, tests or package artifacts
+were copied or vendored. Mathematical and API references are listed in the
+Stage 11F implementation report.
+
 ## Native Pauli Algebra Verification
 
 Stage 11E independently implements phase-aware Pauli and Pauli-list algebra.
