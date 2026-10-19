@@ -11,7 +11,7 @@ import numpy as np
 from quantumbridge.core import Circuit, Measurement
 from quantumbridge.results import Result
 from quantumbridge.utils.math import gate_matrix
-from .execution import apply_readout_distribution, condition_enabled, validate_conditions, validate_wires
+from .execution import apply_readout_distribution, condition_enabled, validate_conditions, validate_wires, needs_dynamic_engine
 
 
 class StabilizerDevice:
@@ -38,7 +38,7 @@ class StabilizerDevice:
         bound = circuit.bind(parameters) if parameters else circuit
         if self.max_qubits is not None and bound.num_qubits > self.max_qubits:
             raise ValueError("QuantumBridge circuit exceeds this device qubit limit.")
-        if bound.has_structured_control_flow:
+        if needs_dynamic_engine(bound,self.noise_model):
             return bound, [("structured", bound, None, {})]
         program = []
         noise = self._noise_instructions(bound.num_qubits)
@@ -135,7 +135,7 @@ class StabilizerDevice:
     _wires = staticmethod(validate_wires)
 
     def _ensemble(self, circuit, program):
-        if circuit.has_structured_control_flow:
+        if needs_dynamic_engine(circuit,self.noise_model):
             from quantumbridge.execution.control_flow_engine import dynamic_branches
             return dynamic_branches(self, circuit)
         branches = [(self._initial(circuit.num_qubits), [0] * circuit.num_bits, {}, 1.0)]
@@ -176,7 +176,7 @@ class StabilizerDevice:
         return branches
 
     def _trajectories(self, circuit, program, shots, seed):
-        if circuit.has_structured_control_flow:
+        if needs_dynamic_engine(circuit,self.noise_model):
             from quantumbridge.execution.control_flow_engine import DynamicExecutionEngine
             yield from DynamicExecutionEngine(self, circuit).trajectories(shots, seed)
             return
@@ -305,7 +305,7 @@ class StabilizerDevice:
                 "noise_model_metadata": {} if self.noise_model is None else self.noise_model.summary()}
 
     def run_shots(self, circuit, shots=1024, seed=None, parameters=None, memory=False):
-        if circuit.has_structured_control_flow:
+        if needs_dynamic_engine(circuit,self.noise_model):
             from quantumbridge.execution.control_flow_engine import dynamic_shots
             return dynamic_shots(self, circuit, shots, seed, parameters, memory)
         if not isinstance(shots, Integral) or shots < 1:
@@ -325,7 +325,7 @@ class StabilizerDevice:
     def run(self, circuit, parameters=None, observable=None):
         bound, program = self._prepare(circuit, parameters)
         metadata = self._metadata(bound)
-        records = self._ensemble(bound, program) if bound.has_structured_control_flow else None
+        records = self._ensemble(bound, program) if needs_dynamic_engine(bound,self.noise_model) else None
         if records is not None: metadata.update(records.metadata)
         if observable is not None:
             value = self.expectation(bound, observable)

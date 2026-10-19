@@ -626,10 +626,45 @@ class Circuit:
             or any(key in item.metadata for key in ("condition", "control_flow", "control_flow_stack"))
             for item in self.measurements
         ) or any(
-            op.name in {"reset", "measure", "kraus", "control_flow"}
+            op.name in {"reset", "measure", "kraus", "control_flow"} or "simulator_instruction" in op.metadata
             or any(key in op.metadata for key in ("condition", "control_flow", "control_flow_stack"))
             for op in self.operations
         )
+
+    @property
+    def has_simulator_instructions(self):
+        return any("simulator_instruction" in op.metadata or op.metadata.get("control_node") is not None and any(body.has_simulator_instructions for body in op.metadata["control_node"].bodies) for op in self.operations)
+
+    def _save(self,kind,qubits=None,**options):
+        from quantumbridge.simulator.instructions import save
+        return save(self,kind,qubits,**options)
+
+    def save_state(self,label="state",**options): return self._save("state",label=label,**options)
+    def save_statevector(self,label="statevector",**options): return self._save("statevector",label=label,**options)
+    def save_statevector_dict(self,label="statevector",**options): return self._save("statevector_dict",label=label,**options)
+    def save_density_matrix(self,qubits=None,label="density_matrix",**options): return self._save("density_matrix",qubits,label=label,**options)
+    def save_matrix_product_state(self,label="matrix_product_state",**options): return self._save("matrix_product_state",label=label,**options)
+    def save_stabilizer(self,label="stabilizer",**options): return self._save("stabilizer",label=label,**options)
+    def save_clifford(self,label="clifford",**options): return self._save("clifford",label=label,**options)
+    def save_unitary(self,label="unitary",**options): return self._save("unitary",label=label,**options)
+    def save_superop(self,label="superop",**options): return self._save("superop",label=label,**options)
+    def save_probabilities(self,qubits=None,label="probabilities",**options): return self._save("probabilities",qubits,label=label,**options)
+    def save_probabilities_dict(self,qubits=None,label="probabilities",**options): return self._save("probabilities_dict",qubits,label=label,**options)
+    def save_amplitudes(self,indices,label="amplitudes",**options): return self._save("amplitudes",indices=indices,label=label,**options)
+    def save_amplitudes_squared(self,indices,label="amplitudes_squared",**options): return self._save("amplitudes_squared",indices=indices,label=label,**options)
+    def save_expectation_value(self,observable,qubits=None,label="expectation_value",**options): return self._save("expectation_value",qubits,observable=observable,label=label,**options)
+    def save_expectation_value_variance(self,observable,qubits=None,label="expectation_value_variance",**options): return self._save("expectation_value_variance",qubits,observable=observable,label=label,**options)
+
+    def _set(self,kind,value):
+        from quantumbridge.simulator.instructions import set_state
+        return set_state(self,kind,value)
+
+    def set_statevector(self,state): return self._set("statevector",state)
+    def set_density_matrix(self,state): return self._set("density_matrix",state)
+    def set_matrix_product_state(self,state): return self._set("matrix_product_state",state)
+    def set_stabilizer(self,state): return self._set("stabilizer",state)
+    def set_unitary(self,state): return self._set("unitary",state)
+    def set_superop(self,state): return self._set("superop",state)
 
     def copy_empty_like(self, name: Optional[str] = None) -> "Circuit":
         metadata = deepcopy(self.metadata)

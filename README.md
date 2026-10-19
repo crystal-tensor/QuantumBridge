@@ -665,6 +665,28 @@ Quafu verification. Studio remains deferred.
 See [Stage 11L report](docs/implementation/stage11l_native_transpiler_report.md)
 and the SDK-free `examples/native_transpile_*.py` workflows.
 
+## Native Simulator Checkpoint
+
+`quantumbridge.simulator.NativeAerSimulator` reuses native Backend/Job execution
+with CPU vector, density, MPS, Clifford tableau and bounded unitary/superoperator
+methods. Circuit Save/Set instructions execute at their actual positions;
+`result.data()` returns labelled snapshots. Native `NoiseModel` supports
+gate-attached Kraus errors and a bounded correlated-readout subset, not just
+changes to terminal counts. This remains a tested subset, not full Aer parity.
+
+```bash
+python -m examples.native_aer_save_set
+python -m examples.native_aer_gate_noise
+python -m examples.native_aer_density_mps
+python -m examples.native_aer_dynamic_snapshots
+```
+
+GPU, extended stabilizer, general tensor-network, unsupported options and
+oversized saves explicitly fail. Native bitstrings remain wire/classical-zero
+first; quantum-error matrices use little-endian qargs. SDK-native object
+shapes/signatures are not universally interchangeable. See the
+[Stage 11N report](docs/implementation/stage11n_native_aer_report.md).
+
 ## Native Serialization Checkpoint
 
 `quantumbridge.serialization` provides native QASM2/QASM3 string/file APIs,

@@ -14,7 +14,7 @@ from quantumbridge.utils.math import (
 )
 from .execution import (
     apply_readout_distribution, condition_enabled, decision_liveness, readout_probability,
-    prepare_program, validate_wires,
+    prepare_program, validate_wires, needs_dynamic_engine,
 )
 
 
@@ -113,7 +113,7 @@ class DensityMatrixDevice:
         return [(value / weight, bits, decisions, weight) for value, bits, decisions, weight in grouped.values()]
 
     def _branches(self, circuit, program):
-        if circuit.has_structured_control_flow:
+        if needs_dynamic_engine(circuit,self.noise_model):
             from quantumbridge.execution.control_flow_engine import dynamic_branches
             return dynamic_branches(self, circuit)
         width = circuit.num_qubits
@@ -148,7 +148,7 @@ class DensityMatrixDevice:
         return branches
 
     def _trajectories(self, circuit, program, shots, seed):
-        if circuit.has_structured_control_flow:
+        if needs_dynamic_engine(circuit,self.noise_model):
             from quantumbridge.execution.control_flow_engine import DynamicExecutionEngine
             yield from DynamicExecutionEngine(self, circuit).trajectories(shots, seed)
             return
@@ -231,7 +231,7 @@ class DensityMatrixDevice:
     def sample(self, circuit, wires=None, shots=1, seed=None, parameters=None):
         self._shots(shots, allow_zero=True)
         bound, program = self._prepare(circuit, parameters)
-        if bound.has_structured_control_flow:
+        if needs_dynamic_engine(bound,self.noise_model):
             from quantumbridge.execution.control_flow_engine import DynamicExecutionEngine
             return DynamicExecutionEngine(self, bound).quantum_samples(wires, shots, seed)
         selected = validate_wires(wires, bound.num_qubits)
@@ -268,7 +268,7 @@ class DensityMatrixDevice:
                 "noise_model_metadata": {} if self.noise_model is None else self.noise_model.summary()}
 
     def run_shots(self, circuit, shots=1024, seed=None, parameters=None, memory=False):
-        if circuit.has_structured_control_flow:
+        if needs_dynamic_engine(circuit,self.noise_model):
             from quantumbridge.execution.control_flow_engine import dynamic_shots
             return dynamic_shots(self, circuit, shots, seed, parameters, memory)
         self._shots(shots)

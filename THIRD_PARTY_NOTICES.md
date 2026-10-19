@@ -7,6 +7,14 @@ QuantumBridge is an independent project. References to Qiskit and PennyLane are 
 
 ## Native Clifford And Stabilizer Verification
 
+Stage 11N independently implements intermediate Save/Set execution, bounded
+snapshot aggregation, CPU method selection and gate-attached CPTP/readout
+noise. Public Aer documentation and installed public SDK calls are behavioral
+references only. Native execution uses existing QuantumBridge state, tensor,
+tableau, channel, Backend/Job and control-flow implementations. No upstream
+source/tests, package artifacts or environments were copied or vendored.
+Full Aer API/performance parity is not claimed; see the Stage 11N report.
+
 Stage 11K independently implements classical first-order tracing, gate-occurrence
 parameter-shift, inverse-state/reverse-cotangent adjoint, Jacobian products and
 shot partitions. Optional Torch/Autograd supply classical graphs/optimizers;

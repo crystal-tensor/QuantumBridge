@@ -58,6 +58,16 @@ class Result:
         samples = self.metadata_data.get("memory")
         return None if samples is None else list(samples)
 
+    def data(self,label=None):
+        from quantumbridge.simulator.snapshots import decode
+        values=decode(self.metadata_data.get("saved_snapshots",{}))
+        if label is None:return values
+        if label not in values:raise KeyError("Unknown saved snapshot label: "+str(label))
+        return values[label]
+
+    def get_counts(self): return self.counts()
+    def get_memory(self): return self.memory()
+
     def expectation_value(self):
         return self.expectation_data
 

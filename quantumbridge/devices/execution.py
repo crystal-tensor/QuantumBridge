@@ -5,7 +5,11 @@
 from numbers import Integral
 
 
-def prepare_program(circuit, parameters=None, max_qubits=None, noise_model=None):
+def needs_dynamic_engine(circuit,noise_model=None):
+    return circuit.has_structured_control_flow or getattr(circuit,"has_simulator_instructions",False) or bool(getattr(noise_model,"requires_dynamic_engine",False))
+
+
+def prepare_program(circuit, parameters=None, max_qubits=None, noise_model=None, *, _leaf_only=False):
     """Validate and order native unitary, CPTP and classical execution events."""
     import numpy as np
 
@@ -17,7 +21,7 @@ def prepare_program(circuit, parameters=None, max_qubits=None, noise_model=None)
     bound = circuit.bind(parameters) if parameters else circuit
     if max_qubits is not None and bound.num_qubits > max_qubits:
         raise ValueError("QuantumBridge circuit exceeds this device qubit limit.")
-    if bound.has_structured_control_flow:
+    if not _leaf_only and needs_dynamic_engine(bound,noise_model):
         return bound, [("structured", bound, None, {})]
     noise = []
     if noise_model is not None:
@@ -125,7 +129,7 @@ def decision_liveness(program):
 
 
 def readout_probability(noise_model, wire, outcome):
-    error = None if noise_model is None else noise_model.readout_errors.get(wire)
+    error = None if noise_model is None else noise_model.readout_for((wire,)) if hasattr(noise_model,"readout_for") else noise_model.readout_errors.get(wire)
     return 0.0 if error is None else error.p1_to_0 if outcome else error.p0_to_1
 
 

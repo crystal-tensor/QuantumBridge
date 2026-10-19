@@ -6,6 +6,9 @@
 from .channels import AmplitudeDampingChannel, BitFlipChannel, DepolarizingChannel, KrausChannel, PhaseDampingChannel, PhaseFlipChannel, QuantumChannel
 from .error_model import NoiseModel, ReadoutError
 from .execution import NoisyEstimator, NoisySampler
+from .quantum_error import (QuantumError, kraus_error, pauli_error, depolarizing_error,
+    mixed_unitary_error, coherent_unitary_error, reset_error, amplitude_damping_error,
+    phase_damping_error, phase_amplitude_damping_error, thermal_relaxation_error)
 
 __all__ = [
     "AmplitudeDampingChannel",
@@ -19,4 +22,7 @@ __all__ = [
     "PhaseFlipChannel",
     "QuantumChannel",
     "ReadoutError",
+    "QuantumError", "kraus_error", "pauli_error", "depolarizing_error", "mixed_unitary_error",
+    "coherent_unitary_error", "reset_error", "amplitude_damping_error", "phase_damping_error",
+    "phase_amplitude_damping_error", "thermal_relaxation_error",
 ]

@@ -5,6 +5,24 @@ Date: 2026-06-05
 
 This ledger records implementation mode and upstream source status for the current P1 release-candidate baseline. Current work uses Native Implementation, Adapter Integration, and Upstream Dependency. No new upstream source migration was introduced during Stage 5.5. No Source Port with Attribution was performed.
 
+## Stage 11N Native Simulator And Noise
+
+Native Implementation; source port count zero. Public SDK behavior is tested
+only through optional black-box calls. No runtime SDK dependency, source/test
+copying, environment/package upload, token access or hardware job. Full API,
+GPU, parallelism, arbitrary correlated-readout and performance parity remain
+unsupported or partial as recorded in the Stage 11N report.
+
+| Files | Independent behavior | Evidence |
+| --- | --- | --- |
+| `quantumbridge/simulator/__init__.py`, `quantumbridge/simulator/aer.py`, `quantumbridge/simulator/limits.py` | Existing Backend/Job integration, real method selection, bounded maps and options | Native method/resource tests; public optional comparisons |
+| `quantumbridge/simulator/instructions.py`, `quantumbridge/simulator/snapshots.py` | In-order Save/Set, native tensor/tableau and grouped snapshots, JSON-safe result data | Intermediate states, replacement, conditional/pershot, no-dense and hostile-input tests |
+| `quantumbridge/noise/quantum_error.py`, `quantumbridge/noise/error_model.py`, `quantumbridge/noise/__init__.py` | Native CPTP algebra, ten constructor families, physical gate and readout bindings | Independent mathematical/CPTP and public channel comparisons |
+| `quantumbridge/core/circuit.py`, `quantumbridge/results/result.py`, `quantumbridge/execution/control_flow_engine.py` | Actual instruction timing, feedback, per-executed-gate noise, snapshots and result serialization | Runtime-loop/noise, IR/JSON and physical-target tests |
+| `quantumbridge/devices/execution.py`, `quantumbridge/devices/density_matrix_device.py`, `quantumbridge/devices/matrix_product_state_device.py`, `quantumbridge/devices/stabilizer_device.py`, `quantumbridge/diff/adjoint.py` | Reuse native state adapters and reject unsupported noisy adjoint | Existing devices/gradients regressions and 100-wire tensor tests |
+| `tests/compat_qiskit_aer/test_native_aer_engine.py`, `tests/compat_qiskit_aer/test_native_aer_dynamic_and_limits.py`, `tests/compat_qiskit_aer/test_native_aer_differential.py`, `tests/noise/test_native_quantum_error_algebra.py` | Independently authored tests; installed SDKs are optional oracles only | Three isolated environments |
+| `examples/native_aer_save_set.py`, `examples/native_aer_gate_noise.py`, `examples/native_aer_density_mps.py`, `examples/native_aer_dynamic_snapshots.py` | Actual SDK-free native workflows | Executed examples |
+
 ## Stage 11M Native Serialization
 
 Native Implementation; source port count zero. Public OpenQASM and QPY format

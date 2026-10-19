@@ -1,6 +1,6 @@
 # Core Functional Parity Ledger
 
-Updated: 2026-10-19, Stage 11M tested checkpoint, starting from published `45fe338`.
+Updated: 2026-10-20, Stage 11N locally tested checkpoint, starting from local `76ea077`.
 This is the single current-status view. Full Qiskit/PennyLane functional
 replacement remains **incomplete**. Line coverage, inventories, passthrough and
 green CI are not proof of complete API coverage.
@@ -8,7 +8,7 @@ green CI are not proof of complete API coverage.
 NATIVE_IMPLEMENTED means executable native code exists; NATIVE_TESTED adds
 independent behavioral tests; UPSTREAM_DIFFERENTIAL_TESTED adds public black-box
 evidence for the stated scenarios only. PARTIAL/UNSUPPORTED/NOT_STARTED describe
-remaining scope. Stage 11M passes the three clean tracked-tree local gates;
+remaining scope. Stages 11M/11N pass the three clean tracked-tree local gates;
 publication/exact-SHA CI is a separate receipt, not inferred from prior CI.
 
 ## Current Core Status
@@ -27,7 +27,7 @@ publication/exact-SHA CI is a separate receipt, not inferred from prior CI.
 | Structured dynamic compilation | NATIVE_TESTED; PARTIAL: if/for/while/switch/store/break/continue actually compile and execute | Remaining branch/layout combinations and dynamic timing |
 | Primitives V2 | NATIVE_TESTED; PARTIAL: native Job/PUB/counts/observables and dynamic results | Full broadcasting, precision/shots/containers/error protocol |
 | Provider/Backend/Job | NATIVE_TESTED; PARTIAL: native local backends and jobs | Complete discovery/options/async/cancellation/remote contracts |
-| Aer methods/noise/save | NATIVE_TESTED; PARTIAL: vector/density/tableau/MPS and CPTP/noise execution | Complete save/set/noise/method/option semantics |
+| Aer methods/noise/save | NATIVE_TESTED; PARTIAL: in-order Save/Set, gate-bound noise, CPU vector/density/tableau/MPS and bounded maps | Full API/performance/GPU/parallelism and remaining option/aggregation/readout contracts |
 | Algorithms | NATIVE_TESTED; PARTIAL: bounded eigen/estimation and VQE/QAOA/Grover | All algorithm families, optimizers and result contracts |
 | Nature/Finance/Optimization/ML/Experiments/Dynamics | PARTIAL: native executable slices and separate optional adapters | Complete independent industry functions; upstream passthrough is not parity |
 | IBM Runtime | PARTIAL: offline/optional adapters | Authorized real service execution and complete runtime contracts |
@@ -42,6 +42,80 @@ publication/exact-SHA CI is a separate receipt, not inferred from prior CI.
 | Templates/qchem/math/resources/kernels/qnn/qcut/shadows | PARTIAL: bounded executable workflows | Full library and differentiation contracts |
 | Compiled 100-qubit MPS | NATIVE_TESTED for GHZ-chain with dense APIs disabled | No arbitrary-entanglement efficiency claim |
 | Quafu/QOS-UQCI/industry taxonomy | PARTIAL: offline target/configuration and existing adapters, four categories/19 subdomains | Real authorized backend/job evidence and complete industry workflows |
+
+## Native Simulator Status
+
+These are scoped native/public test results, not full Aer replacement. Final
+three-environment and coverage receipts are in the Stage 11N report.
+
+| Feature | Implemented/tested behavior | Remaining scope |
+| --- | --- | --- |
+| Statevector/density methods | NATIVE_TESTED: unitary/CPTP, branches/trajectories, save/set, feedback | Complete optimized Aer API/performance |
+| MPS method | NATIVE_TESTED: tensors/local reductions, Kraus trajectories, noise/save/set, 100-wire no-dense case | Arbitrary entanglement efficiency not promised; truncation is approximate |
+| Stabilizer method | NATIVE_TESTED: native tableau, save/set, compatible Clifford-mixture noise | Non-Clifford gates and selective damping reject |
+| Unitary/superop | UPSTREAM_DIFFERENTIAL_TESTED: bounded actual map composition, global phase, reset/CPTP for superop | Measurement and unitary noise/reset reject; large maps resource-limited |
+| Save families | NATIVE_TESTED: state/vector/dict/density/probabilities/dict/amplitudes/squared/expectation/variance/MPS/tableau/Clifford/maps | Method-specific subset; native compact payload shapes, not universal SDK object shapes |
+| Save grouping | UPSTREAM_DIFFERENTIAL_TESTED subset: conditional and pershot physical branches | Analytic mixed vector rejects; raw finite state is last trajectory; full SDK aggregation variants partial |
+| Set families | NATIVE_TESTED: actual vector/density/MPS/tableau/unitary/superop replacement | Full-register only, validated method-specific subset |
+| QuantumError | UPSTREAM_DIFFERENTIAL_TESTED subset: bounded CPTP Kraus, compose/front/tensor/expand | Complete SDK conversion/signatures/optimizations partial |
+| Noise constructors | UPSTREAM_DIFFERENTIAL_TESTED: Pauli/depolarizing/mixed/coherent/reset/amplitude/phase/phase-amplitude/thermal/Kraus | Explicit bounded widths/Kraus counts; native constructor schema |
+| NoiseModel | NATIVE_TESTED: global/specific physical gate error, specific overrides global | Arbitrary backend-derived model/transformation helpers not implemented |
+| Readout | UPSTREAM_DIFFERENTIAL_TESTED subset: asymmetric single and complete consecutive correlated groups | Partial/overlapping/conditional/implicit correlated measurements reject |
+| Physical compiler/noise contract | NATIVE_TESTED: errors attach to actual emitted physical gates | Arbitrary noisy pre/post-compilation equivalence not claimed |
+| Result/Backend/Job/options | NATIVE_TESTED: data/index, JSON, counts/memory/batches/seed, real failure status and budgets | Full result/async/parallel/GPU options partial or unsupported |
+| Serialization | NATIVE_TESTED: native IR and Result JSON retain events/data | Standard QASM2/3/QPY explicitly reject unsupported simulator-specific instructions |
+| Noisy differentiation | NATIVE_TESTED: fixed-channel native shift/finite-difference regression | No noisy adjoint, noise-parameter derivative or arbitrary stochastic gradient claim |
+
+Individual simulator contracts below remain PARTIAL even when a stated native
+or public comparison passed. The status applies only to the supported subset.
+
+| API/capability | Status | Boundary |
+| --- | --- | --- |
+| AerSimulator.run | NATIVE_TESTED; PARTIAL | Existing native Job; batch/index retrieval |
+| available_methods | NATIVE_TESTED; PARTIAL | Actual CPU methods only |
+| automatic selection | NATIVE_TESTED; PARTIAL | Selects real compatible native representation |
+| statevector | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Pure/trajectory/analytic branch subset |
+| density_matrix | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Bounded exact CPTP/dynamic execution |
+| matrix_product_state | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Native tensors and documented truncation |
+| stabilizer | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Clifford and compatible mixtures only |
+| unitary | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Bounded ideal matrix, no measurement/reset/noise |
+| superop | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Bounded actual CPTP map, no measurement |
+| extended_stabilizer | UNSUPPORTED | Not aliased to statevector |
+| tensor_network | UNSUPPORTED | Not aliased to MPS |
+| SaveState | NATIVE_TESTED; PARTIAL | Actual selected-method state |
+| SaveStatevector | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Full register, pure or finite trajectory |
+| SaveStatevectorDict | NATIVE_TESTED; PARTIAL | Native q0-first hex indices |
+| SaveDensityMatrix | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Ordered subset, bounded local dimension |
+| SaveMPS | NATIVE_TESTED; PARTIAL | Native tensor schema, not SDK tuple schema |
+| SaveStabilizer | NATIVE_TESTED; PARTIAL | Native validated tableau schema |
+| SaveClifford | NATIVE_TESTED; PARTIAL | Native tableau, automatic selection tested |
+| SaveUnitary | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Actual matrix, deterministic |
+| SaveSuperOp | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Actual channel, deterministic |
+| SaveProbabilities | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Native wire order, no vector-to-density allocation |
+| SaveProbabilitiesDict | NATIVE_TESTED; PARTIAL | Native q0-first hex indices |
+| SaveAmplitudes | NATIVE_TESTED; PARTIAL | Selected indices; compact MPS contraction |
+| SaveAmplitudesSquared | NATIVE_TESTED; PARTIAL | Pure probabilities or density diagonal |
+| SaveExpectationValue | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Hermitian local matrix/Pauli forms |
+| SaveExpectationValueVariance | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Actual second moment/cross terms |
+| conditional snapshots | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Actual classical groups; grouping budget |
+| pershot snapshots | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Actual finite trajectories, bounded storage |
+| SetStatevector | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Full-register normalized replacement |
+| SetDensityMatrix | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Full-register positive trace-one replacement |
+| SetMPS | NATIVE_TESTED; PARTIAL | Native normalized tensor payload |
+| SetStabilizer | NATIVE_TESTED; PARTIAL | Native validated Clifford tableau |
+| SetUnitary | NATIVE_TESTED; PARTIAL | Full-register bounded unitary replacement |
+| SetSuperOp | NATIVE_TESTED; PARTIAL | Full-register bounded CPTP replacement |
+| NoiseModel | NATIVE_TESTED; PARTIAL | Global and specific physical bindings |
+| QuantumError | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Bounded native Kraus algebra |
+| ReadoutError | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Stochastic 1q and complete correlated groups |
+| Gate-attached noise | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Actual repeated gate execution; explicit qargs order |
+| Thermal relaxation | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Physical T1/T2/time/population domains |
+| physical Target noise | NATIVE_TESTED; PARTIAL | Emitted gates compared to explicit inline Kraus reference |
+| Backend / Job / Result | NATIVE_TESTED; PARTIAL | Existing lifecycle, real errors, JSON/data/counts/memory |
+| SimulatorOptions | NATIVE_TESTED; PARTIAL | CPU/double, MPS and budgets; unsupported options reject |
+| QASM/QPY integration | NATIVE_TESTED; PARTIAL | Simulator-specific instructions reject in standard formats |
+| MPS non-dense execution | NATIVE_TESTED; PARTIAL | 100-wire GHZ saves, later phase gate, local density/amplitudes/shots |
+| noisy gradients | NATIVE_TESTED; PARTIAL | Fixed noise shift/finite difference; noisy adjoint rejects |
 
 ## Serialization Status
 
@@ -79,12 +153,19 @@ it is historical, not a second current status table.
 - [Stage 11L compiler report](../implementation/stage11l_native_transpiler_report.md)
 - [Stage 11M gap audit](../implementation/stage11m_serialization_gap_audit.md)
 - [Stage 11M implementation/test report](../implementation/stage11m_native_qasm_qpy_serialization_report.md)
+- [Stage 11N gap audit](../implementation/stage11n_aer_native_gap_audit.md)
+- [Stage 11N implementation/test report](../implementation/stage11n_native_aer_report.md)
 
 Stage 11L exact-SHA CI: 39259350086, 22/22 success. Its clean local runs:
 SDK-free 899 passed/116 skipped, installed 1090/4, alternate 1054/40, measured
 line coverage 87.5253299%, local matrix exit 0. These are Stage 11M baselines,
 not proof that new serialization changes pass. Stage 11M local results are
 1030/117 SDK-free, 1252/4 installed, 1216/40 alternate; 162 new serialization
-cases pass in each SDK environment; coverage 87.8801865%. Next work remains
-remaining serialization branches, Aer save/set/noise, complete templates/qchem/transforms and
-JAX/TF/capture/higher-order autodiff. Studio stays last.
+cases pass in each SDK environment; coverage 87.8801865%. Stage 11N final local
+results are 1120/118 SDK-free, 1366/4 installed and 1330/40 alternate; 114 new
+cases (73 native simulator, 17 noise mathematical/runtime, 24 public oracle),
+coverage 88.1810076%, unchanged exclusions and full local matrix exit 0.
+Publication is still blocked by existing workflow authorization, not inferred
+from older CI. Next work includes remaining serialization/Aer contracts,
+complete templates/qchem/transforms and JAX/TF/capture/higher-order autodiff.
+Studio stays last.

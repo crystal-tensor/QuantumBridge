@@ -41,7 +41,7 @@ def apply_observable(state, observable, width):
 
 def adjoint_rows(device, circuit, angle_parameters, values, requests):
     from quantumbridge.devices import StatevectorDevice
-    if type(device) is not StatevectorDevice or circuit.has_dynamic_operations:
+    if type(device) is not StatevectorDevice or circuit.has_dynamic_operations or getattr(device,"noise_model",None) is not None:
         raise UnsupportedFeature("adjoint_device", "Native adjoint requires analytic unitary StatevectorDevice execution.")
     mapping = dict(zip(angle_parameters, values))
     bound = circuit.bind(mapping)
