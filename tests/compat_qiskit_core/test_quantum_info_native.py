@@ -15,8 +15,12 @@ from quantumbridge.information import (
     Statevector,
     Stinespring,
     SuperOp,
+    concurrence,
+    entropy,
     average_gate_fidelity,
     gate_error,
+    mutual_information,
+    negativity,
     process_fidelity,
     purity,
     random_density_matrix,
@@ -45,6 +49,10 @@ def test_native_quantum_info_symbols_are_callable():
     assert symbols["trace_distance"] is trace_distance
     assert symbols["average_gate_fidelity"] is average_gate_fidelity
     assert symbols["gate_error"] is gate_error
+    assert symbols["entropy"] is entropy
+    assert symbols["concurrence"] is concurrence
+    assert symbols["mutual_information"] is mutual_information
+    assert symbols["negativity"] is negativity
     assert symbols["SparsePauliOp"] is SparsePauliOperator
     assert native_class("PauliList") is PauliList
 

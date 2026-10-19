@@ -853,3 +853,21 @@ site-packages, or virtual environments are copied or vendored:
 - `docs/implementation/stage11b_native_quantum_channels_report.md`
 
 Stage 11B source port count remains zero.
+
+## Stage 11C Source Inventory
+
+The following Stage 11C files are clean-room QuantumBridge implementations,
+tests, or implementation records for native state analysis and operator
+algebra. No Qiskit, PennyLane, wheels, dist-info, egg-info, site-packages, or
+virtual environments are copied or vendored:
+
+- `quantumbridge/information/analysis.py`
+- `quantumbridge/information/entropy.py`
+- `quantumbridge/information/__init__.py`
+- `quantumbridge/compat/qiskit_core/quantum_info_adapter.py`
+- `tests/information/test_state_analysis_extended.py`
+- `tests/compat_qiskit_core/test_state_analysis_parity.py`
+- `tests/compat_qiskit_core/test_quantum_info_native.py`
+- `docs/implementation/stage11c_native_state_analysis_report.md`
+
+Stage 11C source port count remains zero.
