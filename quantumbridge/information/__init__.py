@@ -3,13 +3,14 @@
 # This file is part of QuantumBridge SDK.
 # This implementation is developed for the QuantumBridge native architecture.
 
-from .channels import Chi, Choi, Kraus, SuperOp
+from .channels import Chi, Choi, Kraus, PTM, Stinespring, SuperOp
 from .clifford import Clifford
 from .density_matrix import DensityMatrix
 from .entropy import von_neumann_entropy
 from .fidelity import state_fidelity
 from .metrics import (
     average_gate_fidelity,
+    gate_error,
     hellinger_distance,
     hellinger_fidelity,
     process_fidelity,
@@ -29,9 +30,12 @@ __all__ = [
     "DensityMatrix",
     "Kraus",
     "Operator",
+    "PTM",
     "Statevector",
+    "Stinespring",
     "SuperOp",
     "average_gate_fidelity",
+    "gate_error",
     "hellinger_distance",
     "hellinger_fidelity",
     "partial_trace",

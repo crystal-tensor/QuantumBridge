@@ -42,19 +42,82 @@ def hellinger_distance(a: dict[str, float], b: dict[str, float]) -> float:
     return float(np.sqrt(1.0 - np.sqrt(fidelity)))
 
 
-def process_fidelity(channel_a, channel_b=None) -> float:
-    a = _as_matrix(channel_a)
-    b = np.eye(a.shape[0], dtype=complex) if channel_b is None else _as_matrix(channel_b)
-    if a.shape != b.shape:
-        raise ValueError("QuantumBridge process_fidelity requires equal dimensions.")
-    dim = a.shape[0]
-    return float(abs(np.trace(a.conj().T @ b)) ** 2 / (dim * dim))
+def _as_choi(channel):
+    from quantumbridge.information.channels import _QuantumChannel, Choi, Kraus
+    from quantumbridge.information.operator import Operator
+
+    if isinstance(channel, _QuantumChannel):
+        return Choi(channel)
+    operator = channel if isinstance(channel, Operator) else Operator(channel)
+    return Choi(Kraus(operator))
 
 
-def average_gate_fidelity(channel, target=None) -> float:
-    matrix = _as_matrix(channel)
-    dim = matrix.shape[0]
-    return float((dim * process_fidelity(matrix, target) + 1) / (dim + 1))
+def process_fidelity(
+    channel,
+    target=None,
+    require_cp: bool = True,
+    require_tp: bool = True,
+) -> float:
+    source = _as_choi(channel)
+    if source._input_dim != source._output_dim:
+        raise ValueError("QuantumBridge process_fidelity requires a square channel.")
+    if require_cp and not source.is_cp():
+        raise ValueError("QuantumBridge process_fidelity requires a completely positive channel.")
+    if require_tp and not source.is_tp():
+        raise ValueError("QuantumBridge process_fidelity requires a trace-preserving channel.")
+
+    if target is None:
+        from quantumbridge.information.operator import Operator
+
+        target = Operator(np.eye(source._input_dim, dtype=complex))
+    reference = _as_choi(target)
+    if source.dim != reference.dim:
+        raise ValueError("QuantumBridge process_fidelity requires equal channel dimensions.")
+    if require_cp and not reference.is_cp():
+        raise ValueError("QuantumBridge process_fidelity target must be completely positive.")
+    if require_tp and not reference.is_tp():
+        raise ValueError("QuantumBridge process_fidelity target must be trace preserving.")
+
+    dim = source._input_dim
+    reference_values = np.linalg.eigvalsh((reference.data + reference.data.conj().T) / 2)
+    if np.count_nonzero(reference_values > 1e-10) == 1:
+        value = np.real_if_close(np.trace(source.data @ reference.data) / (dim * dim))
+        return float(np.clip(np.real(value), 0.0, 1.0))
+    return state_fidelity_general(source.data / dim, reference.data / dim)
+
+
+def average_gate_fidelity(
+    channel,
+    target=None,
+    require_cp: bool = True,
+    require_tp: bool = False,
+) -> float:
+    source = _as_choi(channel)
+    dim = source._input_dim
+    fidelity = process_fidelity(
+        source,
+        target,
+        require_cp=require_cp,
+        require_tp=require_tp,
+    )
+    return float((dim * fidelity + 1) / (dim + 1))
+
+
+def gate_error(
+    channel,
+    target=None,
+    require_cp: bool = True,
+    require_tp: bool = False,
+) -> float:
+    return float(
+        1
+        - average_gate_fidelity(
+            channel,
+            target,
+            require_cp=require_cp,
+            require_tp=require_tp,
+        )
+    )
 
 
 def state_fidelity_general(a, b) -> float:

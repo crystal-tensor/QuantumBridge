@@ -11,9 +11,12 @@ from quantumbridge.information import (
     DensityMatrix,
     Kraus,
     Operator,
+    PTM,
     Statevector,
+    Stinespring,
     SuperOp,
     average_gate_fidelity,
+    gate_error,
     process_fidelity,
     purity,
     random_density_matrix,
@@ -31,6 +34,8 @@ def test_native_quantum_info_symbols_are_callable():
     assert symbols["DensityMatrix"] is DensityMatrix
     assert symbols["Operator"] is Operator
     assert symbols["Kraus"] is Kraus
+    assert symbols["PTM"] is PTM
+    assert symbols["Stinespring"] is Stinespring
     assert symbols["SuperOp"] is SuperOp
     assert symbols["Choi"] is Choi
     assert symbols["Clifford"] is Clifford
@@ -39,6 +44,7 @@ def test_native_quantum_info_symbols_are_callable():
     assert symbols["random_unitary"] is random_unitary
     assert symbols["trace_distance"] is trace_distance
     assert symbols["average_gate_fidelity"] is average_gate_fidelity
+    assert symbols["gate_error"] is gate_error
     assert symbols["SparsePauliOp"] is SparsePauliOperator
     assert native_class("PauliList") is PauliList
 

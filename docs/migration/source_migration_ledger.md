@@ -835,3 +835,21 @@ environments are copied or vendored:
 - `docs/implementation/stage10g_industry_taxonomy_and_quafu_cloud_report.md`
 
 Stage 10G source port count remains zero.
+
+## Stage 11B Source Inventory
+
+The following Stage 11B files are clean-room QuantumBridge implementations,
+tests, or implementation records for native quantum-channel representations
+and metrics. No Qiskit, PennyLane, Aer, wheels, dist-info, egg-info,
+site-packages, or virtual environments are copied or vendored:
+
+- `quantumbridge/information/channels.py`
+- `quantumbridge/information/metrics.py`
+- `quantumbridge/information/__init__.py`
+- `quantumbridge/compat/qiskit_core/quantum_info_adapter.py`
+- `tests/information/test_quantum_channels_extended.py`
+- `tests/compat_qiskit_core/test_quantum_channel_parity.py`
+- `tests/compat_qiskit_core/test_quantum_info_native.py`
+- `docs/implementation/stage11b_native_quantum_channels_report.md`
+
+Stage 11B source port count remains zero.
