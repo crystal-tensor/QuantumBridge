@@ -871,3 +871,21 @@ virtual environments are copied or vendored:
 - `docs/implementation/stage11c_native_state_analysis_report.md`
 
 Stage 11C source port count remains zero.
+
+## Stage 11D Source Inventory
+
+The following Stage 11D files are clean-room QuantumBridge implementations,
+tests, or implementation records for native random quantum-information
+generators. No Qiskit, PennyLane, wheels, dist-info, egg-info, site-packages,
+or virtual environments are copied or vendored:
+
+- `quantumbridge/information/random.py`
+- `quantumbridge/information/channels.py`
+- `quantumbridge/information/__init__.py`
+- `quantumbridge/compat/qiskit_core/quantum_info_adapter.py`
+- `tests/information/test_random_quantum_info_extended.py`
+- `tests/compat_qiskit_core/test_random_quantum_info_parity.py`
+- `tests/compat_qiskit_core/test_quantum_info_native.py`
+- `docs/implementation/stage11d_native_random_quantum_info_report.md`
+
+Stage 11D source port count remains zero.

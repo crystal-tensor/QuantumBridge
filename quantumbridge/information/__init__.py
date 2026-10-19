@@ -32,7 +32,14 @@ from .metrics import (
 )
 from .operator import Operator
 from .partial_trace import partial_trace
-from .random import random_density_matrix, random_statevector, random_unitary
+from .random import (
+    pauli_basis,
+    random_density_matrix,
+    random_hermitian,
+    random_quantum_channel,
+    random_statevector,
+    random_unitary,
+)
 from .statevector import Statevector
 
 __all__ = [
@@ -58,10 +65,13 @@ __all__ = [
     "hellinger_fidelity",
     "mutual_information",
     "negativity",
+    "pauli_basis",
     "partial_trace",
     "process_fidelity",
     "purity",
     "random_density_matrix",
+    "random_hermitian",
+    "random_quantum_channel",
     "random_statevector",
     "random_unitary",
     "schmidt_decomposition",

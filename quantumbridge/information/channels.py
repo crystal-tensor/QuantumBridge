@@ -735,6 +735,30 @@ class Stinespring(_QuantumChannel):
                 raise ValueError("QuantumBridge cannot infer Stinespring output dimensions.")
             self._environment_dim = left_data.shape[0] // self._output_dim
 
+        self._set_public_data()
+
+    @classmethod
+    def _from_matrix(
+        cls,
+        matrix: np.ndarray,
+        input_dim: int,
+        output_dim: int,
+    ) -> "Stinespring":
+        data = np.asarray(matrix, dtype=complex)
+        if data.ndim != 2 or data.shape[1] != input_dim:
+            raise ValueError("QuantumBridge Stinespring matrix does not match input dimensions.")
+        if data.shape[0] % output_dim:
+            raise ValueError("QuantumBridge Stinespring matrix does not match output dimensions.")
+        instance = cls.__new__(cls)
+        instance._left_data = data
+        instance._right_data = data
+        instance._input_dim = int(input_dim)
+        instance._output_dim = int(output_dim)
+        instance._environment_dim = data.shape[0] // output_dim
+        instance._set_public_data()
+        return instance
+
+    def _set_public_data(self) -> None:
         self._is_standard = self._right_data is self._left_data or np.array_equal(
             self._left_data,
             self._right_data,

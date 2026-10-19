@@ -21,9 +21,12 @@ from quantumbridge.information import (
     gate_error,
     mutual_information,
     negativity,
+    pauli_basis,
     process_fidelity,
     purity,
     random_density_matrix,
+    random_hermitian,
+    random_quantum_channel,
     random_statevector,
     random_unitary,
     state_fidelity_general,
@@ -53,6 +56,9 @@ def test_native_quantum_info_symbols_are_callable():
     assert symbols["concurrence"] is concurrence
     assert symbols["mutual_information"] is mutual_information
     assert symbols["negativity"] is negativity
+    assert symbols["pauli_basis"] is pauli_basis
+    assert symbols["random_hermitian"] is random_hermitian
+    assert symbols["random_quantum_channel"] is random_quantum_channel
     assert symbols["SparsePauliOp"] is SparsePauliOperator
     assert native_class("PauliList") is PauliList
 
