@@ -15,9 +15,9 @@ from quantumbridge.utils.math import PauliZ
 def test_provider_discovers_named_backends_and_raises_not_found():
     provider = Provider()
 
-    assert provider.backend_names() == ["density_matrix", "qasm_simulator", "stabilizer", "statevector"]
+    assert provider.backend_names() == ["density_matrix", "matrix_product_state", "qasm_simulator", "stabilizer", "statevector"]
     assert provider.get_backend("statevector").name == "statevector"
-    assert [backend.name for backend in provider.backends(simulator=True)] == ["statevector", "qasm_simulator", "stabilizer", "density_matrix"]
+    assert [backend.name for backend in provider.backends(simulator=True)] == ["statevector", "qasm_simulator", "stabilizer", "density_matrix", "matrix_product_state"]
 
     with pytest.raises(QiskitBackendNotFoundError):
         provider.get_backend("missing")

@@ -8,19 +8,14 @@ from numbers import Integral
 
 import numpy as np
 
-from quantumbridge.core import Circuit, Measurement
 from quantumbridge.results import Result
 from quantumbridge.utils.math import (
-    apply_density_channel, apply_density_operator, gate_matrix, observable_matrix,
-    validate_kraus_operators,
+    apply_density_channel, apply_density_operator, observable_matrix,
 )
 from .execution import (
     apply_readout_distribution, condition_enabled, decision_liveness, readout_probability,
-    validate_conditions, validate_wires,
+    prepare_program, validate_wires,
 )
-
-
-_RESET = (np.array([[1, 0], [0, 0]], complex), np.array([[0, 1], [0, 0]], complex))
 
 
 class DensityMatrixDevice:
@@ -74,63 +69,9 @@ class DensityMatrixDevice:
             raise ValueError("QuantumBridge initial density matrix must be positive, Hermitian and trace one.")
         return np.array(density, copy=True)
 
-    def _noise_program(self, width):
-        if self.noise_model is None:
-            return []
-        if not hasattr(self.noise_model, "channels") or not hasattr(self.noise_model, "readout_errors"):
-            raise TypeError("QuantumBridge density noise requires a native NoiseModel.")
-        program = []
-        for entry in self.noise_model.channels:
-            operators = validate_kraus_operators(entry["channel"].kraus(), 2)
-            wires = range(width) if entry["wires"] is None else entry["wires"]
-            for wire in wires:
-                validate_wires((wire,), width)
-                program.append(("channel", operators, (wire,), {}))
-        for wire, error in self.noise_model.readout_errors.items():
-            validate_wires((wire,), width)
-            if any(not np.isfinite(p) or not 0 <= p <= 1 for p in (error.p0_to_1, error.p1_to_0)):
-                raise ValueError("QuantumBridge readout probabilities must be between zero and one.")
-        return program
-
     def _prepare(self, circuit, parameters=None):
-        if not isinstance(circuit, Circuit):
-            raise TypeError("QuantumBridge DensityMatrixDevice requires a native Circuit.")
-        bound = circuit.bind(parameters) if parameters else circuit
-        if self.max_qubits is not None and bound.num_qubits > self.max_qubits:
-            raise ValueError("QuantumBridge circuit exceeds this device qubit limit.")
+        bound, program = prepare_program(circuit, parameters, self.max_qubits, self.noise_model)
         self._check_memory(bound.num_qubits)
-        noise = self._noise_program(bound.num_qubits)
-        program, inserted = [], False
-        for item in bound.iter_instructions():
-            validate_conditions(item.metadata, bound.num_bits)
-            if isinstance(item, Measurement):
-                bound._check_wire(item.wire)
-                bound._check_bit(item.bit)
-                if not inserted and item.metadata.get("operation_index", len(bound.operations)) == len(bound.operations):
-                    program.extend(noise)
-                    inserted = True
-                program.append(("measure", item.wire, item.bit, item.metadata))
-                continue
-            if item.metadata.get("directive") and item.name in {"barrier", "delay"}:
-                continue
-            wires = validate_wires(item.wires, bound.num_qubits)
-            if item.name == "reset":
-                if item.controls or len(item.targets) != 1:
-                    raise ValueError("QuantumBridge reset requires one target and no controls.")
-                program.append(("channel", _RESET, wires, item.metadata))
-            elif item.name == "kraus":
-                if item.controls:
-                    raise ValueError("QuantumBridge Kraus instructions do not accept coherent controls.")
-                operators = validate_kraus_operators(item.metadata.get("kraus", ()), 1 << len(wires))
-                program.append(("channel", operators, wires, item.metadata))
-            else:
-                matrix = np.asarray(gate_matrix(item.name, item.params, item.metadata), dtype=complex)
-                dimension = 1 << len(wires)
-                if matrix.shape != (dimension, dimension) or not np.all(np.isfinite(matrix)) or not np.allclose(matrix.conj().T @ matrix, np.eye(dimension), atol=1e-10, rtol=0):
-                    raise ValueError("QuantumBridge gate matrices must be finite unitaries matching their wires.")
-                program.append(("gate", matrix, wires, item.metadata))
-        if not inserted:
-            program.extend(noise)
         return bound, program
 
     @staticmethod

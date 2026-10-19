@@ -48,8 +48,14 @@ class Estimator:
             observable_values, observable_shape = _flatten_observables(observables)
             ev_batches = []
             std_batches = []
+            mps_statistics = []
             for params in parameter_sets:
-                evs = [float(self._run_legacy(circuit, observable, parameters=params).expectation_value()) for observable in observable_values]
+                evaluations = [self._run_legacy(circuit, observable, parameters=params) for observable in observable_values]
+                evs = [float(result.expectation_value()) for result in evaluations]
+                statistics = [{key: result.metadata()[key] for key in ("max_bond_observed", "max_discarded_weight", "max_bond_dim", "cutoff") if key in result.metadata()}
+                              for result in evaluations if result.metadata().get("simulation") == "matrix_product_state"]
+                if statistics:
+                    mps_statistics.append(statistics)
                 shaped_evs = _restore_shape(list(evs), observable_shape)
                 shaped_stds = _restore_shape([0.0 for _ in evs], observable_shape)
                 ev_batches.append(shaped_evs)
@@ -73,6 +79,7 @@ class Estimator:
                         "num_observables": len(observable_values),
                         "circuit_metadata": dict(getattr(circuit, "metadata", {}) or {}),
                         "simulation": getattr(self.device, "simulation", "exact_statevector"),
+                        **({"mps_truncation": mps_statistics} if mps_statistics else {}),
                     },
                 )
             )
@@ -193,8 +200,8 @@ def _parameter_array_to_mappings(circuit: Circuit, values) -> list[Mapping[Union
 
 def _resolve_precision(pub_precision: Optional[float], run_precision: Optional[float], default_precision: Optional[float]) -> Optional[float]:
     precision = pub_precision if pub_precision is not None else run_precision if run_precision is not None else default_precision
-    if precision is not None and float(precision) <= 0:
-        raise ValueError("QuantumBridge estimator precision must be positive when provided.")
+    if precision is not None and (isinstance(precision, bool) or not isinstance(precision, Real) or not np.isfinite(precision) or precision < 0):
+        raise ValueError("QuantumBridge estimator precision must be finite and non-negative when provided.")
     return None if precision is None else float(precision)
 
 

@@ -32,6 +32,25 @@ QuantumBridge is an independent project. It is not an official Qiskit, PennyLane
 - NumPy/Torch/JAX array interface helpers, with Torch and JAX optional.
 - Minimal QNode-like wrapper and QML templates.
 
+## Native Matrix Product State Simulation
+
+`MatrixProductStateDevice` and `MatrixProductStateBackend` execute native
+tensor contractions, nonadjacent gates, channels, reset and classical feedback.
+They integrate with Backend/Job, V2 primitives and the native QNode. The example
+runs a 100-qubit GHZ circuit, observables, subsystem reductions, sampling and
+compressed JSON output without expanding a dense statevector:
+
+```bash
+python -m examples.native_matrix_product_state_quantumbridge
+```
+
+Bond limits/cutoff can approximate the state; discarded Schmidt weights are
+reported and are not a final-error guarantee. Unmeasured analytic Result keeps
+a compressed MPS/ensemble rather than an implicit full probability table.
+Dense output and entanglement growth remain resource-limited. This is not
+complete Aer/PennyLane plugin or save-instruction parity. See the
+[Stage 11I report](docs/implementation/stage11i_native_matrix_product_state_report.md).
+
 ## Native Pauli Algebra
 
 The native `Pauli` and `PauliList` implementations now retain the full

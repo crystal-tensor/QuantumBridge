@@ -19,6 +19,7 @@ from .analysis import (
 from .channels import Chi, Choi, Kraus, PTM, Stinespring, SuperOp
 from .clifford import Clifford
 from .density_matrix import DensityMatrix
+from .matrix_product_state import MatrixProductState
 from .fidelity import state_fidelity
 from .metrics import (
     average_gate_fidelity,
@@ -53,6 +54,7 @@ __all__ = [
     "Clifford",
     "DensityMatrix",
     "Kraus",
+    "MatrixProductState",
     "Operator",
     "Pauli",
     "PauliList",

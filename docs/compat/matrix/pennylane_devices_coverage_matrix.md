@@ -1,5 +1,17 @@
 # pennylane Coverage Matrix
 
+## Stage 11I Native MPS Device
+
+The native QNode can execute on MatrixProductStateDevice. State, expectation,
+variance, sampling and selected reduced-density outputs are callable; a
+100-qubit QNode reduction avoids global dense state construction. Installed
+default.qubit comparisons check complex state/reduced state and observables.
+
+Evidence: tests/devices/test_matrix_product_state_device.py and
+tests/compat_qiskit_aer/test_matrix_product_state_native.py. This is a native
+MPS engine, not complete DefaultTensor/quimb, plugin, capture or autodiff parity.
+Truncation and resource semantics are documented in the Stage 11I report.
+
 ## Stage 11H Native Mixed-State Execution
 
 Native QNode now accepts DensityMatrixDevice, inline CPTP channels, state and

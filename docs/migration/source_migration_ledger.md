@@ -5,6 +5,27 @@ Date: 2026-06-05
 
 This ledger records implementation mode and upstream source status for the current P1 release-candidate baseline. Current work uses Native Implementation, Adapter Integration, and Upstream Dependency. No new upstream source migration was introduced during Stage 5.5. No Source Port with Attribution was performed.
 
+## Stage 11I Native MPS Execution
+
+All paths below use Native Implementation. No upstream source/test files or
+environments were copied or vendored. Only public mathematical/API definitions
+were consulted; optional installed SDKs are behavioral oracles. Review remains
+pending; the main risk is numerical truncation, exponential entanglement or
+analytic branch growth. Full SDK/device/save-instruction parity is not claimed.
+
+| Files | Implemented behavior | Verification |
+| --- | --- | --- |
+| `quantumbridge/information/matrix_product_state.py` | Connected qubit tensors, QR center, Schmidt truncation, local/nonlocal gates, reduced states/probabilities, Pauli contractions, collapse and JSON | Native random-complex, truncation and dense-call-blocked 100-qubit tests |
+| `quantumbridge/devices/matrix_product_state_device.py` | Native MPS analytic ensembles, Kraus/measurement trajectories, reset, feedback, readout and observables | Device suite and optional Aer MPS differential tests |
+| `quantumbridge/devices/execution.py`, `quantumbridge/devices/density_matrix_device.py` | Shared validated ordered execution program, retaining mixed-device behavior | Existing density/stabilizer suites plus MPS tests |
+| `quantumbridge/providers/matrix_product_state_backend.py`, `quantumbridge/providers/provider.py` | Discoverable Backend/Job, binding, batches and isolated MPS options | Native provider/V2 tests |
+| `quantumbridge/results/result.py`, `quantumbridge/qml/qnode.py`, `quantumbridge/noise/execution.py` | Compressed MPS Result, direct QNode reduction and noisy sampler dispatch | JSON roundtrip, 100-qubit reduced QNode and noisy-observable tests |
+| `quantumbridge/primitives/estimator.py` | Allow analytic precision zero; reject nonfinite/negative/bool precision | V2 MPS integration and precision validation tests |
+| `quantumbridge/compat/qiskit_aer/simulator_native.py`, package exports | Callable native MPS method and IR dispatch without upstream execution | Native IR roundtrip and optional Aer/PennyLane comparisons |
+| `examples/native_matrix_product_state_quantumbridge.py` | Runnable 100-qubit compressed simulation, sampling and noisy native QNode | SDK-free example execution |
+
+## Historical Ledger
+
 | QuantumBridge file | Feature | Mode | Referenced Qiskit? | Referenced PennyLane? | Original project path | Original license | Copied code? | Modified code? | Modification notes | Copyright retained? | THIRD_PARTY_NOTICES updated? | Tests? | Reviewer | Risk |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `quantumbridge/compat/qiskit_adapter.py` | Qiskit circuit import/export, IR bridge, counts Result adapter | Adapter Integration | API only | No | N/A | Apache-2.0 dependency | No | No | Converts public Qiskit objects to/from QuantumBridge Circuit/IR and adapts counts mappings to Result | N/A | Yes | Yes | Pending | Medium |

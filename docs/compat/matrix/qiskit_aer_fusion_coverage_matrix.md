@@ -1,5 +1,20 @@
 # qiskit_aer Fusion Coverage Matrix
 
+## Stage 11I Executable Native MPS Method
+
+Native MatrixProductStateDevice/Backend implement SVD tensor execution,
+nonadjacent/multiwire gates, CPTP trajectories/ensembles, dynamic measurement,
+reset and feedback. Pauli observables, selected probabilities and reduced
+density outputs do not expand global states. Provider/Job/V2 and native/IR
+Aer-adjacent dispatch are executable without Aer installed.
+
+Evidence: tests/devices/test_matrix_product_state_device.py (including a
+100-qubit dense-call-blocked GHZ test), optional Aer MPS differential tests in
+tests/compat_qiskit_aer/test_matrix_product_state_native.py, and the Stage 11I
+report. This does not claim full Aer save/set snapshots, Gamma/Lambda format,
+gate-attached noise or GPU/distributed method parity. The older inventories
+below remain historical records, not a complete parity measurement.
+
 ## Stage 11H Executable Mixed-State Path
 
 The native density_matrix device/backend accepts bound non-Clifford gates,

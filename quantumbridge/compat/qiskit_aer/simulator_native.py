@@ -10,7 +10,7 @@ import numpy as np
 
 from quantumbridge.compat.qiskit_adapter import circuit_from_ir, circuit_from_qiskit
 from quantumbridge.core import Circuit, Measurement
-from quantumbridge.devices import StatevectorDevice, StabilizerDevice, DensityMatrixDevice
+from quantumbridge.devices import StatevectorDevice, StabilizerDevice, DensityMatrixDevice, MatrixProductStateDevice
 from quantumbridge.schema.aer_results import (
     NoisySimulationResult,
     QasmSimulationResult,
@@ -61,8 +61,8 @@ def normalize_circuit_to_quantumbridge_ir(circuit_or_ir: Any, method: str = "sta
             "native Aer simulator expects a QuantumBridge Circuit, QuantumBridge IR, "
             "IR dictionary, or basic Qiskit QuantumCircuit"
         )
-    if method not in {"statevector", "stabilizer", "density_matrix"}:
-        raise ValueError("QuantumBridge native normalization method must be statevector, stabilizer or density_matrix.")
+    if method not in {"statevector", "stabilizer", "density_matrix", "matrix_product_state"}:
+        raise ValueError("QuantumBridge native normalization method must be statevector, stabilizer, density_matrix or matrix_product_state.")
     if method == "statevector" and circuit.num_qubits > 4:
         raise ValueError("Stage 9F native Aer simulator supports 1-4 qubit circuits")
     if method == "statevector":
@@ -176,6 +176,8 @@ def execute_basic_circuit_native(
         return run_statevector_simulator_native(circuit_or_ir)
     if backend == "density_matrix":
         return run_density_matrix_simulator_native(circuit_or_ir, shots=shots, seed=seed, noise_model=noise_model)
+    if backend == "matrix_product_state":
+        return run_matrix_product_state_simulator_native(circuit_or_ir, shots=shots, seed=seed, noise_model=noise_model)
     if backend in {"stabilizer", "stabilizer_simulator"}:
         return run_stabilizer_simulator_native(circuit_or_ir, shots=shots, seed=seed, noise_model=noise_model)
     if backend in {"qasm", "qasm_simulator"}:
@@ -184,7 +186,25 @@ def execute_basic_circuit_native(
         return run_noisy_qasm_simulator_native(
             circuit_or_ir, shots=shots, noise_model=noise_model, seed=seed
         )
-    raise ValueError("backend must be statevector, density_matrix, stabilizer, qasm, or noisy_qasm")
+    raise ValueError("backend must be statevector, density_matrix, matrix_product_state, stabilizer, qasm, or noisy_qasm")
+
+
+def run_matrix_product_state_simulator_native(circuit_or_ir, shots=1024, seed=None, noise_model=None, memory=False, **device_options):
+    circuit = normalize_circuit_to_quantumbridge_ir(circuit_or_ir, method="matrix_product_state")
+    device = MatrixProductStateDevice(noise_model=noise_model, **device_options)
+    result = device.run(circuit) if shots is None else device.run_shots(circuit, shots=shots, seed=seed, memory=memory)
+    payload = result.to_dict()
+    return QasmSimulationResult(
+        workflow="matrix_product_state_simulator_native", backend="matrix_product_state", mode="native_minimal",
+        capability_level=3, native_implementation=True, num_qubits=circuit.num_qubits,
+        shots=shots, seed=seed, counts=result.counts() or {}, probabilities=result.probabilities() or {},
+        data={"matrix_product_state": payload.get("matrix_product_state")},
+        noise_model=None if noise_model is None else noise_model.summary(),
+        metadata={**result.metadata(), "cloud_access": False, "token_read": False, "hardware_access": False,
+                  "qiskit_aer_parity_claim": False}, raw_type="QuantumBridgeMatrixProductState",
+        warnings=["Native MPS execution is not full Aer/device/save-instruction parity."],
+        provenance=native_provenance("matrix_product_state_simulator_native"),
+    )
 
 
 def run_density_matrix_simulator_native(circuit_or_ir, shots=None, seed=None, noise_model=None, initial_state=None, memory=False):

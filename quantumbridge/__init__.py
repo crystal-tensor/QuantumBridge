@@ -35,9 +35,9 @@ from quantumbridge.circuit_library import (
 from quantumbridge.compat import circuit_from_openqasm, circuit_from_qiskit, circuit_to_qiskit
 from quantumbridge.core import Circuit, Instruction, Measurement, Operation, Parameter, ParameterExpression, ParameterVector
 from quantumbridge.compiler import transpile
-from quantumbridge.devices import ShotSampler, StatevectorDevice, StabilizerDevice, DensityMatrixDevice
+from quantumbridge.devices import ShotSampler, StatevectorDevice, StabilizerDevice, DensityMatrixDevice, MatrixProductStateDevice
 from quantumbridge.diff import parameter_shift
-from quantumbridge.information import DensityMatrix, Statevector
+from quantumbridge.information import DensityMatrix, Statevector, MatrixProductState
 from quantumbridge.operators import Pauli, SparsePauliOperator
 from quantumbridge.primitives import (
     BackendEstimator,
@@ -54,6 +54,7 @@ from quantumbridge.primitives import (
     StatevectorSampler,
 )
 from quantumbridge.providers import Backend, BackendV2, Job, JobError, JobStatus, JobTimeoutError, Options, Provider, QiskitBackendNotFoundError, StabilizerBackend, DensityMatrixBackend
+from quantumbridge.providers import MatrixProductStateBackend
 from quantumbridge.results import Result
 from quantumbridge.transforms import finite_difference, metric_tensor, qng_step, spsa_gradient
 from quantumbridge.utils.math import Hamiltonian, PauliString, PauliX, PauliY, PauliZ
@@ -73,6 +74,9 @@ __all__ = [
     "DensityMatrix",
     "DensityMatrixDevice",
     "DensityMatrixBackend",
+    "MatrixProductState",
+    "MatrixProductStateBackend",
+    "MatrixProductStateDevice",
     "DataBin",
     "EigensolverResult",
     "Estimator",

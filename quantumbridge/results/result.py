@@ -37,12 +37,16 @@ class Result:
     metadata_data: dict[str, Any] = field(default_factory=dict)
     trace: Optional[list[dict[str, Any]]] = None
     density: Optional[np.ndarray] = None
+    mps: Any = None
 
     def statevector(self) -> Optional[np.ndarray]:
         return None if self.state is None else self.state.copy()
 
     def density_matrix(self) -> Optional[np.ndarray]:
         return None if self.density is None else self.density.copy()
+
+    def matrix_product_state(self):
+        return None if self.mps is None else self.mps.copy()
 
     def probabilities(self) -> Optional[dict[str, float]]:
         return None if self.probabilities_data is None else dict(self.probabilities_data)
@@ -88,6 +92,8 @@ class Result:
         )
         payload["expectation"] = self.expectation_data
         payload["trace"] = self.trace
+        if self.mps is not None:
+            payload["matrix_product_state"] = self.mps.to_dict()
         return payload
 
     @classmethod
@@ -130,6 +136,8 @@ class Result:
             if payload.get(key) not in (None, {}, []):
                 metadata.setdefault(key, payload.get(key))
         metadata.setdefault("schema_version", payload.get("schema_version", RESULT_SCHEMA_VERSION))
+        from quantumbridge.information.matrix_product_state import MatrixProductState
+
         return cls(
             state=_complex_array(payload.get("statevector")),
             probabilities_data=None if payload.get("probabilities") is None else dict(payload.get("probabilities")),
@@ -138,6 +146,7 @@ class Result:
             metadata_data=metadata,
             trace=payload.get("trace"),
             density=None if payload.get("density_matrix") is None else np.array([_complex_array(row) for row in payload["density_matrix"]]),
+            mps=None if payload.get("matrix_product_state") is None else MatrixProductState.from_dict(payload["matrix_product_state"]),
         )
 
     def to_json(self, *, indent: int | None = None) -> str:

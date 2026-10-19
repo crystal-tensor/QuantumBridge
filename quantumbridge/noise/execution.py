@@ -33,7 +33,12 @@ class NoisySampler:
         self.device = _device_with_noise(base_device, noise_model)
 
     def probabilities(self, circuit) -> dict[str, float]:
-        return self.device.run(circuit).probabilities()
+        probabilities = self.device.run(circuit).probabilities()
+        if probabilities is not None:
+            return probabilities
+        from quantumbridge.devices.execution import apply_readout_distribution
+
+        return apply_readout_distribution(self.device.probabilities(circuit), self.noise_model, range(circuit.num_qubits))
 
     def run(self, circuit) -> Result:
         result = self.device.run_shots(circuit, shots=self.shots, seed=self.seed)

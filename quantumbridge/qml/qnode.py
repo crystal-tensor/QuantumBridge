@@ -46,6 +46,8 @@ class QNode:
                 return self.device.state(tape.circuit)
             return self.device.statevector(tape.circuit)
         if request.kind == "density_matrix":
+            if hasattr(self.device, "reduced_density_matrix"):
+                return self.device.reduced_density_matrix(tape.circuit, wires=wires)
             matrix = self.device.density_matrix(tape.circuit)
             return matrix if wires is None else _partial_density_matrix(matrix, self.num_qubits, wires)
         if request.kind == "sample":
