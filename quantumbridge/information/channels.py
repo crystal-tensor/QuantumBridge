@@ -87,6 +87,33 @@ def _kraus_from_choi(
     return tuple(operators)
 
 
+def _kraus_pair_from_choi(
+    data: np.ndarray,
+    input_dim: int,
+    output_dim: int,
+    atol: float = 1e-12,
+) -> tuple[tuple[np.ndarray, ...], tuple[np.ndarray, ...]]:
+    hermitian = (data + data.conj().T) / 2
+    if np.allclose(data, data.conj().T, atol=atol):
+        values = np.linalg.eigvalsh(hermitian)
+        if np.min(values) >= -atol:
+            operators = _kraus_from_choi(data, input_dim, output_dim, atol=atol)
+            return operators, operators
+
+    left_vectors, singular_values, right_adjoint = np.linalg.svd(data)
+    right_vectors = right_adjoint.conj().T
+    left = []
+    right = []
+    for index in np.flatnonzero(singular_values > atol):
+        scale = np.sqrt(singular_values[index])
+        left.append((scale * left_vectors[:, index]).reshape((output_dim, input_dim), order="F"))
+        right.append((scale * right_vectors[:, index]).reshape((output_dim, input_dim), order="F"))
+    if not left:
+        zero = np.zeros((output_dim, input_dim), dtype=complex)
+        return (zero,), (zero,)
+    return tuple(left), tuple(right)
+
+
 def _pauli_basis(num_qubits: int) -> tuple[np.ndarray, ...]:
     one_qubit = (
         np.eye(2, dtype=complex),
@@ -181,12 +208,16 @@ class _QuantumChannel:
             if self.num_qubits is None or other_channel.num_qubits is None:
                 raise ValueError("QuantumBridge subsystem channel composition requires qubit channels.")
             normalized = _validate_qargs(qargs, self.num_qubits, other_channel.num_qubits)
-            other_channel = Kraus(
-                tuple(
-                    _embed_operator(op, normalized, self.num_qubits)
-                    for op in other_channel.to_kraus().data
-                )
-            ).to_superop()
+            other_kraus = other_channel.to_kraus()
+            left = tuple(
+                _embed_operator(op, normalized, self.num_qubits)
+                for op in other_kraus._left
+            )
+            right = tuple(
+                _embed_operator(op, normalized, self.num_qubits)
+                for op in other_kraus._right
+            )
+            other_channel = Kraus(left if other_kraus._is_standard else (left, right)).to_superop()
 
         this = self.to_superop()
         if front:
@@ -209,12 +240,18 @@ class _QuantumChannel:
     def tensor(self, other):
         other_kraus = Kraus(other)
         this_kraus = self.to_kraus()
-        operators = tuple(
+        left = tuple(
             np.kron(left, right)
-            for left in this_kraus.data
-            for right in other_kraus.data
+            for left in this_kraus._left
+            for right in other_kraus._left
         )
-        return type(self)(Kraus(operators))
+        right = tuple(
+            np.kron(left, right)
+            for left in this_kraus._right
+            for right in other_kraus._right
+        )
+        data = left if this_kraus._is_standard and other_kraus._is_standard else (left, right)
+        return type(self)(Kraus(data))
 
     def expand(self, other):
         return type(self)(other).tensor(self)
@@ -275,31 +312,91 @@ class _QuantumChannel:
         if rho.ndim != 2 or rho.shape[0] != rho.shape[1]:
             raise ValueError("QuantumBridge channel evolution requires a statevector or density matrix.")
 
-        operators = self.to_kraus().data
+        kraus = self.to_kraus()
+        left = kraus._left
+        right = kraus._right
         if qargs is not None:
             state_dim = rho.shape[0]
             if not _is_power_of_two(state_dim) or self.num_qubits is None:
                 raise ValueError("QuantumBridge subsystem channel evolution requires qubit dimensions.")
             state_qubits = int(np.log2(state_dim))
             normalized = _validate_qargs(qargs, state_qubits, self.num_qubits)
-            operators = tuple(_embed_operator(op, normalized, state_qubits) for op in operators)
+            left = tuple(_embed_operator(op, normalized, state_qubits) for op in left)
+            right = tuple(_embed_operator(op, normalized, state_qubits) for op in right)
         elif rho.shape[0] != self._input_dim:
             raise ValueError("QuantumBridge state and channel input dimensions do not match.")
 
-        output = sum(op @ rho @ op.conj().T for op in operators)
+        output = sum(a @ rho @ b.conj().T for a, b in zip(left, right))
         return DensityMatrix(output)
 
     def to_operator(self) -> Operator:
-        operators = self.to_kraus().data
-        if len(operators) != 1:
+        kraus = self.to_kraus()
+        if not kraus._is_standard or len(kraus._left) != 1:
             raise ValueError("QuantumBridge channel is not representable by one operator.")
-        operator = Operator(operators[0])
+        operator = Operator(kraus._left[0])
         if not operator.is_unitary():
             raise ValueError("QuantumBridge channel operator is not unitary.")
         return operator
 
     def __xor__(self, n: int):
         return self.tensorpower(n)
+
+    def __matmul__(self, other):
+        return self.dot(other)
+
+    def __add__(self, other):
+        other_channel = SuperOp(other)
+        this = self.to_superop()
+        if this.dim != other_channel.dim:
+            raise ValueError("QuantumBridge channel addition requires equal dimensions.")
+        return type(self)(SuperOp._from_matrix(
+            this.data + other_channel.data,
+            self._input_dim,
+            self._output_dim,
+        ))
+
+    def __sub__(self, other):
+        other_channel = SuperOp(other)
+        this = self.to_superop()
+        if this.dim != other_channel.dim:
+            raise ValueError("QuantumBridge channel subtraction requires equal dimensions.")
+        return type(self)(SuperOp._from_matrix(
+            this.data - other_channel.data,
+            self._input_dim,
+            self._output_dim,
+        ))
+
+    def __mul__(self, scalar):
+        if not np.isscalar(scalar):
+            return NotImplemented
+        return type(self)(SuperOp._from_matrix(
+            self.to_superop().data * scalar,
+            self._input_dim,
+            self._output_dim,
+        ))
+
+    def __rmul__(self, scalar):
+        return self.__mul__(scalar)
+
+    def __truediv__(self, scalar):
+        if not np.isscalar(scalar):
+            return NotImplemented
+        return self.__mul__(1 / scalar)
+
+    def reshape(self, input_dims=None, output_dims=None, num_qubits: int | None = None):
+        if input_dims is not None:
+            requested = (input_dims,) if isinstance(input_dims, int) else tuple(input_dims)
+            if int(np.prod(requested)) != self._input_dim:
+                raise ValueError("QuantumBridge channel reshape cannot change the input dimension.")
+        if output_dims is not None:
+            requested = (output_dims,) if isinstance(output_dims, int) else tuple(output_dims)
+            if int(np.prod(requested)) != self._output_dim:
+                raise ValueError("QuantumBridge channel reshape cannot change the output dimension.")
+        if num_qubits is not None:
+            expected = 1 << int(num_qubits)
+            if self._input_dim != expected or self._output_dim != expected:
+                raise ValueError("QuantumBridge channel reshape num_qubits does not match its dimensions.")
+        return self.copy()
 
     def __copy__(self):
         return self.copy()
@@ -311,29 +408,56 @@ class _QuantumChannel:
 
 
 class Kraus(_QuantumChannel):
-    """Standard Kraus representation of a completely positive quantum map."""
+    """Standard or generalized Kraus representation of a quantum map."""
 
     def __init__(self, data):
         if isinstance(data, Kraus):
-            operators = tuple(np.array(op, copy=True) for op in data.data)
+            left = tuple(np.array(op, copy=True) for op in data._left)
+            right = left if data._is_standard else tuple(np.array(op, copy=True) for op in data._right)
         elif isinstance(data, _QuantumChannel):
             choi = data.to_superop().to_choi()
-            operators = _kraus_from_choi(choi.data, choi._input_dim, choi._output_dim)
+            left, right = _kraus_pair_from_choi(
+                choi.data,
+                choi._input_dim,
+                choi._output_dim,
+            )
         elif isinstance(data, Operator) or hasattr(data, "operations") or hasattr(data, "to_matrix"):
-            operators = (_operator_data(data),)
+            left = (_operator_data(data),)
+            right = left
         elif isinstance(data, np.ndarray) and data.ndim == 2:
-            operators = (np.asarray(data, dtype=complex),)
+            left = (np.asarray(data, dtype=complex),)
+            right = left
+        elif (
+            isinstance(data, tuple)
+            and len(data) == 2
+            and np.asarray(data[0]).ndim == 3
+            and np.asarray(data[1]).ndim == 3
+        ):
+            left = tuple(np.asarray(operator, dtype=complex) for operator in data[0])
+            right = tuple(np.asarray(operator, dtype=complex) for operator in data[1])
         else:
-            operators = tuple(np.asarray(operator, dtype=complex) for operator in data)
+            left = tuple(np.asarray(operator, dtype=complex) for operator in data)
+            right = left
 
-        if not operators:
+        if not left or not right:
             raise ValueError("QuantumBridge Kraus channel requires at least one operator.")
-        shape = operators[0].shape
+        if len(left) != len(right):
+            raise ValueError("QuantumBridge generalized Kraus lists must have equal length.")
+        shape = left[0].shape
         if len(shape) != 2:
             raise ValueError("QuantumBridge Kraus operators must be matrices.")
-        if any(operator.shape != shape for operator in operators):
+        if any(operator.shape != shape for operator in left + right):
             raise ValueError("QuantumBridge Kraus operators must have equal shape.")
-        self.data = operators
+        self._left = left
+        self._right = right
+        self._is_standard = right is left or all(
+            np.array_equal(a, b) for a, b in zip(left, right)
+        )
+        if self._is_standard:
+            self._right = self._left
+            self.data = self._left
+        else:
+            self.data = (self._left, self._right)
         self._output_dim, self._input_dim = shape
 
     @classmethod
@@ -344,16 +468,19 @@ class Kraus(_QuantumChannel):
         return self.copy()
 
     def to_superop(self) -> "SuperOp":
-        matrix = sum(np.kron(operator.conj(), operator) for operator in self.data)
+        matrix = sum(
+            np.kron(right.conj(), left)
+            for left, right in zip(self._left, self._right)
+        )
         return SuperOp._from_matrix(matrix, self._input_dim, self._output_dim)
 
     def to_choi(self) -> "Choi":
         matrix = sum(
             np.outer(
-                operator.reshape(-1, order="F"),
-                operator.reshape(-1, order="F").conj(),
+                left.reshape(-1, order="F"),
+                right.reshape(-1, order="F").conj(),
             )
-            for operator in self.data
+            for left, right in zip(self._left, self._right)
         )
         return Choi._from_matrix(matrix, self._input_dim, self._output_dim)
 
@@ -559,44 +686,81 @@ class Chi(_QuantumChannel):
 
 
 class Stinespring(_QuantumChannel):
-    """Stinespring isometry representation of a completely positive map."""
+    """Standard or generalized Stinespring representation of a quantum map."""
 
     def __init__(self, data):
         if isinstance(data, Stinespring):
-            self.data = np.array(data.data, copy=True)
+            self._left_data = np.array(data._left_data, copy=True)
+            self._right_data = (
+                self._left_data
+                if data._is_standard
+                else np.array(data._right_data, copy=True)
+            )
             self._input_dim = data._input_dim
             self._output_dim = data._output_dim
             self._environment_dim = data._environment_dim
-            return
-        if isinstance(data, _QuantumChannel):
+        elif isinstance(data, _QuantumChannel):
             kraus = data.to_kraus()
             environment_dim = len(kraus.data)
-            stacked = np.stack(kraus.data, axis=1).reshape(
+            if not kraus._is_standard:
+                environment_dim = len(kraus._left)
+            self._left_data = np.stack(kraus._left, axis=1).reshape(
                 kraus._output_dim * environment_dim,
                 kraus._input_dim,
             )
-            self.data = stacked
+            self._right_data = (
+                self._left_data
+                if kraus._is_standard
+                else np.stack(kraus._right, axis=1).reshape(
+                    kraus._output_dim * environment_dim,
+                    kraus._input_dim,
+                )
+            )
             self._input_dim = kraus._input_dim
             self._output_dim = kraus._output_dim
             self._environment_dim = environment_dim
-            return
-        matrix = _operator_data(data)
-        if matrix.ndim != 2:
-            raise ValueError("QuantumBridge Stinespring data must be a matrix.")
-        self.data = matrix
-        self._input_dim = matrix.shape[1]
-        self._output_dim = matrix.shape[1]
-        if matrix.shape[0] % self._output_dim:
-            raise ValueError("QuantumBridge cannot infer Stinespring output dimensions.")
-        self._environment_dim = matrix.shape[0] // self._output_dim
+        else:
+            generalized = isinstance(data, tuple) and len(data) == 2
+            left_data = _operator_data(data[0] if generalized else data)
+            right_data = _operator_data(data[1]) if generalized else left_data
+            if left_data.ndim != 2 or right_data.ndim != 2:
+                raise ValueError("QuantumBridge Stinespring data must be a matrix.")
+            if left_data.shape != right_data.shape:
+                raise ValueError("QuantumBridge generalized Stinespring matrices must have equal shape.")
+            self._left_data = left_data
+            self._right_data = right_data
+            self._input_dim = left_data.shape[1]
+            self._output_dim = left_data.shape[1]
+            if left_data.shape[0] % self._output_dim:
+                raise ValueError("QuantumBridge cannot infer Stinespring output dimensions.")
+            self._environment_dim = left_data.shape[0] // self._output_dim
+
+        self._is_standard = self._right_data is self._left_data or np.array_equal(
+            self._left_data,
+            self._right_data,
+        )
+        if self._is_standard:
+            self._right_data = self._left_data
+            self.data = self._left_data
+        else:
+            self.data = (self._left_data, self._right_data)
 
     def to_kraus(self) -> Kraus:
-        tensor = self.data.reshape(
+        left_tensor = self._left_data.reshape(
             self._output_dim,
             self._environment_dim,
             self._input_dim,
         )
-        return Kraus(tuple(tensor[:, index, :] for index in range(self._environment_dim)))
+        left = tuple(left_tensor[:, index, :] for index in range(self._environment_dim))
+        if self._is_standard:
+            return Kraus(left)
+        right_tensor = self._right_data.reshape(
+            self._output_dim,
+            self._environment_dim,
+            self._input_dim,
+        )
+        right = tuple(right_tensor[:, index, :] for index in range(self._environment_dim))
+        return Kraus((left, right))
 
     def to_superop(self) -> SuperOp:
         return self.to_kraus().to_superop()

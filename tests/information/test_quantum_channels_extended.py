@@ -125,3 +125,36 @@ def test_channel_fidelity_metrics_match_closed_form():
     assert abs(average_gate_fidelity(channel) - expected_average) < 1e-12
     assert abs(gate_error(channel) - (1 - expected_average)) < 1e-12
     assert process_fidelity(Operator.from_label("X"), Operator.from_label("X")) == 1.0
+
+
+def test_generalized_kraus_stinespring_and_channel_arithmetic():
+    left = (
+        np.array([[1, 0], [0, 0.5]], dtype=complex),
+        np.array([[0, 0.2], [0, 0]], dtype=complex),
+    )
+    right = (
+        np.array([[1, 0], [0, 0.3]], dtype=complex),
+        np.array([[0, 0.4], [0, 0]], dtype=complex),
+    )
+    channel = Kraus((left, right))
+    expected = np.array(
+        [
+            [1, 0, 0, 0.08],
+            [0, 0.5, 0, 0],
+            [0, 0, 0.3, 0],
+            [0, 0, 0, 0.15],
+        ],
+        dtype=complex,
+    )
+
+    assert isinstance(channel.data, tuple)
+    assert not channel.is_cp()
+    np.testing.assert_allclose(SuperOp(channel).data, expected, atol=1e-12)
+    np.testing.assert_allclose(SuperOp(Stinespring(channel)).data, expected, atol=1e-12)
+    np.testing.assert_allclose(SuperOp(Kraus(SuperOp(channel))).data, expected, atol=1e-12)
+
+    identity = Kraus(Operator(np.eye(2)))
+    np.testing.assert_allclose(SuperOp(identity + identity).data, 2 * np.eye(4), atol=1e-12)
+    np.testing.assert_allclose(SuperOp(0.5 * identity).data, 0.5 * np.eye(4), atol=1e-12)
+    np.testing.assert_allclose(SuperOp(identity @ identity).data, np.eye(4), atol=1e-12)
+    assert identity.reshape(input_dims=(2,), output_dims=(2,), num_qubits=1).dim == (2, 2)

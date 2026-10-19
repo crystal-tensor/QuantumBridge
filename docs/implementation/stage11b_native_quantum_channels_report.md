@@ -16,12 +16,14 @@ source code.
 ## Implemented capability
 
 - Native `Kraus`, `SuperOp`, `Choi`, `PTM`, `Chi`, and `Stinespring`
-  representations.
+  representations, including generalized left/right Kraus and Stinespring
+  pairs for non-CP linear maps.
 - Lossless conversion between all six representations for completely positive
-  qubit channels.
+  channels and arbitrary linear maps through generalized decompositions.
 - Qiskit-compatible channel dimensions and qubit metadata.
 - Composition, front composition through `dot`, tensor, expand, integer power,
-  tensor power, adjoint, conjugate, and transpose.
+  tensor power, adjoint, conjugate, transpose, map addition, subtraction, and
+  scalar multiplication.
 - Full-state and selected-subsystem density-matrix evolution.
 - Complete positivity, trace preservation, and CPTP validation.
 - Conversion of unitary channels back to `Operator`.
@@ -34,13 +36,13 @@ source code.
 Focused dependency-independent validation:
 
 ```text
-8 passed
+9 passed
 ```
 
 Installed Qiskit 2.6.0 parity validation:
 
 ```text
-7 passed
+4 passed
 ```
 
 The parity suite compares amplitude damping in every implemented
@@ -59,13 +61,15 @@ modified nor staged. The staged change was then applied to a clean archive and
 the complete tracked suite passed:
 
 ```text
-624 passed, 4 skipped
+626 passed, 4 skipped
 ```
 
 ## Risk
 
-- Standard Kraus and Stinespring forms currently model completely positive
-  maps. Generalized left/right Kraus and Stinespring pairs remain future work.
+- Generalized decompositions are numerically equivalent but not unique; tests
+  compare reconstructed channel matrices rather than decomposition vectors.
+- Non-CP maps are supported algebraically but do not represent physical quantum
+  channels and may evolve a state outside the density-matrix state space.
 - Arbitrary subsystem dimension tuples are not yet as broad as Qiskit's
   non-qubit dimension model.
 - Selected-subsystem evolution uses QuantumBridge's documented wire ordering.
