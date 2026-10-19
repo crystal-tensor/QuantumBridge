@@ -797,3 +797,18 @@ copied prose, logos, or virtual environments are vendored:
 - `docs/tutorials/studio_generate_seed_and_execute_workflow_quantumbridge.md`
 
 Stage 10E source port count remains zero.
+
+## Stage 10F Source Inventory
+
+The following Stage 10F files are clean-room QuantumBridge implementations
+for native PennyLane-like QML measurement execution. No PennyLane source,
+Qiskit source, examples, tutorials, wheels, dist-info, egg-info, site-packages,
+or virtual environments are vendored:
+
+- `quantumbridge/qml/measurements.py`
+- `quantumbridge/qml/qnode.py`
+- `quantumbridge/qml/tape.py`
+- `quantumbridge/qml/__init__.py`
+- `tests/qml/test_pennylane_measurement_coverage_p2.py`
+
+Stage 10F source port count remains zero.

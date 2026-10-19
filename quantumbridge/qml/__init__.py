@@ -4,6 +4,7 @@
 # This implementation is developed for the QuantumBridge native architecture.
 
 from .embeddings import amplitude_embedding, angle_embedding
+from .measurements import ClassicalShadowResult, MeasurementRequest
 from .observables import Hadamard, Hamiltonian, Identity, PauliX, PauliY, PauliZ, SparseHamiltonian
 from .qnode import QNode
 from .tape import Tape
@@ -13,6 +14,8 @@ __all__ = [
     "Hadamard",
     "Hamiltonian",
     "Identity",
+    "ClassicalShadowResult",
+    "MeasurementRequest",
     "PauliX",
     "PauliY",
     "PauliZ",

@@ -4,6 +4,7 @@
 # This implementation is developed for the QuantumBridge native architecture.
 
 from quantumbridge.core import Circuit
+from .measurements import MeasurementRequest, normalize_wires
 
 
 class Tape:
@@ -14,6 +15,16 @@ class Tape:
         self.measurement_wires = None
         self.measurement_shots = None
         self.measurement_seed = None
+        self.measurements: list[MeasurementRequest] = []
+
+    def _record_measurement(self, request: MeasurementRequest):
+        self.measurements.append(request)
+        self.observable = request.observable
+        self.measurement = request.kind
+        self.measurement_wires = request.wires
+        self.measurement_shots = request.shots
+        self.measurement_seed = request.seed
+        return request
 
     def x(self, wire: int):
         self.circuit.x(wire)
@@ -54,38 +65,39 @@ class Tape:
         self.circuit.swap(a, b)
 
     def expval(self, observable):
-        self.observable = observable
-        self.measurement = "expval"
-        return observable
+        return self._record_measurement(MeasurementRequest("expval", observable=observable))
 
     def var(self, observable):
-        self.observable = observable
-        self.measurement = "var"
-        return observable
+        return self._record_measurement(MeasurementRequest("var", observable=observable))
 
     def probs(self, wires=None):
-        self.measurement = "probs"
-        self.measurement_wires = None if wires is None else tuple(wires)
-        return self.measurement
+        return self._record_measurement(MeasurementRequest("probs", wires=normalize_wires(wires)))
 
     def sample(self, wires=None, shots=None, seed=None):
-        self.measurement = "sample"
-        self.measurement_wires = None if wires is None else tuple(wires)
-        self.measurement_shots = shots
-        self.measurement_seed = seed
-        return self.measurement
+        return self._record_measurement(MeasurementRequest("sample", wires=normalize_wires(wires), shots=shots, seed=seed))
 
     def counts(self, wires=None, shots=None, seed=None):
-        self.measurement = "counts"
-        self.measurement_wires = None if wires is None else tuple(wires)
-        self.measurement_shots = shots
-        self.measurement_seed = seed
-        return self.measurement
+        return self._record_measurement(MeasurementRequest("counts", wires=normalize_wires(wires), shots=shots, seed=seed))
 
     def state(self):
-        self.measurement = "state"
-        return self.measurement
+        return self._record_measurement(MeasurementRequest("state"))
 
-    def density_matrix(self):
-        self.measurement = "density_matrix"
-        return self.measurement
+    def density_matrix(self, wires=None):
+        return self._record_measurement(MeasurementRequest("density_matrix", wires=normalize_wires(wires)))
+
+    def classical_shadow(self, wires=None, shots=None, seed=None):
+        return self._record_measurement(
+            MeasurementRequest("classical_shadow", wires=normalize_wires(wires), shots=shots, seed=seed)
+        )
+
+    def shadow_expval(self, observable, wires=None, shots=None, seed=None, k=None):
+        return self._record_measurement(
+            MeasurementRequest(
+                "shadow_expval",
+                observable=observable,
+                wires=normalize_wires(wires),
+                shots=shots,
+                seed=seed,
+                metadata={"k": k} if k is not None else None,
+            )
+        )
