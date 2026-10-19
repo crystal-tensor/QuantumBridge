@@ -153,6 +153,22 @@ class Circuit:
     def reset(self, q: int) -> "Circuit":
         return self.append("reset", (q,))
 
+    def kraus(self, operators, wires: Sequence[int]) -> "Circuit":
+        from quantumbridge.utils.math import validate_kraus_operators
+
+        selected = tuple(wires)
+        if not selected:
+            raise ValueError("QuantumBridge circuit channels require at least one wire.")
+        matrices = validate_kraus_operators(operators, 1 << len(selected))
+        return self.append("kraus", selected, metadata={"kraus": matrices})
+
+    def channel(self, channel, wires: Sequence[int]) -> "Circuit":
+        if hasattr(channel, "kraus"):
+            return self.kraus(channel.kraus(), wires)
+        if hasattr(channel, "to_instruction"):
+            return self.append(channel.to_instruction(), wires)
+        raise TypeError("QuantumBridge circuit channels require Kraus matrices or a native channel instruction.")
+
     def id(self, q: int) -> "Circuit":
         return self.append("id", (q,))
 
@@ -520,7 +536,7 @@ class Circuit:
             or any(key in item.metadata for key in ("condition", "control_flow", "control_flow_stack"))
             for item in self.measurements
         ) or any(
-            op.name in {"reset", "measure"}
+            op.name in {"reset", "measure", "kraus"}
             or any(key in op.metadata for key in ("condition", "control_flow", "control_flow_stack"))
             for op in self.operations
         )

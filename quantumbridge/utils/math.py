@@ -21,6 +21,42 @@ PAULI_Y = np.array([[0, -1j], [1j, 0]], dtype=complex)
 PAULI_Z = np.array([[1, 0], [0, -1]], dtype=complex)
 
 
+def validate_kraus_operators(operators, dimension=None):
+    matrices = tuple(np.array(operator, dtype=complex, copy=True) for operator in operators)
+    if not matrices:
+        raise ValueError("QuantumBridge Kraus channels require at least one operator.")
+    if matrices[0].ndim != 2:
+        raise ValueError("QuantumBridge Kraus operators must be square matrices.")
+    dimension = matrices[0].shape[0] if dimension is None else dimension
+    if dimension < 1 or dimension & (dimension - 1):
+        raise ValueError("QuantumBridge channel dimension must be a power of two.")
+    if any(matrix.shape != (dimension, dimension) or not np.all(np.isfinite(matrix)) for matrix in matrices):
+        raise ValueError("QuantumBridge Kraus operators must be finite matching square matrices.")
+    total = sum(matrix.conj().T @ matrix for matrix in matrices)
+    if not np.allclose(total, np.eye(dimension), atol=1e-10, rtol=0):
+        raise ValueError("QuantumBridge circuit channels must be trace preserving.")
+    return matrices
+
+
+def apply_density_operator(density, operator, wires, num_qubits):
+    """Apply a local A rho A-dagger without constructing a full-system A."""
+    selected = tuple(wires)
+    tensor = np.asarray(density, dtype=complex).reshape((2,) * (2 * num_qubits))
+
+    def apply_axes(value, matrix, axes):
+        order = tuple(axes) + tuple(axis for axis in range(2 * num_qubits) if axis not in axes)
+        flat = value.transpose(order).reshape(1 << len(axes), -1)
+        return (matrix @ flat).reshape((2,) * (2 * num_qubits)).transpose(np.argsort(order))
+
+    tensor = apply_axes(tensor, operator, selected)
+    tensor = apply_axes(tensor, np.conjugate(operator), tuple(num_qubits + wire for wire in selected))
+    return tensor.reshape(1 << num_qubits, 1 << num_qubits)
+
+
+def apply_density_channel(density, operators, wires, num_qubits):
+    return sum(apply_density_operator(density, operator, wires, num_qubits) for operator in operators)
+
+
 def gate_matrix(name: str, params: tuple[Real, ...] = (), metadata: Optional[dict] = None) -> np.ndarray:
     if name in {"id", "i"}:
         return I2

@@ -8,13 +8,16 @@ from __future__ import annotations
 import numpy as np
 
 from typing import Union
+from numbers import Integral
 
 from .statevector import Statevector
 from quantumbridge.utils.math import bit_at
 
 
 def _validate_qargs(qargs, num_qubits: int) -> tuple[int, ...]:
-    normalized = tuple(range(num_qubits) if qargs is None else (int(qarg) for qarg in qargs))
+    normalized = tuple(range(num_qubits) if qargs is None else qargs)
+    if any(not isinstance(qarg, Integral) or isinstance(qarg, bool) for qarg in normalized):
+        raise ValueError("QuantumBridge DensityMatrix qargs must be integer subsystem positions.")
     if len(set(normalized)) != len(normalized):
         raise ValueError("QuantumBridge DensityMatrix qargs must be distinct.")
     if any(qarg < 0 or qarg >= num_qubits for qarg in normalized):
@@ -63,7 +66,9 @@ class DensityMatrix:
 
     @classmethod
     def from_circuit(cls, circuit) -> "DensityMatrix":
-        return cls.from_statevector(Statevector.from_circuit(circuit))
+        from quantumbridge.devices import DensityMatrixDevice
+
+        return cls(DensityMatrixDevice().density_matrix(circuit))
 
     def trace(self) -> complex:
         return np.trace(self.data)
@@ -73,8 +78,10 @@ class DensityMatrix:
         return int(np.log2(self.data.shape[0]))
 
     def is_valid(self, atol: float = 1e-10) -> bool:
-        hermitian = np.allclose(self.data, self.data.conj().T, atol=atol)
-        trace_one = np.isclose(np.trace(self.data), 1.0, atol=atol)
+        if not np.all(np.isfinite(self.data)):
+            return False
+        hermitian = np.allclose(self.data, self.data.conj().T, atol=atol, rtol=0)
+        trace_one = np.isclose(np.trace(self.data), 1.0, atol=atol, rtol=0)
         positive = np.all(np.linalg.eigvalsh(self.data) >= -atol)
         return bool(hermitian and trace_one and positive)
 
@@ -113,8 +120,24 @@ class DensityMatrix:
         return np.trace(self.data @ matrix)
 
     def evolve(self, operator, qargs=None) -> "DensityMatrix":
+        from quantumbridge.information.channels import _QuantumChannel
         from quantumbridge.information.operator import Operator
 
+        if isinstance(operator, _QuantumChannel):
+            return operator.evolve(self, qargs=qargs)
+        if hasattr(operator, "kraus") and not hasattr(operator, "operations"):
+            from quantumbridge.information.channels import Kraus
+
+            return Kraus(operator.kraus()).evolve(self, qargs=qargs)
+        if hasattr(operator, "operations"):
+            from quantumbridge.devices import DensityMatrixDevice
+            from quantumbridge.core import Circuit
+
+            circuit = operator
+            if qargs is not None:
+                selected = _validate_qargs(qargs, self.num_qubits)
+                circuit = Circuit(self.num_qubits, operator.num_bits).compose(operator, qubits=selected)
+            return DensityMatrix(DensityMatrixDevice(initial_state=self.data).density_matrix(circuit))
         op = Operator.from_circuit(operator) if hasattr(operator, "operations") else operator
         matrix = np.asarray(op.to_matrix(), dtype=complex) if hasattr(op, "to_matrix") else np.asarray(op, dtype=complex)
         if qargs is not None:
@@ -126,6 +149,27 @@ class DensityMatrix:
         if matrix.shape != self.data.shape:
             raise ValueError("QuantumBridge evolution operator dimension must match DensityMatrix dimension.")
         return DensityMatrix(matrix @ self.data @ matrix.conj().T)
+
+    def reset(self, qargs=None) -> "DensityMatrix":
+        from quantumbridge.utils.math import apply_density_channel
+
+        selected = _validate_qargs(qargs, self.num_qubits)
+        reset = (np.array([[1, 0], [0, 0]], complex), np.array([[0, 1], [0, 0]], complex))
+        data = self.data.copy()
+        for wire in selected:
+            data = apply_density_channel(data, reset, (wire,), self.num_qubits)
+        return DensityMatrix(data)
+
+    def measure(self, qargs=None, seed=None):
+        selected = _validate_qargs(qargs, self.num_qubits)
+        outcome = self.sample_memory(1, qargs=selected, seed=seed)[0]
+        mask = np.array([
+            all(bit_at(index, wire, self.num_qubits) == int(bit) for wire, bit in zip(selected, outcome))
+            for index in range(1 << self.num_qubits)
+        ])
+        projected = self.data * mask[:, None] * mask[None, :]
+        probability = np.trace(projected).real
+        return outcome, DensityMatrix(projected / probability)
 
     def tensor(self, other) -> "DensityMatrix":
         other_state = other if isinstance(other, DensityMatrix) else DensityMatrix(other)

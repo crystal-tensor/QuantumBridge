@@ -41,6 +41,7 @@ from quantumbridge.compat.qiskit_aer.statevector_simulator_adapter import (
     run_statevector_simulator_native,
 )
 from quantumbridge.compat.qiskit_aer.simulator_native import run_stabilizer_simulator_native
+from quantumbridge.compat.qiskit_aer.simulator_native import run_density_matrix_simulator_native
 from quantumbridge.compat.qiskit_common import QiskitAdapterFacade
 
 ADAPTER = QiskitAdapterFacade(
@@ -99,6 +100,7 @@ __all__ = [
     "run_qasm_upstream_aer",
     "run_statevector_simulator_native",
     "run_stabilizer_simulator_native",
+    "run_density_matrix_simulator_native",
     "run_statevector_example",
     "run_statevector_upstream_aer",
     "to_quantumbridge_schema",

@@ -13,6 +13,31 @@ from typing import Any, Optional
 from quantumbridge.core.parameters import Parameter, ParameterExpression
 
 
+def matrix_from_ir(value):
+    import numpy as np
+
+    if isinstance(value, dict) and set(value) == {"real", "imag"}:
+        real, imag = np.asarray(value["real"]), np.asarray(value["imag"])
+        if real.shape != imag.shape:
+            raise ValueError("QuantumBridge matrix real/imag shapes must match.")
+        return real.astype(float) + 1j * imag.astype(float)
+    return np.asarray(value, dtype=complex)
+
+
+def decode_instruction_metadata(metadata):
+    result = dict(metadata)
+    if "matrix" in result:
+        result["matrix"] = matrix_from_ir(result["matrix"])
+    if "kraus" in result:
+        result["kraus"] = tuple(matrix_from_ir(value) for value in result["kraus"])
+    return result
+
+
+def _matrix_to_ir(value):
+    matrix = matrix_from_ir(value)
+    return {"real": matrix.real.tolist(), "imag": matrix.imag.tolist()}
+
+
 def _param_to_ir(value: Any) -> Any:
     if isinstance(value, Parameter):
         return {"parameter": value.name}
@@ -35,12 +60,17 @@ class IRInstruction:
     metadata: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        metadata = {key: value for key, value in self.metadata.items() if key not in {"matrix", "kraus"}}
+        if "matrix" in self.metadata:
+            metadata["matrix"] = _matrix_to_ir(self.metadata["matrix"])
+        if "kraus" in self.metadata:
+            metadata["kraus"] = [_matrix_to_ir(value) for value in self.metadata["kraus"]]
         return {
             "op": self.op,
             "targets": list(self.targets),
             "controls": list(self.controls),
             "params": [_param_to_ir(param) for param in self.params],
-            "metadata": {key: value for key, value in self.metadata.items() if key != "matrix"},
+            "metadata": metadata,
         }
 
 

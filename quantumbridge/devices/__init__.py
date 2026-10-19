@@ -7,6 +7,7 @@
 from .sampler_device import ShotSampler
 from .statevector_device import StatevectorDevice
 from .stabilizer_device import StabilizerDevice
+from .density_matrix_device import DensityMatrixDevice
 
-__all__ = ["ShotSampler", "StatevectorDevice", "StabilizerDevice"]
+__all__ = ["ShotSampler", "StatevectorDevice", "StabilizerDevice", "DensityMatrixDevice"]
 

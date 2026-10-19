@@ -5,6 +5,7 @@
 
 from .backend import Backend, BackendV2
 from .stabilizer_backend import StabilizerBackend
+from .density_matrix_backend import DensityMatrixBackend
 from .exceptions import JobError, JobTimeoutError, QiskitBackendNotFoundError
 from .job import Job, JobStatus
 from .options import Options
@@ -14,6 +15,7 @@ __all__ = [
     "Backend",
     "BackendV2",
     "StabilizerBackend",
+    "DensityMatrixBackend",
     "Job",
     "JobError",
     "JobStatus",

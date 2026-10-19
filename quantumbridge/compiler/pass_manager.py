@@ -59,7 +59,7 @@ class PassManager:
                 flush()
                 metadata = {**deepcopy(item.metadata), "operation_index": len(out.operations)}
                 out.measurements.append(Measurement(item.wire, item.bit, item.kind, metadata))
-            elif item.name == "reset" or item.metadata.get("directive"):
+            elif item.name in {"reset", "kraus"} or item.metadata.get("directive"):
                 flush()
                 out.operations.append(item)
             elif any(key in item.metadata for key in ("condition", "control_flow", "control_flow_stack")):

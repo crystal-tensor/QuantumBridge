@@ -10,6 +10,7 @@ from typing import Optional
 
 from .backend import Backend
 from .stabilizer_backend import StabilizerBackend
+from .density_matrix_backend import DensityMatrixBackend
 from .exceptions import QiskitBackendNotFoundError
 
 
@@ -21,6 +22,7 @@ class Provider:
             Backend(name="statevector", max_qubits=None),
             Backend(name="qasm_simulator", max_qubits=None, shots=1024),
             StabilizerBackend(),
+            DensityMatrixBackend(),
         )
         self._backends: dict[str, Backend] = {}
         for backend in default_backends:

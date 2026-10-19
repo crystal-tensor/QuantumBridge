@@ -42,6 +42,8 @@ class QNode:
         if request.kind == "probs":
             return self.device.probabilities(tape.circuit, wires=wires)
         if request.kind == "state":
+            if hasattr(self.device, "state"):
+                return self.device.state(tape.circuit)
             return self.device.statevector(tape.circuit)
         if request.kind == "density_matrix":
             matrix = self.device.density_matrix(tape.circuit)

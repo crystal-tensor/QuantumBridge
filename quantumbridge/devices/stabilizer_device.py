@@ -11,6 +11,7 @@ import numpy as np
 from quantumbridge.core import Circuit, Measurement
 from quantumbridge.results import Result
 from quantumbridge.utils.math import gate_matrix
+from .execution import apply_readout_distribution, condition_enabled, validate_conditions, validate_wires
 
 
 class StabilizerDevice:
@@ -68,40 +69,11 @@ class StabilizerDevice:
             program.extend(noise)
         return bound, program
 
-    @staticmethod
-    def _validate_conditions(metadata, num_bits):
-        frames = metadata.get("control_flow_stack", [])
-        if metadata.get("control_flow") and not frames:
-            raise ValueError("QuantumBridge stabilizer control flow requires ordered branch metadata; rebuild this block with Circuit.if_else.")
-        conditions = [metadata.get("condition"), metadata.get("gate_condition")]
-        for frame in frames:
-            if frame.get("type") != "if_else" or frame.get("branch") not in {"true", "false"} or not frame.get("block_id"):
-                raise ValueError("QuantumBridge stabilizer supports if/else control-flow blocks only.")
-            conditions.append(frame.get("condition"))
-        for condition in conditions:
-            if condition is None:
-                continue
-            bits = condition.get("bits", [])
-            if not bits or len(set(bits)) != len(bits) or any(not isinstance(bit, Integral) or bit < 0 or bit >= num_bits for bit in bits):
-                raise ValueError("QuantumBridge stabilizer condition bits are outside the classical register.")
-            value = condition.get("value")
-            if not isinstance(value, Integral) or not 0 <= value < (1 << len(bits)):
-                raise ValueError("QuantumBridge stabilizer condition value is outside its bit width.")
+    _validate_conditions = staticmethod(validate_conditions)
+    _enabled = staticmethod(condition_enabled)
 
-    @staticmethod
-    def _matches(condition, bits):
-        return sum(bits[bit] << index for index, bit in enumerate(condition["bits"])) == condition["value"]
-
-    def _enabled(self, metadata, bits, decisions):
-        frames = metadata.get("control_flow_stack", [])
-        for frame in frames:
-            key = frame["block_id"]
-            if frame.get("start") or key not in decisions:
-                decisions[key] = self._matches(frame["condition"], bits)
-            if decisions[key] != (frame["branch"] == "true"):
-                return False
-        condition = metadata.get("gate_condition") if frames else metadata.get("condition")
-        return condition is None or self._matches(condition, bits)
+    def with_noise_model(self, noise_model):
+        return StabilizerDevice(self.max_qubits, noise_model, self.max_branches)
 
     def _noise_instructions(self, num_qubits):
         from quantumbridge.information.clifford import Clifford
@@ -115,7 +87,7 @@ class StabilizerDevice:
         for entry in self.noise_model.channels:
             channel = entry["channel"]
             if isinstance(channel, PhaseDampingChannel):
-                p = channel.probability / 2
+                p = (1 - np.sqrt(1 - channel.probability)) / 2
                 kraus = [np.sqrt(1 - p) * np.eye(2), np.sqrt(p) * np.diag([1, -1])]
             else:
                 kraus = channel.kraus()
@@ -157,12 +129,7 @@ class StabilizerDevice:
 
         return StabilizerState(Clifford.identity(width))
 
-    @staticmethod
-    def _wires(wires, width):
-        selected = tuple(range(width) if wires is None else wires)
-        if len(set(selected)) != len(selected) or any(not isinstance(wire, Integral) or not 0 <= wire < width for wire in selected):
-            raise ValueError("QuantumBridge stabilizer wires must be distinct valid circuit wires.")
-        return selected
+    _wires = staticmethod(validate_wires)
 
     def _ensemble(self, circuit, program):
         branches = [(self._initial(circuit.num_qubits), [0] * circuit.num_bits, {}, 1.0)]
@@ -354,7 +321,7 @@ class StabilizerDevice:
                 label = "".join(map(str, bits))
                 probabilities[label] = probabilities.get(label, 0.0) + weight
         else:
-            probabilities = self.probabilities(bound)
+            probabilities = apply_readout_distribution(self.probabilities(bound), self.noise_model, range(bound.num_qubits))
         return Result(probabilities_data=probabilities, metadata_data=metadata)
 
     def statevector(self, circuit, parameters=None):

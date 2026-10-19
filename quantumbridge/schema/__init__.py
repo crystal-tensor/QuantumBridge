@@ -104,6 +104,7 @@ try:
         QasmSimulationResult,
         SimulatorComparisonResult,
         StatevectorSimulationResult,
+        DensityMatrixSimulationResult,
         UpstreamAerResult,
     )
     from quantumbridge.schema.error_mitigation_results import (
@@ -259,6 +260,7 @@ try:
         "QasmSimulationResult",
         "SimulatorComparisonResult",
         "StatevectorSimulationResult",
+        "DensityMatrixSimulationResult",
         "UpstreamAerResult",
         "ErrorMitigationComparisonResult",
         "ErrorMitigationResult",

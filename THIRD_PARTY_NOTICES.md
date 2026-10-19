@@ -7,6 +7,12 @@ QuantumBridge is an independent project. References to Qiskit and PennyLane are 
 
 ## Native Clifford And Stabilizer Verification
 
+Stage 11H independently implements local density-matrix contractions, physical
+Kraus instructions, mixed-state execution and QNode integration. Installed
+Qiskit/Aer and PennyLane default.mixed are optional behavior oracles only.
+Phase-damping formulas follow the public mathematical channel definition.
+No upstream source, tests or package artifacts were copied or vendored.
+
 Stage 11G adds independent tableau execution, dynamic measurement/reset and
 if/else handling, native noise trajectories and Backend/Job/primitive
 integration. Installed Qiskit 2.4.1 and Aer 0.17.2 serve as optional behavioral

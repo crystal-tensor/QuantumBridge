@@ -1,5 +1,19 @@
 # pennylane Coverage Matrix
 
+## Stage 11H Native Mixed-State Execution
+
+Native QNode now accepts DensityMatrixDevice, inline CPTP channels, state and
+reduced-density outputs, expectation/variance, seeded samples and shadows.
+Optional default.mixed comparisons validate complex density matrices and
+observables, including the corrected standard PhaseDamping parameterization.
+
+Evidence: tests/qml/test_mixed_qnode_native.py and
+tests/devices/test_density_matrix_device.py. This is not a complete PennyLane
+device factory, plugin, capture, shot-vector or autodifferentiation protocol.
+The matrix below remains a historical public-name inventory, not proof of parity.
+
+## Historical Inventory
+
 Generated from runtime public-name introspection. No upstream source, tests, comments, or documentation text is copied.
 
 - Installed: True

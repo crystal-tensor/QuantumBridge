@@ -80,6 +80,24 @@ simulation. See the [Stage 11F report](docs/implementation/stage11f_native_cliff
 
 ## Ecosystem Compatibility Status
 
+Stage 11H adds native `DensityMatrixDevice` and
+`Provider().get_backend("density_matrix")` / `DensityMatrixBackend` execution.
+Bound non-Clifford gates, in-circuit multi-qubit CPTP Kraus channels, reset,
+classical feedback, mixed initial states, Backend/Job/V2 primitives and native
+QNode mixed-state outputs are callable without Qiskit or PennyLane. Density
+matrices are first-class serializable Result data, not mislabeled statevectors.
+
+```bash
+python -m examples.native_mixed_state_quantumbridge
+```
+
+PhaseDamping now uses the standard parameter convention: off-diagonal terms
+are multiplied by `sqrt(1-p)`, not `1-p`. To reproduce the old attenuation at
+`p_old`, use `p = 2*p_old - p_old*p_old`. NoisyEstimator now evaluates X/Y and
+Hamiltonian observables on the noisy density matrix. Dense simulation remains
+exponential and enforces a configurable memory bound. Scope and remaining
+gaps are in the [Stage 11H report](docs/implementation/stage11h_native_mixed_state_execution_report.md).
+
 Stage 11G adds an executable native `StabilizerDevice` and
 `Provider().get_backend("stabilizer")` / `StabilizerBackend` path. Backend/Job,
 Sampler V2 and Estimator V2 can run large Clifford circuits without enumerating

@@ -117,9 +117,8 @@ class PhaseDampingChannel:
     def kraus(self):
         p = self.probability
         return [
-            np.sqrt(1 - p) * np.eye(2, dtype=complex),
-            np.sqrt(p) * np.array([[1, 0], [0, 0]], dtype=complex),
-            np.sqrt(p) * np.array([[0, 0], [0, 1]], dtype=complex),
+            np.diag([1, np.sqrt(1 - p)]).astype(complex),
+            np.diag([0, np.sqrt(p)]).astype(complex),
         ]
 
     def is_trace_preserving(self, atol: float = 1e-10) -> bool:

@@ -64,6 +64,37 @@ class Tape:
     def swap(self, a: int, b: int):
         self.circuit.swap(a, b)
 
+    def kraus(self, operators, wires):
+        self.circuit.kraus(operators, normalize_wires(wires))
+
+    def channel(self, channel, wires):
+        self.circuit.channel(channel, normalize_wires(wires))
+
+    def amplitude_damping(self, probability, wire):
+        from quantumbridge.noise.channels import AmplitudeDampingChannel
+
+        self.channel(AmplitudeDampingChannel(probability), wire)
+
+    def phase_damping(self, probability, wire):
+        from quantumbridge.noise.channels import PhaseDampingChannel
+
+        self.channel(PhaseDampingChannel(probability), wire)
+
+    def depolarizing(self, probability, wire):
+        from quantumbridge.noise.channels import DepolarizingChannel
+
+        self.channel(DepolarizingChannel(probability), wire)
+
+    def bit_flip(self, probability, wire):
+        from quantumbridge.noise.channels import BitFlipChannel
+
+        self.channel(BitFlipChannel(probability), wire)
+
+    def phase_flip(self, probability, wire):
+        from quantumbridge.noise.channels import PhaseFlipChannel
+
+        self.channel(PhaseFlipChannel(probability), wire)
+
     def expval(self, observable):
         return self._record_measurement(MeasurementRequest("expval", observable=observable))
 

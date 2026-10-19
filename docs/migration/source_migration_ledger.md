@@ -992,3 +992,50 @@ source, tests, credentials, package artifacts or environments are vendored:
 - `THIRD_PARTY_NOTICES.md`
 
 Stage 11G source port count remains zero.
+
+## Stage 11H Source Inventory
+
+The following files independently implement, integrate or verify native
+mixed-state execution and physical Kraus instructions. Installed Qiskit/Aer
+and PennyLane are optional behavioral oracles only. No upstream source,
+tests, credentials, package artifacts or environments are copied or vendored:
+
+- `quantumbridge/__init__.py`
+- `quantumbridge/core/circuit.py`
+- `quantumbridge/utils/math.py`
+- `quantumbridge/devices/__init__.py`
+- `quantumbridge/devices/execution.py`
+- `quantumbridge/devices/density_matrix_device.py`
+- `quantumbridge/devices/stabilizer_device.py`
+- `quantumbridge/providers/__init__.py`
+- `quantumbridge/providers/backend.py`
+- `quantumbridge/providers/provider.py`
+- `quantumbridge/providers/density_matrix_backend.py`
+- `quantumbridge/providers/stabilizer_backend.py`
+- `quantumbridge/information/channels.py`
+- `quantumbridge/information/density_matrix.py`
+- `quantumbridge/noise/channels.py`
+- `quantumbridge/noise/execution.py`
+- `quantumbridge/qml/qnode.py`
+- `quantumbridge/qml/tape.py`
+- `quantumbridge/results/result.py`
+- `quantumbridge/schema/__init__.py`
+- `quantumbridge/schema/aer_results.py`
+- `quantumbridge/ir/qb_ir.py`
+- `quantumbridge/compiler/pass_manager.py`
+- `quantumbridge/compat/qiskit_adapter.py`
+- `quantumbridge/compat/qiskit_aer/__init__.py`
+- `quantumbridge/compat/qiskit_aer/simulator_native.py`
+- `tests/devices/test_density_matrix_device.py`
+- `tests/devices/test_stabilizer_device.py`
+- `tests/providers/test_provider_model.py`
+- `tests/qml/test_mixed_qnode_native.py`
+- `tests/compat_qiskit_aer/test_density_matrix_native.py`
+- `examples/native_mixed_state_quantumbridge.py`
+- `docs/implementation/stage11h_native_mixed_state_execution_report.md`
+- `docs/compat/matrix/qiskit_aer_fusion_coverage_matrix.md`
+- `docs/compat/matrix/pennylane_devices_coverage_matrix.md`
+- `README.md`
+- `THIRD_PARTY_NOTICES.md`
+
+Stage 11H source port count remains zero.

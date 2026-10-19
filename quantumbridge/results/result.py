@@ -25,7 +25,7 @@ def _complex_list(values: Optional[np.ndarray]) -> Optional[list[dict[str, float
 def _complex_array(values) -> Optional[np.ndarray]:
     if values is None:
         return None
-    return np.asarray([complex(item.get("real", 0.0), item.get("imag", 0.0)) for item in values], dtype=complex)
+    return np.asarray([complex(item.get("real", 0.0), item.get("imag", 0.0)) if isinstance(item, dict) else complex(item) for item in values], dtype=complex)
 
 
 @dataclass
@@ -36,9 +36,13 @@ class Result:
     expectation_data: Optional[Union[float, dict[str, float]]] = None
     metadata_data: dict[str, Any] = field(default_factory=dict)
     trace: Optional[list[dict[str, Any]]] = None
+    density: Optional[np.ndarray] = None
 
     def statevector(self) -> Optional[np.ndarray]:
         return None if self.state is None else self.state.copy()
+
+    def density_matrix(self) -> Optional[np.ndarray]:
+        return None if self.density is None else self.density.copy()
 
     def probabilities(self) -> Optional[dict[str, float]]:
         return None if self.probabilities_data is None else dict(self.probabilities_data)
@@ -70,7 +74,7 @@ class Result:
             counts=self.counts(),
             probabilities=self.probabilities(),
             statevector=_complex_list(self.state),
-            density_matrix=metadata.get("density_matrix"),
+            density_matrix=metadata.get("density_matrix") if self.density is None else [_complex_list(row) for row in self.density],
             expectation_values=expectation_values,
             observable_metadata=metadata.get("observable_metadata", {}),
             circuit_metadata=metadata.get("circuit_metadata", {}),
@@ -133,6 +137,7 @@ class Result:
             expectation_data=expectation,
             metadata_data=metadata,
             trace=payload.get("trace"),
+            density=None if payload.get("density_matrix") is None else np.array([_complex_array(row) for row in payload["density_matrix"]]),
         )
 
     def to_json(self, *, indent: int | None = None) -> str:

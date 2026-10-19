@@ -12,7 +12,7 @@ from quantumbridge.core import Circuit, Measurement
 from quantumbridge.results import Result
 
 
-SUPPORTED_IMPORT = {"id", "x", "y", "z", "h", "s", "sdg", "sx", "sxdg", "rx", "ry", "rz", "p", "phase", "cx", "cnot", "cy", "cz", "swap", "dcx", "ecr", "iswap", "measure", "reset", "barrier", "delay", "if_else"}
+SUPPORTED_IMPORT = {"id", "x", "y", "z", "h", "s", "sdg", "sx", "sxdg", "t", "tdg", "rx", "ry", "rz", "p", "phase", "cx", "cnot", "cy", "cz", "swap", "dcx", "ecr", "iswap", "measure", "reset", "barrier", "delay", "if_else", "kraus", "unitary"}
 
 
 def _require_qiskit():
@@ -31,8 +31,8 @@ def circuit_from_qiskit(qiskit_circuit) -> Circuit:
             raise ValueError(f"QuantumBridge Qiskit adapter does not support operation {name!r}.")
         qubits = [qiskit_circuit.find_bit(qubit).index for qubit in item.qubits]
         clbits = [qiskit_circuit.find_bit(clbit).index for clbit in item.clbits]
-        params = [] if name == "if_else" else [float(param) for param in getattr(item.operation, "params", [])]
-        if name in {"id", "x", "y", "z", "h", "s", "sdg", "sx", "sxdg", "reset"}:
+        params = [] if name in {"if_else", "kraus", "unitary"} else [float(param) for param in getattr(item.operation, "params", [])]
+        if name in {"id", "x", "y", "z", "h", "s", "sdg", "sx", "sxdg", "t", "tdg", "reset"}:
             getattr(qb, name)(qubits[0])
         elif name in {"rx", "ry", "rz"}:
             getattr(qb, name)(params[0], qubits[0])
@@ -49,6 +49,10 @@ def circuit_from_qiskit(qiskit_circuit) -> Circuit:
             qb.barrier(*qubits)
         elif name == "delay":
             qb.delay(params[0], qubits[0], unit=item.operation.unit)
+        elif name == "kraus":
+            qb.kraus(item.operation.params, tuple(reversed(qubits)))
+        elif name == "unitary":
+            qb.unitary(item.operation.to_matrix(), tuple(reversed(qubits)))
         elif name == "if_else":
             classical, value = item.operation.condition
             condition_bits = [qiskit_circuit.find_bit(bit).index for bit in classical] if hasattr(classical, "__iter__") else [qiskit_circuit.find_bit(classical).index]
@@ -71,7 +75,7 @@ def circuit_to_qiskit(circuit: Circuit):
             raise ValueError("QuantumBridge Qiskit export does not yet reconstruct conditional blocks.")
         if isinstance(op, Measurement):
             qc.measure(op.wire, op.bit)
-        elif op.name in {"id", "x", "y", "z", "h", "s", "sdg", "sx", "sxdg", "reset"}:
+        elif op.name in {"id", "x", "y", "z", "h", "s", "sdg", "sx", "sxdg", "t", "tdg", "reset"}:
             getattr(qc, op.name)(op.targets[0])
         elif op.name in {"rx", "ry", "rz"}:
             getattr(qc, op.name)(float(op.params[0]), op.targets[0])
@@ -85,16 +89,24 @@ def circuit_to_qiskit(circuit: Circuit):
             qc.barrier(*op.targets)
         elif op.name == "delay":
             qc.delay(float(op.params[0]), op.targets[0], unit=op.metadata.get("unit", "dt"))
+        elif op.name == "kraus":
+            from qiskit.quantum_info import Kraus
+
+            qc.append(Kraus(list(op.metadata["kraus"])).to_instruction(), list(reversed(op.wires)))
+        elif "matrix" in op.metadata:
+            qc.unitary(op.metadata["matrix"], list(reversed(op.wires)))
         else:
             raise ValueError(f"QuantumBridge Qiskit export does not support operation {op.name!r}.")
     return qc
 
 
 def circuit_from_ir(program) -> Circuit:
+    from quantumbridge.ir.qb_ir import decode_instruction_metadata
+
     circuit = Circuit(program.num_qubits, program.num_bits, program.name, program.metadata)
     for instruction in program.instructions:
         circuit.append(instruction.op, instruction.targets, controls=instruction.controls,
-                       params=instruction.params, metadata=instruction.metadata)
+                       params=instruction.params, metadata=decode_instruction_metadata(instruction.metadata))
     for measurement in program.measurements:
         circuit.measurements.append(Measurement(measurement.wire, measurement.bit, measurement.kind, dict(getattr(measurement, "metadata", {}))))
     return circuit

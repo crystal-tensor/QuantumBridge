@@ -1,5 +1,18 @@
 # qiskit_aer Fusion Coverage Matrix
 
+## Stage 11H Executable Mixed-State Path
+
+The native density_matrix device/backend accepts bound non-Clifford gates,
+ordered multi-qubit CPTP Kraus instructions, reset, feedback and mixed initial
+states. Backend/Job/V2 integration and serialized density results are exercised
+without upstream SDKs. Optional Aer tests compare random Kraus evolution,
+unitary/channel import/export, dynamic density matrices and counts.
+
+Evidence: tests/devices/test_density_matrix_device.py and
+tests/compat_qiskit_aer/test_density_matrix_native.py. Dense memory is
+exponential and guarded. This is not full AerSimulator, gate-attached noise,
+save-instruction or MPS parity; see the Stage 11H report.
+
 ## Stage 11G Executable Native Stabilizer Path
 
 The runtime inventory below is historical, not proof of callable parity.

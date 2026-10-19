@@ -338,6 +338,18 @@ class _QuantumChannel:
             raise ValueError("QuantumBridge channel operator is not unitary.")
         return operator
 
+    def to_instruction(self):
+        from quantumbridge.core.operations import Instruction
+        from quantumbridge.utils.math import validate_kraus_operators
+
+        if self.num_qubits is None or self.num_qubits < 1:
+            raise ValueError("QuantumBridge channel instructions require equal positive qubit input/output widths.")
+        kraus = self.to_kraus()
+        if not kraus._is_standard:
+            kraus = Kraus(self.to_choi())
+        operators = validate_kraus_operators(kraus._left, self._input_dim)
+        return Instruction("kraus", self.num_qubits, metadata={"kraus": operators})
+
     def __xor__(self, n: int):
         return self.tensorpower(n)
 

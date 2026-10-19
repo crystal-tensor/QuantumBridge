@@ -155,6 +155,27 @@ class BackendV2(Backend):
     """Alias class for Qiskit BackendV2-style discovery."""
 
 
+class _SimulatorBackend(BackendV2):
+    def _configured_device(self, options):
+        return self.device.with_noise_model(options.get("noise_model")) if "noise_model" in options else self.device
+
+    def _execute(self, circuits, options, parameter_values=None, observable=None):
+        sequence = _as_circuit_sequence(circuits)
+        parameter_sets = _parameter_sets_for_circuits(parameter_values, len(sequence))
+        device = self._configured_device(options)
+        results = []
+        for circuit, parameters in zip(sequence, parameter_sets):
+            self._validate_circuit(circuit)
+            if observable is not None or options.get("shots") is None:
+                result = device.run(circuit, parameters=parameters, observable=observable)
+            else:
+                result = device.run_shots(circuit, shots=options.shots, seed=options.get("seed_simulator"),
+                                          parameters=parameters, memory=options.get("memory", False))
+            result.metadata_data["backend_name"] = self.name
+            results.append(result)
+        return results[0] if isinstance(circuits, Circuit) else results
+
+
 def _as_circuit_sequence(circuits) -> list[Circuit]:
     if isinstance(circuits, Circuit):
         return [circuits]

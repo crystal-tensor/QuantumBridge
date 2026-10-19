@@ -120,6 +120,26 @@ class StatevectorSimulationResult(AerResult):
     ECOSYSTEM = "quantumbridge_native_simulator"
 
 
+@dataclass
+class DensityMatrixSimulationResult(AerResult):
+    final_density_matrix: list[list[complex]] = field(default_factory=list)
+
+    def __post_init__(self):
+        self.final_density_matrix = [[_complex_from_payload(value) for value in row] for row in self.final_density_matrix]
+        super().__post_init__()
+        if self.final_density_matrix:
+            dimension = len(self.final_density_matrix)
+            if any(len(row) != dimension for row in self.final_density_matrix):
+                raise ValueError("QuantumBridge density result matrix must be square.")
+            if self.num_qubits is not None and dimension != 1 << self.num_qubits:
+                raise ValueError("QuantumBridge density result width must match num_qubits.")
+
+    def to_dict(self):
+        result = super().to_dict()
+        result["final_density_matrix"] = [[_complex_to_dict(value) for value in row] for row in self.final_density_matrix]
+        return result
+
+
 class QasmSimulationResult(AerResult):
     ECOSYSTEM = "quantumbridge_native_simulator"
 

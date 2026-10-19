@@ -96,13 +96,14 @@ def test_general_clifford_mixture_and_phase_damping_coherence():
     device = StabilizerDevice(noise_model=NoiseModel().add_channel(mixture))
     np.testing.assert_allclose(device.probabilities(Circuit(1))["0"], .65)
     phase = StabilizerDevice(noise_model=NoiseModel().add_channel(PhaseDampingChannel(.4)))
-    assert phase.expectation(Circuit(1).h(0), "X") == pytest.approx(.6)
+    assert phase.expectation(Circuit(1).h(0), "X") == pytest.approx(np.sqrt(.6))
 
 
 def test_asymmetric_readout_and_noisy_feedback():
     noise = NoiseModel().add_readout_error(0, ReadoutError(.2, .4))
     device = StabilizerDevice(noise_model=noise)
     assert device.run(Circuit(1, 1).measure(0, 0)).probabilities() == {"0": .8, "1": .2}
+    assert device.run(Circuit(1)).probabilities() == {"0": .8, "1": .2}
     feedback = Circuit(1, 1).measure(0, 0).if_else((0, 1), Circuit(1).x(0))
     assert device.probabilities(feedback)["1"] == pytest.approx(.2)
     counts = device.run_shots(Circuit(1, 1).x(0).measure(0, 0), 1500, seed=11).counts()
