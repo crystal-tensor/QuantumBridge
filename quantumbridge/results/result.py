@@ -46,6 +46,10 @@ class Result:
     def counts(self) -> Optional[dict[str, int]]:
         return None if self.counts_data is None else dict(self.counts_data)
 
+    def memory(self) -> Optional[list[str]]:
+        samples = self.metadata_data.get("memory")
+        return None if samples is None else list(samples)
+
     def expectation_value(self):
         return self.expectation_data
 

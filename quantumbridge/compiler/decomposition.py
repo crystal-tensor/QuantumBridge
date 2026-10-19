@@ -10,7 +10,7 @@ def needs_decomposition(circuit, basis_gates) -> bool:
 
 
 from quantumbridge.core import Circuit
-from .pass_base import PassResult, TransformationPass
+from .pass_base import PassResult, TransformationPass, copy_terminal_measurements
 
 
 class BasisGateConversionPass(TransformationPass):
@@ -48,5 +48,5 @@ class GateDecompositionPass(TransformationPass):
                 out.operations.append(op)
             else:
                 raise ValueError(f"QuantumBridge gate decomposition does not support operation {op.name!r}.")
-        out.measurements = list(circuit.measurements)
+        copy_terminal_measurements(circuit, out)
         return PassResult(out, {"decomposed": decomposed}, bool(decomposed))

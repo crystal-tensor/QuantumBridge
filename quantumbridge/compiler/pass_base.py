@@ -5,6 +5,18 @@
 
 
 from dataclasses import dataclass, field
+from copy import deepcopy
+
+from quantumbridge.core.measurements import Measurement
+
+
+def copy_terminal_measurements(source, target):
+    if source.has_dynamic_operations:
+        raise ValueError("Use PassManager for circuits with dynamic execution boundaries.")
+    target.measurements = [
+        Measurement(item.wire, item.bit, item.kind, {**deepcopy(item.metadata), "operation_index": len(target.operations)})
+        for item in source.measurements
+    ]
 
 
 @dataclass

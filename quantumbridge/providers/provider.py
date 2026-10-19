@@ -9,6 +9,7 @@ from collections.abc import Callable, Iterable
 from typing import Optional
 
 from .backend import Backend
+from .stabilizer_backend import StabilizerBackend
 from .exceptions import QiskitBackendNotFoundError
 
 
@@ -19,6 +20,7 @@ class Provider:
         default_backends = backends or (
             Backend(name="statevector", max_qubits=None),
             Backend(name="qasm_simulator", max_qubits=None, shots=1024),
+            StabilizerBackend(),
         )
         self._backends: dict[str, Backend] = {}
         for backend in default_backends:

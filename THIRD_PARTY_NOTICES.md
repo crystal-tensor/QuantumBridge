@@ -7,6 +7,12 @@ QuantumBridge is an independent project. References to Qiskit and PennyLane are 
 
 ## Native Clifford And Stabilizer Verification
 
+Stage 11G adds independent tableau execution, dynamic measurement/reset and
+if/else handling, native noise trajectories and Backend/Job/primitive
+integration. Installed Qiskit 2.4.1 and Aer 0.17.2 serve as optional behavioral
+oracles; they are not required by the native execution path. No upstream
+source, tests or package artifacts were copied or vendored.
+
 Stage 11F independently implements signed binary symplectic Clifford algebra,
 circuit synthesis, random Clifford sampling and pure stabilizer-state
 execution. The mathematical basis is the published stabilizer formalism;

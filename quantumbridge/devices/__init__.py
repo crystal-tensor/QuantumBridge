@@ -6,6 +6,7 @@
 
 from .sampler_device import ShotSampler
 from .statevector_device import StatevectorDevice
+from .stabilizer_device import StabilizerDevice
 
-__all__ = ["ShotSampler", "StatevectorDevice"]
+__all__ = ["ShotSampler", "StatevectorDevice", "StabilizerDevice"]
 

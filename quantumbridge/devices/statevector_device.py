@@ -27,6 +27,8 @@ class StatevectorDevice:
 
     def statevector(self, circuit, parameters: Optional[Mapping[Union[Parameter, str], Real]] = None) -> np.ndarray:
         circuit = self._bound_circuit(circuit, parameters)
+        if circuit.has_dynamic_operations:
+            raise ValueError("QuantumBridge StatevectorDevice requires unitary operations and terminal measurements; use StabilizerDevice for dynamic Clifford circuits.")
         if self.max_qubits is not None and circuit.num_qubits > self.max_qubits:
             raise ValueError("QuantumBridge circuit exceeds this device qubit limit.")
         state = np.zeros(1 << circuit.num_qubits, dtype=complex)

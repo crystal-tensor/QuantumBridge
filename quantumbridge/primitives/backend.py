@@ -23,7 +23,7 @@ class BackendSampler(Sampler):
         options_dict = _merged_options(options, run_options)
         shots = options_dict.get("shots", _backend_option(backend, "shots", 1024))
         seed = options_dict.get("seed_simulator", options_dict.get("seed", _backend_option(backend, "seed_simulator", None)))
-        super().__init__(shots=int(shots or 1024), seed=None if seed is None else int(seed))
+        super().__init__(shots=1024 if shots is None else shots, seed=None if seed is None else int(seed))
         self.backend = backend
         self.options = options_dict
 
@@ -33,12 +33,14 @@ class BackendSampler(Sampler):
         shots: Optional[int] = None,
         parameters: Optional[Mapping[Union[Parameter, str], Real]] = None,
     ) -> Result:
+        run_options = {key: value for key, value in self.options.items() if key not in {"shots", "seed", "seed_simulator"}}
+        run_options.setdefault("memory", True)
         job = self.backend.run(
             circuit,
-            shots=shots or self.shots,
+            shots=self.shots if shots is None else shots,
             seed_simulator=self.seed,
             parameter_values=parameters,
-            **{key: value for key, value in self.options.items() if key not in {"shots", "seed", "seed_simulator"}},
+            **run_options,
         )
         result = job.result()
         result.metadata_data.setdefault("primitive_backend", getattr(self.backend, "name", None))

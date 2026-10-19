@@ -49,7 +49,9 @@ class Sampler:
             for params in parameter_sets:
                 result = self._run_legacy(circuit, shots=effective_shots, parameters=params)
                 counts = result.counts() or {}
-                samples = BitArray.from_counts(counts, num_bits=circuit.num_qubits)
+                num_bits = result.metadata_data.get("num_bits", circuit.num_qubits)
+                memory = result.memory()
+                samples = BitArray.from_counts(counts, num_bits=num_bits) if memory is None else BitArray(tuple(memory), num_bits)
                 counts_batch.append(counts)
                 quasi_batch.append({label: count / effective_shots for label, count in counts.items()})
                 samples_batch.append(samples)

@@ -107,6 +107,8 @@ class Operator:
 
     @classmethod
     def from_circuit(cls, circuit) -> "Operator":
+        if circuit.has_dynamic_operations:
+            raise ValueError("QuantumBridge Operator cannot represent measurement, reset or classical control flow as a unitary.")
         size = 1 << circuit.num_qubits
         matrix = np.zeros((size, size), dtype=complex)
         for col in range(size):

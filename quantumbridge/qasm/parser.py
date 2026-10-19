@@ -14,7 +14,7 @@ from .lexer import lex
 from .tokens import Token
 
 
-ONE_QUBIT = {"h", "x", "y", "z", "s", "sdg", "t", "tdg"}
+ONE_QUBIT = {"id", "h", "x", "y", "z", "s", "sdg", "t", "tdg", "reset"}
 ROTATION = {"rx", "ry", "rz", "phase", "p"}
 TWO_QUBIT = {"cx", "cz", "swap"}
 THREE_QUBIT = {"ccx"}

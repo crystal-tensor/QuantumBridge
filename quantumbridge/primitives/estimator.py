@@ -49,7 +49,7 @@ class Estimator:
             ev_batches = []
             std_batches = []
             for params in parameter_sets:
-                evs = [float(self.device.expectation(circuit, observable, parameters=params)) for observable in observable_values]
+                evs = [float(self._run_legacy(circuit, observable, parameters=params).expectation_value()) for observable in observable_values]
                 shaped_evs = _restore_shape(list(evs), observable_shape)
                 shaped_stds = _restore_shape([0.0 for _ in evs], observable_shape)
                 ev_batches.append(shaped_evs)
@@ -72,7 +72,7 @@ class Estimator:
                         "num_parameter_sets": len(parameter_sets),
                         "num_observables": len(observable_values),
                         "circuit_metadata": dict(getattr(circuit, "metadata", {}) or {}),
-                        "simulation": "exact_statevector",
+                        "simulation": getattr(self.device, "simulation", "exact_statevector"),
                     },
                 )
             )

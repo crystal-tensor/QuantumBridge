@@ -15,7 +15,7 @@ def routing_required(circuit, coupling_map) -> bool:
 
 
 from quantumbridge.core import Circuit
-from .pass_base import PassResult, TransformationPass
+from .pass_base import PassResult, TransformationPass, copy_terminal_measurements
 
 
 class BasicRoutingPass(TransformationPass):
@@ -46,5 +46,5 @@ class SwapInsertionPass(TransformationPass):
                 out.swap(op.wires[0], bridge)
                 inserted += 1
             out.operations.append(op)
-        out.measurements = list(circuit.measurements)
+        copy_terminal_measurements(circuit, out)
         return PassResult(out, {"inserted_swaps": inserted}, bool(inserted))

@@ -1,5 +1,24 @@
 # qiskit_aer Fusion Coverage Matrix
 
+## Stage 11G Executable Native Stabilizer Path
+
+The runtime inventory below is historical, not proof of callable parity.
+The native path now executes the following independently of installed Aer:
+
+| Capability | Executable behavior | Evidence |
+| --- | --- | --- |
+| Stabilizer backend | Backend/Job, circuit batches, parameter binding, seeds, memory and exact Pauli expectations | tests/devices/test_stabilizer_device.py |
+| Dynamic Clifford execution | Ordered measurement, reset, nested/repeated if/else, branch-entry snapshot and classical-bit remapping | Same tests and tests/core/test_ordered_measurements.py |
+| Native noise | End-of-circuit single-wire Clifford mixtures and asymmetric readout; exact ensembles or shot trajectories | Same device suite; optional Aer statistics in tests/compat_qiskit_aer/test_stabilizer_native.py |
+| Large-shot execution | 64-qubit uniform superposition with dense states and probability enumeration blocked | Device suite and examples/native_stabilizer_backend_quantumbridge.py |
+| Aer-adjacent callable | run_stabilizer_simulator_native and backend='stabilizer', native Circuit/IR, 32-qubit GHZ, serialized result | tests/compat_qiskit_aer/test_stabilizer_native.py |
+
+This does not implement complete AerSimulator, gate-attached Aer noise, every
+save instruction or other Aer simulation methods. See the Stage 11G report
+for supported contracts and explicit rejection paths.
+
+## Historical Inventory
+
 Generated from runtime public-name introspection. No upstream source, tests, comments, or documentation text is copied.
 
 - Upstream package: qiskit-aer

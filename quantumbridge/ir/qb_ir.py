@@ -49,9 +49,13 @@ class IRMeasurement:
     kind: str
     wire: int
     bit: int
+    metadata: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        return {"kind": self.kind, "wires": [self.wire], "bits": [self.bit]}
+        result = {"kind": self.kind, "wires": [self.wire], "bits": [self.bit]}
+        if self.metadata:
+            result["metadata"] = dict(self.metadata)
+        return result
 
 
 @dataclass(frozen=True)
@@ -73,7 +77,7 @@ class IRProgram:
             instructions=tuple(
                 IRInstruction(op.name, op.targets, op.controls, op.params, op.metadata) for op in circuit.operations
             ),
-            measurements=tuple(IRMeasurement(item.kind, item.wire, item.bit) for item in circuit.measurements),
+            measurements=tuple(IRMeasurement(item.kind, item.wire, item.bit, dict(item.metadata)) for item in circuit.measurements),
             name=circuit.name,
             metadata=dict(circuit.metadata),
         )

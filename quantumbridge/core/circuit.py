@@ -11,6 +11,7 @@ from collections.abc import Mapping as ABCMapping
 from copy import deepcopy
 from numbers import Real
 from typing import Any, Callable, Mapping, Optional, Sequence, Union
+from uuid import uuid4
 
 import numpy as np
 
@@ -96,6 +97,8 @@ class Circuit:
             raise ValueError("QuantumBridge instruction append requires distinct qubits.")
 
         merged_metadata = deepcopy(instruction.metadata)
+        if isinstance(merged_metadata.get("control_flow"), list):
+            merged_metadata.pop("control_flow")
         merged_metadata.update(dict(metadata or {}))
         effective_params = tuple(params) if params else instruction.params
         effective_instruction = (
@@ -107,8 +110,9 @@ class Circuit:
         clbit_map = {source: target for source, target in enumerate(clbits_tuple)}
 
         if effective_instruction.definition is not None:
+            offset = len(self.operations)
             for op in effective_instruction.definition.operations:
-                mapped = _remap_operation(op, qubit_map)
+                mapped = _remap_operation(op, qubit_map, clbit_map)
                 mapped_metadata = deepcopy(mapped.metadata)
                 mapped_metadata.setdefault(
                     "instruction",
@@ -121,8 +125,10 @@ class Circuit:
                 mapped_metadata.update(merged_metadata)
                 self.operations.append(Operation(mapped.name, mapped.targets, mapped.controls, mapped.params, mapped_metadata))
             for measurement in effective_instruction.definition.measurements:
+                mapped = _remap_measurement(measurement, qubit_map, clbit_map, offset, len(effective_instruction.definition.operations))
+                mapped_metadata = {**mapped.metadata, **deepcopy(merged_metadata)}
                 self.measurements.append(
-                    Measurement(kind=measurement.kind, wire=qubit_map[measurement.wire], bit=clbit_map[measurement.bit])
+                    Measurement(mapped.wire, mapped.bit, mapped.kind, mapped_metadata)
                 )
             return self
 
@@ -143,6 +149,9 @@ class Circuit:
 
     def x(self, q: int) -> "Circuit":
         return self.append("x", (q,))
+
+    def reset(self, q: int) -> "Circuit":
+        return self.append("reset", (q,))
 
     def id(self, q: int) -> "Circuit":
         return self.append("id", (q,))
@@ -307,12 +316,19 @@ class Circuit:
         target = self if inplace else self.copy()
         qubit_map = _index_map(other.num_qubits, target.num_qubits, qubits, "qubits")
         clbit_map = _index_map(other.num_bits, target.num_bits, clbits, "clbits")
-        mapped_ops = [_remap_operation(op, qubit_map) for op in other.operations]
+        offset = 0 if front else len(target.operations)
+        mapped_ops = [_remap_operation(op, qubit_map, clbit_map) for op in other.operations]
         mapped_measurements = [
-            Measurement(kind=measurement.kind, wire=qubit_map[measurement.wire], bit=clbit_map[measurement.bit])
+            _remap_measurement(measurement, qubit_map, clbit_map, offset, len(other.operations))
             for measurement in other.measurements
         ]
         if front:
+            identity_q = dict(enumerate(range(target.num_qubits)))
+            identity_c = dict(enumerate(range(target.num_bits)))
+            target.measurements = [
+                _remap_measurement(item, identity_q, identity_c, len(mapped_ops), len(target.operations))
+                for item in target.measurements
+            ]
             target.operations = mapped_ops + target.operations
             target.measurements = mapped_measurements + target.measurements
         else:
@@ -344,20 +360,24 @@ class Circuit:
         for bit in normalized["bits"]:
             self._check_bit(bit)
         target = self if inplace else self.copy()
+        block_id = uuid4().hex
+        mapped_true = target.copy_empty_like().compose(true_body, qubits=qubits, clbits=clbits)
         true_block = _circuit_with_operation_metadata(
-            true_body,
+            mapped_true,
             {
                 "condition": deepcopy(normalized),
-                "control_flow": {"type": "if_else", "branch": "true", "condition": deepcopy(normalized)},
+                "control_flow": {"type": "if_else", "branch": "true", "condition": deepcopy(normalized), "block_id": block_id},
             },
         )
-        target.compose(true_block, qubits=qubits, clbits=clbits, inplace=True)
+        target.compose(true_block, inplace=True)
         if false_body is not None:
+            mapped_false = target.copy_empty_like().compose(false_body, qubits=qubits, clbits=clbits)
             false_block = _circuit_with_operation_metadata(
-                false_body,
-                {"control_flow": {"type": "if_else", "branch": "false", "condition": deepcopy(normalized)}},
+                mapped_false,
+                {"control_flow": {"type": "if_else", "branch": "false", "condition": deepcopy(normalized), "block_id": block_id}},
+                start=not (true_block.operations or true_block.measurements),
             )
-            target.compose(false_block, qubits=qubits, clbits=clbits, inplace=True)
+            target.compose(false_block, inplace=True)
         target.metadata.setdefault("control_flow", []).append(
             {
                 "type": "if_else",
@@ -465,7 +485,7 @@ class Circuit:
         if bit is None:
             bit = len(self.measurements)
         self._check_bit(bit)
-        self.measurements.append(Measurement(wire=q, bit=bit))
+        self.measurements.append(Measurement(wire=q, bit=bit, metadata={"operation_index": len(self.operations)}))
         return self
 
     def measure_all(self) -> "Circuit":
@@ -477,8 +497,33 @@ class Circuit:
 
     def remove_final_measurements(self, inplace: bool = False) -> "Circuit":
         target = self if inplace else self.copy()
-        target.measurements = []
+        target.measurements = [item for item in target.measurements if item.metadata.get("operation_index", len(target.operations)) < len(target.operations)]
         return target
+
+    def iter_instructions(self):
+        """Yield gates and measurements in execution order, including mid-circuit reads."""
+        positions = {}
+        for measurement in self.measurements:
+            position = measurement.metadata.get("operation_index", len(self.operations))
+            if not isinstance(position, int) or not 0 <= position <= len(self.operations):
+                raise ValueError("QuantumBridge measurement operation_index is outside this circuit.")
+            positions.setdefault(position, []).append(measurement)
+        for index in range(len(self.operations) + 1):
+            yield from positions.get(index, ())
+            if index < len(self.operations):
+                yield self.operations[index]
+
+    @property
+    def has_dynamic_operations(self) -> bool:
+        return any(
+            item.metadata.get("operation_index", len(self.operations)) < len(self.operations)
+            or any(key in item.metadata for key in ("condition", "control_flow", "control_flow_stack"))
+            for item in self.measurements
+        ) or any(
+            op.name in {"reset", "measure"}
+            or any(key in op.metadata for key in ("condition", "control_flow", "control_flow_stack"))
+            for op in self.operations
+        )
 
     def copy_empty_like(self, name: Optional[str] = None) -> "Circuit":
         return Circuit(self.num_qubits, self.num_bits, name if name is not None else self.name, deepcopy(self.metadata))
@@ -501,22 +546,24 @@ class Circuit:
         qubit_layers = [0] * self.num_qubits
         bit_layers = [0] * self.num_bits
         max_layer = 0
-        for op in self.operations:
+        for op in self.iter_instructions():
             if filter_function is not None and not filter_function(op):
+                continue
+            if isinstance(op, Measurement):
+                layer = 1 + max(qubit_layers[op.wire], bit_layers[op.bit])
+                qubit_layers[op.wire] = bit_layers[op.bit] = layer
+                max_layer = max(max_layer, layer)
                 continue
             if op.metadata.get("directive"):
                 continue
             wires = op.controls + op.targets
-            layer = 1 + max((qubit_layers[wire] for wire in wires), default=0)
+            conditions = [op.metadata.get("condition"), op.metadata.get("gate_condition")]
+            conditions += [frame.get("condition") for frame in op.metadata.get("control_flow_stack", [])]
+            bits = {bit for condition in conditions if condition for bit in condition["bits"]}
+            dependencies = [qubit_layers[wire] for wire in wires] + [bit_layers[bit] for bit in bits]
+            layer = 1 + max(dependencies, default=0)
             for wire in wires:
                 qubit_layers[wire] = layer
-            max_layer = max(max_layer, layer)
-        for measurement in self.measurements:
-            if filter_function is not None and not filter_function(measurement):
-                continue
-            layer = 1 + max(qubit_layers[measurement.wire], bit_layers[measurement.bit])
-            qubit_layers[measurement.wire] = layer
-            bit_layers[measurement.bit] = layer
             max_layer = max(max_layer, layer)
         return max_layer
 
@@ -607,13 +654,31 @@ def _index_map(source_size: int, target_size: int, selected: Optional[Sequence[i
     return {source: target for source, target in enumerate(selected_tuple)}
 
 
-def _remap_operation(op: Operation, qubit_map: Mapping[int, int]) -> Operation:
+def _remap_metadata(metadata, clbit_map):
+    result = deepcopy(metadata)
+    if clbit_map is not None:
+        for key in ("condition", "gate_condition"):
+            if result.get(key):
+                result[key]["bits"] = [clbit_map[bit] for bit in result[key]["bits"]]
+        frames = ([result["control_flow"]] if result.get("control_flow") else []) + result.get("control_flow_stack", [])
+        for frame in frames:
+            frame["condition"]["bits"] = [clbit_map[bit] for bit in frame["condition"]["bits"]]
+    return result
+
+
+def _remap_measurement(measurement, qubit_map, clbit_map, offset, source_size):
+    metadata = _remap_metadata(measurement.metadata, clbit_map)
+    metadata["operation_index"] = offset + metadata.get("operation_index", source_size)
+    return Measurement(qubit_map[measurement.wire], clbit_map[measurement.bit], measurement.kind, metadata)
+
+
+def _remap_operation(op: Operation, qubit_map: Mapping[int, int], clbit_map=None) -> Operation:
     return Operation(
         name=op.name,
         targets=tuple(qubit_map[wire] for wire in op.targets),
         controls=tuple(qubit_map[wire] for wire in op.controls),
         params=op.params,
-        metadata=deepcopy(op.metadata),
+        metadata=_remap_metadata(op.metadata, clbit_map),
     )
 
 
@@ -623,9 +688,23 @@ def _operation_with_metadata(op: Operation, metadata: Mapping[str, Any]) -> Oper
     return Operation(op.name, op.targets, op.controls, op.params, merged)
 
 
-def _circuit_with_operation_metadata(circuit: Circuit, metadata: Mapping[str, Any]) -> Circuit:
+def _circuit_with_operation_metadata(circuit: Circuit, metadata: Mapping[str, Any], start: bool = True) -> Circuit:
     out = circuit.copy()
-    out.operations = [_operation_with_metadata(op, metadata) for op in out.operations]
+    first = next(iter(out.iter_instructions()), None)
+
+    def merged(item):
+        previous = deepcopy(item.metadata)
+        result = deepcopy(previous)
+        result.update(deepcopy(metadata))
+        if previous.get("condition") and not previous.get("control_flow"):
+            result["gate_condition"] = previous["condition"]
+        frame = deepcopy(metadata["control_flow"])
+        frame["start"] = start and item is first
+        result["control_flow_stack"] = [frame] + previous.get("control_flow_stack", [])
+        return result
+
+    out.operations = [Operation(op.name, op.targets, op.controls, op.params, merged(op)) for op in out.operations]
+    out.measurements = [Measurement(item.wire, item.bit, item.kind, merged(item)) for item in out.measurements]
     return out
 
 

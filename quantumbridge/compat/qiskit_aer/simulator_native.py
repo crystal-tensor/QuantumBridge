@@ -9,8 +9,8 @@ from typing import Any, Iterable
 import numpy as np
 
 from quantumbridge.compat.qiskit_adapter import circuit_from_ir, circuit_from_qiskit
-from quantumbridge.core import Circuit
-from quantumbridge.devices import StatevectorDevice
+from quantumbridge.core import Circuit, Measurement
+from quantumbridge.devices import StatevectorDevice, StabilizerDevice
 from quantumbridge.schema.aer_results import (
     NoisySimulationResult,
     QasmSimulationResult,
@@ -44,7 +44,7 @@ SUPPORTED_NATIVE_GATES = {
 }
 
 
-def normalize_circuit_to_quantumbridge_ir(circuit_or_ir: Any) -> Circuit:
+def normalize_circuit_to_quantumbridge_ir(circuit_or_ir: Any, method: str = "statevector") -> Circuit:
     """Normalize a QuantumBridge Circuit, IRProgram, or basic Qiskit circuit."""
 
     if isinstance(circuit_or_ir, Circuit):
@@ -60,9 +60,12 @@ def normalize_circuit_to_quantumbridge_ir(circuit_or_ir: Any) -> Circuit:
             "native Aer simulator expects a QuantumBridge Circuit, QuantumBridge IR, "
             "IR dictionary, or basic Qiskit QuantumCircuit"
         )
-    if circuit.num_qubits > 4:
+    if method not in {"statevector", "stabilizer"}:
+        raise ValueError("QuantumBridge native normalization method must be statevector or stabilizer.")
+    if method != "stabilizer" and circuit.num_qubits > 4:
         raise ValueError("Stage 9F native Aer simulator supports 1-4 qubit circuits")
-    _validate_supported_operations(circuit.operations)
+    if method != "stabilizer":
+        _validate_supported_operations(circuit.operations)
     circuit.metadata.setdefault("normalized_by", "quantumbridge.compat.qiskit_aer")
     return circuit
 
@@ -170,13 +173,32 @@ def execute_basic_circuit_native(
     backend = str(backend)
     if backend == "statevector":
         return run_statevector_simulator_native(circuit_or_ir)
+    if backend in {"stabilizer", "stabilizer_simulator"}:
+        return run_stabilizer_simulator_native(circuit_or_ir, shots=shots, seed=seed, noise_model=noise_model)
     if backend in {"qasm", "qasm_simulator"}:
         return run_qasm_simulator_native(circuit_or_ir, shots=shots, seed=seed)
     if backend in {"noisy_qasm", "noisy_qasm_simulator"}:
         return run_noisy_qasm_simulator_native(
             circuit_or_ir, shots=shots, noise_model=noise_model, seed=seed
         )
-    raise ValueError("backend must be statevector, qasm, or noisy_qasm")
+    raise ValueError("backend must be statevector, stabilizer, qasm, or noisy_qasm")
+
+
+def run_stabilizer_simulator_native(circuit_or_ir, shots=1024, seed=None, noise_model=None, memory=False):
+    """Execute native tableau trajectories without the legacy four-qubit cap."""
+    circuit = normalize_circuit_to_quantumbridge_ir(circuit_or_ir, method="stabilizer")
+    result = StabilizerDevice(noise_model=noise_model).run_shots(circuit, shots=shots, seed=seed, memory=memory)
+    return QasmSimulationResult(
+        workflow="stabilizer_simulator_native", backend="stabilizer", mode="native_minimal",
+        capability_level=3, native_implementation=True, num_qubits=circuit.num_qubits,
+        shots=shots, seed=seed, counts=result.counts(), probabilities=result.probabilities(),
+        noise_model=None if noise_model is None else noise_model.summary(),
+        metadata={**result.metadata(), "cloud_access": False, "token_read": False, "hardware_access": False,
+                  "qiskit_aer_parity_claim": False},
+        raw_type="QuantumBridgeStabilizerCounts",
+        warnings=["Native Clifford/stabilizer execution is not full Qiskit Aer parity."],
+        provenance=native_provenance("stabilizer_simulator_native"),
+    )
 
 
 def simulator_result_to_dict(result: Any) -> dict[str, Any]:
@@ -270,22 +292,10 @@ def _circuit_from_ir_dict(payload: dict[str, Any]) -> Circuit:
         targets = tuple(int(value) for value in instruction.get("targets", ()))
         controls = tuple(int(value) for value in instruction.get("controls", ()))
         params = tuple(float(value) for value in instruction.get("params", ()))
-        if op in {"x", "y", "z", "h"}:
-            getattr(circuit, op)(targets[0])
-        elif op in {"rx", "ry", "rz"}:
-            getattr(circuit, op)(params[0], targets[0])
-        elif op in {"p", "phase"}:
-            circuit.phase(params[0], targets[0])
-        elif op in {"cx", "cnot"}:
-            circuit.cx(controls[0], targets[0])
-        elif op == "cz":
-            circuit.cz(controls[0], targets[0])
-        elif op == "swap":
-            circuit.swap(targets[0], targets[1])
-        else:
-            raise ValueError(f"Stage 9F native Aer simulator does not support IR op {op!r}")
+        circuit.append("cx" if op == "cnot" else "phase" if op == "p" else op,
+                       targets, controls=controls, params=params, metadata=instruction.get("metadata", {}))
     for measurement in payload.get("measurements", ()):
         wires = measurement.get("wires", ())
         bits = measurement.get("bits", ())
-        circuit.measure(int(wires[0]), int(bits[0]))
+        circuit.measurements.append(Measurement(int(wires[0]), int(bits[0]), measurement.get("kind", "computational"), dict(measurement.get("metadata", {}))))
     return circuit

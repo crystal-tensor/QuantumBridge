@@ -8,6 +8,8 @@ from __future__ import annotations
 
 from numbers import Real
 
+from quantumbridge.core.measurements import Measurement
+
 
 def _format_param(value) -> str:
     if not isinstance(value, Real):
@@ -19,13 +21,17 @@ def dumps(circuit) -> str:
     lines = ["OPENQASM 2.0;", 'include "qelib1.inc";', f"qreg q[{circuit.num_qubits}];"]
     if circuit.num_bits:
         lines.append(f"creg c[{circuit.num_bits}];")
-    for op in circuit.operations:
-        if op.name == "barrier":
+    for op in circuit.iter_instructions():
+        if any(key in op.metadata for key in ("condition", "control_flow", "control_flow_stack")):
+            raise ValueError("QuantumBridge QASM export does not yet support conditional blocks.")
+        if isinstance(op, Measurement):
+            lines.append(f"measure q[{op.wire}] -> c[{op.bit}];")
+        elif op.name == "barrier":
             lines.append("barrier " + ",".join(f"q[{wire}]" for wire in op.targets) + ";")
         elif op.name == "delay":
             unit = op.metadata.get("unit", "dt")
             lines.append(f"// delay({_format_param(op.params[0])} {unit}) q[{op.targets[0]}];")
-        elif op.name in {"x", "y", "z", "h", "s", "sdg", "t", "tdg"}:
+        elif op.name in {"id", "x", "y", "z", "h", "s", "sdg", "t", "tdg", "reset"}:
             lines.append(f"{op.name} q[{op.targets[0]}];")
         elif op.name in {"rx", "ry", "rz"}:
             lines.append(f"{op.name}({_format_param(op.params[0])}) q[{op.targets[0]}];")
@@ -49,6 +55,4 @@ def dumps(circuit) -> str:
             lines.append(f"cswap q[{op.controls[0]}],q[{op.targets[0]}],q[{op.targets[1]}];")
         else:
             raise ValueError(f"QuantumBridge QASM export does not support operation {op.name!r}.")
-    for measurement in circuit.measurements:
-        lines.append(f"measure q[{measurement.wire}] -> c[{measurement.bit}];")
     return "\n".join(lines) + "\n"

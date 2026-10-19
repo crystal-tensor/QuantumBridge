@@ -5,7 +5,7 @@
 
 from quantumbridge.core import Circuit
 
-from .pass_base import PassResult, TransformationPass
+from .pass_base import PassResult, TransformationPass, copy_terminal_measurements
 
 
 class SimpleGateCancellationPass(TransformationPass):
@@ -30,7 +30,7 @@ class SimpleGateCancellationPass(TransformationPass):
                 continue
             out.operations.append(current)
             index += 1
-        out.measurements = list(circuit.measurements)
+        copy_terminal_measurements(circuit, out)
         return PassResult(out, {}, changed)
 
 
@@ -51,7 +51,7 @@ class RemoveZeroRotationPass(TransformationPass):
                 changed = True
                 continue
             out.operations.append(op)
-        out.measurements = list(circuit.measurements)
+        copy_terminal_measurements(circuit, out)
         return PassResult(out, {}, changed)
 
 
@@ -81,5 +81,5 @@ class MergeAdjacentRotationPass(TransformationPass):
                 continue
             out.operations.append(current)
             index += 1
-        out.measurements = list(circuit.measurements)
+        copy_terminal_measurements(circuit, out)
         return PassResult(out, {}, changed)

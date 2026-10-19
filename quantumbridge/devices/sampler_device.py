@@ -19,33 +19,53 @@ from .statevector_device import StatevectorDevice
 class ShotSampler:
     """Seeded sampler over exact MVP statevector probabilities."""
 
-    def __init__(self, shots: int, seed: Optional[int] = None, base_device: Optional[StatevectorDevice] = None, noise_model=None) -> None:
+    def __init__(self, shots: int, seed: Optional[int] = None, base_device: Optional[StatevectorDevice] = None, noise_model=None, memory: bool = False) -> None:
         if not isinstance(shots, int) or shots <= 0:
             raise ValueError("QuantumBridge sampler shots must be a positive integer.")
         self.shots = shots
         self.seed = seed
         self.base_device = base_device or StatevectorDevice()
         self.noise_model = noise_model
+        self.memory = bool(memory)
 
     def run(self, circuit, parameters: Optional[Mapping[Union[Parameter, str], Real]] = None) -> Result:
+        if hasattr(self.base_device, "run_shots"):
+            if self.noise_model is not None:
+                raise ValueError("Configure stabilizer noise on its device before sampling.")
+            return self.base_device.run_shots(circuit, shots=self.shots, seed=self.seed, parameters=parameters, memory=self.memory)
         probabilities = self.base_device.probabilities(circuit, parameters=parameters)
         labels = sorted(probabilities)
         weights = np.array([probabilities[label] for label in labels], dtype=float)
         weights = weights / weights.sum()
         rng = np.random.default_rng(self.seed)
         draws = rng.choice(labels, size=self.shots, p=weights)
+        num_bits = circuit.num_qubits
+        if circuit.measurements:
+            num_bits = circuit.num_bits
+            recorded = []
+            for draw in draws:
+                bits = ["0"] * num_bits
+                for measurement in circuit.measurements:
+                    bits[measurement.bit] = draw[measurement.wire]
+                recorded.append("".join(bits))
+            draws = np.asarray(recorded)
+            labels = sorted(set(recorded))
         counts = {label: int(np.count_nonzero(draws == label)) for label in labels}
         counts = {label: count for label, count in counts.items() if count}
         empirical = {label: count / self.shots for label, count in counts.items()}
-        return Result(
+        result = Result(
             probabilities_data=empirical,
             counts_data=counts,
             metadata_data={
                 "device": "ShotSampler",
                 "shots": self.shots,
+                "num_bits": num_bits,
                 "seed": self.seed,
                 "source": "StatevectorDevice probabilities",
                 "qubit_order": "q0-first bitstrings",
                 "noise_model": None if self.noise_model is None else self.noise_model.summary(),
             },
         )
+        if self.memory:
+            result.metadata_data["memory"] = draws.tolist()
+        return result

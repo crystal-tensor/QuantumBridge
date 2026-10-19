@@ -4,6 +4,7 @@
 # This implementation is developed for the QuantumBridge native architecture.
 
 from .backend import Backend, BackendV2
+from .stabilizer_backend import StabilizerBackend
 from .exceptions import JobError, JobTimeoutError, QiskitBackendNotFoundError
 from .job import Job, JobStatus
 from .options import Options
@@ -12,6 +13,7 @@ from .provider import Provider
 __all__ = [
     "Backend",
     "BackendV2",
+    "StabilizerBackend",
     "Job",
     "JobError",
     "JobStatus",

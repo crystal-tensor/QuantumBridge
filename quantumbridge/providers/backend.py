@@ -70,7 +70,7 @@ class Backend:
             "basis_gates": list(self.basis_gates),
             "simulator": self.simulator,
             "local": True,
-            "conditional": True,
+            "conditional": bool(getattr(self.device, "supports_classical_control", False)),
             "memory": bool(self.options.get("memory", False)),
         }
 
@@ -139,7 +139,7 @@ class Backend:
             if shots is None:
                 result = self.device.run(circuit, parameters=parameters, observable=observable)
             else:
-                result = ShotSampler(int(shots), seed=options.get("seed_simulator"), base_device=self.device).run(circuit, parameters=parameters)
+                result = ShotSampler(shots, seed=options.get("seed_simulator"), base_device=self.device, memory=options.get("memory", False)).run(circuit, parameters=parameters)
                 result.metadata_data.setdefault("backend_name", self.name)
             results.append(result)
         return results[0] if isinstance(circuits, Circuit) else results

@@ -1,5 +1,17 @@
 # qiskit Coverage Matrix
 
+## Stage 11G Execution Update
+
+Native BackendSampler can now preserve actual backend shot order and
+classical register width rather than regenerating sorted samples from counts.
+Native BackendEstimator executes the new tableau device and labels the method
+correctly. The device suite proves a 64-qubit Sampler/Estimator workflow without
+dense conversion or basis-probability enumeration. This is callable native
+behavior, not full pub broadcasting, precision, multi-register BitArray or
+primitive protocol parity. Evidence: tests/devices/test_stabilizer_device.py.
+
+## Historical Inventory
+
 Generated from runtime public-name introspection. No upstream source, tests, comments, or documentation text is copied.
 
 - Installed: True

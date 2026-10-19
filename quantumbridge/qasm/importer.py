@@ -42,7 +42,7 @@ def circuit_from_ast(program: QASMProgram) -> Circuit:
     for statement in program.statements:
         if isinstance(statement, GateCall):
             wires = [_resolve(ref, qregs, "quantum") for ref in statement.qubits]
-            if statement.name in {"x", "y", "z", "h", "s", "sdg", "t", "tdg"}:
+            if statement.name in {"id", "x", "y", "z", "h", "s", "sdg", "t", "tdg", "reset"}:
                 getattr(circuit, statement.name)(wires[0])
             elif statement.name in {"rx", "ry", "rz", "phase"}:
                 getattr(circuit, statement.name)(statement.params[0], wires[0])

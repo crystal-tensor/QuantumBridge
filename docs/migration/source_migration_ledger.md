@@ -944,3 +944,51 @@ credentials or virtual environments are copied or vendored:
 - `THIRD_PARTY_NOTICES.md`
 
 Stage 11F source port count remains zero.
+
+## Stage 11G Source Inventory
+
+The following files independently implement, integrate, test or document
+native stabilizer backend and ordered dynamic execution. Installed Qiskit/Aer
+is an optional test oracle, not a native runtime dependency. No upstream
+source, tests, credentials, package artifacts or environments are vendored:
+
+- `quantumbridge/__init__.py`
+- `quantumbridge/core/circuit.py`
+- `quantumbridge/devices/__init__.py`
+- `quantumbridge/devices/stabilizer_device.py`
+- `quantumbridge/devices/sampler_device.py`
+- `quantumbridge/devices/statevector_device.py`
+- `quantumbridge/providers/__init__.py`
+- `quantumbridge/providers/stabilizer_backend.py`
+- `quantumbridge/providers/backend.py`
+- `quantumbridge/providers/provider.py`
+- `quantumbridge/primitives/backend.py`
+- `quantumbridge/primitives/sampler.py`
+- `quantumbridge/primitives/estimator.py`
+- `quantumbridge/results/result.py`
+- `quantumbridge/information/operator.py`
+- `quantumbridge/ir/qb_ir.py`
+- `quantumbridge/compat/qiskit_adapter.py`
+- `quantumbridge/compat/qiskit_aer/__init__.py`
+- `quantumbridge/compat/qiskit_aer/simulator_native.py`
+- `quantumbridge/compiler/pass_base.py`
+- `quantumbridge/compiler/pass_manager.py`
+- `quantumbridge/compiler/cancellation.py`
+- `quantumbridge/compiler/decomposition.py`
+- `quantumbridge/compiler/optimization.py`
+- `quantumbridge/compiler/routing.py`
+- `quantumbridge/qasm/exporter.py`
+- `quantumbridge/qasm/importer.py`
+- `quantumbridge/qasm/parser.py`
+- `tests/core/test_ordered_measurements.py`
+- `tests/devices/test_stabilizer_device.py`
+- `tests/providers/test_provider_model.py`
+- `tests/compat_qiskit_aer/test_stabilizer_native.py`
+- `examples/native_stabilizer_backend_quantumbridge.py`
+- `docs/implementation/stage11g_native_stabilizer_backend_report.md`
+- `docs/compat/matrix/qiskit_aer_fusion_coverage_matrix.md`
+- `docs/compat/matrix/qiskit_core_primitives_coverage_matrix.md`
+- `README.md`
+- `THIRD_PARTY_NOTICES.md`
+
+Stage 11G source port count remains zero.

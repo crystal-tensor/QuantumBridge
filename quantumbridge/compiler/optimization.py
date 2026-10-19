@@ -9,7 +9,7 @@ def operation_count(circuit) -> int:
 
 
 from quantumbridge.core import Circuit
-from .pass_base import PassResult, TransformationPass
+from .pass_base import PassResult, TransformationPass, copy_terminal_measurements
 
 
 class RemoveIdentityPass(TransformationPass):
@@ -21,7 +21,7 @@ class RemoveIdentityPass(TransformationPass):
                 removed += 1
                 continue
             out.operations.append(op)
-        out.measurements = list(circuit.measurements)
+        copy_terminal_measurements(circuit, out)
         return PassResult(out, {"removed_identity": removed}, bool(removed))
 
 
@@ -43,7 +43,7 @@ class CancelAdjacentInversePass(TransformationPass):
                     continue
             out.operations.append(current)
             index += 1
-        out.measurements = list(circuit.measurements)
+        copy_terminal_measurements(circuit, out)
         return PassResult(out, {"cancelled_operations": cancelled}, bool(cancelled))
 
 

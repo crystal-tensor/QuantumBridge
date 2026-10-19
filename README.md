@@ -80,6 +80,23 @@ simulation. See the [Stage 11F report](docs/implementation/stage11f_native_cliff
 
 ## Ecosystem Compatibility Status
 
+Stage 11G adds an executable native `StabilizerDevice` and
+`Provider().get_backend("stabilizer")` / `StabilizerBackend` path. Backend/Job,
+Sampler V2 and Estimator V2 can run large Clifford circuits without enumerating
+all basis probabilities. Ordered mid-circuit measurements, reset, nested
+if/else feedback, classical memory and native Clifford-mixture/readout noise
+are exercised, including optional Aer comparisons. Native result bitstrings
+remain wire-zero-first or classical-bit-zero-first, not Qiskit's reversed
+printed-register order. Run:
+
+```bash
+python -m examples.native_stabilizer_backend_quantumbridge
+```
+
+This adds a real stabilizer execution path, not complete Aer, dynamic-circuit,
+noise-model or primitive parity. The exact scope, compiler boundaries and
+migration notes are in the [Stage 11G report](docs/implementation/stage11g_native_stabilizer_backend_report.md).
+
 Stage 7 planning defines function coverage by level:
 
 - Level 0 Inventory: public API names are identified and written to a matrix; this does not mean runnable support.
