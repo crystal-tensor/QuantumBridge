@@ -90,6 +90,10 @@ openfermion = ["numpy>=2,<3", "openfermion==1.7.1"]
 pyscf = ["pyscf==2.13.1"]
 quafu = ["pyquafu==0.4.5", "numpy<2.0.0"]
 quafu-compatible = ["pyquafu==0.4.5", "numpy<2.0.0"]
+quafu-cloud = [
+  "quarkstudio>=7.3.9; python_version >= '3.12'",
+  "quarkcircuit>=0.5.13; python_version >= '3.12'"
+]
 torch = ["torch"]
 jax = ["jax", "jaxlib"]
 dev = ["pytest", "numpy", "pytest-cov"]

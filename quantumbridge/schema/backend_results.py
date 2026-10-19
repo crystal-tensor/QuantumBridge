@@ -1,6 +1,6 @@
 # This file is independently implemented for QuantumBridge SDK.
 # No source code from QOS-UQCI, Quafu, pyquafu, IBM, or Qiskit was copied.
-"""Serializable schemas for Stage 10A backend compatibility workflows."""
+"""Serializable schemas for backend compatibility and cloud workflows."""
 
 from __future__ import annotations
 
@@ -61,15 +61,24 @@ class BackendCompatibilityResult:
     def validate(self) -> bool:
         if not self.workflow:
             raise ValueError("workflow must be non-empty")
-        if self.mode not in {"native_mock", "upstream_passthrough", "conversion"}:
-            raise ValueError("mode must be native_mock, upstream_passthrough, or conversion")
+        valid_modes = {"native_mock", "upstream_passthrough", "conversion", "cloud_hardware"}
+        if self.mode not in valid_modes:
+            raise ValueError("mode must be native_mock, upstream_passthrough, conversion, or cloud_hardware")
         if self.capability_level not in {0, 1, 2, 3, 4}:
             raise ValueError("capability_level must be between 0 and 4")
         if self.production_ready:
             raise ValueError("Stage 10A backend compatibility results must not claim production readiness")
-        for key in ("cloud_access", "token_read", "hardware_access", "official_endorsement_claim"):
-            if self.metadata.get(key) is True or self.provenance.get(key) is True:
-                raise ValueError(f"Stage 10A backend compatibility must not set {key}=True")
+        if self.metadata.get("official_endorsement_claim") is True or self.provenance.get("official_endorsement_claim") is True:
+            raise ValueError("backend compatibility results must not claim official endorsement")
+        cloud_flags = ("cloud_access", "token_read", "hardware_access")
+        if self.mode == "cloud_hardware":
+            for key in cloud_flags:
+                if self.metadata.get(key) is not True or self.provenance.get(key) is not True:
+                    raise ValueError(f"cloud_hardware results must set {key}=True in metadata and provenance")
+        else:
+            for key in cloud_flags:
+                if self.metadata.get(key) is True or self.provenance.get(key) is True:
+                    raise ValueError(f"offline backend compatibility must not set {key}=True")
         if self.shots is not None and self.shots <= 0:
             raise ValueError("shots must be positive when provided")
         return True

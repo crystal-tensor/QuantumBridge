@@ -2,7 +2,13 @@
 # No source code from Quafu or pyquafu was copied.
 """Quafu clean-room backend compatibility helpers."""
 
-from .dependency import dependency_available, get_upstream_version, validate_quafu_dependencies
+from .cloud_backend import QUARK_SHOT_UNIT, QuafuCloudBackend, QuafuCloudJob, QuarkStudioTransport
+from .dependency import (
+    dependency_available,
+    get_upstream_version,
+    validate_quafu_dependencies,
+    validate_quarkstudio_dependencies,
+)
 from .examples import quafu_bell_circuit, run_quafu_bell_payload_example, run_quafu_mock_backend_example
 from .job_adapter import build_quafu_job_spec, validate_quafu_job_spec
 from .mock_backend import run_quafu_mock_backend
@@ -13,6 +19,10 @@ from .warnings import QUAFU_COMPAT_WARNING, quafu_warnings
 
 __all__ = [
     "QUAFU_COMPAT_WARNING",
+    "QUARK_SHOT_UNIT",
+    "QuafuCloudBackend",
+    "QuafuCloudJob",
+    "QuarkStudioTransport",
     "build_quafu_job_spec",
     "dependency_available",
     "get_upstream_version",
@@ -26,6 +36,7 @@ __all__ = [
     "run_upstream_pyquafu_if_available",
     "to_quantumbridge_schema",
     "validate_quafu_dependencies",
+    "validate_quarkstudio_dependencies",
     "validate_quafu_job_spec",
     "validate_quafu_payload",
     "wrap_quafu_result",

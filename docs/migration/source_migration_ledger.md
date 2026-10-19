@@ -812,3 +812,26 @@ or virtual environments are vendored:
 - `tests/qml/test_pennylane_measurement_coverage_p2.py`
 
 Stage 10F source port count remains zero.
+
+## Stage 10G Source Inventory
+
+The following Stage 10G files are clean-room QuantumBridge implementations,
+architecture records, or tests for the optional QuarkStudio public API. No
+Quafu, QuarkStudio, pyquafu, Qiskit, PennyLane, Cirq, OpenFermion, wheels,
+dist-info, egg-info, site-packages, credentials, tokens, or virtual
+environments are copied or vendored:
+
+- `quantumbridge/ecosystem/industry_taxonomy.py`
+- `quantumbridge/ecosystem/__init__.py`
+- `quantumbridge/compat/quafu/cloud_backend.py`
+- `quantumbridge/compat/quafu/dependency.py`
+- `quantumbridge/compat/quafu/warnings.py`
+- `quantumbridge/compat/quafu/__init__.py`
+- `quantumbridge/schema/backend_results.py`
+- `tests/ecosystem/test_industry_taxonomy.py`
+- `tests/compat_quafu/test_quafu_cloud_backend.py`
+- `docs/architecture/industry_capability_taxonomy_v1.md`
+- `docs/compat/quafu_cloud_execution.md`
+- `docs/implementation/stage10g_industry_taxonomy_and_quafu_cloud_report.md`
+
+Stage 10G source port count remains zero.

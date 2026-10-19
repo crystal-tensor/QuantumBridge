@@ -34,3 +34,26 @@ def validate_quafu_dependencies(package_name: str = "quafu") -> dict[str, object
         "token_read": False,
         "hardware_access": False,
     }
+
+
+def validate_quarkstudio_dependencies() -> dict[str, object]:
+    """Inspect the optional QuarkStudio client without reading credentials."""
+
+    task_available = False
+    try:
+        module = import_module("quark")
+        task_available = callable(getattr(module, "Task", None))
+    except Exception:
+        pass
+    return {
+        "package": "quarkstudio",
+        "import_name": "quark",
+        "available": task_available,
+        "version": get_upstream_version("quarkstudio"),
+        "circuit_package": "quarkcircuit",
+        "circuit_version": get_upstream_version("quarkcircuit"),
+        "required_by_default": False,
+        "cloud_access": False,
+        "token_read": False,
+        "hardware_access": False,
+    }
