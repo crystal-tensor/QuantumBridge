@@ -33,6 +33,8 @@ class JAXBridgeLimits:
 
 
 def execute_jax(node, args, kwargs, *, return_status=False):
+    if getattr(node, "unified_limits", None) is not None:
+        raise UnsupportedFeature("jax_unified_graph_resources", "Ordinary JAX graph callbacks do not yet have a shared request account; use explicit native derivative-status queries for per-request budgets.")
     try:
         import jax
         import jax.numpy as jnp

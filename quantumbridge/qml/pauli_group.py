@@ -3,6 +3,7 @@
 """Native joint Pauli measurements, with an auditable shared sample buffer."""
 
 from dataclasses import dataclass
+from contextlib import nullcontext
 from numbers import Integral
 from uuid import uuid4
 
@@ -56,6 +57,22 @@ class PauliGroupResult:
     resources: object = None
 
     def metadata(self):
+        from quantumbridge.execution.resource_context import current_resources
+        resources = current_resources()
+        size, rows = len(self.group.words), len(self.group.coefficients)
+        workspace = nullcontext() if resources is None else resources.ledger.reserve(
+            "qwc_metadata_workspace", memory_bytes=8*(rows*size+size*size+8*rows))
+        with workspace:
+            return self._metadata(resources, size, rows)
+
+    def _metadata(self, resources, size, rows):
+        if resources is not None:
+            # Lists duplicate numeric payload; bitstrings remain shared references.
+            count = size+size*size+(0 if self.sample_covariance is None else size*size)
+            count += 0 if self.eigenvalues is None else self.eigenvalues.size
+            ticket = resources.retain("qwc_metadata_numerical_payload", 8*(count+4*rows))
+            resources.ledger.unavailable("python_container_allocator_memory",
+                "QWC list/scalar payload excludes Python objects and allocator overhead.")
         rows = np.asarray(self.group.coefficients)
         variances = np.maximum(0., np.sum((rows @ self.covariance) * rows, axis=1))
         if self.shots is None:
@@ -64,7 +81,7 @@ class PauliGroupResult:
             errors = [None if np.any(row) else 0. for row in rows]
         else:
             errors = np.sqrt(np.maximum(0., np.sum((rows @ self.sample_covariance) * rows, axis=1)) / self.shots).tolist()
-        return {"execution_id": self.execution_id, "basis": self.group.basis,
+        result = {"execution_id": self.execution_id, "basis": self.group.basis,
                 "words": self.group.words, "source_term_indices": self.group.indices,
                 "source_coefficients": self.group.coefficients, "shots": self.shots, "seed": self.seed,
                 "sample_count": 0 if self.bitstrings is None else len(self.bitstrings),
@@ -78,10 +95,35 @@ class PauliGroupResult:
                 "device_calls": self.device_calls, "joint_sample_calls": int(self.shots is not None),
                 "resources":self.resources,
                 "provenance": "native analytic Pauli expectations" if self.shots is None else "one native Device.sample call; all word eigenvalues derive from this bitstring buffer"}
+        if resources is not None:
+            ticket.observe(8*(count+4*len(rows)))
+        return result
 
 
 def measure_pauli_group(device, circuit, group, shots, seed):
     group.validate(circuit.num_qubits)
+    size = len(group.words)
+    if shots is not None and (isinstance(shots, bool) or not isinstance(shots, Integral) or shots < 1):
+        raise ValueError("Joint Pauli shots must be a positive integer.")
+    from quantumbridge.execution.resource_context import current_resources
+    scope = current_resources()
+    result_bytes = 8*(size+size*size)
+    if shots is not None:
+        result_bytes += shots*len(group.basis)+8*shots*size+(8*size*size if shots > 1 else 0)
+    ticket = None if scope is None else scope.retain("qwc_retained_arrays_and_bitstrings", result_bytes)
+    # This scope holds result arrays, not the sequential decoding workspace.
+    temporary_bytes = 0 if shots is None else shots*(len(group.basis)+24*size+16)+8*size*size
+    workspace = nullcontext() if scope is None else scope.ledger.reserve("qwc_statistics_workspace", memory_bytes=temporary_bytes)
+    with workspace:
+        result = _measure_pauli_group(device, circuit, group, shots, seed)
+    if ticket is not None:
+        actual = sum(value.nbytes for value in (result.means, result.covariance, result.sample_covariance, result.eigenvalues) if value is not None)
+        actual += 0 if result.bitstrings is None else sum(len(word) for word in result.bitstrings)
+        ticket.observe(actual)
+    return result
+
+
+def _measure_pauli_group(device, circuit, group, shots, seed):
     size = len(group.words)
     resources = None
     def capture():

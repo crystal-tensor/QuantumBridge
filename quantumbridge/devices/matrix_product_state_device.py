@@ -10,13 +10,15 @@ import numpy as np
 
 from quantumbridge.information.matrix_product_state import MatrixProductState
 from quantumbridge.results import Result
+from quantumbridge.execution.device_derivatives import NativeDeviceDerivatives
+from quantumbridge.execution.resource_context import meter_native_samples
 from quantumbridge.utils.math import Hamiltonian, PauliString, observable_matrix
 from .execution import (
     condition_enabled, decision_liveness, prepare_program, readout_probability, needs_dynamic_engine,
 )
 
 
-class MatrixProductStateDevice:
+class MatrixProductStateDevice(NativeDeviceDerivatives):
     """Native SVD MPS execution, exact ensembles or seeded quantum trajectories."""
 
     simulation = "matrix_product_state"
@@ -251,6 +253,7 @@ class MatrixProductStateDevice:
         if isinstance(shots, bool) or not isinstance(shots, Integral) or shots < int(not allow_zero):
             raise ValueError("QuantumBridge MPS shots must be a positive integer (or zero for sample/counts).")
 
+    @meter_native_samples
     def sample(self, circuit, wires=None, shots=1, seed=None, parameters=None):
         self._shots(shots, allow_zero=True)
         bound, program = self._prepare(circuit, parameters)

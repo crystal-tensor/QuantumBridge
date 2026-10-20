@@ -16,7 +16,7 @@ from .tape import Tape
 class QNode:
     def __init__(self, fn, num_qubits: int, device=None, shots=None, seed: int | None = None,
                  interface="auto", diff_method="best", gradient_kwargs=None, max_diff=1,
-                 jax_limits=None, tensorflow_limits=None, higher_order_limits=None):
+                 jax_limits=None, tensorflow_limits=None, higher_order_limits=None, unified_limits=None):
         self.fn = fn
         self.num_qubits = num_qubits
         self.device = device or StatevectorDevice()
@@ -28,6 +28,7 @@ class QNode:
         self.jax_limits = jax_limits
         self.tensorflow_limits = tensorflow_limits
         self.higher_order_limits = higher_order_limits
+        self.unified_limits = unified_limits
         self.last_metadata = {}
         self.compiler_options = None
         self.transform_program = None
@@ -132,6 +133,10 @@ class QNode:
         if interface in {"tf", "tensorflow"}:
             from quantumbridge.interfaces.tensorflow_autodiff import execute_tensorflow
             return execute_tensorflow(self, args, kwargs)
+        if interface in {None, "numpy"}:
+            from quantumbridge.execution.qnode_derivatives import manages_native_node, execute_native_qnode
+            if manages_native_node(self):
+                return execute_native_qnode(self, args, kwargs)[0].value
         plan = self._construct(args, kwargs)
         if interface in {None, "numpy"}:
             result = plan.evaluate(plan.recorder.native_values())
@@ -140,6 +145,11 @@ class QNode:
         return result
 
     def _differentiate(self, args, kwargs, argnums=0, argnames=(), method=None):
+        from quantumbridge.execution.qnode_derivatives import manages_native_node, execute_native_qnode
+        if manages_native_node(self):
+            result, prepared = execute_native_qnode(self, args, kwargs, order=1,
+                argnums=argnums, argnames=argnames, method=method)
+            return result.value, result.jacobian, prepared.output_spec, prepared.layout, prepared.single
         from quantumbridge.core.classical import UnsupportedFeature
         from quantumbridge.diff.trace import trace_arguments
         if self.max_diff not in {1, 2}: raise UnsupportedFeature("higher_order_derivatives", "Native QNode implements derivative orders at most two.")
@@ -182,6 +192,43 @@ class QNode:
         from quantumbridge.interfaces.tensorflow_autodiff import execute_tensorflow
         return execute_tensorflow(self, args, kwargs, return_status=True)
 
+    def jax_hvp_with_status(self, tangent, *args, **kwargs):
+        """Return a native directional HVP and runtime status (CPU query API)."""
+        from quantumbridge.interfaces.jax_derivative_status import execute_jax_derivative_status
+        return execute_jax_derivative_status(self, args, kwargs, kind="hvp", tangent=tangent)
+
+    def jax_hessian_with_status(self, *args, **kwargs):
+        """Return a native materialized Hessian and runtime status."""
+        from quantumbridge.interfaces.jax_derivative_status import execute_jax_derivative_status
+        return execute_jax_derivative_status(self, args, kwargs, kind="hessian")
+
+    def jax_jacobian_with_status(self, *args, **kwargs):
+        """Return a native Jacobian and runtime status."""
+        from quantumbridge.interfaces.jax_derivative_status import execute_jax_derivative_status
+        return execute_jax_derivative_status(self, args, kwargs, kind="jacobian")
+
+    def tensorflow_hvp_with_status(self, tangent, *args, **kwargs):
+        """Return a CPU native HVP query and its derivative-specific status."""
+        from quantumbridge.interfaces.tensorflow_derivative_status import execute_tensorflow_derivative_status
+        return execute_tensorflow_derivative_status(self, args, kwargs, kind="hvp", tangent=tangent)
+
+    def tensorflow_hessian_with_status(self, *args, **kwargs):
+        from quantumbridge.interfaces.tensorflow_derivative_status import execute_tensorflow_derivative_status
+        return execute_tensorflow_derivative_status(self, args, kwargs, kind="hessian")
+
+    def tensorflow_jacobian_with_status(self, *args, **kwargs):
+        from quantumbridge.interfaces.tensorflow_derivative_status import execute_tensorflow_derivative_status
+        return execute_tensorflow_derivative_status(self, args, kwargs, kind="jacobian")
+
+    def tensorflow_vjp_with_status(self, cotangent, *args, **kwargs):
+        from quantumbridge.interfaces.tensorflow_derivative_status import execute_tensorflow_derivative_status
+        return execute_tensorflow_derivative_status(self, args, kwargs, kind="vjp", cotangent=cotangent)
+
+    def tensorflow_value_with_status(self, *args, **kwargs):
+        """Explicit value query using the same unified Device request account."""
+        from quantumbridge.interfaces.tensorflow_derivative_status import execute_tensorflow_derivative_status
+        return execute_tensorflow_derivative_status(self, args, kwargs, kind="value")
+
     def tensorflow_batch(self, values):
         """Bounded CPU leading-axis mapping for one static tensor argument."""
         from quantumbridge.interfaces.tensorflow_autodiff import execute_tensorflow_batch
@@ -202,6 +249,11 @@ class QNode:
     jacobian = compute_jacobian
 
     def _differentiate_second(self, args, kwargs, argnums, argnames, method, tangent=None):
+        from quantumbridge.execution.qnode_derivatives import manages_native_node, execute_native_qnode
+        if manages_native_node(self):
+            result, prepared = execute_native_qnode(self, args, kwargs, order=2,
+                argnums=argnums, argnames=argnames, method=method, tangent=tangent)
+            return result.value, result.jacobian, result.second, prepared.output_spec, prepared.layout, prepared.single
         from quantumbridge.core.classical import UnsupportedFeature
         from quantumbridge.diff.higher_order_limits import resolve_higher_order_limits
         from quantumbridge.diff.trace import trace_arguments

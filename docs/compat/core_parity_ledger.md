@@ -1,6 +1,6 @@
 # Core Functional Parity Ledger
 
-Updated: 2026-10-20, Stage 11P-C2A native second-adjoint checkpoint, starting from local `eafc143`.
+Updated: 2026-10-21, Stage 11P-C3 IN_PROGRESS, starting from committed C2A `d05ad74`.
 This is the single current-status view. Full Qiskit/PennyLane functional
 replacement remains **incomplete**. Line coverage, inventories, passthrough and
 green CI are not proof of complete API coverage.
@@ -44,6 +44,45 @@ publication/exact-SHA CI is a separate receipt, not inferred from prior CI.
 | Templates/qchem/math/resources/kernels/qnn/qcut/shadows | PARTIAL: native geometry-derived hydrogen electronic structure now added; other bounded workflows remain | Full library/transform/template and differentiation contracts |
 | Compiled 100-qubit MPS | NATIVE_TESTED for GHZ-chain with dense APIs disabled | No arbitrary-entanglement efficiency claim |
 | Quafu/QOS-UQCI/industry taxonomy | PARTIAL: offline target/configuration and existing adapters, four categories/19 subdomains | Real authorized backend/job evidence and complete industry workflows |
+
+## Stage 11P-C3 Work In Progress
+
+Real native Device request dispatch now exists for Circuit/Tape/QNode sources,
+Jacobian/VJP/JVP/Hessian/HVP and analytic Statevector second adjoint. Focused
+tests exercise shared lifecycle accounts, structured failure/recovery, actual
+MPS and density paths, Tableau rejection and 100-wire no-dense HVP. Explicit
+JAX/TF CPU derivative queries return runtime status using the same native
+Device executor and framework classical maps. They currently require one
+floating array argument; their query payloads do not add automatic derivative
+rules (normal QNode graphs retain their existing differentiation interface).
+
+Ordinary eager Torch/Autograd callbacks now share a single invocation budget,
+with actual forward/backward/double-backward failure/recovery tests. Ordinary
+JAX/TF with the new unified graph option explicitly reject unsupported shared
+callback accounting; their default graphs remain available without that claim.
+
+Native NumPy QNode calls now enforce the same option and preserve selected/
+keyword input layouts. Completed sample buffers remain consumed after subsequent
+statistics/child failures. QWC numerical payload/workspace and copied receipts
+have distinct reservations. One-build H2 Device/native/four-framework numerical
+paths and explicit compiled-query budget recovery have focused evidence.
+
+This remains PARTIAL, not completed C3: universal native working-array ownership,
+ordinary JAX/TF graph callback lifetimes, internal failed-sampler partial-work
+observation remain open; final clean-tree regression gates have completed. Managed
+save/set/snapshot derivative requests explicitly reject until their retained
+results have an ownership contract. A conservative MPS workspace reservation is not observed
+allocator peak or strict RSS. See the [resource progress report](../implementation/stage11p_c3_unified_resource_report.md)
+and [status progress report](../implementation/stage11p_c3_derivative_status_report.md).
+
+The final clean-tree gates subsequently pass: main 2334 passed/5 skipped/3 public
+xfails, alternate 2332 passed/5 skipped/5 public xfails, SDK-free 1742 passed/
+369 skipped; full 28-section matrix exit 0; true full coverage 89.86520579542997%
+with 68 exclusions unchanged. The remaining **implementation** gaps are still
+open, especially native framework map allocation before reservation, retained
+graph-array lifetimes, ordinary JAX/TF graph-wide budgets and internal failed
+sampler observations. Existing main/alternate pip conflicts are separately
+reported. No complete C3 acceptance or entry into D/Capture is implied.
 
 ## Stage 11P-C2A Second-Order Status
 

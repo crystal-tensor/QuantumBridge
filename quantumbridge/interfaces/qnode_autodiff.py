@@ -60,6 +60,8 @@ def _torch_execute(plan):
     dtype = tensors[0].dtype if tensors else torch.float64
     if any(value.dtype != dtype for value in tensors): raise TypeError("QuantumBridge gate tensors must use one floating dtype.")
     indices = [index for index, value in enumerate(angles) if isinstance(value, torch.Tensor) and value.requires_grad]
+    from .ordinary_resources import managed_framework_plan
+    plan = managed_framework_plan(plan)
     unpack, second_derivatives = _framework_point(plan, indices)
     packed = torch.stack([angles[index] for index in indices]) if indices else torch.empty(0, dtype=dtype)
     for value in inputs:
@@ -128,6 +130,8 @@ def _autograd_execute(plan):
         from autograd.extend import primitive, defvjp, defvjp_argnums
     except ImportError as exc: raise ImportError("QuantumBridge Autograd QNode requires optional autograd.") from exc
     indices = [index for index, angle in enumerate(plan.recorder.angles) if type(angle).__module__.startswith("autograd")]
+    from .ordinary_resources import managed_framework_plan
+    plan = managed_framework_plan(plan)
     unpack, second_derivatives = _framework_point(plan, indices)
 
     def publish(second=False):

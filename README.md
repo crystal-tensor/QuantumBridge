@@ -1073,6 +1073,15 @@ Add `--method adjoint` to run the same workflow through second adjoint.
 Current receipts and remaining gaps:
 [second-adjoint report](docs/implementation/stage11p_c2a_native_second_adjoint_report.md).
 
+### Derivative Execution Work In Progress
+
+Stage 11P-C3 is adding native Device derivative requests, shared resource
+reservations and explicit CPU JAX/TF derivative-status queries. Current tested
+slices do not complete Device parity, graph-wide accounting or strict process
+memory bounds. The full functional replacement goal remains incomplete.
+See the [resource progress report](docs/implementation/stage11p_c3_unified_resource_report.md)
+and [status progress report](docs/implementation/stage11p_c3_derivative_status_report.md).
+
 ## Native Molecular Chemistry Checkpoint
 
 `quantumbridge.qchem` now computes a bounded hydrogen/STO-3G s-shell workflow

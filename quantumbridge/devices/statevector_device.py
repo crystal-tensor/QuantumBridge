@@ -13,10 +13,12 @@ import numpy as np
 
 from quantumbridge.core.parameters import Parameter
 from quantumbridge.results import Result
+from quantumbridge.execution.device_derivatives import NativeDeviceDerivatives
+from quantumbridge.execution.resource_context import meter_native_samples
 from quantumbridge.utils.math import apply_unitary, expectation_observable, gate_matrix, probabilities_from_state, variance_observable
 
 
-class StatevectorDevice:
+class StatevectorDevice(NativeDeviceDerivatives):
     """Exact pure-state simulator for QuantumBridge MVP circuits."""
 
     def __init__(self, max_qubits: Optional[int] = None, execution_limits=None, max_memory_mb=1024) -> None:
@@ -98,6 +100,7 @@ class StatevectorDevice:
         state = self.statevector(circuit, parameters)
         return np.outer(state, np.conjugate(state))
 
+    @meter_native_samples
     def sample(
         self,
         circuit,

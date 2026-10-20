@@ -1,13 +1,78 @@
 # Source Migration Ledger
 
-Status: Stage 11P-C2A native second-adjoint checkpoint
-Date: 2026-10-20
+Status: Stage 11P-C3 derivative execution work in progress; C2A committed
+Date: 2026-10-21
 
 This ledger retains historical release and checkpoint sections. Current work
 uses Native Implementation, Adapter Integration and Upstream Dependency, with
 their boundaries stated separately. Historical checkpoint limitations are not
 the current status view; use core_parity_ledger.md for that view.
 No Source Port with Attribution was performed.
+
+## Stage 11P-C3 In-Progress Source Inventory
+
+Independent Native Implementation and optional classical framework integration,
+not an accepted complete C3 checkpoint. Zero source/test ports; no SDK engine,
+vendoring, credentials, cloud or hardware calls. Scope and missing acceptance
+evidence are recorded in the C3 reports.
+
+- `quantumbridge/devices/statevector_device.py`
+- `quantumbridge/devices/density_matrix_device.py`
+- `quantumbridge/devices/matrix_product_state_device.py`
+- `quantumbridge/devices/stabilizer_device.py`
+- `quantumbridge/diff/qnode_engine.py`
+- `quantumbridge/diff/second_trace.py`
+- `quantumbridge/diff/second_adjoint.py`
+- `quantumbridge/execution/__init__.py`
+- `quantumbridge/execution/derivative_request.py`
+- `quantumbridge/execution/derivative_result.py`
+- `quantumbridge/execution/derivative_status.py`
+- `quantumbridge/execution/derivative_planning.py`
+- `quantumbridge/execution/device_derivatives.py`
+- `quantumbridge/execution/resource_limits.py`
+- `quantumbridge/execution/resource_ledger.py`
+- `quantumbridge/execution/resource_context.py`
+- `quantumbridge/interfaces/native_host.py`
+- `quantumbridge/interfaces/framework_derivatives.py`
+- `quantumbridge/interfaces/jax_derivative_status.py`
+- `quantumbridge/interfaces/tensorflow_derivative_status.py`
+- `quantumbridge/qml/qnode.py`
+- `README.md`
+- `THIRD_PARTY_NOTICES.md`
+- `docs/compat/core_parity_ledger.md`
+- `docs/migration/source_migration_ledger.md`
+- `docs/implementation/stage11p_c3_derivative_execution_gap_audit.md`
+- `docs/implementation/stage11p_c3_unified_resource_report.md`
+- `docs/implementation/stage11p_c3_derivative_status_report.md`
+- `tests/derivative_execution/test_initial_contracts.py`
+- `tests/derivative_execution/test_resource_lifecycle.py`
+- `tests/derivative_execution/test_device_derivative_api.py`
+- `tests/derivative_execution/test_failure_recovery.py`
+- `tests/derivative_execution/test_jax_compiled_status.py`
+- `tests/derivative_execution/test_tensorflow_graph_status.py`
+- `tests/derivative_execution/test_mps_nondense_hvp.py`
+- `tests/derivative_execution/test_independent_math.py`
+- `tests/derivative_execution/test_public_differential.py`
+- `examples/native_device_derivatives.py`
+- `examples/native_unified_resource_budget.py`
+- `examples/native_jax_hvp_status.py`
+- `examples/native_tensorflow_hvp_status.py`
+- `examples/native_mps_hvp_budget.py`
+- `tests/derivative_execution/test_ordinary_framework_budget.py`
+- `quantumbridge/interfaces/ordinary_resources.py`
+- `quantumbridge/interfaces/qnode_autodiff.py`
+- `quantumbridge/transforms/program.py`
+- `quantumbridge/interfaces/jax_autodiff.py`
+- `quantumbridge/interfaces/tensorflow_autodiff.py`
+- `tests/derivative_execution/test_partial_shots_failure.py`
+- `quantumbridge/qml/pauli_group.py`
+- `quantumbridge/diff/second_order.py`
+- `tests/derivative_execution/test_qwc_resource_ownership.py`
+- `quantumbridge/execution/qnode_derivatives.py`
+- `tests/derivative_execution/test_native_qnode_budget.py`
+- `tests/derivative_execution/test_fixed_h2_execution.py`
+- `quantumbridge/diff/trace.py`
+- `tests/derivative_execution/test_execution_examples.py`
 
 ## Stage 11P-C2A Native Second Adjoint
 

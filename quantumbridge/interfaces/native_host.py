@@ -47,7 +47,7 @@ def _shape_tree(tree, width, shots, limits, interface):
 class NativeHostKernel:
     """A tracer-free source description; every call builds fresh native plans."""
 
-    def __init__(self, node, source, recorder, program, limits, *, interface="jax"):
+    def __init__(self, node, source, recorder, program, limits, *, interface="jax", validate_derivatives=True):
         self.interface = interface
         prefixes = ("jax", "jaxlib") if interface == "jax" else ("tensorflow",)
         self.node, self.limits = copy(node), limits
@@ -133,6 +133,8 @@ class NativeHostKernel:
             # Framework second rules return an output-by-parameter HVP, never a
             # packed Hessian. Bound even the checked-error NaN result here.
             second_limits.check("max_memory_bytes", 8*(self.output_size*(1+2*self.size)+self.size*self.size))
+        if not validate_derivatives:
+            return
         # Preflight native capability and expansion without quantum execution.
         plan = self.plan(np.ones(self.size))
         limits.check("max_parameter_elements", len(plan.recorder.parameters))

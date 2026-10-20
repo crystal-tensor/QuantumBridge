@@ -3,7 +3,7 @@
 # Native gate-occurrence derivatives and executable QNode plans.
 
 from dataclasses import replace
-from copy import deepcopy
+from quantumbridge.execution.resource_context import copy_execution_payload as deepcopy
 from types import SimpleNamespace
 from uuid import uuid4
 import warnings
@@ -16,6 +16,16 @@ from quantumbridge.qml.shot_vector import ShotSpec
 from quantumbridge.utils.math import Hamiltonian, PauliString, observable_matrix
 from .adjoint import adjoint_rows, gate_derivative
 from .trace import Dual, flatten_tree, unflatten_tree
+
+
+def _physical_measurement_shots(request, shots):
+    physical = shots or 0
+    if request.kind in {"expval", "var"} and isinstance(request.observable, PauliString):
+        if all(label == "I" for _, label in request.observable.terms):
+            return 0
+    if request.kind == "expval" and isinstance(request.observable, Hamiltonian):
+        physical *= sum(any(label != "I" for _, label in word.terms) for _, word in request.observable.terms)
+    return physical
 
 
 class AngleRecorder:
@@ -114,13 +124,25 @@ class ExecutionPlan:
         return (float(np.mean(samples)) if request.kind == "expval" else float(np.var(samples))), float(np.mean(samples))
 
     def evaluate(self, values, linear=False, *, sampling_seed=...):
+        from quantumbridge.execution.resource_context import current_resources
+        resources = current_resources()
+        if resources is None:
+            return self._evaluate(values, linear, sampling_seed=sampling_seed)
+        from quantumbridge.execution.derivative_planning import device_working_bytes
+        ledger = resources.ledger
+        workspace = device_working_bytes(self.node.device, self.circuit)
+        with ledger.reserve("native_device_workspace", memory_bytes=workspace), ledger.reserve("active_native_tape", tapes=1):
+            result = self._evaluate(values, linear, sampling_seed=sampling_seed)
+            return result
+
+    def _evaluate(self, values, linear=False, *, sampling_seed=...):
         if len(values) != len(self.recorder.parameters): raise ValueError("QNode angle shape mismatch.")
         bound = self.circuit.bind(dict(zip(self.recorder.parameters, values)))
         outputs, partitions, corrections = [], [], []
         root_seed = self.node.seed if sampling_seed is ... else sampling_seed
         for shots, seed in zip(self.shots.partitions, self.shots.seeds(root_seed)):
             statistics, spans, offset, measurement_metadata, joint_metadata, device_resources = [], [], 0, [], [], []
-            def execute(request):
+            def execute_measurement(request):
                 nonlocal offset
                 if getattr(self.node.device,"simulation",None) == "matrix_product_state":
                     self.node.device.last_execution_metadata = {}
@@ -132,11 +154,7 @@ class ExecutionPlan:
                     raise ValueError("QNode measurement shots must be positive integers.")
                 if effective_shots is not None and effective_shots > self.limits.max_shots:
                     raise ValueError("QNode shots exceed max_shots.")
-                physical = effective_shots or 0
-                if request.kind in {"expval","var"} and isinstance(request.observable,PauliString) and all(label == "I" for _,label in request.observable.terms):
-                    physical = 0
-                if request.kind == "expval" and isinstance(request.observable,Hamiltonian):
-                    physical *= sum(any(label != "I" for _,label in word.terms) for _,word in request.observable.terms)
+                physical = _physical_measurement_shots(request, effective_shots)
                 measurement_metadata.append({"kind": request.kind, "shots": effective_shots, "seed": effective_seed,"physical_shots":physical})
                 if request.kind == "probs" and len(request.wires if request.wires is not None else range(bound.num_qubits)) > 16:
                     raise UnsupportedFeature("probability_output_size", "QNode probability output exceeds the native budget.")
@@ -173,6 +191,18 @@ class ExecutionPlan:
                     size = 0
                 offset += size
                 return value
+            def execute(request):
+                from quantumbridge.execution.resource_context import current_resources, measurement_shots
+                resources = current_resources()
+                if resources is None:
+                    return execute_measurement(request)
+                effective = request.shots if request.shots is not None else shots
+                if self.legacy_state_queries and request.kind in {"state", "density_matrix", "expval", "var", "probs"}:
+                    effective = None
+                if effective is None and request.kind in {"sample", "counts", "classical_shadow"}:
+                    raise UnsupportedFeature("unified_implicit_shots", "Managed sampling requires an explicit shot count.")
+                with measurement_shots(resources.ledger, _physical_measurement_shots(request, effective)):
+                    return execute_measurement(request)
             output = map_measurements(self.tree, execute)
             if linear:
                 vector, spec = flatten_tree(output)
@@ -193,6 +223,10 @@ class ExecutionPlan:
                 partition["approximation_warning"] = "MPS truncation may bias values/gradients; discarded weights are not a final infidelity bound."
                 self.resource_history.append(partition)
             partitions.append(partition)
+            from quantumbridge.execution.resource_context import current_resources
+            resources = current_resources()
+            if resources is not None:
+                resources.ledger.consume(tapes=1, category="completed_partition")
         self.metadata = {"partitions": partitions, "native_execution": True, "legacy_analytic_state_queries": self.legacy_state_queries}
         if linear:
             return outputs, corrections
@@ -265,7 +299,17 @@ class ExecutionPlan:
             requests = [terminal for request in self.requests for terminal in (
                 [MeasurementRequest("expval",observable=PauliString(word)) for word in request.observable.words]
                 if request.kind == "pauli_group" else [request])]
-            matrix = adjoint_rows(self.node.device, self.circuit, tuple(self.recorder.parameters), values, requests)
+            from contextlib import ExitStack
+            from quantumbridge.execution.resource_context import current_resources
+            resources = current_resources()
+            with ExitStack() as stack:
+                if resources is not None:
+                    from quantumbridge.execution.derivative_planning import device_working_bytes
+                    stack.enter_context(resources.ledger.reserve("first_adjoint_workspace",
+                        memory_bytes=device_working_bytes(self.node.device, self.circuit)))
+                matrix = adjoint_rows(self.node.device, self.circuit, tuple(self.recorder.parameters), values, requests)
+                if resources is not None:
+                    resources.ledger.consume(tapes=1, category="native_adjoint_sweep")
             evaluations = 1
             receipts.append({"evaluation_id":str(uuid4()),"kind":"native_adjoint_reverse_sweep","physical_shots":0})
         else:

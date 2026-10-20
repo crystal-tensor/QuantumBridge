@@ -22,6 +22,10 @@ class SecondContext:
         self.limits.check("max_input_parameters", size)
         self.size, self.node_budget, self.nodes = size, node_budget, 0
         self.directional = direction is not None
+        from quantumbridge.execution.resource_context import current_resources
+        self.resources = current_resources()
+        if self.resources is not None:
+            self.resources.retain("parameter_trace_directions", 8*size*(size if direction is None else 1))
         if direction is None:
             self.limits.check("max_hessian_elements", size*size)
             self.limits.check("max_memory_bytes", 8*size*size)
@@ -39,6 +43,8 @@ class SecondContext:
     def reserve(self):
         self.limits.check(self.node_budget, self.nodes+1)
         self.limits.check("max_memory_bytes", self.directions.nbytes + (self.nodes+1)*self.buffer_bytes_per_node)
+        if self.resources is not None:
+            self.resources.retain("parameter_trace_nodes", self.buffer_bytes_per_node)
         self.nodes += 1
 
     def constant(self, value):

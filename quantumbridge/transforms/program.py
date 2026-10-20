@@ -2,7 +2,7 @@
 # Licensed under the Apache License, Version 2.0.
 """Bounded native Tape batching; execution reuses the existing QNode plan."""
 
-from copy import deepcopy
+from quantumbridge.execution.resource_context import copy_execution_payload as deepcopy
 from dataclasses import dataclass
 from itertools import islice
 from numbers import Integral
@@ -284,6 +284,7 @@ class TransformedExecutionPlan:
 
     def __init__(self, node, tape, original_recorder, program, bindings=None):
         from quantumbridge.diff.compiled_parameters import record_compiled_parameters
+        self.source_tree = output_tree(tape)
         self.node, self.prepared, self.limits = node, program.prepare(tape), program.limits
         self.original_recorder, self.recorder = original_recorder, AngleRecorder()
         self.child_plans, self.parameter_slices = [], []

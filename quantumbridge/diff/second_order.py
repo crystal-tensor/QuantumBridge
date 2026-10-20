@@ -2,7 +2,7 @@
 # Licensed under the Apache License, Version 2.0.
 """Exact second parameter-shift rules on the existing native execution plan."""
 
-from copy import deepcopy
+from quantumbridge.execution.resource_context import copy_execution_payload as deepcopy
 from uuid import uuid4
 
 import numpy as np

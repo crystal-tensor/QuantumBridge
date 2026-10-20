@@ -9,6 +9,8 @@ from numbers import Integral
 import numpy as np
 
 from quantumbridge.results import Result
+from quantumbridge.execution.device_derivatives import NativeDeviceDerivatives
+from quantumbridge.execution.resource_context import meter_native_samples
 from quantumbridge.utils.math import (
     apply_density_channel, apply_density_operator, observable_matrix,
 )
@@ -18,7 +20,7 @@ from .execution import (
 )
 
 
-class DensityMatrixDevice:
+class DensityMatrixDevice(NativeDeviceDerivatives):
     """Native mixed-state simulation with local Kraus contractions and feedback."""
 
     simulation = "exact_density_matrix"
@@ -231,6 +233,7 @@ class DensityMatrixDevice:
         if isinstance(shots, bool) or not isinstance(shots, Integral) or shots < (0 if allow_zero else 1):
             raise ValueError("QuantumBridge density shots must be a positive integer (or zero for sample/counts).")
 
+    @meter_native_samples
     def sample(self, circuit, wires=None, shots=1, seed=None, parameters=None):
         self._shots(shots, allow_zero=True)
         bound, program = self._prepare(circuit, parameters)

@@ -11,32 +11,45 @@ from quantumbridge.core.classical import UnsupportedFeature
 class Dual:
     __array_priority__ = 1000
 
-    def __init__(self, value, derivative):
+    def __init__(self, value, derivative, *, _reserved=False):
+        if not _reserved:
+            self._reserve(np.size(derivative))
         self.value = float(value)
         self.derivative = np.asarray(derivative, dtype=float)
 
+    @staticmethod
+    def _reserve(size):
+        from quantumbridge.execution.resource_context import current_resources
+        scope = current_resources()
+        if scope is not None:
+            scope.retain("first_parameter_trace_nodes", 8*size)
+
+    def _new(self, value, compute):
+        self._reserve(self.derivative.size)
+        return Dual(value, compute(), _reserved=True)
+
     def _other(self, value):
-        return value if isinstance(value, Dual) else Dual(value, np.zeros_like(self.derivative))
+        return value if isinstance(value, Dual) else self._new(value, lambda: np.zeros_like(self.derivative))
 
     def __add__(self, other):
         other = self._other(other)
-        return Dual(self.value + other.value, self.derivative + other.derivative)
+        return self._new(self.value + other.value, lambda: self.derivative + other.derivative)
 
     __radd__ = __add__
 
-    def __neg__(self): return Dual(-self.value, -self.derivative)
+    def __neg__(self): return self._new(-self.value, lambda: -self.derivative)
     def __sub__(self, other): return self + -self._other(other)
     def __rsub__(self, other): return self._other(other) + -self
 
     def __mul__(self, other):
         other = self._other(other)
-        return Dual(self.value * other.value, self.derivative * other.value + other.derivative * self.value)
+        return self._new(self.value * other.value, lambda: self.derivative * other.value + other.derivative * self.value)
 
     __rmul__ = __mul__
 
     def __truediv__(self, other):
         other = self._other(other)
-        return Dual(self.value / other.value, (self.derivative * other.value - other.derivative * self.value) / other.value ** 2)
+        return self._new(self.value / other.value, lambda: (self.derivative * other.value - other.derivative * self.value) / other.value ** 2)
 
     def __rtruediv__(self, other): return self._other(other) / self
 
@@ -45,24 +58,23 @@ class Dual:
         value = self.value ** other.value
         if np.any(other.derivative):
             if self.value <= 0: raise UnsupportedFeature("classical_power", "Variable powers require a positive base.")
-            derivative = value * (other.derivative * np.log(self.value) + other.value * self.derivative / self.value)
+            return self._new(value, lambda: value * (other.derivative * np.log(self.value) + other.value * self.derivative / self.value))
         elif other.value == 0:
-            derivative = np.zeros_like(self.derivative)
+            return self._new(value, lambda: np.zeros_like(self.derivative))
         else:
-            derivative = other.value * self.value ** (other.value - 1) * self.derivative
-        return Dual(value, derivative)
+            return self._new(value, lambda: other.value * self.value ** (other.value - 1) * self.derivative)
 
     def __rpow__(self, other): return self._other(other) ** self
-    def sin(self): return Dual(np.sin(self.value), np.cos(self.value) * self.derivative)
-    def cos(self): return Dual(np.cos(self.value), -np.sin(self.value) * self.derivative)
-    def tan(self): return Dual(np.tan(self.value), self.derivative / np.cos(self.value) ** 2)
-    def exp(self): return Dual(np.exp(self.value), np.exp(self.value) * self.derivative)
-    def log(self): return Dual(np.log(self.value), self.derivative / self.value)
+    def sin(self): return self._new(np.sin(self.value), lambda: np.cos(self.value) * self.derivative)
+    def cos(self): return self._new(np.cos(self.value), lambda: -np.sin(self.value) * self.derivative)
+    def tan(self): return self._new(np.tan(self.value), lambda: self.derivative / np.cos(self.value) ** 2)
+    def exp(self): return self._new(np.exp(self.value), lambda: np.exp(self.value) * self.derivative)
+    def log(self): return self._new(np.log(self.value), lambda: self.derivative / self.value)
     def sqrt(self): return self ** .5
 
     def __abs__(self):
         if self.value == 0: raise UnsupportedFeature("nonsmooth_preprocessing", "Absolute value is not differentiable at zero.")
-        return Dual(abs(self.value), np.sign(self.value) * self.derivative)
+        return self._new(abs(self.value), lambda: np.sign(self.value) * self.derivative)
 
     def __float__(self):
         raise UnsupportedFeature("classical_cast", "Converting a trainable input to float loses its classical derivative.")
@@ -111,9 +123,10 @@ def trace_arguments(args, kwargs, argnums=0, argnames=(), *, order=1, direction=
         for index in np.ndindex(array.shape):
             position = offset + np.ravel_multi_index(index, array.shape)
             if context is None:
+                Dual._reserve(total)
                 derivative = np.zeros(total)
                 derivative[position] = 1
-                traced[index] = Dual(array[index], derivative)
+                traced[index] = Dual(array[index], derivative, _reserved=True)
             else:
                 traced[index] = context.variable(array[index], position)
         value = traced.item() if array.ndim == 0 else traced

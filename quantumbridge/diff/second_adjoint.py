@@ -2,7 +2,7 @@
 # Licensed under the Apache License, Version 2.0.
 """Native tangent-over-reverse second derivatives with constant state buffers."""
 
-from copy import deepcopy
+from quantumbridge.execution.resource_context import copy_execution_payload as deepcopy
 from uuid import uuid4
 
 import numpy as np
@@ -144,6 +144,25 @@ def execute_second_adjoint(plan, values, classical, classical_second, direction,
     flat, spec = flatten_tree(result_payload(base))
     if flat.size != work["output_size"]:
         raise ValueError("Second adjoint output changed after preflight.")
+    from contextlib import ExitStack
+    from quantumbridge.execution.resource_context import current_resources
+    resources = current_resources()
+    with ExitStack() as stack:
+        if resources is not None:
+            ledger = resources.ledger
+            vector_bytes = 16*(1 << plan.circuit.num_qubits)
+            for name, count in (("adjoint_forward_states", 4), ("adjoint_tangent_states", 4),
+                                ("adjoint_reverse_states", 8), ("adjoint_temporary_states", 4)):
+                stack.enter_context(ledger.reserve(name, memory_bytes=count*vector_bytes))
+            other = work["combined_working_buffer_bytes"]-work["derivative_buffer_bytes"]-20*vector_bytes
+            stack.enter_context(ledger.reserve("adjoint_local_matrices", memory_bytes=other))
+            ledger.consume(tapes=classical.shape[1] if direction is None else 1,
+                           category="native_second_adjoint_directions")
+        return _execute_second_adjoint(plan, values, classical, classical_second, direction, work,
+                                       base, base_metadata, flat, spec)
+
+
+def _execute_second_adjoint(plan, values, classical, classical_second, direction, work, base, base_metadata, flat, spec):
     width, size = plan.circuit.num_qubits, classical.shape[1]
     columns = size if direction is None else 1
     jacobian = np.zeros((flat.size, size))

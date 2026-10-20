@@ -35,6 +35,8 @@ class TensorFlowBridgeLimits:
 
 
 def execute_tensorflow(node, args, kwargs, *, return_status=False):
+    if getattr(node, "unified_limits", None) is not None:
+        raise UnsupportedFeature("tensorflow_unified_graph_resources", "Ordinary TensorFlow graph callbacks do not yet have a shared request account; use explicit native derivative-status queries for per-request budgets.")
     try:
         import tensorflow as tf
     except ImportError as exc:

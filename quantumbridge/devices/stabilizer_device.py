@@ -10,11 +10,13 @@ import numpy as np
 
 from quantumbridge.core import Circuit, Measurement
 from quantumbridge.results import Result
+from quantumbridge.execution.device_derivatives import NativeDeviceDerivatives
+from quantumbridge.execution.resource_context import meter_native_samples
 from quantumbridge.utils.math import gate_matrix
 from .execution import apply_readout_distribution, condition_enabled, validate_conditions, validate_wires, needs_dynamic_engine
 
 
-class StabilizerDevice:
+class StabilizerDevice(NativeDeviceDerivatives):
     """Tableau execution, including ordered measurement, reset and classical branches."""
 
     simulation = "exact_stabilizer"
@@ -274,6 +276,7 @@ class StabilizerDevice:
             second += weight * state.expectation_value(squared).real
         return max(0.0, float(second - first ** 2))
 
+    @meter_native_samples
     def sample(self, circuit, wires=None, shots=1, seed=None, parameters=None):
         if not isinstance(shots, Integral) or shots < 0:
             raise ValueError("QuantumBridge stabilizer shots must be a non-negative integer.")

@@ -1,11 +1,19 @@
 # Third-party Notices
 
-Status: Stage 11P-C2A native second-adjoint checkpoint
-Date: 2026-10-20
+Status: Stage 11P-C3 work in progress; C2A committed
+Date: 2026-10-21
 
 QuantumBridge is an independent project. References to Qiskit and PennyLane are for attribution, compatibility, and optional adapter documentation only and do not imply endorsement.
 
 ## Native Template Verification
+
+Stage 11P-C3 currently adds independently authored native Device requests,
+resource reservations and structured derivative outcomes around the existing
+native plans, plus explicit optional CPU JAX/TF derivative-status queries.
+Frameworks supply classical source maps only; no quantum SDK implementation or
+test source is read/copied as the native engine. This work is in progress,
+not complete C3 or full Device/SDK parity. Focused observations do not establish
+strict process memory bounds, complete framework graph budgeting or remote CI.
 
 Stage 11P-C2A independently differentiates QuantumBridge's existing reverse-state
 gradient recurrence in a tangent direction. Native gate matrices, observable
