@@ -280,26 +280,27 @@ class NativeHostKernel:
         self.limits.check("max_callback_executions", len(active))
         limits = resolve_higher_order_limits(self.node.higher_order_limits)
         limits.check("max_memory_bytes", 8*(incoming.size+2*self.size))
-        totals = dict.fromkeys(("shift_count", "tape_count", "physical_shots"), 0)
+        totals = dict.fromkeys(("shift_count", "tape_count", "physical_shots", "adjoint_operations"), 0)
         def check_totals(work):
             limits.check("max_shifted_circuits", work["shift_count"])
             limits.check("max_total_tapes", work["tape_count"])
             limits.check("max_total_physical_shots", work["physical_shots"])
+            limits.check("max_adjoint_operations", work["adjoint_operations"])
             self.limits.check("max_total_shots", work["physical_shots"])
         for index in active:
             prepared = self.prepare_second(values, direction=incoming[index])
             work = prepared[-1]
             del prepared
-            for key in totals: totals[key] += work[key]
+            for key in totals: totals[key] += work.get(key, 0)
             check_totals(totals)
         result, receipts = np.zeros(self.size), []
         observed = dict.fromkeys(totals, 0)
         for index in active:
             prepared = self.prepare_second(values, direction=incoming[index])
-            check_totals({key: observed[key]+prepared[-1][key] for key in observed})
+            check_totals({key: observed[key]+prepared[-1].get(key, 0) for key in observed})
             _, _, product, metadata = self._execute_second(prepared, incoming[index])
             result += product[index, :, 0]
-            for key in observed: observed[key] += metadata["second_order_work"][key]
+            for key in observed: observed[key] += metadata["second_order_work"].get(key, 0)
             receipts.append({"output_row": index, **metadata})
             del prepared
         if observed != totals:

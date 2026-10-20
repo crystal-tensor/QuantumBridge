@@ -1,6 +1,6 @@
 # Source Migration Ledger
 
-Status: Stage 11P-C2 streamed framework HVP checkpoint
+Status: Stage 11P-C2A native second-adjoint checkpoint
 Date: 2026-10-20
 
 This ledger retains historical release and checkpoint sections. Current work
@@ -8,6 +8,26 @@ uses Native Implementation, Adapter Integration and Upstream Dependency, with
 their boundaries stated separately. Historical checkpoint limitations are not
 the current status view; use core_parity_ledger.md for that view.
 No Source Port with Attribution was performed.
+
+## Stage 11P-C2A Native Second Adjoint
+
+Native Implementation, zero upstream implementation/test source ports. The
+existing native reverse gradient recurrence is differentiated independently;
+Jones/Gacon's public first-order adjoint paper is a mathematical reference only.
+No quantum SDK is an execution or derivative engine for this path.
+
+| Files | Changes | Independent evidence |
+| --- | --- | --- |
+| `quantumbridge/diff/second_adjoint.py` | Native forward state tangent and reverse curvature; direct source-map Hessian/HVP contraction | Trigonometric controlled-frequency and complex matrix references, variance, probabilities, stationary maps and zero shifted circuits |
+| `quantumbridge/diff/higher_order_limits.py`, `quantumbridge/diff/second_order.py` | Explicit adjoint dispatch, combined working-buffer and aggregate child work preflight; actual second processors retained | Resource failures before native execution, live coefficient/cross-child rules and existing shift regressions |
+| `quantumbridge/interfaces/native_host.py` | Aggregate transposed-output-row adjoint work preflight | JAX reverse-mode limit rejects before executing any row |
+| `tests/qml/test_native_second_adjoint.py`, `tests/interfaces/test_native_second_adjoint_frameworks.py` | Independently authored native math, true four-framework second graphs and unsupported negatives | Initial three real red contracts; long shared-parameter/no-shift execution and eager/JIT composition |
+| `tests/compat/test_native_second_order_pennylane_differential.py` | Native second adjoint additionally compared to public backprop Hessians | Four new actual public numerical scenarios; prior public shift limitations retained separately |
+| `tests/qml/test_native_second_order.py`, `tests/qml/test_native_second_order_workflows.py`, `examples/native_framework_hvp.py` | Valid adjoint replaces obsolete analytic rejection; sampled rejection retained; H2 Newton/example supports both methods | Actual one-build fixed-geometry H2 second derivatives/updates, no tolerance relaxation |
+| `docs/implementation/stage11p_c2a_native_second_adjoint_audit.md`, `docs/implementation/stage11p_c2a_native_second_adjoint_report.md`, `docs/compat/core_parity_ledger.md`, `README.md`, `THIRD_PARTY_NOTICES.md` | Observed gaps, implementation math, scoped receipts and complete remaining boundaries | Full replacement is not declared complete by this checkpoint |
+
+No Studio/Router, tag/release, package/environment tree, source vendoring,
+credential, authentication/TLS or cloud/hardware work is included.
 
 ## Stage 11P-C2 Streamed Framework HVPs
 

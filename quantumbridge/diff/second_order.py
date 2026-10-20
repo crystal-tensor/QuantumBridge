@@ -45,8 +45,11 @@ def second_seeds(count, classical, classical_second, direction, limits):
 def second_work(plan, values, classical, classical_second, direction, limits, method=None):
     """Validate all recipes and planned physical work before the first execution."""
     requested = method or plan.node.diff_method
+    if requested == "adjoint":
+        from .second_adjoint import second_adjoint_work
+        return second_adjoint_work(plan, values, classical, classical_second, direction, limits)
     if requested not in {"best", "parameter-shift"}:
-        raise UnsupportedFeature("second_order_method", "Native second order currently implements exact parameter-shift, not adjoint or finite differences.")
+        raise UnsupportedFeature("second_order_method", "Native second order supports parameter-shift or analytic statevector adjoint, not finite differences.")
     plan.gradient_capability("parameter-shift")
     limits.check("max_derivative_order", 2)
     fixed_sampling_schedule = direction is not None and (
@@ -140,6 +143,9 @@ def execution_second_derivatives(plan, values, method=None, *, direction=None, c
         raise ValueError("Second-order gate values must be finite real scalars matching the recorded occurrences.")
     classical, classical_second, direction = second_seeds(len(values), classical, classical_second, direction, limits)
     recipes, pairs, projections, work = second_work(plan, values, classical, classical_second, direction, limits, method)
+    if work.get("method") == "adjoint":
+        from .second_adjoint import execute_second_adjoint
+        return execute_second_adjoint(plan, values, classical, classical_second, direction, work)
     receipts = []
     sequence = np.random.SeedSequence(plan.node.seed, spawn_key=(2,))
 
@@ -230,10 +236,15 @@ def transformed_second_work(plan, values, classical, classical_second, direction
         works.append(second_work(child, values[start:stop], classical[start:stop], classical_second[start:stop], direction, limits, method)[3])
     totals = {key: sum(work[key] for work in works) for key in
               ("shift_count", "first_shift_count", "second_shift_count", "evaluation_count", "tape_count", "physical_shots", "sample_elements", "derivative_buffer_bytes")}
+    totals["adjoint_operations"] = sum(work.get("adjoint_operations", 0) for work in works)
     limits.check("max_shifted_circuits", totals["shift_count"])
     limits.check("max_total_tapes", totals["tape_count"])
     limits.check("max_total_physical_shots", totals["physical_shots"]+plan.forward_physical_shots)
     limits.check("max_memory_bytes", totals["derivative_buffer_bytes"]+8*classical.size+8*classical_second.size)
+    limits.check("max_adjoint_operations", totals["adjoint_operations"])
+    if any(work.get("method") == "adjoint" for work in works):
+        limits.check("max_memory_bytes", max(work.get("combined_working_buffer_bytes", 0) for work in works)
+                     +totals["derivative_buffer_bytes"]+8*(classical.size+classical_second.size))
     plan.limits.check("max_total_shots", totals["physical_shots"]+plan.forward_physical_shots)
     plan.limits.check("max_sample_values", totals["sample_elements"])
     check_batch(plan.prepared.tapes, plan.limits)
@@ -270,16 +281,19 @@ def transformed_second_derivatives(plan, values, method=None, *, direction=None,
     physical = sum(child.metadata["total_physical_shots"] for child in plan.child_plans)
     if physical != totals["physical_shots"]:
         raise RuntimeError("Actual transformed second-order physical work differs from preflight.")
-    plan.metadata.update(derivative_order=2, gradient_method="parameter-shift",
-        second_order_method="convolved exact parameter-shift", hvp_streamed=direction is not None,
+    adjoint = bool(executions) and all(child["gradient_method"] == "adjoint" for child in executions)
+    plan.metadata.update(derivative_order=2, gradient_method="classical-only" if not executions else "adjoint" if adjoint else "parameter-shift",
+        second_order_method="native classical second chain rule" if not executions else "native tangent-over-reverse adjoint" if adjoint else "convolved exact parameter-shift", hvp_streamed=direction is not None,
         postprocessing_second_chain_rule=True, native_postprocessing_derivative=True,
         first_shifted_evaluation_count=totals["first_shift_count"], second_shifted_evaluation_count=totals["second_shift_count"],
-        shifted_evaluation_count=totals["shift_count"], derivative_evaluation_count=totals["shift_count"],
+        shifted_evaluation_count=totals["shift_count"],
+        derivative_evaluation_count=sum(child.get("derivative_evaluation_count", 0) for child in executions),
         second_order_executions=deepcopy(executions), second_order_work=totals,
         gradient_physical_shots=physical, preceding_forward_physical_shots=plan.forward_physical_shots,
         total_physical_shots=physical+plan.forward_physical_shots,
         gradient_semantics="finite-shot estimate" if finite else "analytic",
         postprocessing_derivative_nodes=context.nodes,
-        differentiation_path="actual child second shift rules -> native processor second chain rule -> source classical graph",
-        memory_budget_scope="classical trace and derivative buffers; native device state limits apply separately")
+        adjoint_second_sweeps=sum(child.get("adjoint_second_sweeps", 0) for child in executions),
+        differentiation_path="actual child second derivatives -> native processor second chain rule -> source classical graph",
+        memory_budget_scope="combined second-adjoint child working buffers plus parent derivative arrays" if adjoint else "classical trace and derivative buffers; native device state limits apply separately")
     return value, matrix, second, spec

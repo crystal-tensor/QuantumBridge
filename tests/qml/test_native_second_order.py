@@ -121,7 +121,7 @@ def test_finite_shot_linear_expectation_independent_streams_and_actual_work():
     ({"higher_order_limits": HigherOrderLimits(max_derivative_order=1)}, None, MemoryError),
     ({"shots": 100, "seed": 7, "higher_order_limits": HigherOrderLimits(max_total_physical_shots=700)}, None, MemoryError),
     ({"shots": 100}, None, UnsupportedFeature),
-    ({}, "adjoint", UnsupportedFeature), ({}, "finite-diff", UnsupportedFeature),
+    ({"shots": 100, "seed": 7}, "adjoint", UnsupportedFeature), ({}, "finite-diff", UnsupportedFeature),
 ])
 def test_preflight_limits_and_unsupported_methods_execute_no_quantum_work(options, method, error, monkeypatch):
     node = QNode(_ry_z, 1, max_diff=2, **options)

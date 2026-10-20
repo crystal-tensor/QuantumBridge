@@ -15,9 +15,9 @@ from quantumbridge.qml import QNode
 from quantumbridge.transforms import TransformProgram, merge_rotations, split_non_commuting
 
 
-def framework_product(interface, program, point, direction):
+def framework_product(interface, program, point, direction, method="parameter-shift"):
     node = TransformProgram((merge_rotations, split_non_commuting))(
-        QNode(program, 4, interface=interface, max_diff=2, diff_method="parameter-shift",
+        QNode(program, 4, interface=interface, max_diff=2, diff_method=method,
               higher_order_limits=HigherOrderLimits(max_hessian_elements=1)))
     if interface == "torch":
         import torch
@@ -49,7 +49,7 @@ def framework_product(interface, program, point, direction):
     return float(value), np.asarray(product, dtype=float)
 
 
-def main(interfaces=("torch",), chemistry=False):
+def main(interfaces=("torch",), chemistry=False, method="parameter-shift"):
     builds = 0
     if chemistry:
         problem = qchem.molecular_hamiltonian_native(qchem.Molecule(["H", "H"], [(0, 0, 0), (0, 0, 1.4)], unit="bohr"))
@@ -78,12 +78,12 @@ def main(interfaces=("torch",), chemistry=False):
     guard = patch.object(qchem, "molecular_hamiltonian_native", side_effect=AssertionError("Fixed-geometry integrals must not be rebuilt during framework HVPs")) if chemistry else nullcontext()
     with guard:
         for interface in interfaces:
-            value, product = framework_product(interface, circuit, point, direction)
+            value, product = framework_product(interface, circuit, point, direction, method)
             tolerance = 5e-6 if interface == "jax" else 3e-10
             np.testing.assert_allclose(value, expected_value, atol=tolerance, rtol=0)
             np.testing.assert_allclose(product, expected, atol=tolerance, rtol=0)
             receipts.append({"interface": interface, "value": value, "hvp": product.tolist(), "native_full_hessian_budget": 1})
-    result = {"geometry_builds": builds, "fixed_geometry": bool(chemistry), "receipts": receipts}
+    result = {"geometry_builds": builds, "fixed_geometry": bool(chemistry), "method": method, "receipts": receipts}
     print(json.dumps(result, indent=2))
     return result
 
@@ -92,6 +92,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--interface", choices=("torch", "autograd", "jax", "tf", "all"), default="torch")
     parser.add_argument("--chemistry", action="store_true")
+    parser.add_argument("--method", choices=("parameter-shift", "adjoint"), default="parameter-shift")
     args = parser.parse_args()
     selected = ("torch", "autograd", "jax", "tf") if args.interface == "all" else (args.interface,)
-    main(selected, args.chemistry)
+    main(selected, args.chemistry, args.method)

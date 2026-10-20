@@ -1,11 +1,21 @@
 # Third-party Notices
 
-Status: Stage 11P-C2 streamed framework HVP checkpoint
+Status: Stage 11P-C2A native second-adjoint checkpoint
 Date: 2026-10-20
 
 QuantumBridge is an independent project. References to Qiskit and PennyLane are for attribution, compatibility, and optional adapter documentation only and do not imply endorsement.
 
 ## Native Template Verification
+
+Stage 11P-C2A independently differentiates QuantumBridge's existing reverse-state
+gradient recurrence in a tangent direction. Native gate matrices, observable
+actions and statevector execution remain the engine. Jones and Gacon's public
+adjoint-gradient paper is a mathematical reference, not implementation source
+or a claim that its first-order algorithm supplies this second-order extension.
+Tests use independent trigonometric/matrix formulas, native parameter shifts and
+real classical framework graphs. No upstream implementation/test ports, private
+quantum derivative helper, cloud/token/hardware call or vendored tree is added.
+The complete functional replacement goal remains incomplete.
 
 Stage 11P-C2 independently streams framework HVPs through the existing native
 second-order engine. Optional Autograd public primitive VJP registration and

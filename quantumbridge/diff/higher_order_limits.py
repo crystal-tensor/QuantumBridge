@@ -13,6 +13,7 @@ class HigherOrderLimits:
     max_output_elements: int = 100000
     max_hessian_elements: int = 2000000
     max_shifted_circuits: int = 10000
+    max_adjoint_operations: int = 50000000
     max_total_tapes: int = 20000
     max_total_physical_shots: int = 1000000
     max_parameter_graph_nodes: int = 100000

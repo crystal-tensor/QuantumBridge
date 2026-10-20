@@ -11,8 +11,9 @@ from quantumbridge.transforms import split_non_commuting
 
 
 @pytest.mark.parametrize("scenario", ["ry", "controlled_two_frequencies", "nonlinear_qwc_loss", "live_coefficient_qwc"])
-@pytest.mark.parametrize("public_method", ["parameter-shift", "backprop"])
-def test_public_pennylane_second_derivatives(scenario, public_method):
+@pytest.mark.parametrize("native_method,public_method", [
+    ("parameter-shift", "parameter-shift"), ("parameter-shift", "backprop"), ("adjoint", "backprop")])
+def test_public_pennylane_second_derivatives(scenario, native_method, public_method):
     pl = pytest.importorskip("pennylane")
     autograd = pytest.importorskip("autograd")
     anp = pytest.importorskip("autograd.numpy")
@@ -36,7 +37,7 @@ def test_public_pennylane_second_derivatives(scenario, public_method):
             return pl.expval(pl.Hamiltonian([coefficient, .2], [pl.X(0), pl.X(0)@pl.Z(1)]))
         pl.RY(x[0], wires=0)
         return pl.expval(pl.Z(0))
-    a = QNode(native, 2, interface="autograd", max_diff=2, diff_method="parameter-shift")
+    a = QNode(native, 2, interface="autograd", max_diff=2, diff_method=native_method)
     b = pl.QNode(public, pl.device("default.qubit", wires=2), interface="autograd", diff_method=public_method, max_diff=2)
     nonlinear = scenario in {"nonlinear_qwc_loss", "live_coefficient_qwc"}
     if nonlinear:

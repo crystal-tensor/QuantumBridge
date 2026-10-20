@@ -1010,8 +1010,10 @@ and actual CPU Torch/Autograd/JAX/TF second-order graphs. The default remains
 first order; third derivatives explicitly reject. Quantum second derivatives
 use convolved exact parameter-shift recipes, including the two frequencies of
 controlled rotations, not finite differences or an upstream quantum engine.
-`best` selects parameter-shift for second order; explicit second-order adjoint
-and simulator backprop are not implemented.
+`best` still selects parameter-shift for second order. Explicit `adjoint` now
+uses native tangent-over-reverse second derivatives on analytic, noiseless,
+unitary StatevectorDevice plans. Sampled, mixed/MPS and general dynamic second
+adjoint paths remain unsupported; simulator backprop is not implemented.
 
 ```python
 import numpy as np
@@ -1054,14 +1056,22 @@ are tested separately.
 Hessian storage, shifted circuits, tapes, shots, trace/processor nodes and
 derivative-buffer memory. Native devices retain their separate state-memory
 limits; this is not a universal process-memory or arbitrary-user-code limit.
+Second adjoint additionally preflights a conservative combined bound for its
+working state vectors and derivative buffers against both memory limits, plus
+`max_adjoint_operations` dense-element work. It replays one forward tangent and
+one reverse curvature sweep per output/direction without retaining the entire
+state trajectory. This path does not allocate quantum gate-pair Hessians or
+substitute shifted circuits. Source graph ownership and arbitrary user converter
+internals are outside the combined working-buffer claim.
 Non-dense 100-wire MPS and fixed-geometry H2 ansatz tests do not imply arbitrary
 MPS efficiency, geometry Hessians, differentiable Hartree-Fock or full parity.
 
 Run `python -m examples.native_qnode_second_order` or
 `python -m examples.native_framework_hvp --interface all --chemistry`.
 The latter reuses one native H2 Hamiltonian build across all four frameworks.
+Add `--method adjoint` to run the same workflow through second adjoint.
 Current receipts and remaining gaps:
-[streamed framework HVP report](docs/implementation/stage11p_c2_streamed_framework_hvp_report.md).
+[second-adjoint report](docs/implementation/stage11p_c2a_native_second_adjoint_report.md).
 
 ## Native Molecular Chemistry Checkpoint
 

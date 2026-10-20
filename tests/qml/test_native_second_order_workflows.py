@@ -66,12 +66,13 @@ def fixed_h2():
     return circuit, reference
 
 
-def test_native_fixed_h2_hessian_hvp_and_real_regularized_newton_updates(fixed_h2, monkeypatch):
+@pytest.mark.parametrize("method", ["parameter-shift", "adjoint"])
+def test_native_fixed_h2_hessian_hvp_and_real_regularized_newton_updates(fixed_h2, monkeypatch, method):
     circuit, reference = fixed_h2
     def forbidden(*unused, **kwargs): raise AssertionError("Fixed molecular geometry/integrals rebuilt during ansatz derivatives")
     monkeypatch.setattr(qchem, "molecular_hamiltonian_native", forbidden)
-    node = TransformProgram((merge_rotations, split_non_commuting))(QNode(circuit, 4, max_diff=2))
-    unsplit = QNode(circuit, 4, max_diff=2)
+    node = TransformProgram((merge_rotations, split_non_commuting))(QNode(circuit, 4, max_diff=2, diff_method=method))
+    unsplit = QNode(circuit, 4, max_diff=2, diff_method=method)
     angle, initial = .3, reference(.3)[0]
     for iteration in range(3):
         value, second = node.execute_and_compute_hessian(angle)
