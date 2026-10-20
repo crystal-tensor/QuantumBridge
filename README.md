@@ -728,6 +728,7 @@ python -m examples.native_transform_program
 python -m examples.native_transform_qnode
 python -m examples.native_measurement_splitting
 python -m examples.native_qchem_transform_energy
+python -m examples.native_qwc_shot_allocation
 ```
 
 `split_hamiltonian` is an internal expval-to-term-Tapes prototype, **not**
@@ -747,11 +748,38 @@ reconstructed. It is not QWC grouping. `cancel_inverses`, bounded native
 layout/routing engine but rejects unproved measurement remapping/ancilla growth.
 Definitions are native Circuit/Instruction/Template objects, not SDK source.
 
-Shot vectors remain per-child/per-measurement budgets, not a shared-shot
-allocator. Transformed autodiff is not yet delivered: live framework/Dual
+The separate `split_non_commuting` transform now groups native Pauli
+expvals/Pauli variances using QWC, disjoint `wires`, or no grouping. Default is
+QWC for this all-Pauli subset. Generally commuting XX/YY do **not** share a
+local-basis group. Each finite-shot group makes one native `Device.sample`
+call and derives all its word eigenvalues from that exact joint bitstring
+buffer. Metadata retains the basis, actual sampling IDs, bitstrings,
+coefficients, means, covariance, allocated shots and source output mapping.
+
+`shot_dist=None` gives every group the full shots; `"uniform"` and `"weighted"`
+share a total budget, conserving each shot-vector partition independently.
+Weighted allocation uses group coefficient L1 norms. Integer shares are
+floored, with remainder shots assigned in group order. Insufficient effective
+group samples reject; weighted zero-contribution groups are omitted.
+Hamiltonian expectation uncertainty includes within-group covariance and
+independent-group estimator variances. A single shot has unknown standard
+error, not a fabricated zero error. This is not a full quantum Hamiltonian
+variance across incompatible groups or a certified hardware error bound.
+
+Public tests use PennyLane 0.44.1/0.42.3; the older version has no `shot_dist`
+API. The newer version flattens distributed shot vectors and can omit groups
+with zero allocated shots. Native partition preservation and explicit
+undersampling rejection are documented differences, not full public parity.
+General observables, local measurement overrides, sum variances, random/custom
+allocation and complete transform APIs remain unsupported.
+
+Other transforms retain their per-child/per-measurement shot semantics.
+Transformed autodiff is not yet delivered: live framework/Dual
 inputs explicitly reject rather than detach. Native ordinary QNode gradients
 remain separate. Full Stage 11O-B and full SDK parity are incomplete. See the
 [B2/B3 report](docs/implementation/stage11o_b2_b3_native_transform_report.md).
+Actual grouped sampling and its boundaries are in the
+[B4 report](docs/implementation/stage11o_b4_native_qwc_shot_allocation_report.md).
 
 ## Native Molecular Chemistry Checkpoint
 

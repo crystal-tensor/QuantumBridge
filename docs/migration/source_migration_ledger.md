@@ -5,6 +5,28 @@ Date: 2026-06-05
 
 This ledger records implementation mode and upstream source status for the current P1 release-candidate baseline. Current work uses Native Implementation, Adapter Integration, and Upstream Dependency. No new upstream source migration was introduced during Stage 5.5. No Source Port with Attribution was performed.
 
+## Stage 11O-B4 Native QWC And Shot Allocation
+
+Native Implementation, zero implementation/test source ports. Native Tape,
+QNode, Device sampling and existing parameter binding are reused. Public
+PennyLane 0.44.1/0.42.3 APIs are behavioral oracles only. No upstream source,
+private helpers, tests, credentials, package artifacts or environments are
+copied, imported as implementations or vendored.
+
+| Files | Independently implemented behavior | Evidence |
+| --- | --- | --- |
+| `quantumbridge/qml/pauli_group.py`, `quantumbridge/diff/qnode_engine.py` | Validated common Pauli basis, actual single shared native sample buffer, per-word eigenvalues, exact/empirical covariance and truthful execution receipts | XX/YY non-QWC counterexample, per-shot X/XZ equality, Y sign/wire order, covariance/anticorrelation, density/dynamic/MPS execution |
+| `quantumbridge/qml/qnode.py` | Reject currently unsupported transformed live input graphs before a builder can detach coefficient-only inputs | Red/green Torch coefficient-only counterexample; ordinary untransformed behavior unchanged |
+| `quantumbridge/transforms/qwc.py`, `quantumbridge/transforms/program.py`, `quantumbridge/transforms/__init__.py` | Bounded grouping, deduplication/identity offsets/nested reconstruction, deterministic uniform/weighted allocation, sibling allocation validation and resource budgets | Integer/partition conservation, copies/seed independence, budget/undersampling errors and unchanged B1-B3 regressions |
+| `tests/transforms/test_native_qwc_grouping.py`, `tests/compat/test_native_qwc_differential.py` | Independent mathematical/runtime/counterexample tests and public API differential scenarios | Both installed public PennyLane versions; real geometry-generated H2 execution |
+| `examples/native_qwc_shot_allocation.py` | SDK-free shared sampling example with group IDs, basis, counts, shots, energy and standard error | Per-partition physical-shot conservation and numerical assertions |
+| `docs/implementation/stage11o_b4_native_qwc_shot_allocation_report.md`, `docs/compat/core_parity_ledger.md`, `README.md`, `THIRD_PARTY_NOTICES.md` | Actual supported contracts, version differences, test receipts and remaining work | Full replacement remains incomplete; B5 derivatives and B6 defer/integration remain open |
+
+Public 0.42.3 has no shot allocation API; 0.44.1 collapses distributed shot
+vectors and may omit zero-shot groups. Native preservation of partitions and
+explicit rejection of undersampled nonzero groups are documented differences,
+not claimed parity. No new source port was performed.
+
 ## Stage 11O-B2/B3 Native QNode And Basic Transforms
 
 Native Implementation; no implementation/test source ports. Optional public

@@ -1,6 +1,6 @@
 # Core Functional Parity Ledger
 
-Updated: 2026-10-20, Stage 11O-B2/B3 QNode/basic transform checkpoint, starting from local `7e00be7`.
+Updated: 2026-10-20, Stage 11O-B4 native QWC/shot allocation checkpoint, starting from local `d8d8741`.
 This is the single current-status view. Full Qiskit/PennyLane functional
 replacement remains **incomplete**. Line coverage, inventories, passthrough and
 green CI are not proof of complete API coverage.
@@ -138,13 +138,18 @@ or public comparison passed. The status applies only to the supported subset.
 | compile | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: actual native target/routing/basis pipeline with equal-width restored identity measurement maps | Full public pipeline/API and generalized measurement/layout remapping |
 | Internal split_hamiltonian prototype | NATIVE_TESTED; PARTIAL: real per-term child execution, identity/duplicates/zero/static coefficients, nested and shot-vector reconstruction | Not public split_to_single_terms parity; no QWC grouping or shot allocation |
 | split_to_single_terms | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: one Tape, deduplicated native Pauli measurements, identity/zero/duplicate coefficients, nested/shot reconstruction | General symbolic observables, trainable coefficients and full public/gradient protocols |
-| split_non_commuting | NOT_STARTED | True QWC grouping, joint samples, shot allocation and native gradient integration |
+| split_non_commuting | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: actual native Pauli QWC/wires/None grouping, shared joint bitstrings, identity/duplicate/tree reconstruction and covariance | General observables/measurement kinds, full default/cache/operation protocol and transformed native gradients |
+| QWC shot distribution | NATIVE_TESTED; PARTIAL: full per-group budget or deterministic uniform/L1-weighted total allocation, exact per-vector-partition conservation | Random/custom allocation and full SDK parity; PL 0.42.3 has no allocation API, PL 0.44.1 flattens distributed vectors and may drop undersampled groups |
+| QWC estimator statistics | NATIVE_TESTED; PARTIAL: exact analytic group covariance or real empirical shared-sample covariance and source expectation standard error | Not full quantum variance across incompatible groups, uncertainty of variance estimators or calibrated hardware confidence guarantees |
 | defer_measurements | NOT_STARTED | Proved coherent supported subset with explicit dynamic limits |
 
 Remaining Stage 11O-B requirements stay active. Eight executable template
-families and the B1-B3 execution foundation do not establish full template or
+families and the B1-B4 execution foundation do not establish full template or
 transform parity. Framework scalar graphs survive transformation, but the
 new executor explicitly rejects transformed input autodiff until B5.
+Native weighted zero-contribution groups can be omitted, but a nonzero group
+with zero assigned samples explicitly rejects instead of silently biasing the
+answer. These documented boundaries must not be described as full parity.
 
 ## Stage 11O Chemistry Progress
 
@@ -216,6 +221,7 @@ it is historical, not a second current status table.
 - [Stage 11O-A template checkpoint](../implementation/stage11o_ab_native_templates_report.md)
 - [Stage 11O-B1 transform checkpoint](../implementation/stage11o_b1_native_transform_execution_report.md)
 - [Stage 11O-B2/B3 QNode and basic transforms](../implementation/stage11o_b2_b3_native_transform_report.md)
+- [Stage 11O-B4 QWC joint samples and shots](../implementation/stage11o_b4_native_qwc_shot_allocation_report.md)
 
 Stage 11L exact-SHA CI: 39259350086, 22/22 success. Its clean local runs:
 SDK-free 899 passed/116 skipped, installed 1090/4, alternate 1054/40, measured

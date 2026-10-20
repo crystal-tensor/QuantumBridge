@@ -34,6 +34,10 @@ class QNode:
 
     def _construct(self, args, kwargs):
         from quantumbridge.diff.qnode_engine import AngleRecorder, ExecutionPlan, measurement_tree
+        if self.transform_program is not None:
+            from quantumbridge.interfaces.qnode_autodiff import _leaves
+            from quantumbridge.transforms.program import _reject_live
+            _reject_live(_leaves((args, kwargs)))
         recorder = AngleRecorder()
         tape = Tape(self.num_qubits, recorder, shots=self.shots, seed=self.seed)
         returned = self.fn(tape, *args, **kwargs)

@@ -7,6 +7,16 @@ QuantumBridge is an independent project. References to Qiskit and PennyLane are 
 
 ## Native Template Verification
 
+Stage 11O-B4 independently implements bounded native Pauli QWC grouping,
+deterministic integer shot allocation, one actual Device.sample buffer per
+finite-shot group, covariance statistics and source result reconstruction.
+Existing QuantumBridge Tape/QNode/Device engines are reused. PennyLane public
+documentation and 0.44.1/0.42.3 public calls are optional black-box references;
+no SDK implementation/test files were opened or copied, no private SDK helpers
+are imported, and no upstream source, package artifacts, credentials or
+environments are vendored. Documented API/version differences remain; complete
+transform/gradient parity and upstream endorsement are not claimed.
+
 Stage 11O-B2/B3 independently implements native QNode/callable transform
 dispatch, parameter reconstruction, inverse cancellation, bounded native
 definition/basis decomposition, target compilation and single-term measurement

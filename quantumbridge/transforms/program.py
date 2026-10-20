@@ -29,6 +29,7 @@ class TransformLimits:
     max_structure_depth: int = 64
     max_postprocessing_nodes: int = 100000
     max_total_shots: int = 1000000
+    max_sample_values: int = 2000000
 
     def __post_init__(self):
         if any(isinstance(value, bool) or not isinstance(value, Integral) or value < 1
@@ -99,9 +100,9 @@ def operation_count(circuit, limits):
     return count
 
 
-def check_batch(tapes, limits):
+def check_batch(tapes, limits, *, shot_budget=True):
     limits.check("max_tapes", len(tapes))
-    operations, shots = 0, 0
+    operations, shots, sample_values = 0, 0, 0
     for tape in tapes:
         if not isinstance(tape, Tape):
             raise TypeError("Transform children must be native Tape objects.")
@@ -119,12 +120,21 @@ def check_batch(tapes, limits):
                 count = request.shots if request.shots is not None else partition
                 if legacy_analytic and request.kind in {"state", "density_matrix", "expval", "var", "probs"}:
                     count = None
+                if count is not None and (isinstance(count, bool) or not isinstance(count, Integral) or count < 1):
+                    raise ValueError("Transform measurement shots must be positive integers.")
+                if request.kind == "pauli_group":
+                    from quantumbridge.qml.pauli_group import PauliGroup
+                    group = request.observable
+                    if not isinstance(group, PauliGroup):
+                        raise TypeError("Joint measurement requires a native PauliGroup.")
+                    group.validate(tape.circuit.num_qubits)
+                    sample_values += (count or 0) * (len(group.basis) + len(group.words)) + len(group.words) ** 2
+                    limits.check("max_sample_values", sample_values)
                 if count is not None:
-                    if isinstance(count, bool) or not isinstance(count, Integral) or count < 1:
-                        raise ValueError("Transform measurement shots must be positive integers.")
                     terms = len(request.observable.terms) if request.kind == "expval" and isinstance(request.observable, Hamiltonian) else 1
                     shots += count * terms
-        limits.check("max_total_shots", shots)
+        if shot_budget:
+            limits.check("max_total_shots", shots)
     return operations, shots
 
 
@@ -145,7 +155,7 @@ class TransformProgram:
 
     Processors receive one result per child Tape, including that Tape's shot
     partitions. They must be pure result functions, not execute more circuits.
-    B1 requires unchanged shot specifications across a transform boundary.
+    Changed shots require a validated complete native group-allocation receipt.
     """
 
     def __init__(self, transforms=(), *, limits=None):
@@ -158,7 +168,7 @@ class TransformProgram:
 
     def prepare(self, tape):
         limits = self.limits
-        check_batch((tape,), limits)
+        check_batch((tape,), limits, shot_budget=False)
         batch, levels, trace, expansion = (copy_for_transform(tape),), [], [], 0
         for stage, function in enumerate(self.transforms):
             children, processors = [], []
@@ -180,7 +190,9 @@ class TransformProgram:
                     limits.check("max_expansion_steps", expansion)
                     parent_shots = ShotSpec.parse(parent.shots)
                     if any(ShotSpec.parse(child.shots) != parent_shots for child in emitted):
-                        raise UnsupportedFeature("transform_shot_allocation", "B1 transforms must preserve parent shot partitions; allocation is not implemented.")
+                        from .qwc import validate_shot_allocation
+                        if not validate_shot_allocation(parent, emitted):
+                            raise UnsupportedFeature("transform_shot_allocation", "Changed shot partitions require a validated native joint-group allocation receipt.")
                     start = len(children)
                     children.extend(copy_for_transform(child) for child in emitted)
                     processors.append((start, len(children), processor))
@@ -203,9 +215,11 @@ class TransformProgram:
             check_structure(current, limits)
             for stage in reversed(range(len(levels))):
                 reconstructed = []
+                runtime_metadata = []
                 for parent, (start, stop, processor) in enumerate(levels[stage]):
                     try:
                         value = processor(current[start:stop])
+                        runtime_metadata.append(deepcopy(getattr(processor, "last_metadata", {})))
                         check_structure(value, limits)
                         reconstructed.append(value)
                     except MemoryError:
@@ -213,6 +227,7 @@ class TransformProgram:
                     except Exception as exc:
                         raise TransformError(f"postprocessing stage {stage}, parent {parent}: {exc}") from exc
                 current = tuple(reconstructed)
+                trace[stage]["postprocessing_metadata"] = runtime_metadata
                 check_structure(current, limits)
             if len(current) != 1:
                 raise ValueError("TransformProgram must reconstruct one original Tape result.")
@@ -340,7 +355,7 @@ def execute_transform(tape, transform_fn, device=None, *, bindings=None, shots=_
     if tape.output_tree is None and not tape.measurements:
         raise ValueError("Raw transform execution needs terminal measurements or an explicit output tree.")
     limits = resolve_limits(limits if limits is not None else getattr(transform_fn, "limits", None))
-    check_batch((tape,), limits)
+    check_batch((tape,), limits, shot_budget=False)
     source = tape.copy()
     if shots is not _UNSET:
         source.shots = shots

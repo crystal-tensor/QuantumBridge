@@ -108,7 +108,7 @@ class ExecutionPlan:
         bound = self.circuit.bind(dict(zip(self.recorder.parameters, values)))
         outputs, partitions, corrections = [], [], []
         for shots, seed in zip(self.shots.partitions, self.shots.seeds(self.node.seed)):
-            statistics, spans, offset, measurement_metadata = [], [], 0, []
+            statistics, spans, offset, measurement_metadata, joint_metadata = [], [], 0, [], []
             def execute(request):
                 nonlocal offset
                 effective_shots = request.shots if request.shots is not None else shots
@@ -122,7 +122,12 @@ class ExecutionPlan:
                 measurement_metadata.append({"kind": request.kind, "shots": effective_shots, "seed": effective_seed})
                 if request.kind == "probs" and len(request.wires if request.wires is not None else range(bound.num_qubits)) > 16:
                     raise UnsupportedFeature("probability_output_size", "QNode probability output exceeds the native budget.")
-                if request.kind in {"expval", "var"} and effective_shots is not None:
+                if request.kind == "pauli_group":
+                    from quantumbridge.qml.pauli_group import measure_pauli_group
+                    value = measure_pauli_group(self.node.device, bound, request.observable, effective_shots, effective_seed)
+                    joint_metadata.append(value.metadata())
+                    mean = None
+                elif request.kind in {"expval", "var"} and effective_shots is not None:
                     value, mean = self._sampling(bound, request, effective_shots, effective_seed)
                 else:
                     request_bound = replace(request, shots=effective_shots, seed=effective_seed)
@@ -152,7 +157,12 @@ class ExecutionPlan:
             outputs.append(output)
             partition = {"shots": shots, "seed": seed, "measurements": measurement_metadata,
                          "simulation": getattr(self.node.device, "simulation", "statevector")}
-            if getattr(self.node.device, "simulation", None) == "matrix_product_state":
+            if joint_metadata:
+                partition["joint_measurements"] = joint_metadata
+            if joint_metadata and getattr(self.node.device, "simulation", None) == "matrix_product_state":
+                partition["resources"] = {"available": False, "reason": "Device.sample/expectation does not return a resource receipt; no extra resource-only trajectory run was executed."}
+                partition["approximation_warning"] = "MPS truncation may bias group values; resource and final infidelity bounds are unavailable from this sampling API."
+            elif getattr(self.node.device, "simulation", None) == "matrix_product_state":
                 resource_shots = max((item["shots"] or 0 for item in measurement_metadata), default=0)
                 result = self.node.device.run_shots(bound, shots=resource_shots, seed=seed) if resource_shots else self.node.device.run(bound)
                 resource = result.metadata()
