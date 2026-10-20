@@ -774,12 +774,42 @@ General observables, local measurement overrides, sum variances, random/custom
 allocation and complete transform APIs remain unsupported.
 
 Other transforms retain their per-child/per-measurement shot semantics.
-Transformed autodiff is not yet delivered: live framework/Dual
-inputs explicitly reject rather than detach. Native ordinary QNode gradients
-remain separate. Full Stage 11O-B and full SDK parity are incomplete. See the
+Recorded transformed QNodes now support first-order native Jacobians,
+VJP/JVP and Torch/Autograd backward. Child quantum means use the existing
+native shift/adjoint engine; a bounded native postprocessing Jacobian follows
+the actual reconstruction order. Hamiltonian coefficient graphs survive
+construction/copying, including a parameter shared by gate angles and
+coefficients: both `c*dmean` and `dc*mean` contribute. Ordinary live-coefficient
+QNodes reuse native single-term preprocessing, not a second execution engine.
+Quantum primals are unboxed for native execution while the original classical
+graphs remain registered. Passive covariance/SE/bitstrings/UUIDs are not
+differentiable leaves. These are explicit bounded Jacobian products, not a
+matrix-free VJP or full derivative-device protocol.
+
+Finite-shot shift evaluations really resample each group with independent
+shift/partition streams and report actual forward/derivative physical work.
+Sampled gradients are stochastic estimates; energy SE is not a gradient error
+bound. Finite-shot transformed variance gradients, trainable zero-weight
+weighted allocation, fixed local seed gradients, raw live Tape execution,
+postselection/reused parameterized loops, higher order, capture, JAX/TF and
+GPU contracts remain explicitly unsupported. A prepared coefficient-bearing
+plan rejects changed coefficient primals; QNode calls construct fresh plans.
+
+```bash
+python -m examples.native_transformed_autodiff
+python -m examples.native_mps_template_transform_gradient
+python -m examples.native_qchem_transformed_gradient
+```
+
+The 100-wire GHZ/template/QWC native shift proof forbids dense expansion and
+records real MPS bond/storage/truncation telemetry without extra resource-only
+executions. It does not imply arbitrary 100-wire efficiency. Full Stage 11O-B
+and full SDK parity remain incomplete. See the
 [B2/B3 report](docs/implementation/stage11o_b2_b3_native_transform_report.md).
 Actual grouped sampling and its boundaries are in the
 [B4 report](docs/implementation/stage11o_b4_native_qwc_shot_allocation_report.md).
+Gradient execution and remaining limits are in the
+[B5 report](docs/implementation/stage11o_b5_native_transformed_autodiff_report.md).
 
 ## Native Molecular Chemistry Checkpoint
 

@@ -80,6 +80,10 @@ class MatrixProductState:
         return tuple(tensor.copy() for tensor in self._tensors)
 
     @property
+    def tensor_bytes(self):
+        return sum(tensor.nbytes for tensor in self._tensors)
+
+    @property
     def bond_dimensions(self):
         return tuple(tensor.shape[2] for tensor in self._tensors[:-1])
 

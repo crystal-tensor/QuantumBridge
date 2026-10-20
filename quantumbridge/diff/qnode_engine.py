@@ -3,7 +3,9 @@
 # Native gate-occurrence derivatives and executable QNode plans.
 
 from dataclasses import replace
+from copy import deepcopy
 from types import SimpleNamespace
+from uuid import uuid4
 import warnings
 import numpy as np
 
@@ -103,14 +105,17 @@ class ExecutionPlan:
             samples = eigenvalues[[int(label, 2) for label in labels]]
         return (float(np.mean(samples)) if request.kind == "expval" else float(np.var(samples))), float(np.mean(samples))
 
-    def evaluate(self, values, linear=False):
+    def evaluate(self, values, linear=False, *, sampling_seed=...):
         if len(values) != len(self.recorder.parameters): raise ValueError("QNode angle shape mismatch.")
         bound = self.circuit.bind(dict(zip(self.recorder.parameters, values)))
         outputs, partitions, corrections = [], [], []
-        for shots, seed in zip(self.shots.partitions, self.shots.seeds(self.node.seed)):
-            statistics, spans, offset, measurement_metadata, joint_metadata = [], [], 0, [], []
+        root_seed = self.node.seed if sampling_seed is ... else sampling_seed
+        for shots, seed in zip(self.shots.partitions, self.shots.seeds(root_seed)):
+            statistics, spans, offset, measurement_metadata, joint_metadata, device_resources = [], [], 0, [], [], []
             def execute(request):
                 nonlocal offset
+                if getattr(self.node.device,"simulation",None) == "matrix_product_state":
+                    self.node.device.last_execution_metadata = {}
                 effective_shots = request.shots if request.shots is not None else shots
                 if self.legacy_state_queries and request.kind in {"state", "density_matrix", "expval", "var", "probs"}:
                     effective_shots = None
@@ -119,14 +124,23 @@ class ExecutionPlan:
                     raise ValueError("QNode measurement shots must be positive integers.")
                 if effective_shots is not None and effective_shots > self.limits.max_shots:
                     raise ValueError("QNode shots exceed max_shots.")
-                measurement_metadata.append({"kind": request.kind, "shots": effective_shots, "seed": effective_seed})
+                physical = effective_shots or 0
+                if request.kind in {"expval","var"} and isinstance(request.observable,PauliString) and all(label == "I" for _,label in request.observable.terms):
+                    physical = 0
+                if request.kind == "expval" and isinstance(request.observable,Hamiltonian):
+                    physical *= sum(any(label != "I" for _,label in word.terms) for _,word in request.observable.terms)
+                measurement_metadata.append({"kind": request.kind, "shots": effective_shots, "seed": effective_seed,"physical_shots":physical})
                 if request.kind == "probs" and len(request.wires if request.wires is not None else range(bound.num_qubits)) > 16:
                     raise UnsupportedFeature("probability_output_size", "QNode probability output exceeds the native budget.")
                 if request.kind == "pauli_group":
                     from quantumbridge.qml.pauli_group import measure_pauli_group
                     value = measure_pauli_group(self.node.device, bound, request.observable, effective_shots, effective_seed)
                     joint_metadata.append(value.metadata())
+                    if value.resources is not None:
+                        device_resources.append(deepcopy(value.resources))
                     mean = None
+                    if linear:
+                        value = value.means
                 elif request.kind in {"expval", "var"} and effective_shots is not None:
                     value, mean = self._sampling(bound, request, effective_shots, effective_seed)
                 else:
@@ -140,6 +154,8 @@ class ExecutionPlan:
                         counts = self.node.device.counts(bound, wires=wires, shots=effective_shots, seed=effective_seed)
                         value = {label: counts.get(label, 0) / effective_shots for label in labels}
                     else: value = {label: value.get(label, 0.) for label in labels}
+                if request.kind != "pauli_group" and getattr(self.node.device,"simulation",None) == "matrix_product_state" and self.node.device.last_execution_metadata:
+                    device_resources.append(deepcopy(self.node.device.last_execution_metadata))
                 if linear and request.kind == "var":
                     statistics.append(mean)
                     spans.append((offset, len(statistics) - 1, mean))
@@ -156,23 +172,16 @@ class ExecutionPlan:
                 corrections.append((len(vector), spans, spec))
             outputs.append(output)
             partition = {"shots": shots, "seed": seed, "measurements": measurement_metadata,
-                         "simulation": getattr(self.node.device, "simulation", "statevector")}
+                         "simulation": getattr(self.node.device, "simulation", "statevector"),
+                         "physical_shots":sum(item["physical_shots"] for item in measurement_metadata)}
             if joint_metadata:
                 partition["joint_measurements"] = joint_metadata
-            if joint_metadata and getattr(self.node.device, "simulation", None) == "matrix_product_state":
-                partition["resources"] = {"available": False, "reason": "Device.sample/expectation does not return a resource receipt; no extra resource-only trajectory run was executed."}
-                partition["approximation_warning"] = "MPS truncation may bias group values; resource and final infidelity bounds are unavailable from this sampling API."
-            elif getattr(self.node.device, "simulation", None) == "matrix_product_state":
-                resource_shots = max((item["shots"] or 0 for item in measurement_metadata), default=0)
-                result = self.node.device.run_shots(bound, shots=resource_shots, seed=seed) if resource_shots else self.node.device.run(bound)
-                resource = result.metadata()
-                partition["resources"] = {key: value for key, value in resource.items() if key not in {"mps_ensemble", "classical_ensemble"}}
-                if result.mps is not None:
-                    partition["resources"]["bond_dimensions"] = list(result.mps.bond_dimensions)
-                else:
-                    partition["resources"]["ensemble_bond_dimensions"] = [
-                        [len(tensor["real"][0][0]) for tensor in item["state"]["tensors"][:-1]]
-                        for item in resource.get("mps_ensemble", ())]
+            if getattr(self.node.device, "simulation", None) == "matrix_product_state":
+                partition["resources"] = {"available":bool(device_resources),"native_measurement_calls":device_resources}
+                if device_resources:
+                    for key in ("max_bond_observed","max_discarded_weight","max_tensor_bytes","max_truncations"):
+                        partition["resources"][key] = max(item[key] for item in device_resources)
+                    partition["resources"]["bond_dimensions"] = [max(item["max_bond_dimensions_observed"][index] for item in device_resources) for index in range(bound.num_qubits-1)]
                 partition["approximation_warning"] = "MPS truncation may bias values/gradients; discarded weights are not a final infidelity bound."
                 self.resource_history.append(partition)
             partitions.append(partition)
@@ -185,8 +194,17 @@ class ExecutionPlan:
         return result
 
     def gradient_capability(self, method):
+        pending = [self.circuit]
+        while pending:
+            body = pending.pop()
+            for operation in body.operations:
+                if "postselect" in operation.metadata or "postselection" in operation.metadata:
+                    raise UnsupportedFeature("postselection_gradient", "Native postselected transformed derivative semantics are not implemented.")
+                control = operation.metadata.get("control_node")
+                if control is not None:
+                    pending.extend(control.bodies)
         if getattr(self.node.device, "simulation", None) == "exact_stabilizer": raise UnsupportedFeature("tableau_continuous_gradient")
-        if any(request.kind not in {"expval", "var", "probs"} for request in self.requests): raise UnsupportedFeature("gradient_measurement")
+        if any(request.kind not in {"expval", "var", "probs", "pauli_group"} for request in self.requests): raise UnsupportedFeature("gradient_measurement")
         if method == "backprop": raise UnsupportedFeature("simulator_backprop", "Framework VJPs are available; differentiable simulator backprop is not implemented.")
         if method not in {"parameter-shift", "finite-diff", "adjoint", "best"}: raise UnsupportedFeature("gradient_method", f"Unknown native gradient method {method}.")
         from quantumbridge.devices import StatevectorDevice
@@ -215,16 +233,31 @@ class ExecutionPlan:
     def jacobian(self, values, method=None, step=1e-6):
         method = self.gradient_capability(method or self.node.diff_method)
         base = self.evaluate(values)
-        flat, spec = flatten_tree(base)
+        base_metadata = deepcopy(self.metadata)
+        receipts = [{"evaluation_id":str(uuid4()),"kind":"base",**deepcopy(self.metadata)}]
+        from .processing import result_payload
+        flat, spec = flatten_tree(result_payload(base))
         if flat.size * max(1, len(values)) > 2000000: raise MemoryError("QNode Jacobian exceeds the output budget.")
         evaluations = 0
         if method == "adjoint":
-            matrix = adjoint_rows(self.node.device, self.circuit, tuple(self.recorder.parameters), values, self.requests)
+            requests = [terminal for request in self.requests for terminal in (
+                [MeasurementRequest("expval",observable=PauliString(word)) for word in request.observable.words]
+                if request.kind == "pauli_group" else [request])]
+            matrix = adjoint_rows(self.node.device, self.circuit, tuple(self.recorder.parameters), values, requests)
             evaluations = 1
+            receipts.append({"evaluation_id":str(uuid4()),"kind":"native_adjoint_reverse_sweep","physical_shots":0})
         else:
             if not np.isfinite(step) or step <= 0: raise ValueError("Finite-difference step must be positive and finite.")
             occurrences = self._occurrences()
             base_linear, corrections = self.evaluate(values, linear=True)
+            receipts.append({"evaluation_id":str(uuid4()),"kind":"linear_moments",**deepcopy(self.metadata)})
+            seed_sequence = np.random.SeedSequence(self.node.seed)
+            def shifted(point,index,shift,sign):
+                seed = int(seed_sequence.spawn(1)[0].generate_state(1)[0])
+                result,_ = self.evaluate(point,linear=True,sampling_seed=seed)
+                receipts.append({"evaluation_id":str(uuid4()),"kind":"shift" if method == "parameter-shift" else "finite-diff",
+                                 "angle_index":index,"shift":float(shift),"sign":sign,"root_seed":seed,**deepcopy(self.metadata)})
+                return result
             rows = sum(len(part) for part in base_linear)
             matrix_linear = np.zeros((rows, len(values)))
             for index, parameter in enumerate(self.recorder.parameters):
@@ -242,8 +275,8 @@ class ExecutionPlan:
                 for coefficient, shift in recipes:
                     plus, minus = np.array(values, copy=True), np.array(values, copy=True)
                     plus[index] += shift; minus[index] -= shift
-                    upper, _ = self.evaluate(plus, linear=True)
-                    lower, _ = self.evaluate(minus, linear=True)
+                    upper = shifted(plus,index,shift,1)
+                    lower = shifted(minus,index,shift,-1)
                     matrix_linear[:, index] += coefficient * (np.concatenate(upper) - np.concatenate(lower))
                     evaluations += 2
             matrix, offset = [], 0
@@ -254,8 +287,11 @@ class ExecutionPlan:
                 offset += length + len(spans)
             matrix = np.concatenate(matrix, axis=0)
         if matrix.shape != (len(flat), len(values)): raise ValueError("Native Jacobian shape does not match executed outputs.")
+        self.metadata = base_metadata
         self.metadata.update(gradient_method=method, shifted_evaluation_count=evaluations if method == "parameter-shift" else 0,
                              derivative_evaluation_count=evaluations, derivative_order=1,
+                             gradient_evaluations=receipts,
+                             gradient_physical_shots=sum(part["physical_shots"] for receipt in receipts for part in receipt.get("partitions",())),
                              gradient_semantics="finite-shot estimate" if any(shots is not None for shots in self.shots.partitions) or any(request.shots is not None for request in self.requests) else "analytic")
         if self.resource_history: self.metadata["gradient_resource_evaluations"] = list(self.resource_history)
         return base, matrix, spec

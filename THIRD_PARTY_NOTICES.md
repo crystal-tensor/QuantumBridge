@@ -7,6 +7,17 @@ QuantumBridge is an independent project. References to Qiskit and PennyLane are 
 
 ## Native Template Verification
 
+Stage 11O-B5 independently implements first-order native transformed child
+quantum Jacobians, bounded classical postprocessing differentiation and
+gate/coefficient chain rules. Existing QuantumBridge shift/adjoint, Tape/QNode,
+Device and interface engines are reused. Optional Torch/Autograd supply
+classical graphs and optimizers, not quantum differentiation. PennyLane public
+gradient APIs are black-box test references only; no SDK implementation/test
+files or private SDK gradient helpers are opened/copied or used at runtime.
+No third-party code, credentials, environments or package artifacts are
+vendored. MPS resource receipts come from actual measurement calls. This is
+not complete transform/gradient/device parity or upstream endorsement.
+
 Stage 11O-B4 independently implements bounded native Pauli QWC grouping,
 deterministic integer shot allocation, one actual Device.sample buffer per
 finite-shot group, covariance statistics and source result reconstruction.

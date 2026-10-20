@@ -51,6 +51,9 @@ def split_hamiltonian(tape):
         limits.check("max_expansion_steps", work)
         positions = []
         for coefficient, pauli in terms:
+            from quantumbridge.diff.scalars import is_live_scalar
+            if is_live_scalar(coefficient):
+                raise UnsupportedFeature("prototype_coefficient_graph", "Use split_to_single_terms or QWC for coefficient derivatives, not the internal term-Tapes prototype.")
             if not np.isfinite(coefficient) or np.iscomplexobj(coefficient):
                 raise ValueError("Splitting requires finite real static coefficients.")
             wires = [wire for wire, _ in pauli.terms]
@@ -103,11 +106,13 @@ def split_to_single_terms(tape, *, limits=None):
     from quantumbridge.qml.shot_vector import ShotSpec
     from quantumbridge.utils.math import Hamiltonian, PauliString
     from .program import resolve_limits, check_batch, output_tree
+    from quantumbridge.diff.scalars import CoefficientTable
 
     limits = resolve_limits(limits)
     check_batch((tape,),limits)
     tree = output_tree(tape)
     unique, indices, slots, work = [], {}, [], 0
+    coefficients = CoefficientTable()
 
     def native(observable):
         if hasattr(observable,"to_quantumbridge"): return observable.to_quantumbridge()
@@ -142,23 +147,22 @@ def split_to_single_terms(tape, *, limits=None):
         if request.kind != "expval":
             if isinstance(observable,Hamiltonian):
                 raise UnsupportedFeature("split_measurement_sum", "Only expectation values of sums can be split linearly.")
-            slots.append((0.,((insert(request),1.),),True))
+            slots.append(((),((insert(request),1.),),True))
             return request
         terms = observable.terms if isinstance(observable,Hamiltonian) else ((1.,observable),)
         work += len(terms)
         limits.check("max_expansion_steps",work)
-        offset, positions = 0., []
+        offsets, positions = [], []
         for coefficient, pauli in terms:
-            if np.iscomplexobj(coefficient) or not np.isfinite(coefficient):
-                raise ValueError("Single-term splitting requires finite real static coefficients.")
+            reference = coefficients.add(coefficient)
             terminal = replace(request,observable=pauli)
             signature = key(terminal)
             if isinstance(pauli,PauliString) and not signature[1]:
-                offset += coefficient
+                offsets.append(reference)
             else:
                 # Even a zero coefficient retains its public-contract measurement.
-                positions.append((insert(terminal),coefficient))
-        slots.append((offset,tuple(positions),False))
+                positions.append((insert(terminal),reference))
+        slots.append((tuple(offsets),tuple(positions),False))
         return request
 
     map_measurements(tree,expand)
@@ -169,24 +173,27 @@ def split_to_single_terms(tape, *, limits=None):
     child.observable = unique[-1].observable if unique else None
     check_batch((child,),limits)
 
-    def one(result):
+    def one(result, parameters=None):
         values = (result,) if len(unique) == 1 else result
         if len(values) != len(unique):
             raise ValueError("Single-term result width does not match its measurement list.")
         restored = iter(values[positions[0][0]] if direct else
-                        sum((coefficient*values[index] for index,coefficient in positions),offset)
-                        for offset,positions,direct in slots)
+                        sum((coefficients.resolve(coefficient,parameters)*values[index] for index,coefficient in positions),
+                            sum(coefficients.resolve(coefficient,parameters) for coefficient in offsets))
+                        for offsets,positions,direct in slots)
         return map_measurements(tree,lambda _:next(restored))
 
-    def process(results):
+    def process(results, *, parameters=None, differentiating=False):
         if len(results) != 1:
             raise ValueError("split_to_single_terms expects one child Tape result.")
         spec = ShotSpec.parse(tape.shots)
         if spec.is_vector:
             if not isinstance(results[0],tuple) or len(results[0]) != len(spec.partitions):
                 raise ValueError("Single-term shot partition count mismatch.")
-            return tuple(one(result) for result in results[0])
-        return one(results[0])
+            return tuple(one(result,parameters) for result in results[0])
+        return one(results[0],parameters)
 
+    process.native_evaluate = process
+    process.native_parameters = tuple(coefficients.parameters)
     return (child,),process
 

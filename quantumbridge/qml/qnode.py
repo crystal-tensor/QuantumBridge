@@ -36,8 +36,8 @@ class QNode:
         from quantumbridge.diff.qnode_engine import AngleRecorder, ExecutionPlan, measurement_tree
         if self.transform_program is not None:
             from quantumbridge.interfaces.qnode_autodiff import _leaves
-            from quantumbridge.transforms.program import _reject_live
-            _reject_live(_leaves((args, kwargs)))
+            from quantumbridge.transforms.program import _reject_unsupported_interface
+            _reject_unsupported_interface(_leaves((args, kwargs)))
         recorder = AngleRecorder()
         tape = Tape(self.num_qubits, recorder, shots=self.shots, seed=self.seed)
         returned = self.fn(tape, *args, **kwargs)
@@ -51,12 +51,21 @@ class QNode:
                 raise UnsupportedFeature("compiled_qnode_layout", "QNode measurements currently require equal width and restored identity layout.")
             tape.circuit, recorder = record_compiled_parameters(compiled, recorder)
         tree = measurement_tree(returned, tape)
-        if self.transform_program is None:
+        program = self.transform_program
+        if program is None:
+            from quantumbridge.diff.scalars import is_live_scalar
+            from quantumbridge.diff.qnode_engine import map_measurements
+            requests = []
+            map_measurements(tree,lambda request:requests.append(request))
+            if any(isinstance(request.observable,Hamiltonian) and any(is_live_scalar(coefficient) for coefficient,_ in request.observable.terms) for request in requests):
+                from quantumbridge.transforms import TransformProgram, split_to_single_terms
+                program = TransformProgram((split_to_single_terms,))
+        if program is None:
             plan = ExecutionPlan(self, tape, tree, recorder)
         else:
             from quantumbridge.transforms.program import TransformedExecutionPlan
             tape.output_tree = tree
-            plan = TransformedExecutionPlan(self, tape, recorder, self.transform_program)
+            plan = TransformedExecutionPlan(self, tape, recorder, program)
         plan.input_values = (args, kwargs)
         return plan
 
@@ -103,6 +112,9 @@ class QNode:
     def __call__(self, *args, **kwargs):
         from quantumbridge.interfaces.qnode_autodiff import execute_interface, infer_interface
         interface = infer_interface(args, kwargs) if self.interface == "auto" else self.interface
+        if self.transform_program is not None and interface in {None, "numpy"} and infer_interface(args, kwargs) is not None:
+            from quantumbridge.core.classical import UnsupportedFeature
+            raise UnsupportedFeature("transform_interface", "Use the framework interface or native gradient/VJP API; explicit NumPy cannot detach live framework inputs.")
         plan = self._construct(args, kwargs)
         if interface in {None, "numpy"}:
             result = plan.evaluate(plan.recorder.native_values())
@@ -125,9 +137,12 @@ class QNode:
         base, matrix, spec = plan.jacobian(plan.recorder.native_values(), method, **self.gradient_kwargs)
         classical = plan.recorder.classical_jacobian(size)
         matrix = matrix @ classical
+        gate_count = plan.metadata.get("gate_parameter_count",len(plan.recorder.parameters))
+        active = np.flatnonzero(np.any(classical != 0,axis=1))
         self.last_metadata = {**plan.metadata, "classical_chain_rule": True, "input_parameter_count": size,
-                              "gate_parameter_count": len(plan.recorder.parameters),
-                              "trainable_gate_occurrences": np.flatnonzero(np.any(classical != 0, axis=1)).tolist()}
+                              "gate_parameter_count": gate_count,"scalar_parameter_count":len(plan.recorder.parameters),
+                              "trainable_gate_occurrences":active[active < gate_count].tolist(),
+                              "trainable_coefficient_slots":(active[active >= gate_count]-gate_count).tolist()}
         return base, matrix, spec, layout, single
 
     @staticmethod

@@ -34,6 +34,7 @@ class MatrixProductStateDevice:
         self.state_options = dict(max_bond_dim=validated.max_bond_dim, cutoff=validated.cutoff, max_memory_mb=validated.max_memory_mb)
         self.noise_model, self.initial_state = noise_model, initial_state
         self.execution_limits = execution_limits
+        self.last_execution_metadata = {}
 
     def _configured(self, **changes):
         options = dict(self.state_options, max_qubits=self.max_qubits, max_branches=self.max_branches,
@@ -157,6 +158,7 @@ class MatrixProductStateDevice:
         state = self._initial(bound.num_qubits)
         for _, matrix, wires, metadata in program:
             self._gate(state,matrix,wires,metadata)
+        self.last_execution_metadata = self._metadata(bound,[state])
         return state
 
     def statevector(self, circuit, parameters=None):
@@ -166,7 +168,10 @@ class MatrixProductStateDevice:
 
     def reduced_density_matrix(self, circuit, wires=None, parameters=None):
         bound, program = self._prepare(circuit, parameters)
-        return sum(weight * state.reduced_density_matrix(wires) for state, _, _, weight in self._branches(bound, program))
+        branches = self._branches(bound, program)
+        result = sum(weight * state.reduced_density_matrix(wires) for state, _, _, weight in branches)
+        self.last_execution_metadata = self._metadata(bound,[state for state,_,_,_ in branches])
+        return result
 
     def density_matrix(self, circuit, parameters=None):
         return self.reduced_density_matrix(circuit, parameters=parameters)
@@ -174,9 +179,12 @@ class MatrixProductStateDevice:
     def probabilities(self, circuit, wires=None, parameters=None):
         bound, program = self._prepare(circuit, parameters)
         result = {}
+        states = []
         for state, _, _, weight in self._branches(bound, program):
+            states.append(state)
             for label, probability in state.probabilities(wires).items():
                 result[label] = result.get(label, 0.0) + weight * probability
+        self.last_execution_metadata = self._metadata(bound,states)
         return result
 
     @staticmethod
@@ -213,7 +221,9 @@ class MatrixProductStateDevice:
         operator = self._paulis(observable, bound.num_qubits)
         squared = operator.dot(operator).simplify() if operator is not None and variance else None
         first = second = 0.0
+        states = []
         for state, _, _, weight in self._branches(bound, program):
+            states.append(state)
             if operator is not None:
                 first += weight * sum(coefficient * state.expectation_pauli(label) for label, coefficient in operator.terms).real
                 if variance:
@@ -227,6 +237,7 @@ class MatrixProductStateDevice:
                 first += weight * np.trace(density @ matrix).real
                 if variance:
                     second += weight * np.trace(density @ matrix @ matrix).real
+        self.last_execution_metadata = self._metadata(bound,states)
         return max(0.0, float(second - first ** 2)) if variance else float(first)
 
     def expectation(self, circuit, observable, parameters=None):
@@ -245,13 +256,19 @@ class MatrixProductStateDevice:
         bound, program = self._prepare(circuit, parameters)
         selected = self._initial(bound.num_qubits)._wires(wires)
         memory = []
+        resource = self._metadata(bound,[])
         for state, _, rng in self._trajectories(bound, program, shots, seed):
+            current = self._metadata(bound,[state])
+            for key in ("max_bond_observed","max_discarded_weight","max_tensor_bytes","max_truncations"):
+                resource[key] = max(resource[key],current[key])
+            resource["max_bond_dimensions_observed"] = [max(a,b) for a,b in zip(resource["max_bond_dimensions_observed"],current["max_bond_dimensions_observed"])]
             outcomes = []
             for wire in selected:
                 outcome = state.measure(wire, rng)
                 p = readout_probability(self.noise_model, wire, outcome)
                 outcomes.append(str(outcome ^ int(p > 0 and rng.random() < p)))
             memory.append("".join(outcomes))
+        self.last_execution_metadata = {**resource,"shots":shots,"seed":seed}
         return memory
 
     def counts(self, circuit, wires=None, shots=1024, seed=None, parameters=None):
@@ -270,6 +287,10 @@ class MatrixProductStateDevice:
                 **self.state_options, "max_branches": self.max_branches,
                 "max_bond_observed": max((state.peak_bond_dimension for state in states), default=1),
                 "max_discarded_weight": max((state.discarded_weight for state in states), default=0),
+                "max_tensor_bytes":max((state.tensor_bytes for state in states),default=0),
+                "tensor_bytes_semantics":"maximum observed final MPS storage, not peak SVD workspace",
+                "max_truncations":max((state.truncations for state in states),default=0),
+                "max_bond_dimensions_observed":[max((state.bond_dimensions[index] for state in states),default=1) for index in range(bound.num_qubits-1)],
                 "noise_model_metadata": {} if self.noise_model is None else self.noise_model.summary()}
 
     def run_shots(self, circuit, shots=1024, seed=None, parameters=None, memory=False):

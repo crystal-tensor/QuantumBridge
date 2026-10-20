@@ -167,7 +167,7 @@ def test_request_local_shots_preserved_and_total_budget_preflight():
     tape.measurements[0] = replace(tape.measurements[0], shots=11, seed=9)
     value, metadata = execute_transform(tape, split_hamiltonian, return_metadata=True)
     assert isinstance(value, float)
-    assert all(item["partitions"][0]["measurements"][0] == {"kind": "expval", "shots": 11, "seed": 9} for item in metadata["executions"])
+    assert all(item["partitions"][0]["measurements"][0] == {"kind": "expval", "shots": 11, "seed": 9,"physical_shots":11} for item in metadata["executions"])
     device = CountingDevice()
     with pytest.raises(MemoryError, match="max_total_shots"):
         execute_transform(tape, split_hamiltonian, device, limits=TransformLimits(max_total_shots=32))
@@ -209,7 +209,7 @@ def test_torch_nonleaf_graph_copy_and_merging_without_claiming_quantum_vjp():
     child.circuit.operations[0].params[0].backward()
     assert x.grad.item() == pytest.approx(np.cos(.31)+2)
     assert tape.circuit.operations[0].params[0].grad_fn is not None
-    with pytest.raises(UnsupportedFeature, match="B1"):
+    with pytest.raises(UnsupportedFeature, match="Raw live"):
         execute_transform(tape, merge_rotations)
 
 
@@ -462,7 +462,7 @@ def test_dynamic_execution_matches_without_cross_measurement_merges():
 
 def test_direct_dual_execution_is_explicitly_unsupported():
     tape = program(Dual(.3, [1.]))
-    with pytest.raises(UnsupportedFeature, match="B1"):
+    with pytest.raises(UnsupportedFeature, match="Raw live"):
         execute_transform(tape, identity)
 
 
@@ -527,7 +527,7 @@ def test_framework_global_phase_and_parameter_bindings_cannot_silently_detach():
     # A custom transform can write metadata directly; do not let that bypass
     # the normal Circuit setter's existing trainable-phase rejection.
     tape.circuit.metadata["global_phase"] = torch.sin(x)
-    with pytest.raises(UnsupportedFeature, match="B1"):
+    with pytest.raises(UnsupportedFeature, match="Raw live"):
         execute_transform(tape, identity)
     tape = program(Parameter("p"))
     with pytest.raises(UnsupportedFeature, match="numeric bindings"):

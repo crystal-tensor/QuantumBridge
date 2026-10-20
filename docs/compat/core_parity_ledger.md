@@ -1,6 +1,6 @@
 # Core Functional Parity Ledger
 
-Updated: 2026-10-20, Stage 11O-B4 native QWC/shot allocation checkpoint, starting from local `d8d8741`.
+Updated: 2026-10-20, Stage 11O-B5 native transformed autodiff checkpoint, starting from local `8031a8a`.
 This is the single current-status view. Full Qiskit/PennyLane functional
 replacement remains **incomplete**. Line coverage, inventories, passthrough and
 green CI are not proof of complete API coverage.
@@ -131,22 +131,24 @@ or public comparison passed. The status applies only to the supported subset.
 | QFT | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: complete bounded complex unitary, inverse/swaps/ordered wires | Complete operation API and large-scale resource semantics |
 | TrotterProduct | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: positive-time Pauli order 1/2 gates, actual approximation and time gradients | Higher formulas, grouped/general operands, trainable coefficients and complete API |
 | UCCSD and other template families | NOT_STARTED beyond separately tested bounded chemistry excitation helpers | Full native template catalogue and semantics |
-| Tape transform protocol / TransformProgram | NATIVE_TESTED; PARTIAL: actual batches, reverse postprocessing, fresh QNode/native-callable dispatch and parameter/dependency slices | Transformed native Jacobian/VJP, all framework/capture/public protocols |
-| merge_rotations Tape transform | NATIVE_TESTED; PARTIAL: same-axis adjacent rotations, preserved parameter graphs and dynamic/directive/metadata boundaries | Full public semantics and transformed derivative integration |
+| Tape transform protocol / TransformProgram | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: actual batches, fresh dispatch, native child shift/adjoint Jacobians and native postprocessing products | Full matrix-free VJP/derivative-device/public/capture protocols and arbitrary user processor derivatives |
+| merge_rotations Tape transform | NATIVE_TESTED; PARTIAL: same-axis adjacent rotations, parameter graphs, runtime boundaries and actual transformed native gradients | Full public commuting/operation semantics |
 | cancel_inverses | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: proved adjacent fixed/symbolic pairs with strict runtime/metadata boundaries | Full commuting/non-adjacent/operation catalogue and public protocol |
 | decompose | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: real bounded native definition/template/compound gate expansion and full complex phase | General SDK operation/capture/graph-compiler/ancilla and complete decomposition catalogue |
 | compile | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: actual native target/routing/basis pipeline with equal-width restored identity measurement maps | Full public pipeline/API and generalized measurement/layout remapping |
 | Internal split_hamiltonian prototype | NATIVE_TESTED; PARTIAL: real per-term child execution, identity/duplicates/zero/static coefficients, nested and shot-vector reconstruction | Not public split_to_single_terms parity; no QWC grouping or shot allocation |
-| split_to_single_terms | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: one Tape, deduplicated native Pauli measurements, identity/zero/duplicate coefficients, nested/shot reconstruction | General symbolic observables, trainable coefficients and full public/gradient protocols |
-| split_non_commuting | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: actual native Pauli QWC/wires/None grouping, shared joint bitstrings, identity/duplicate/tree reconstruction and covariance | General observables/measurement kinds, full default/cache/operation protocol and transformed native gradients |
+| split_to_single_terms | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: deduplicated native Pauli measurements, real scalar coefficient graphs, tree reconstruction and native gradients | General symbolic observable families, raw Tape autodiff and full public protocols |
+| split_non_commuting | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: actual native Pauli grouping, joint samples, coefficient/identity/tree reconstruction and native gradients | General observables/measurement kinds and full default/cache/operation protocols |
+| Transformed coefficient/gate derivatives | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: native quantum means plus coefficient product rule, Torch/Autograd/native first-order interfaces | Weighted zero-valued trainable groups reject; changed prepared coefficient primals require a fresh plan; no JAX/TF/GPU/higher order |
+| Transformed sampled gradients | NATIVE_TESTED; PARTIAL: real grouped parameter shifts with independent streams, partitions and actual work receipts | Stochastic estimates, not a universally unbiased nonlinear estimator or an SE-derived gradient bound; finite variance/local-seed/postselection/parameterized-loop gaps |
 | QWC shot distribution | NATIVE_TESTED; PARTIAL: full per-group budget or deterministic uniform/L1-weighted total allocation, exact per-vector-partition conservation | Random/custom allocation and full SDK parity; PL 0.42.3 has no allocation API, PL 0.44.1 flattens distributed vectors and may drop undersampled groups |
 | QWC estimator statistics | NATIVE_TESTED; PARTIAL: exact analytic group covariance or real empirical shared-sample covariance and source expectation standard error | Not full quantum variance across incompatible groups, uncertainty of variance estimators or calibrated hardware confidence guarantees |
 | defer_measurements | NOT_STARTED | Proved coherent supported subset with explicit dynamic limits |
 
 Remaining Stage 11O-B requirements stay active. Eight executable template
-families and the B1-B4 execution foundation do not establish full template or
-transform parity. Framework scalar graphs survive transformation, but the
-new executor explicitly rejects transformed input autodiff until B5.
+families and the B1-B5 execution/gradient foundation do not establish full
+template or transform parity. The native postprocessing trace visits means
+and declared classical slots only, not passive statistics or execution data.
 Native weighted zero-contribution groups can be omitted, but a nonzero group
 with zero assigned samples explicitly rejects instead of silently biasing the
 answer. These documented boundaries must not be described as full parity.
@@ -154,8 +156,9 @@ answer. These documented boundaries must not be described as full parity.
 ## Stage 11O Chemistry Progress
 
 This is a scoped scientific checkpoint, not whole Stage 11O completion.
-Template catalogue completion and transformed derivative integration remain
-unfinished. Existing pedagogical fixed H2/LiH models are not native molecular integrals.
+Template catalogue completion and general derivative contracts remain
+unfinished. A geometry-derived H2 excitation/QWC/gradient/optimizer workflow
+is now tested; pedagogical fixed H2/LiH models are not native molecular integrals.
 
 | API | Current evidence/status | Remaining work |
 | --- | --- | --- |
@@ -222,6 +225,7 @@ it is historical, not a second current status table.
 - [Stage 11O-B1 transform checkpoint](../implementation/stage11o_b1_native_transform_execution_report.md)
 - [Stage 11O-B2/B3 QNode and basic transforms](../implementation/stage11o_b2_b3_native_transform_report.md)
 - [Stage 11O-B4 QWC joint samples and shots](../implementation/stage11o_b4_native_qwc_shot_allocation_report.md)
+- [Stage 11O-B5 native transformed autodiff](../implementation/stage11o_b5_native_transformed_autodiff_report.md)
 
 Stage 11L exact-SHA CI: 39259350086, 22/22 success. Its clean local runs:
 SDK-free 899 passed/116 skipped, installed 1090/4, alternate 1054/40, measured

@@ -45,6 +45,20 @@ class Tape:
     def copy(self):
         """Copy owned structure without detaching scalar parameter graphs."""
         memo = {id(self.parameter_transform): self.parameter_transform}
+        from quantumbridge.utils.math import Hamiltonian
+        measurements = [self.observable, self.output_tree, *self.measurements]
+        coefficient_seen = set()
+        while measurements:
+            item = measurements.pop()
+            if id(item) in coefficient_seen:
+                continue
+            coefficient_seen.add(id(item))
+            if isinstance(item, MeasurementRequest):
+                measurements.append(item.observable)
+            elif isinstance(item, (tuple,list,dict)):
+                measurements.extend(item.values() if isinstance(item,dict) else item)
+            elif isinstance(item, Hamiltonian):
+                memo.update((id(coefficient), coefficient) for coefficient,_ in item.terms)
         pending, seen = [self.circuit], set()
         while pending:
             circuit = pending.pop()

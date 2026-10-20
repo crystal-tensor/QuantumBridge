@@ -265,21 +265,24 @@ class PauliString:
 class Hamiltonian:
     """Weighted sum of PauliString observables."""
 
-    terms: tuple[tuple[float, PauliString], ...]
+    terms: tuple[tuple[object, PauliString], ...]
 
     def __init__(self, terms: Iterable[tuple[Real, PauliString]]):
+        from quantumbridge.diff.scalars import retain_coefficient
         normalized = []
         for coeff, pauli in terms:
             if not isinstance(pauli, PauliString):
                 raise ValueError("QuantumBridge Hamiltonian terms require PauliString observables.")
-            normalized.append((float(coeff), pauli))
+            normalized.append((retain_coefficient(coeff), pauli))
         object.__setattr__(self, "terms", tuple(normalized))
 
     def __add__(self, other: "Hamiltonian") -> "Hamiltonian":
         return Hamiltonian(self.terms + other.terms)
 
     def __mul__(self, scalar: Real) -> "Hamiltonian":
-        return Hamiltonian([(float(scalar) * coeff, pauli) for coeff, pauli in self.terms])
+        from quantumbridge.diff.scalars import retain_coefficient
+        scalar = retain_coefficient(scalar)
+        return Hamiltonian([(scalar * coeff, pauli) for coeff, pauli in self.terms])
 
     __rmul__ = __mul__
 

@@ -155,13 +155,13 @@ def test_native_symbolic_circuit_qnode_rebinds_after_transform():
     assert node(.7) == pytest.approx(np.cos(1.05))
 
 
-def test_transformed_numpy_qnode_derivatives_remain_explicitly_unsupported():
+def test_transformed_numpy_qnode_derivatives_use_native_chain_rule():
     node = merge_rotations(QNode(lambda tape,x:(tape.ry(x,0),tape.expval(PauliZ(0)))[1],1))
-    with pytest.raises(UnsupportedFeature, match="VJP"):
-        node.gradient(.2)
+    assert node.gradient(.2) == pytest.approx(-np.sin(.2),abs=1e-12)
     plan = node._construct((.2,),{})
-    with pytest.raises(UnsupportedFeature, match="VJP"):
-        plan.jacobian(plan.recorder.native_values())
+    value,jacobian,_ = plan.jacobian(plan.recorder.native_values())
+    assert value == pytest.approx(np.cos(.2),abs=1e-12)
+    np.testing.assert_allclose(jacobian,[[-np.sin(.2)]],atol=1e-12)
     with pytest.raises(ValueError, match="shape"):
         plan.evaluate([])
 
@@ -173,11 +173,10 @@ def test_live_torch_and_autograd_are_not_silently_detached_even_numpy_interface(
         node(torch.tensor(.2,requires_grad=True))
 
 
-def test_live_autograd_rejects_instead_of_returning_false_derivative():
+def test_live_autograd_has_a_real_nonzero_transformed_derivative():
     autograd = pytest.importorskip("autograd")
     node = merge_rotations(QNode(lambda tape,x:(tape.ry(x,0),tape.expval(PauliZ(0)))[1],1))
-    with pytest.raises(UnsupportedFeature, match="VJP"):
-        autograd.grad(node)(.2)
+    assert autograd.grad(node)(.2) == pytest.approx(-np.sin(.2),abs=1e-12)
 
 
 def test_dynamic_global_phase_and_mid_circuit_measurement_order_preserved():

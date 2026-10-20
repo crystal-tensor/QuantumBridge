@@ -208,7 +208,7 @@ class TransformProgram:
             levels.append(tuple(processors))
             batch = tuple(children)
 
-        def process(results):
+        def process(results, *, parameter_values=None, differentiating=False):
             if len(results) != len(batch):
                 raise ValueError("Postprocessing result count must match executed Tapes.")
             current = tuple(results)
@@ -218,8 +218,12 @@ class TransformProgram:
                 runtime_metadata = []
                 for parent, (start, stop, processor) in enumerate(levels[stage]):
                     try:
-                        value = processor(current[start:stop])
-                        runtime_metadata.append(deepcopy(getattr(processor, "last_metadata", {})))
+                        if hasattr(processor, "native_evaluate"):
+                            value = processor.native_evaluate(current[start:stop], parameters=(parameter_values or {}).get((stage,parent), ()), differentiating=differentiating)
+                        else:
+                            value = processor(current[start:stop])
+                        if not differentiating:
+                            runtime_metadata.append(deepcopy(getattr(processor, "last_metadata", {})))
                         check_structure(value, limits)
                         reconstructed.append(value)
                     except MemoryError:
@@ -227,7 +231,8 @@ class TransformProgram:
                     except Exception as exc:
                         raise TransformError(f"postprocessing stage {stage}, parent {parent}: {exc}") from exc
                 current = tuple(reconstructed)
-                trace[stage]["postprocessing_metadata"] = runtime_metadata
+                if not differentiating:
+                    trace[stage]["postprocessing_metadata"] = runtime_metadata
                 check_structure(current, limits)
             if len(current) != 1:
                 raise ValueError("TransformProgram must reconstruct one original Tape result.")
@@ -261,7 +266,12 @@ def _is_live(value):
 
 def _reject_live(values):
     if any(_is_live(value) for value in values):
-        raise UnsupportedFeature("transform_autodiff", "B1/B2 preserve parameter graphs but transformed framework/Dual execution requires the native VJP integration.")
+        raise UnsupportedFeature("raw_transform_autodiff", "Raw live transform gate values require a recorded QNode for native VJP execution.")
+
+
+def _reject_unsupported_interface(values):
+    if any(type(value).__module__.startswith(("jax", "jaxlib", "tensorflow")) for value in values):
+        raise UnsupportedFeature("transform_interface", "Native transformed JAX/TF VJP execution is not implemented.")
 
 
 class TransformedExecutionPlan:
@@ -273,11 +283,10 @@ class TransformedExecutionPlan:
         self.original_recorder, self.recorder = original_recorder, AngleRecorder()
         self.child_plans, self.parameter_slices = [], []
         self.last_spec, self.metadata = None, {}
+        self.forward_physical_shots, self.forward_evaluation_count, self.last_forward_executions = 0,0,[]
         mapping = dict(bindings or {})
         if any(_is_live(value) for value in mapping.values()):
-            raise UnsupportedFeature("transform_autodiff", "B1/B2 support numeric bindings, not transformed input autodiff.")
-        if original_recorder is not None:
-            _reject_live(original_recorder.angles)
+            raise UnsupportedFeature("raw_transform_autodiff", "Raw Tape supports numeric bindings; use a QNode for framework input VJPs.")
         seed_sequence = np.random.SeedSequence(node.seed)
         children = self.prepared.tapes
         seeds = seed_sequence.spawn(len(children)) if node.seed is not None else [None] * len(children)
@@ -307,10 +316,47 @@ class TransformedExecutionPlan:
             child_node.num_qubits, child_node.shots, child_node.seed = child.circuit.num_qubits, child.shots, seed_value
             self.child_plans.append(ExecutionPlan(child_node, child, output_tree(child), recorder))
         check_batch(children, self.limits)
+        self.processing_parameter_slices = {}
+        for stage, level in enumerate(self.prepared.processing_levels):
+            for parent, (_, _, processor) in enumerate(level):
+                start = len(self.recorder.parameters)
+                for value in getattr(processor, "native_parameters", ()):
+                    if original_recorder is None:
+                        raise UnsupportedFeature("raw_coefficient_graph", "Raw Tape execution needs numeric coefficients; use a QNode for a native coefficient VJP.")
+                    self.recorder(value)
+                self.processing_parameter_slices[(stage,parent)] = (start,len(self.recorder.parameters))
+
+    def _processing_values(self, values):
+        from quantumbridge.diff.scalars import scalar_primal
+        result = {}
+        for key,(start,stop) in self.processing_parameter_slices.items():
+            original = [scalar_primal(value) for value in self.recorder.angles[start:stop]]
+            if not np.array_equal(values[start:stop],original):
+                raise UnsupportedFeature("coefficient_rebinding", "Coefficient primals changed after grouping/allocation; construct a fresh QNode plan.")
+            result[key] = values[start:stop]
+        return result
+
+    def _reconstruct(self, values, results, executions):
+        value = self.prepared.processing_fn(tuple(results), parameter_values=self._processing_values(values))
+        self.metadata = {**deepcopy(self.prepared.metadata), "native_execution": True,
+                         "executed_tape_count": len(executions), "executions": executions,
+                         "gate_parameter_count": sum(stop-start for start,stop in self.parameter_slices),
+                         "processing_parameter_count": sum(stop-start for start,stop in self.processing_parameter_slices.values()),
+                         "source_gate_parameter_count": 0 if self.original_recorder is None else len(self.original_recorder.parameters),
+                         "execution_semantics": "one independent native ExecutionPlan evaluation per child Tape",
+                         "gradient_support": "native child quantum Jacobians and bounded native postprocessing chain rule"}
+        from quantumbridge.diff.trace import flatten_tree
+        try:
+            _, self.last_spec = flatten_tree(value)
+        except UnsupportedFeature:
+            self.last_spec = None
+        return value
 
     def evaluate(self, values):
         if len(values) != len(self.recorder.parameters):
             raise ValueError("Transformed QNode angle shape mismatch.")
+        self._processing_values(values)
+        self.limits.check("max_total_shots",self.forward_physical_shots+check_batch(self.prepared.tapes,self.limits)[1])
         results, executions = [], []
         for index, (plan, (start, stop)) in enumerate(zip(self.child_plans, self.parameter_slices)):
             execution_id = str(uuid4())
@@ -323,22 +369,93 @@ class TransformedExecutionPlan:
             executions.append({"tape_index": index, "execution_id": execution_id,
                                "gate_angle_slice": (start, stop),
                                "operation_count": operation_count(plan.circuit, self.limits), **deepcopy(plan.metadata)})
-        value = self.prepared.processing_fn(tuple(results))
-        self.metadata = {**deepcopy(self.prepared.metadata), "native_execution": True,
-                         "executed_tape_count": len(executions), "executions": executions,
-                         "gate_parameter_count": len(self.recorder.parameters),
-                         "source_gate_parameter_count": 0 if self.original_recorder is None else len(self.original_recorder.parameters),
-                         "execution_semantics": "one independent native ExecutionPlan evaluation per child Tape",
-                         "gradient_support": "not implemented for transformed execution before native VJP integration"}
-        from quantumbridge.diff.trace import flatten_tree
-        try:
-            _, self.last_spec = flatten_tree(value)
-        except UnsupportedFeature:
-            self.last_spec = None
+        self.forward_physical_shots += sum(part.get("physical_shots",0) for execution in executions for part in execution.get("partitions",()))
+        self.forward_evaluation_count += 1
+        self.last_forward_executions = deepcopy(executions)
+        value = self._reconstruct(values, results, executions)
+        self.metadata.update(forward_physical_shots=self.forward_physical_shots,forward_evaluation_count=self.forward_evaluation_count)
         return value
 
-    def jacobian(self, *args, **kwargs):
-        raise UnsupportedFeature("transform_autodiff", "Transformed quantum Jacobian/VJP integration is not implemented yet.")
+    def jacobian(self, values, method=None, step=1e-6):
+        from quantumbridge.diff.processing import processing_jacobian, result_payload
+        from quantumbridge.diff.trace import flatten_tree
+        if self.node.max_diff != 1:
+            raise UnsupportedFeature("higher_order_derivatives", "Transformed native derivatives currently support first order only.")
+        if len(values) != len(self.recorder.parameters):
+            raise ValueError("Transformed QNode angle shape mismatch.")
+        self._processing_values(values)
+        results, matrices, executions, derivative_receipts = [], [], [], []
+        selected = [plan.gradient_capability(method or self.node.diff_method) for plan in self.child_plans]
+        repetitions = [2+sum(4 if operation.name in {"crx","cry","crz"} and chosen == "parameter-shift" else 2
+                               for operation in plan._occurrences().values()) if chosen != "adjoint" else 1
+                       for plan,chosen in zip(self.child_plans,selected)]
+        total_shots = sum(check_batch((child,),self.limits)[1]*count for child,count in zip(self.prepared.tapes,repetitions))
+        self.limits.check("max_total_shots",total_shots+self.forward_physical_shots)
+        storage = 0
+        for child,count in zip(self.prepared.tapes,repetitions):
+            for request in child.measurements:
+                if request.kind == "pauli_group":
+                    group = request.observable
+                    storage += sum((shots or 0)*(len(group.words)+len(group.basis))+len(group.words)**2 for shots in ShotSpec.parse(child.shots).partitions)*count
+        self.limits.check("max_sample_values",storage)
+        if any(request.seed is not None and (request.shots is not None or any(shots is not None for shots in plan.shots.partitions)) for plan in self.child_plans for request in plan.requests):
+            raise UnsupportedFeature("local_seed_gradient", "Fixed local measurement seeds cannot provide independent shifted sampling streams.")
+        if any(request.kind == "var" and (request.shots is not None or any(shots is not None for shots in plan.shots.partitions)) for plan in self.child_plans for request in plan.requests):
+            raise UnsupportedFeature("sampled_variance_gradient", "Finite-shot transformed variance derivatives have no verified estimator contract yet.")
+        for level in self.prepared.processing_levels:
+            for _,_,processor in level:
+                if getattr(processor,"native_variance",False) and any(shots is not None for shots in ShotSpec.parse(self.node.shots).partitions):
+                    raise UnsupportedFeature("sampled_variance_gradient", "Grouped finite-shot variance derivatives have no verified estimator contract yet.")
+        for index,(plan,(start,stop),chosen) in enumerate(zip(self.child_plans,self.parameter_slices,selected)):
+            base,matrix,_ = plan.jacobian(values[start:stop],chosen,step)
+            results.append(base)
+            matrices.append(matrix)
+            executions.append({"tape_index":index,"execution_id":str(uuid4()),"gate_angle_slice":(start,stop),
+                               "operation_count":operation_count(plan.circuit,self.limits),**deepcopy(plan.metadata)})
+            derivative_receipts.append({"tape_index":index,**deepcopy(plan.metadata)})
+        value = self._reconstruct(values,results,executions)
+        _, processing, spec, quantum_width = processing_jacobian(self.prepared,tuple(results),self._processing_values(values))
+        flat,_ = flatten_tree(value)
+        if len(flat)*max(1,len(values)) > 2000000:
+            raise MemoryError("Transformed QNode Jacobian exceeds its output budget.")
+        matrix,offset = np.zeros((len(flat),len(values))),0
+        for child_matrix,(start,stop),result in zip(matrices,self.parameter_slices,results):
+            width = len(flatten_tree(result_payload(result))[0])
+            matrix[:,start:stop] = processing[:,offset:offset+width] @ child_matrix
+            offset += width
+        offset = quantum_width
+        for start,stop in self.processing_parameter_slices.values():
+            matrix[:,start:stop] = processing[:,offset:offset+stop-start]
+            offset += stop-start
+        actual_shots = sum(plan.metadata.get("gradient_physical_shots",0) for plan in self.child_plans)
+        self.metadata.update(postprocessing_chain_rule=True,native_postprocessing_derivative=True,
+                             gradient_method=selected[0] if len(set(selected)) == 1 else "mixed" if selected else "classical-only",
+                             shifted_evaluation_count=sum(plan.metadata.get("shifted_evaluation_count",0) for plan in self.child_plans),
+                             derivative_evaluation_count=sum(plan.metadata.get("derivative_evaluation_count",0) for plan in self.child_plans),
+                             derivative_order=1,gradient_executions=derivative_receipts,
+                             gradient_semantics="finite-shot estimate" if total_shots else "analytic",
+                             gradient_physical_shots=actual_shots,preceding_forward_physical_shots=self.forward_physical_shots,
+                             preceding_forward_evaluation_count=self.forward_evaluation_count,
+                             preceding_forward_executions=deepcopy(self.last_forward_executions),
+                             total_physical_shots=actual_shots+self.forward_physical_shots,
+                             differentiation_path="native child quantum means -> native postprocessing Jacobian -> source classical graph")
+        return value,matrix,spec
+
+    compute_jacobian = jacobian
+
+    def execute_and_compute_derivatives(self, values, method=None, step=1e-6):
+        return self.jacobian(values,method,step)
+
+    def execute_and_compute_vjp(self, cotangent, values, method=None, step=1e-6):
+        from quantumbridge.diff.trace import flatten_tree
+        value,matrix,spec = self.jacobian(values,method,step)
+        flat,actual = flatten_tree(cotangent)
+        if actual != spec:
+            raise ValueError("Cotangent tree must match the transformed output.")
+        return value,flat @ matrix
+
+    def compute_vjp(self, cotangent, values, method=None, step=1e-6):
+        return self.execute_and_compute_vjp(cotangent,values,method,step)[1]
 
 
 def execute_transform(tape, transform_fn, device=None, *, bindings=None, shots=_UNSET,
@@ -348,7 +465,8 @@ def execute_transform(tape, transform_fn, device=None, *, bindings=None, shots=_
     Returns its reconstructed QNode-style value. With return_metadata=True,
     returns (value, metadata). Execution IDs denote real child plan evaluations,
     not claims that a multi-measurement device uses only one simulator run.
-    Native parameter bindings are supported; transformed autodiff is not yet.
+    Raw parameter bindings are numeric; native/framework derivatives use the
+    recorded QNode entry points, not raw live gate values or Tape bindings.
     """
     if not isinstance(tape, Tape):
         raise TypeError("execute_transform requires a native Tape.")

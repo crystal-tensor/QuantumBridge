@@ -5,6 +5,26 @@ Date: 2026-06-05
 
 This ledger records implementation mode and upstream source status for the current P1 release-candidate baseline. Current work uses Native Implementation, Adapter Integration, and Upstream Dependency. No new upstream source migration was introduced during Stage 5.5. No Source Port with Attribution was performed.
 
+## Stage 11O-B5 Native Transformed Autodiff
+
+Native Implementation; zero implementation/test source ports. Existing native
+quantum engines supply all quantum derivatives. Optional Torch/Autograd retain
+classical graphs; public PennyLane 0.44.1/0.42.3 calls are differential test
+oracles only. No SDK implementation/tests, package artifacts, credentials,
+environment trees or private SDK gradient helpers are copied or used at runtime.
+
+| Files | Native changes | Independent evidence |
+| --- | --- | --- |
+| `quantumbridge/diff/processing.py`, `quantumbridge/transforms/program.py`, `quantumbridge/diff/qnode_engine.py` | Means-only derivative payload, bounded chunked Dual postprocessing Jacobian, child native shift/adjoint and complete result/input chain | Torch QWC squared-loss red/green; native Jacobian/VJP/JVP, reverse-order and nested/multi-child tests |
+| `quantumbridge/diff/scalars.py`, `quantumbridge/utils/math.py`, `quantumbridge/qml/tape.py`, `quantumbridge/qml/qnode.py`, `quantumbridge/transforms/qwc.py`, `quantumbridge/transforms/measurement_transforms.py` | Retained scalar coefficient graphs, declared processing slots/product rules, ordinary live-coefficient native preprocessing and explicit unsupported boundaries | Coefficient-only/shared-angle/identity/zero/scaling/native/Torch/Autograd tests and public coefficient derivatives |
+| `quantumbridge/qml/pauli_group.py`, `quantumbridge/devices/matrix_product_state_device.py`, `quantumbridge/information/matrix_product_state.py` | Actual-call MPS telemetry, no extra resource-only circuits, tensor storage and group receipts | 100-wire GHZ+AngleEmbedding+Transform gradient with dense APIs forbidden, actual bond/storage/truncation proof |
+| `tests/transforms/test_native_transformed_autodiff.py`, `tests/compat/test_native_transformed_gradient_differential.py`, existing B1/B2/B4 tests | Independently authored mathematical/runtime/framework/sampling tests; old unsupported assertions upgraded to real derivative checks without deleting scenarios | Both public SDK versions, full regression gates, actual shared sample/shift/partition receipts |
+| `examples/native_transformed_autodiff.py`, `examples/native_mps_template_transform_gradient.py`, `examples/native_qchem_transformed_gradient.py` | SDK-free coefficient/gate VJP, non-dense MPS and geometry-derived H2 optimization | Executable numerical assertions and actual metadata |
+| `docs/implementation/stage11o_b5_native_transformed_autodiff_report.md`, `docs/compat/core_parity_ledger.md`, `README.md`, `THIRD_PARTY_NOTICES.md` | Test receipts, implementation boundaries and source accounting | B6/full parity remain incomplete; no new-SHA remote CI is inferred |
+
+No source port was performed. This is a supported first-order native checkpoint,
+not all PennyLane transform/gradient or Qiskit functional replacement.
+
 ## Stage 11O-B4 Native QWC And Shot Allocation
 
 Native Implementation, zero implementation/test source ports. Native Tape,

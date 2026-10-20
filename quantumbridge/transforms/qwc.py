@@ -3,12 +3,13 @@
 """Bounded native QWC grouping, shot allocation and covariance reconstruction."""
 
 from dataclasses import dataclass
-from numbers import Integral, Real
+from numbers import Integral
 
 import numpy as np
 
 from quantumbridge.core.classical import UnsupportedFeature
 from quantumbridge.diff.qnode_engine import map_measurements
+from quantumbridge.diff.scalars import CoefficientSlot, CoefficientTable
 from quantumbridge.qml.measurements import MeasurementRequest
 from quantumbridge.qml.pauli_group import PauliGroup, PauliGroupResult
 from quantumbridge.qml.shot_vector import ShotSpec
@@ -92,6 +93,7 @@ def split_non_commuting(tape, grouping_strategy="default", shot_dist=None, seed=
     tree, requests = output_tree(tape), []
     map_measurements(tree, lambda request: requests.append(request))
     words, word_indices, rows, offsets, kinds = [], {}, [], [], []
+    coefficients, recipes = CoefficientTable(), []
     work = 0
     for request in requests:
         if request.kind not in {"expval", "var"}:
@@ -110,8 +112,8 @@ def split_non_commuting(tape, grouping_strategy="default", shot_dist=None, seed=
         work += len(terms)
         limits.check("max_expansion_steps", work)
         for coefficient, pauli in terms:
-            if not isinstance(coefficient, Real) or not np.isfinite(coefficient):
-                raise ValueError("QWC coefficients must be static finite real scalars.")
+            reference = coefficients.add(coefficient)
+            coefficient = coefficients.resolve(reference)
             if not isinstance(pauli, PauliString):
                 raise UnsupportedFeature("qwc_observable", "Native QWC grouping requires PauliString/Hamiltonian observables.")
             occupied = [wire for wire, _ in pauli.terms]
@@ -120,6 +122,7 @@ def split_non_commuting(tape, grouping_strategy="default", shot_dist=None, seed=
             word = tuple(sorted((wire, label) for wire, label in pauli.terms if label != "I"))
             if not word:
                 offset += coefficient
+                recipes.append((len(rows),None,reference))
                 continue
             if word not in word_indices:
                 limits.check("max_postprocessing_nodes", len(words) + 1)
@@ -127,6 +130,7 @@ def split_non_commuting(tape, grouping_strategy="default", shot_dist=None, seed=
                 words.append(word)
             index = word_indices[word]
             row[index] = row.get(index, 0.) + coefficient
+            recipes.append((len(rows),index,reference))
         if not np.isfinite(offset) or not all(np.isfinite(value) for value in row.values()):
             raise ValueError("Combined QWC coefficients must remain finite.")
         rows.append(row)
@@ -154,6 +158,9 @@ def split_non_commuting(tape, grouping_strategy="default", shot_dist=None, seed=
     if not all(np.isfinite(weight) for weight in weights):
         raise ValueError("QWC group weights must remain finite.")
     if shot_dist == "weighted":
+        live_words = {index for _,index,reference in recipes if isinstance(reference,CoefficientSlot)}
+        if any(weight == 0 and any(index in live_words for index in group) for group,weight in zip(groups,weights)):
+            raise UnsupportedFeature("weighted_trainable_zero", "A zero-weight trainable group still needs its means for coefficient derivatives; use undistributed or uniform shots.")
         kept = [index for index, weight in enumerate(weights) if weight > 0]
         groups, bases, weights = ([items[index] for index in kept] for items in (groups, bases, weights))
     spec = ShotSpec.parse(tape.shots)
@@ -165,8 +172,8 @@ def split_non_commuting(tape, grouping_strategy="default", shot_dist=None, seed=
                              tuple(tuple(words[index] for index in group) for group in groups))
     children, descriptions = [], []
     for number, (indices, basis) in enumerate(zip(groups, bases)):
-        coefficients = tuple(tuple(row.get(index, 0.) for index in indices) for row in rows)
-        group = PauliGroup(receipt.words[number], tuple(sorted(basis.items())), tuple(indices), coefficients,
+        group_coefficients = tuple(tuple(row.get(index, 0.) for index in indices) for row in rows)
+        group = PauliGroup(receipt.words[number], tuple(sorted(basis.items())), tuple(indices), group_coefficients,
                            receipt, number, limits.max_sample_values)
         child = tape.copy()
         terminal = MeasurementRequest("pauli_group", observable=group)
@@ -175,26 +182,36 @@ def split_non_commuting(tape, grouping_strategy="default", shot_dist=None, seed=
         child.shots = ShotSpec(allocation[number], spec.is_vector)
         children.append(child)
         descriptions.append({"group_index": number, "source_term_indices": tuple(indices), "words": group.words,
-                             "basis": group.basis, "source_coefficients": coefficients,
+                             "basis": group.basis, "source_coefficients": group_coefficients,
                              "allocated_shots": allocation[number], "weight": weights[number]})
     check_batch(children, limits)
 
-    def one(results):
+    def one(results, differentiating=False, parameters=None):
         if any(not isinstance(value, PauliGroupResult) or value.group != child.observable for value, child in zip(results, children)):
             raise TypeError("QWC reconstruction requires the matching native joint measurement results.")
         restored, statistics = [], []
-        for position, (offset, kind) in enumerate(zip(offsets, kinds)):
+        bound_rows, bound_offsets = [dict() for _ in rows], [0.]*len(rows)
+        for source,index,reference in recipes:
+            value = coefficients.resolve(reference,parameters)
+            if index is None:
+                bound_offsets[source] += value
+            else:
+                bound_rows[source][index] = bound_rows[source].get(index,0.) + value
+        for position, (offset, kind) in enumerate(zip(bound_offsets, kinds)):
             mean, empirical, variance_of_mean, uncertain = offset, 0., 0., False
             for result in results:
-                coefficients = np.asarray(result.group.coefficients[position])
-                mean += float(coefficients @ result.means)
-                empirical += float(coefficients @ result.covariance @ coefficients)
-                if result.shots is not None and np.any(coefficients):
+                row_coefficients = np.asarray([bound_rows[position].get(index,0.) for index in result.group.indices])
+                contribution = sum(coefficient*mean for coefficient,mean in zip(row_coefficients,result.means))
+                mean += contribution if differentiating else float(contribution)
+                if differentiating:
+                    continue
+                empirical += float(row_coefficients @ result.covariance @ row_coefficients)
+                if result.shots is not None and np.any(row_coefficients):
                     if result.sample_covariance is None:
                         uncertain = True
                     else:
-                        variance_of_mean += float(coefficients @ result.sample_covariance @ coefficients) / result.shots
-            value = mean if kind == "expval" else max(0., 1. - mean * mean) if rows[position] else 0.
+                        variance_of_mean += float(row_coefficients @ result.sample_covariance @ row_coefficients) / result.shots
+            value = mean if kind == "expval" else (1. - mean * mean if differentiating else max(0., 1. - mean * mean)) if rows[position] else 0.
             restored.append(value)
             statistics.append({"source_measurement_index": position, "kind": kind, "expectation": mean,
                                "variance": max(0., empirical),
@@ -204,17 +221,19 @@ def split_non_commuting(tape, grouping_strategy="default", shot_dist=None, seed=
         values = iter(restored)
         return map_measurements(tree, lambda _: next(values)), statistics
 
-    def process(results):
+    def process(results, *, parameters=None, differentiating=False):
         if len(results) != len(children):
             raise ValueError("QWC result count must match the actual child Tape count.")
         if spec.is_vector:
             if any(not isinstance(result, tuple) or len(result) != len(spec.partitions) for result in results):
                 raise ValueError("QWC shot partition count mismatch.")
-            processed = [one(tuple(result[partition] for result in results)) for partition in range(len(spec.partitions))]
+            processed = [one(tuple(result[partition] for result in results),differentiating,parameters) for partition in range(len(spec.partitions))]
             value = tuple(item[0] for item in processed)
         else:
-            processed = [one(results)]
+            processed = [one(results,differentiating,parameters)]
             value = processed[0][0]
+        if differentiating:
+            return value
         process.last_metadata = {"grouping_strategy": grouping_strategy, "effective_strategy": strategy,
                                  "shot_distribution": shot_dist, "parent_shots": spec.partitions,
                                  "groups": descriptions, "partitions": [
@@ -226,4 +245,7 @@ def split_non_commuting(tape, grouping_strategy="default", shot_dist=None, seed=
                                  "allocation_rule": "floor proportional shares; one remainder shot to each earliest group; reject any undersampled effective group; preserve vector partitions"}
         return value
 
+    process.native_evaluate = process
+    process.native_variance = "var" in kinds
+    process.native_parameters = tuple(coefficients.parameters)
     return tuple(children), process

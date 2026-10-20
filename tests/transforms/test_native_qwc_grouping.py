@@ -356,7 +356,8 @@ def test_mps_joint_samples_do_not_execute_an_extra_resource_only_shot_job():
     tape.expval(PauliX(0).tensor(PauliZ(29)))
     value,metadata = execute_transform(tape,split_non_commuting,NoExtraRun(),return_metadata=True)
     assert value == (1.,1.)
-    assert not metadata["executions"][0]["partitions"][0]["resources"]["available"]
+    resources = metadata["executions"][0]["partitions"][0]["resources"]
+    assert resources["available"] and resources["max_tensor_bytes"] > 0
 
 
 def test_qnode_rebinding_after_compile_and_grouping_changes_actual_sampled_state():
@@ -369,7 +370,9 @@ def test_qnode_rebinding_after_compile_and_grouping_changes_actual_sampled_state
     first,second = node(.1),node(.8)
     assert first != second and len(device.calls) == 4 and sum(call[1] for call in device.calls) == 202
     assert node.transform_program.transforms[-1].__name__ == "split_non_commuting"
-    with pytest.raises(UnsupportedFeature,match="VJP"): node.gradient(.2)
+    assert np.isfinite(node.gradient(.2))
+    assert node.last_metadata["postprocessing_chain_rule"]
+    assert node.last_metadata["gradient_semantics"] == "finite-shot estimate"
 
 
 def test_group_count_changes_get_fresh_allocation_and_no_old_processing_closure():

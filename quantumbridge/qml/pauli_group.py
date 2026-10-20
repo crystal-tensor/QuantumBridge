@@ -53,6 +53,7 @@ class PauliGroupResult:
     seed: object
     execution_id: str
     device_calls: int
+    resources: object = None
 
     def metadata(self):
         rows = np.asarray(self.group.coefficients)
@@ -75,16 +76,33 @@ class PauliGroupResult:
                 "sample_covariance": None if self.sample_covariance is None else self.sample_covariance.tolist(),
                 "covariance_semantics": "exact observable covariance" if self.shots is None else "empirical population covariance; sample_covariance uses ddof=1",
                 "device_calls": self.device_calls, "joint_sample_calls": int(self.shots is not None),
+                "resources":self.resources,
                 "provenance": "native analytic Pauli expectations" if self.shots is None else "one native Device.sample call; all word eigenvalues derive from this bitstring buffer"}
 
 
 def measure_pauli_group(device, circuit, group, shots, seed):
     group.validate(circuit.num_qubits)
     size = len(group.words)
+    resources = None
+    def capture():
+        nonlocal resources
+        current = getattr(device,"last_execution_metadata",None)
+        if not current or getattr(device,"simulation",None) != "matrix_product_state":
+            return
+        if resources is None:
+            resources = dict(current)
+        else:
+            for key in ("max_bond_observed","max_discarded_weight","max_tensor_bytes","max_truncations"):
+                resources[key] = max(resources[key],current[key])
+            resources["max_bond_dimensions_observed"] = [max(a,b) for a,b in zip(resources["max_bond_dimensions_observed"],current["max_bond_dimensions_observed"])]
+    def expectation(word):
+        value = device.expectation(circuit,PauliString(word))
+        capture()
+        return value
     if shots is None:
         if size * size > group.max_sample_values:
             raise MemoryError("Joint Pauli analytic covariance exceeds the sample-value budget.")
-        means = np.asarray([device.expectation(circuit, PauliString(word)) for word in group.words])
+        means = np.asarray([expectation(word) for word in group.words])
         covariance, calls = np.empty((size, size)), size
         for i, first in enumerate(group.words):
             for j in range(i + 1):
@@ -94,7 +112,7 @@ def measure_pauli_group(device, circuit, group, shots, seed):
                         del product[wire]
                     else:
                         product[wire] = label
-                second = 1. if not product else device.expectation(circuit, PauliString(sorted(product.items())))
+                second = 1. if not product else expectation(sorted(product.items()))
                 calls += bool(product)
                 covariance[i, j] = covariance[j, i] = second - means[i] * means[j]
         memory = eigenvalues = sample_covariance = None
@@ -111,6 +129,7 @@ def measure_pauli_group(device, circuit, group, shots, seed):
                 rotated.sdg(wire).h(wire)
         wires = tuple(wire for wire, _ in group.basis)
         memory = tuple(device.sample(rotated, wires=wires, shots=shots, seed=seed))
+        capture()
         if len(memory) != shots or any(not isinstance(label, str) or len(label) != len(wires) or set(label) - {"0", "1"} for label in memory):
             raise ValueError("Native Device returned an invalid joint bitstring buffer.")
         positions = {wire: index for index, wire in enumerate(wires)}
@@ -126,4 +145,4 @@ def measure_pauli_group(device, circuit, group, shots, seed):
         if value is not None:
             value.setflags(write=False)
     return PauliGroupResult(group, means, covariance, sample_covariance, memory, eigenvalues,
-                            shots, seed, str(uuid4()), calls)
+                            shots, seed, str(uuid4()), calls,resources)
