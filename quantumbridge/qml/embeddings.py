@@ -21,8 +21,8 @@ def angle_embedding(circuit, features, wires=None, rotation="ry", *, limits=None
     if axis == "phase" or shape[0] > len(wires):
         raise ValueError("AngleEmbedding needs X/Y/Z rotations and at most one feature per wire.")
     operation_budget(circuit, limits, shape[0])
-    for value, wire in zip(features, wires):
-        getattr(circuit, axis)(value, wire)
+    for index in range(shape[0]):
+        getattr(circuit, axis)(features[index], wires[index])
     return circuit
 
 

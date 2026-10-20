@@ -99,6 +99,10 @@ def angle_value(value):
         return
     if isinstance(value, Dual):
         value = value.value
+    elif type(value).__module__.startswith("tensorflow"):
+        if value.shape.rank != 0 or not value.dtype.is_floating:
+            raise TypeError("Template gate angles require real scalar parameters.")
+        return
     elif type(value).__module__.startswith(("jax", "jaxlib")):
         if shape_of(value) or value.dtype.kind != "f":
             raise TypeError("Template gate angles require real scalar parameters.")
@@ -138,7 +142,7 @@ def static_array(value, *, complex_values=False):
     shape = shape_of(value)
     for indices in np.ndindex(shape):
         item = entry(value, indices)
-        if isinstance(item, (Dual, Parameter, ParameterExpression)) or type(item).__module__.startswith(("torch", "autograd")):
+        if isinstance(item, (Dual, Parameter, ParameterExpression)) or type(item).__module__.startswith(("torch", "autograd", "tensorflow")):
             raise UnsupportedFeature("state_preparation_input_gradient", "Native basis/amplitude features are static; input differentiation is not implemented.")
     if not complex_values and np.iscomplexobj(value):
         raise ValueError("Basis features must be real bits.")

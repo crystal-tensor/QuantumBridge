@@ -128,12 +128,13 @@ def flatten_tree(value):
     return np.concatenate(leaves) if leaves else np.empty(0), spec
 
 
-def unflatten_tree(flat, spec, trailing_shape=()):
+def unflatten_tree(flat, spec, trailing_shape=(), *, reshape=None):
     kind = spec[0]
-    if kind == "dict": return {key: unflatten_tree(flat, child, trailing_shape) for key, child in spec[1]}
+    if kind == "dict": return {key: unflatten_tree(flat, child, trailing_shape, reshape=reshape) for key, child in spec[1]}
     if kind in {"tuple", "list"}:
-        values = [unflatten_tree(flat, child, trailing_shape) for child in spec[1]]
+        values = [unflatten_tree(flat, child, trailing_shape, reshape=reshape) for child in spec[1]]
         return tuple(values) if kind == "tuple" else values
     _, shape, start, size = spec
-    value = flat[start:start + size].reshape(shape + trailing_shape)
+    part = flat[start:start + size]
+    value = part.reshape(shape + trailing_shape) if reshape is None else reshape(part, shape + trailing_shape)
     return value.item() if not shape and not trailing_shape and isinstance(value, np.ndarray) else value

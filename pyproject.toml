@@ -96,6 +96,7 @@ quafu-cloud = [
 ]
 torch = ["torch"]
 jax = ["jax", "jaxlib"]
+tensorflow = ["tensorflow"]
 dev = ["pytest", "numpy", "pytest-cov"]
 
 [tool.setuptools]

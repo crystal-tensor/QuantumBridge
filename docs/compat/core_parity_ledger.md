@@ -1,6 +1,6 @@
 # Core Functional Parity Ledger
 
-Updated: 2026-10-20, Stage 11P-A native JAX checkpoint, starting from local `bc17863`.
+Updated: 2026-10-20, Stage 11P-B native TensorFlow checkpoint, starting from local `edf4728`.
 This is the single current-status view. Full Qiskit/PennyLane functional
 replacement remains **incomplete**. Line coverage, inventories, passthrough and
 green CI are not proof of complete API coverage.
@@ -36,7 +36,8 @@ publication/exact-SHA CI is a separate receipt, not inferred from prior CI.
 | VJP/JVP/execute derivatives | NATIVE_TESTED; PARTIAL | Current explicit Jacobian products are not full derivative-device contracts |
 | Torch/Autograd | NATIVE_TESTED; PARTIAL: CPU framework graphs with native quantum VJP | GPU, higher order and full interface/device contracts |
 | JAX | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: CPU native first-order QNode/transform derivatives, PyTrees, supported host JIT/VMAP and explicit seeded sampling | Complete public interfaces, GPU/TPU, dynamic PRNG keys, higher order, capture and full derivative-device protocols |
-| TF/backprop/capture | NOT_STARTED or UNSUPPORTED as documented | Full end-to-end implementations; array conversion is not autodiff |
+| TensorFlow | NATIVE_TESTED; PARTIAL: CPU eager/GradientTape/Variable/static tf.function, native child VJP, coefficients and explicit seeded sampling | Complete TF/device protocol, higher order, distributed/GPU/TPU/XLA/export and dynamic contracts |
+| Native simulator backprop/capture | UNSUPPORTED / NOT_STARTED | Shift/adjoint interfaces are not simulator backprop or complete capture |
 | Shot vectors/dynamic gradients/MPS gradients | NATIVE_TESTED; PARTIAL: actual sampling/branches, native shift and finite difference | Complete stochastic/loop/postselection contracts; numerical truncation risk |
 | Higher-order derivatives | UNSUPPORTED | First-order guards remain active |
 | Compiled QNode gradients | NATIVE_TESTED; PARTIAL: expressions, shared inputs, Torch/Autograd and native gradients | Restored identity/equal-width only; general measurement remapping |
@@ -44,7 +45,28 @@ publication/exact-SHA CI is a separate receipt, not inferred from prior CI.
 | Compiled 100-qubit MPS | NATIVE_TESTED for GHZ-chain with dense APIs disabled | No arbitrary-entanglement efficiency claim |
 | Quafu/QOS-UQCI/industry taxonomy | PARTIAL: offline target/configuration and existing adapters, four categories/19 subdomains | Real authorized backend/job evidence and complete industry workflows |
 
-## Stage 11P-A JAX Status
+## Stage 11P-B TensorFlow Status
+
+Bounded CPU first-order implementation, not full TensorFlow or SDK parity.
+Detailed receipts: [TF report](../implementation/stage11p_b_native_tensorflow_autodiff_report.md).
+
+| Contract | Status | Boundary |
+| --- | --- | --- |
+| Eager / GradientTape / tf.Variable | NATIVE_TESTED; PARTIAL | Explicit packed inputs, real native shift/adjoint VJP; tested closure reads |
+| tf.custom_gradient | NATIVE_TESTED; PARTIAL | Real native quantum/postprocessing Jacobians, not a constant wrapper |
+| tf.function | NATIVE_TESTED; PARTIAL | Static real shape CPU same-process callback; fresh runtime values, not quantum XLA |
+| Preprocessing / outer losses / trees | NATIVE_TESTED; PARTIAL | TF chain rule, nested dict/list/tuple output and cotangents |
+| Coefficients / transforms / QWC | NATIVE_TESTED; PARTIAL | Product rule and actual child/reverse postprocessing, including compile/defer |
+| Keras SGD/Adam | NATIVE_TESTED; PARTIAL | Twenty actual updates in tested scalar workflows, not all optimizer/layer contracts |
+| Finite shots / vectors | NATIVE_TESTED; PARTIAL | Explicit integer seed, estimates and actual eager forward/backward work |
+| tensorflow_batch | NATIVE_TESTED; PARTIAL | Static single-argument leading-axis CPU mapping, bounded logical work |
+| 100-wire MPS / native H2 | NATIVE_TESTED; PARTIAL | Low entanglement no-dense proof; one fixed-geometry SCF and optimizer, not DiffHF |
+| Legacy public TF oracle | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Six actual public scenarios per installed PL 0.44.1/0.42.3; deprecation is not inferred unavailability |
+| Higher order / native backprop | UNSUPPORTED | Explicit first-order guard; Hessian/HVP remains open |
+| XLA / GPU / TPU / distributed / portable SavedModel | UNSUPPORTED or unverified | Host callback cannot imply these capabilities |
+| Full TF/PennyLane/Qiskit replacement | INCOMPLETE | Full final goal retained |
+
+## Stage 11P-A JAX Status (Historical Checkpoint)
 
 These are bounded native CPU contracts, not full JAX/PennyLane parity.
 Current detailed receipts are in the

@@ -1,11 +1,22 @@
 # Third-party Notices
 
-Status: Stage 11P-A native JAX interface checkpoint
+Status: Stage 11P-B native TensorFlow interface checkpoint
 Date: 2026-10-20
 
 QuantumBridge is an independent project. References to Qiskit and PennyLane are for attribution, compatibility, and optional adapter documentation only and do not imply endorsement.
 
 ## Native Template Verification
+
+Stage 11P-B independently connects existing native quantum execution and
+shift/adjoint/transform Jacobians to optional TensorFlow classical graphs.
+Public custom_gradient/numpy_function contracts inform the interface boundary;
+no framework or SDK implementation/test source is copied. Native host-plan
+machinery is shared with the previously independent JAX bridge, not a second
+quantum engine. Public installed PennyLane calls are independent black-box
+oracles only. No TensorFlow Quantum/PennyLane quantum runtime is used by the
+native path. Source ports remain zero. No credentials, cloud/hardware calls,
+upstream sources, environments, wheels or installed package trees are included.
+This bounded CPU first-order checkpoint is not full SDK parity or endorsement.
 
 Stage 11P-A independently connects the existing native QNode, Device,
 shift/adjoint and transformed postprocessing Jacobians to optional JAX graphs.

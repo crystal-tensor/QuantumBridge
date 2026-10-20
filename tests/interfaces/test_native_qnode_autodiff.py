@@ -88,10 +88,16 @@ def test_autograd_unused_input_and_native_training_loss():
     assert node(x) < initial - 1
 
 
-def test_unimplemented_frameworks_and_unknown_interfaces_are_explicit():
+def test_optional_tensorflow_and_unknown_interfaces_are_explicit():
+    import importlib.util
+    from quantumbridge.interfaces import MissingOptionalDependency
     for interface in ("tf", "tensorflow"):
         node = QNode(lambda t, x: (t.ry(x, 0), t.expval(PauliZ(0)))[-1], 1, interface=interface)
-        with pytest.raises(UnsupportedFeature): node(.3)
+        if importlib.util.find_spec("tensorflow") is None:
+            with pytest.raises(MissingOptionalDependency): node(.3)
+        else:
+            import tensorflow as tf
+            assert tf.is_tensor(node(tf.constant(.3)))
     with pytest.raises(ValueError): QNode(lambda t: t.expval(PauliZ(0)), 1, interface="unknown")
 
 

@@ -916,7 +916,7 @@ count or resource receipt. Eager native receipts remain auditable.
 Finite gradients are estimates, with independent shifted/group/partition
 streams; forward SE is not a strict gradient-error bound.
 
-Higher-order differentiation, capture/Catalyst, TensorFlow, GPU/TPU, native
+Higher-order differentiation, capture/Catalyst, GPU/TPU, native
 backprop, full derivative-device protocols and complete SDK parity remain open.
 Public comparisons document version-specific differences rather than treating
 upstream unsupported paths as positive matching evidence.
@@ -930,6 +930,76 @@ JAX_ENABLE_X64=1 python -m examples.native_jax_qchem_h2
 
 See the [JAX audit](docs/implementation/stage11p_a_jax_gap_audit.md) and
 [JAX implementation report](docs/implementation/stage11p_a_native_jax_autodiff_report.md).
+
+## Native TensorFlow Autodiff
+
+Optional `interface="tf"` / `"tensorflow"` now uses real `GradientTape`,
+`tf.Variable`, float32/float64 and first-order native quantum VJPs. TensorFlow
+owns classical preprocessing and outer losses; QuantumBridge's existing
+shift/adjoint, Device and transformed child/postprocessing Jacobians own
+quantum execution. No PennyLane/TF Quantum quantum engine is used.
+
+```python
+import tensorflow as tf
+from quantumbridge import PauliZ
+from quantumbridge.qml import QNode
+
+def circuit(tape, theta):
+    tape.ry(tf.sin(theta) + 2 * theta, 0)
+    return tape.expval(PauliZ(0))
+
+node = QNode(circuit, 1, interface="tf", diff_method="parameter-shift")
+theta = tf.Variable(0.37, dtype=tf.float64)
+with tf.GradientTape() as recording:
+    loss = node(theta) ** 2
+gradient = recording.gradient(loss, theta)
+```
+
+Install the optional `.[tensorflow]` extra. Supported static `tf.function`
+graphs use same-process CPU host callbacks, not a quantum XLA/GPU lowering.
+On the tested macOS host, importing PyArrow 24 before TensorFlow 2.21 reproduced
+a native-library hang even without QuantumBridge. Validation uses an isolated
+TF environment or a PyArrow 23.0.1 test overlay; arbitrary co-installability is
+not guaranteed. Details and exact environment conditions are in the TF report.
+Recording is symbolically traced even for eager calls, preventing `float(x)` /
+`x.numpy()` from silently detaching trainable gate expressions. Variables,
+including tested closures, are read into explicit packed tensor inputs outside
+the custom-gradient quantum operation. Fully defined static shapes and real
+expval/variance/probability output trees are required. Native templates,
+compile/merge/defer/QWC, live Hamiltonian coefficients and multiple child
+Tapes preserve their tested chain rules.
+
+`tensorflow_with_status` returns forward value/status (0 success, 1 invalid,
+2 unsupported, 3 budget, 4 unexpected failure); failed derivatives are NaN.
+Ordinary graph calls assert on callback failure. Static unsupported contracts
+raise before callback creation. `TensorFlowBridgeLimits` bounds input/output,
+source/expanded parameters, Jacobians, child Tapes and forward-plus-backward
+shot work. `tensorflow_batch(values)` explicitly bounds single-argument static
+leading-axis mapping. Callback bounds describe this API's logical expansion,
+not arbitrary external TF scheduling, mapping or repeated graph invocations.
+Eager metadata reports actual forward/backward work; graph metadata explicitly
+contains trace configuration only, never invented execution counts.
+
+Finite-shot gradients require an explicit immutable integer seed and are
+estimates, not pathwise derivatives or universal accuracy guarantees. Separate
+forward work, native base/linear/shift work, partitions and group/shift seeds
+are receipted. Higher-order/Hessian/HVP, arbitrary dynamic shapes/control flow,
+complex/full-state derivatives, distributed execution, portable SavedModel,
+XLA, GPU/TPU and simulator backprop remain unsupported/unverified. Full
+TensorFlow/PennyLane/Qiskit parity remains incomplete.
+
+```bash
+python -m examples.native_tensorflow_qnode_gradient
+python -m examples.native_tensorflow_transform_training
+python -m examples.native_tensorflow_mps_100qubits
+python -m examples.native_tensorflow_qchem_h2
+```
+
+These are real gradient, twenty-update SGD, non-dense low-entanglement 100-wire
+MPS and fixed-geometry native Gaussian/RHF/JW H2 workflows, not general MPS
+efficiency, differentiable Hartree-Fock or ground-state convergence guarantees.
+See the [TF audit](docs/implementation/stage11p_b_tensorflow_gap_audit.md) and
+[TF report](docs/implementation/stage11p_b_native_tensorflow_autodiff_report.md).
 
 ## Native Molecular Chemistry Checkpoint
 

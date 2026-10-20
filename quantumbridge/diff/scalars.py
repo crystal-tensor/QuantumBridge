@@ -16,7 +16,7 @@ def is_live_scalar(value):
 def scalar_primal(value):
     module = type(value).__module__
     if module.startswith(("jax", "jaxlib", "tensorflow")):
-        raise UnsupportedFeature("coefficient_interface", "Native JAX/TF coefficient differentiation is not implemented.")
+        raise UnsupportedFeature("coefficient_interface", "Use the framework QNode bridge; live JAX/TF primals cannot be read by native host planning.")
     if hasattr(value, "derivative"):
         value = value.value
     elif module.startswith("torch"):
@@ -36,6 +36,10 @@ def scalar_primal(value):
 
 def retain_coefficient(value):
     if is_live_scalar(value):
+        if type(value).__module__.startswith("tensorflow"):
+            if value.shape.rank != 0 or not value.dtype.is_floating:
+                raise TypeError("TensorFlow coefficients require real floating scalars.")
+            return value
         if type(value).__module__.startswith(("jax", "jaxlib")):
             if value.shape or value.dtype.kind != "f":
                 raise TypeError("JAX coefficients require real floating scalars.")

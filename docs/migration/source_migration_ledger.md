@@ -1,6 +1,6 @@
 # Source Migration Ledger
 
-Status: Stage 11P-A native JAX interface checkpoint
+Status: Stage 11P-B native TensorFlow interface checkpoint
 Date: 2026-10-20
 
 This ledger retains historical release and checkpoint sections. Current work
@@ -8,6 +8,28 @@ uses Native Implementation, Adapter Integration and Upstream Dependency, with
 their boundaries stated separately. Historical checkpoint limitations are not
 the current status view; use core_parity_ledger.md for that view.
 No Source Port with Attribution was performed.
+
+## Stage 11P-B Native TensorFlow Autodiff
+
+Native Implementation and optional classical framework integration, zero
+upstream implementation/test source ports. Public TF contracts are references;
+PennyLane public numerical calls are test-only black boxes, not native engines.
+
+| Files | Native changes | Independent evidence |
+| --- | --- | --- |
+| `quantumbridge/interfaces/native_host.py`, `quantumbridge/interfaces/jax_autodiff.py` | Extracted shared source snapshots, static output shape, fresh native plans and quantum Jacobians; retained JAX behavior | Old JAX regressions plus native TF derivatives; no second quantum engine |
+| `quantumbridge/interfaces/tensorflow_autodiff.py`, `quantumbridge/interfaces/__init__.py` | Optional CPU custom-gradient VJP, traced preprocessing, eager/graph status, bounded mapping and work | Real TF GradientTape, variables, graph inputs, failure injection and allocation preflight |
+| `quantumbridge/qml/qnode.py`, `quantumbridge/diff/scalars.py`, `quantumbridge/diff/trace.py` | TF dispatch, status/map API, live coefficient retention and framework reshape callback | Nested outputs/cotangents, native circuit reconstruction, coefficient product rule |
+| `quantumbridge/qml/template_core.py`, `quantumbridge/qml/embeddings.py` | Static TF scalar validation and shape-indexed template emission | Native AngleEmbedding in eager/graph/MPS derivatives; static state-preparation boundaries |
+| `tests/interfaces/test_native_tensorflow_grad.py`, `tests/interfaces/test_native_tensorflow_graph.py`, `tests/interfaces/test_native_tensorflow_transforms.py` | Independently authored basic/transform/Variable/graph math and optimizer tests | Two actual pre-runtime red tests, true native Jacobian spies, fresh graph values and real updates |
+| `tests/interfaces/test_native_tensorflow_shots_limits.py`, `tests/interfaces/test_native_tensorflow_negative.py`, `tests/interfaces/test_native_tensorflow_examples.py` | Sampling/limits, explicit unsupported cases, SDK-free MPS/H2 workflows | Actual physical work/seed receipts, failure codes, no-dense 100-wire and one SCF build |
+| `tests/interfaces/test_native_qnode_autodiff.py` | Replaced obsolete TF-unsupported assertions with installed/absent optional dependency contracts | Does not skip installed TF as false completion evidence |
+| `tests/compat/test_native_tensorflow_pennylane_differential.py` | Six independent public TF black-box scenarios | Explicit typed coefficients prevent public float32 literal conversion from polluting the float64 oracle |
+| `examples/native_tensorflow_qnode_gradient.py`, `examples/native_tensorflow_transform_training.py`, `examples/native_tensorflow_mps_100qubits.py`, `examples/native_tensorflow_qchem_h2.py` | Actual native derivative, Keras optimizer, MPS and geometry-derived chemistry examples | No upstream quantum runtime, no cloud/hardware/token, measured native work |
+| `docs/implementation/stage11p_b_tensorflow_gap_audit.md`, `docs/implementation/stage11p_b_native_tensorflow_autodiff_report.md`, `pyproject.toml` | Audited gaps, scoped receipts and optional TF extra | Full replacement remains incomplete; no core TF dependency or package vendoring |
+
+No Studio/Router, tag/release, authentication/TLS, remote publication or
+third-party source/binary/environment work belongs to this batch.
 
 ## Stage 11P-A Native JAX Autodiff
 

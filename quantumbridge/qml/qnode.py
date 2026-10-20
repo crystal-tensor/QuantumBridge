@@ -16,7 +16,7 @@ from .tape import Tape
 class QNode:
     def __init__(self, fn, num_qubits: int, device=None, shots=None, seed: int | None = None,
                  interface="auto", diff_method="best", gradient_kwargs=None, max_diff=1,
-                 jax_limits=None):
+                 jax_limits=None, tensorflow_limits=None):
         self.fn = fn
         self.num_qubits = num_qubits
         self.device = device or StatevectorDevice()
@@ -26,6 +26,7 @@ class QNode:
         self.gradient_kwargs = dict(gradient_kwargs or {})
         self.max_diff = max_diff
         self.jax_limits = jax_limits
+        self.tensorflow_limits = tensorflow_limits
         self.last_metadata = {}
         self.compiler_options = None
         self.transform_program = None
@@ -103,8 +104,12 @@ class QNode:
         def program(tape,*values):
             if len(values) == 1 and isinstance(values[0],(tuple,list)):
                 values = tuple(values[0])
-            elif len(values) == 1 and hasattr(values[0],"shape") and values[0].shape:
-                values = tuple(values[0].reshape(-1))
+            elif len(values) == 1 and hasattr(values[0],"shape") and len(values[0].shape):
+                if type(values[0]).__module__.startswith("tensorflow"):
+                    import tensorflow as tf
+                    values = tuple(tf.unstack(tf.reshape(values[0], (-1,))))
+                else:
+                    values = tuple(values[0].reshape(-1))
             if len(values) != len(parameters): raise ValueError("Circuit QNode argument count must match its free parameter count.")
             source = AngleRecorder()
             source.parameters,source.angles = list(parameters),list(values)
@@ -123,6 +128,9 @@ class QNode:
         if interface == "jax":
             from quantumbridge.interfaces.jax_autodiff import execute_jax
             return execute_jax(self, args, kwargs)
+        if interface in {"tf", "tensorflow"}:
+            from quantumbridge.interfaces.tensorflow_autodiff import execute_tensorflow
+            return execute_tensorflow(self, args, kwargs)
         plan = self._construct(args, kwargs)
         if interface in {None, "numpy"}:
             result = plan.evaluate(plan.recorder.native_values())
@@ -162,6 +170,21 @@ class QNode:
         """
         from quantumbridge.interfaces.jax_autodiff import execute_jax
         return execute_jax(self, args, kwargs, return_status=True)
+
+    def tensorflow_with_status(self, *args, **kwargs):
+        """Return (value, status) for checked CPU TF host calls.
+
+        Status: 0 success, 1 invalid value, 2 unsupported path, 3 resource
+        limit, 4 unexpected host failure. Failed values/derivatives are NaN.
+        Static capability/shape errors reject before callback creation.
+        """
+        from quantumbridge.interfaces.tensorflow_autodiff import execute_tensorflow
+        return execute_tensorflow(self, args, kwargs, return_status=True)
+
+    def tensorflow_batch(self, values):
+        """Bounded CPU leading-axis mapping for one static tensor argument."""
+        from quantumbridge.interfaces.tensorflow_autodiff import execute_tensorflow_batch
+        return execute_tensorflow_batch(self, values)
 
     @staticmethod
     def _input_results(values, layout, single):

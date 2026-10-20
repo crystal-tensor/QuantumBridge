@@ -5,8 +5,9 @@
 
 from .jax_interface import to_jax
 from .jax_autodiff import JAXBridgeLimits, MissingOptionalDependency
+from .tensorflow_autodiff import TensorFlowBridgeLimits
 from .numpy_interface import to_numpy
 from .torch_interface import to_torch
 
-__all__ = ["to_jax", "to_numpy", "to_torch", "JAXBridgeLimits", "MissingOptionalDependency"]
+__all__ = ["to_jax", "to_numpy", "to_torch", "JAXBridgeLimits", "TensorFlowBridgeLimits", "MissingOptionalDependency"]
 
