@@ -1030,16 +1030,21 @@ product = node.compute_hvp(np.array([0.4, -0.3]), np.array([0.7, 0.2]))
 `execute_and_compute_hessian` and `execute_and_compute_hvp` also return the
 executed value. For multiple selected arguments, Hessians are argument-pair
 blocks containing the output tree; HVPs contain one output tree per argument.
-The native HVP accumulates directional second contributions without allocating
-the full Hessian. Framework second-order bridges currently use bounded packed
-Hessians, not a claim of streamed framework HVP or device-native differentiation.
+Native and CPU Torch/Autograd/JAX/TF HVPs accumulate directional second
+contributions without allocating an output-by-parameter-by-parameter Hessian.
+JAX has explicit linear tangent, transpose, CPU lowering and mapped rules;
+reverse-mode output rows are preflighted together and executed sequentially.
+First Jacobians and classical maps can still be dense. This is not device-native
+quantum differentiation or an assertion that all quadratic memory is removed.
 Fixed numeric source angles are not treated as framework variables.
 
 Actual transformed children and native processors retain nonlinear input,
 gate/coefficient and cross-child product rules. Analytic variances include
 second-moment and mean-gradient outer-product corrections. Explicitly seeded
 finite-shot linear expectations/probabilities retain partition/group streams
-and physical-work receipts. Sampled variance, unverified nonlinear sampled
+and physical-work receipts. Direction-independent seeded shift schedules retain
+HVP linearity, including stationary input maps; fixed numerical angles do not
+acquire derivative recipes. Sampled variance, unverified nonlinear sampled
 postprocessing and parameter-dependent weighted integer shot allocation reject.
 Postselection, reused parameterized loops and general measurement-record second
 derivatives remain unsupported. Supported coherent deferred analytic children
@@ -1052,8 +1057,11 @@ limits; this is not a universal process-memory or arbitrary-user-code limit.
 Non-dense 100-wire MPS and fixed-geometry H2 ansatz tests do not imply arbitrary
 MPS efficiency, geometry Hessians, differentiable Hartree-Fock or full parity.
 
-Run `python -m examples.native_qnode_second_order`. Current receipts and remaining
-gaps: [second-order report](docs/implementation/stage11p_c_native_second_order_report.md).
+Run `python -m examples.native_qnode_second_order` or
+`python -m examples.native_framework_hvp --interface all --chemistry`.
+The latter reuses one native H2 Hamiltonian build across all four frameworks.
+Current receipts and remaining gaps:
+[streamed framework HVP report](docs/implementation/stage11p_c2_streamed_framework_hvp_report.md).
 
 ## Native Molecular Chemistry Checkpoint
 

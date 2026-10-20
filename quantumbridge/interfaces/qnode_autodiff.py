@@ -37,14 +37,15 @@ def _framework_point(plan, indices):
         point = fixed.copy()
         point[indices] = values
         return point
-    def second(values):
+    def second(values, direction=None):
         from quantumbridge.diff.higher_order_limits import resolve_higher_order_limits
         limits = resolve_higher_order_limits(plan.node.higher_order_limits)
         limits.check("max_input_parameters", len(indices))
-        limits.check("max_memory_bytes", 8*len(fixed)*len(indices)*(1+len(indices)))
+        columns = len(indices) if direction is None else 1
+        limits.check("max_memory_bytes", 8*len(fixed)*len(indices)*(1+columns))
         classical = np.zeros((len(fixed), len(indices)))
         classical[indices, np.arange(len(indices))] = 1.
-        return plan.second_derivatives(unpack(values), classical=classical, limits=limits)
+        return plan.second_derivatives(unpack(values), direction=direction, classical=classical, limits=limits)
     return unpack, second
 
 
@@ -71,9 +72,10 @@ def _torch_execute(plan):
     class NativeSecondVJP(torch.autograd.Function):
         @staticmethod
         def forward(ctx, values, cotangent, incoming):
-            _, matrix, second, _ = second_derivatives(values.detach().numpy().astype(float))
-            gradient = np.einsum("o,opq,p->q", cotangent.detach().numpy(), second, incoming.detach().numpy())
-            tangent = matrix @ incoming.detach().numpy()
+            direction = incoming.detach().numpy().astype(float)
+            _, matrix, product, _ = second_derivatives(values.detach().numpy().astype(float), direction)
+            gradient = cotangent.detach().numpy() @ product[:, :, 0]
+            tangent = matrix @ direction
             publish(True)
             return torch.as_tensor(gradient, dtype=values.dtype), torch.as_tensor(tangent, dtype=cotangent.dtype)
 
@@ -123,7 +125,7 @@ def _torch_execute(plan):
 def _autograd_execute(plan):
     try:
         import autograd.numpy as anp
-        from autograd.extend import primitive, defvjp
+        from autograd.extend import primitive, defvjp, defvjp_argnums
     except ImportError as exc: raise ImportError("QuantumBridge Autograd QNode requires optional autograd.") from exc
     indices = [index for index, angle in enumerate(plan.recorder.angles) if type(angle).__module__.startswith("autograd")]
     unpack, second_derivatives = _framework_point(plan, indices)
@@ -133,26 +135,32 @@ def _autograd_execute(plan):
                                   "native_second_order": second, "classical_chain_rule": "Autograd graph"}
 
     @primitive
-    def native_hessian(values):
-        _, _, second, _ = second_derivatives(np.asarray(values, dtype=float))
+    def native_second_vjp(values, cotangent, direction):
+        _, matrix, product, _ = second_derivatives(np.asarray(values, dtype=float), np.asarray(direction, dtype=float))
         publish(True)
-        return second
+        return np.concatenate([np.asarray(cotangent) @ product[:, :, 0], matrix @ direction])
 
     def reject_third(*unused):
         raise UnsupportedFeature("higher_order_derivatives", "Autograd native third derivatives are not implemented.")
-    defvjp(native_hessian, reject_third)
+    defvjp(native_second_vjp, reject_third, reject_third, reject_third)
 
     @primitive
-    def native_jacobian(values):
+    def native_vjp(values, cotangent):
         _, matrix, _ = plan.jacobian(unpack(np.asarray(values, dtype=float)), **plan.node.gradient_kwargs)
         matrix = matrix[:, indices]
         publish()
-        return matrix
+        return np.asarray(cotangent) @ matrix
 
-    def jacobian_vjp(answer, values):
-        second = native_hessian(values)
-        return lambda incoming: anp.einsum("op,opq->q", incoming, second)
-    defvjp(native_jacobian, jacobian_vjp)
+    def second_vjp_rule(argnums, answer, arguments, keywords):
+        values, cotangent = arguments
+        if plan.node.max_diff != 2:
+            raise UnsupportedFeature("higher_order_derivatives", "Autograd second derivatives require max_diff=2.")
+        def backward(direction):
+            result = native_second_vjp(values, cotangent, direction)
+            full = (result[:len(indices)], result[len(indices):])
+            return tuple(full[index] for index in argnums)
+        return backward
+    defvjp_argnums(native_vjp, second_vjp_rule)
 
     @primitive
     def native_quantum(values):
@@ -164,8 +172,7 @@ def _autograd_execute(plan):
         if plan.node.max_diff not in {1, 2}: raise UnsupportedFeature("higher_order_derivatives")
         if plan.node.max_diff == 1 and type(values).__module__.startswith("autograd"):
             raise UnsupportedFeature("higher_order_derivatives", "Autograd higher-order native QNode derivatives are not implemented.")
-        jacobian = native_jacobian(values)
-        return lambda cotangent: anp.dot(cotangent, jacobian)
+        return lambda cotangent: native_vjp(values, cotangent)
 
     defvjp(native_quantum, vjp_rule)
     packed = anp.stack([plan.recorder.angles[index] for index in indices]) if indices else anp.empty(0)

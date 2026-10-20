@@ -49,6 +49,8 @@ def second_work(plan, values, classical, classical_second, direction, limits, me
         raise UnsupportedFeature("second_order_method", "Native second order currently implements exact parameter-shift, not adjoint or finite differences.")
     plan.gradient_capability("parameter-shift")
     limits.check("max_derivative_order", 2)
+    fixed_sampling_schedule = direction is not None and (
+        any(shots is not None for shots in plan.shots.partitions) or any(request.shots is not None for request in plan.requests))
     output_size, physical_shots, sample_elements = 0, 0, 0
     for request in plan.requests:
         if (request.metadata or {}).get("measurement_records"):
@@ -99,7 +101,8 @@ def second_work(plan, values, classical, classical_second, direction, limits, me
     occurrences = plan._occurrences()
     recipes = {}
     for index, parameter in enumerate(plan.recorder.parameters):
-        if parameter not in occurrences or not (np.any(classical[index]) or np.any(classical_second[index])):
+        active_dependency = fixed_sampling_schedule and getattr(plan.recorder.angles[index], "depends_on_inputs", False)
+        if parameter not in occurrences or not (active_dependency or np.any(classical[index]) or np.any(classical_second[index])):
             continue
         positive = plan.shift_recipe(occurrences[parameter], values[index])
         recipes[index] = tuple((sign*coefficient, sign*shift) for coefficient, shift in positive for sign in (1, -1))
@@ -107,11 +110,11 @@ def second_work(plan, values, classical, classical_second, direction, limits, me
     first_count = sum(len(recipe) for recipe in recipes.values())
     limits.check("max_shifted_circuits", first_count)
     pairs, second_count = [], 0
-    active = [index for index in recipes if np.any(classical[index])]
-    if any(np.any(projections[index]) for index in active):
+    active = [index for index in recipes if fixed_sampling_schedule or np.any(classical[index])]
+    if fixed_sampling_schedule or any(np.any(projections[index]) for index in active):
         for offset, i in enumerate(active):
             for j in active[offset:]:
-                if not (np.any(projections[i]) or np.any(projections[j])):
+                if not (fixed_sampling_schedule or np.any(projections[i]) or np.any(projections[j])):
                     continue
                 second_count += len(recipes[i])*len(recipes[j])
                 limits.check("max_shifted_circuits", first_count+second_count)
@@ -121,7 +124,8 @@ def second_work(plan, values, classical, classical_second, direction, limits, me
             "shift_count": first_count+second_count, "evaluation_count": count,
             "tape_count": count*len(plan.shots.partitions), "physical_shots": count*physical_shots,
             "sample_elements": count*sample_elements, "derivative_buffer_bytes": buffer_bytes,
-            "output_size": output_size, "linear_size": linear_size}
+            "output_size": output_size, "linear_size": linear_size,
+            "direction_independent_sampling_schedule": fixed_sampling_schedule}
     limits.check("max_shifted_circuits", work["shift_count"])
     limits.check("max_total_tapes", work["tape_count"])
     limits.check("max_total_physical_shots", work["physical_shots"])
@@ -207,16 +211,10 @@ def execution_second_derivatives(plan, values, method=None, *, direction=None, c
     return base, jacobian, second, spec
 
 
-def transformed_second_derivatives(plan, values, method=None, *, direction=None, classical=None, classical_second=None, limits=None):
-    from .processing import processing_second
-    from .second_trace import SecondContext
-    from quantumbridge.transforms.program import check_batch, operation_count
-    limits = resolve_higher_order_limits(limits if limits is not None else getattr(plan.node, "higher_order_limits", None))
-    values = np.asarray(values)
-    if values.shape != (len(plan.recorder.parameters),) or values.dtype.kind not in "fiu" or not np.all(np.isfinite(values)):
-        raise ValueError("Transformed second-order values must match the recorded scalar slots.")
-    classical, classical_second, direction = second_seeds(len(values), classical, classical_second, direction, limits)
-    parameters = plan._processing_values(values)
+def transformed_second_work(plan, values, classical, classical_second, direction, limits, method=None):
+    """Reusable preflight; no child executes while collecting physical work."""
+    from quantumbridge.transforms.program import check_batch
+    plan._processing_values(values)
     finite = any(shots is not None for child in plan.child_plans for shots in child.shots.partitions) or any(
         request.shots is not None for child in plan.child_plans for request in child.requests)
     for stage, level in enumerate(plan.prepared.processing_levels):
@@ -239,6 +237,20 @@ def transformed_second_derivatives(plan, values, method=None, *, direction=None,
     plan.limits.check("max_total_shots", totals["physical_shots"]+plan.forward_physical_shots)
     plan.limits.check("max_sample_values", totals["sample_elements"])
     check_batch(plan.prepared.tapes, plan.limits)
+    return totals, finite
+
+
+def transformed_second_derivatives(plan, values, method=None, *, direction=None, classical=None, classical_second=None, limits=None):
+    from .processing import processing_second
+    from .second_trace import SecondContext
+    from quantumbridge.transforms.program import operation_count
+    limits = resolve_higher_order_limits(limits if limits is not None else getattr(plan.node, "higher_order_limits", None))
+    values = np.asarray(values)
+    if values.shape != (len(plan.recorder.parameters),) or values.dtype.kind not in "fiu" or not np.all(np.isfinite(values)):
+        raise ValueError("Transformed second-order values must match the recorded scalar slots.")
+    classical, classical_second, direction = second_seeds(len(values), classical, classical_second, direction, limits)
+    parameters = plan._processing_values(values)
+    totals, finite = transformed_second_work(plan, values, classical, classical_second, direction, limits, method)
     context = SecondContext(classical.shape[1], direction, limits, node_budget="max_postprocessing_nodes")
     results, derivatives, executions = [], [], []
     for index, (child, (start, stop)) in enumerate(zip(plan.child_plans, plan.parameter_slices)):

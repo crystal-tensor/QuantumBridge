@@ -106,14 +106,14 @@ def execute_tensorflow(node, args, kwargs, *, return_status=False):
     backward_calls = 0
     observed_shots = 0
 
-    def host(values, derivative):
+    def host(values, derivative, direction=None):
         nonlocal forward_metadata, backward_calls, observed_shots
         if not graph and derivative:
             limits.check("max_callback_executions", backward_calls + 2)
             limits.check("max_total_shots", kernel.forward_shot_bound + (backward_calls + 1) * kernel.derivative_shot_bound)
         point = np.array(values, dtype=float, copy=True)
         if derivative == 2:
-            value, matrix, second, metadata = kernel.run_second(point,
+            value, matrix, second, metadata = kernel.run_second(point, direction=np.asarray(direction, dtype=float),
                 remaining_shots=None if graph else limits.max_total_shots-observed_shots)
         else:
             value, matrix, metadata = kernel.run(point, derivative,
@@ -135,9 +135,9 @@ def execute_tensorflow(node, args, kwargs, *, return_status=False):
             arrays += (second.astype(numpy_dtype),)
         return (*arrays, np.int32(0))
 
-    def checked(values, derivative):
+    def checked(values, derivative, direction=None):
         try:
-            return host(values, derivative)
+            return host(values, derivative, direction)
         except Exception as error:
             while error.__cause__ is not None:
                 error = error.__cause__
@@ -146,10 +146,10 @@ def execute_tensorflow(node, args, kwargs, *, return_status=False):
         if derivative:
             arrays += (np.full((kernel.output_size, kernel.size), np.nan, numpy_dtype),)
         if derivative == 2:
-            arrays += (np.full((kernel.output_size, kernel.size, kernel.size), np.nan, numpy_dtype),)
+            arrays += (np.full((kernel.output_size, kernel.size, 1), np.nan, numpy_dtype),)
         return (*arrays, np.int32(code))
 
-    def evaluate(values, derivative):
+    def evaluate(values, derivative, direction=None):
         limits.check("max_callback_executions", 3 if derivative == 2 else 2 if derivative else 1)
         if graph:
             node.last_metadata = {"interface": "tensorflow", "execution": "CPU host callback",
@@ -158,17 +158,20 @@ def execute_tensorflow(node, args, kwargs, *, return_status=False):
                                   "observed_callback_count": "not reported from tracing",
                                   "runtime_failure": "explicit tensorflow_with_status or graph assertion"}
             with tf.device("/CPU:0"):
-                outputs = tf.numpy_function(lambda x: checked(x, derivative), [values],
+                callback = (lambda x, vector: checked(x, derivative, vector)) if derivative == 2 else (lambda x: checked(x, derivative))
+                inputs = [values, direction] if derivative == 2 else [values]
+                outputs = tf.numpy_function(callback, inputs,
                                             [dtype, dtype, dtype, tf.int32] if derivative == 2 else [dtype, dtype, tf.int32] if derivative else [dtype, tf.int32],
                                             stateful=True, name="quantumbridge_native_derivative" if derivative else "quantumbridge_native_forward")
         else:
-            arrays = checked(values.numpy(), derivative) if return_status else host(values.numpy(), derivative)
+            vector = direction.numpy() if derivative == 2 else None
+            arrays = checked(values.numpy(), derivative, vector) if return_status else host(values.numpy(), derivative, vector)
             outputs = [tf.convert_to_tensor(value) for value in arrays]
         outputs[0].set_shape((kernel.output_size,))
         if derivative:
             outputs[1].set_shape((kernel.output_size, kernel.size))
         if derivative == 2:
-            outputs[2].set_shape((kernel.output_size, kernel.size, kernel.size))
+            outputs[2].set_shape((kernel.output_size, kernel.size, 1))
         outputs[-1].set_shape(())
         if not return_status:
             with tf.control_dependencies([tf.debugging.assert_equal(outputs[-1], 0, message="Native TensorFlow host execution failed; use tensorflow_with_status for code")]):
@@ -177,8 +180,8 @@ def execute_tensorflow(node, args, kwargs, *, return_status=False):
 
     @tf.custom_gradient
     def second_order_vjp(values, cotangent, incoming):
-        _, matrix, second, status = evaluate(values, 2)
-        value_gradient = tf.einsum("o,opq,p->q", cotangent, second, incoming)
+        _, matrix, second, status = evaluate(values, 2, incoming)
+        value_gradient = tf.linalg.matvec(second[:, :, 0], cotangent, transpose_a=True)
         cotangent_gradient = tf.linalg.matvec(matrix, incoming)
         if return_status:
             ok = tf.equal(status, 0)

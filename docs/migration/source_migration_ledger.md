@@ -1,6 +1,6 @@
 # Source Migration Ledger
 
-Status: Stage 11P-C bounded native second-order checkpoint
+Status: Stage 11P-C2 streamed framework HVP checkpoint
 Date: 2026-10-20
 
 This ledger retains historical release and checkpoint sections. Current work
@@ -8,6 +8,28 @@ uses Native Implementation, Adapter Integration and Upstream Dependency, with
 their boundaries stated separately. Historical checkpoint limitations are not
 the current status view; use core_parity_ledger.md for that view.
 No Source Port with Attribution was performed.
+
+## Stage 11P-C2 Streamed Framework HVPs
+
+Native Implementation and optional classical framework integration. No upstream
+implementation/test source ports. Existing plans, native devices, shift recipes
+and processors remain the quantum engine. Public JAX extension/derivative and
+Autograd primitive contracts are behavioral references, not copied source.
+
+| Files | Changes | Independent evidence |
+| --- | --- | --- |
+| `quantumbridge/diff/second_order.py`, `quantumbridge/diff/second_trace.py` | Reusable transform preflight, direction-independent sampled schedules and structural input dependency | Seeded HVP additivity/homogeneity, stationary maps and fixed-constant exclusion |
+| `quantumbridge/interfaces/native_host.py` | Directional classical maps and two-pass row-transpose execution with aggregate preflight | Combined row shift/tape/shot rejection before quantum work |
+| `quantumbridge/interfaces/qnode_autodiff.py`, `quantumbridge/interfaces/tensorflow_autodiff.py` | Real Torch/Autograd/TF second VJPs using HVPs and live cotangent branches | Shared/coefficient/nonlinear-loss/vector-output rules with full-Hessian budget one |
+| `quantumbridge/interfaces/jax_autodiff.py`, `quantumbridge/interfaces/jax_directional.py` | One optional module-global linear primitive with explicit JVP/transpose/batching/CPU lowering | Forward/reverse/JIT/mapped/direct-direction differentiation and real host failures |
+| `tests/interfaces/test_native_streamed_hvp.py`, `tests/interfaces/test_native_streamed_hvp_mps.py`, `tests/interfaces/test_native_second_order_frameworks.py` | Independently authored framework, resource, negative and no-dense MPS contracts | Real native directional-plan spies, physical shot receipts and all four frameworks |
+| `tests/qml/test_native_sampled_hvp_linearity.py`, `tests/qml/test_native_second_classical_trace.py` | Independent stochastic-linear and structural trace tests | None/uniform/weighted shot vectors, zero directions, stationary variables and numeric constants |
+| `examples/native_framework_hvp.py` | Actual four-framework toy and native geometry-derived H2 HVP workflows | Independent analytic references, one SCF build and explicit framework dtypes |
+| `docs/implementation/stage11p_c2_streamed_framework_hvp_audit.md`, `docs/implementation/stage11p_c2_streamed_framework_hvp_report.md`, `docs/compat/core_parity_ledger.md`, `README.md`, `THIRD_PARTY_NOTICES.md` | Observed gaps, scoped receipts, source attribution and remaining full-parity boundaries | No reduction of the full independent replacement goal |
+
+First Jacobians/classical maps can remain dense; no combined whole-device and
+derivative resident-memory bound is claimed. No Studio/Router, cloud/hardware,
+token, tag/release, package/environment tree or source vendoring is included.
 
 ## Stage 11P-C Native Second Derivatives
 
@@ -30,8 +52,8 @@ implementation/test source ports remain zero.
 
 No Studio/Router, tags/releases, remote publication, cloud/hardware/token,
 authentication/TLS or third-party source/package/environment changes belong to
-this checkpoint. Framework Hessians are bounded packed arrays; only the native
-HVP API currently makes the streamed/no-full-Hessian claim.
+this historical checkpoint. At that point only the native HVP API streamed;
+Stage 11P-C2 above supersedes the framework packed-Hessian limitation.
 
 ## Stage 11P-B Native TensorFlow Autodiff
 

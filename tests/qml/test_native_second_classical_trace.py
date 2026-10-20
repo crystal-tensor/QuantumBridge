@@ -67,6 +67,30 @@ def test_variable_power_full_mixed_hessian():
     np.testing.assert_allclose(result.second, expected, atol=1e-12, rtol=0)
 
 
+def test_structural_dependency_survives_stationary_zero_direction():
+    context = SecondContext(1, [0.])
+    x, constant = context.variable(0., 0), context.constant(.2)
+    for result in (x*x, np.cos(x), constant+x*x, constant*x*x, -(x*x), 2**(x*x)):
+        assert result.depends_on_inputs
+        np.testing.assert_array_equal(result.derivative, [0.])
+        np.testing.assert_array_equal(result.second, [[0.]])
+    assert not constant.depends_on_inputs
+    assert not (constant+constant).depends_on_inputs
+    assert not (x**0).depends_on_inputs
+    assert (x**1).depends_on_inputs
+    with pytest.raises(UnsupportedFeature, match="positive base"):
+        (-2)**(x*x)
+
+
+def test_injected_derivative_dependency_defaults_and_invalid_flag():
+    from quantumbridge.diff.second_trace import SecondDual
+    context = SecondContext(1, [0.])
+    assert SecondDual(1., [1.], [[0.]], context).depends_on_inputs
+    assert not SecondDual(1., [0.], [[0.]], context).depends_on_inputs
+    with pytest.raises(TypeError, match="boolean"):
+        SecondDual(1., [0.], [[0.]], context, depends_on_inputs=1)
+
+
 def test_reservations_reject_before_computing_the_next_result():
     context = SecondContext(2, limits=HigherOrderLimits(max_memory_bytes=100))
     x = context.variable(.3, 0)

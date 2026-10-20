@@ -1,6 +1,6 @@
 # Core Functional Parity Ledger
 
-Updated: 2026-10-20, Stage 11P-C bounded second-order checkpoint, starting from local `612c25a`.
+Updated: 2026-10-20, Stage 11P-C2 streamed framework HVP checkpoint, starting from local `8961779`.
 This is the single current-status view. Full Qiskit/PennyLane functional
 replacement remains **incomplete**. Line coverage, inventories, passthrough and
 green CI are not proof of complete API coverage.
@@ -39,22 +39,30 @@ publication/exact-SHA CI is a separate receipt, not inferred from prior CI.
 | TensorFlow | NATIVE_TESTED; PARTIAL: CPU eager/GradientTape/Variable/static tf.function, true first/second child derivatives and coefficients | Complete TF/device protocol, third/higher orders, distributed/GPU/TPU/XLA/export and dynamic contracts |
 | Native simulator backprop/capture | UNSUPPORTED / NOT_STARTED | Shift/adjoint interfaces are not simulator backprop or complete capture |
 | Shot vectors/dynamic gradients/MPS gradients | NATIVE_TESTED; PARTIAL: actual sampling/branches, native shift and finite difference | Complete stochastic/loop/postselection contracts; numerical truncation risk |
-| Higher-order derivatives | NATIVE_TESTED; PARTIAL: opt-in exact native Hessian, streamed native HVP, processor/classical second rules and four CPU frameworks | All generators, second adjoint, streamed framework HVP, finite variance/nonlinear stochastic rules, general loops/postselection, third/higher orders remain open |
+| Higher-order derivatives | NATIVE_TESTED; PARTIAL: opt-in exact native Hessian, streamed native/four-framework CPU HVPs, processor/classical second rules | All generators, second adjoint, combined device/derivative memory accounting, finite variance/nonlinear stochastic rules, general loops/postselection, third/higher orders remain open |
 | Compiled QNode gradients | NATIVE_TESTED; PARTIAL: expressions, shared inputs, Torch/Autograd and native gradients | Restored identity/equal-width only; general measurement remapping |
 | Templates/qchem/math/resources/kernels/qnn/qcut/shadows | PARTIAL: native geometry-derived hydrogen electronic structure now added; other bounded workflows remain | Full library/transform/template and differentiation contracts |
 | Compiled 100-qubit MPS | NATIVE_TESTED for GHZ-chain with dense APIs disabled | No arbitrary-entanglement efficiency claim |
 | Quafu/QOS-UQCI/industry taxonomy | PARTIAL: offline target/configuration and existing adapters, four categories/19 subdomains | Real authorized backend/job evidence and complete industry workflows |
 
-## Stage 11P-C Second-Order Status
+## Stage 11P-C2 Second-Order Status
 
-Bounded opt-in `max_diff=2`, not full gradient/device or SDK parity. Native
-HVP does not form a full Hessian; framework second rules currently use bounded
-packed Hessians. See the [second-order report](../implementation/stage11p_c_native_second_order_report.md).
+Bounded opt-in `max_diff=2`, not full gradient/device or SDK parity. Native and
+Torch/Autograd/JAX/TF HVPs do not form a full native output Hessian. First
+Jacobians and classical maps remain potentially dense. JAX uses explicit linear
+direction/transpose/mapped CPU host rules; cumulative transpose-row work rejects
+before quantum execution. See the [streamed HVP report](../implementation/stage11p_c2_streamed_framework_hvp_report.md).
 Quantum rules are independently convolved parameter shifts, not finite
 differences or second adjoint. Actual QWC children/processors include classical
 map Hessians, coefficient and cross-child terms. Three/higher orders reject.
 Sampled support is limited to verified linear output processing with explicit
 seeds; finite variance and coefficient-dependent weighted allocation reject.
+Seeded schedules are direction independent and retain stationary dependencies,
+not fixed numeric angles. Actual four-framework 100-wire low-entanglement MPS
+tests forbid dense conversion. One fixed-geometry native H2 build is reused
+across all four framework HVP examples, not differentiable Hartree-Fock.
+JIT metadata remains static configuration, not observed work; compiled HVP
+callback failures yield NaNs, not a complete derivative-status protocol.
 Derivative-buffer memory and native device-state memory have separate budgets.
 
 ## Stage 11P-B TensorFlow Status (Historical Checkpoint)

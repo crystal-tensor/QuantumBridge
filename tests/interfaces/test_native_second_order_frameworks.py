@@ -132,7 +132,7 @@ def test_jax_actual_third_order_rejection():
 
 
 @pytest.mark.parametrize("interface", ["jax", "tf"])
-def test_declared_second_callback_shape_is_bounded_before_callback_creation(interface, monkeypatch):
+def test_declared_directional_callback_shape_is_bounded_before_callback_creation(interface, monkeypatch):
     from quantumbridge import StatevectorDevice
     from quantumbridge.diff import HigherOrderLimits
     if interface == "jax":
@@ -144,7 +144,7 @@ def test_declared_second_callback_shape_is_bounded_before_callback_creation(inte
         t.ry(x[0], 0); t.rx(x[1], 0)
         return t.expval(PauliZ(0))
     node = QNode(circuit, 1, interface=interface, max_diff=2,
-                 higher_order_limits=HigherOrderLimits(max_hessian_elements=1))
+                 higher_order_limits=HigherOrderLimits(max_memory_bytes=1))
     monkeypatch.setattr(StatevectorDevice, "expectation", lambda *a, **k: pytest.fail("invalid second callback shape must reject before execution"))
-    with pytest.raises(MemoryError, match="max_hessian_elements"):
+    with pytest.raises(MemoryError, match="max_memory_bytes"):
         node(array)

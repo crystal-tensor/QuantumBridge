@@ -1,11 +1,21 @@
 # Third-party Notices
 
-Status: Stage 11P-C bounded native second-order checkpoint
+Status: Stage 11P-C2 streamed framework HVP checkpoint
 Date: 2026-10-20
 
 QuantumBridge is an independent project. References to Qiskit and PennyLane are for attribution, compatibility, and optional adapter documentation only and do not imply endorsement.
 
 ## Native Template Verification
+
+Stage 11P-C2 independently streams framework HVPs through the existing native
+second-order engine. Optional Autograd public primitive VJP registration and
+JAX documented extension namespaces supply classical transformation plumbing,
+including explicit numerical transposition and CPU host lowering; no upstream
+quantum derivative engine or implementation/test source is used. Public JAX
+custom-derivative, callback and primitive documentation informs the contracts.
+Finite-shot linearity, native MPS and one-build H2 examples are independently
+authored. No source ports, vendoring, credentials or cloud calls are included.
+Full independent functional parity remains incomplete.
 
 Stage 11P-C independently implements convolved native shift recipes, second
 classical tracing, transformed processor chain rules and bounded CPU framework

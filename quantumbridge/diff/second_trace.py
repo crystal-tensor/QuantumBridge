@@ -43,7 +43,8 @@ class SecondContext:
 
     def constant(self, value):
         self.reserve()
-        return SecondDual(value, np.zeros(self.size), np.zeros(self.second_shape), self, _reserved=True)
+        return SecondDual(value, np.zeros(self.size), np.zeros(self.second_shape), self,
+                          depends_on_inputs=False, _reserved=True)
 
     def variable(self, value, index):
         if not 0 <= index < self.size:
@@ -51,7 +52,8 @@ class SecondContext:
         self.reserve()
         derivative = np.zeros(self.size)
         derivative[index] = 1.
-        return SecondDual(value, derivative, np.zeros(self.second_shape), self, _reserved=True)
+        return SecondDual(value, derivative, np.zeros(self.second_shape), self,
+                          depends_on_inputs=True, _reserved=True)
 
 
 class SecondDual(Dual):
@@ -59,7 +61,7 @@ class SecondDual(Dual):
 
     __array_priority__ = 1100
 
-    def __init__(self, value, derivative, second, context, *, _reserved=False):
+    def __init__(self, value, derivative, second, context, *, depends_on_inputs=None, _reserved=False):
         if not _reserved:
             context.reserve()
         if np.shape(derivative) != (context.size,) or np.shape(second) != context.second_shape:
@@ -67,6 +69,11 @@ class SecondDual(Dual):
         self.value, self.context = float(value), context
         self.derivative = np.asarray(derivative, dtype=float)
         self.second = np.asarray(second, dtype=float)
+        if depends_on_inputs is None:
+            depends_on_inputs = bool(np.any(self.derivative) or np.any(self.second))
+        if not isinstance(depends_on_inputs, bool):
+            raise TypeError("Classical input dependency must be a boolean.")
+        self.depends_on_inputs = depends_on_inputs
         if not np.isfinite(self.value) or not np.all(np.isfinite(self.derivative)) or not np.all(np.isfinite(self.second)):
             raise ValueError("Second-order classical values and derivatives must be finite.")
 
@@ -79,10 +86,12 @@ class SecondDual(Dual):
             raise UnsupportedFeature("mixed_trace_order", "A first-order trace cannot supply missing second-order information.")
         return self.context.constant(value)
 
-    def _result(self, calculate):
+    def _result(self, calculate, *, depends_on_inputs=None):
         self.context.reserve()
         value, derivative, second = calculate()
-        return SecondDual(value, derivative, second, self.context, _reserved=True)
+        return SecondDual(value, derivative, second, self.context,
+                          depends_on_inputs=self.depends_on_inputs if depends_on_inputs is None else depends_on_inputs,
+                          _reserved=True)
 
     def _unary(self, value, first, second):
         return self._result(lambda: (value, first*self.derivative,
@@ -90,7 +99,8 @@ class SecondDual(Dual):
 
     def __add__(self, other):
         other = self._other(other)
-        return self._result(lambda: (self.value+other.value, self.derivative+other.derivative, self.second+other.second))
+        return self._result(lambda: (self.value+other.value, self.derivative+other.derivative, self.second+other.second),
+                            depends_on_inputs=self.depends_on_inputs or other.depends_on_inputs)
 
     __radd__ = __add__
 
@@ -107,7 +117,8 @@ class SecondDual(Dual):
                                     self.derivative*other.value+other.derivative*self.value,
                                     self.second*other.value+other.second*self.value
                                     + np.outer(self.derivative, other.derivative @ directions)
-                                    + np.outer(other.derivative, self.derivative @ directions)))
+                                    + np.outer(other.derivative, self.derivative @ directions)),
+                            depends_on_inputs=self.depends_on_inputs or other.depends_on_inputs)
 
     __rmul__ = __mul__
 
@@ -119,7 +130,7 @@ class SecondDual(Dual):
 
     def __pow__(self, other):
         other = self._other(other)
-        if np.any(other.derivative) or np.any(other.second):
+        if other.depends_on_inputs:
             if self.value <= 0:
                 raise UnsupportedFeature("classical_power", "Variable powers require a positive base.")
             return (other*self.log()).exp()

@@ -130,10 +130,9 @@ class NativeHostKernel:
             second_limits.check("max_derivative_order", 2)
             second_limits.check("max_input_parameters", self.size)
             second_limits.check("max_output_elements", self.output_size)
-            elements = self.output_size*self.size*self.size
-            second_limits.check("max_hessian_elements", elements)
-            # Error/status callbacks must never allocate an unbounded NaN tensor.
-            second_limits.check("max_memory_bytes", 8*(self.output_size*(1+self.size)+elements+self.size*self.size))
+            # Framework second rules return an output-by-parameter HVP, never a
+            # packed Hessian. Bound even the checked-error NaN result here.
+            second_limits.check("max_memory_bytes", 8*(self.output_size*(1+2*self.size)+self.size*self.size))
         # Preflight native capability and expansion without quantum execution.
         plan = self.plan(np.ones(self.size))
         limits.check("max_parameter_elements", len(plan.recorder.parameters))
@@ -167,13 +166,13 @@ class NativeHostKernel:
                 work += sum(x or 0 for x in effective) * terms * repetitions
         return forward_work, work
 
-    def plan(self, values, *, derivative=False):
+    def plan(self, values, *, derivative=False, direction=None):
         from quantumbridge.transforms.program import TransformedExecutionPlan
         if np.asarray(values).shape != (self.size,) or not np.all(np.isfinite(values)):
             raise ValueError("framework packed parameters must have the declared shape and finite real values.")
         if derivative == 2:
             from quantumbridge.diff.second_trace import SecondContext
-            context = SecondContext(self.size, limits=self.node.higher_order_limits)
+            context = SecondContext(self.size, direction, limits=self.node.higher_order_limits)
             traced = [context.variable(value, index) for index, value in enumerate(values)]
         else:
             eye = np.eye(self.size) if derivative else None
@@ -225,21 +224,37 @@ class NativeHostKernel:
         return flat, matrix, {**plan.metadata, "interface": self.interface, "native_" + self.interface: True,
                               "native_quantum_derivative": bool(derivative), "higher_order": False}
 
-    def run_second(self, values, *, remaining_shots=None):
+    def prepare_second(self, values, *, direction=None, remaining_shots=None):
         from quantumbridge.diff.higher_order_limits import resolve_higher_order_limits
+        from quantumbridge.diff.second_order import second_work, transformed_second_work
         limits = resolve_higher_order_limits(self.node.higher_order_limits)
         shot_limit = min(limits.max_total_physical_shots, self.limits.max_total_shots)
         if remaining_shots is not None:
             shot_limit = min(shot_limit, max(1, remaining_shots))
         limits = replace(limits, max_total_physical_shots=shot_limit)
-        plan = self.plan(values, derivative=2)
+        plan = self.plan(values, derivative=2, direction=direction)
         self.limits.check("max_transform_tapes", len(getattr(plan, "child_plans", (plan,))))
         self.limits.check("max_parameter_elements", len(plan.recorder.parameters))
         count = len(plan.recorder.parameters)
-        limits.check("max_memory_bytes", 8*count*self.size*(1+self.size))
-        value, matrix, second, spec = plan.second_derivatives(plan.recorder.native_values(),
-            classical=plan.recorder.classical_jacobian(self.size),
-            classical_second=plan.recorder.classical_second(self.size, self.size), limits=limits)
+        columns = self.size if direction is None else 1
+        limits.check("max_memory_bytes", 8*count*self.size*(1+columns))
+        point = plan.recorder.native_values()
+        classical = plan.recorder.classical_jacobian(self.size)
+        second_map = plan.recorder.classical_second(self.size, columns)
+        if hasattr(plan, "child_plans"):
+            work = transformed_second_work(plan, point, classical, second_map, direction, limits)[0]
+        else:
+            work = second_work(plan, point, classical, second_map, direction, limits)[3]
+        return plan, point, classical, second_map, limits, work
+
+    def run_second(self, values, *, direction=None, remaining_shots=None):
+        prepared = self.prepare_second(values, direction=direction, remaining_shots=remaining_shots)
+        return self._execute_second(prepared, direction)
+
+    def _execute_second(self, prepared, direction):
+        plan, point, classical, second_map, limits, _ = prepared
+        value, matrix, second, spec = plan.second_derivatives(point, direction=direction,
+            classical=classical, classical_second=second_map, limits=limits)
         flat, actual = flatten_tree(value)
         if spec != self.spec or actual != self.spec or flat.shape != (self.output_size,):
             raise ValueError("Second-order framework execution changed its declared output structure.")
@@ -247,3 +262,49 @@ class NativeHostKernel:
             raise ValueError("Native framework second derivatives produced a nonfinite value.")
         return flat, matrix, second, {**plan.metadata, "interface": self.interface, "higher_order": True,
                                     "native_"+self.interface: True, "native_quantum_derivative": True}
+
+    def run_second_transpose(self, values, incoming):
+        """Transpose the linear HVP map without building an output Hessian.
+
+        Each output row has its own direction. Two streaming passes validate
+        the total work before executing any row, without retaining all plans.
+        """
+        from quantumbridge.diff.higher_order_limits import resolve_higher_order_limits
+        values = np.asarray(values)
+        if values.shape != (self.size,) or values.dtype.kind not in "fiu" or not np.all(np.isfinite(values)):
+            raise ValueError("Second-rule primal values must be finite real packed parameters.")
+        incoming = np.asarray(incoming)
+        if incoming.shape != (self.output_size, self.size) or incoming.dtype.kind not in "fiu" or not np.all(np.isfinite(incoming)):
+            raise ValueError("Second-rule cotangents must match the real output-by-parameter Jacobian.")
+        active = [index for index, row in enumerate(incoming) if np.any(row)]
+        self.limits.check("max_callback_executions", len(active))
+        limits = resolve_higher_order_limits(self.node.higher_order_limits)
+        limits.check("max_memory_bytes", 8*(incoming.size+2*self.size))
+        totals = dict.fromkeys(("shift_count", "tape_count", "physical_shots"), 0)
+        def check_totals(work):
+            limits.check("max_shifted_circuits", work["shift_count"])
+            limits.check("max_total_tapes", work["tape_count"])
+            limits.check("max_total_physical_shots", work["physical_shots"])
+            self.limits.check("max_total_shots", work["physical_shots"])
+        for index in active:
+            prepared = self.prepare_second(values, direction=incoming[index])
+            work = prepared[-1]
+            del prepared
+            for key in totals: totals[key] += work[key]
+            check_totals(totals)
+        result, receipts = np.zeros(self.size), []
+        observed = dict.fromkeys(totals, 0)
+        for index in active:
+            prepared = self.prepare_second(values, direction=incoming[index])
+            check_totals({key: observed[key]+prepared[-1][key] for key in observed})
+            _, _, product, metadata = self._execute_second(prepared, incoming[index])
+            result += product[index, :, 0]
+            for key in observed: observed[key] += metadata["second_order_work"][key]
+            receipts.append({"output_row": index, **metadata})
+            del prepared
+        if observed != totals:
+            raise RuntimeError("Native second-rule transpose work changed after aggregate preflight.")
+        return result, {"interface": self.interface, "hvp_streamed": True, "transpose_hvp": True,
+                        "native_quantum_derivative": True, "derivative_order": 2,
+                        "native_hvp_calls": len(receipts), "total_physical_shots": observed["physical_shots"],
+                        "second_order_work": observed, "hvp_executions": receipts}

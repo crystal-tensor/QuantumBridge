@@ -71,13 +71,9 @@ def execute_jax(node, args, kwargs, *, return_status=False):
     kernel.angles = []
     out_spec = jax.ShapeDtypeStruct((kernel.output_size,), dtype)
     jac_spec = jax.ShapeDtypeStruct((kernel.output_size, kernel.size), dtype)
-    second_spec = jax.ShapeDtypeStruct((kernel.output_size, kernel.size, kernel.size), dtype)
     status_spec = jax.ShapeDtypeStruct((), dtype)
     def host(values, derivative):
         array = np.asarray(values, dtype=float)
-        if derivative == 2:
-            value, matrix, second, metadata = kernel.run_second(array)
-            return value.astype(dtype), matrix.astype(dtype), second.astype(dtype), metadata
         value, matrix, metadata = kernel.run(array, derivative)
         if derivative:
             return value.astype(dtype), matrix.astype(dtype), metadata
@@ -88,7 +84,7 @@ def execute_jax(node, args, kwargs, *, return_status=False):
         # It is nondifferentiable and always has zero tangent.
         try:
             result = host(values, derivative)
-            outputs = result[:3] if derivative == 2 else result[:2] if derivative else result[:1]
+            outputs = result[:2] if derivative else result[:1]
             return (*outputs, np.asarray(0, dtype=dtype)), result[-1]
         except UnsupportedFeature:
             status = 2
@@ -100,13 +96,11 @@ def execute_jax(node, args, kwargs, *, return_status=False):
             status = 4
         flat = np.full(out_spec.shape, np.nan, dtype=dtype)
         outputs = (flat, np.full(jac_spec.shape, np.nan, dtype=dtype)) if derivative else (flat,)
-        if derivative == 2:
-            outputs += (np.full(second_spec.shape, np.nan, dtype=dtype),)
         return (*outputs, np.asarray(status, dtype=dtype)), {"runtime_status": status, "interface": "jax"}
 
     def callback_function(derivative):
         from jax.custom_batching import custom_vmap
-        specs = (out_spec, jac_spec, second_spec, status_spec) if derivative == 2 else (out_spec, jac_spec, status_spec) if derivative else (out_spec, status_spec)
+        specs = (out_spec, jac_spec, status_spec) if derivative else (out_spec, status_spec)
         @custom_vmap
         def callback(values):
             return jax.pure_callback(lambda x: checked(x, derivative)[0], specs, values, vmap_method="sequential")
@@ -121,7 +115,7 @@ def execute_jax(node, args, kwargs, *, return_status=False):
             return outputs, jax.tree_util.tree_map(lambda _: True, outputs)
         return callback
 
-    callbacks = {False: callback_function(False), True: callback_function(True), 2: callback_function(2)}
+    callbacks = {False: callback_function(False), True: callback_function(True)}
 
     def evaluate(values, derivative):
         limits.check("max_callback_executions", 1)
@@ -141,10 +135,10 @@ def execute_jax(node, args, kwargs, *, return_status=False):
         return tuple(jnp.asarray(x) for x in outputs)
 
     @jax.custom_jvp
-    def second_derivatives(values):
-        return evaluate(values, 2)
+    def second_point(values):
+        return values
 
-    @second_derivatives.defjvp
+    @second_point.defjvp
     def reject_third_order(primals, tangents):
         raise UnsupportedFeature("higher_order_derivatives", "Native JAX third derivatives are not implemented.")
 
@@ -156,8 +150,14 @@ def execute_jax(node, args, kwargs, *, return_status=False):
     def second_order_jvp(primals, tangents):
         if node.max_diff != 2:
             raise UnsupportedFeature("higher_order_derivatives", "Native JAX second derivatives require max_diff=2.")
-        value, matrix, second, status = second_derivatives(primals[0])
-        return (value, matrix, status), (matrix @ tangents[0], jnp.einsum("opq,q->op", second, tangents[0]), jnp.zeros_like(status))
+        from .jax_directional import DirectionalRule, directional_second
+        point = second_point(primals[0])
+        value, matrix, status = evaluate(point, True)
+        rule = DirectionalRule(kernel, np.dtype(dtype))
+        product = directional_second(point, tangents[0], rule)
+        node.last_metadata = {**node.last_metadata, "hvp_streamed": True, "native_linear_second_rule": True,
+                              "second_rule_execution": "CPU directional host primitive; native transpose, no packed Hessian"}
+        return (value, matrix, status), (matrix @ tangents[0], product, jnp.zeros_like(status))
 
     @jax.custom_jvp
     def native(values):
