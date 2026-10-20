@@ -5,6 +5,25 @@ Date: 2026-06-05
 
 This ledger records implementation mode and upstream source status for the current P1 release-candidate baseline. Current work uses Native Implementation, Adapter Integration, and Upstream Dependency. No new upstream source migration was introduced during Stage 5.5. No Source Port with Attribution was performed.
 
+## Stage 11O-B2/B3 Native QNode And Basic Transforms
+
+Native Implementation; no implementation/test source ports. Optional public
+PennyLane calls are black-box behavioral oracles only, with explicit complex
+matrix/global-phase checks. SDK implementation/test files are not copied,
+imported as private helpers or vendored. Native execution requires no SDK.
+
+| Files | Native changes | Independent evidence |
+| --- | --- | --- |
+| `quantumbridge/qml/qnode.py`, `quantumbridge/transforms/dispatch.py`, `quantumbridge/transforms/program.py`, `quantumbridge/transforms/__init__.py` | Fresh QNode construction, Tape/callable dispatch and shared child native plans, dependency/parameter slices and recorder ownership | Repeated .2/.7 inputs, changing batch widths, shared/nonlinear/keyword inputs, direct mutation and framework rejection tests |
+| `quantumbridge/transforms/circuit_transforms.py`, `quantumbridge/transforms/gate_transforms.py`, `quantumbridge/transforms/measurement_transforms.py` | Safe native inverse/rotation algebra, recursive definition and basis expansion, target compiler integration, one-Tape deduplicated measurement reconstruction | Exact complex matrices, dynamic boundaries, source ownership, resource and layout counterexamples |
+| `quantumbridge/compiler/decomposition.py`, `quantumbridge/compiler/transpile.py` | Shared decomposition output/work/nesting budgets, including lexical control bodies | Compiler regression suite and cross-body expansion budget tests |
+| `tests/transforms/test_native_qnode_transform_dispatch.py`, `tests/transforms/test_native_basic_transforms.py`, `tests/compat/test_native_transform_differential.py` | Independently authored native mathematics/runtime tests and public black-box differential comparisons | Both pinned PennyLane versions, no private SDK implementation use |
+| `examples/native_transform_qnode.py`, `examples/native_measurement_splitting.py`, `examples/native_qchem_transform_energy.py` | Real repeated QNode/measurement and geometry-derived H2 computation | SDK-free executable numerical assertions and execution IDs |
+| `docs/implementation/stage11o_ab_native_gap_audit.md`, `docs/implementation/stage11o_b2_b3_native_transform_report.md`, `docs/compat/core_parity_ledger.md`, `README.md`, `THIRD_PARTY_NOTICES.md` | Supported behavior, test receipts, provenance and remaining full-parity gaps | B4-B6 and the full-replacement objective remain unfinished |
+
+Transformed VJP, QWC/shot allocation, defer_measurements and joint Stage 11O
+acceptance are not claimed by this checkpoint. Source port count remains zero.
+
 ## Stage 11O-B1 Native Transform Execution Checkpoint
 
 Native Implementation, zero implementation/test source ports. Native child

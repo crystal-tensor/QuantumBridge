@@ -725,18 +725,33 @@ child evaluation IDs, operation counts, shot partitions and stage order.
 
 ```bash
 python -m examples.native_transform_program
+python -m examples.native_transform_qnode
+python -m examples.native_measurement_splitting
+python -m examples.native_qchem_transform_energy
 ```
 
 `split_hamiltonian` is an internal expval-to-term-Tapes prototype, **not**
 PennyLane `split_to_single_terms` parity. It handles static real Hamiltonian
 coefficients, identity/duplicate/zero terms and nested output trees.
 `merge_rotations` reuses existing native algebra within safe segments and
-retains symbolic parameter graphs. Shot vectors remain per-child budgets;
-they are not QWC grouping or a total-shot allocator. QNode/callable transform
-dispatch and transformed autodiff are not yet delivered. Raw execution
-explicitly rejects live framework/Dual inputs instead of silently detaching.
-Full Stage 11O-B remains incomplete. See the
-[B1 report](docs/implementation/stage11o_b1_native_transform_execution_report.md).
+retains symbolic parameter graphs. Native transforms now dispatch to Tape,
+QNode or a native callable with explicit `qnode_options`. Both
+`merge_rotations(node)` and `TransformProgram([...]).execute_qnode(node, x)`
+build a new batch with current inputs, without changing the original QNode.
+
+The actual `split_to_single_terms` contract instead emits **one** Tape with
+distinct measurements: repeated native Pauli measurements are deduplicated,
+identity coefficients are offsets, and nested results/shot partitions are
+reconstructed. It is not QWC grouping. `cancel_inverses`, bounded native
+`decompose` and `compile` also execute; compilation reuses the native target,
+layout/routing engine but rejects unproved measurement remapping/ancilla growth.
+Definitions are native Circuit/Instruction/Template objects, not SDK source.
+
+Shot vectors remain per-child/per-measurement budgets, not a shared-shot
+allocator. Transformed autodiff is not yet delivered: live framework/Dual
+inputs explicitly reject rather than detach. Native ordinary QNode gradients
+remain separate. Full Stage 11O-B and full SDK parity are incomplete. See the
+[B2/B3 report](docs/implementation/stage11o_b2_b3_native_transform_report.md).
 
 ## Native Molecular Chemistry Checkpoint
 

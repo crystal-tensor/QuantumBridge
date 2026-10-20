@@ -5,9 +5,12 @@
 
 from .gradient_transforms import finite_difference, metric_tensor, qng_step, spsa_gradient
 from .program import TransformProgram, TransformLimits, TransformError, execute_transform
-from .circuit_transforms import merge_rotations
-from .measurement_transforms import split_hamiltonian
+from .dispatch import transform, NativeTransform
+from .circuit_transforms import merge_rotations, cancel_inverses
+from .measurement_transforms import split_hamiltonian, split_to_single_terms
+from .gate_transforms import decompose, compile
 
 __all__ = ["finite_difference", "metric_tensor", "qng_step", "spsa_gradient",
            "TransformProgram", "TransformLimits", "TransformError", "execute_transform",
-           "merge_rotations", "split_hamiltonian"]
+           "merge_rotations", "split_hamiltonian", "transform", "NativeTransform",
+           "cancel_inverses", "decompose", "compile", "split_to_single_terms"]

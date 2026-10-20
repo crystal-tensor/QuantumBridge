@@ -8,6 +8,10 @@ def measurement_count(circuit) -> int:
     return len(circuit.measurements)
 
 
+from .dispatch import transform
+
+
+@transform
 def split_hamiltonian(tape):
     """Internal expval-to-term-Tapes prototype, not split_to_single_terms parity.
 
@@ -25,10 +29,11 @@ def split_hamiltonian(tape):
 
     limits = TransformLimits()
     check_batch((tape,), limits)
-    children, slots = [], []
+    children, slots, work = [], [], 0
     tree = output_tree(tape)
 
     def expand(request):
+        nonlocal work
         if request.kind != "expval":
             raise UnsupportedFeature("hamiltonian_split_measurement", "B1 Hamiltonian splitting supports expval only.")
         observable = request.observable
@@ -42,7 +47,8 @@ def split_hamiltonian(tape):
             terms = observable.terms
         else:
             raise UnsupportedFeature("hamiltonian_split_observable", "B1 splitting requires native Pauli/Hamiltonian form.")
-        limits.check("max_expansion_steps", len(terms))
+        work += len(terms)
+        limits.check("max_expansion_steps", work)
         positions = []
         for coefficient, pauli in terms:
             if not np.isfinite(coefficient) or np.iscomplexobj(coefficient):
@@ -81,4 +87,106 @@ def split_hamiltonian(tape):
         return one_partition(results)
 
     return tuple(children), process
+
+
+@transform
+def split_to_single_terms(tape, *, limits=None):
+    """Split linear Pauli measurements on one Tape, with global deduplication.
+
+    Identity terms become constant offsets. Non-commuting observables remain
+    separate measurements on the same Tape; this is not QWC grouping.
+    """
+    from dataclasses import replace
+    import numpy as np
+    from quantumbridge.core.classical import UnsupportedFeature
+    from quantumbridge.diff.qnode_engine import map_measurements
+    from quantumbridge.qml.shot_vector import ShotSpec
+    from quantumbridge.utils.math import Hamiltonian, PauliString
+    from .program import resolve_limits, check_batch, output_tree
+
+    limits = resolve_limits(limits)
+    check_batch((tape,),limits)
+    tree = output_tree(tape)
+    unique, indices, slots, work = [], {}, [], 0
+
+    def native(observable):
+        if hasattr(observable,"to_quantumbridge"): return observable.to_quantumbridge()
+        if hasattr(observable,"to_hamiltonian"): return observable.to_hamiltonian()
+        return observable
+
+    def key(request):
+        observable = native(request.observable)
+        if isinstance(observable,PauliString):
+            wires = [wire for wire,_ in observable.terms]
+            if len(set(wires)) != len(wires) or any(wire < 0 or wire >= tape.circuit.num_qubits for wire in wires):
+                raise ValueError("Single-term measurements need distinct in-register Pauli wires.")
+            identity = tuple(sorted((wire,label) for wire,label in observable.terms if label != "I"))
+        elif observable is None:
+            identity = None
+        else:
+            identity = ("opaque",len(unique))
+        return (request.kind,identity,request.wires,request.shots,request.seed,
+                None if not request.metadata else len(unique))
+
+    def insert(request):
+        signature = key(request)
+        if signature not in indices:
+            limits.check("max_postprocessing_nodes",len(unique)+1)
+            indices[signature] = len(unique)
+            unique.append(request)
+        return indices[signature]
+
+    def expand(request):
+        nonlocal work
+        observable = native(request.observable)
+        if request.kind != "expval":
+            if isinstance(observable,Hamiltonian):
+                raise UnsupportedFeature("split_measurement_sum", "Only expectation values of sums can be split linearly.")
+            slots.append((0.,((insert(request),1.),),True))
+            return request
+        terms = observable.terms if isinstance(observable,Hamiltonian) else ((1.,observable),)
+        work += len(terms)
+        limits.check("max_expansion_steps",work)
+        offset, positions = 0., []
+        for coefficient, pauli in terms:
+            if np.iscomplexobj(coefficient) or not np.isfinite(coefficient):
+                raise ValueError("Single-term splitting requires finite real static coefficients.")
+            terminal = replace(request,observable=pauli)
+            signature = key(terminal)
+            if isinstance(pauli,PauliString) and not signature[1]:
+                offset += coefficient
+            else:
+                # Even a zero coefficient retains its public-contract measurement.
+                positions.append((insert(terminal),coefficient))
+        slots.append((offset,tuple(positions),False))
+        return request
+
+    map_measurements(tree,expand)
+    child = tape.copy()
+    child.measurements = unique
+    child.output_tree = unique[0] if len(unique) == 1 else tuple(unique)
+    child.measurement = unique[-1].kind if unique else None
+    child.observable = unique[-1].observable if unique else None
+    check_batch((child,),limits)
+
+    def one(result):
+        values = (result,) if len(unique) == 1 else result
+        if len(values) != len(unique):
+            raise ValueError("Single-term result width does not match its measurement list.")
+        restored = iter(values[positions[0][0]] if direct else
+                        sum((coefficient*values[index] for index,coefficient in positions),offset)
+                        for offset,positions,direct in slots)
+        return map_measurements(tree,lambda _:next(restored))
+
+    def process(results):
+        if len(results) != 1:
+            raise ValueError("split_to_single_terms expects one child Tape result.")
+        spec = ShotSpec.parse(tape.shots)
+        if spec.is_vector:
+            if not isinstance(results[0],tuple) or len(results[0]) != len(spec.partitions):
+                raise ValueError("Single-term shot partition count mismatch.")
+            return tuple(one(result) for result in results[0])
+        return one(results[0])
+
+    return (child,),process
 

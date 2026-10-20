@@ -26,6 +26,7 @@ class QNode:
         self.max_diff = max_diff
         self.last_metadata = {}
         self.compiler_options = None
+        self.transform_program = None
         from .shot_vector import ShotSpec
         ShotSpec.parse(shots)
         if interface not in {None, "auto", "numpy", "torch", "autograd", "jax", "tf", "tensorflow"}:
@@ -34,7 +35,7 @@ class QNode:
     def _construct(self, args, kwargs):
         from quantumbridge.diff.qnode_engine import AngleRecorder, ExecutionPlan, measurement_tree
         recorder = AngleRecorder()
-        tape = Tape(self.num_qubits, recorder)
+        tape = Tape(self.num_qubits, recorder, shots=self.shots, seed=self.seed)
         returned = self.fn(tape, *args, **kwargs)
         if self.compiler_options is not None:
             from quantumbridge.compiler import native_transpile
@@ -45,9 +46,29 @@ class QNode:
             if compiled.num_qubits != self.num_qubits or compiled.metadata.get("initial_layout") != identity or compiled.metadata.get("routing", {}).get("final_layout", identity) != identity:
                 raise UnsupportedFeature("compiled_qnode_layout", "QNode measurements currently require equal width and restored identity layout.")
             tape.circuit, recorder = record_compiled_parameters(compiled, recorder)
-        plan = ExecutionPlan(self, tape, measurement_tree(returned, tape), recorder)
+        tree = measurement_tree(returned, tape)
+        if self.transform_program is None:
+            plan = ExecutionPlan(self, tape, tree, recorder)
+        else:
+            from quantumbridge.transforms.program import TransformedExecutionPlan
+            tape.output_tree = tree
+            plan = TransformedExecutionPlan(self, tape, recorder, self.transform_program)
         plan.input_values = (args, kwargs)
         return plan
+
+    def with_transform(self, transform, *, limits=None):
+        """Return an independent QNode using a fresh transformed batch per call."""
+        from copy import copy
+        from quantumbridge.transforms.program import TransformProgram
+        previous = self.transform_program
+        prefix = () if previous is None else previous.transforms
+        stages = transform.transforms if isinstance(transform, TransformProgram) else (transform,)
+        if limits is None:
+            limits = getattr(transform, "limits", None) if previous is None else previous.limits
+        result = copy(self)
+        result.last_metadata = {}
+        result.transform_program = TransformProgram(prefix + stages, limits=limits)
+        return result
 
     def compile(self, **options):
         from copy import copy

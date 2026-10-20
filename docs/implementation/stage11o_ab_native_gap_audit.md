@@ -119,6 +119,27 @@ cloud/hardware, vendoring and history rewriting are outside this batch.
 
 ## Public Contract References
 
+### B2/B3 Follow-Up Audit
+
+Starting `7e00be78452cc15ba41bea74d6397113739be380`, B1 already had real
+multi-Tape native execution. The next verified red test failed because
+`TransformProgram.execute_qnode` did not exist. B2 now reuses the same native
+child ExecutionPlans and reconstructs a new batch on every QNode call.
+Transform-owned copies must not share the source builder's mutable angle
+recorder; appending a constant gate is tested against that failure mode.
+
+B3 public-API probes on both pinned SDK versions establish that
+split_to_single_terms emits one Tape with distinct measurements, not the B1
+internal per-term Tape prototype. Duplicate Pauli measurements are shared,
+identity terms are offsets, zero-coefficient nonidentity measurements remain,
+and variance-of-sum rejects. Gate comparisons require full complex matrices:
+the public decompose/compile oracle must retain GlobalPhase in its basis or
+it may intentionally drop it. Native phase preservation is not relaxed.
+
+Current B2/B3 implementation and final verification are recorded separately
+in `stage11o_b2_b3_native_transform_report.md`. QWC, allocation, transformed
+native VJP, deferred measurements and full Stage 11O acceptance remain open.
+
 - https://docs.pennylane.ai/en/stable/code/api/pennylane.AngleEmbedding.html
 - https://docs.pennylane.ai/en/stable/code/api/pennylane.BasicEntanglerLayers.html
 - https://docs.pennylane.ai/en/stable/code/api/pennylane.StronglyEntanglingLayers.html

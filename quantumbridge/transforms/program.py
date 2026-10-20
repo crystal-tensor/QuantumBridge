@@ -48,6 +48,17 @@ def resolve_limits(limits):
     return limits
 
 
+def _identity_angle(value):
+    return value
+
+
+def copy_for_transform(tape):
+    result = tape.copy()
+    # Transforms edit parameter ASTs, not the source builder's mutable recorder.
+    result.parameter_transform = _identity_angle
+    return result
+
+
 def check_structure(tree, limits):
     pending, count = [(tree, 0)], 0
     while pending:
@@ -67,7 +78,7 @@ def output_tree(tape):
     if tape.output_tree is not None:
         return tape.output_tree
     if not tape.measurements:
-        raise ValueError("A transform Tape needs terminal measurements.")
+        return ()
     return tape.measurements[0] if len(tape.measurements) == 1 else tuple(tape.measurements)
 
 
@@ -126,6 +137,7 @@ class PreparedTransform:
     tapes: tuple
     processing_fn: object
     metadata: dict
+    processing_levels: tuple = ()
 
 
 class TransformProgram:
@@ -142,18 +154,19 @@ class TransformProgram:
         self.limits.check("max_transforms", len(self.transforms))
         if not all(callable(function) for function in self.transforms):
             raise TypeError("TransformProgram stages must be callable.")
+        self.last_metadata = {}
 
     def prepare(self, tape):
         limits = self.limits
         check_batch((tape,), limits)
-        batch, levels, trace, expansion = (tape.copy(),), [], [], 0
+        batch, levels, trace, expansion = (copy_for_transform(tape),), [], [], 0
         for stage, function in enumerate(self.transforms):
             children, processors = [], []
             name = getattr(function, "__name__", type(function).__name__)
             for index, parent in enumerate(batch):
                 context = f"transform stage {stage} ({name}), parent {index}"
                 try:
-                    returned = function(parent.copy())
+                    returned = function(copy_for_transform(parent))
                     if not isinstance(returned, (tuple, list)) or len(returned) != 2:
                         raise TypeError("A transform must return (tapes, processing_fn).")
                     emitted, processor = returned
@@ -169,7 +182,7 @@ class TransformProgram:
                     if any(ShotSpec.parse(child.shots) != parent_shots for child in emitted):
                         raise UnsupportedFeature("transform_shot_allocation", "B1 transforms must preserve parent shot partitions; allocation is not implemented.")
                     start = len(children)
-                    children.extend(child.copy() for child in emitted)
+                    children.extend(copy_for_transform(child) for child in emitted)
                     processors.append((start, len(children), processor))
                 except MemoryError as exc:
                     raise MemoryError(context + ": " + str(exc)) from exc
@@ -178,7 +191,8 @@ class TransformProgram:
             operation_total, shot_total = check_batch(children, limits)
             trace.append({"stage": stage, "name": name, "input_tape_count": len(batch),
                           "output_tape_count": len(children), "operation_count": operation_total,
-                          "sampled_shots": shot_total})
+                          "sampled_shots": shot_total,
+                          "parent_child_slices": [(start, stop) for start, stop, _ in processors]})
             levels.append(tuple(processors))
             batch = tuple(children)
 
@@ -205,14 +219,111 @@ class TransformProgram:
             return current[0]
 
         return PreparedTransform(batch, process, {"transform_count": len(self.transforms), "stages": trace,
-                                                  "postprocessing_order": list(reversed(range(len(levels))))})
+                                                  "postprocessing_order": list(reversed(range(len(levels))))}, tuple(levels))
 
-    def __call__(self, tape):
-        prepared = self.prepare(tape)
+    def __call__(self, target, *, qnode_options=None):
+        if not isinstance(target, Tape):
+            from .dispatch import bind_qnode
+            return bind_qnode(target, self, qnode_options)
+        if qnode_options is not None:
+            raise TypeError("Tape dispatch does not accept QNode options.")
+        prepared = self.prepare(target)
         return prepared.tapes, prepared.processing_fn
+
+    def execute_qnode(self, node, *args, **kwargs):
+        transformed = self(node)
+        value = transformed(*args, **kwargs)
+        self.last_metadata = deepcopy(transformed.last_metadata)
+        return value
 
 
 _UNSET = object()
+
+
+def _is_live(value):
+    return type(value).__module__.startswith(("torch","autograd","jax","jaxlib","tensorflow")) or hasattr(value,"derivative")
+
+
+def _reject_live(values):
+    if any(_is_live(value) for value in values):
+        raise UnsupportedFeature("transform_autodiff", "B1/B2 preserve parameter graphs but transformed framework/Dual execution requires the native VJP integration.")
+
+
+class TransformedExecutionPlan:
+    """Own child native plans and reconstruction dependencies for this call only."""
+
+    def __init__(self, node, tape, original_recorder, program, bindings=None):
+        from quantumbridge.diff.compiled_parameters import record_compiled_parameters
+        self.node, self.prepared, self.limits = node, program.prepare(tape), program.limits
+        self.original_recorder, self.recorder = original_recorder, AngleRecorder()
+        self.child_plans, self.parameter_slices = [], []
+        self.last_spec, self.metadata = None, {}
+        mapping = dict(bindings or {})
+        if any(_is_live(value) for value in mapping.values()):
+            raise UnsupportedFeature("transform_autodiff", "B1/B2 support numeric bindings, not transformed input autodiff.")
+        if original_recorder is not None:
+            _reject_live(original_recorder.angles)
+        seed_sequence = np.random.SeedSequence(node.seed)
+        children = self.prepared.tapes
+        seeds = seed_sequence.spawn(len(children)) if node.seed is not None else [None] * len(children)
+        for index, (child, child_seed) in enumerate(zip(children, seeds)):
+            pending = [child.circuit]
+            while pending:
+                body = pending.pop()
+                _reject_live((body.global_phase,) + tuple(value for operation in body.operations for value in operation.params))
+                for operation in body.operations:
+                    control = operation.metadata.get("control_node")
+                    if control is not None:
+                        pending.extend(control.bodies)
+            if original_recorder is None:
+                child.circuit = child.circuit.assign_parameters(mapping, strict=False)
+                if child.circuit.parameters:
+                    raise ValueError(f"Transform child {index} has unbound parameters.")
+                recorder = AngleRecorder()
+            else:
+                child.circuit, recorder = record_compiled_parameters(child.circuit, original_recorder)
+            start = len(self.recorder.parameters)
+            for angle in recorder.angles:
+                self.recorder(angle)
+            self.parameter_slices.append((start, len(self.recorder.parameters)))
+            seed_value = child.seed if child.seed != node.seed else None if child_seed is None else int(child_seed.generate_state(1)[0])
+            from copy import copy
+            child_node = copy(node)
+            child_node.num_qubits, child_node.shots, child_node.seed = child.circuit.num_qubits, child.shots, seed_value
+            self.child_plans.append(ExecutionPlan(child_node, child, output_tree(child), recorder))
+        check_batch(children, self.limits)
+
+    def evaluate(self, values):
+        if len(values) != len(self.recorder.parameters):
+            raise ValueError("Transformed QNode angle shape mismatch.")
+        results, executions = [], []
+        for index, (plan, (start, stop)) in enumerate(zip(self.child_plans, self.parameter_slices)):
+            execution_id = str(uuid4())
+            try:
+                value = plan.evaluate(values[start:stop])
+            except Exception as exc:
+                raise TransformError(f"execution child {index} ({execution_id}): {exc}") from exc
+            check_structure(value, self.limits)
+            results.append(value)
+            executions.append({"tape_index": index, "execution_id": execution_id,
+                               "gate_angle_slice": (start, stop),
+                               "operation_count": operation_count(plan.circuit, self.limits), **deepcopy(plan.metadata)})
+        value = self.prepared.processing_fn(tuple(results))
+        self.metadata = {**deepcopy(self.prepared.metadata), "native_execution": True,
+                         "executed_tape_count": len(executions), "executions": executions,
+                         "gate_parameter_count": len(self.recorder.parameters),
+                         "source_gate_parameter_count": 0 if self.original_recorder is None else len(self.original_recorder.parameters),
+                         "execution_semantics": "one independent native ExecutionPlan evaluation per child Tape",
+                         "gradient_support": "not implemented for transformed execution before native VJP integration"}
+        from quantumbridge.diff.trace import flatten_tree
+        try:
+            _, self.last_spec = flatten_tree(value)
+        except UnsupportedFeature:
+            self.last_spec = None
+        return value
+
+    def jacobian(self, *args, **kwargs):
+        raise UnsupportedFeature("transform_autodiff", "Transformed quantum Jacobian/VJP integration is not implemented yet.")
 
 
 def execute_transform(tape, transform_fn, device=None, *, bindings=None, shots=_UNSET,
@@ -226,6 +337,8 @@ def execute_transform(tape, transform_fn, device=None, *, bindings=None, shots=_
     """
     if not isinstance(tape, Tape):
         raise TypeError("execute_transform requires a native Tape.")
+    if tape.output_tree is None and not tape.measurements:
+        raise ValueError("Raw transform execution needs terminal measurements or an explicit output tree.")
     limits = resolve_limits(limits if limits is not None else getattr(transform_fn, "limits", None))
     check_batch((tape,), limits)
     source = tape.copy()
@@ -237,46 +350,7 @@ def execute_transform(tape, transform_fn, device=None, *, bindings=None, shots=_
         program = TransformProgram(transform_fn.transforms, limits=limits)
     else:
         program = TransformProgram((transform_fn,), limits=limits)
-    prepared = program.prepare(source)
-    plans = []
-    seed_sequence = np.random.SeedSequence(source.seed)
-    child_seeds = seed_sequence.spawn(len(prepared.tapes)) if source.seed is not None else [None] * len(prepared.tapes)
-    for index, (child, child_seed) in enumerate(zip(prepared.tapes, child_seeds)):
-        pending = [child.circuit]
-        while pending:
-            body = pending.pop()
-            values = (body.global_phase,) + tuple(value for operation in body.operations for value in operation.params)
-            if any(type(value).__module__.startswith(("torch", "autograd")) or hasattr(value, "derivative") for value in values):
-                raise UnsupportedFeature("transform_autodiff", "B1 preserves parameter graphs but transformed framework/Dual execution is not implemented.")
-            for operation in body.operations:
-                node = operation.metadata.get("control_node")
-                if node is not None:
-                    pending.extend(node.bodies)
-        mapping = dict(bindings or {})
-        if any(type(value).__module__.startswith(("torch", "autograd")) or hasattr(value, "derivative") for value in mapping.values()):
-            raise UnsupportedFeature("transform_autodiff", "B1 supports numeric bindings, not transformed input autodiff.")
-        child.circuit = child.circuit.assign_parameters(mapping, strict=False)
-        if child.circuit.parameters:
-            raise ValueError(f"Transform child {index} has unbound parameters.")
-        seed_value = child.seed if child.seed != source.seed else None if child_seed is None else int(child_seed.generate_state(1)[0])
-        node = QNode(lambda _: None, child.circuit.num_qubits, device=device,
-                     shots=child.shots, seed=seed_value)
-        plans.append(ExecutionPlan(node, child, output_tree(child), AngleRecorder()))
-    check_batch(prepared.tapes, limits)
-    results, executions = [], []
-    for index, plan in enumerate(plans):
-        execution_id = str(uuid4())
-        try:
-            value = plan.evaluate(())
-        except Exception as exc:
-            raise TransformError(f"execution child {index} ({execution_id}): {exc}") from exc
-        check_structure(value, limits)
-        results.append(value)
-        executions.append({"tape_index": index, "execution_id": execution_id,
-                           "operation_count": operation_count(plan.circuit, limits), **deepcopy(plan.metadata)})
-    value = prepared.processing_fn(tuple(results))
-    metadata = {**deepcopy(prepared.metadata), "native_execution": True,
-                "executed_tape_count": len(executions), "executions": executions,
-                "execution_semantics": "one independent native ExecutionPlan evaluation per child Tape",
-                "gradient_support": "not implemented for transformed execution in B1"}
-    return (value, metadata) if return_metadata else value
+    node = QNode(lambda _: None, source.circuit.num_qubits, device=device, shots=source.shots, seed=source.seed)
+    plan = TransformedExecutionPlan(node, source, None, program, bindings)
+    value = plan.evaluate(())
+    return (value, plan.metadata) if return_metadata else value

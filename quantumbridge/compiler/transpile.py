@@ -108,11 +108,11 @@ def generate_preset_pass_manager(
     resolved_target = _resolve_target(target, basis_gates, coupling_map)
     limits = limits or CompilationLimits()
     passes = [_LayoutPass(resolved_target, initial_layout)]
-    passes.append(GateDecompositionPass(resolved_target.basis_gates))
+    passes.append(GateDecompositionPass(resolved_target.basis_gates,limits=limits))
     if resolved_target.coupling_map is not None:
         passes.append(BasicRoutingPass(resolved_target.coupling_map))
         passes.append(SwapInsertionPass(resolved_target.coupling_map, restore_layout, resolved_target, limits))
-        passes.append(GateDecompositionPass(resolved_target.basis_gates))
+        passes.append(GateDecompositionPass(resolved_target.basis_gates,limits=limits))
     if optimization_level >= 1:
         passes.append(RemoveIdentityPass())
     if optimization_level >= 2:

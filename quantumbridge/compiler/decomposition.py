@@ -5,12 +5,13 @@
 from copy import deepcopy
 from dataclasses import replace
 from math import pi
-from numbers import Real
+from numbers import Real, Integral
 
 from quantumbridge.core import Circuit, Operation, Measurement
 from quantumbridge.core.classical import UnsupportedFeature
 from .pass_base import PassResult, TransformationPass
 from .traversal import append_item, map_control_bodies
+from .limits import CompilationLimits
 
 
 def needs_decomposition(circuit, basis_gates):
@@ -30,18 +31,39 @@ class BasisGateConversionPass(TransformationPass):
 class GateDecompositionPass(TransformationPass):
     handles_dynamic = True
 
-    def __init__(self, basis_gates=None):
+    def __init__(self, basis_gates=None, *, limits=None):
         self.basis_gates = set(basis_gates or {"x", "y", "z", "h", "rx", "ry", "rz", "cx", "cz", "swap"})
+        self.limits = limits or CompilationLimits()
 
-    def run(self, circuit):
+    def run(self, circuit, *, max_operations=None, max_expansion_steps=None, max_depth=None, _budget=None, _nesting=0):
+        max_operations = self.limits.max_dag_nodes if max_operations is None else max_operations
+        max_expansion_steps = 4*self.limits.max_dag_nodes if max_expansion_steps is None else max_expansion_steps
+        for value in (max_operations,max_expansion_steps,24 if max_depth is None else max_depth):
+            if isinstance(value,bool) or not isinstance(value,Integral) or value < 1:
+                raise ValueError("Decomposition limits must be positive integers.")
+        if _nesting > (self.limits.max_control_nesting if max_depth is None else max_depth):
+            raise MemoryError("Decomposition exceeds its control nesting budget.")
+        budget = {"steps":0,"operations":0} if _budget is None else _budget
+        def charge(output=False):
+            budget["steps"] += 1
+            if budget["steps"] > max_expansion_steps:
+                raise MemoryError("Decomposition exceeds max_expansion_steps.")
+            if output:
+                budget["operations"] += 1
+                if budget["operations"] > max_operations:
+                    raise MemoryError("Decomposition exceeds max_operations.")
         out = Circuit(circuit.num_qubits, circuit.num_bits, circuit.name, deepcopy(circuit.metadata))
         decomposed = []
         def translate(op, depth=0):
-            if depth > 24: raise UnsupportedFeature("basis_translation", f"No algebraic route to basis for {op.name}.")
+            charge()
+            if depth > (24 if max_depth is None else max_depth): raise UnsupportedFeature("basis_translation", f"No bounded algebraic route to basis for {op.name}.")
             if op.name in self.basis_gates or op.metadata.get("directive") or op.name in {"reset", "kraus"}:
+                charge(output=True)
                 out.operations.append(deepcopy(op)); return
             if op.metadata.get("control_node") is not None:
-                out.operations.append(map_control_bodies(op, lambda body: self.run(body).circuit)); return
+                charge(output=True)
+                out.operations.append(map_control_bodies(op, lambda body: self.run(body,max_operations=max_operations,
+                    max_expansion_steps=max_expansion_steps,max_depth=max_depth,_budget=budget,_nesting=_nesting+1).circuit)); return
             name, wires, params = op.name, op.wires, op.params
             phase, recipe = 0., []
             a = wires[0] if wires else None
@@ -104,6 +126,8 @@ class GateDecompositionPass(TransformationPass):
             for child in recipe:
                 translate(replace(child, metadata=deepcopy(op.metadata)), depth + 1)
         for item in circuit.iter_instructions():
-            if isinstance(item, Measurement): append_item(out, item)
+            if isinstance(item, Measurement):
+                charge(output=True)
+                append_item(out, item)
             else: translate(item)
         return PassResult(out, {"decomposed": decomposed, "global_phase_preserved": True}, bool(decomposed))
