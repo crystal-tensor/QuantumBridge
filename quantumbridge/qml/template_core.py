@@ -99,6 +99,10 @@ def angle_value(value):
         return
     if isinstance(value, Dual):
         value = value.value
+    elif type(value).__module__.startswith(("jax", "jaxlib")):
+        if shape_of(value) or value.dtype.kind != "f":
+            raise TypeError("Template gate angles require real scalar parameters.")
+        return
     elif type(value).__module__.startswith(("torch", "autograd")):
         dtype = getattr(value, "dtype", None)
         if shape_of(value) or getattr(dtype, "is_complex", False) or getattr(dtype, "kind", "f") == "c" or not getattr(dtype,"is_floating_point",True):

@@ -1,6 +1,6 @@
 # Core Functional Parity Ledger
 
-Updated: 2026-10-20, Stage 11O-B6 native coherent deferral checkpoint, starting from local `bd88f88`.
+Updated: 2026-10-20, Stage 11P-A native JAX checkpoint, starting from local `bc17863`.
 This is the single current-status view. Full Qiskit/PennyLane functional
 replacement remains **incomplete**. Line coverage, inventories, passthrough and
 green CI are not proof of complete API coverage.
@@ -35,13 +35,47 @@ publication/exact-SHA CI is a separate receipt, not inferred from prior CI.
 | Native parameter-shift/adjoint | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: actual first-order algorithms and classical chain rule | All generators/transforms, reused parameterized loops and mixed/MPS adjoint |
 | VJP/JVP/execute derivatives | NATIVE_TESTED; PARTIAL | Current explicit Jacobian products are not full derivative-device contracts |
 | Torch/Autograd | NATIVE_TESTED; PARTIAL: CPU framework graphs with native quantum VJP | GPU, higher order and full interface/device contracts |
-| JAX/TF/backprop/capture | NOT_STARTED or UNSUPPORTED as documented | Full end-to-end implementations; array conversion is not autodiff |
+| JAX | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: CPU native first-order QNode/transform derivatives, PyTrees, supported host JIT/VMAP and explicit seeded sampling | Complete public interfaces, GPU/TPU, dynamic PRNG keys, higher order, capture and full derivative-device protocols |
+| TF/backprop/capture | NOT_STARTED or UNSUPPORTED as documented | Full end-to-end implementations; array conversion is not autodiff |
 | Shot vectors/dynamic gradients/MPS gradients | NATIVE_TESTED; PARTIAL: actual sampling/branches, native shift and finite difference | Complete stochastic/loop/postselection contracts; numerical truncation risk |
 | Higher-order derivatives | UNSUPPORTED | First-order guards remain active |
 | Compiled QNode gradients | NATIVE_TESTED; PARTIAL: expressions, shared inputs, Torch/Autograd and native gradients | Restored identity/equal-width only; general measurement remapping |
 | Templates/qchem/math/resources/kernels/qnn/qcut/shadows | PARTIAL: native geometry-derived hydrogen electronic structure now added; other bounded workflows remain | Full library/transform/template and differentiation contracts |
 | Compiled 100-qubit MPS | NATIVE_TESTED for GHZ-chain with dense APIs disabled | No arbitrary-entanglement efficiency claim |
 | Quafu/QOS-UQCI/industry taxonomy | PARTIAL: offline target/configuration and existing adapters, four categories/19 subdomains | Real authorized backend/job evidence and complete industry workflows |
+
+## Stage 11P-A JAX Status
+
+These are bounded native CPU contracts, not full JAX/PennyLane parity.
+Current detailed receipts are in the
+[JAX report](../implementation/stage11p_a_native_jax_autodiff_report.md).
+
+| Contract | Status | Boundary |
+| --- | --- | --- |
+| Eager | NATIVE_TESTED; PARTIAL | Real native plans/devices and first-order numerical outputs |
+| grad | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Native shift/adjoint, real scalar loss |
+| value_and_grad | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Actual value plus native derivative in the same graph |
+| jacrev | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Bounded real output/input trees |
+| jacfwd | NATIVE_TESTED; PARTIAL | Verified linear custom-JVP rule, not custom-VJP-only support |
+| jvp / vjp | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Explicit bounded native Jacobian products |
+| jit | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Pure CPU host callback with explicit shape/dtype/status, not quantum XLA lowering |
+| jit-grad | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Static supported graph and bounded native quantum derivatives |
+| vmap | NATIVE_TESTED; PARTIAL | Sequential CPU host mapping and per-axis expansion limits |
+| vmap-grad | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Public backprop numerical oracle; public eager shift/vmap rejection reported separately |
+| PyTrees | NATIVE_TESTED; PARTIAL | Native nonempty dict/list/tuple result trees, static shapes |
+| Classical preprocessing | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | JAX-owned graph and native occurrence derivatives |
+| Trainable coefficients | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Full tested gate/coefficient product rule in supported native Hamiltonians |
+| Transformed QNode | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL | Actual children and reverse native postprocessing, not original-QNode gradient bypass |
+| Finite shots | NATIVE_TESTED; PARTIAL | Explicit immutable integer seed; estimates and real eager physical-work receipts |
+| Shot vectors | NATIVE_TESTED; PARTIAL | Partitions and supported group allocations preserved |
+| 100-wire MPS | NATIVE_TESTED; PARTIAL | Low-entanglement no-dense proof with actual eager telemetry; not arbitrary efficiency |
+| Geometry-derived H2 optimizer | NATIVE_TESTED; PARTIAL | One native Gaussian/RHF/JW build, native excitation/QWC/JAX updates; not differentiable HF |
+| Higher-order derivatives | UNSUPPORTED | Explicit guard; Hessian/HVP remains open |
+| Capture/Catalyst | NOT_STARTED | Not implemented by host JIT |
+| TensorFlow | NOT_STARTED / UNSUPPORTED | Existing explicit interface rejection retained |
+| Native simulator backprop | UNSUPPORTED | Native quantum shift/adjoint bridge is not differentiable simulator backprop |
+| Complete device derivative protocols | PARTIAL | Existing explicit native products; full plugin/device contracts remain open |
+| Dynamic keys / GPU / TPU | UNSUPPORTED | No false device-native quantum or full stochastic-interface claim |
 
 ## Native Simulator Status
 
@@ -139,7 +173,7 @@ or public comparison passed. The status applies only to the supported subset.
 | Internal split_hamiltonian prototype | NATIVE_TESTED; PARTIAL: real per-term child execution, identity/duplicates/zero/static coefficients, nested and shot-vector reconstruction | Not public split_to_single_terms parity; no QWC grouping or shot allocation |
 | split_to_single_terms | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: deduplicated native Pauli measurements, real scalar coefficient graphs, tree reconstruction and native gradients | General symbolic observable families, raw Tape autodiff and full public protocols |
 | split_non_commuting | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: actual native Pauli grouping, joint samples, coefficient/identity/tree reconstruction and native gradients | General observables/measurement kinds and full default/cache/operation protocols |
-| Transformed coefficient/gate derivatives | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: native quantum means plus coefficient product rule, Torch/Autograd/native first-order interfaces | Weighted zero-valued trainable groups reject; changed prepared coefficient primals require a fresh plan; no JAX/TF/GPU/higher order |
+| Transformed coefficient/gate derivatives | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: native quantum means plus coefficient product rule, Torch/Autograd/JAX/native first-order interfaces | Weighted zero-valued trainable groups reject; changed prepared coefficient primals require a fresh plan; no TF/GPU/higher order |
 | Transformed sampled gradients | NATIVE_TESTED; PARTIAL: real grouped parameter shifts with independent streams, partitions and actual work receipts | Stochastic estimates, not a universally unbiased nonlinear estimator or an SE-derived gradient bound; finite variance/local-seed/postselection/parameterized-loop gaps |
 | QWC shot distribution | NATIVE_TESTED; PARTIAL: full per-group budget or deterministic uniform/L1-weighted total allocation, exact per-vector-partition conservation | Random/custom allocation and full SDK parity; PL 0.42.3 has no allocation API, PL 0.44.1 flattens distributed vectors and may drop undersampled groups |
 | QWC estimator statistics | NATIVE_TESTED; PARTIAL: exact analytic group covariance or real empirical shared-sample covariance and source expectation standard error | Not full quantum variance across incompatible groups, uncertainty of variance estimators or calibrated hardware confidence guarantees |

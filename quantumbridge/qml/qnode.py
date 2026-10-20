@@ -15,7 +15,8 @@ from .tape import Tape
 
 class QNode:
     def __init__(self, fn, num_qubits: int, device=None, shots=None, seed: int | None = None,
-                 interface="auto", diff_method="best", gradient_kwargs=None, max_diff=1):
+                 interface="auto", diff_method="best", gradient_kwargs=None, max_diff=1,
+                 jax_limits=None):
         self.fn = fn
         self.num_qubits = num_qubits
         self.device = device or StatevectorDevice()
@@ -24,6 +25,7 @@ class QNode:
         self.interface, self.diff_method = interface, diff_method
         self.gradient_kwargs = dict(gradient_kwargs or {})
         self.max_diff = max_diff
+        self.jax_limits = jax_limits
         self.last_metadata = {}
         self.compiler_options = None
         self.transform_program = None
@@ -32,9 +34,9 @@ class QNode:
         if interface not in {None, "auto", "numpy", "torch", "autograd", "jax", "tf", "tensorflow"}:
             raise ValueError("Unknown QuantumBridge QNode interface.")
 
-    def _construct(self, args, kwargs):
+    def _construct(self, args, kwargs, *, prepare_only=False):
         from quantumbridge.diff.qnode_engine import AngleRecorder, ExecutionPlan, measurement_tree
-        if self.transform_program is not None:
+        if self.transform_program is not None and not prepare_only:
             from quantumbridge.interfaces.qnode_autodiff import _leaves
             from quantumbridge.transforms.program import _reject_unsupported_interface
             _reject_unsupported_interface(_leaves((args, kwargs)))
@@ -60,6 +62,9 @@ class QNode:
             if any(isinstance(request.observable,Hamiltonian) and any(is_live_scalar(coefficient) for coefficient,_ in request.observable.terms) for request in requests):
                 from quantumbridge.transforms import TransformProgram, split_to_single_terms
                 program = TransformProgram((split_to_single_terms,))
+        if prepare_only:
+            tape.output_tree = tree
+            return tape, recorder, program
         if program is None:
             plan = ExecutionPlan(self, tape, tree, recorder)
         else:
@@ -115,6 +120,9 @@ class QNode:
         if self.transform_program is not None and interface in {None, "numpy"} and infer_interface(args, kwargs) is not None:
             from quantumbridge.core.classical import UnsupportedFeature
             raise UnsupportedFeature("transform_interface", "Use the framework interface or native gradient/VJP API; explicit NumPy cannot detach live framework inputs.")
+        if interface == "jax":
+            from quantumbridge.interfaces.jax_autodiff import execute_jax
+            return execute_jax(self, args, kwargs)
         plan = self._construct(args, kwargs)
         if interface in {None, "numpy"}:
             result = plan.evaluate(plan.recorder.native_values())
@@ -144,6 +152,16 @@ class QNode:
                               "trainable_gate_occurrences":active[active < gate_count].tolist(),
                               "trainable_coefficient_slots":(active[active >= gate_count]-gate_count).tolist()}
         return base, matrix, spec, layout, single
+
+    def jax_with_status(self, *args, **kwargs):
+        """Return (value, nondifferentiable status) for checked CPU JAX calls.
+
+        Codes: 0 success, 1 invalid/nonfinite value, 2 unsupported runtime path,
+        3 resource budget, 4 other runtime failure. Failed values are NaN.
+        Static capability/shape errors still reject before callback creation.
+        """
+        from quantumbridge.interfaces.jax_autodiff import execute_jax
+        return execute_jax(self, args, kwargs, return_status=True)
 
     @staticmethod
     def _input_results(values, layout, single):

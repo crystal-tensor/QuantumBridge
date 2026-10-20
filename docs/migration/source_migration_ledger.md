@@ -1,6 +1,6 @@
 # Source Migration Ledger
 
-Status: Stage 11O-B6 native coherent deferral checkpoint
+Status: Stage 11P-A native JAX interface checkpoint
 Date: 2026-10-20
 
 This ledger retains historical release and checkpoint sections. Current work
@@ -8,6 +8,27 @@ uses Native Implementation, Adapter Integration and Upstream Dependency, with
 their boundaries stated separately. Historical checkpoint limitations are not
 the current status view; use core_parity_ledger.md for that view.
 No Source Port with Attribution was performed.
+
+## Stage 11P-A Native JAX Autodiff
+
+Native Implementation and optional framework integration, not an upstream
+quantum-engine adapter. Independent implementation/test source ports: zero.
+JAX public custom-JVP/callback/batching contracts are references. All quantum
+values/Jacobians are computed by existing native plans, devices and derivatives.
+
+| Files | Native changes | Independent evidence |
+| --- | --- | --- |
+| `quantumbridge/interfaces/jax_autodiff.py`, `quantumbridge/interfaces/__init__.py` | Optional CPU JAX custom-JVP and real native plan bridge; pure callback shape/status and resource boundaries | Persisted two-test red/green, actual native derivative spies, independent math and public JAX composition |
+| `quantumbridge/qml/qnode.py`, `quantumbridge/qml/template_core.py`, `quantumbridge/diff/scalars.py` | Reused source recording, retained JAX scalar/coefficient graphs, static template validation, explicit checked status | Shared/nonlinear/preprocessing/coefficient/PyTree, QWC/defer/compile and dtype tests |
+| `tests/interfaces/test_native_jax_grad.py`, `tests/interfaces/test_native_jax_jit.py`, `tests/interfaces/test_native_jax_resource_limits.py` | Independent value/grad/JVP/VJP/Jacobian/JIT/VMAP/error/shape/resource contracts | No finite-diff substitution, actual host return values, x64 subprocess checks and preflight failures |
+| `tests/interfaces/test_native_jax_transform_gradients.py`, `tests/interfaces/test_native_jax_shots.py`, `tests/interfaces/test_native_jax_mps_non_dense.py` | Actual child/reverse/coefficient derivatives, seeded sample partitions, non-dense MPS and native H2 | Quantum execution/gradient/work receipts, 100-wire dense APIs forbidden, fixed geometry constructed once |
+| `tests/interfaces/test_native_qnode_autodiff.py` | Old JAX-unsupported assertion updated to new tested support; explicit missing-optional-dependency contract added; TF guards retained | Missing-installation behavior is tested separately from installed JAX, not silently skipped as proof |
+| `tests/compat/test_native_jax_pennylane_differential.py` | Independently authored public API oracles | Eight matching numerical scenarios per public version; public eager shift/VMAP tracer rejection recorded as a separate expected failure, not matching evidence |
+| `examples/native_jax_qnode_gradient.py`, `examples/native_jax_transform_training.py`, `examples/native_jax_mps_100qubits.py`, `examples/native_jax_qchem_h2.py` | Four actual native/JAX workflows | Analytic values/derivatives, optimizer updates, actual MPS telemetry and real Gaussian/RHF/JW Hamiltonian |
+| `docs/implementation/stage11p_a_jax_gap_audit.md`, `docs/implementation/stage11p_a_native_jax_autodiff_report.md` | Initial missing interface audit and bounded implementation receipts | Full functional replacement remains incomplete; no reduction of the final goal |
+
+No third-party source/binary/package tree or environment is placed in the
+repository. No cloud/token/hardware, Studio/Router or publication work is included.
 
 ## Stage 11O-B6 Native Coherent Deferred Measurements
 

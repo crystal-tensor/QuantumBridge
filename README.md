@@ -57,7 +57,7 @@ See [native training](examples/native_qnode_gradient.py),
 [Torch training](examples/native_qnode_torch_training.py),
 [shot partitions](examples/native_qnode_shot_vectors.py) and the
 [Stage 11K report](docs/implementation/stage11k_native_qnode_autodiff_report.md).
-Full autodiff parity is not complete: simulator backprop, JAX/TF, higher order,
+Full autodiff parity is not complete: simulator backprop, complete JAX/TF, higher order,
 capture and unsupported dynamic/adjoint cases remain explicit gaps. MPS gradients
 retain tensor execution and truncation/resource warnings. Legacy mixed analytic
 state plus sampled queries emit a warning and record actual measurement shots.
@@ -791,7 +791,7 @@ shift/partition streams and report actual forward/derivative physical work.
 Sampled gradients are stochastic estimates; energy SE is not a gradient error
 bound. Finite-shot transformed variance gradients, trainable zero-weight
 weighted allocation, fixed local seed gradients, raw live Tape execution,
-postselection/reused parameterized loops, higher order, capture, JAX/TF and
+postselection/reused parameterized loops, higher order, capture, complete JAX/TF and
 GPU contracts remain explicitly unsupported. A prepared coefficient-bearing
 plan rejects changed coefficient primals; QNode calls construct fresh plans.
 
@@ -869,6 +869,68 @@ See the [B6 report](docs/implementation/stage11o_b6_native_deferred_measurements
 [joint acceptance](docs/implementation/stage11o_joint_acceptance_report.md)
 and [remaining gaps](docs/implementation/stage11o_remaining_functional_parity_gaps.md).
 
+## Native JAX Autodiff
+
+Optional `interface="jax"` now connects the existing native QNode and
+TransformProgram to real first-order `jax.grad`, `value_and_grad`, `jacrev`,
+`jacfwd`, `jvp` and VJP workflows. JAX retains preprocessing/outer-loss graphs;
+QuantumBridge supplies actual native shift/adjoint and child/postprocessing
+Jacobians, including shared gate/Hamiltonian coefficient product rules.
+This is not PennyLane execution, finite-difference fallback or simulator backprop.
+
+```python
+import jax
+import jax.numpy as jnp
+from quantumbridge import PauliZ
+from quantumbridge.qml import QNode
+
+def circuit(tape, theta):
+    tape.ry(jnp.sin(theta) + 2 * theta, 0)
+    return tape.expval(PauliZ(0))
+
+node = QNode(circuit, 1, interface="jax", diff_method="parameter-shift")
+value, gradient = jax.value_and_grad(node)(jnp.asarray(0.37))
+```
+
+Analytic and explicit-immutable-integer-seeded sampling support tested CPU
+JIT/VMAP subsets via public pure host callbacks and declared shape/dtype.
+VMAP is sequential CPU host execution, not GPU quantum batching or quantum
+simulation compiled into XLA. Native plans/devices are fresh per host call;
+dynamic PRNG keys, complete plugin protocols and arbitrary dynamic shapes
+remain unsupported. Float32/float64 respect the caller's x64 configuration;
+QuantumBridge never changes that process setting on import.
+
+`node.jax_with_status(...)` returns `(value, status)` for numerical runtime
+validation: 0 success, 1 invalid/nonfinite value, 2 unsupported runtime path,
+3 budget failure, 4 other runtime failure. Failures return NaN value/gradient
+data, not intentional exceptions inside a pure callback. Status has zero
+tangent. Static shape/capability errors reject before callback creation.
+Ordinary eager calls retain normal exceptions.
+
+`JAXBridgeLimits` bounds inputs, source/expanded parameters, output/Jacobian
+storage, transform Tapes, sampled work and mapped batch expansion. Its callback
+budget bounds logical mapped expansion per axis, not the actual optimizer-
+scheduled count: JIT can drop, duplicate or reorder pure callbacks. JIT metadata
+is explicitly a trace-configuration description, never an actual execution
+count or resource receipt. Eager native receipts remain auditable.
+Finite gradients are estimates, with independent shifted/group/partition
+streams; forward SE is not a strict gradient-error bound.
+
+Higher-order differentiation, capture/Catalyst, TensorFlow, GPU/TPU, native
+backprop, full derivative-device protocols and complete SDK parity remain open.
+Public comparisons document version-specific differences rather than treating
+upstream unsupported paths as positive matching evidence.
+
+```bash
+JAX_ENABLE_X64=1 python -m examples.native_jax_qnode_gradient
+JAX_ENABLE_X64=1 python -m examples.native_jax_transform_training
+JAX_ENABLE_X64=1 python -m examples.native_jax_mps_100qubits
+JAX_ENABLE_X64=1 python -m examples.native_jax_qchem_h2
+```
+
+See the [JAX audit](docs/implementation/stage11p_a_jax_gap_audit.md) and
+[JAX implementation report](docs/implementation/stage11p_a_native_jax_autodiff_report.md).
+
 ## Native Molecular Chemistry Checkpoint
 
 `quantumbridge.qchem` now computes a bounded hydrogen/STO-3G s-shell workflow
@@ -886,7 +948,8 @@ python -m examples.native_qchem_h2_vqe
 This is not the legacy fixed-coefficient H2/LiH demo, and is not complete
 PennyLane qchem: other elements/bases, open-shell solvers, active spaces,
 properties and fully differentiable molecular geometry/SCF are not implemented.
-Template and multi-Tape transform work in Stage 11O is still in progress.
+Supported native template/transform subsets now execute; their full contracts
+and the complete chemistry library remain partial.
 See the [chemistry checkpoint report](docs/implementation/stage11o_native_qchem_report.md).
 
 ## Native Serialization Checkpoint

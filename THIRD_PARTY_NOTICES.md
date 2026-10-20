@@ -1,11 +1,23 @@
 # Third-party Notices
 
-Status: Stage 8D adapter contract update
-Date: 2026-06-09
+Status: Stage 11P-A native JAX interface checkpoint
+Date: 2026-10-20
 
 QuantumBridge is an independent project. References to Qiskit and PennyLane are for attribution, compatibility, and optional adapter documentation only and do not imply endorsement.
 
 ## Native Template Verification
+
+Stage 11P-A independently connects the existing native QNode, Device,
+shift/adjoint and transformed postprocessing Jacobians to optional JAX graphs.
+JAX provides classical differentiation and public callback/transform APIs;
+it is not a replacement quantum simulator. Public documentation supplies
+interface contracts, not implementation source. Independently authored public
+PennyLane 0.44.1/0.42.3 calls are black-box numerical oracles only, with known
+unsupported public paths reported separately. No JAX/SDK implementation or
+test source is ported; no private upstream gradient helper is used by native
+execution. Source ports remain zero. Environments, wheels, installed package
+trees, credentials and cloud/hardware calls are not included. This is not
+complete JAX/PennyLane/Qiskit parity or an endorsement.
 
 Stage 11O-B6 independently implements coherent measurement recording,
 bounded controlled-unitary lowering and logical terminal reconstruction.

@@ -89,7 +89,17 @@ def test_autograd_unused_input_and_native_training_loss():
 
 
 def test_unimplemented_frameworks_and_unknown_interfaces_are_explicit():
-    for interface in ("jax", "tf", "tensorflow"):
+    for interface in ("tf", "tensorflow"):
         node = QNode(lambda t, x: (t.ry(x, 0), t.expval(PauliZ(0)))[-1], 1, interface=interface)
         with pytest.raises(UnsupportedFeature): node(.3)
     with pytest.raises(ValueError): QNode(lambda t: t.expval(PauliZ(0)), 1, interface="unknown")
+
+
+def test_jax_is_optional_and_missing_installation_is_explicit():
+    import importlib.util
+    if importlib.util.find_spec("jax") is not None:
+        pytest.skip("Missing-installation contract runs in SDK-free/main environments without JAX.")
+    from quantumbridge.interfaces.jax_autodiff import MissingOptionalDependency
+    node = QNode(lambda t, x: (t.ry(x, 0), t.expval(PauliZ(0)))[-1], 1, interface="jax")
+    with pytest.raises(MissingOptionalDependency, match="optional jax"):
+        node(.3)

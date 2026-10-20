@@ -36,6 +36,11 @@ def scalar_primal(value):
 
 def retain_coefficient(value):
     if is_live_scalar(value):
+        if type(value).__module__.startswith(("jax", "jaxlib")):
+            if value.shape or value.dtype.kind != "f":
+                raise TypeError("JAX coefficients require real floating scalars.")
+            # Preserve the graph; the JAX bridge validates concrete host values.
+            return value
         scalar_primal(value)
         return value
     return float(value)
