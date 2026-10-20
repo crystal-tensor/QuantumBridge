@@ -3,7 +3,7 @@
 """Concrete executable templates sharing the existing native QML implementation."""
 from .qml.template_core import NativeTemplate, TemplateLimits, wire_labels, resolve_limits, bounded_pairs
 from .qml.embeddings import angle_embedding, basis_embedding, amplitude_embedding
-from .qml.templates import basic_entangler_layers, strongly_entangling_layers
+from .qml.templates import basic_entangler_layers, _basic_entangler_layers, strongly_entangling_layers
 from .qml.subroutines import iqp_embedding, qft, trotter_product
 
 
@@ -27,7 +27,7 @@ class AmplitudeEmbedding(NativeTemplate):
 
 class BasicEntanglerLayers(NativeTemplate):
     def __init__(self,weights,wires,rotation="X",*,limits=None):
-        self._build(basic_entangler_layers,wires,weights,rotation=rotation,limits=limits)
+        self._build(_basic_entangler_layers,wires,weights,rotation=rotation,limits=limits)
 
 
 class StronglyEntanglingLayers(NativeTemplate):

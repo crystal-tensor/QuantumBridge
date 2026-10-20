@@ -4,5 +4,10 @@
 # This implementation is developed for the QuantumBridge native architecture.
 
 from .gradient_transforms import finite_difference, metric_tensor, qng_step, spsa_gradient
+from .program import TransformProgram, TransformLimits, TransformError, execute_transform
+from .circuit_transforms import merge_rotations
+from .measurement_transforms import split_hamiltonian
 
-__all__ = ["finite_difference", "metric_tensor", "qng_step", "spsa_gradient"]
+__all__ = ["finite_difference", "metric_tensor", "qng_step", "spsa_gradient",
+           "TransformProgram", "TransformLimits", "TransformError", "execute_transform",
+           "merge_rotations", "split_hamiltonian"]

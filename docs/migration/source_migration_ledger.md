@@ -5,6 +5,27 @@ Date: 2026-06-05
 
 This ledger records implementation mode and upstream source status for the current P1 release-candidate baseline. Current work uses Native Implementation, Adapter Integration, and Upstream Dependency. No new upstream source migration was introduced during Stage 5.5. No Source Port with Attribution was performed.
 
+## Stage 11O-B1 Native Transform Execution Checkpoint
+
+Native Implementation, zero implementation/test source ports. Native child
+Tapes execute through the existing QuantumBridge QNode plan and Device, not
+an upstream SDK. The Hamiltonian splitting prototype is not the full public
+PennyLane split_to_single_terms contract. No SDK source/tests, credentials,
+package artifacts or environment are included.
+
+| Files | Independently implemented behavior | Evidence |
+| --- | --- | --- |
+| `quantumbridge/qml/tape.py` | Owned structural copies retaining parameter graphs; explicit nested outputs and local shots/seed | Mutation, nested tree, native expression and live scalar graph tests |
+| `quantumbridge/transforms/program.py`, `quantumbridge/transforms/__init__.py` | Bounded Tape batching, reverse reconstruction and independent native execution | Counting Device, IDs, staged errors and resource preflight |
+| `quantumbridge/transforms/circuit_transforms.py`, `quantumbridge/transforms/measurement_transforms.py` | Safe rotation segment merging and real weighted Hamiltonian child-Tape execution | Complete unitary, dynamic boundary, zero/identity/duplicate/shot tests |
+| `quantumbridge/qml/templates.py`, `quantumbridge/templates.py` | Explicit legacy functional migration warning, unchanged modern object and legacy ansatz alternative | Independent old/new gate-sequence regression |
+| `tests/transforms/test_native_transform_program.py`, `examples/native_transform_program.py` | Independently authored multi-Tape correctness tests and SDK-free example | Actual three-child evaluation and geometry-generated H2 energy |
+| `scripts/run_local_matrix.sh` | Consume the coverage-help probe fully under pipefail instead of misreporting an installed plugin as absent | Old probe exits 1; full-consuming probe exits 0; full matrix coverage rerun |
+| `docs/implementation/stage11o_b1_native_transform_execution_report.md`, `docs/compat/core_parity_ledger.md`, `README.md`, `THIRD_PARTY_NOTICES.md` | Explicit checkpoint evidence, limitations and source accounting | No full transform, SDK replacement or publication claim |
+
+QWC grouping, shot allocation, transformed native VJP and complete Stage 11O-B
+are still required. Source port count remains zero.
+
 ## Stage 11O-A Native Templates Checkpoint
 
 Native Implementation; zero third-party implementation/test source ports.

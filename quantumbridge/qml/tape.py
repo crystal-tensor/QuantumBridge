@@ -3,12 +3,14 @@
 # This file is part of QuantumBridge SDK.
 # This implementation is developed for the QuantumBridge native architecture.
 
+from copy import deepcopy
+
 from quantumbridge.core import Circuit
 from .measurements import MeasurementRequest, normalize_wires
 
 
 class Tape:
-    def __init__(self, num_qubits: int, parameter_transform=None):
+    def __init__(self, num_qubits: int, parameter_transform=None, *, shots=None, seed=None):
         self.circuit = Circuit(num_qubits)
         self.parameter_transform = parameter_transform or (lambda value: value)
         self.observable = None
@@ -17,6 +19,46 @@ class Tape:
         self.measurement_shots = None
         self.measurement_seed = None
         self.measurements: list[MeasurementRequest] = []
+        self.output_tree = None
+        self.shots, self.seed = shots, seed
+
+    def set_output(self, tree):
+        """Retain an explicit nested terminal-measurement return structure."""
+        pending, count = [(tree, 0)], 0
+        recorded = {id(request) for request in self.measurements}
+        while pending:
+            value, depth = pending.pop()
+            count += 1
+            if count > 100000 or depth > 64:
+                raise MemoryError("Tape output structure exceeds the native budget.")
+            if isinstance(value, MeasurementRequest):
+                if id(value) not in recorded:
+                    raise ValueError("Tape outputs must refer to its recorded measurements.")
+            elif isinstance(value, (dict, tuple, list)) and value:
+                values = value.values() if isinstance(value, dict) else value
+                pending.extend((child, depth + 1) for child in values)
+            else:
+                raise TypeError("Tape outputs require a nonempty measurement tree.")
+        self.output_tree = tree
+        return self
+
+    def copy(self):
+        """Copy owned structure without detaching scalar parameter graphs."""
+        memo = {id(self.parameter_transform): self.parameter_transform}
+        pending, seen = [self.circuit], set()
+        while pending:
+            circuit = pending.pop()
+            if id(circuit) in seen:
+                continue
+            seen.add(id(circuit))
+            memo[id(circuit.global_phase)] = circuit.global_phase
+            for operation in circuit.operations:
+                for value in operation.params:
+                    memo[id(value)] = value
+                node = operation.metadata.get("control_node")
+                if node is not None:
+                    pending.extend(node.bodies)
+        return deepcopy(self, memo)
 
     def _record_measurement(self, request: MeasurementRequest):
         self.measurements.append(request)

@@ -6,6 +6,7 @@
 
 from numbers import Integral
 from itertools import islice
+import warnings
 from .template_core import (resolve_limits, selected_wires, angle_array, operation_budget,
                             rotation_axis, entry)
 
@@ -16,6 +17,11 @@ def basic_entangler(circuit, parameters, *, wires=None, limits=None):
 
 
 def basic_entangler_layers(circuit, parameters, wires=None, rotation="X", *, limits=None):
+    warnings.warn("basic_entangler_layers now uses RX/ring semantics. For the previous RY/open-chain behavior use hardware_efficient_ansatz; new code may use templates.BasicEntanglerLayers.", FutureWarning, stacklevel=2)
+    return _basic_entangler_layers(circuit, parameters, wires, rotation, limits=limits)
+
+
+def _basic_entangler_layers(circuit, parameters, wires=None, rotation="X", *, limits=None):
     limits = resolve_limits(limits)
     wires = selected_wires(circuit, wires, limits)
     layers, width = angle_array(parameters, 2, limits)

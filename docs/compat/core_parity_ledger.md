@@ -1,6 +1,6 @@
 # Core Functional Parity Ledger
 
-Updated: 2026-10-20, Stage 11O-A native template checkpoint validation, starting from local `df9bd22`.
+Updated: 2026-10-20, Stage 11O-B1 native multi-Tape checkpoint, starting from local `a161c28`.
 This is the single current-status view. Full Qiskit/PennyLane functional
 replacement remains **incomplete**. Line coverage, inventories, passthrough and
 green CI are not proof of complete API coverage.
@@ -131,13 +131,17 @@ or public comparison passed. The status applies only to the supported subset.
 | QFT | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: complete bounded complex unitary, inverse/swaps/ordered wires | Complete operation API and large-scale resource semantics |
 | TrotterProduct | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: positive-time Pauli order 1/2 gates, actual approximation and time gradients | Higher formulas, grouped/general operands, trainable coefficients and complete API |
 | UCCSD and other template families | NOT_STARTED beyond separately tested bounded chemistry excitation helpers | Full native template catalogue and semantics |
-| Tape transform protocol / TransformProgram | NOT_STARTED | True batches, independent execution, reverse postprocessing, QNode dispatch and native VJP |
-| cancel/merge/decompose/compile transforms | NOT_STARTED as a Tape transform interface | Existing compiler passes do not themselves prove this contract |
-| split_to_single_terms / split_non_commuting | NOT_STARTED | Actual splitting, QWC grouping, shot allocation and reconstruction |
+| Tape transform protocol / TransformProgram | NATIVE_TESTED; PARTIAL: real bounded batches, independent native execution and reverse postprocessing | QNode/callable dispatch, transformed native Jacobian/VJP and complete public protocol |
+| merge_rotations Tape transform | NATIVE_TESTED; PARTIAL: same-axis adjacent rotations, preserved parameter graphs and dynamic/directive/metadata boundaries | Full public semantics and transformed derivative integration |
+| cancel/decompose/compile Tape transforms | NOT_STARTED as a Tape transform interface | Existing compiler passes do not themselves prove this contract |
+| Internal split_hamiltonian prototype | NATIVE_TESTED; PARTIAL: real per-term child execution, identity/duplicates/zero/static coefficients, nested and shot-vector reconstruction | Not public split_to_single_terms parity; no QWC grouping or shot allocation |
+| split_to_single_terms / split_non_commuting public contracts | NOT_STARTED | Full public splitting, QWC grouping, shot allocation and gradient integration |
 | defer_measurements | NOT_STARTED | Proved coherent supported subset with explicit dynamic limits |
 
-All Stage 11O-B requirements remain active. Eight executable template families
-do not establish full template parity or satisfy the multi-Tape deliverables.
+Remaining Stage 11O-B requirements stay active. Eight executable template
+families and the B1 execution foundation do not establish full template or
+transform parity. Framework scalar graphs survive transformation, but the
+new executor explicitly rejects transformed input autodiff until B5.
 
 ## Stage 11O Chemistry Progress
 
@@ -207,6 +211,7 @@ it is historical, not a second current status table.
 - [Stage 11O chemistry checkpoint](../implementation/stage11o_native_qchem_report.md)
 - [Stage 11O-A/B gap audit](../implementation/stage11o_ab_native_gap_audit.md)
 - [Stage 11O-A template checkpoint](../implementation/stage11o_ab_native_templates_report.md)
+- [Stage 11O-B1 transform checkpoint](../implementation/stage11o_b1_native_transform_execution_report.md)
 
 Stage 11L exact-SHA CI: 39259350086, 22/22 success. Its clean local runs:
 SDK-free 899 passed/116 skipped, installed 1090/4, alternate 1054/40, measured

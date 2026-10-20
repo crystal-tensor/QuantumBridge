@@ -7,6 +7,12 @@ QuantumBridge is an independent project. References to Qiskit and PennyLane are 
 
 ## Native Template Verification
 
+Stage 11O-B1 independently implements bounded native Tape batches, reverse
+result reconstruction, safe rotation merging and a Hamiltonian term-Tapes
+prototype. It reuses QuantumBridge's existing native QNode/Device execution
+and compiler algebra; it does not copy or invoke an upstream transform
+implementation. This is not complete PennyLane transform parity.
+
 Stage 11O-A independently enhances existing native QML embeddings/layers and
 adds concrete IQP, QFT and bounded Pauli product-formula templates. Public
 PennyLane APIs are optional black-box behavior oracles only. Existing native

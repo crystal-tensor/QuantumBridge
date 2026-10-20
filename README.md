@@ -709,8 +709,34 @@ and the public ring convention; the legacy RY/open-chain helper remains
 but bounded to dimension 64 by default, static, and require zero target input.
 Their native IR is supported, while opaque matrix QASM/QPY exports reject.
 Trotter approximates `exp(+i t H)`, not the opposite time-sign convention.
-This is not full PennyLane template parity. Multi-Tape TransformProgram work
-remains unfinished. See the [template report](docs/implementation/stage11o_ab_native_templates_report.md).
+The old functional `basic_entangler_layers` entry emits a migration warning;
+use `hardware_efficient_ansatz` to retain RY/open-chain behavior, or the
+explicit `templates.BasicEntanglerLayers` object for RX/ring behavior.
+This is not full PennyLane template parity. See the
+[template report](docs/implementation/stage11o_ab_native_templates_report.md).
+
+## Native Transform Execution Checkpoint
+
+`quantumbridge.transforms.TransformProgram` now composes native
+`Tape -> (Tapes, processing_fn)` functions. `execute_transform` runs each
+child with the existing native QNode execution plan, then reconstructs
+results in reverse transform order. `return_metadata=True` exposes actual
+child evaluation IDs, operation counts, shot partitions and stage order.
+
+```bash
+python -m examples.native_transform_program
+```
+
+`split_hamiltonian` is an internal expval-to-term-Tapes prototype, **not**
+PennyLane `split_to_single_terms` parity. It handles static real Hamiltonian
+coefficients, identity/duplicate/zero terms and nested output trees.
+`merge_rotations` reuses existing native algebra within safe segments and
+retains symbolic parameter graphs. Shot vectors remain per-child budgets;
+they are not QWC grouping or a total-shot allocator. QNode/callable transform
+dispatch and transformed autodiff are not yet delivered. Raw execution
+explicitly rejects live framework/Dual inputs instead of silently detaching.
+Full Stage 11O-B remains incomplete. See the
+[B1 report](docs/implementation/stage11o_b1_native_transform_execution_report.md).
 
 ## Native Molecular Chemistry Checkpoint
 

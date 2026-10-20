@@ -165,7 +165,8 @@ section "ecosystem-inventory"
 
 section "dev"
 "$PYTEST_BIN" -q -rs
-if "$PYTEST_BIN" --help | grep -q -- '--cov'; then
+# Consume help fully: grep -q can close the pipe early under pipefail.
+if "$PYTEST_BIN" --help | grep -- '--cov' > /dev/null; then
   "$PYTEST_BIN" --cov=quantumbridge
 else
   echo "pytest-cov unavailable; coverage not executed."
