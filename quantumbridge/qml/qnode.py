@@ -16,7 +16,7 @@ from .tape import Tape
 class QNode:
     def __init__(self, fn, num_qubits: int, device=None, shots=None, seed: int | None = None,
                  interface="auto", diff_method="best", gradient_kwargs=None, max_diff=1,
-                 jax_limits=None, tensorflow_limits=None):
+                 jax_limits=None, tensorflow_limits=None, higher_order_limits=None):
         self.fn = fn
         self.num_qubits = num_qubits
         self.device = device or StatevectorDevice()
@@ -27,6 +27,7 @@ class QNode:
         self.max_diff = max_diff
         self.jax_limits = jax_limits
         self.tensorflow_limits = tensorflow_limits
+        self.higher_order_limits = higher_order_limits
         self.last_metadata = {}
         self.compiler_options = None
         self.transform_program = None
@@ -141,7 +142,7 @@ class QNode:
     def _differentiate(self, args, kwargs, argnums=0, argnames=(), method=None):
         from quantumbridge.core.classical import UnsupportedFeature
         from quantumbridge.diff.trace import trace_arguments
-        if self.max_diff != 1: raise UnsupportedFeature("higher_order_derivatives", "Native QNode currently validates first derivatives only.")
+        if self.max_diff not in {1, 2}: raise UnsupportedFeature("higher_order_derivatives", "Native QNode implements derivative orders at most two.")
         if isinstance(argnums, str): argnames, argnums = (argnums,), ()
         if argnums == 0 and not args and not argnames:
             import inspect
@@ -199,6 +200,70 @@ class QNode:
         return result[0] if single else tuple(result)
 
     jacobian = compute_jacobian
+
+    def _differentiate_second(self, args, kwargs, argnums, argnames, method, tangent=None):
+        from quantumbridge.core.classical import UnsupportedFeature
+        from quantumbridge.diff.higher_order_limits import resolve_higher_order_limits
+        from quantumbridge.diff.trace import trace_arguments
+        if self.max_diff != 2:
+            raise UnsupportedFeature("higher_order_derivatives", "Second derivatives require max_diff=2; orders above two are not implemented.")
+        if isinstance(argnums, str): argnames, argnums = (argnums,), ()
+        if argnums == 0 and not args and not argnames:
+            import inspect
+            name = next(iter(tuple(inspect.signature(self.fn).parameters)[1:]), None)
+            if name not in kwargs: raise ValueError("No first trainable QNode argument was supplied.")
+            argnames, argnums = (name,), ()
+        direction = None
+        if tangent is not None:
+            positions = (argnums,) if isinstance(argnums, int) else tuple(argnums)
+            names = (argnames,) if isinstance(argnames, str) else tuple(argnames)
+            selected = [args[index] for index in positions]+[kwargs[name] for name in names]
+            single = isinstance(argnums, int) and not argnames or not positions and len(names) == 1
+            tangents = [tangent] if single else list(tangent)
+            if len(tangents) != len(selected) or any(np.shape(value) != np.shape(source) for value, source in zip(tangents, selected)):
+                raise ValueError("HVP tangent shapes must match the selected trainable arguments.")
+            if any(np.asarray(value).dtype.kind not in "fiu" or not np.all(np.isfinite(value)) for value in tangents):
+                raise ValueError("HVP tangents must contain finite real values.")
+            direction = np.concatenate([np.asarray(value, dtype=float).reshape(-1) for value in tangents])
+        limits = resolve_higher_order_limits(self.higher_order_limits)
+        traced_args, traced_kwargs, layout, single, size = trace_arguments(
+            args, kwargs, argnums, argnames, order=2, direction=direction, limits=limits)
+        plan = self._construct(traced_args, traced_kwargs)
+        columns = size if direction is None else 1
+        count = len(plan.recorder.parameters)
+        limits.check("max_memory_bytes", 8*count*size*(1+columns))
+        base, matrix, second, spec = plan.second_derivatives(
+            plan.recorder.native_values(), method, direction=direction,
+            classical=plan.recorder.classical_jacobian(size),
+            classical_second=plan.recorder.classical_second(size, columns), limits=limits)
+        self.last_metadata = {**plan.metadata, "classical_chain_rule": True,
+                              "second_classical_chain_rule": True, "input_parameter_count": size,
+                              "scalar_parameter_count": count,
+                              "gate_parameter_count": plan.metadata.get("gate_parameter_count", count)}
+        return base, matrix, second, spec, layout, single
+
+    def execute_and_compute_hessian(self, *args, argnums=0, argnames=(), method=None, **kwargs):
+        from quantumbridge.diff.trace import unflatten_tree
+        base, _, second, spec, layout, single = self._differentiate_second(args, kwargs, argnums, argnames, method)
+        blocks = tuple(tuple(unflatten_tree(second[:, left, right], spec, shape+other_shape)
+                             for other_shape, right in layout) for shape, left in layout)
+        return base, blocks[0][0] if single else blocks
+
+    def compute_hessian(self, *args, argnums=0, argnames=(), method=None, **kwargs):
+        return self.execute_and_compute_hessian(*args, argnums=argnums, argnames=argnames, method=method, **kwargs)[1]
+
+    hessian = compute_hessian
+
+    def execute_and_compute_hvp(self, tangent, *args, argnums=0, argnames=(), method=None, **kwargs):
+        from quantumbridge.diff.trace import unflatten_tree
+        if tangent is None:
+            raise ValueError("HVP requires an explicit real tangent matching the selected inputs.")
+        base, _, second, spec, layout, single = self._differentiate_second(args, kwargs, argnums, argnames, method, tangent)
+        results = tuple(unflatten_tree(second[:, indices, 0], spec, shape) for shape, indices in layout)
+        return base, results[0] if single else results
+
+    def compute_hvp(self, tangent, *args, argnums=0, argnames=(), method=None, **kwargs):
+        return self.execute_and_compute_hvp(tangent, *args, argnums=argnums, argnames=argnames, method=method, **kwargs)[1]
 
     def gradient(self, *args, argnums=0, argnames=(), method=None, **kwargs):
         base, matrix, spec, layout, single = self._differentiate(args, kwargs, argnums, argnames, method)

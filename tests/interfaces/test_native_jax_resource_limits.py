@@ -72,7 +72,7 @@ def test_unsupported_derivative_measurement_and_complex_contracts():
     for step in (False, 0., float("nan")):
         with pytest.raises(ValueError, match="finite positive"):
             node_with(gradient_kwargs={"step": step})(jnp.asarray(.2))
-    with pytest.raises(UnsupportedFeature): node_with(max_diff=2)(jnp.asarray(.2))
+    with pytest.raises(UnsupportedFeature): node_with(max_diff=3)(jnp.asarray(.2))
     with pytest.raises(UnsupportedFeature): jax.grad(jax.grad(node_with()))(jnp.asarray(.2))
     with pytest.raises(UnsupportedFeature): QNode(lambda t, x: t.state(), 1, interface="jax")(jnp.asarray(.2))
     with pytest.raises(UnsupportedFeature, match="native vector/density/MPS"):

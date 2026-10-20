@@ -916,8 +916,9 @@ count or resource receipt. Eager native receipts remain auditable.
 Finite gradients are estimates, with independent shifted/group/partition
 streams; forward SE is not a strict gradient-error bound.
 
-Higher-order differentiation, capture/Catalyst, GPU/TPU, native
-backprop, full derivative-device protocols and complete SDK parity remain open.
+Opt-in bounded second derivatives are described below. Third/higher orders,
+capture/Catalyst, GPU/TPU, native backprop, full derivative-device protocols
+and complete SDK parity remain open.
 Public comparisons document version-specific differences rather than treating
 upstream unsupported paths as positive matching evidence.
 
@@ -983,7 +984,8 @@ contains trace configuration only, never invented execution counts.
 Finite-shot gradients require an explicit immutable integer seed and are
 estimates, not pathwise derivatives or universal accuracy guarantees. Separate
 forward work, native base/linear/shift work, partitions and group/shift seeds
-are receipted. Higher-order/Hessian/HVP, arbitrary dynamic shapes/control flow,
+are receipted. Opt-in second derivatives are described below; third/higher
+orders, arbitrary dynamic shapes/control flow,
 complex/full-state derivatives, distributed execution, portable SavedModel,
 XLA, GPU/TPU and simulator backprop remain unsupported/unverified. Full
 TensorFlow/PennyLane/Qiskit parity remains incomplete.
@@ -1000,6 +1002,58 @@ MPS and fixed-geometry native Gaussian/RHF/JW H2 workflows, not general MPS
 efficiency, differentiable Hartree-Fock or ground-state convergence guarantees.
 See the [TF audit](docs/implementation/stage11p_b_tensorflow_gap_audit.md) and
 [TF report](docs/implementation/stage11p_b_native_tensorflow_autodiff_report.md).
+
+## Native Second Derivatives
+
+Set `max_diff=2` for bounded native Hessians, streamed Hessian-vector products
+and actual CPU Torch/Autograd/JAX/TF second-order graphs. The default remains
+first order; third derivatives explicitly reject. Quantum second derivatives
+use convolved exact parameter-shift recipes, including the two frequencies of
+controlled rotations, not finite differences or an upstream quantum engine.
+`best` selects parameter-shift for second order; explicit second-order adjoint
+and simulator backprop are not implemented.
+
+```python
+import numpy as np
+from quantumbridge import PauliZ
+from quantumbridge.qml import QNode
+
+def circuit(tape, x):
+    tape.ry(x[0] * x[1], 0)
+    return tape.expval(PauliZ(0))
+
+node = QNode(circuit, 1, max_diff=2)
+hessian = node.compute_hessian(np.array([0.7, 0.2]))
+product = node.compute_hvp(np.array([0.4, -0.3]), np.array([0.7, 0.2]))
+```
+
+`execute_and_compute_hessian` and `execute_and_compute_hvp` also return the
+executed value. For multiple selected arguments, Hessians are argument-pair
+blocks containing the output tree; HVPs contain one output tree per argument.
+The native HVP accumulates directional second contributions without allocating
+the full Hessian. Framework second-order bridges currently use bounded packed
+Hessians, not a claim of streamed framework HVP or device-native differentiation.
+Fixed numeric source angles are not treated as framework variables.
+
+Actual transformed children and native processors retain nonlinear input,
+gate/coefficient and cross-child product rules. Analytic variances include
+second-moment and mean-gradient outer-product corrections. Explicitly seeded
+finite-shot linear expectations/probabilities retain partition/group streams
+and physical-work receipts. Sampled variance, unverified nonlinear sampled
+postprocessing and parameter-dependent weighted integer shot allocation reject.
+Postselection, reused parameterized loops and general measurement-record second
+derivatives remain unsupported. Supported coherent deferred analytic children
+are tested separately.
+
+`quantumbridge.diff.HigherOrderLimits` bounds derivative order, input/output,
+Hessian storage, shifted circuits, tapes, shots, trace/processor nodes and
+derivative-buffer memory. Native devices retain their separate state-memory
+limits; this is not a universal process-memory or arbitrary-user-code limit.
+Non-dense 100-wire MPS and fixed-geometry H2 ansatz tests do not imply arbitrary
+MPS efficiency, geometry Hessians, differentiable Hartree-Fock or full parity.
+
+Run `python -m examples.native_qnode_second_order`. Current receipts and remaining
+gaps: [second-order report](docs/implementation/stage11p_c_native_second_order_report.md).
 
 ## Native Molecular Chemistry Checkpoint
 

@@ -33,7 +33,7 @@ def with_payload(template, payload):
     return payload
 
 
-def _traced_output(value, width):
+def _traced_output(value, width, *, second_context=None):
     primals, derivatives = [], []
     def walk(item):
         if isinstance(item, dict):
@@ -42,6 +42,12 @@ def _traced_output(value, width):
             return ("tuple" if isinstance(item, tuple) else "list", tuple(walk(child) for child in item))
         array = np.asarray(item, dtype=object)
         start = len(primals)
+        if second_context is not None:
+            limits, count = second_context.limits, start+array.size
+            limits.check("max_output_elements", count)
+            limits.check("max_memory_bytes", 8*count*(1+width+np.prod(second_context.second_shape)))
+            if not second_context.directional:
+                limits.check("max_hessian_elements", count*np.prod(second_context.second_shape))
         for scalar in array.flat:
             if isinstance(scalar, Dual):
                 primals.append(scalar.value)
@@ -96,3 +102,38 @@ def processing_jacobian(prepared, results, parameter_values, *, max_entries=2000
             raise ValueError("Postprocessing produced a nonfinite derivative.")
         matrix[:,start:stop] = derivative
     return base, matrix, spec, len(raw)
+
+
+def processing_second(prepared, results, child_derivatives, parameter_values, parameter_derivatives, context):
+    """Run actual processors on child means carrying source-input second seeds."""
+    from .second_trace import SecondDual
+    traced_results = []
+    for result, (matrix, second) in zip(results, child_derivatives):
+        raw, spec = flatten_tree(result_payload(result))
+        traced = np.empty(raw.size, dtype=object)
+        for index, value in enumerate(raw):
+            traced[index] = SecondDual(value, matrix[index], second[index], context)
+        traced_results.append(with_payload(result, unflatten_tree(traced, spec)))
+    traced_parameters = {}
+    for key, values in parameter_values.items():
+        matrix, second = parameter_derivatives[key]
+        traced_parameters[key] = tuple(SecondDual(value, matrix[index], second[index], context)
+                                       for index, value in enumerate(values))
+    output = prepared.processing_fn(tuple(traced_results), parameter_values=traced_parameters, differentiating=True)
+    raw, matrix, spec = _traced_output(output, context.size, second_context=context)
+    tensors = []
+    def walk(value):
+        if isinstance(value, dict):
+            for child in value.values(): walk(child)
+        elif isinstance(value, (tuple, list)):
+            for child in value: walk(child)
+        else:
+            for scalar in np.asarray(value, dtype=object).flat:
+                if isinstance(scalar, Dual) and not isinstance(scalar, SecondDual):
+                    raise UnsupportedFeature("postprocessing_trace_order", "A processor lost second-order derivative information.")
+                tensors.append(scalar.second if isinstance(scalar, SecondDual) else np.zeros(context.second_shape))
+    walk(output)
+    second = np.asarray(tensors).reshape(raw.size, *context.second_shape)
+    if not np.all(np.isfinite(raw)) or not np.all(np.isfinite(matrix)) or not np.all(np.isfinite(second)):
+        raise ValueError("Second-order postprocessing produced a nonfinite value or derivative.")
+    return raw, matrix, second, spec

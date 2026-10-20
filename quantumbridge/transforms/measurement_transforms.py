@@ -195,5 +195,6 @@ def split_to_single_terms(tape, *, limits=None):
 
     process.native_evaluate = process
     process.native_parameters = tuple(coefficients.parameters)
+    process.native_linear_quantum_outputs = True
     return (child,),process
 

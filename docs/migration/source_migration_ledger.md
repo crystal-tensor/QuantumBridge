@@ -1,6 +1,6 @@
 # Source Migration Ledger
 
-Status: Stage 11P-B native TensorFlow interface checkpoint
+Status: Stage 11P-C bounded native second-order checkpoint
 Date: 2026-10-20
 
 This ledger retains historical release and checkpoint sections. Current work
@@ -8,6 +8,30 @@ uses Native Implementation, Adapter Integration and Upstream Dependency, with
 their boundaries stated separately. Historical checkpoint limitations are not
 the current status view; use core_parity_ledger.md for that view.
 No Source Port with Attribution was performed.
+
+## Stage 11P-C Native Second Derivatives
+
+Native Implementation and optional classical framework integration. Existing
+native quantum plans/devices remain the execution engine. Published math/API
+contracts and installed public numerical calls are references only; upstream
+implementation/test source ports remain zero.
+
+| Files | Changes | Independent evidence |
+| --- | --- | --- |
+| `quantumbridge/diff/higher_order_limits.py`, `quantumbridge/diff/second_trace.py`, `quantumbridge/diff/second_order.py`, `quantumbridge/diff/__init__.py` | Bounded second classical graph, exact shift convolution and streamed native HVP | Analytic mixed/controlled/nonlinear rules, preflight resource rejection and real shifted calls |
+| `quantumbridge/diff/trace.py`, `quantumbridge/diff/qnode_engine.py`, `quantumbridge/diff/processing.py`, `quantumbridge/qml/qnode.py` | Native Hessian/HVP APIs, moment corrections and actual processor second chain rule | Initial four real red contracts; source-input, coefficient and cross-child terms |
+| `quantumbridge/transforms/program.py`, `quantumbridge/transforms/qwc.py`, `quantumbridge/transforms/measurement_transforms.py` | Actual child second derivatives, declared linear sampled processors and allocation boundaries | QWC None/uniform/weighted shot vectors, independent streams and exact integer physical work |
+| `quantumbridge/interfaces/native_host.py`, `quantumbridge/interfaces/qnode_autodiff.py`, `quantumbridge/interfaces/jax_autodiff.py`, `quantumbridge/interfaces/tensorflow_autodiff.py` | Fixed numeric/source-variable separation, true second framework rules and third-order rejection | Real Torch gradgradcheck, Autograd Hessian, JAX forward/reverse/JIT/VMAP and nested TF eager/function derivatives |
+| `tests/qml/test_native_second_classical_trace.py`, `tests/qml/test_native_second_order.py`, `tests/qml/test_native_second_order_workflows.py` | Independently authored math, resource, stochastic and integrated native tests | Non-dense 100-wire MPS and one fixed-geometry H2 build with ansatz Hessian/HVP/Newton updates |
+| `tests/interfaces/test_native_second_order_contracts.py`, `tests/interfaces/test_native_second_order_frameworks.py` | Real second-order graphs and explicit third-order negatives | No detached tensor/constant-gradient substitution |
+| `tests/interfaces/test_native_jax_resource_limits.py`, `tests/interfaces/test_native_tensorflow_negative.py`, `tests/gradients/test_native_qnode_derivatives.py` | Obsolete max_diff=2 rejection becomes max_diff=3 rejection; max_diff=2 first gradient checked numerically | Existing default-first-order higher-order negatives remain |
+| `tests/compat/test_native_second_order_pennylane_differential.py`, `examples/native_qnode_second_order.py` | Optional public black boxes and SDK-free executable example | Unresolved upstream objects are not numeric parity evidence |
+| `docs/implementation/stage11p_c_higher_order_gap_audit.md`, `docs/implementation/stage11p_c_native_second_order_report.md`, `docs/compat/core_parity_ledger.md`, `README.md`, `THIRD_PARTY_NOTICES.md` | Starting gaps, scoped evidence and explicit remaining boundaries | Full independent functional replacement remains incomplete |
+
+No Studio/Router, tags/releases, remote publication, cloud/hardware/token,
+authentication/TLS or third-party source/package/environment changes belong to
+this checkpoint. Framework Hessians are bounded packed arrays; only the native
+HVP API currently makes the streamed/no-full-Hessian claim.
 
 ## Stage 11P-B Native TensorFlow Autodiff
 

@@ -61,8 +61,11 @@ class NativeHostKernel:
             from quantumbridge.transforms.program import TransformProgram
             self.program = TransformProgram(tuple(deepcopy(stage) for stage in program.transforms), limits=program.limits)
         self.node.last_metadata = {}
-        self.parameters = tuple(recorder.parameters)
-        self.angles = list(recorder.angles)
+        live = [index for index, value in enumerate(recorder.angles) if type(value).__module__.startswith(prefixes)]
+        self.parameters = tuple(recorder.parameters[index] for index in live)
+        self.angles = [recorder.angles[index] for index in live]
+        frozen = {parameter: value for parameter, value in zip(recorder.parameters, recorder.angles)
+                  if not type(value).__module__.startswith(prefixes)}
         pending = [source.circuit]
         while pending:
             circuit = pending.pop()
@@ -81,7 +84,7 @@ class NativeHostKernel:
                 raise UnsupportedFeature(interface + "_complex", "Native framework gate parameters must be real.")
         self.coefficients = []
         self.source = Tape(source.circuit.num_qubits, shots=ShotSpec.parse(source.shots), seed=source.seed)
-        self.source.circuit = source.circuit.copy()
+        self.source.circuit = source.circuit.assign_parameters(frozen, strict=False)
         def clean(request):
             observable = request.observable
             if hasattr(observable, "to_quantumbridge"):
@@ -121,6 +124,16 @@ class NativeHostKernel:
         self.output_size = len(flat)
         limits.check("max_jacobian_elements", self.output_size * max(1, self.size))
         limits.check("max_jacobian_elements", self.size * self.size)
+        if node.max_diff == 2:
+            from quantumbridge.diff.higher_order_limits import resolve_higher_order_limits
+            second_limits = resolve_higher_order_limits(node.higher_order_limits)
+            second_limits.check("max_derivative_order", 2)
+            second_limits.check("max_input_parameters", self.size)
+            second_limits.check("max_output_elements", self.output_size)
+            elements = self.output_size*self.size*self.size
+            second_limits.check("max_hessian_elements", elements)
+            # Error/status callbacks must never allocate an unbounded NaN tensor.
+            second_limits.check("max_memory_bytes", 8*(self.output_size*(1+self.size)+elements+self.size*self.size))
         # Preflight native capability and expansion without quantum execution.
         plan = self.plan(np.ones(self.size))
         limits.check("max_parameter_elements", len(plan.recorder.parameters))
@@ -158,8 +171,13 @@ class NativeHostKernel:
         from quantumbridge.transforms.program import TransformedExecutionPlan
         if np.asarray(values).shape != (self.size,) or not np.all(np.isfinite(values)):
             raise ValueError("framework packed parameters must have the declared shape and finite real values.")
-        eye = np.eye(self.size) if derivative else None
-        traced = [Dual(value, eye[index] if derivative else np.empty(0)) for index, value in enumerate(values)]
+        if derivative == 2:
+            from quantumbridge.diff.second_trace import SecondContext
+            context = SecondContext(self.size, limits=self.node.higher_order_limits)
+            traced = [context.variable(value, index) for index, value in enumerate(values)]
+        else:
+            eye = np.eye(self.size) if derivative else None
+            traced = [Dual(value, eye[index] if derivative else np.empty(0)) for index, value in enumerate(values)]
         source = self.source.copy()
         references = iter(self.coefficients)
         def restore(request):
@@ -206,3 +224,26 @@ class NativeHostKernel:
             raise ValueError("Native framework execution produced a nonfinite value or derivative.")
         return flat, matrix, {**plan.metadata, "interface": self.interface, "native_" + self.interface: True,
                               "native_quantum_derivative": bool(derivative), "higher_order": False}
+
+    def run_second(self, values, *, remaining_shots=None):
+        from quantumbridge.diff.higher_order_limits import resolve_higher_order_limits
+        limits = resolve_higher_order_limits(self.node.higher_order_limits)
+        shot_limit = min(limits.max_total_physical_shots, self.limits.max_total_shots)
+        if remaining_shots is not None:
+            shot_limit = min(shot_limit, max(1, remaining_shots))
+        limits = replace(limits, max_total_physical_shots=shot_limit)
+        plan = self.plan(values, derivative=2)
+        self.limits.check("max_transform_tapes", len(getattr(plan, "child_plans", (plan,))))
+        self.limits.check("max_parameter_elements", len(plan.recorder.parameters))
+        count = len(plan.recorder.parameters)
+        limits.check("max_memory_bytes", 8*count*self.size*(1+self.size))
+        value, matrix, second, spec = plan.second_derivatives(plan.recorder.native_values(),
+            classical=plan.recorder.classical_jacobian(self.size),
+            classical_second=plan.recorder.classical_second(self.size, self.size), limits=limits)
+        flat, actual = flatten_tree(value)
+        if spec != self.spec or actual != self.spec or flat.shape != (self.output_size,):
+            raise ValueError("Second-order framework execution changed its declared output structure.")
+        if not all(np.all(np.isfinite(array)) for array in (flat, matrix, second)):
+            raise ValueError("Native framework second derivatives produced a nonfinite value.")
+        return flat, matrix, second, {**plan.metadata, "interface": self.interface, "higher_order": True,
+                                    "native_"+self.interface: True, "native_quantum_derivative": True}

@@ -1,6 +1,6 @@
 # Copyright 2026 QuantumBridge Contributors.
 # Licensed under the Apache License, Version 2.0.
-"""Optional CPU TensorFlow graphs with native quantum first-order VJPs."""
+"""Optional CPU TensorFlow graphs with native quantum first/second VJPs."""
 
 from copy import copy
 from dataclasses import dataclass, replace
@@ -39,8 +39,8 @@ def execute_tensorflow(node, args, kwargs, *, return_status=False):
         import tensorflow as tf
     except ImportError as exc:
         raise MissingOptionalDependency("Native TensorFlow QNode requires optional tensorflow.") from exc
-    if node.max_diff != 1:
-        raise UnsupportedFeature("higher_order_derivatives", "Native TensorFlow supports first derivatives only.")
+    if node.max_diff not in {1, 2}:
+        raise UnsupportedFeature("higher_order_derivatives", "Native TensorFlow supports derivative orders at most two.")
     if set(node.gradient_kwargs) - {"step"}:
         raise UnsupportedFeature("tensorflow_gradient_options", "Use diff_method; gradient_kwargs supports only a static step.")
     step = node.gradient_kwargs.get("step", 1e-6)
@@ -111,8 +111,13 @@ def execute_tensorflow(node, args, kwargs, *, return_status=False):
         if not graph and derivative:
             limits.check("max_callback_executions", backward_calls + 2)
             limits.check("max_total_shots", kernel.forward_shot_bound + (backward_calls + 1) * kernel.derivative_shot_bound)
-        value, matrix, metadata = kernel.run(np.array(values, dtype=float, copy=True), derivative,
-                                            remaining_shots=None if graph else limits.max_total_shots-observed_shots)
+        point = np.array(values, dtype=float, copy=True)
+        if derivative == 2:
+            value, matrix, second, metadata = kernel.run_second(point,
+                remaining_shots=None if graph else limits.max_total_shots-observed_shots)
+        else:
+            value, matrix, metadata = kernel.run(point, derivative,
+                remaining_shots=None if graph else limits.max_total_shots-observed_shots)
         if not graph:
             shots = metadata.get("total_physical_shots", metadata.get("gradient_physical_shots",
                                 metadata.get("forward_physical_shots", sum(part.get("physical_shots", 0) for part in metadata.get("partitions", ())))))
@@ -126,6 +131,8 @@ def execute_tensorflow(node, args, kwargs, *, return_status=False):
                                   "forward_execution": forward_metadata, "backward_calls": backward_calls,
                                   "observed_physical_shots": observed_shots}
         arrays = (value.astype(numpy_dtype), matrix.astype(numpy_dtype)) if derivative else (value.astype(numpy_dtype),)
+        if derivative == 2:
+            arrays += (second.astype(numpy_dtype),)
         return (*arrays, np.int32(0))
 
     def checked(values, derivative):
@@ -138,10 +145,12 @@ def execute_tensorflow(node, args, kwargs, *, return_status=False):
         arrays = (np.full((kernel.output_size,), np.nan, numpy_dtype),)
         if derivative:
             arrays += (np.full((kernel.output_size, kernel.size), np.nan, numpy_dtype),)
+        if derivative == 2:
+            arrays += (np.full((kernel.output_size, kernel.size, kernel.size), np.nan, numpy_dtype),)
         return (*arrays, np.int32(code))
 
     def evaluate(values, derivative):
-        limits.check("max_callback_executions", 2 if derivative else 1)
+        limits.check("max_callback_executions", 3 if derivative == 2 else 2 if derivative else 1)
         if graph:
             node.last_metadata = {"interface": "tensorflow", "execution": "CPU host callback",
                                   "trace_configuration_only": True,
@@ -150,7 +159,7 @@ def execute_tensorflow(node, args, kwargs, *, return_status=False):
                                   "runtime_failure": "explicit tensorflow_with_status or graph assertion"}
             with tf.device("/CPU:0"):
                 outputs = tf.numpy_function(lambda x: checked(x, derivative), [values],
-                                            [dtype, dtype, tf.int32] if derivative else [dtype, tf.int32],
+                                            [dtype, dtype, dtype, tf.int32] if derivative == 2 else [dtype, dtype, tf.int32] if derivative else [dtype, tf.int32],
                                             stateful=True, name="quantumbridge_native_derivative" if derivative else "quantumbridge_native_forward")
         else:
             arrays = checked(values.numpy(), derivative) if return_status else host(values.numpy(), derivative)
@@ -158,6 +167,8 @@ def execute_tensorflow(node, args, kwargs, *, return_status=False):
         outputs[0].set_shape((kernel.output_size,))
         if derivative:
             outputs[1].set_shape((kernel.output_size, kernel.size))
+        if derivative == 2:
+            outputs[2].set_shape((kernel.output_size, kernel.size, kernel.size))
         outputs[-1].set_shape(())
         if not return_status:
             with tf.control_dependencies([tf.debugging.assert_equal(outputs[-1], 0, message="Native TensorFlow host execution failed; use tensorflow_with_status for code")]):
@@ -165,14 +176,29 @@ def execute_tensorflow(node, args, kwargs, *, return_status=False):
         return outputs
 
     @tf.custom_gradient
+    def second_order_vjp(values, cotangent, incoming):
+        _, matrix, second, status = evaluate(values, 2)
+        value_gradient = tf.einsum("o,opq,p->q", cotangent, second, incoming)
+        cotangent_gradient = tf.linalg.matvec(matrix, incoming)
+        if return_status:
+            ok = tf.equal(status, 0)
+            value_gradient = tf.where(ok, value_gradient, tf.fill(tf.shape(value_gradient), tf.cast(float("nan"), dtype)))
+            cotangent_gradient = tf.where(ok, cotangent_gradient, tf.fill(tf.shape(cotangent_gradient), tf.cast(float("nan"), dtype)))
+        def reject(*unused):
+            raise UnsupportedFeature("higher_order_derivatives", "Native TensorFlow third derivatives are not implemented.")
+        return (value_gradient, cotangent_gradient), reject
+
+    @tf.custom_gradient
     def first_order_vjp(values, cotangent):
         _, matrix, status = evaluate(values, True)
         result = tf.linalg.matvec(matrix, cotangent, transpose_a=True)
         if return_status:
             result = tf.where(tf.equal(status, 0), result, tf.fill(tf.shape(result), tf.cast(float("nan"), dtype)))
-        def reject(*unused):
-            raise UnsupportedFeature("higher_order_derivatives", "Native TensorFlow second derivatives are not implemented.")
-        return result, reject
+        def backward(incoming):
+            if node.max_diff != 2:
+                raise UnsupportedFeature("higher_order_derivatives", "Native TensorFlow second derivatives require max_diff=2.")
+            return second_order_vjp(values, cotangent, incoming)
+        return result, backward
 
     @tf.custom_gradient
     def native(values):
@@ -201,7 +227,8 @@ def execute_tensorflow_batch(node, values):
     size = values.shape[0]
     limits.check("max_batch_size", size)
     limits.check("max_input_elements", values.shape.num_elements())
-    limits.check("max_callback_executions", 2 * size)
+    callbacks_per_item = 3 if node.max_diff == 2 else 2
+    limits.check("max_callback_executions", callbacks_per_item * size)
     child = copy(node)
     child.tensorflow_limits = replace(limits, max_total_shots=max(1, limits.max_total_shots // size))
     function = tf.function(lambda x: execute_tensorflow(child, (x,), {}), autograph=False)
@@ -211,5 +238,5 @@ def execute_tensorflow_batch(node, values):
     node.last_metadata = {"interface": "tensorflow", "execution": "bounded CPU host map",
                           "batch_size": size, "trace_configuration_only": True,
                           "observed_callback_count": "not reported from tracing",
-                          "logical_forward_backward_callback_bound": 2 * size}
+                          "logical_forward_backward_callback_bound": callbacks_per_item * size}
     return tf.map_fn(function, values, fn_output_signature=signature, parallel_iterations=1)

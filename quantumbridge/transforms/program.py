@@ -392,8 +392,8 @@ class TransformedExecutionPlan:
     def jacobian(self, values, method=None, step=1e-6):
         from quantumbridge.diff.processing import processing_jacobian, result_payload
         from quantumbridge.diff.trace import flatten_tree
-        if self.node.max_diff != 1:
-            raise UnsupportedFeature("higher_order_derivatives", "Transformed native derivatives currently support first order only.")
+        if self.node.max_diff not in {1, 2}:
+            raise UnsupportedFeature("higher_order_derivatives", "Transformed native derivatives implement orders at most two.")
         if len(values) != len(self.recorder.parameters):
             raise ValueError("Transformed QNode angle shape mismatch.")
         self._processing_values(values)
@@ -455,6 +455,11 @@ class TransformedExecutionPlan:
         return value,matrix,spec
 
     compute_jacobian = jacobian
+
+    def second_derivatives(self, values, method=None, *, direction=None, classical=None, classical_second=None, limits=None):
+        from quantumbridge.diff.second_order import transformed_second_derivatives
+        return transformed_second_derivatives(self, values, method, direction=direction, classical=classical,
+                                              classical_second=classical_second, limits=limits)
 
     def execute_and_compute_derivatives(self, values, method=None, step=1e-6):
         return self.jacobian(values,method,step)

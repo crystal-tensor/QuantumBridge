@@ -40,6 +40,14 @@ class AngleRecorder:
         if not np.all(np.isfinite(result)): raise ValueError("Classical preprocessing has a nonfinite derivative.")
         return result
 
+    def classical_second(self, size, columns):
+        from .second_trace import SecondDual
+        result = np.asarray([angle.second if isinstance(angle, SecondDual) else np.zeros((size, columns))
+                             for angle in self.angles]).reshape(len(self.angles), size, columns)
+        if not np.all(np.isfinite(result)):
+            raise ValueError("Classical preprocessing has a nonfinite second derivative.")
+        return result
+
 
 def measurement_tree(returned, tape):
     def valid(value):
@@ -230,6 +238,20 @@ class ExecutionPlan:
         walk(self.circuit)
         return found
 
+    def shift_recipe(self, operation, value):
+        gate_derivative(operation, (value,))
+        if operation.name in {"crx", "cry", "crz"}:
+            shifts = np.asarray([np.pi / 2, 3 * np.pi / 2])
+            frequencies = np.asarray([.5, 1.])
+            coefficients = np.linalg.solve(2 * np.sin(frequencies[:, None] * shifts), frequencies)
+            return tuple(zip(coefficients, shifts))
+        return ((.5, np.pi / 2),)
+
+    def second_derivatives(self, values, method=None, *, direction=None, classical=None, classical_second=None, limits=None):
+        from .second_order import execution_second_derivatives
+        return execution_second_derivatives(self, values, method, direction=direction, classical=classical,
+                                            classical_second=classical_second, limits=limits)
+
     def jacobian(self, values, method=None, step=1e-6):
         method = self.gradient_capability(method or self.node.diff_method)
         base = self.evaluate(values)
@@ -265,13 +287,7 @@ class ExecutionPlan:
                 if operation is None: continue
                 if method == "finite-diff": recipes = [(1 / (2 * step), step)]
                 else:
-                    gate_derivative(operation, (values[index],))
-                    if operation.name in {"crx", "cry", "crz"}:
-                        shifts = np.asarray([np.pi / 2, 3 * np.pi / 2])
-                        frequencies = np.asarray([.5, 1.])
-                        coefficients = np.linalg.solve(2 * np.sin(frequencies[:, None] * shifts), frequencies)
-                        recipes = zip(coefficients, shifts)
-                    else: recipes = [(.5, np.pi / 2)]
+                    recipes = self.shift_recipe(operation, values[index])
                 for coefficient, shift in recipes:
                     plus, minus = np.array(values, copy=True), np.array(values, copy=True)
                     plus[index] += shift; minus[index] -= shift

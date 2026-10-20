@@ -197,7 +197,8 @@ def test_capability_rejections_never_fallback_silently():
     for method in ("backprop", "unknown"):
         with pytest.raises(UnsupportedFeature): rotation().gradient(.4, method=method)
     with pytest.raises(UnsupportedFeature): rotation(device=StabilizerDevice()).gradient(.4)
-    with pytest.raises(UnsupportedFeature): rotation(max_diff=2).gradient(.4)
+    assert rotation(max_diff=2).gradient(.4) == pytest.approx(-np.sin(.4), abs=1e-12)
+    with pytest.raises(UnsupportedFeature): rotation(max_diff=3).gradient(.4)
     with pytest.raises(UnsupportedFeature): QNode(lambda t, x: (t.ry(x, 0), t.state())[-1], 1).jacobian(.4)
     with pytest.raises(UnsupportedFeature): QNode(lambda t, x: (t.ry(x if x > 0 else -x, 0), t.expval(PauliZ(0)))[-1], 1).gradient(.4)
     with pytest.raises(UnsupportedFeature): QNode(lambda t, x: (t.ry(float(x), 0), t.expval(PauliZ(0)))[-1], 1).gradient(.4)

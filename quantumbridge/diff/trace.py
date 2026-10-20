@@ -86,7 +86,9 @@ class Dual:
         raise UnsupportedFeature("classical_ufunc", f"No native derivative rule for {ufunc.__name__}.")
 
 
-def trace_arguments(args, kwargs, argnums=0, argnames=()):
+def trace_arguments(args, kwargs, argnums=0, argnames=(), *, order=1, direction=None, limits=None):
+    if order not in {1, 2}:
+        raise UnsupportedFeature("higher_order_derivatives", "Native classical tracing implements orders one and two.")
     positions = (argnums,) if isinstance(argnums, int) else tuple(argnums)
     names = (argnames,) if isinstance(argnames, str) else tuple(argnames)
     single = isinstance(argnums, int) and not argnames or not positions and len(names) == 1
@@ -99,13 +101,21 @@ def trace_arguments(args, kwargs, argnums=0, argnames=()):
     if any(not np.all(np.isfinite(array)) for array in arrays): raise ValueError("Trainable inputs must be finite.")
     total, offset = sum(array.size for array in arrays), 0
     if total > 1024: raise MemoryError("Native classical trace exceeds the 1024-input derivative budget.")
+    context = None
+    if order == 2:
+        from .second_trace import SecondContext
+        context = SecondContext(total, direction, limits)
     traced_args, traced_kwargs, layout = list(args), dict(kwargs), []
     for (kind, key, _), array in zip(selected, arrays):
         traced = np.empty(array.shape, dtype=object)
         for index in np.ndindex(array.shape):
-            derivative = np.zeros(total)
-            derivative[offset + np.ravel_multi_index(index, array.shape)] = 1
-            traced[index] = Dual(array[index], derivative)
+            position = offset + np.ravel_multi_index(index, array.shape)
+            if context is None:
+                derivative = np.zeros(total)
+                derivative[position] = 1
+                traced[index] = Dual(array[index], derivative)
+            else:
+                traced[index] = context.variable(array[index], position)
         value = traced.item() if array.ndim == 0 else traced
         if kind == "arg": traced_args[key] = value
         else: traced_kwargs[key] = value

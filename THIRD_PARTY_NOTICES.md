@@ -1,11 +1,21 @@
 # Third-party Notices
 
-Status: Stage 11P-B native TensorFlow interface checkpoint
+Status: Stage 11P-C bounded native second-order checkpoint
 Date: 2026-10-20
 
 QuantumBridge is an independent project. References to Qiskit and PennyLane are for attribution, compatibility, and optional adapter documentation only and do not imply endorsement.
 
 ## Native Template Verification
+
+Stage 11P-C independently implements convolved native shift recipes, second
+classical tracing, transformed processor chain rules and bounded CPU framework
+second derivatives. Existing native plans/devices/Pauli rules are reused;
+Torch/Autograd/JAX/TF provide classical graph APIs only. Published interface
+contracts are references, not copied implementation or tests. Public installed
+PennyLane Hessians are optional black-box oracles; unresolved public ArrayBox
+results are reported separately, never counted as numerical matching. Source
+ports remain zero. No credentials, cloud/hardware calls, third-party source,
+package artifacts or environments are included. Complete parity remains open.
 
 Stage 11P-B independently connects existing native quantum execution and
 shift/adjoint/transform Jacobians to optional TensorFlow classical graphs.

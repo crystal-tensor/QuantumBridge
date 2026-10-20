@@ -248,4 +248,6 @@ def split_non_commuting(tape, grouping_strategy="default", shot_dist=None, seed=
     process.native_evaluate = process
     process.native_variance = "var" in kinds
     process.native_parameters = tuple(coefficients.parameters)
+    process.native_linear_quantum_outputs = "var" not in kinds
+    process.native_shot_distribution = shot_dist
     return tuple(children), process

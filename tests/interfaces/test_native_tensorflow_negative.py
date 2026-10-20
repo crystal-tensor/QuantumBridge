@@ -50,7 +50,7 @@ def test_full_state_and_finite_difference_are_not_claimed_supported():
     with pytest.raises(UnsupportedFeature): QNode(lambda t, x: t.state(), 1, interface="tf")(tf.constant(.3))
     with pytest.raises(UnsupportedFeature): node(diff_method="finite-diff")(tf.constant(.3))
     with pytest.raises(UnsupportedFeature, match="diff_method"): node(gradient_kwargs={"method": "finite-diff"})(tf.constant(.3))
-    with pytest.raises(UnsupportedFeature): node(max_diff=2)(tf.constant(.3))
+    with pytest.raises(UnsupportedFeature): node(max_diff=3)(tf.constant(.3))
 
 
 def test_dynamic_shapes_require_explicit_unsupported_result():
