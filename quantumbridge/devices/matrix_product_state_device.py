@@ -68,6 +68,13 @@ class MatrixProductStateDevice:
         return state
 
     @staticmethod
+    def _gate(state, matrix, wires, metadata):
+        if metadata.get("requires_zero_input"):
+            from .execution import validate_preparation_input
+            validate_preparation_input(state,wires,state.num_qubits,"matrix_product_state")
+        return state.apply(matrix,wires)
+
+    @staticmethod
     def _kraus_choices(state, operators, wires):
         density = state.reduced_density_matrix(wires)
         probabilities = [max(0.0, float(np.trace(operator @ density @ operator.conj().T).real)) for operator in operators]
@@ -85,7 +92,7 @@ class MatrixProductStateDevice:
                 if not condition_enabled(metadata, bits, decisions):
                     updated.append((state, bits, decisions, weight))
                 elif kind == "gate":
-                    updated.append((state.apply(value, wires), bits, decisions, weight))
+                    updated.append((self._gate(state,value,wires,metadata), bits, decisions, weight))
                 elif kind == "channel":
                     for probability, operator in self._kraus_choices(state, value, wires):
                         self._guard_branches(state, len(branches) + len(updated) + 1)
@@ -123,7 +130,7 @@ class MatrixProductStateDevice:
         for kind, value, wires, metadata in program:
             if kind != "gate" or metadata.get("condition") or metadata.get("control_flow_stack"):
                 break
-            prefix.apply(value, wires)
+            self._gate(prefix,value,wires,metadata)
             offset += 1
         for _ in range(shots):
             state, bits, decisions = prefix.copy(), [0] * circuit.num_bits, {}
@@ -131,7 +138,7 @@ class MatrixProductStateDevice:
                 if not condition_enabled(metadata, bits, decisions):
                     continue
                 if kind == "gate":
-                    state.apply(value, wires)
+                    self._gate(state,value,wires,metadata)
                 elif kind == "channel":
                     choices = self._kraus_choices(state, value, wires)
                     weights = np.array([p for p, _ in choices])
@@ -148,8 +155,8 @@ class MatrixProductStateDevice:
         if any(kind != "gate" or metadata.get("condition") or metadata.get("control_flow_stack") for kind, _, _, metadata in program):
             raise ValueError("QuantumBridge single MPS state requires unitary execution without measurements/channels; use ensemble or shots.")
         state = self._initial(bound.num_qubits)
-        for _, matrix, wires, _ in program:
-            state.apply(matrix, wires)
+        for _, matrix, wires, metadata in program:
+            self._gate(state,matrix,wires,metadata)
         return state
 
     def statevector(self, circuit, parameters=None):

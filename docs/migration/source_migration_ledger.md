@@ -5,6 +5,25 @@ Date: 2026-06-05
 
 This ledger records implementation mode and upstream source status for the current P1 release-candidate baseline. Current work uses Native Implementation, Adapter Integration, and Upstream Dependency. No new upstream source migration was introduced during Stage 5.5. No Source Port with Attribution was performed.
 
+## Stage 11O-A Native Templates Checkpoint
+
+Native Implementation; zero third-party implementation/test source ports.
+Existing QML helpers and native Operation/Circuit/Tape/QNode/gradient engines
+are enhanced, not replaced by a second execution system. Public PennyLane
+0.44.1/0.42.3 functions are optional differential oracles. No runtime SDK
+dependency, package tree, wheel, environment or token is included.
+
+| Files | Independently implemented behavior | Evidence |
+| --- | --- | --- |
+| `quantumbridge/qml/template_core.py`, `quantumbridge/templates.py` | Bounded concrete template decomposition, named-wire mapping and live native emission | Native shape/resource/graph and public tests |
+| `quantumbridge/qml/embeddings.py`, `quantumbridge/qml/templates.py`, `quantumbridge/qml/subroutines.py`, `quantumbridge/qml/__init__.py` | Real amplitude/basis/angle, entangler layers, IQP/QFT/Trotter gates and exports | Independent complex matrices/states, gradients and public contracts |
+| `quantumbridge/devices/execution.py`, `quantumbridge/devices/statevector_device.py`, `quantumbridge/devices/density_matrix_device.py`, `quantumbridge/devices/matrix_product_state_device.py`, `quantumbridge/execution/control_flow_engine.py` | Actual runtime zero-subsystem precondition for bounded amplitude preparation | Nonzero initial state rejection, IR and shared dynamic path tests |
+| `tests/templates/test_native_templates.py`, `tests/templates/test_native_template_gradients.py`, `tests/compat/test_native_template_differential.py`, `tests/qml/test_pennylane_templates_p2.py` | Mathematical/runtime/gradient/resource tests; obsolete metadata-only test now checks actual complex state | Native and optional black-box differential, no copied upstream tests |
+| `examples/native_angle_embedding_qnode.py`, `examples/native_entangling_templates_training.py`, `examples/native_qft_and_trotter.py` | Actual SDK-free input derivative, two-wire training and complex QFT/Trotter convergence | Executable assertions and measured values |
+
+Stage 11O-B real multi-Tape execution and postprocessing are still unfinished.
+This checkpoint is not full PennyLane template or transform parity.
+
 ## Stage 11O-C Native Molecular Electronic Structure Checkpoint
 
 Native Implementation, zero implementation/test source ports. Six numerical

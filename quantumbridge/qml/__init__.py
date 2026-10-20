@@ -3,7 +3,8 @@
 # This file is part of QuantumBridge SDK.
 # This implementation is developed for the QuantumBridge native architecture.
 
-from .embeddings import amplitude_embedding, angle_embedding
+from .embeddings import amplitude_embedding, angle_embedding, basis_embedding
+from .subroutines import iqp_embedding, qft, trotter_product
 from .measurements import ClassicalShadowResult, MeasurementRequest
 from .observables import Hadamard, Hamiltonian, Identity, PauliX, PauliY, PauliZ, SparseHamiltonian
 from .qnode import QNode
@@ -30,6 +31,10 @@ __all__ = [
     "Tape",
     "amplitude_embedding",
     "angle_embedding",
+    "basis_embedding",
+    "iqp_embedding",
+    "qft",
+    "trotter_product",
     "basic_entangler",
     "basic_entangler_layers",
     "hardware_efficient_ansatz",

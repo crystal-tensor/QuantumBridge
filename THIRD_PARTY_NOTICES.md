@@ -5,6 +5,15 @@ Date: 2026-06-09
 
 QuantumBridge is an independent project. References to Qiskit and PennyLane are for attribution, compatibility, and optional adapter documentation only and do not imply endorsement.
 
+## Native Template Verification
+
+Stage 11O-A independently enhances existing native QML embeddings/layers and
+adds concrete IQP, QFT and bounded Pauli product-formula templates. Public
+PennyLane APIs are optional black-box behavior oracles only. Existing native
+mathematics and execution engines are reused, not SDK template source or
+tests. Standard gate serialization and explicit unsupported preparation
+exports are tested. Full template/transform parity is not claimed.
+
 ## Native Molecular Electronic Structure
 
 Stage 11O-C independently implements bounded s-Gaussian integrals, closed-shell

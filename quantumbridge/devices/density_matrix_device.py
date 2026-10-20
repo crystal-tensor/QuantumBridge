@@ -76,8 +76,11 @@ class DensityMatrixDevice:
         return bound, program
 
     @staticmethod
-    def _apply(density, kind, value, wires, width):
+    def _apply(density, kind, value, wires, width, metadata=None):
         if kind == "gate":
+            if metadata and metadata.get("requires_zero_input"):
+                from .execution import validate_preparation_input
+                validate_preparation_input(density,wires,width,"exact_density_matrix")
             return apply_density_operator(density, value, wires, width)
         return apply_density_channel(density, value, wires, width)
 
@@ -125,7 +128,7 @@ class DensityMatrixDevice:
                 if not condition_enabled(metadata, bits, decisions):
                     updated.append((density, bits, decisions, weight))
                 elif kind != "measure":
-                    updated.append((self._apply(density, kind, value, wires, width), bits, decisions, weight))
+                    updated.append((self._apply(density, kind, value, wires, width, metadata), bits, decisions, weight))
                 else:
                     self._check_memory(width, len(branches) + len(updated) + 4)
                     for outcome in (0, 1):
@@ -158,7 +161,7 @@ class DensityMatrixDevice:
         for kind, value, wires, metadata in program:
             if kind == "measure" or metadata.get("condition") or metadata.get("control_flow_stack"):
                 break
-            prefix = self._apply(prefix, kind, value, wires, width)
+            prefix = self._apply(prefix, kind, value, wires, width, metadata)
             offset += 1
         for _ in range(shots):
             density, bits, decisions = prefix.copy(), [0] * circuit.num_bits, {}
@@ -170,7 +173,7 @@ class DensityMatrixDevice:
                     p = readout_probability(self.noise_model, value, outcome)
                     bits[wires] = outcome ^ int(p > 0 and rng.random() < p)
                 else:
-                    density = self._apply(density, kind, value, wires, width)
+                    density = self._apply(density, kind, value, wires, width, metadata)
             yield density, bits, rng
 
     @staticmethod

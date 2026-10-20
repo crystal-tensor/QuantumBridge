@@ -1,6 +1,6 @@
 # Core Functional Parity Ledger
 
-Updated: 2026-10-20, Stage 11O-C native chemistry checkpoint validation, starting from local `0d00362`.
+Updated: 2026-10-20, Stage 11O-A native template checkpoint validation, starting from local `df9bd22`.
 This is the single current-status view. Full Qiskit/PennyLane functional
 replacement remains **incomplete**. Line coverage, inventories, passthrough and
 green CI are not proof of complete API coverage.
@@ -117,6 +117,28 @@ or public comparison passed. The status applies only to the supported subset.
 | MPS non-dense execution | NATIVE_TESTED; PARTIAL | 100-wire GHZ saves, later phase gate, local density/amplitudes/shots |
 | noisy gradients | NATIVE_TESTED; PARTIAL | Fixed noise shift/finite difference; noisy adjoint rejects |
 
+## Stage 11O Templates And Transform Status
+
+| API | Supported native evidence/status | Remaining gap |
+| --- | --- | --- |
+| Template decomposition/apply | NATIVE_TESTED; PARTIAL: existing Operation/Circuit/Tape emission, ordered and explicitly mapped named wires | Complete operation/queue/capture/broadcast/serialization object protocols |
+| AngleEmbedding | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: actual axes/partial input/live first-order graph | Complete broadcasting/interface/device contracts |
+| BasisEmbedding | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: integer/string/vector occupation gates | General state-preparation and complete parameter/operation API |
+| AmplitudeEmbedding | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: actual bounded complex state, padding/normalization/zero-input guards | Input gradients, portable gate decomposition, full StatePrep and QPY object support |
+| BasicEntanglerLayers | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: actual one/two/multiple wire ring, rotation choices and native gradients | Arbitrary rotation objects, broadcast/capture and complete API |
+| StronglyEntanglingLayers | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: actual Euler/ranges/CX-CZ, tensor/shared/nonlinear gradients | General imprimitives and complete family API |
+| IQPEmbedding | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: feature products, pair patterns, repeats and native gradients | Full public operation/shape/capture surface |
+| QFT | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: complete bounded complex unitary, inverse/swaps/ordered wires | Complete operation API and large-scale resource semantics |
+| TrotterProduct | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: positive-time Pauli order 1/2 gates, actual approximation and time gradients | Higher formulas, grouped/general operands, trainable coefficients and complete API |
+| UCCSD and other template families | NOT_STARTED beyond separately tested bounded chemistry excitation helpers | Full native template catalogue and semantics |
+| Tape transform protocol / TransformProgram | NOT_STARTED | True batches, independent execution, reverse postprocessing, QNode dispatch and native VJP |
+| cancel/merge/decompose/compile transforms | NOT_STARTED as a Tape transform interface | Existing compiler passes do not themselves prove this contract |
+| split_to_single_terms / split_non_commuting | NOT_STARTED | Actual splitting, QWC grouping, shot allocation and reconstruction |
+| defer_measurements | NOT_STARTED | Proved coherent supported subset with explicit dynamic limits |
+
+All Stage 11O-B requirements remain active. Eight executable template families
+do not establish full template parity or satisfy the multi-Tape deliverables.
+
 ## Stage 11O Chemistry Progress
 
 This is a scoped scientific checkpoint, not whole Stage 11O completion.
@@ -183,6 +205,8 @@ it is historical, not a second current status table.
 - [Stage 11N implementation/test report](../implementation/stage11n_native_aer_report.md)
 - [Stage 11O initial gap audit](../implementation/stage11o_pennylane_native_gap_audit.md)
 - [Stage 11O chemistry checkpoint](../implementation/stage11o_native_qchem_report.md)
+- [Stage 11O-A/B gap audit](../implementation/stage11o_ab_native_gap_audit.md)
+- [Stage 11O-A template checkpoint](../implementation/stage11o_ab_native_templates_report.md)
 
 Stage 11L exact-SHA CI: 39259350086, 22/22 success. Its clean local runs:
 SDK-free 899 passed/116 skipped, installed 1090/4, alternate 1054/40, measured

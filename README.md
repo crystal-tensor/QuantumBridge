@@ -687,6 +687,31 @@ first; quantum-error matrices use little-endian qargs. SDK-native object
 shapes/signatures are not universally interchangeable. See the
 [Stage 11N report](docs/implementation/stage11n_native_aer_report.md).
 
+## Native Templates Checkpoint
+
+`quantumbridge.templates` provides eight concrete native templates: Angle,
+Basis and AmplitudeEmbedding, Basic/StronglyEntanglingLayers, IQPEmbedding,
+QFT and first/second-order TrotterProduct. Objects expose actual native
+`decomposition()`, `to_circuit()` and `apply(tape_or_circuit, wire_map=...)`.
+Angle/Basic/Strong inputs support the existing native first-order gradients
+and optional Torch/Autograd interfaces without an upstream SDK executor.
+
+```bash
+python -m examples.native_angle_embedding_qnode
+python -m examples.native_entangling_templates_training
+python -m examples.native_qft_and_trotter
+```
+
+Important boundaries: functional `qml.angle_embedding` retains default Y;
+`templates.AngleEmbedding` defaults to X. BasicEntanglerLayers now uses RX
+and the public ring convention; the legacy RY/open-chain helper remains
+`basic_entangler`/`hardware_efficient_ansatz`. Amplitudes are genuinely prepared
+but bounded to dimension 64 by default, static, and require zero target input.
+Their native IR is supported, while opaque matrix QASM/QPY exports reject.
+Trotter approximates `exp(+i t H)`, not the opposite time-sign convention.
+This is not full PennyLane template parity. Multi-Tape TransformProgram work
+remains unfinished. See the [template report](docs/implementation/stage11o_ab_native_templates_report.md).
+
 ## Native Molecular Chemistry Checkpoint
 
 `quantumbridge.qchem` now computes a bounded hydrogen/STO-3G s-shell workflow

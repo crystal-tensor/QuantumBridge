@@ -56,6 +56,9 @@ class StatevectorDevice:
                 continue
             matrix = gate_matrix(op.name, op.params, op.metadata)
             wires = op.controls + op.targets
+            if op.metadata.get("requires_zero_input"):
+                from .execution import validate_preparation_input
+                validate_preparation_input(state,wires,circuit.num_qubits,"statevector")
             state = apply_unitary(state, matrix, wires, circuit.num_qubits)
         return np.exp(1j * float(circuit.global_phase)) * state
 

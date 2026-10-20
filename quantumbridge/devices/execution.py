@@ -5,6 +5,22 @@
 from numbers import Integral
 
 
+def validate_preparation_input(state, wires, width, kind):
+    """A unitary amplitude preparation is defined here only on a zero subsystem."""
+    import numpy as np
+    from quantumbridge.core.classical import UnsupportedFeature
+    if kind == "matrix_product_state":
+        probability = state.probabilities(wires).get("0" * len(wires), 0.)
+    elif kind in {"statevector", "exact_density_matrix"}:
+        probabilities = np.abs(state) ** 2 if kind == "statevector" else np.diag(state).real
+        index = tuple(0 if wire in wires else slice(None) for wire in range(width))
+        probability = np.sum(probabilities.reshape((2,) * width)[index])
+    else:
+        raise UnsupportedFeature("state_preparation_device", "This device has no verified amplitude-preparation input contract.")
+    if not np.isclose(probability, 1., atol=1e-10, rtol=0):
+        raise UnsupportedFeature("state_preparation_input", "Native amplitude preparation requires a zero input subsystem; it does not reset an arbitrary input state.")
+
+
 def needs_dynamic_engine(circuit,noise_model=None):
     return circuit.has_structured_control_flow or getattr(circuit,"has_simulator_instructions",False) or bool(getattr(noise_model,"requires_dynamic_engine",False))
 

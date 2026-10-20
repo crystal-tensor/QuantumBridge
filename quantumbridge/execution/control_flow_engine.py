@@ -262,6 +262,9 @@ class DynamicExecutionEngine:
             operators = validate_kraus_operators(item.metadata.get("kraus", ()), 1 << len(item.wires))
             return self._quantum(branch, "channel", operators, item.wires, rng)
         parameters = tuple(resolve_parameter(p, binding) for p in item.params)
+        if item.metadata.get("requires_zero_input"):
+            from quantumbridge.devices.execution import validate_preparation_input
+            validate_preparation_input(branch.state,item.wires,self.circuit.num_qubits,self.adapter.kind)
         try: matrix = gate_matrix(item.name, parameters, item.metadata)
         except ValueError as exc: raise UnsupportedFeature("quantum_operation", str(exc)) from exc
         dimension = 1 << len(item.wires)
