@@ -1,9 +1,33 @@
 # Source Migration Ledger
 
-Status: Stage 7 ecosystem planning update
-Date: 2026-06-05
+Status: Stage 11O-B6 native coherent deferral checkpoint
+Date: 2026-10-20
 
-This ledger records implementation mode and upstream source status for the current P1 release-candidate baseline. Current work uses Native Implementation, Adapter Integration, and Upstream Dependency. No new upstream source migration was introduced during Stage 5.5. No Source Port with Attribution was performed.
+This ledger retains historical release and checkpoint sections. Current work
+uses Native Implementation, Adapter Integration and Upstream Dependency, with
+their boundaries stated separately. Historical checkpoint limitations are not
+the current status view; use core_parity_ledger.md for that view.
+No Source Port with Attribution was performed.
+
+## Stage 11O-B6 Native Coherent Deferred Measurements
+
+Native Implementation, zero implementation/test source ports. The measurement
+record purification and bounded commuting-projector expansion are independently
+authored. Existing native dynamic, matrix, compiler and derivative components
+are reused. Public documentation and public installed PennyLane calls are
+behavioral references/oracles, not the production implementation.
+
+| Files | Native changes | Independent evidence |
+| --- | --- | --- |
+| `quantumbridge/transforms/deferred_measurements.py`, `quantumbridge/transforms/__init__.py` | Fresh record wires, conditional unitary lowering, phase preservation, logical output mapping and preflight limits | Reused-wire red/green, reduced-state proofs, complete complex control matrices, invalid capacity/noise/reset/postselection boundaries |
+| `quantumbridge/transforms/program.py` | Device-specific transform validation, actual record receipts and generic sampled-output storage budgeting | Existing batch regressions; exact physical work and source/ancilla mapping checks |
+| `quantumbridge/qml/measurement_records.py`, `quantumbridge/qml/tape.py`, `quantumbridge/qml/qnode.py`, `quantumbridge/diff/qnode_engine.py` | Ordered real classical records and quantum terminal samples on the existing dynamic engine; coherent ancilla reconstruction | Native statevector/density/MPS probabilities, joint finite records, seed/vector and derivative tests |
+| `tests/transforms/test_native_deferred_measurements.py`, `tests/compat/test_native_deferred_measurement_differential.py` | Independently authored physics, matrix, framework, resource and public black-box scenarios | Both installed public versions; actual coherent child derivatives, no-dense 101-wire execution and geometry-derived H2 integration |
+| `examples/native_defer_measurements.py`, `examples/native_defer_reused_wire.py`, `examples/native_defer_transform_gradient.py`, `examples/native_defer_mps_100qubits.py`, `examples/native_stage11o_integrated_h2.py` | Five SDK-free executable workflows | Actual values, record mapping, gradients, resource receipts and unsupported boundaries |
+| `docs/implementation/stage11o_b6_native_deferred_measurements_report.md`, `docs/implementation/stage11o_joint_acceptance_report.md`, `docs/implementation/stage11o_remaining_functional_parity_gaps.md` | Scoped evidence and remaining full functional contracts | No conversion of a bounded joint checkpoint into complete Qiskit/PennyLane parity |
+
+No third-party implementation, test suite, environment, binary package,
+credential or source tree is vendored. Full replacement remains incomplete.
 
 ## Stage 11O-B5 Native Transformed Autodiff
 

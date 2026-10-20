@@ -133,6 +133,11 @@ def check_batch(tapes, limits, *, shot_budget=True):
                 if count is not None:
                     terms = len(request.observable.terms) if request.kind == "expval" and isinstance(request.observable, Hamiltonian) else 1
                     shots += count * terms
+                    if request.kind in {"sample", "counts", "probs"}:
+                        width = tape.circuit.num_qubits if request.wires is None else len(request.wires)
+                        width += len((request.metadata or {}).get("measurement_records", ()))
+                        sample_values += count * max(1, width)
+                        limits.check("max_sample_values", sample_values)
         if shot_budget:
             limits.check("max_total_shots", shots)
     return operations, shots
@@ -284,6 +289,11 @@ class TransformedExecutionPlan:
         self.child_plans, self.parameter_slices = [], []
         self.last_spec, self.metadata = None, {}
         self.forward_physical_shots, self.forward_evaluation_count, self.last_forward_executions = 0,0,[]
+        for level in self.prepared.processing_levels:
+            for _, _, processor in level:
+                validate = getattr(processor, "native_validate_device", None)
+                if validate is not None:
+                    validate(node.device)
         mapping = dict(bindings or {})
         if any(_is_live(value) for value in mapping.values()):
             raise UnsupportedFeature("raw_transform_autodiff", "Raw Tape supports numeric bindings; use a QNode for framework input VJPs.")
@@ -345,6 +355,9 @@ class TransformedExecutionPlan:
                          "source_gate_parameter_count": 0 if self.original_recorder is None else len(self.original_recorder.parameters),
                          "execution_semantics": "one independent native ExecutionPlan evaluation per child Tape",
                          "gradient_support": "native child quantum Jacobians and bounded native postprocessing chain rule"}
+        self.metadata["deferred_measurements"] = [
+            {"tape_index": index, **deepcopy(plan.circuit.metadata["deferred_measurements"])}
+            for index, plan in enumerate(self.child_plans) if "deferred_measurements" in plan.circuit.metadata]
         from quantumbridge.diff.trace import flatten_tree
         try:
             _, self.last_spec = flatten_tree(value)

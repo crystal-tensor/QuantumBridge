@@ -209,14 +209,24 @@ class Tape:
     def var(self, observable):
         return self._record_measurement(MeasurementRequest("var", observable=observable))
 
-    def probs(self, wires=None):
-        return self._record_measurement(MeasurementRequest("probs", wires=normalize_wires(wires)))
+    def probs(self, wires=None, *, records=()):
+        """Record probabilities; classical records precede explicit quantum wires."""
+        from .measurement_records import record_metadata
+        metadata = record_metadata(records)
+        selected = () if metadata and wires is None else normalize_wires(wires)
+        return self._record_measurement(MeasurementRequest("probs", wires=selected, metadata=metadata))
 
-    def sample(self, wires=None, shots=None, seed=None):
-        return self._record_measurement(MeasurementRequest("sample", wires=normalize_wires(wires), shots=shots, seed=seed))
+    def sample(self, wires=None, shots=None, seed=None, *, records=()):
+        from .measurement_records import record_metadata
+        metadata = record_metadata(records)
+        selected = () if metadata and wires is None else normalize_wires(wires)
+        return self._record_measurement(MeasurementRequest("sample", wires=selected, shots=shots, seed=seed, metadata=metadata))
 
-    def counts(self, wires=None, shots=None, seed=None):
-        return self._record_measurement(MeasurementRequest("counts", wires=normalize_wires(wires), shots=shots, seed=seed))
+    def counts(self, wires=None, shots=None, seed=None, *, records=()):
+        from .measurement_records import record_metadata
+        metadata = record_metadata(records)
+        selected = () if metadata and wires is None else normalize_wires(wires)
+        return self._record_measurement(MeasurementRequest("counts", wires=selected, shots=shots, seed=seed, metadata=metadata))
 
     def state(self):
         return self._record_measurement(MeasurementRequest("state"))

@@ -7,6 +7,17 @@ QuantumBridge is an independent project. References to Qiskit and PennyLane are 
 
 ## Native Template Verification
 
+Stage 11O-B6 independently implements coherent measurement recording,
+bounded controlled-unitary lowering and logical terminal reconstruction.
+It reuses QuantumBridge's dynamic execution, compiler algebra, QNode and
+gradient engines. Public PennyLane 0.44.1/0.42.3 calls are optional black-box
+oracles; published documentation is a behavioral reference, not implementation
+source. No SDK implementation/test code is ported or used as the native
+execution engine. Source port count is zero. No credentials, environments,
+package artifacts or upstream source trees are included. Supported subsets,
+differences and remaining complete API contracts are documented explicitly;
+this is not full SDK parity, production certification or endorsement.
+
 Stage 11O-B5 independently implements first-order native transformed child
 quantum Jacobians, bounded classical postprocessing differentiation and
 gate/coefficient chain rules. Existing QuantumBridge shift/adjoint, Tape/QNode,

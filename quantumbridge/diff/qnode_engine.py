@@ -147,7 +147,7 @@ class ExecutionPlan:
                     request_bound = replace(request, shots=effective_shots, seed=effective_seed)
                     value = self.node._execute_measurement(SimpleNamespace(circuit=bound), request_bound)
                     mean = self.node.device.expectation(bound, request.observable) if request.kind == "var" else None
-                if request.kind == "probs":
+                if request.kind == "probs" and not (request.metadata or {}).get("measurement_records"):
                     wires = tuple(range(bound.num_qubits)) if request.wires is None else request.wires
                     labels = [format(index, f"0{len(wires)}b") if wires else "" for index in range(1 << len(wires))]
                     if effective_shots is not None:

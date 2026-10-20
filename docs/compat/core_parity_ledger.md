@@ -1,6 +1,6 @@
 # Core Functional Parity Ledger
 
-Updated: 2026-10-20, Stage 11O-B5 native transformed autodiff checkpoint, starting from local `8031a8a`.
+Updated: 2026-10-20, Stage 11O-B6 native coherent deferral checkpoint, starting from local `bd88f88`.
 This is the single current-status view. Full Qiskit/PennyLane functional
 replacement remains **incomplete**. Line coverage, inventories, passthrough and
 green CI are not proof of complete API coverage.
@@ -31,7 +31,7 @@ publication/exact-SHA CI is a separate receipt, not inferred from prior CI.
 | Algorithms | NATIVE_TESTED; PARTIAL: bounded eigen/estimation and VQE/QAOA/Grover | All algorithm families, optimizers and result contracts |
 | Nature/Finance/Optimization/ML/Experiments/Dynamics | PARTIAL: native executable slices and separate optional adapters | Complete independent industry functions; upstream passthrough is not parity |
 | IBM Runtime | PARTIAL: offline/optional adapters | Authorized real service execution and complete runtime contracts |
-| QNode/device/measurement | NATIVE_TESTED; PARTIAL: native vector/density/MPS/tableau, typed trees and dynamic measurements | Complete constructor/plugins/devices/operations/measurement protocols |
+| QNode/device/measurement | NATIVE_TESTED; PARTIAL: native vector/density/MPS/tableau, typed trees, dynamic measurements and ordered classical-record/quantum terminal samples | Complete constructor/plugins/devices/operations/measurement protocols; native record keyword API is not complete SDK MeasurementValue parity |
 | Native parameter-shift/adjoint | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: actual first-order algorithms and classical chain rule | All generators/transforms, reused parameterized loops and mixed/MPS adjoint |
 | VJP/JVP/execute derivatives | NATIVE_TESTED; PARTIAL | Current explicit Jacobian products are not full derivative-device contracts |
 | Torch/Autograd | NATIVE_TESTED; PARTIAL: CPU framework graphs with native quantum VJP | GPU, higher order and full interface/device contracts |
@@ -143,12 +143,18 @@ or public comparison passed. The status applies only to the supported subset.
 | Transformed sampled gradients | NATIVE_TESTED; PARTIAL: real grouped parameter shifts with independent streams, partitions and actual work receipts | Stochastic estimates, not a universally unbiased nonlinear estimator or an SE-derived gradient bound; finite variance/local-seed/postselection/parameterized-loop gaps |
 | QWC shot distribution | NATIVE_TESTED; PARTIAL: full per-group budget or deterministic uniform/L1-weighted total allocation, exact per-vector-partition conservation | Random/custom allocation and full SDK parity; PL 0.42.3 has no allocation API, PL 0.44.1 flattens distributed vectors and may drop undersampled groups |
 | QWC estimator statistics | NATIVE_TESTED; PARTIAL: exact analytic group covariance or real empirical shared-sample covariance and source expectation standard error | Not full quantum variance across incompatible groups, uncertainty of variance estimators or calibrated hardware confidence guarantees |
-| defer_measurements | NOT_STARTED | Proved coherent supported subset with explicit dynamic limits |
+| defer_measurements | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: actual fresh record ancillas, unitary child circuit, logical reduced outputs, native gradients and QWC/compiler composition | Reset/postselection/noisy feedback/conditional MCM/Store/arithmetic/capture/full state semantics and complete public transform protocol remain unsupported |
+| Classical measurement records | UPSTREAM_DIFFERENTIAL_TESTED; PARTIAL: ordered bit records plus explicit quantum wires, analytic probabilities and real joint sample/counts; record ancillas retain reused-wire outcomes | Full MeasurementValue expressions/signatures, all device kinds, conditional records and general classical memory reconstruction |
 
 Remaining Stage 11O-B requirements stay active. Eight executable template
-families and the B1-B5 execution/gradient foundation do not establish full
+families and the B1-B6 execution/gradient foundation do not establish full
 template or transform parity. The native postprocessing trace visits means
 and declared classical slots only, not passive statistics or execution data.
+Coherent deferral has actual execution evidence, including 100 logical wires
+expanded to 101 MPS wires and a geometry-derived H2 feedback gradient. It does
+not cover every mid-measurement contract. Native default terminal wire
+selection preserves the original logical wires; the public API may require
+explicit wires. Record outputs use an explicit native `records=` keyword.
 Native weighted zero-contribution groups can be omitted, but a nonzero group
 with zero assigned samples explicitly rejects instead of silently biasing the
 answer. These documented boundaries must not be described as full parity.
@@ -226,6 +232,9 @@ it is historical, not a second current status table.
 - [Stage 11O-B2/B3 QNode and basic transforms](../implementation/stage11o_b2_b3_native_transform_report.md)
 - [Stage 11O-B4 QWC joint samples and shots](../implementation/stage11o_b4_native_qwc_shot_allocation_report.md)
 - [Stage 11O-B5 native transformed autodiff](../implementation/stage11o_b5_native_transformed_autodiff_report.md)
+- [Stage 11O-B6 coherent deferral](../implementation/stage11o_b6_native_deferred_measurements_report.md)
+- [Stage 11O joint acceptance](../implementation/stage11o_joint_acceptance_report.md)
+- [Remaining full functional parity gaps](../implementation/stage11o_remaining_functional_parity_gaps.md)
 
 Stage 11L exact-SHA CI: 39259350086, 22/22 success. Its clean local runs:
 SDK-free 899 passed/116 skipped, installed 1090/4, alternate 1054/40, measured

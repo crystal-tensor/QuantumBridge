@@ -811,6 +811,64 @@ Actual grouped sampling and its boundaries are in the
 Gradient execution and remaining limits are in the
 [B5 report](docs/implementation/stage11o_b5_native_transformed_autodiff_report.md).
 
+## Native Coherent Deferred Measurements
+
+`transforms.defer_measurements` turns the supported native Z-measurement /
+conditional-unitary subset into an actual larger unitary circuit. Every
+measurement owns a fresh zero-initialized record ancilla, including when its
+original wire is subsequently changed. Logical probabilities and reduced
+density outputs exclude unrequested ancillas. This is not continued dynamic
+execution hidden behind a transform name.
+
+```python
+from quantumbridge.qml import QNode
+from quantumbridge.transforms import defer_measurements
+from quantumbridge.utils.math import PauliZ
+
+def circuit(tape, theta):
+    tape.ry(theta, 0)
+    m = tape.measure(0)
+    tape.h(0)
+    tape.cond(m, lambda branch: branch.x(1))
+    return tape.expval(PauliZ(1))
+
+node = defer_measurements(QNode(circuit, 2))
+energy = node(0.37)
+derivative = node.gradient(0.37)
+```
+
+Supported terminal `probs`, `sample` and `counts` accept a native `records=`
+keyword. Records precede explicitly selected quantum wires in their bitstrings;
+omitting wires with records requests records only. They are actual classical
+records on the original dynamic engine and actual ancilla reads after defer,
+not the changed state of the originally measured wire. This native interface
+does not claim the complete upstream MeasurementValue protocol.
+
+The transform composes with native QWC grouping, shot allocation, compilation,
+first-order Jacobian/VJP and Torch/Autograd. Finite-shot derivatives retain
+their stochastic semantics and actual physical-shot receipts. Capacity and
+expansion limits apply before constructing oversized controlled matrices.
+Device/Target capacity must include extra wires; simulator success is not
+hardware validation. A 100-logical-wire GHZ/template/feedback/gradient proof
+uses 101 real MPS wires with full dense expansion forbidden.
+
+Reset, postselection, noisy feedback, conditional measurements, runtime loops,
+classical Store/arithmetic, mid-state snapshots, undefined full state output
+and unproved opaque/observable mappings remain explicitly unsupported.
+The complete SDK functional parity goal is still incomplete.
+
+```bash
+python -m examples.native_defer_measurements
+python -m examples.native_defer_reused_wire
+python -m examples.native_defer_transform_gradient
+python -m examples.native_defer_mps_100qubits
+python -m examples.native_stage11o_integrated_h2
+```
+
+See the [B6 report](docs/implementation/stage11o_b6_native_deferred_measurements_report.md),
+[joint acceptance](docs/implementation/stage11o_joint_acceptance_report.md)
+and [remaining gaps](docs/implementation/stage11o_remaining_functional_parity_gaps.md).
+
 ## Native Molecular Chemistry Checkpoint
 
 `quantumbridge.qchem` now computes a bounded hydrogen/STO-3G s-shell workflow

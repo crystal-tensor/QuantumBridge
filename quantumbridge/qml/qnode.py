@@ -195,6 +195,9 @@ class QNode:
 
     def _execute_measurement(self, tape: Tape, request: MeasurementRequest):
         wires = _validate_wires(request.wires, self.num_qubits)
+        if (request.metadata or {}).get("measurement_records"):
+            from .measurement_records import execute_records
+            return execute_records(self.device, tape.circuit, request)
         if request.kind == "expval":
             return self.device.expectation(tape.circuit, request.observable)
         if request.kind == "var":
