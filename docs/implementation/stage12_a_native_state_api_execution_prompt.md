@@ -1318,9 +1318,11 @@ Studio 最后，不在本批启动。
 ## Stage 12-A P0.6 Received Execution Prompt
 
 Received 2026-10-22 from the designated conversation after reporting the actual
-P0.5 code SHA and terminal receipts. The complete reply ends at Task 10; its
-completion marker and full final text were read before saving. Formatting is
-normalized below, including the tensor-index equation transcribed as ASCII.
+P0.5 code SHA and terminal receipts. An initial full snapshot displayed a
+completion marker after Task 10; a later snapshot exposed Task 11 and the
+closing execution paragraph. Both are now included below. No missing-task
+regeneration was requested. Formatting is normalized, including the tensor-index
+equation transcribed as ASCII.
 This is a report-based task recommendation, not an independent source/log audit.
 
 ### P0.5 有界判断及下一批选择
@@ -1477,3 +1479,31 @@ pip 冲突。真实回归保存失败证据、最小修复、重新冻结并重�
 不触碰用户 Studio/Router；不 push、不改认证/TLS、不读 token、不调用云/硬件、不
 vendor/tag/release、不 force/reset/rebase/amend。仅 Owner 后续明确恢复授权且完成
 fresh fast-forward 核验才重新考虑正常 push。新提交远端 CI 为 NOT_VERIFIED。
+
+#### Task 11 - 最终验收报告
+
+报告：
+
+1. 实际存在且被修复的函数级缺口。
+2. 公开 Qiskit 2.4.1/2.6 契约调查。
+3. 原生 subsystem permutation/reduction 数学。
+4. Red->green 及独立退出码。
+5. 两套独立数学 oracle。
+6. 两条真实组合执行链。
+7. Native/Public 兼容差异。
+8. 新增数组资源边界。
+9. SDK-free/main/alternate FULL。
+10. 四框架专项、coverage、28 段 matrix。
+11. Frozen/staged/committed equality 与本地 SHA。
+12. 未实现核心函数及本批限制。
+
+只对证据完整的具体功能切片标记 Verified Native。
+
+### 明确执行要求
+
+现在启动 Stage 12-A P0.6。第一步不是编写新代码，而是核实子系统置换和 mixed-radix
+reduction 在现有 Statevector/DensityMatrix 中究竟还缺什么。只有发现真实缺口，
+才按 red -> 原生最小修复 -> 独立数学 oracle -> 公开差分 -> 完整门禁 -> scoped
+commit 执行。整个项目继续以完整 Qiskit/PennyLane 原生函数库替代为最高目标，
+绝不把当前 90.62% 行覆盖率解释为 SDK 完成度。C3 PARTIAL，不进入 Capture/Studio，
+Studio 最后。

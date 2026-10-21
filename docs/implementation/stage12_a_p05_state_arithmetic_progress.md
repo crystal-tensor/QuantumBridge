@@ -339,13 +339,17 @@ new-SHA remote CI, tag/release, vendoring or real hardware execution is claimed.
 The actual commit, complete terminal receipts, real Fraction refreeze and all
 known limits were sent to the authorized conversation. Its completed response
 accepts the reported bounded slice only, explicitly not an independent source/
-log/CI audit. The full next P0.6 Tasks 0-10, including the final commit and
-NOT_VERIFIED remote-CI paragraph, are saved in the
+log/CI audit. The full next P0.6 Tasks 0-11, including the final report and
+closing execution paragraph, are saved in the
 [execution prompt](stage12_a_native_state_api_execution_prompt.md#stage-12-a-p06-received-execution-prompt).
 It requires first proving an actual subsystem permutation/reduction gap;
 already-correct functions must not be rewritten. If none is found, report
 NO_NEW_FUNCTIONAL_GAP rather than inventing an API or a false feature commit.
 No P0.6 functionality or acceptance is claimed by this P0.5 receipt.
+The first completed-marked UI snapshot exposed only Tasks 0-10; a later full
+snapshot revealed Task 11 and the closing paragraph. These were read and saved
+without asking for a duplicate regenerated prompt. This corrects the earlier
+UI-completeness report, not the product's numerical or gate evidence.
 
 ## Remaining Goal
 
