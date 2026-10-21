@@ -15,7 +15,8 @@ classes and the highest full independent replacement objective remain PARTIAL
 and ACTIVE / INCOMPLETE, respectively. No cloud or remote CI proof is implied.
 See [P0.1 progress](../implementation/stage12_a_p01_mixed_radix_progress.md).
 
-Updated: 2026-10-21, local R2 code checkpoint `b1d345b`; C3 remains PARTIAL.
+Updated: 2026-10-21, local P0.1 code checkpoint `89f4dc9`, historical R2
+checkpoint `b1d345b`; C3 remains PARTIAL. No push or new-SHA CI is claimed.
 
 Historical R2 same-tree SDK-free/main/alternate FULL, four-framework focuses and the
 actual complete 28-section matrix now finish with exits 0. Independent main and

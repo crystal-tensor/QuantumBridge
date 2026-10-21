@@ -202,6 +202,42 @@ before P0.1 acceptance/checkpoint, then bounded mapped-operator work. The reply
 is saved in the execution prompt; it is report-based feedback, not an external
 source audit. No additional functionality was started during the frozen gates.
 
+## Local Checkpoint Receipt
+
+Normal local code commit: 89f4dc95bd38076c869c13e9176423698d6efb53 on main,
+message: feat: support native mixed-radix state construction and propagation.
+Exactly 13 P0.1-owned paths were staged, 1060 insertions / 141 deletions; user
+Studio/Router tracked and untracked changes remain outside the commit. Existing
+binary tests were not edited. The index was empty before scoped staging and
+again after the commit. No amend or identity configuration was performed; Git
+used its existing automatically configured identity and emitted its warning.
+
+The final documentation snapshot 34a323909c8abdd8c267716b29cb055510689d6a
+preserves production/tests/examples from the FULL-tested 7aeb821e candidate
+(Git diff exit 0). The normal staged tree exactly matched that final snapshot:
+qb-stage12a-p01-final-staged-equality, exit 0. Its controlled export at
+/tmp/qb-stage12a-p01-final.Mz0BdY/source also passes fresh compile (exit 0), legal
+(4 passed, exit 0) and privacy/security (49 passed / 1 existing warning,
+exit 0), prefixes qb-stage12a-p01-final-docs-{compile,legal,privacy}.
+Commit runtime/tests/examples equality to the original FULL-tested candidate
+is independently recorded by qb-stage12a-p01-committed-runtime-equality, exit 0.
+These later documentation receipts do not change the tested runtime.
+
+No push was attempted; the earlier workflow OAuth refusal was not retried or
+bypassed, and no fresh remote fast-forward/CI proof is claimed. Ahead counts
+are relative to cached origin/main only. New-SHA remote CI and actual hardware
+remain NOT_VERIFIED. No tag/release, vendoring, credential/auth/TLS change,
+cloud call or history rewriting occurred. The highest full-replacement goal
+remains ACTIVE / INCOMPLETE. Further P0.2 work is a separate bounded batch.
+
+The designated conversation received the actual code SHA and all final gates,
+and its complete P0.2-A mapped-numeric-operator prompt was read and preserved
+in the execution-prompt document. It calls for verified public contracts,
+genuine reds, native local contractions (not an embedded full Kronecker matrix),
+independent complex mathematics and fresh gates. Square dimension-preserving
+operators come first; rectangular changes require proved target output dims.
+No P0.2 implementation or test result is claimed by saving that next prompt.
+
 ## Supplemental Frozen-Tree Public Numerical Comparison
 
 The external validation script /tmp/qb-stage12a-p01-propagation-oracle.py calls

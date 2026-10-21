@@ -1,6 +1,6 @@
 # Source Migration Ledger
 
-Status: bounded P0.1 native slices validated; R2 baseline b1d345b; C3 remains partial
+Status: bounded P0.1 local checkpoint 89f4dc9; R2 baseline b1d345b; C3 remains partial
 Date: 2026-10-21
 
 This ledger retains historical release and checkpoint sections. Current work

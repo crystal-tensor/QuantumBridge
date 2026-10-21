@@ -206,3 +206,113 @@ reported, the designated conversation's completed clarification was fully read:
   exclusions are quality evidence, not all-gates acceptance or an SDK parity
   percentage. Full replacement stays ACTIVE / INCOMPLETE; C3 stays PARTIAL and
   Capture/Studio remain excluded.
+
+## Completed Next Prompt: Stage 12-A P0.2-A Mapped Numeric Operator
+
+After the actual P0.1 checkpoint and all final gate results were reported, the
+designated conversation's completed reply was fully read. This is a faithful
+English preservation of its complete task requirements, based on the execution
+report rather than an independent external source audit.
+
+Baseline: P0.1 code commit 89f4dc95bd38076c869c13e9176423698d6efb53;
+C3 PARTIAL; full independent Qiskit/PennyLane replacement ACTIVE / INCOMPLETE.
+Implement real local numeric-operator action on selected mixed qubit/qudit
+subsystems, not another dimensions-only patch. Limit the batch to existing
+Statevector/DensityMatrix mapped numeric evolution. No general channels, RNG,
+arithmetic/purity, Capture or Studio.
+
+### Task 1: Verify Public Contracts
+
+Use installed Qiskit 2.4.1/2.6 public numerical APIs as black boxes, never reading
+or copying upstream source/tests. Probe Statevector.evolve(Operator,qargs=...)
+and DensityMatrix.evolve(Operator,qargs=...) for (2,4), (3,2), (2,3,2), single
+qudit (6,), noncontiguous (0,2), reversed (2,0), different input/output subsystem
+dimensions, actual rectangular-operator boundaries, duplicate/out-of-range/
+illegal qargs, complex non-diagonal and nonunitary matrices. Record actual
+versioned numbers, exceptions, dims, dtype and subsystem order. Confirm version
+differences experimentally, not by guessing.
+
+### Task 2: Preserve Genuine Reds
+
+Cover at least: a non-diagonal operation on the 4-level subsystem of (2,4);
+a complex qutrit unitary on (3,2); coupled operation on (0,2) of (2,3,2);
+the SAME matrix on reversed (2,0) without sorting qargs; noncontiguous state or
+operator buffers and incorrect copy/reshape behavior; state/density evolution
+disagreement; invalid duplicate/out-of-range qargs; and correct numeric output
+with incorrectly flattened dimensions. Save full red logs and independent
+exits, distinguishing unsupported implementation, mathematical error and public
+compatibility difference. Do not fabricate failures in already-correct paths.
+
+### Task 3: Actual Native Local Action
+
+Reuse existing Statevector, DensityMatrix, Operator and native tensor/array
+kernels. Derive subsystem sizes/strides from actual dims, map qargs in their
+given order (including reversed/noncontiguous), act identically on unselected
+subsystems, and perform native complex tensor contractions or controlled index
+operations. Share consistent state/density mapping. Density follows U rho U-dagger;
+do NOT silently normalize a nonunitary result. For verified supported dimension-
+changing operators, update actual output dims; reject unproved combinations as
+Unsupported. No second simulator, SDK engine/facade or full-system Kronecker
+embedded matrix masquerading as local execution. In a (2,3,2) system, do not
+default to constructing a complete 12x12 embedded matrix for a local operator.
+
+### Task 4: Independent Mathematics And Public Differentials
+
+Author an independent NumPy oracle using explicit mixed-radix basis enumeration,
+without Qiskit/PennyLane. Include mixed product states, complex entanglement,
+complex Hadamard/Fourier unitaries, non-diagonal/nonunitary matrices,
+noncontiguous/reversed qargs, different target dimensions, and applicable
+density Hermiticity/PSD/trace behavior. Compare both public versions, reporting
+numeric/dims/qargs/error differences separately. Explicitly transform native
+q0-first versus public ordering; transformed equality is not identical calling
+convention parity.
+
+### Task 5: Bounded Resources And Regression
+
+Reuse ResourceScope/Ledger/ArrayOwnership. Only account new known ndarray
+outputs/temporaries introduced here; no global allocator audit. Prove known
+outputs admitted before allocation, no unmetered strided-input copy, independent
+charging for actual copies with shared roots for views, budget rejection before
+the core contraction, valid -> overbudget -> valid recovery, and the lifetime
+of user-held result views. Preserve P0.1 native q0-first, probability dicts and
+DensityMatrix shape-tuple dim.
+
+### Task 6: Explicit Non-Goals
+
+No general Kraus/Choi/SuperOp mapped channels, mixed-radix circuit instructions,
+qudit synthesis, general observable framework, object RNG/seed, state arithmetic/
+purity, overall SDK facade or global resource-ledger refactor. Classify calls
+involving an unsupported channel/circuit instead of forwarding to upstream.
+The reply also mentions "Operator.evolve" in this caution: verify actual public
+method names during Task 1 rather than inventing an API from that wording.
+
+### Task 7: Acceptance And Local Checkpoint
+
+Deliver at least 12 mixed-radix local-action math scenarios, 6 noncontiguous/
+reversed-qargs scenarios, 6 state/density-consistency scenarios, 6 failure/
+resource/lifetime scenarios, both public-version differentials, and an actual
+composed call: from_int -> tensor -> mapped evolve -> DensityMatrix ->
+partial_trace -> probabilities. These minimum case counts are not feature-
+completion metrics. Freeze final code, then run fresh SDK-free/main/alternate
+FULL, independent JAX/TF, Torch/Autograd, true full coverage, actual 28-section
+matrix, compile/legal/privacy/security and tested-tree equality. Baseline is
+90.44385395138274%, exclusions 68 must not increase; coverage is not API parity.
+Stage only owned P0.2-A paths and commit normally after gates. Preserve user
+Router/Studio; no push, auth/TLS/credential changes or token reads, cloud or
+hardware, vendor/tag/release, or history rewriting.
+
+### Task 8: Delivery And Execution Order
+
+Report actual newly implemented native APIs; mixed-radix index/stride/qargs
+mapping; genuine red/green; independent complex state/density results; both
+public-version differentials and actual differences; supported/Unsupported
+matrix types; resources/views; three FULL environments, coverage/matrix;
+actual local SHA and remote CI status; then the next real core gaps. Metadata,
+wrappers and upstream passthrough do not count as native computation.
+
+First implement dimension-preserving square local operators for arbitrary
+verified qargs on (2,4)/(3,2)/(2,3,2), for both state types. Only then extend
+rectangular input/output operators where public contracts are verified; update
+target subsystem output dimensions rather than only changing total array size.
+Decide whether to start P0.2-B mapped channels AFTER this batch. The highest
+goal stays ACTIVE / INCOMPLETE, C3 PARTIAL, Studio last.
