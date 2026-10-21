@@ -104,6 +104,23 @@ class StatevectorDevice(NativeDeviceDerivatives):
 
     def density_matrix(self, circuit, parameters: Optional[Mapping[Union[Parameter, str], Real]] = None) -> np.ndarray:
         self._guard_density(circuit.num_qubits)
+        from quantumbridge.execution.resource_context import current_resources
+        scope=current_resources()
+        if scope is not None:
+            from quantumbridge.execution.array_reservations import array_layout
+            from quantumbridge.information.density_matrix import DensityMatrix
+            from quantumbridge.execution import mps_arrays as arrays
+            shape=(1<<circuit.num_qubits,)*2
+            scope.ledger.preflight(memory_bytes=array_layout(shape,complex)[2])
+            if not circuit.has_dynamic_operations:
+                return DensityMatrix.from_statevector(self.statevector(circuit,parameters)).data
+            result=arrays.filled("statevector_ensemble_density",shape,complex,0)
+            for state,_,_,weight in self._dynamic_branches(circuit,parameters):
+                current=DensityMatrix.from_statevector(state).data
+                np.multiply(current,weight,out=current)
+                np.add(result,current,out=result)
+                current=None
+            return result
         if circuit.has_dynamic_operations:
             return sum(weight * np.outer(state, state.conj()) for state, _, _, weight in self._dynamic_branches(circuit, parameters))
         state = self.statevector(circuit, parameters)

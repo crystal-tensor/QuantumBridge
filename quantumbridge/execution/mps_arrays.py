@@ -3,45 +3,19 @@
 """Known ndarray storage around the existing native MPS numerical kernels."""
 
 from math import prod
-from threading import RLock
-import weakref
-
 import numpy as np
 
 from quantumbridge.core.classical import UnsupportedFeature
-from .array_ownership import native_storage_bytes, retain_reservation, retained_array
+from .array_ownership import (
+    native_storage_bytes, retain_reservation, retained_array,
+    remember_storage_ledger as _remember, storage_ledger as owner_account,
+    _storage_owners as _owners,
+)
 from .array_reservations import ArrayReservation, array_layout, matmul_into
 from .resource_context import current_resources
 
 
 _NO_COPY_RESHAPE = np.lib.NumpyVersion(np.__version__) >= "2.1.0"
-_owners, _owner_lock = {}, RLock()
-
-
-def _root(value):
-    while isinstance(value.base, np.ndarray): value = value.base
-    return value
-
-
-def _remember(value, ledger):
-    if ledger is None: return
-    root = _root(value)
-    key = id(root)
-    def forgotten(reference):
-        with _owner_lock:
-            record = _owners.get(key)
-            if record is not None and record[0] is reference:
-                del _owners[key]
-    with _owner_lock:
-        _owners[key] = (weakref.ref(root, forgotten), weakref.ref(ledger))
-
-
-def owner_account(value):
-    """Weak ownership metadata, not a global execution budget or graph owner."""
-    root = _root(value)
-    with _owner_lock:
-        record = _owners.get(id(root))
-        return None if record is None or record[0]() is not root else record[1]()
 
 
 def adopt_for_mutation(tensors):

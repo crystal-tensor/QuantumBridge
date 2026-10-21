@@ -5,7 +5,6 @@
 
 from __future__ import annotations
 
-from copy import deepcopy
 from math import isqrt
 
 import numpy as np
@@ -678,9 +677,8 @@ class _QuantumChannel:
         return self.copy()
 
     def __deepcopy__(self, memo):
-        copied = type(self)(deepcopy(self.data, memo))
-        memo[id(self)] = copied
-        return copied
+        from quantumbridge.execution.array_ownership import native_object_deepcopy
+        return native_object_deepcopy(self,memo)
 
 
 class Kraus(_QuantumChannel):

@@ -1145,6 +1145,28 @@ optional dependency subsets were not executed. This is line coverage, not SDK
 function completion, real-cloud proof or a clean all-in-one dependency stack.
 These changes do not complete the full Qiskit/PennyLane replacement goal.
 
+C3-R2 state/Result development now adds native Pauli-eigenstate labels and
+Statevector reset, plus scoped state/density sampling and defensive Result
+copies with real buffer/view lifetimes. An explicit full-qargs reset preserves
+the collapsed phase; the no-qargs default returns the canonical ground state.
+Public optional Qiskit checks are numerical oracles, not native engines.
+Object-level RNG, general subsystem dimensions and the complete public state
+API remain incomplete. Operator/tableau audit and final R2 gates are still
+open. See the [state/Result progress report](docs/implementation/stage11p_c3_r2_state_result_progress.md).
+Further P1 development adds native reflected Operator matrix arithmetic,
+stable global-phase equivalence, admitted Pauli labels/reversal and shared-memo
+Operator/Channel deep copies. It has focused mathematical and framework
+evidence, not final R2 full/matrix acceptance. See the
+[Operator/Channel progress report](docs/implementation/stage11p_c3_r2_operator_channel_progress.md).
+P2 development now owns bool-tableau/GF(2) storage, signed Clifford composition/
+adjoint/synthesis and Stabilizer measurement/sample outputs. Native 100-qubit
+tableau execution remains non-dense while full matrix/state expansion rejects
+before exponential allocation. A scoped direct Device density-output ownership
+defect was also fixed using the existing density implementation. Old dense
+allowances are retained pending proved replacement; final R2 gates and universal
+core API parity are not claimed. See the
+[Tableau progress report](docs/implementation/stage11p_c3_r2_tableau_progress.md).
+
 ## Native Molecular Chemistry Checkpoint
 
 `quantumbridge.qchem` now computes a bounded hydrogen/STO-3G s-shell workflow

@@ -67,6 +67,12 @@ def record_completed_native_shot():
     if ticket is not None: ticket.consume(shots=1)
 
 
+def record_completed_native_shots(shots):
+    """A completed categorical buffer remains spent if later formatting fails."""
+    ticket = _sample_ticket.get()
+    if ticket is not None:ticket.consume(shots=shots)
+
+
 def result_shots(result):
     return sum((result.counts_data or {}).values())
 

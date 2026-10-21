@@ -1,6 +1,26 @@
 # Core Functional Parity Ledger
 
-Updated: 2026-10-21, Stage 11P-C3-R1 IN_PROGRESS, starting from C3 checkpoint `71f211d`.
+Updated: 2026-10-21, Stage 11P-C3-R2 PARTIAL, from local R1 checkpoint `89bd0f1`.
+
+R2 state/Result development adds actual native Pauli eigenstate labels,
+Statevector reset with explicit collapsed-phase behavior, subsystem counts and
+controlled sampling/defensive-copy storage. Focused tests include independent
+math, real failure/reuse/lifetimes and public Qiskit comparisons. This is not
+complete state API parity. Operator/tableau and final R2 gates remain open;
+see the [partial report](../implementation/stage11p_c3_r2_state_result_progress.md).
+
+P1 now implements reflected native Operator matrix arithmetic and corrects
+tiny-pivot phase equivalence, label/reversal outputs and shared-memo deep
+copies for Operator/six Channel representations. New mathematical, storage and
+framework evidence is in the [P1 report](../implementation/stage11p_c3_r2_operator_channel_progress.md).
+The P0/Result FULL gates predate P1; they are not final verification of newer
+code. P2/tableau, allowance audit and all final R2 gates remain required.
+
+P2 now has focused native bool-tableau/GF(2), compose/adjoint/Pauli phase,
+generator/synthesis/measurement and 100-qubit no-dense evidence. Direct scoped
+StatevectorDevice density outputs now retain actual storage. Old dense guards
+remain, and all final R2 gates are still required; this is not universal resource
+or SDK API completion. See the [P2 report](../implementation/stage11p_c3_r2_tableau_progress.md).
 
 Task 3E development extends prior allocation/ownership to named gates, builtin
 noise, six native channel representations, dense evolution/reset, integer

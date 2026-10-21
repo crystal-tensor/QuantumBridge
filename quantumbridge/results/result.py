@@ -74,10 +74,12 @@ class Result:
     mps_snapshots: dict[str, Any] = field(default_factory=dict, repr=False)
 
     def statevector(self) -> Optional[np.ndarray]:
-        return None if self.state is None else self.state.copy()
+        from quantumbridge.execution.array_ownership import copied_array
+        return None if self.state is None else copied_array(self.state, category="result_statevector_copy")
 
     def density_matrix(self) -> Optional[np.ndarray]:
-        return None if self.density is None else self.density.copy()
+        from quantumbridge.execution.array_ownership import copied_array
+        return None if self.density is None else copied_array(self.density, category="result_density_copy")
 
     def matrix_product_state(self, label=None):
         """Copy the final MPS or a native labeled save, preserving group nesting.

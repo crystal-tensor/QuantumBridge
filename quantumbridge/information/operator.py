@@ -5,7 +5,8 @@
 
 from __future__ import annotations
 
-from copy import deepcopy
+from cmath import phase as scalar_phase, rect
+from math import isfinite
 from numbers import Number
 
 import numpy as np
@@ -67,17 +68,19 @@ def _expand_subsystem_operator(data: np.ndarray, qargs: tuple[int, ...], num_qub
 
 
 def _reverse_qubit_order(data: np.ndarray, num_qubits: int) -> np.ndarray:
+    from quantumbridge.execution.array_ownership import copied_array
     size = 1 << num_qubits
-    permutation = np.zeros((size, size), dtype=complex)
-    for source in range(size):
-        bits = _index_to_bits(source, num_qubits)
-        dest = _bits_to_index(list(reversed(bits)))
-        permutation[dest, source] = 1.0
-    return permutation @ data @ permutation.T
+    output=copied_array(data,category="operator_reverse")
+    order=tuple(_bits_to_index(list(reversed(_index_to_bits(index,num_qubits)))) for index in range(size))
+    for row,destination in enumerate(order):
+        for column,target in enumerate(order):output[destination,target]=data[row,column]
+    return output
 
 
 class Operator:
     """Dense linear operator with a Qiskit quantum_info-like core API."""
+
+    __array_priority__ = 1000
 
     def __init__(self, data):
         from quantumbridge.execution.resource_context import current_resources
@@ -107,13 +110,20 @@ class Operator:
 
     @classmethod
     def from_label(cls, label: str) -> "Operator":
-        from quantumbridge.utils.math import pauli_matrix
-
-        out = np.array([[1]], dtype=complex)
-        for char in label.upper():
-            if char not in "IXYZ":
-                raise ValueError("QuantumBridge Operator labels may contain only I, X, Y, Z.")
-            out = np.kron(out, pauli_matrix(char))
+        if type(label) is not str or any(char not in "IXYZ" for char in label.upper()):
+            raise ValueError("QuantumBridge Operator labels may contain only I, X, Y, Z.")
+        from quantumbridge.execution import mps_arrays as arrays
+        label=label.upper()
+        out=arrays.filled("operator_pauli_label",(1<<len(label),)*2,complex,0)
+        for column in range(len(out)):
+            row,amplitude=column,1.+0j
+            for wire,symbol in enumerate(label):
+                mask=1<<(len(label)-1-wire)
+                bit=bool(column&mask)
+                if symbol in "XY":row^=mask
+                if symbol=="Y":amplitude*=(-1j if bit else 1j)
+                elif symbol=="Z" and bit:amplitude=-amplitude
+            out[row,column]=amplitude
         return cls(out)
 
     @classmethod
@@ -147,28 +157,19 @@ class Operator:
         return bool(np.allclose(self.data.conj().T @ self.data, eye, atol=atol))
 
     def adjoint(self) -> "Operator":
-        from quantumbridge.execution.resource_context import current_resources
-        if current_resources() is not None:
-            from quantumbridge.execution import mps_arrays as arrays
-            return Operator(arrays.conjugated(self.data).T)
-        return Operator(self.data.conj().T)
+        return Operator(self.conjugate().data.T)
 
     def transpose(self) -> "Operator":
         return Operator(self.data.T)
 
     def conjugate(self) -> "Operator":
-        from quantumbridge.execution.resource_context import current_resources
-        if current_resources() is not None:
-            from quantumbridge.execution import mps_arrays as arrays
-            return Operator(arrays.conjugated(self.data))
-        return Operator(np.conjugate(self.data))
+        copied=self.copy()
+        np.conjugate(copied.data,out=copied.data)
+        return copied
 
     def copy(self) -> "Operator":
-        from quantumbridge.execution.resource_context import current_resources
-        if current_resources() is not None:
-            from quantumbridge.execution.array_reservations import numeric_array
-            return Operator(numeric_array(self.data,copy=True,category="operator_copy"))
-        return Operator(np.array(self.data, copy=True))
+        from quantumbridge.execution.array_ownership import copied_array
+        return Operator(copied_array(self.data,category="operator_copy"))
 
     def compose(self, other: "Operator", qargs=None, front: bool = False) -> "Operator":
         other = other if isinstance(other, Operator) else Operator(other)
@@ -213,7 +214,7 @@ class Operator:
     def tensorpower(self, n: int) -> "Operator":
         if not isinstance(n, int) or n < 0:
             raise ValueError("QuantumBridge Operator tensorpower requires a non-negative integer exponent.")
-        out = Operator(np.array([[1]], dtype=complex))
+        out = Operator.from_label("")
         for _ in range(n):
             out = out.tensor(self)
         return out
@@ -234,21 +235,35 @@ class Operator:
         return self.copy()
 
     def equiv(self, other, atol: float = 1e-10) -> bool:
-        other_data = other.data if isinstance(other, Operator) else np.asarray(other, dtype=complex)
-        if self.data.shape != other_data.shape:
+        from quantumbridge.execution.resource_context import current_resources
+        first=self.data
+        other_data = other.data if isinstance(other, Operator) else other
+        if current_resources() is not None:
+            from quantumbridge.execution.array_reservations import numeric_array
+            first=numeric_array(first,category="operator_equiv_input")
+            other_data=numeric_array(other_data,category="operator_equiv_input")
+        else:other_data=np.asarray(other_data,dtype=complex)
+        if first.shape != other_data.shape:
             return False
-        if np.allclose(self.data, other_data, atol=atol):
+        if not isfinite(atol) or atol<0:raise ValueError("Operator equivalence tolerance must be finite and nonnegative.")
+        pivot,largest=0,0.
+        for index,(a,b) in enumerate(zip(first.flat,other_data.flat)):
+            a,b=complex(a),complex(b)
+            if not all(isfinite(value) for value in (a.real,a.imag,b.real,b.imag)):return False
+            size=max(abs(b.real),abs(b.imag))
+            if size>largest:pivot,largest=index,size
+        def matches(phase):
+            for a,b in zip(first.flat,other_data.flat):
+                a,b=complex(a),complex(b)
+                scale=max(1.,abs(a.real),abs(a.imag),abs(b.real),abs(b.imag))
+                reference=(b/scale)*phase
+                if abs(a/scale-reference)>atol/scale+1e-5*abs(reference):return False
             return True
-        nonzero = np.argwhere(np.abs(other_data) > atol)
-        if nonzero.size == 0:
-            return bool(np.allclose(self.data, other_data, atol=atol))
-        row, col = nonzero[0]
-        if abs(other_data[row, col]) <= atol:
-            return False
-        phase = self.data[row, col] / other_data[row, col]
-        if abs(abs(phase) - 1.0) > atol:
-            return False
-        return bool(np.allclose(self.data, phase * other_data, atol=atol))
+        if matches(1.):return True
+        if not largest:return False
+        # A largest-component pivot avoids amplifying noise in a tiny entry.
+        phase=rect(1.,scalar_phase(complex(first.flat[pivot]))-scalar_phase(complex(other_data.flat[pivot])))
+        return matches(phase)
 
     def to_instruction(self, name: str = "unitary", label: str | None = None) -> Instruction:
         return Instruction(
@@ -258,19 +273,42 @@ class Operator:
         )
 
     def to_matrix(self) -> np.ndarray:
-        from quantumbridge.execution.resource_context import current_resources
-        if current_resources() is not None:
-            from quantumbridge.execution.array_reservations import numeric_array
-            return numeric_array(self.data,copy=True,category="operator_matrix_export")
-        return np.array(self.data, copy=True)
+        from quantumbridge.execution.array_ownership import copied_array
+        return copied_array(self.data,category="operator_matrix_export")
 
     def __matmul__(self, other: "Operator") -> "Operator":
         return self.compose(other)
 
+    def __rmatmul__(self, other) -> "Operator":
+        return Operator(other).compose(self)
+
+    def _arithmetic(self, other, operation, *, scalar=False, reverse=False):
+        from quantumbridge.execution.resource_context import current_resources
+        scope=current_resources()
+        first=self.data
+        second=other.data if isinstance(other,Operator) else other
+        if scope is not None:
+            from quantumbridge.execution.array_reservations import numeric_array, numeric_shape
+            first=numeric_array(first,category="operator_arithmetic_input")
+            if scalar:
+                if numeric_shape(second):raise ValueError("Operator scaling requires a numeric scalar.")
+            else:second=numeric_array(second,category="operator_arithmetic_input")
+        elif not scalar:second=np.asarray(second,dtype=complex)
+        if not scalar and first.shape!=second.shape:
+            raise ValueError("QuantumBridge Operator arithmetic requires equal dimensions.")
+        left,right=(second,first) if reverse else (first,second)
+        if scope is None:return Operator(operation(left,right))
+        from quantumbridge.execution import mps_arrays as arrays
+        output=arrays.owned("operator_arithmetic_output",first.shape,complex)
+        scope.ledger.unavailable("operator_ufunc_iterator_workspace",
+            "The independent matrix output is reserved; NumPy scalar/iterator workspace is not measured RSS.")
+        operation(left,right,out=output)
+        return Operator(output)
+
     def __mul__(self, scalar) -> "Operator":
         if not isinstance(scalar, Number):
             return NotImplemented
-        return Operator(self.data * scalar)
+        return self._arithmetic(scalar,np.multiply,scalar=True)
 
     def __rmul__(self, scalar) -> "Operator":
         return self.__mul__(scalar)
@@ -278,19 +316,19 @@ class Operator:
     def __truediv__(self, scalar) -> "Operator":
         if not isinstance(scalar, Number):
             return NotImplemented
-        return Operator(self.data / scalar)
+        return self._arithmetic(scalar,np.divide,scalar=True)
 
     def __add__(self, other) -> "Operator":
-        other_data = other.data if isinstance(other, Operator) else np.asarray(other, dtype=complex)
-        if self.data.shape != other_data.shape:
-            raise ValueError("QuantumBridge Operator addition requires equal dimensions.")
-        return Operator(self.data + other_data)
+        return self._arithmetic(other,np.add)
+
+    def __radd__(self, other) -> "Operator":
+        return self._arithmetic(other,np.add,reverse=True)
 
     def __sub__(self, other) -> "Operator":
-        other_data = other.data if isinstance(other, Operator) else np.asarray(other, dtype=complex)
-        if self.data.shape != other_data.shape:
-            raise ValueError("QuantumBridge Operator subtraction requires equal dimensions.")
-        return Operator(self.data - other_data)
+        return self._arithmetic(other,np.subtract)
+
+    def __rsub__(self, other) -> "Operator":
+        return self._arithmetic(other,np.subtract,reverse=True)
 
     def __xor__(self, n: int) -> "Operator":
         return self.tensorpower(n)
@@ -299,9 +337,8 @@ class Operator:
         return self.copy()
 
     def __deepcopy__(self, memo) -> "Operator":
-        copied = Operator(deepcopy(self.data, memo))
-        memo[id(self)] = copied
-        return copied
+        from quantumbridge.execution.array_ownership import native_object_deepcopy
+        return native_object_deepcopy(self,memo)
 
     def __eq__(self, other) -> bool:
         try:

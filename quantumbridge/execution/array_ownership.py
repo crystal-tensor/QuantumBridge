@@ -13,6 +13,36 @@ import numpy as np
 from .array_reservations import ArrayReservation
 
 
+_storage_owners, _storage_owner_lock = {}, RLock()
+
+
+def _storage_root(array):
+    while True:
+        base = np.ndarray.base.__get__(array)
+        if not issubclass(type(base), np.ndarray):return array
+        array = base
+
+
+def remember_storage_ledger(array, ledger):
+    """Weak provenance only; this neither owns storage nor reserves a budget."""
+    if ledger is None:return
+    root = _storage_root(array)
+    key = id(root)
+    def forgotten(reference):
+        with _storage_owner_lock:
+            record = _storage_owners.get(key)
+            if record is not None and record[0] is reference:del _storage_owners[key]
+    with _storage_owner_lock:
+        _storage_owners[key] = (weakref.ref(root, forgotten), weakref.ref(ledger))
+
+
+def storage_ledger(array):
+    root = _storage_root(array)
+    with _storage_owner_lock:
+        record = _storage_owners.get(id(root))
+        return None if record is None or record[0]() is not root else record[1]()
+
+
 def _roots(value):
     roots, pending, seen = {}, [value], set()
     while pending:
@@ -47,12 +77,15 @@ def retain_reservation(reservation, value):
         reservation.release()
         return
     remaining, lock = len(roots), RLock()
+    ticket = reservation.ticket if isinstance(reservation, ArrayReservation) else reservation
+    ledger = None if ticket is None else ticket.ledger
     def released():
         nonlocal remaining
         with lock:
             remaining -= 1
             if remaining == 0: reservation.release()
     for root in roots:
+        remember_storage_ledger(root, ledger)
         weakref.finalize(root, released)
 
 
@@ -64,6 +97,24 @@ def retained_array(ledger, category, shape, dtype, factory=None):
         reservation.release()
         raise RuntimeError("Retained array factories must create new owned storage, not borrow a view.")
     retain_reservation(reservation, result)
+    return result
+
+
+def copied_array(value, *, category="native_defensive_copy"):
+    """A real copy follows the active request, otherwise its actual source owner."""
+    from .array_reservations import numeric_shape
+    from .resource_context import current_resources
+    numeric_shape(value)
+    if not issubclass(type(value), np.ndarray):
+        raise TypeError("Native defensive copies require an explicit numeric ndarray.")
+    value = np.ndarray.view(value, np.ndarray)
+    scope = current_resources()
+    ledger = storage_ledger(value) if scope is None else scope.ledger
+    result = retained_array(ledger, category, value.shape, value.dtype)
+    if ledger is not None:
+        ledger.unavailable("native_copy_iterator_workspace",
+            "The copy destination has a storage lease; NumPy iterator and Python allocator workspace is not measured RSS.")
+    np.copyto(result, value, casting="no")
     return result
 
 
@@ -144,10 +195,8 @@ def _immutable_callback_data(value, seen=None):
     return False
 
 
-def _strict_configuration_copy(value, memo, ledger, category, on_array):
+def _strict_configuration_copy(value, memo, ledger, category, on_array, *, preflight_group=False):
     from quantumbridge.core.classical import UnsupportedFeature
-    if ledger is None:
-        raise ValueError("Strict native configuration copying requires an explicit storage account.")
     pending, seen, arrays, native = [value], set(memo), [], []
     atomic = (type(None), bool, int, float, complex, str, bytes, type, range)
     while pending:
@@ -168,8 +217,9 @@ def _strict_configuration_copy(value, memo, ledger, category, on_array):
         elif _exact_type(kind, (FunctionType, BuiltinFunctionType)):
             if not _immutable_callback_data(item):
                 raise UnsupportedFeature("persistent_callable_capture", "Persistent callbacks require immutable explicit captures; opaque captured storage is not copied or executed.")
-            ledger.unavailable("callable_module_state",
-                "Executable code is borrowed; module globals and allocations made by later callback execution are not a copied immutable data snapshot or a process-memory bound.")
+            if ledger is not None:
+                ledger.unavailable("callable_module_state",
+                    "Executable code is borrowed; module globals and allocations made by later callback execution are not a copied immutable data snapshot or a process-memory bound.")
         elif kind is MethodType:
             pending.extend((item.__func__, item.__self__))
         elif _defined_type(kind, "numpy") and any(base is np.generic for base in type.__dict__["__mro__"].__get__(kind)):
@@ -193,16 +243,29 @@ def _strict_configuration_copy(value, memo, ledger, category, on_array):
             # No isinstance/hasattr/vars call on an opaque instance: even
             # looking up __class__ or __dict__ may execute foreign callbacks.
             raise UnsupportedFeature("persistent_foreign_copy", "Persistent storage cannot bound this foreign copy protocol.")
+    if preflight_group:
+        from .array_reservations import array_layout
+        layouts=[array_layout(array.shape,array.dtype) for array in arrays]
+        if ledger is not None:ledger.preflight(memory_bytes=sum(layout[2] for layout in layouts))
     for item, fields in native:
         memo[id(item)] = object.__new__(type(item))
     for array in arrays:
-        copied = retained_array(ledger, category, array.shape, array.dtype,
-            lambda array=array: array.copy(order="K"))
+        copied = (copied_array(array,category=category) if ledger is None else
+            retained_array(ledger, category, array.shape, array.dtype,
+                lambda array=array: array.copy(order="K")))
         memo[id(array)] = copied
         if on_array is not None: on_array(copied)
     for item, fields in native:
         object.__getattribute__(memo[id(item)], "__dict__").update(deepcopy(fields, memo))
     return deepcopy(value, memo)
+
+
+def native_object_deepcopy(value, memo):
+    """Native object copy hooks share the caller's memo, never foreign hooks."""
+    from .resource_context import current_resources
+    scope=current_resources()
+    return _strict_configuration_copy(value,memo,None if scope is None else scope.ledger,
+        "native_object_deepcopy",None,preflight_group=True)
 
 
 def native_configuration_copy(value, *, memo=None, category="native_configuration_copy",
@@ -219,6 +282,8 @@ def native_configuration_copy(value, *, memo=None, category="native_configuratio
     ledger = ledger if ledger is not None else None if scope is None else scope.ledger
     memo = {} if memo is None else dict(memo)
     if strict:
+        if ledger is None:
+            raise ValueError("Strict native configuration copying requires an explicit storage account.")
         return _strict_configuration_copy(value, memo, ledger, category, on_array)
     if ledger is None: return deepcopy(value, memo)
     pending, seen, arrays = [value], set(memo), []

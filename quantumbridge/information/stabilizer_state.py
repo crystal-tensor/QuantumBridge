@@ -10,35 +10,51 @@ from numbers import Integral
 
 import numpy as np
 
-from quantumbridge.information.clifford import Clifford, _gf2_basis, _gf2_solve, _symplectic_product
+from quantumbridge.information.clifford import (
+    Clifford, _gf2_basis, _gf2_solve, _symplectic_product, _stack_binary,
+    _swap_halves, _label_array, _workspace_notice,
+)
 from quantumbridge.operators import Pauli, SparsePauliOperator
 from quantumbridge.operators.pauli import _PHASE_FACTORS, _validate_qargs
+from quantumbridge.execution import mps_arrays as arrays
+from quantumbridge.execution.resource_context import current_resources, meter_native_samples, record_completed_native_shot
 
 
 def _pauli_vector(pauli: Pauli):
-    return np.r_[pauli.x, pauli.z]
+    result=arrays.owned("stabilizer_pauli_vector",(2*pauli.num_qubits,),bool)
+    for index,symbol in enumerate(reversed(pauli._body)):
+        result[index]=symbol in "XY"
+        result[pauli.num_qubits+index]=symbol in "ZY"
+    return result
+
+
+def _generator_rows(paulis,width):
+    result=arrays.owned("stabilizer_generator_rows",(len(paulis),2*width),bool)
+    for row,pauli in enumerate(paulis):
+        for index,symbol in enumerate(reversed(pauli._body)):
+            result[row,index]=symbol in "XY"
+            result[row,width+index]=symbol in "ZY"
+    return result
 
 
 def _nullspace(matrix):
     reduced = _gf2_basis(matrix)
     width = reduced.shape[1]
-    pivots = [int(np.flatnonzero(row)[0]) for row in reduced]
-    vectors = []
-    for column in range(width):
-        if column in pivots:
-            continue
-        vector = np.zeros(width, dtype=bool)
-        vector[column] = True
+    pivots=[next(index for index,value in enumerate(row) if value) for row in reduced]
+    free=[column for column in range(width) if column not in pivots]
+    vectors=arrays.filled("stabilizer_nullspace",(len(free),width),bool,False)
+    for vector,column in zip(vectors,free):
+        vector[column]=True
         for row, pivot in enumerate(pivots):
             vector[pivot] = reduced[row, column]
-        vectors.append(vector)
-    return np.array(vectors, dtype=bool).reshape(-1, width)
+    return vectors
 
 
 class StabilizerState:
     """Pure stabilizer state with polynomial-memory Clifford-tableau execution."""
 
     def __init__(self, data, validate: bool = True):
+        _workspace_notice()
         if isinstance(data, StabilizerState):
             self._clifford = data.clifford.copy()
             self._rng = deepcopy(data._rng)
@@ -53,6 +69,9 @@ class StabilizerState:
         allow_redundant: bool = False,
         allow_underconstrained: bool = False,
     ) -> "StabilizerState":
+        if current_resources() is not None and type(stabilizers) not in (list,tuple):
+            from quantumbridge.core.classical import UnsupportedFeature
+            raise UnsupportedFeature("stabilizer_generator_sequence","Managed generator conversion requires an explicit builtin sequence.")
         supplied = [Pauli(label) for label in stabilizers]
         if not supplied:
             raise ValueError("QuantumBridge needs a non-empty stabilizer list to infer state width.")
@@ -69,35 +88,36 @@ class StabilizerState:
             for pivot in sorted(basis):
                 if _pauli_vector(reduced)[pivot]:
                     reduced = reduced.dot(basis[pivot])
-            positions = np.flatnonzero(_pauli_vector(reduced))
-            if not positions.size:
+            vector=_pauli_vector(reduced)
+            pivot=next((index for index,value in enumerate(vector) if value),None)
+            if pivot is None:
                 if reduced.phase:
                     raise ValueError("QuantumBridge stabilizer constraints contain negative identity.")
                 if not allow_redundant:
                     raise ValueError("QuantumBridge stabilizer generators are redundant.")
                 continue
-            basis[int(positions[0])] = reduced
+            basis[pivot] = reduced
             independent.append(pauli)
 
         if len(independent) < width and not allow_underconstrained:
             raise ValueError("QuantumBridge stabilizer list is underconstrained.")
         while len(independent) < width:
-            vectors = np.array([_pauli_vector(pauli) for pauli in independent], dtype=bool).reshape(-1, 2 * width)
-            constraints = np.c_[vectors[:, width:], vectors[:, :width]]
+            vectors=_generator_rows(independent,width)
+            constraints=_swap_halves(vectors)
             for candidate in _nullspace(constraints):
-                if len(_gf2_basis(np.vstack([vectors, candidate]))) > len(independent):
+                if len(_gf2_basis(_stack_binary(vectors,candidate[None,:]))) > len(independent):
                     independent.append(Pauli((candidate[width:], candidate[:width])))
                     break
             else:
                 raise ValueError("QuantumBridge cannot complete the stabilizer constraints.")
 
-        stabilizer_vectors = np.array([_pauli_vector(pauli) for pauli in independent])
-        constraints = np.c_[stabilizer_vectors[:, width:], stabilizer_vectors[:, :width]]
+        stabilizer_vectors=_generator_rows(independent,width)
+        constraints=_swap_halves(stabilizer_vectors)
         destabilizers = []
         for index in range(width):
-            additional = np.array([_pauli_vector(pauli) for pauli in destabilizers], dtype=bool).reshape(-1, 2 * width)
-            equations = np.vstack([constraints, np.c_[additional[:, width:], additional[:, :width]]])
-            target = np.zeros(width + index, dtype=bool)
+            additional=_generator_rows(destabilizers,width)
+            equations=_stack_binary(constraints,_swap_halves(additional))
+            target=arrays.filled("stabilizer_dual_target",(width+index,),bool,False)
             target[index] = True
             vector = _gf2_solve(equations, target)
             destabilizers.append(Pauli((vector[width:], vector[:width])))
@@ -182,54 +202,60 @@ class StabilizerState:
         return all(self.expectation_value(operand.clifford._row_pauli(self.num_qubits + row)) == 1 for row in range(self.num_qubits))
 
     def _measure_z(self, qubit: int, forced=None, rng=None):
-        pivot_rows = np.flatnonzero(self.clifford.stab_x[:, qubit])
-        if not pivot_rows.size:
-            z = np.zeros(self.num_qubits, dtype=bool)
-            z[qubit] = True
-            observable = Pauli((z, np.zeros(self.num_qubits, dtype=bool)))
+        destabilizer_row=next((row for row in range(self.num_qubits) if self.clifford.stab_x[row,qubit]),None)
+        label="I"*(self.num_qubits-1-qubit)+"Z"+"I"*qubit
+        if destabilizer_row is None:
+            observable=Pauli(label)
             outcome = 0 if self.expectation_value(observable).real > 0 else 1
             return outcome, float(forced is None or forced == outcome)
 
         outcome = int((self._rng if rng is None else rng).integers(2)) if forced is None else int(forced)
-        destabilizer_row = int(pivot_rows[0])
         pivot = self.num_qubits + destabilizer_row
         generator = self.clifford._row_pauli(pivot)
-        for row in np.flatnonzero(self.clifford.x[:, qubit]):
-            if row not in (pivot, destabilizer_row):
-                self.clifford._set_row(int(row), self.clifford._row_pauli(int(row)).dot(generator))
+        for row in range(2*self.num_qubits):
+            if self.clifford.x[row,qubit] and row not in (pivot,destabilizer_row):
+                self.clifford._set_row(row,self.clifford._row_pauli(row).dot(generator))
         self.clifford._set_row(destabilizer_row, generator)
-        z = np.zeros(self.num_qubits, dtype=bool)
-        z[qubit] = True
-        self.clifford._set_row(pivot, Pauli((z, np.zeros(self.num_qubits, dtype=bool), 2 * outcome)))
+        generator=Pauli(label)
+        generator.phase=2*outcome
+        self.clifford._set_row(pivot,generator)
         return outcome, 0.5
 
-    def measure(self, qargs=None):
+    @meter_native_samples(result_count=lambda result:1)
+    def _measure_once(self,qargs=None,shots=1,reset=False):
         selected = self._qubits(qargs)
         result = self.copy()
-        outcomes = [result._measure_z(qubit, rng=self._rng)[0] for qubit in selected]
+        outcomes=[]
+        for qubit in selected:
+            outcome=result._measure_z(qubit,rng=self._rng)[0]
+            outcomes.append(outcome)
+            if reset and outcome:result.clifford._append_gate("x",(qubit,))
+        record_completed_native_shot()
         result._rng = deepcopy(self._rng)
+        if reset:return result
         return "".join(str(value) for value in reversed(outcomes)), result
 
-    def reset(self, qargs=None):
-        selected = self._qubits(qargs)
-        result = self.copy()
-        for qubit in selected:
-            outcome, _ = result._measure_z(qubit, rng=self._rng)
-            if outcome:
-                result.clifford._append_gate("x", (qubit,))
-        result._rng = deepcopy(self._rng)
-        return result
+    def measure(self,qargs=None):
+        return self._measure_once(qargs)
 
+    def reset(self, qargs=None):
+        return self._measure_once(qargs,reset=True)
+
+    @meter_native_samples
     def sample_memory(self, shots: int, qargs=None):
-        if not isinstance(shots, Integral) or shots < 0:
+        if isinstance(shots,bool) or not isinstance(shots, Integral) or shots < 0:
             raise ValueError("QuantumBridge stabilizer shots must be a non-negative integer.")
         selected = self._qubits(qargs)
+        scope=current_resources()
+        if scope is not None:
+            scope.ledger.preflight(memory_bytes=4*max(1,len(selected))*shots+(self.clifford.tableau.nbytes if shots else 0))
         memory = []
         for _ in range(shots):
             collapsed = self.copy()
             outcomes = [collapsed._measure_z(qubit, rng=self._rng)[0] for qubit in selected]
+            record_completed_native_shot()
             memory.append("".join(str(value) for value in reversed(outcomes)))
-        return np.asarray(memory, dtype=str)
+        return _label_array(memory,len(selected),"stabilizer_sample_labels")
 
     def sample_counts(self, shots: int, qargs=None):
         counts = {}
@@ -260,7 +286,7 @@ class StabilizerState:
 
     def probabilities(self, qargs=None, decimals=None):
         selected = self._qubits(qargs)
-        probabilities = np.zeros(1 << len(selected))
+        probabilities=arrays.filled("stabilizer_probability_output",(1<<len(selected),),float,0)
         for key, value in self.probabilities_dict(selected, decimals=decimals).items():
             probabilities[int(key or "0", 2)] = value
         return probabilities
@@ -284,8 +310,7 @@ class StabilizerState:
     def to_density_matrix(self):
         from quantumbridge.information.density_matrix import DensityMatrix
 
-        vector = self.to_statevector().data
-        return DensityMatrix(np.outer(vector, vector.conj()))
+        return DensityMatrix.from_statevector(self.to_statevector())
 
     def __repr__(self):
         return f"StabilizerState({self.clifford.to_labels(mode='S')!r})"

@@ -1,6 +1,6 @@
 # Source Migration Ledger
 
-Status: Stage 11P-C3-R1 in progress; C3 checkpoint 71f211d committed
+Status: Stage 11P-C3-R2 partial; local R1 checkpoint 89bd0f1 committed
 Date: 2026-10-21
 
 This ledger retains historical release and checkpoint sections. Current work
@@ -8,6 +8,65 @@ uses Native Implementation, Adapter Integration and Upstream Dependency, with
 their boundaries stated separately. Historical checkpoint limitations are not
 the current status view; use core_parity_ledger.md for that view.
 No Source Port with Attribution was performed.
+
+## Stage 11P-C3-R2 State/Result Source Inventory
+
+Independent Native Implementation. Public Qiskit APIs are optional black-box
+test oracles only; NumPy public array/RNG behavior is used by the native code.
+No upstream implementation or test source was read/copied/ported. No SDK
+quantum execution engine, vendoring, cloud, hardware, token or auth changes.
+
+- `quantumbridge/execution/array_ownership.py`: shared weak storage provenance
+  and pre-admitted independent defensive copies.
+- `quantumbridge/execution/mps_arrays.py`: reuse the existing ownership helpers
+  and shared weak metadata, preserving native MPS helper names.
+- `quantumbridge/execution/resource_context.py`: confirmed categorical buffer
+  shots remain consumed before later formatting.
+- `quantumbridge/information/statevector.py`: independently authored Pauli
+  eigenstates, reset, subsystem counts and bounded existing state operations.
+- `quantumbridge/information/density_matrix.py`: existing native density
+  construction/measure/tensor/reversal/sampling with explicit admitted buffers.
+- `quantumbridge/results/result.py`: existing public state/density accessors
+  return independently owned copies with actual source/new-request accounts.
+- `tests/derivative_execution/test_quantum_info_state_resources.py` and
+  `tests/derivative_execution/test_result_array_resources.py`: independently
+  authored mathematical, allocation, lifetime, fault and public differential
+  scenarios, not copied upstream tests.
+- `docs/implementation/stage11p_c3_r2_execution_prompt.md` and
+  `docs/implementation/stage11p_c3_r2_state_result_progress.md`: scoped spec,
+  actual red/green receipts, validation status and remaining functional gaps.
+
+Operator/tableau work, old allowance retirement and final R2 acceptance are
+not claimed. Full functional replacement remains incomplete.
+
+The subsequent P1 slice additionally modifies
+`quantumbridge/information/operator.py` and
+`quantumbridge/information/channels.py`, reusing the audited native field copier
+in `array_ownership.py` for shared caller memo and independent roots. Native
+reflected matrix arithmetic, standard Pauli permutation labels and stable
+scalar global-phase comparison were independently authored. New tests in
+`tests/derivative_execution/test_quantum_info_operator_copy_resources.py`
+use direct NumPy mathematics and optional public Qiskit calls as black-box
+oracles. No implementation/test source port or new quantum engine occurred.
+The scope correction for persistent-pool partial-copy failure preserves the
+original test rather than changing its established lifetime contract. See
+`docs/implementation/stage11p_c3_r2_operator_channel_progress.md` for actual
+receipts; P2 and final R2 acceptance remain open.
+
+The bounded P2 slice additionally changes
+`quantumbridge/information/clifford.py`,
+`quantumbridge/information/stabilizer_state.py`,
+`quantumbridge/operators/pauli.py` and
+`quantumbridge/devices/statevector_device.py`. It reuses existing native tableau,
+GF(2), Pauli and density formulas with admitted ndarray storage and real root
+lifetimes. The small-gate cache stores immutable Python descriptors, not
+third-party source or a new engine. Mathematical/resource tests in
+`tests/derivative_execution/test_tableau_resources.py` were independently
+authored; public installed Qiskit calls are optional black-box oracles only.
+No implementation/test source port, vendoring, credentials or cloud calls.
+The old dense guard is intentionally retained after an actual overlap/residual
+audit. Exact results and incomplete final gates are in
+`docs/implementation/stage11p_c3_r2_tableau_progress.md`.
 
 ## Stage 11P-C3-R1 In-Progress Source Inventory
 

@@ -18,7 +18,7 @@ _PHASE_PREFIXES = ("", "-i", "-", "i")
 
 def _validate_qargs(qargs, width: int, target_width: int) -> tuple[int, ...]:
     raw = tuple(qargs)
-    if any(not isinstance(qarg, Integral) for qarg in raw):
+    if any(isinstance(qarg,bool) or not isinstance(qarg, Integral) for qarg in raw):
         raise ValueError("QuantumBridge Pauli qargs must be integers.")
     selected = tuple(int(qarg) for qarg in raw)
     if len(selected) != width or len(set(selected)) != len(selected):
@@ -65,8 +65,14 @@ class Pauli:
             self._body = body
             self._phase = phase
         elif isinstance(data, tuple) and len(data) in (2, 3):
-            z = np.asarray(data[0], dtype=bool)
-            x = np.asarray(data[1], dtype=bool)
+            from quantumbridge.execution.resource_context import current_resources
+            if current_resources() is None:
+                z=np.asarray(data[0],dtype=bool)
+                x=np.asarray(data[1],dtype=bool)
+            else:
+                from quantumbridge.execution.array_reservations import numeric_array
+                z=numeric_array(data[0],dtype=bool,category="pauli_z_input")
+                x=numeric_array(data[1],dtype=bool,category="pauli_x_input")
             if z.ndim != 1 or z.shape != x.shape:
                 raise ValueError("QuantumBridge Pauli symplectic arrays must have equal one-dimensional shape.")
             chars = ["Y" if zb and xb else "Z" if zb else "X" if xb else "I" for zb, xb in zip(z, x)]
@@ -100,7 +106,10 @@ class Pauli:
 
     @property
     def z(self) -> np.ndarray:
-        return np.array([char in "ZY" for char in reversed(self._body)], dtype=bool)
+        from quantumbridge.execution import mps_arrays as arrays
+        result=arrays.owned("pauli_z_export",(self.num_qubits,),bool)
+        for index,char in enumerate(reversed(self._body)):result[index]=char in "ZY"
+        return result
 
     @z.setter
     def z(self, value) -> None:
@@ -111,7 +120,10 @@ class Pauli:
 
     @property
     def x(self) -> np.ndarray:
-        return np.array([char in "XY" for char in reversed(self._body)], dtype=bool)
+        from quantumbridge.execution import mps_arrays as arrays
+        result=arrays.owned("pauli_x_export",(self.num_qubits,),bool)
+        for index,char in enumerate(reversed(self._body)):result[index]=char in "XY"
+        return result
 
     @x.setter
     def x(self, value) -> None:

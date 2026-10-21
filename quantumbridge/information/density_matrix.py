@@ -10,7 +10,8 @@ import numpy as np
 from typing import Union
 from numbers import Integral
 
-from .statevector import Statevector
+from .statevector import Statevector, _sample_measurements, _tensor_arrays
+from quantumbridge.execution.resource_context import current_resources, meter_native_samples
 from quantumbridge.utils.math import bit_at
 
 
@@ -57,6 +58,18 @@ class DensityMatrix:
 
     @classmethod
     def from_statevector(cls, statevector: Union[Statevector, np.ndarray]) -> "DensityMatrix":
+        scope=current_resources()
+        if scope is not None:
+            from quantumbridge.execution import mps_arrays as arrays
+            from quantumbridge.execution.array_reservations import numeric_shape, numeric_array, array_layout
+            raw=statevector.data if type(statevector) is Statevector else statevector
+            shape=numeric_shape(raw)
+            if len(shape)!=1:raise ValueError("DensityMatrix.from_statevector requires a vector.")
+            dimension=shape[0]
+            conversion=0 if issubclass(type(raw),np.ndarray) and np.ndarray.view(raw,np.ndarray).dtype==np.dtype(complex) else 16*dimension
+            scope.ledger.preflight(memory_bytes=array_layout((dimension,dimension),complex)[2]+16*dimension+conversion)
+            vector=numeric_array(raw,category="density_vector_input")
+            return cls(arrays.einsum("i,j->ij",(dimension,dimension),vector,arrays.conjugated(vector)))
         vector = statevector.data if isinstance(statevector, Statevector) else np.asarray(statevector, dtype=complex)
         return cls(np.outer(vector, np.conjugate(vector)))
 
@@ -107,12 +120,11 @@ class DensityMatrix:
         return DensityMatrix(partial_trace(self.data, tuple(keep), self.num_qubits))
 
     def probabilities(self, wires=None) -> dict[str, float]:
-        selected = tuple(range(self.num_qubits) if wires is None else wires)
+        selected = _validate_qargs(wires,self.num_qubits)
         probs: dict[str, float] = {}
-        diag = np.real_if_close(np.diag(self.data))
-        for index, value in enumerate(diag):
+        for index in range(len(self.data)):
             key = "".join(str(bit_at(index, wire, self.num_qubits)) for wire in selected)
-            probs[key] = probs.get(key, 0.0) + float(np.real(value))
+            probs[key] = probs.get(key, 0.0) + complex(self.data[index,index]).real
         return probs
 
     def probabilities_dict(self, qargs=None) -> dict[str, float]:
@@ -193,6 +205,18 @@ class DensityMatrix:
 
     def measure(self, qargs=None, seed=None):
         selected = _validate_qargs(qargs, self.num_qubits)
+        if current_resources() is not None:
+            current_resources().ledger.preflight(memory_bytes=self.data.nbytes)
+            outcome=self.sample_memory(1,qargs=selected,seed=seed)[0]
+            indices=tuple(index for index in range(1<<self.num_qubits)
+                if all(bit_at(index,wire,self.num_qubits)==int(bit) for wire,bit in zip(selected,outcome)))
+            probability=sum(complex(self.data[index,index]).real for index in indices)
+            if probability<=0:raise ValueError("Measurement produced a zero-probability density collapse.")
+            from quantumbridge.execution import mps_arrays as arrays
+            result=arrays.filled("density_projection",self.data.shape,complex,0)
+            for row in indices:
+                for column in indices:result[row,column]=self.data[row,column]/probability
+            return outcome,DensityMatrix(result)
         outcome = self.sample_memory(1, qargs=selected, seed=seed)[0]
         mask = np.array([
             all(bit_at(index, wire, self.num_qubits) == int(bit) for wire, bit in zip(selected, outcome))
@@ -204,52 +228,47 @@ class DensityMatrix:
 
     def tensor(self, other) -> "DensityMatrix":
         other_state = other if isinstance(other, DensityMatrix) else DensityMatrix(other)
-        return DensityMatrix(np.kron(self.data, other_state.data))
+        return DensityMatrix(_tensor_arrays(self.data,other_state.data))
 
     def expand(self, other) -> "DensityMatrix":
         other_state = other if isinstance(other, DensityMatrix) else DensityMatrix(other)
-        return DensityMatrix(np.kron(other_state.data, self.data))
+        return DensityMatrix(_tensor_arrays(other_state.data,self.data))
 
     def reverse_qargs(self) -> "DensityMatrix":
+        if current_resources() is not None:
+            from quantumbridge.execution.array_ownership import copied_array
+            result=copied_array(self.data,category="density_reverse")
+            order=tuple(int(format(index,f"0{self.num_qubits}b")[::-1],2) for index in range(len(self.data)))
+            for row,destination in enumerate(order):
+                for column,target in enumerate(order):result[destination,target]=self.data[row,column]
+            return DensityMatrix(result)
         permutation = _reverse_permutation(self.num_qubits)
         return DensityMatrix(permutation @ self.data @ permutation.T)
 
+    @meter_native_samples(result_count=lambda counts:sum(counts.values()))
     def sample_counts(self, shots: int, qargs=None, seed: int | None = None) -> dict[str, int]:
-        if shots < 0:
-            raise ValueError("QuantumBridge DensityMatrix sample_counts shots cannot be negative.")
-        labels = sorted(self.probabilities(qargs))
-        probs_dict = self.probabilities(qargs)
-        probs = np.array([probs_dict[label] for label in labels], dtype=float)
-        probs = probs / probs.sum()
-        rng = np.random.default_rng(seed)
-        draws = rng.choice(len(labels), size=shots, p=probs)
-        counts = {label: 0 for label in labels}
-        for draw in draws:
-            counts[labels[int(draw)]] += 1
-        return {key: value for key, value in counts.items() if value}
+        from . import statevector as sampling
+        return sampling._counts_from_indices(*_sample_measurements(self,_validate_qargs(qargs,self.num_qubits),shots,seed))
 
+    @meter_native_samples
     def sample_memory(self, shots: int, qargs=None, seed: int | None = None) -> list[str]:
-        if shots < 0:
-            raise ValueError("QuantumBridge DensityMatrix sample_memory shots cannot be negative.")
-        labels = sorted(self.probabilities(qargs))
-        probs_dict = self.probabilities(qargs)
-        probs = np.array([probs_dict[label] for label in labels], dtype=float)
-        probs = probs / probs.sum()
-        rng = np.random.default_rng(seed)
-        draws = rng.choice(len(labels), size=shots, p=probs)
-        return [labels[int(draw)] for draw in draws]
+        from . import statevector as sampling
+        return sampling._memory_from_indices(*_sample_measurements(self,_validate_qargs(qargs,self.num_qubits),shots,seed))
 
     def copy(self) -> "DensityMatrix":
-        return DensityMatrix(np.array(self.data, copy=True))
+        from quantumbridge.execution.array_ownership import copied_array
+        return DensityMatrix(copied_array(self.data,category="density_copy"))
 
     def conjugate(self) -> "DensityMatrix":
-        return DensityMatrix(np.conjugate(self.data))
+        copied=self.copy()
+        np.conjugate(copied.data,out=copied.data)
+        return copied
 
     def transpose(self) -> "DensityMatrix":
         return DensityMatrix(self.data.T)
 
     def adjoint(self) -> "DensityMatrix":
-        return DensityMatrix(self.data.conj().T)
+        return DensityMatrix(self.conjugate().data.T)
 
     def to_operator(self):
         from quantumbridge.information.operator import Operator
