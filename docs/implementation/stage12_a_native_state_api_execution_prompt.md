@@ -1892,3 +1892,206 @@ rebase/amend/tag/release。新SHA远端CI NOT_VERIFIED。
 scoped commit、有界报告。目标让核心数学对象与线路执行真正连接，不包装或重建已有
 引擎。完整Qiskit/PennyLane独立原生full functional parity/full replacement仍为
 ACTIVE / INCOMPLETE，C3 PARTIAL，Studio最后。
+
+## Stage 12-B P2 Received Execution Prompt
+
+Received 2026-10-22 after reporting actual P1 code
+2ec69c4b1eb0059b26633569442456986e440e1e and terminal final receipts to the
+authorized conversation. Its acceptance is explicitly based on the report, not
+an independent audit of unpushed sources or full class/SDK parity. Complete
+Tasks 0-13 and the closing execution decision were read. A completed-marked AX
+view initially stopped at Task 10's heading; clicking the observed Scroll To
+Bottom control revealed Task 10's body, Tasks 11-13 and closing. No duplicate
+tail request, regeneration or acknowledgement loop was sent. Formatting below
+is normalized with all functional, gate and stop requirements retained. P2 is a
+received plan, NOT a claimed implementation. The subsequent documentation-only
+receipt commit changes HEAD metadata, not the reported P1 runtime baseline.
+
+### Next Batch Decision
+
+Stage 12-B P2: Native Parameterized Circuit / Instruction Binding & Structural
+Operations。P1 已连通 Circuit -> Instruction -> State/Density/Operator，下一步确认
+参数化线路可可靠绑定、组合、反向、重复使用并执行，这是 QuantumCircuit、QNode、VQE
+和变分算法之间的基础连接。已有 binding、composite instruction、compiler 和 QNode
+导数不能重做，只补当前原生 API 真实缺失或错误的函数。
+
+### Task 0 - 基线、目标和禁止事项
+
+报告时本地代码 HEAD 2ec69c4b1eb0059b26633569442456986e440e1e；P1 有界本地验收完成，
+Stage 11P-C3 PARTIAL。最高目标完整独立原生 Qiskit/PennyLane full functional parity /
+full replacement ACTIVE / INCOMPLETE。补现有 Circuit/Instruction 参数表达式、绑定和
+结构代数真实缺口，使参数化线路能反复组合并交给 P1 原生执行内核。不开发第二套
+Circuit IR、Parameter 系统、模拟器或 QNode 引擎，不进入 Capture/Studio，不接云或真机。
+
+### Task 1 - 真实 API 与实现缺口调查
+
+检查现有真实方法签名、IR、参数表达式系统和测试。使用已安装 Qiskit 2.4.1/2.6.0
+公开 API 黑盒调查真实操作，优先包括：
+
+- Parameter、ParameterExpression、ParameterVector。
+- QuantumCircuit.parameters、assign_parameters()、compose()。
+- QuantumCircuit.to_instruction()、to_gate()。
+- 当前 Instruction 参数持有与绑定。
+- 当前受支持指令 inverse()、power()。
+- 参数化线路 copy、decompose、repeat 行为。
+
+不根据方法名猜测参数、返回值或异常，不混淆 QuantumCircuit、Instruction、Gate 接口。
+分类 EXISTING_CORRECT（现有真实数学/API）、MISSING（public 有、native 缺）、INCORRECT
+（native 有但结果/契约错误）、UNSUPPORTED_BY_CURRENT_IR（需要新 IR）。只实现能复用
+现有原生核心的 MISSING/INCORRECT 子集。未确认的公开参数表达式语义先黑盒实验，
+不从上游源码移植。
+
+### Task 2 - 真实红灯与首批范围
+
+按实际缺口优先选择以下三组中能形成独立数学闭环的内容。
+
+P2-A 参数表达式与绑定验证：
+
+1. 多个共享参数出现在不同门中。
+2. 表达式包含加减、乘法和可支持的数学函数。
+3. 先部分绑定，再绑定剩余参数。
+4. 参数顺序与 ParameterVector 真实契约。
+5. 原线路保持不变/原位修改的公开行为。
+6. 同名但不同身份参数处理。
+7. 缺失参数、重复键、不支持类型的拒绝。
+8. 绑定后矩阵随参数真正变化。
+
+已有正确内容只保留回归，不制造缺失。
+
+P2-B Parameterized Composite Instruction：验证 Parameterized Circuit ->
+Composite Instruction -> Parent Circuit -> assign_parameters -> Native
+State/Operator execution 的参数传播。重点为嵌套参数引用、copy 后参数身份、同一指令
+多次复用、不同 wire 布局、gate 顺序、global phase，以及绑定后缓存失效。不提前把
+未绑定指令换成固定矩阵，导致后续参数改变不起作用。
+
+P2-C 结构代数：只对真实公开契约、现有 IR 支持的静态 unitary 子集补确证缺失的
+Circuit compose、Instruction inverse、受支持 integer power、合法分解、操作数映射和
+参数传播。不得把测量/reset/classical feedback/一般控制流当可逆 unitary，不重写
+Stage 11J 动态执行器。至少保存两条真实 production 红灯、修复前日志与独立 exit。
+
+### Task 3 - 最小原生实现
+
+优先修改现有 Parameter/Expression、Circuit、Instruction、绑定路径：
+
+- 保留符号表达式直到合法绑定时机，不丢共享参数身份。
+- 使用现有 Circuit IR，保留 global phase。
+- 保留参数表达式与实际量子门关联。
+- 复用现有 Gate matrix、Operator、Device。
+- 绑定失败不部分修改原对象。
+- 生产执行不借 Qiskit/PennyLane。
+
+原位/非原位绑定遵守实际公开契约和 native 合法行为。未绑定参数不得任意代默认数值
+执行并返回看似正确的矩阵。
+
+### Task 4 - 独立数学 Oracle
+
+Oracle A：测试中独立计算参数门的显式复矩阵表达式，按真实门序相乘。Oracle B：独立
+逐门张量收缩作用输入态，比较完整复振幅。覆盖非交换参数旋转、共享参数、非线性
+表达式、嵌套指令、非连续/反向 wire、global phase、复初态、多组独立参数输入。
+比较完整复矩阵或 state，不能只比较概率。
+
+### Task 5 - 导数与既有执行系统
+
+复用现有 parameter-shift、adjoint、JVP/VJP/HVP、QNode，不开发新 autodiff 框架；只验证
+新增/修复绑定路径不破坏导数。至少一条有共享参数和非线性表达式的实际线路比较：
+
+1. 绑定后的 forward value。
+2. 有解析依据的梯度。
+3. 小规模中心有限差分参考。
+4. 现有 native derivative execution 真正输出。
+
+若非线性表达式不受现有导数系统支持，明确 PARTIAL，不声称完整可微性。
+
+### Task 6 - 两条真实组合调用链
+
+链 A：Parameter/ParameterExpression -> QuantumCircuit -> assign_parameters ->
+Operator -> Statevector -> expectation_value，至少三组不同参数，每次输出真实变化且与
+独立数学一致。链 B：Parameterized Subcircuit -> Instruction -> Parent Circuit ->
+bind -> DensityMatrix evolve -> partial_trace -> purity/expectation。
+明确两链输入参数、数值输出、global phase、执行顺序、wire mapping 和 oracle 误差。
+不把独立 Operator 数学测试冒充完整参数化组合执行。
+
+### Task 7 - 公开行为差分
+
+Qiskit 2.4.1/2.6.0 公开 API 验证受支持函数，分别报告参数身份/表达式、顺序、部分
+绑定、in-place/copy、composite instruction、inverse/power、phase、数值、异常、metadata。
+public records 不得叫 native tests passed；不复制上游实现/测试，不修改 P0.2/P0.3
+现有公开差异字面证据。
+
+### Task 8 - 失败恢复与资源边界
+
+只管理本批新增参数容器、受控副本和数值数组：failed binding 不污染原 Circuit；
+同一 Instruction 在多线路复用不串值；旧缓存不错误复用失效参数结果；受控 ndarray
+copy 分配前预约；valid -> invalid/overbudget -> valid；retained Result/array view
+生命周期；foreign parameter/array protocol 安全拒绝。禁止全局 allocator 审计。
+
+### Task 9 - 回归与停止条件
+
+保护 P0.1-P0.7 State/Density/Operator、P1 bridge、C2A second-adjoint/HVP、四框架、
+100-qubit MPS、H2、QASM/QPY、Aer Noise/Save/Set、dynamic control、Result/Snapshot。
+已正确候选标 EXISTING_CORRECT 不重写；全调查无可修复缺口则 NO_NEW_FUNCTIONAL_GAP
+并结束本批，不做假功能提交。不扩新 Circuit IR、Primitives framework、general mapped
+channels、PennyLane Capture、Studio、云硬件或无界 allocator 重构。
+
+### Task 10 - 新增功能验收
+
+至少 10 个参数表达式/绑定数学场景、8 个 composite Instruction 场景、6 个结构运算/
+inverse/order 场景、6 个失败/缓存/资源场景、两个版本公开黑盒差分、两条真实端到端
+链、一个 forward 与现有 derivative 一致性案例。数量是下限，不能用重复参数化案例
+充当不同数学行为。每项新功能必须有真实缺口 -> Red -> Native fix -> Independent
+math -> Public differential -> Regression。
+
+### Task 11 - 最终冻结与完整门禁
+
+实现后冻结唯一 production/tests/examples 树，同树运行：
+
+1. SDK-free FULL pytest。
+2. Main FULL pytest + explicit coverage。
+3. Alternate FULL pytest。
+4. 独立 JAX、独立 TF、Torch/Autograd focused。
+5. 原始完整 28 段 local matrix，独立真实 shell exit。
+6. Compileall、controlled legal、privacy/security/no-token/no-vendor。
+7. 五环境版本、实际 origins、pipcheck。
+8. Frozen/export/workspace/staged/committed runtime 一致性。
+
+历史 coverage 基线 90.64759814049587%，68 exclusions 不增加，不代替功能对等率。
+七个缺依赖子集保留 NOT_EXECUTED，QOS/Quafu/Runtime offline 不冒充云/真机。
+dirty Router ledger 失败与 passing controlled legal 分别披露。全部进程真实终止；
+回归保留原始 red、最小修复、重新冻结，在最终树重跑必要门禁。
+
+### Task 12 - Scoped 本地提交
+
+必要门禁通过后只 stage 本批归属路径，不用 git add .；检查真实 index；核对 staged
+与受测 runtime；正常本地 commit 不 amend；再核对 committed/tested，输出实际 SHA、
+文件清单和摘要。禁改/暂存用户 Studio/Router；不 push，除非 Owner 后续明确恢复授权
+且 fresh fetch 证明 FF 安全。不改认证/TLS、不读 token、不云/硬件、不 vendor、
+force/reset/rebase/amend/tag/release。新 SHA 远端 CI NOT_VERIFIED。
+
+### Task 13 - 最终完整报告
+
+1. 实际确认的参数化 Circuit/Instruction 缺口。
+2. 原已有且保持正确的功能。
+3. 本批真正新增函数与签名。
+4. Red/green 与数学证明。
+5. 两套独立 Oracle。
+6. 参数身份、共享参数与缓存生命周期。
+7. Inverse/compose/decompose 支持边界。
+8. Phase/wire order/typed dims。
+9. Forward 与既有 gradient 的组合验证。
+10. 两条完整数值调用链。
+11. 两版 Qiskit 差分与剩余兼容问题。
+12. 三环境 FULL、四框架、coverage、28 段 matrix。
+13. 五环境 origin/pip、合规、受测树一致性。
+14. 本地 commit 与新 SHA 远端 CI。
+15. 未完成 Circuit/Primitives/QNode/SDK 核心功能。
+
+仅实证充分函数切片 Verified Native。
+
+### Closing Execution Decision
+
+现在启动 P2：先审计现有 Parameter/ParameterExpression、Circuit、Instruction 真实
+缺口，优先补参数绑定和 composite Instruction 原生组合执行。公开黑盒、真红、最小
+native fix、双 oracle、既有导数一致性之后，同树完整门禁和 scoped commit。不机械
+新增大型 Parameter 框架，已有正确核心直接复用。不启动新 Primitives、Capture 或
+Studio。最高目标完整 Qiskit/PennyLane 独立原生 full functional parity/full replacement
+仍 ACTIVE / INCOMPLETE，C3 PARTIAL，Studio 最后。

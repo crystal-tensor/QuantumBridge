@@ -245,7 +245,56 @@ unchanged. Studio is last. No real cloud/hardware or new-SHA remote CI is verifi
 
 ## Local Commit
 
-The bounded slice meets the above local acceptance conditions. The following
-scoped normal commit records only its explicit owned files after staged/export/
-workspace runtime equality and whitespace checks; actual commit SHA and final
-post-commit equality are appended in the receipt update, not guessed in advance.
+Normal local code commit: 2ec69c4b1eb0059b26633569442456986e440e1e,
+full tree e04c0fda96a8a0a9483b2fd7cb5fe7c531f9971f, 12 files,
+6342 insertions / 12 deletions. No push or remote new-SHA CI. The staged
+write-tree matched that entire final-code tree exactly before committing.
+Legitimate tree:subtree queries and post-commit runtime diff against the final
+frozen tree return the production/tests/examples SHA values above and exit 0.
+An attempted directory index query `git rev-parse :quantumbridge :tests :examples`
+returned 128 because directories are not index entries. It is a command-shape
+error, not a runtime difference; the already-passing full staged-tree identity
+and valid tree:subtree queries are the actual proof. No history rewrite or
+identity/configuration change is made in response to Git's automatic advice.
+
+Explicit owned code-commit files:
+
+- quantumbridge/core/circuit.py
+- quantumbridge/information/operator.py
+- quantumbridge/information/statevector.py
+- quantumbridge/information/density_matrix.py
+- tests/information/test_circuit_instruction_state_bridge.py
+- tests/information/test_mixed_radix_states.py
+- tests/compat/test_native_serialization_differential.py
+- examples/native_circuit_instruction_state_bridge.py
+- docs/compat/stage12_b_p1_public_execution_contracts.json
+- docs/compat/core_parity_ledger.md
+- docs/migration/source_migration_ledger.md
+- docs/implementation/stage12_b_p1_execution_bridge_progress.md
+
+Final-code export /tmp/qb-stage12b-final-code.yOZTpx/source is the committed
+full-tree export, with controlled runtime equality to the frozen export and
+workspace exit 0. Its legal repeat is 4 passed / .23s / exit 0 and 17-file privacy
+repeat 49 passed / 1 existing warning / 1.72s / exit 0. The normal real index is
+empty after commit; only the original unrelated Studio/Router/user dirt remains.
+main is ahead 32 of cached origin/main, not a fresh remote synchronization claim.
+
+The actual result report was sent once to the authorized ChatGPT conversation
+Claude 代码泄漏与应对, with delivery and a completed reply visibly verified. Its
+bounded judgment is explicitly based on this report, not an independent
+inspection of unpushed sources. Complete P2 Tasks 0-13 and closing are saved in
+the existing execution-prompt document: native parameter binding, parameterized
+composite instructions and structural algebra, evidence-first reuse, actual
+derivative consistency and full same-tree gates. An initially completed-marked
+view stopped at Task 10's heading; the actual observed Scroll To Bottom exposed
+the remaining body/Tasks 11-13/closing without a duplicate tail request. P2 has
+not been implemented by merely saving this plan.
+
+Mechanical acceptance audit v2 also exits 0, checking the 26 explicit driver
+receipts, exact two known pip conflicts, 28 matrix headings/seven missing subsets,
+per-file coverage and its unchanged exclusions, five frozen import origins,
+public reruns with only generated Parameter UUID differences, and empty scoped
+key-pattern log. The initial audit's broad filename glob counted an additional
+independent runtime-equality receipt and failed its count assertion; v2 enumerates
+the actual driver children and keeps the extra proof, not discarding failed
+tests or changing production. Both audit receipts are preserved separately.

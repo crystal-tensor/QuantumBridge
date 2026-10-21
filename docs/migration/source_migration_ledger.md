@@ -1,7 +1,8 @@
 # Source Migration Ledger
 
-Status: Stage 12-B P1 native execution bridge final frozen tree 58a823d8 validated;
-tested production subtree e8220fbf, full same-tree local acceptance below;
+Status: Stage 12-B P1 local code 2ec69c4, full tree e04c0fda;
+final frozen tree 58a823d8 validated, tested production subtree e8220fbf;
+staged/full committed runtime identity and same-tree local acceptance below;
 P0.7 native partial transpose local code cd0370b, frozen tree 03424712 validated;
 tested production subtree 7d983011, committed full tree df9720cd;
 P0.6 existing subsystem audit makes no runtime change;
