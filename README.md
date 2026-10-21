@@ -1151,8 +1151,8 @@ copies with real buffer/view lifetimes. An explicit full-qargs reset preserves
 the collapsed phase; the no-qargs default returns the canonical ground state.
 Public optional Qiskit checks are numerical oracles, not native engines.
 Object-level RNG, general subsystem dimensions and the complete public state
-API remain incomplete. Operator/tableau audit and final R2 gates are still
-open. See the [state/Result progress report](docs/implementation/stage11p_c3_r2_state_result_progress.md).
+API remain incomplete. The initial slice's pending gates are superseded by the
+final R2 receipts below. See the [state/Result progress report](docs/implementation/stage11p_c3_r2_state_result_progress.md).
 Further P1 development adds native reflected Operator matrix arithmetic,
 stable global-phase equivalence, admitted Pauli labels/reversal and shared-memo
 Operator/Channel deep copies. It has focused mathematical and framework
@@ -1163,8 +1163,14 @@ adjoint/synthesis and Stabilizer measurement/sample outputs. Native 100-qubit
 tableau execution remains non-dense while full matrix/state expansion rejects
 before exponential allocation. A scoped direct Device density-output ownership
 defect was also fixed using the existing density implementation. Old dense
-allowances are retained pending proved replacement; final R2 gates and universal
-core API parity are not claimed. See the
+allowances are retained pending proved replacement; universal core API parity
+is not claimed. Final R2 same-tree FULL/framework/28-section matrix test gates
+now finish at local code checkpoint b1d345b. Main and matrix full coverage both
+record 90.35145452152166%, with 68 exclusions unchanged. Seven optional matrix
+subsets were not executed and existing pip conflicts remain; no push, new-SHA
+remote CI or real cloud hardware proof is implied. C3 stays PARTIAL after the
+finite [joint review](docs/review/stage11p_c3_joint_review.md), with Stage 12-A
+actual state API behavior next. See the
 [Tableau progress report](docs/implementation/stage11p_c3_r2_tableau_progress.md).
 
 ## Native Molecular Chemistry Checkpoint

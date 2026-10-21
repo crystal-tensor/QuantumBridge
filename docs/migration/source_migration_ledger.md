@@ -1,6 +1,6 @@
 # Source Migration Ledger
 
-Status: Stage 11P-C3-R2 partial; local R1 checkpoint 89bd0f1 committed
+Status: local R2 code checkpoint b1d345b committed; C3 remains partial
 Date: 2026-10-21
 
 This ledger retains historical release and checkpoint sections. Current work
@@ -36,8 +36,10 @@ quantum execution engine, vendoring, cloud, hardware, token or auth changes.
   `docs/implementation/stage11p_c3_r2_state_result_progress.md`: scoped spec,
   actual red/green receipts, validation status and remaining functional gaps.
 
-Operator/tableau work, old allowance retirement and final R2 acceptance are
-not claimed. Full functional replacement remains incomplete.
+The initial slice below predates final Operator/tableau work and R2 gates.
+Fresh final receipts and bounded classifications are in
+`docs/review/stage11p_c3_joint_review.md`. Old allowance retirement and complete
+C3 acceptance are not claimed. Full functional replacement remains incomplete.
 
 The subsequent P1 slice additionally modifies
 `quantumbridge/information/operator.py` and

@@ -1,12 +1,23 @@
 # Core Functional Parity Ledger
 
-Updated: 2026-10-21, Stage 11P-C3-R2 PARTIAL, from local R1 checkpoint `89bd0f1`.
+Updated: 2026-10-21, local R2 code checkpoint `b1d345b`; C3 remains PARTIAL.
+
+Fresh R2 same-tree SDK-free/main/alternate FULL, four-framework focuses and the
+actual complete 28-section matrix now finish with exits 0. Independent main and
+matrix coverage both record 27456/30388 = 90.35145452152166%, excluded 68.
+Seven optional matrix subsets were NOT_EXECUTED; main/alternate retain their
+known pip conflicts. Publication and real cloud hardware remain NOT_VERIFIED.
+The finite [C3 joint classification review](../review/stage11p_c3_joint_review.md)
+retains specific native/allocator/API gaps. Stage 12-A targets real state API
+behavior, starting with composite dimensions, not further unbounded allocator
+work. These current receipts supersede the earlier development-only pending
+statements; no whole-SDK functional parity or C3 completion is claimed.
 
 R2 state/Result development adds actual native Pauli eigenstate labels,
 Statevector reset with explicit collapsed-phase behavior, subsystem counts and
 controlled sampling/defensive-copy storage. Focused tests include independent
 math, real failure/reuse/lifetimes and public Qiskit comparisons. This is not
-complete state API parity. Operator/tableau and final R2 gates remain open;
+complete state API parity. The initial state/Result slice predates later R2 work;
 see the [partial report](../implementation/stage11p_c3_r2_state_result_progress.md).
 
 P1 now implements reflected native Operator matrix arithmetic and corrects
@@ -14,12 +25,12 @@ tiny-pivot phase equivalence, label/reversal outputs and shared-memo deep
 copies for Operator/six Channel representations. New mathematical, storage and
 framework evidence is in the [P1 report](../implementation/stage11p_c3_r2_operator_channel_progress.md).
 The P0/Result FULL gates predate P1; they are not final verification of newer
-code. P2/tableau, allowance audit and all final R2 gates remain required.
+code. Final P2 and whole-R2 receipts are in the P2 report and joint review above.
 
 P2 now has focused native bool-tableau/GF(2), compose/adjoint/Pauli phase,
 generator/synthesis/measurement and 100-qubit no-dense evidence. Direct scoped
 StatevectorDevice density outputs now retain actual storage. Old dense guards
-remain, and all final R2 gates are still required; this is not universal resource
+remain, and the fresh final R2 gates above now finish; this is not universal resource
 or SDK API completion. See the [P2 report](../implementation/stage11p_c3_r2_tableau_progress.md).
 
 Task 3E development extends prior allocation/ownership to named gates, builtin
