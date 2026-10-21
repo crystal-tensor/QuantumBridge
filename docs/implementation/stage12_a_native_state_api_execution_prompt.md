@@ -1700,3 +1700,195 @@ ACTIVE / INCOMPLETE；新SHA CI NOT_VERIFIED；Studio DEFERRED。
 最终沿用 Tasks 0-11，加以上 Tasks 12-13，继续实际原生数学、双oracle、公开差分、
 组合、同树完整门禁、限定本地commit和有界报告。无 negativity/general channels/RNG/
 Circuit/Capture/Studio，不以 facade/passthrough 冒充native。最终目标不缩小。
+
+## Stage 12-B P1 Received Execution Prompt
+
+Received 2026-10-22 after reporting actual P0.7 code SHA
+cd0370b9f48112337d54b025483f938573bc8e3e and all terminal receipts to the
+designated conversation. The reply accepts the reported bounded P0.7 slice,
+not an independent source/log audit or full class/SDK parity. The complete
+next Tasks 0-13 and closing paragraph were read. An initially completed-marked
+AX view stopped at Task 12's heading; focusing the input alone did not expose
+the tail, but the observed Scroll To Bottom button did. No duplicate prompt
+or tail regeneration was requested for this response. Formatting is normalized
+below with all functional/gate/stop requirements retained.
+
+### Next Batch Decision
+
+优先 Stage 12-B P1: Native Mixed-Radix Circuit/Instruction -> Operator/State
+Execution。此前 Statevector/DensityMatrix/Operator 已有较多 mixed-radix 数学，
+应核实 Circuit -> Operator -> State 真实执行连接和 require_qubits 边界，不仅继续
+独立数学对象之间的小操作。不能默认整个 QuantumCircuit 缺失；已有 qubit-native
+Circuit、动态控制、QASM/QPY、compiler/device 必须保留。本批只补有实证的转换和静态
+执行缺口，不凭空建立 qudit IR。
+
+### Task 0 - 基线、最高目标与范围
+
+当前本地代码 cd0370b9f48112337d54b025483f938573bc8e3e；P0.7 已完成有界本地验收，
+C3 PARTIAL。最高目标 Qiskit+PennyLane 全部核心功能独立原生 full functional parity /
+full replacement ACTIVE / INCOMPLETE。本批补 Circuit/Instruction/Operator/State
+真实转换和执行缺口；不建第二套模拟器、线路 IR、transpiler 或兼容执行器，不以
+Qiskit/PennyLane wrapper、passthrough、mock 冒充原生计算。
+
+### Task 1 - 首先调查真实缺口和公开契约
+
+只读检查现有 QuantumBridge 的实际类、签名和路径：
+
+- QuantumCircuit、Instruction/Gate。
+- Operator.from_circuit()、to_operator()、to_instruction() 等实际存在入口。
+- Statevector.from_circuit()、DensityMatrix.from_circuit()。
+- Statevector.evolve(circuit/instruction)、DensityMatrix.evolve(circuit/instruction)。
+- 已有 mixed-radix Operator、numeric evolve、local mapped kernel。
+- Circuit 内部 wire/dims 表示、参数绑定和执行路径。
+
+Qiskit 2.4.1/2.6.0 公开黑盒核实签名、输入输出、异常。不要假定公开 QuantumCircuit
+支持任意 qudit wires。已有 qubit Circuit 子集追求公开对等；只有现有 native IR
+明确表示非二进制子系统时，才考虑有界 native extension。先回答：
+
+1. 哪些静态 qubit Circuit -> Operator/State 已正确？
+2. 哪些 require_qubits 错误阻挡现有 mixed-radix 数学可安全支持的转换？
+3. 哪些路径真正缺 qudit Instruction/IR，不能靠删 guard 修复？
+
+分类 EXISTING_CORRECT、MISSING_FUNCTION、INCORRECT_GUARD、IR_UNSUPPORTED、UNVERIFIED。
+不得为开发发明公开 API。
+
+### Task 2 - 优先建立真实红灯
+
+只对 Task 1 确认缺口保存修复前原生失败。优先情形：
+
+1. typed mixed-radix Operator -> State evolve 被不合理 qubit-only guard 拒绝。
+2. 已有静态 Circuit -> Operator 有真实缺失。
+3. Circuit -> Statevector 与 Circuit -> Operator -> Statevector 数值不一致。
+4. Circuit -> DensityMatrix 与对应纯态外积不一致。
+5. 非连续、反序 targets/wire order 错误。
+6. 绑定参数后的静态 Circuit 数值错误。
+7. Operator/State 转换丢失 global phase。
+8. composite Instruction 分解与组合矩阵不一致。
+9. 已支持 numeric unitary Instruction 被错误拒绝。
+10. 无法表示的 qudit wire 被静默解释成多个 qubit。
+
+至少两条确切生产功能红灯，不人为制造已有正确功能失败。IR 不支持非二进制
+instruction 时给出阻断证据，不把移除 require_qubits 当实现。
+
+### Task 3 - P1-A 静态 Circuit -> Operator
+
+复用已有 Circuit IR、Instruction、参数绑定、gate matrix、Operator composition。
+对已确认支持的静态线路补真实缺失：标准单/双比特门、自定义 numeric unitary、
+参数化旋转、composite Instruction、global phase、实际 wire ordering、多个非交换门
+时间顺序。验证完整复矩阵，不仅概率；已有正确实现不重写。现有 IR 若能合法表达
+typed mixed-radix numeric instruction 才有限复用 P0.2/P0.3；否则 IR_UNSUPPORTED，
+不另建通用 qudit Circuit 系统。
+
+### Task 4 - P1-B Circuit/Instruction -> Statevector/DensityMatrix
+
+让受支持原生静态 Circuit 在现有 State/Density kernel 真实执行，正确处理初态、
+复振幅、一致门序和 wire 映射、global phase；DensityMatrix 执行 U rho U-dagger。
+参数变化须产生真实数值变化。不以 Qiskit/PL 执行，不绕开 Device/ExecutionContext
+限制。Measurement/reset/condition/loop/classical feedback 继续复用 Stage 11J 等
+既有动态路径，不建新动态系统，不把动态线路当单一 unitary Operator。
+
+### Task 5 - P1-C 现有 Mixed-Radix Operator 转换
+
+仅补输入已有明确 typed input/output dimensions、现有 native kernel 数学支持、
+不丢 dims/phase/wire order、不需新 qudit IR、不涉及 general Kraus/Choi/SuperOp 的
+真实转换缺口。有证据时可补 numeric Operator -> supported State evolve；不能把
+所有 qudit to_instruction 标 Supported。若继续必须新建非二进制 Circuit 表达体系，
+记录独立后续需求，本批到此停止。
+
+### Task 6 - 两套独立数学 Oracle
+
+Oracle A 独立小规模复矩阵：逐门生成矩阵、嵌入 target wire、按时间顺序相乘。
+Oracle B 独立逐门 state/density tensor contraction，不先构造整体线路 Operator。
+都不调用 production Circuit->Operator/State helper。覆盖非交换门序、global phase、
+complex custom unitary、参数化门、composite instruction、非连续/反序 wire、纠缠
+初态、state/density 一致性及现有 IR 实际支持的 mixed-radix numeric 子集。
+不以概率分布代替完整复态/矩阵。
+
+### Task 7 - 真实跨函数组合
+
+```text
+A: QuantumCircuit -> parameter binding -> Operator -> Statevector.evolve
+   -> expectation_value
+B: QuantumCircuit -> composite instruction -> DensityMatrix execution
+   -> partial_trace -> purity/expectation
+```
+
+记录完整复数结果、dims、wire order、phase、独立 oracle 误差。另比 direct Circuit
+evolve 与 Circuit->Operator->State，在适用静态 unitary 子集须一致。但这两条生产路径
+可能共用kernel，不能算两套独立 oracle。
+
+### Task 8 - 公开 API 差分与错误边界
+
+对 Qiskit 两版真实可比子集核实矩阵、state/density、global phase、qargs/wire order、
+参数绑定、return type、dimensions、异常。保留 native q0-first 等约定，兼容转换显式。
+P0.2/P0.3 PUBLIC_DIFFERENTIAL_MISMATCH 不删除、不覆盖、不静默 xfail。IR 无法表示
+的 mixed-radix Circuit、dynamic-to-unitary、general channels 标 Unsupported/Partial。
+
+### Task 9 - 有界资源与回归
+
+只管理本批新增已知 Operator 输出、矩阵变换和执行临时数组；验证预约、真实 root/view、
+非连续输入、失败恢复、valid -> overbudget -> valid。不做新的全局 allocator 审计。
+保留 P0.1-P0.7、Circuit/Compiler/QASM/QPY/Aer/MPS/C2A second-adjoint/四框架/H2/
+Result/Snapshot 正确行为，不放宽容差、不删正确测试、不新增 coverage exclusions。
+
+### Task 10 - 范围停止条件
+
+只补实证且现有引擎能实现的 Circuit/Instruction/Operator/State 转换和执行。不做新
+mixed-radix IR、general mapped channels、完整transpiler重构、新Primitives framework、
+PennyLane Capture、fractional Operator.power、Studio、云硬件、纯文档治理或全局内存重构。
+相关功能若已正确，给证据并停止该子项；整批无真实缺口则 NO_NEW_FUNCTIONAL_GAP，
+不制造 feature commit。
+
+### Task 11 - 冻结和完整验收门禁
+
+功能、真实 red->green、专项和数学差分后冻结唯一 production/tests/examples。同树运行：
+
+1. SDK-free FULL pytest。
+2. Main FULL + explicit coverage。
+3. Alternate FULL。
+4. 独立 JAX 0.12、独立 TF 2.21、Torch/Autograd focused。
+5. 原完整 28 段 scripts/run_local_matrix.sh，保存实际 shell exit。
+6. compileall、controlled legal、privacy/security/no-token/no-vendor。
+7. 五环境 versions/真实 import origins/pipcheck。
+8. Frozen/export/workspace/staged/committed production/tests/examples 一致性。
+
+基线 90.6279318042121%、excluded 68 不增加，不是 API parity 百分比。七个缺依赖
+生态子集 NOT_EXECUTED；QOS/Quafu/Runtime 离线不当真机。Whole dirty workspace Router
+legal 失败与 controlled-export 通过分别披露。所有进程真实终止；回归保存red、
+最小修复、重新冻结并最终树重跑必要门禁，不借旧树结果。
+
+### Task 12 - Scoped 正常本地提交
+
+必要门禁满足条件后明确归属文件、查真实index、仅stage本批，不 git add .；比较staged
+与frozen runtime，正常commit不amend；再核对committed与受测树，报告SHA/文件清单/摘要。
+不得改、暂存或删用户Studio/Router脏文件。不push，除非Owner后续恢复授权且fresh fetch
+证明fast-forward安全。不改OAuth/认证/TLS，不读token，不云/硬件，不vendor/force/reset/
+rebase/amend/tag/release。新SHA远端CI NOT_VERIFIED。
+
+### Task 13 - 最终完整报告
+
+1. Task 1 真实缺口与已有正确实现。
+2. 实际新增 Circuit/Instruction/Operator/State 函数。
+3. Qiskit两版本公开契约。
+4. 真red->green，区分作者错误/生产缺陷。
+5. Circuit->Operator完整复矩阵数学。
+6. Circuit->State/Density真实执行。
+7. 双独立oracle。
+8. 两条组合链。
+9. global phase/wire order/typed dims/parameter binding。
+10. public数值/metadata/异常差异。
+11. dynamic/mixed-radix IR/channel Unsupported/Partial边界。
+12. 新分配和生命周期边界。
+13. SDK-free/main/alternate FULL、四框架、coverage、28段matrix。
+14. 五环境origin/pip、legal/privacy、冻结与提交一致性。
+15. 本地commit、远端CI和真实剩余缺口。
+
+仅证据充分函数切片 Verified Native，不把Circuit/Primitives/QNode/全SDK标full parity。
+
+### Final Execution Decision
+
+从真实缺口调查开始，尤其mixed-radix to_operator require_qubits边界；然后公开黑盒、
+真red、复用IR/kernel最小native修复、双oracle、组合、同树FULL/coverage/matrix、
+scoped commit、有界报告。目标让核心数学对象与线路执行真正连接，不包装或重建已有
+引擎。完整Qiskit/PennyLane独立原生full functional parity/full replacement仍为
+ACTIVE / INCOMPLETE，C3 PARTIAL，Studio最后。

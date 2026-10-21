@@ -242,11 +242,37 @@ Studio/Router edits and untracked files are left untouched.
 
 ## Scoped Commit Boundary
 
-All required processes are terminal before any normal staging. The finalized
-candidate may differ from the tested full tree only in final receipt documents;
-production/tests/examples must stay identical. Only the ten owned P0.7/audit/
-report paths are eligible for normal local commit. Actual commit SHA and final
-tree receipts follow after the commit, not before it. No P0.7 push is claimed.
+All required processes terminated before normal staging. The finalized candidate
+differs from the tested full tree only in final receipt documentation;
+production/tests/examples stay identical. Normal local code commit:
+cd0370b9f48112337d54b025483f938573bc8e3e, `feat: add native mixed-radix partial
+transpose`, exactly ten owned files, 2057 insertions / 4 deletions.
+
+Normal staged full tree and committed full tree both equal finalized candidate
+df9720cd0d425dadf9a4638e41d77294449e742d. Final candidate export:
+/tmp/qb-stage12a-p07-final-code.vbDSyb/source. Full candidate/export equality
+exits 0; frozen/candidate/committed production, tests and examples subtrees are
+identical, checked with actual exit 0 after commit. The final documentation
+export also passes fresh legal 4 tests / 0.23s and privacy/security 49 tests /
+1 existing warning / 1.76s, both exits 0, with independent
+/tmp/qb-stage12a-p07-final-doc-{legal,privacy}.log/.exit receipts.
+
+The actual code SHA receipt and any next-task transcript are documentation-only
+follow-ups, not a second runtime change or evidence that post-test report text
+existed in the original FULL export. No push or new-SHA remote CI is claimed.
+
+## Designated Conversation Follow-Up
+
+The actual code SHA, complete terminal receipts and all compatibility/environment
+limits were sent to the authorized conversation. Its completed reply accepts
+the reported bounded function slice, explicitly not an independent source/log
+audit or full class/SDK parity. The complete next Stage 12-B P1 Tasks 0-13 and
+closing execution decision are saved in the
+[execution prompt](stage12_a_native_state_api_execution_prompt.md#stage-12-b-p1-received-execution-prompt).
+The next scope first distinguishes existing-correct static qubit execution,
+incorrect conversion guards and actual IR_UNSUPPORTED nonbinary circuits.
+No new circuit IR or blind guard removal is authorized by that recommendation.
+No Stage 12-B implementation/acceptance is claimed by this P0.7 receipt.
 
 Complete State/Density/Operator/general-channel/Circuit/QNode and whole ecosystem
 functionality remains incomplete or unverified. This bounded mathematical

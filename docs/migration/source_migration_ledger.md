@@ -1,7 +1,7 @@
 # Source Migration Ledger
 
-Status: P0.7 native partial transpose frozen tree 03424712 validated;
-tested production subtree 7d983011, local code SHA follows actual scoped commit;
+Status: P0.7 native partial transpose local code cd0370b, frozen tree 03424712 validated;
+tested production subtree 7d983011, committed full tree df9720cd;
 P0.6 existing subsystem audit makes no runtime change;
 P0.5 native state arithmetic local code 87076d5, frozen tree e6f261f5 validated;
 tested production subtree c69bbb07, committed full tree 81f453ac;
