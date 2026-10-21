@@ -1,10 +1,10 @@
 # Stage 12-A P0.2-A Native Mapped Numeric Operator
 
 Date: 2026-10-21. Status: bounded native function slices validated by fresh
-frozen-runtime FULL/framework/coverage/matrix gates; scoped checkpoint pending.
+frozen-runtime FULL/framework/coverage/matrix gates; local checkpoint 12098c9.
 Baseline HEAD: 2bd746c, documentation over P0.1 runtime 89f4dc9. Full independent
 Qiskit/PennyLane functional replacement remains ACTIVE / INCOMPLETE, C3 PARTIAL.
-P0.1 receipts do not validate this new source. No P0.2 commit or push yet.
+P0.1 receipts do not validate this new source. No push or remote CI is claimed.
 
 ## Native Functions Implemented
 
@@ -247,8 +247,36 @@ installed. No environment was altered to suppress them. The full requested
 replacement and C3 remain incomplete; this bounded validation does not close
 all public state/Operator APIs, dependency combinations or real hardware work.
 
+## Local Checkpoint And Equality
+
+Normal code commit: 12098c950236597ae17c157376fffcce8785acbf, title
+`feat: add native mixed-radix mapped operator evolution`. Exactly 15 owned paths
+were staged; no user Studio/Router file was included. The normal index was empty
+during all full gates and is empty after that commit. No history rewrite occurred.
+
+The final documentation/export snapshot is dfaf19b8aedb320fc9ad5db9364099d6b7f24d9f
+at /tmp/qb-stage12a-p02-final-docs.4PI7z1/source. Compared with tested 2973040c,
+its differences are documentation only. Export/workspace runtime/tests/examples,
+staged tree and committed source equality were checked before/after commit.
+The independent checkpoint-runtime-equality and checkpoint-staged-tree-equality
+receipts both exit 0. Their logs/exits use prefix qb-stage12a-p02- under /tmp.
+
+On that final docs snapshot, fresh final-docs-compile exits 0, final-docs-legal
+has 4 passed in 0.12s / exit 0, and final-docs-privacy has 49 passed / 1 existing
+warning in 1.63s / exit 0. Checkpoint-secret-patterns scans the actual committed
+15 paths for private keys and common GitHub/OpenAI token formats: grep exit 1
+with an empty 0-byte log means no hits, not a universal credential audit.
+
 The user's Studio/Router tracked and untracked changes remain outside the batch.
 Whole-workspace legal has the separately known untracked Router ledger gap;
 controlled-export legal must not be represented as certifying those files.
-No deletion or fabricated attribution is used to hide that failure. The normal
-Git index remains empty until scoped checkpoint staging after required gates.
+No deletion or fabricated attribution is used to hide that failure. Cached
+origin/main was 21 commits behind after the local commit; this is NOT a fresh
+remote check. Prior push authorization failure is not confirmed restored, so no
+push/auth workaround, remote CI, tag or release was attempted.
+
+The actual results and local SHA were sent to the owner's designated ChatGPT
+conversation on 2026-10-21. Its response is advisory collaboration based on the
+reported evidence, not an independent review of unpublished source. The next
+complete bounded implementation prompt is retained in the execution contract;
+receiving it does not mean the next batch is already implemented or accepted.

@@ -384,3 +384,241 @@ delta rules out merely a global phase difference in the measured example.
   nonunitary/single-basis/swapped-target example to distinguish public semantics,
   common version behavior or a potential defect. Do not assert its cause now.
   This feedback is based on the execution report, not an external source audit.
+
+## Received Next Batch Prompt: P0.3
+
+The complete designated-conversation reply finished on 2026-10-21 (the UI showed
+the completed response, not a partial stream). The prompt below is transcribed
+with Markdown formatting from that response. It is the NEXT implementation
+batch, not a claim that P0.3 has already been implemented or accepted. Its stated
+HEAD is the actual P0.2-A code commit; later checkpoint-receipt edits are docs only.
+
+### QuantumBridge Stage 12-A P0.3 — Native Mixed-Radix Operator Composition & Subsystem Evolution
+
+#### 0. 任务目标
+
+当前 HEAD：`12098c950236597ae17c157376fffcce8785acbf`
+
+本批目标是让现有原生 Operator 支持真实的 mixed-radix operator-to-operator
+composition，并与已完成的 Statevector/DensityMatrix 局部 evolve 形成可组合数学体系。
+
+不是创建新的 Quantum Operator 框架，而是在现有 Operator、utils.math 和原生状态内核上
+补齐缺失的实际计算功能。最高目标保持：Qiskit + PennyLane 全部核心功能独立原生
+full functional parity/full replacement，ACTIVE / INCOMPLETE。
+
+#### Task 1 — 公开行为调查与差异最小反例
+
+先使用现有 Qiskit 2.4.1、2.6 的公开 API 黑盒实验，核对实际存在的：
+
+- `Operator.compose(other, qargs=..., front=...)`
+- `Operator.dot(other)`
+- `Operator @ other`
+- `Operator.tensor(other)`
+- `Operator.expand(other)`
+- `Operator.adjoint()`
+- `Operator.power(n)` 的已支持边界
+- 不同 input_dims/output_dims 的矩形 Operator 组合
+
+必须核实两个版本各自的实际签名、qargs 顺序、维度传播、异常类型，不猜测 API。
+
+同时，对已经保留的 `stage12_a_p02_public_differential_case.json` 做有界最小反例分析：
+
+1. 保留原始完整案例和输出，不覆写既有证据。
+2. 缩减为更少子系统、简单复相位、可手算矩阵的实验。
+3. 依次排除 qargs 翻转、矩阵张量排序、输入/输出维度排序、Statevector 与 DensityMatrix 使用不同公开映射语义等可能性。
+4. 将每种解释与真实黑盒输出比较，而不是推断上游源码。
+5. 如仍不能解释，继续保留 PUBLIC_DIFFERENTIAL_MISMATCH，不阻塞本批原生功能实现。
+
+时间范围限定为一轮专项调查，不允许演变成无限追踪上游内部实现。
+
+#### Task 2 — 真实红灯：Mixed Operator Composition
+
+至少建立以下修复前失败案例：
+
+1. (2,3) mixed-radix Operator 的正确 compose 数值。
+2. (2,3,2) 全系统 Operator 与作用在 qargs (0,2) 的局部 Operator 组合。
+3. 反向 qargs (2,0)，证明目标位置不被偷偷排序。
+4. 非对称复矩阵组合，证明左右乘法方向正确。
+5. 相同总维度、不同 subsystem partition 的合法与非法组合。
+6. 矩形 Operator 组合，例如 4→6→3。
+7. front=True/False 对应的真实组合顺序。
+8. 输出矩阵正确，但 input_dims/output_dims 丢失的反例。
+9. 非连续、转置、带复相位的 Operator 数组。
+10. 数学上不可组合的输入/输出维度被错误接受。
+
+先运行并持久化 red log、独立 exit 和真实差异。不能为了制造红灯修改已经正确的旧测试。
+
+#### Task 3 — 原生最小实现
+
+复用现有：
+
+- Operator numeric representation；
+- Mixed-radix dimensions；
+- 原生 stride/index 映射；
+- ResourceScope / ArrayOwnership；
+- 已有 matrix multiplication kernel。
+
+实现真实的：
+
+A. Full-system Operator composition
+
+正确支持兼容维度的矩形矩阵复合，包括输入总维度和输出总维度不同的情形。
+
+B. Mapped Operator composition
+
+在现有支持的 subsystem count 不变场景下，将局部算符映射到指定 qargs，与全系统 Operator 组合。
+
+- 不排序 qargs。
+- 保留未选子系统恒等作用。
+- 正确区分 front 与默认 compose 顺序。
+- 正确传递 output partition。
+- 矩形局部映射只有在数学和公开契约已验证时纳入；否则明确 Unsupported。
+
+C. Operator 与 State 一致性
+
+验证 `(A.compose(B)).evolve` 所对应的状态作用，与在现有 Statevector/DensityMatrix 上
+按正确顺序连续执行 A、B 的结果一致。这里需以仓库真实 API 为准，不得调用不存在的
+Operator.evolve 方法。应使用现有 Statevector.evolve(Operator) /
+DensityMatrix.evolve(Operator) 等真实入口。
+
+D. 不构造不必要的全局中间 Operator
+
+对于 mapped composition，尽量复用 P0.2-A 的局部收缩和目标索引规则，不默认构造完整
+embedded Kronecker 算符。如果公开 API 要求最终返回完整 Operator，允许为最终结果
+分配完整输出矩阵，但必须明确其数学必要性，并在分配前预约；不能声称整个计算过程都没有全局矩阵。
+
+#### Task 4 — 独立数学 Oracle
+
+至少使用两种独立验证方式：
+
+- 显式 mixed-radix 基态枚举；
+- 独立 NumPy 张量指标收缩或小规模 Kronecker 参考计算。
+
+使用非对称复矩阵、非幺正矩阵和矩形矩阵，避免只测试 Pauli/Clifford 等容易掩盖维度顺序
+错误的特殊矩阵。必须验证：
+
+- compose 左右顺序；
+- front；
+- qargs；
+- wire ordering；
+- global phase；
+- mixed dimensions；
+- output partition；
+- Statevector/DensityMatrix 数值一致性；
+- 非幺正时不自动归一化。
+
+对 Qiskit 2.4.1/2.6 只做公开黑盒 differential，不使用上游 SDK 执行 QuantumBridge 的生产计算。
+
+#### Task 5 — Native 与 Public 兼容边界
+
+继续保留：
+
+- QuantumBridge native q0-first；
+- 已有 Operator/state 实际 dims 不变量；
+- native probabilities dict；
+- DensityMatrix shape-tuple dim。
+
+公开兼容差异独立记录，不能静默改写 native API。
+
+特别注意：如果某个公开 Statevector.evolve(mapped Operator) 的结果与独立数学不一致，
+不能借由 Operator.compose 的实现把错误传播到核心内核。将其归类为已验证 native
+mathematics 与未解决 public contract mismatch，直至独立证据支持修改。
+
+#### Task 6 — 最小资源与错误处理
+
+只管理本批新增输出和已知临时数组。要求：
+
+- 分配前计算矩阵输出大小；
+- 预预约；
+- view/root lease 正确；
+- 矩形中间量与最终结果分开计量；
+- 超限在大矩阵分配前拒绝；
+- valid → overbudget → valid；
+- invalid qargs、dimension mismatch 和 foreign ndarray protocol 在执行前安全拒绝。
+
+不要开启全局 allocator 审计，不重写 C3 ledger。
+
+#### Task 7 — 明确排除项
+
+本批不做：
+
+- General mapped Kraus/Choi/SuperOp；
+- General quantum channels；
+- Circuit instruction lowering；
+- Qudit gate synthesis；
+- PennyLane 新 template；
+- RNG；
+- State arithmetic；
+- Purity；
+- Capture；
+- Studio；
+- 全局资源预算重构。
+
+如果任务调查发现 Operator compose 当前已经正确支持某个子集，应直接复用并列为回归，而不是重新实现。
+
+#### Task 8 — 有界验收标准
+
+至少交付：
+
+- 12 个 mixed-radix composition 数学场景；
+- 8 个 qargs/front/order 场景；
+- 6 个矩形输入输出维度场景；
+- 6 个 state-vs-composition 一致性场景；
+- 6 个资源/非法输入/失败恢复场景；
+- 两个 Qiskit 版本的公开 API 黑盒差分；
+- 一个端到端组合：
+
+`Operator A → Operator B → mapped compose → Statevector evolve → DensityMatrix → partial_trace → probabilities`
+
+这些应当是真实执行场景，不以大量重复参数化测试取代关键独立数学证据。
+
+#### Task 9 — 最终门禁
+
+冻结全部生产源码与测试后执行：
+
+1. SDK-free FULL。
+2. Main FULL + explicit coverage。
+3. Alternate FULL。
+4. 独立 JAX/TF 和 Torch/Autograd focused。
+5. 完整 28 段 local matrix，独立 shell exit。
+6. compileall、legal、privacy/security/no-token/no-vendor。
+7. 五环境版本、import origins 和 pipcheck。
+8. tested tree、export、workspace 和 staged/committed production/tests/examples 一致性检查。
+
+Coverage 历史值 90.45969876172117%，68 exclusions 不增加。不得把行覆盖率解释为功能完成率。
+受控 legal 与带用户 Router 脏文件的整个 workspace legal 结果仍须分别披露。
+
+#### Task 10 — 限定提交与报告
+
+必要门禁全部通过后，仅 stage Stage 12-A P0.3 归属文件并正常本地 commit。
+
+不修改 Studio/Router 用户文件；不 push；不改认证/TLS；不读取 token；不调用云或真实硬件；
+不 vendor、force、reset、rebase、amend、tag 或 release。
+
+最终报告至少列出：
+
+- 真实新增 API；
+- Operator compose/front/qargs 数学；
+- mixed-radix 矩形维度传播；
+- 两种独立 oracle；
+- Qiskit 2.4.1/2.6 差分；
+- 原公开 Statevector 异常案例的调查结果；
+- SDK-free/main/alternate FULL；
+- coverage、28 段 matrix；
+- 本地 commit；
+- 未验证远端 CI；
+- 下一批真实核心函数缺口。
+
+#### 明确执行要求
+
+立即执行 Stage 12-A P0.3，先完成公开 Operator.compose 契约调查与既有 Statevector 差异的
+有限最小反例，再建立真实 composition 红灯，随后实现原生 mapped composition。
+
+我选择这项任务，而不是马上做 mapped channels，是因为它直接扩展现有核心 Operator
+的组合能力，同时能够为后续 State、Circuit、Channel 的数学操作提供可复用基础。
+
+但本批有一个必须坚持的工程原则：以真实函数能力和独立数学正确性为验收中心，
+而不是把工作重新变成资源账本或兼容包装工程。
+
+完整 Qiskit/PennyLane full native functional parity/full replacement 仍为
+ACTIVE / INCOMPLETE，C3 仍为 PARTIAL，Studio 最后。

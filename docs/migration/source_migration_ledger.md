@@ -1,6 +1,7 @@
 # Source Migration Ledger
 
-Status: P0.2-A frozen runtime 2973040c validated; P0.1 checkpoint 89f4dc9;
+Status: P0.2-A local checkpoint 12098c9, frozen runtime 2973040c validated;
+P0.1 checkpoint 89f4dc9;
 R2 baseline b1d345b; C3 remains partial and full replacement incomplete
 Date: 2026-10-21
 
@@ -13,7 +14,7 @@ No Source Port with Attribution was performed.
 ## Stage 12-A P0.2-A Native Local Operator Inventory
 
 Independent Native Implementation; bounded frozen-runtime FULL/framework/matrix
-gates complete, scoped checkpoint pending. Public Qiskit APIs are black-box
+gates complete, scoped local checkpoint 12098c9. Public Qiskit APIs are black-box
 references in tests only, not a runtime engine. Observed public numerical
 differences remain unresolved compatibility rather than upstream defect claims.
 
