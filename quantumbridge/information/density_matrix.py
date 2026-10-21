@@ -10,6 +10,7 @@ import numpy as np
 from typing import Union
 
 from .statevector import Statevector, _sample_measurements, _tensor_arrays, _mapped_evolution_data, _expectation_value
+from .statevector import _state_arithmetic, _state_trace, _state_dictionary, _state_valid
 from quantumbridge.execution.resource_context import current_resources, meter_native_samples
 from .state_dimensions import (
     state_dimensions, qubit_count, basis_digits, basis_index, basis_label,
@@ -78,31 +79,46 @@ class DensityMatrix:
         return cls(DensityMatrixDevice().density_matrix(circuit))
 
     def trace(self) -> complex:
-        return np.trace(self.data)
+        return _state_trace(self)
 
     @property
     def num_qubits(self) -> int | None:
         return qubit_count(self._dims)
 
-    def is_valid(self, atol: float = 1e-10) -> bool:
-        from quantumbridge.execution.resource_context import current_resources
-        if current_resources() is not None:
-            from quantumbridge.utils.math import validate_hermitian_matrix
-            from quantumbridge.execution.array_ownership import retained_array
-            if not validate_hermitian_matrix(self.data,len(self.data),atol=atol,rtol=0):return False
-            if not np.isclose(np.trace(self.data),1.,atol=atol,rtol=0):return False
-            values=retained_array(current_resources().ledger,"density_validation_eigenvalues",(len(self.data),),float,lambda:np.linalg.eigvalsh(self.data))
-            current_resources().ledger.unavailable("density_lapack_workspace","Explicit density validation outputs are reserved; hidden NumPy/LAPACK workspace is not measured RSS.")
-            return bool(np.min(values)>=-atol)
-        if not np.all(np.isfinite(self.data)):
-            return False
-        hermitian = np.allclose(self.data, self.data.conj().T, atol=atol, rtol=0)
-        trace_one = np.isclose(np.trace(self.data), 1.0, atol=atol, rtol=0)
-        positive = np.all(np.linalg.eigvalsh(self.data) >= -atol)
-        return bool(hermitian and trace_one and positive)
+    def is_valid(self, atol: float | None = None, rtol: float | None = None) -> bool:
+        return _state_valid(self,atol,rtol)
 
-    def purity(self) -> float:
-        return float(np.real_if_close(np.trace(self.data @ self.data)))
+    def purity(self) -> complex:
+        return _state_trace(self,square=True)
+
+    def to_dict(self, decimals: int | None = None) -> dict[str, complex]:
+        return _state_dictionary(self,decimals)
+
+    def __add__(self, other):
+        data,dimensions=_state_arithmetic(self,other,"add")
+        return DensityMatrix(data,dims=dimensions)
+
+    def __sub__(self, other):
+        data,dimensions=_state_arithmetic(self,other,"subtract")
+        return DensityMatrix(data,dims=dimensions)
+
+    def __neg__(self):
+        return self.__mul__(-1)
+
+    def __mul__(self, scalar):
+        result=_state_arithmetic(self,scalar,"multiply")
+        if result is NotImplemented:return NotImplemented
+        data,dimensions=result
+        return DensityMatrix(data,dims=dimensions)
+
+    def __rmul__(self, scalar):
+        return self.__mul__(scalar)
+
+    def __truediv__(self, scalar):
+        result=_state_arithmetic(self,scalar,"divide")
+        if result is NotImplemented:return NotImplemented
+        data,dimensions=result
+        return DensityMatrix(data,dims=dimensions)
 
     def partial_trace(self, keep: tuple[int, ...] | list[int]) -> "DensityMatrix":
         from quantumbridge.information.partial_trace import partial_trace

@@ -1,5 +1,23 @@
 # Core Functional Parity Ledger
 
+Stage 12-A P0.5 implements actual native state add/sub/neg/scalar arithmetic,
+Statevector trace/purity, strict-partition inner, complex density trace-square
+purity and state/density dictionary export. Development focuses pass 288 cases
+in each installed environment and 274 native cases without SDKs. Fresh final
+SDK-free/main/alternate FULL finish with 3302/4032/4030 passed respectively,
+with skips/xfails disclosed in the report. Independent frameworks and the
+original 28-section matrix terminate with exits 0. Main/matrix coverage agrees
+per file and in total: 27992/30889 = 90.62125675806922%, excluded 68 unchanged.
+Seven optional subsets remain NOT_EXECUTED; main/alternate retain two known
+pip conflicts. Whole-workspace Router attribution still fails separately from
+the passing controlled export. The initial broad regression
+caught relaxed physical simulator admission; explicit old strict tolerance at
+the two callers preserves that contract, not a weakened assertion. Public
+vector-to-density subtraction, list subtraction, exceptions, zero-register
+export and configuration protocols remain Partial. Whole SDK replacement stays
+ACTIVE / INCOMPLETE and C3 PARTIAL. See the
+[P0.5 progress report](../implementation/stage12_a_p05_state_arithmetic_progress.md).
+
 Stage 12-A P0.4 implements actual native mixed-radix local Statevector and
 DensityMatrix expectation, preserving complex non-Hermitian values and reusing
 the existing ordered local action/index rules without a full embedded observable.
@@ -56,7 +74,9 @@ classes and the highest full independent replacement objective remain PARTIAL
 and ACTIVE / INCOMPLETE, respectively. No cloud or remote CI proof is implied.
 See [P0.1 progress](../implementation/stage12_a_p01_mixed_radix_progress.md).
 
-Updated: 2026-10-22, P0.4 local code `84623f0`, tested runtime tree `6b5b3927`; P0.3 local code
+Updated: 2026-10-22, P0.5 frozen tree `e6f261f5`, tested production subtree
+`c69bbb07`; scoped local commit receipt follows actual commit. P0.4 local code
+`84623f0`, tested runtime tree `6b5b3927`; P0.3 local code
 `be9d5e3`, tested runtime tree `7a9ebe78`, P0.2-A local code
 `12098c9`, tested runtime tree `2973040c`, local P0.1 code
 checkpoint `89f4dc9`, historical R2 checkpoint `b1d345b`; C3 remains PARTIAL.
@@ -119,7 +139,7 @@ publication/exact-SHA CI is a separate receipt, not inferred from prior CI.
 | --- | --- | --- |
 | QuantumCircuit | NATIVE_TESTED; PARTIAL: typed storage, parameters, arithmetic, compose/control/inverse/power and runtime blocks | Complete builders/signatures, all types/scopes, calibrations and instruction schedules |
 | Circuit library | NATIVE_TESTED; PARTIAL: standard gates, bounded ansatz/arithmetic/encoding | All library families and edge cases |
-| Quantum information | NATIVE_TESTED; PARTIAL: vector/density/operators/Pauli/channels/metrics/random/Clifford/MPS, bounded mixed-radix mapped evolution, Operator composition/partitions and complex local expectation | Remaining state/Operator methods, mapped channels, synthesis and general-map/public contracts; recorded public numerical mismatch remains open |
+| Quantum information | NATIVE_TESTED; PARTIAL: vector/density/operators/Pauli/channels/metrics/random/Clifford/MPS, bounded mixed-radix mapped evolution, Operator composition, complex expectation and state arithmetic/trace/purity/export | Remaining state/Operator methods, mapped channels, synthesis and general-map/public contracts; recorded public numerical mismatch remains open |
 | DAG/mutation/roundtrip | NATIVE_TESTED; PARTIAL: actual wire/classical dependencies and validation | Full graph API and noncontiguous contraction |
 | PassManager/PropertySet | NATIVE_TESTED; PARTIAL: analysis lifetime, invalidation, prerequisites, callbacks, stages and limits | Full DAG-pass/flow-controller/plugin protocol |
 | Target/CouplingMap/Layout | NATIVE_TESTED; PARTIAL: properties, directed paths, initial/final mapping | Full backend/calibration schema and optimal search |

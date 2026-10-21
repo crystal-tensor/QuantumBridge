@@ -1218,6 +1218,19 @@ Public partition, scalar and target-validation differences remain explicit;
 this is not complete state-class or Qiskit/PennyLane parity. See the
 [P0.4 report](docs/implementation/stage12_a_p04_observable_expectation_progress.md).
 
+Stage 12-A P0.5 implements native state arithmetic, Statevector trace/purity,
+strict-partition inner products and density dictionary export. It corrects
+complex density purity and tiny/rounded export values, and admits introduced
+numeric outputs/conversions before allocation. Development focuses pass 288
+cases in each installed environment and 274 native cases without SDKs. Fresh
+frozen SDK-free/main/alternate FULL have 3302/4032/4030 passed, with skips/xfails
+disclosed. Frameworks and the original 28-section matrix exit 0; main/matrix
+coverage agrees at 90.6213%, exclusions 68 unchanged. Seven optional subsets
+remain unexecuted and two known environment conflicts remain. Public coercion/exception, scalar
+and configuration boundaries remain Partial; physical simulator admission keeps
+its stricter tolerance. This is not full class or SDK parity. See the
+[P0.5 report](docs/implementation/stage12_a_p05_state_arithmetic_progress.md).
+
 ## Native Molecular Chemistry Checkpoint
 
 `quantumbridge.qchem` now computes a bounded hydrogen/STO-3G s-shell workflow

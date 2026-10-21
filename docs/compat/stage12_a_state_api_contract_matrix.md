@@ -1,11 +1,12 @@
 # Stage 12-A State API Contract Matrix
 
-Date: 2026-10-22. Status: bounded P0.4 expectation frozen-runtime gates validated;
+Date: 2026-10-22. Status: bounded P0.5 state arithmetic frozen-runtime gates validated;
+P0.4 expectation frozen-runtime gates validated;
 P0.1/P0.2-A/P0.3 slices validated, complete classes/public compatibility PARTIAL.
 Native baseline: b1d345b3731276f5f2721cb42c2397d98981ac5c.
 This is a bounded initial matrix, not the complete SDK/API inventory.
 The table below records that baseline, not the later candidate implementation.
-See [the current P0.4 progress report](../implementation/stage12_a_p04_observable_expectation_progress.md)
+See [the current P0.5 progress report](../implementation/stage12_a_p05_state_arithmetic_progress.md)
 and the historical P0.1 construction/propagation report for actual receipts.
 
 ## Evidence And Limits
@@ -160,3 +161,38 @@ public APIs. Pauli/Sparse objects remain binary-only. Both public classes lack
 variance(); none is invented here. The P0.2/P0.3 PUBLIC_DIFFERENTIAL_MISMATCH
 artifacts and correct mapped-evolution math remain unchanged. General mapped
 channels, RNG/analysis/arithmetic and whole class/public parity remain open.
+
+## P0.5 Current Function Delta
+
+Actual native add/sub/neg/scalar operations now preserve complex values and left
+subsystem metadata, with output ownership and whole known conversion/output
+admission. Equal total size permits flat add/sub without declaring different
+partitions equivalent; Statevector.inner requires exact ordered partitions.
+Statevector gains trace = squared norm and purity = trace squared, not an
+invented norm() method. DensityMatrix purity computes complex Tr(rho squared),
+not a forced-real Frobenius norm for non-Hermitian data. Dictionary export keeps
+tiny nonzero values, rounds before removing zeros and uses explicit native
+q0-first labels, comma-separated multi-qudit digits and column|row density keys.
+
+is_valid accepts explicit atol/rtol and None defaults observed in the public
+survey; pure-state validity uses norm, density uses trace/Hermiticity/PSD, with
+finite values and admitted known packing/eigenvalue output. The physical initial
+and replacement density callers retain their strict atol=1e-10/rtol=0 contract.
+No hidden normalization or physical projection is performed.
+
+288 focused cases pass in each installed environment, 274 native + 14 optional
+public references. Fresh final SDK-free/main/alternate FULL have 3302/4032/4030
+passed, with skips/xfails disclosed. Frameworks and original 28-section matrix
+exit 0; main/matrix per-file coverage agrees at 90.62125675806922%, excluded 68.
+Seven optional subsets remain NOT_EXECUTED and two known environment conflicts
+remain. Current complete public v4
+probes each have 443 records / 417 cases / 51 exceptions. Records agree across
+the two sampled versions, not proof of universal version equality or native
+passing-test counts. Native subtracts a vector's outer product from a density;
+the observed public result instead adds it; negation-before-conversion is an
+interpretation, not a claim about upstream internals. Native builtin list
+subtraction works while sampled public list subtraction errors. Native scalar
+zero-register export, strict invalid tolerance rejection, external-object ABI
+and mutable upstream tolerance settings remain explicit Partial/Unverified
+boundaries. Existing P0.2/P0.3 mismatch artifacts are unchanged. General channels,
+RNG, full analysis/state/Operator and whole SDK parity remain open.

@@ -1,6 +1,8 @@
 # Source Migration Ledger
 
-Status: P0.4 local code checkpoint 84623f0, frozen runtime 6b5b3927 validated;
+Status: P0.5 native state arithmetic frozen tree e6f261f5 validated;
+tested production subtree c69bbb07; local code commit receipt follows actual commit;
+P0.4 local code checkpoint 84623f0, frozen runtime 6b5b3927 validated;
 P0.3 local code checkpoint be9d5e3, frozen runtime 7a9ebe78 validated;
 P0.2-A local checkpoint 12098c9, frozen runtime 2973040c validated;
 P0.1 checkpoint 89f4dc9;
@@ -12,6 +14,33 @@ uses Native Implementation, Adapter Integration and Upstream Dependency, with
 their boundaries stated separately. Historical checkpoint limitations are not
 the current status view; use core_parity_ledger.md for that view.
 No Source Port with Attribution was performed.
+
+## Stage 12-A P0.5 Native State Arithmetic Inventory
+
+Independent Native Implementation; no upstream implementation/test source port.
+`quantumbridge/information/statevector.py` gains actual state arithmetic,
+trace/purity, controlled inner products, dictionary export and shared existing
+native state validation/math helpers. `quantumbridge/information/density_matrix.py`
+uses those native numeric helpers for matrix arithmetic, complex trace-square
+purity, export and validity. No second simulator or upstream SDK engine is used.
+`quantumbridge/devices/density_matrix_device.py` and
+`quantumbridge/simulator/instructions.py` explicitly retain their prior strict
+physical-state admission tolerance when the generic query defaults are extended.
+`tests/information/test_native_state_arithmetic.py` independently authors linear
+algebra/spectral, actual workflow, public-reference, resource/error/lifetime and
+physical-admission regression cases. The generated
+`docs/compat/stage12_a_p05_public_state_arithmetic_contracts.json` contains literal
+installed-public observations, not source or tests. The report
+`docs/implementation/stage12_a_p05_state_arithmetic_progress.md` records real
+red/recovery, introduced/corrected regressions and explicit compatibility limits.
+Qiskit is optional black-box test reference only. Fresh frozen SDK-free/main/
+alternate FULL have 3302/4032/4030 passed with skips/xfails disclosed; independent
+frameworks and the original 28-section matrix terminate with exits 0. Main/matrix
+coverage agrees at 90.62125675806922%, excluded 68 unchanged. Seven optional
+subsets remain NOT_EXECUTED and main/alternate retain two known pip conflicts.
+No complete class/SDK parity, cloud, credential, Studio/Router or vendor work is
+claimed. The existing unrelated dirty Router attribution gap is not fabricated
+as resolved by this inventory.
 
 ## Stage 12-A P0.4 Native Observable Expectation Inventory
 

@@ -1,0 +1,2652 @@
+{
+  "schema": "quantumbridge.public-state-arithmetic.v1",
+  "date": "2026-10-22",
+  "native_baseline": "b3111bea1e6795763220221abe46ad3ee4ca8e76",
+  "scope": "Selected literal installed-public API outcomes. Complete v4 probes each have 443 records excluding the version header, 417 cases, 51 exceptions. Neither records nor successful reporter exits are native passing-test counts or exhaustive API parity.",
+  "complete_v4_records_excluding_header_sha256": "004cc770a87e6d743e6bc4353df10331f7bc6f438b34c761760db26006ffa63f",
+  "observed_version_differences": [],
+  "sampled_records_identical": true,
+  "method": "Public constructors, operations and inspect.signature only; no upstream source/tests read or ported. NaN/infinity payload components are strings for strict JSON. V2 coercion labels accidentally reused a vector variable; v3 corrected it, v4 adds the norm-versus-norm-square validity case. Only v4 is the current complete survey.",
+  "versions": [
+    {
+      "qiskit_version": "2.4.1",
+      "process_exit": 0,
+      "log_prefix": "/tmp/qb-stage12a-p05-public-v4-qiskit241",
+      "total_records_excluding_version_header": 443,
+      "case_records": 417,
+      "exception_records": 51,
+      "selected_outcomes": [
+        {
+          "tolerance_defaults": "Statevector",
+          "atol": 1e-8,
+          "rtol": 0.00001
+        },
+        {
+          "signature": "Statevector.__add__",
+          "value": "(self, other)"
+        },
+        {
+          "signature": "Statevector.__sub__",
+          "value": "(self, other)"
+        },
+        {
+          "signature": "Statevector.__mul__",
+          "value": "(self, other)"
+        },
+        {
+          "signature": "Statevector.__rmul__",
+          "value": "(self, other)"
+        },
+        {
+          "signature": "Statevector.__truediv__",
+          "value": "(self, other)"
+        },
+        {
+          "signature": "Statevector.__neg__",
+          "value": "(self)"
+        },
+        {
+          "signature": "Statevector.inner",
+          "value": "(self, other: 'Statevector') -> 'np.complex128'"
+        },
+        {
+          "signature": "Statevector.norm",
+          "value": null
+        },
+        {
+          "signature": "Statevector.trace",
+          "value": "(self) -> 'np.float64'"
+        },
+        {
+          "signature": "Statevector.purity",
+          "value": "(self) -> 'np.float64'"
+        },
+        {
+          "signature": "Statevector.is_valid",
+          "value": "(self, atol: 'float | None' = None, rtol: 'float | None' = None) -> 'bool'"
+        },
+        {
+          "signature": "Statevector.to_dict",
+          "value": "(self, decimals: 'None | int' = None) -> 'dict'"
+        },
+        {
+          "case": "Statevector/partition/(2, 2, 2)/inner",
+          "error": "QiskitError",
+          "message": "'Statevector dimensions do not match: (2, 4) and (2, 2, 2).'"
+        },
+        {
+          "case": "Statevector/partition/(8,)/inner",
+          "error": "QiskitError",
+          "message": "'Statevector dimensions do not match: (2, 4) and (8,).'"
+        },
+        {
+          "case": "Statevector/partition/(4, 2)/inner",
+          "error": "QiskitError",
+          "message": "'Statevector dimensions do not match: (2, 4) and (4, 2).'"
+        },
+        {
+          "case": "Statevector/partition/(4,)/add",
+          "error": "QiskitError",
+          "message": "'Cannot add shapes with different total left dimension 8 != 4'"
+        },
+        {
+          "case": "Statevector/partition/(4,)/sub",
+          "error": "QiskitError",
+          "message": "'Cannot add shapes with different total left dimension 8 != 4'"
+        },
+        {
+          "case": "Statevector/partition/(4,)/inner",
+          "error": "QiskitError",
+          "message": "'Statevector dimensions do not match: (2, 4) and (4,).'"
+        },
+        {
+          "case": "Statevector/unnormalized/purity",
+          "value": {
+            "type": "float64",
+            "real": 25
+          }
+        },
+        {
+          "case": "Statevector/zero/is_valid",
+          "value": false
+        },
+        {
+          "case": "Statevector/zero/purity",
+          "value": {
+            "type": "float64",
+            "real": 0
+          }
+        },
+        {
+          "case": "Statevector/zero/to_dict",
+          "value": {}
+        },
+        {
+          "case": "Statevector/zero/trace",
+          "value": {
+            "type": "float64",
+            "real": 0
+          }
+        },
+        {
+          "case": "Statevector/zero/inner",
+          "value": {
+            "type": "complex128",
+            "real": 0,
+            "imag": 0
+          }
+        },
+        {
+          "case": "Statevector/valid-tolerances/(None, None)",
+          "value": true
+        },
+        {
+          "case": "Statevector/valid-tolerances/(0, 0)",
+          "value": true
+        },
+        {
+          "case": "Statevector/valid-tolerances/(0.001, 0)",
+          "value": true
+        },
+        {
+          "case": "Statevector/valid-tolerances/(-1, 0)",
+          "value": true
+        },
+        {
+          "case": "Statevector/valid-tolerances/(nan, 0)",
+          "value": true,
+          "warnings": [
+            {
+              "type": "RuntimeWarning",
+              "message": "One of rtol or atol is not valid, atol: nan, rtol: 0"
+            }
+          ]
+        },
+        {
+          "case": "Statevector/dict-format/(3,)/None",
+          "value": {
+            "0": {
+              "type": "complex128",
+              "real": 1e-16,
+              "imag": 1e-17
+            },
+            "1": {
+              "type": "complex128",
+              "real": 0.1234,
+              "imag": 0.0003
+            }
+          }
+        },
+        {
+          "case": "Statevector/dict-format/(3,)/2",
+          "value": {
+            "1": {
+              "type": "complex128",
+              "real": 0.12,
+              "imag": 0
+            }
+          }
+        },
+        {
+          "case": "Statevector/dict-format/(3,)/0",
+          "value": {}
+        },
+        {
+          "case": "Statevector/dict-format/(3,)/-1",
+          "value": {}
+        },
+        {
+          "case": "Statevector/dict-format/(11,)/None",
+          "value": {
+            "0": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            },
+            "10": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 1
+            }
+          }
+        },
+        {
+          "case": "Statevector/dict-format/(11,)/2",
+          "value": {
+            "0": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            },
+            "10": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 1
+            }
+          }
+        },
+        {
+          "case": "Statevector/dict-format/(11,)/0",
+          "value": {
+            "0": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            },
+            "10": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 1
+            }
+          }
+        },
+        {
+          "case": "Statevector/dict-format/(11,)/-1",
+          "value": {}
+        },
+        {
+          "case": "Statevector/dict-format/(2, 11)/None",
+          "value": {
+            "0,0": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            },
+            "10,1": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 1
+            }
+          }
+        },
+        {
+          "case": "Statevector/dict-format/(2, 11)/2",
+          "value": {
+            "0,0": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            },
+            "10,1": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 1
+            }
+          }
+        },
+        {
+          "case": "Statevector/dict-format/(2, 11)/0",
+          "value": {
+            "0,0": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            },
+            "10,1": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 1
+            }
+          }
+        },
+        {
+          "case": "Statevector/dict-format/(2, 11)/-1",
+          "value": {}
+        },
+        {
+          "tolerance_defaults": "DensityMatrix",
+          "atol": 1e-8,
+          "rtol": 0.00001
+        },
+        {
+          "signature": "DensityMatrix.__add__",
+          "value": "(self, other)"
+        },
+        {
+          "signature": "DensityMatrix.__sub__",
+          "value": "(self, other)"
+        },
+        {
+          "signature": "DensityMatrix.__mul__",
+          "value": "(self, other)"
+        },
+        {
+          "signature": "DensityMatrix.__rmul__",
+          "value": "(self, other)"
+        },
+        {
+          "signature": "DensityMatrix.__truediv__",
+          "value": "(self, other)"
+        },
+        {
+          "signature": "DensityMatrix.__neg__",
+          "value": "(self)"
+        },
+        {
+          "signature": "DensityMatrix.inner",
+          "value": null
+        },
+        {
+          "signature": "DensityMatrix.norm",
+          "value": null
+        },
+        {
+          "signature": "DensityMatrix.trace",
+          "value": "(self)"
+        },
+        {
+          "signature": "DensityMatrix.purity",
+          "value": "(self)"
+        },
+        {
+          "signature": "DensityMatrix.is_valid",
+          "value": "(self, atol=None, rtol=None)"
+        },
+        {
+          "signature": "DensityMatrix.to_dict",
+          "value": "(self, decimals: 'None | int' = None) -> 'dict'"
+        },
+        {
+          "case": "DensityMatrix/partition/(4,)/add",
+          "error": "QiskitError",
+          "message": "'Cannot add shapes with different total left dimension 8 != 4'"
+        },
+        {
+          "case": "DensityMatrix/partition/(4,)/sub",
+          "error": "QiskitError",
+          "message": "'Cannot add shapes with different total left dimension 8 != 4'"
+        },
+        {
+          "case": "DensityMatrix/unnormalized/purity",
+          "value": {
+            "type": "complex128",
+            "real": 3,
+            "imag": 0
+          }
+        },
+        {
+          "case": "DensityMatrix/zero/is_valid",
+          "value": false
+        },
+        {
+          "case": "DensityMatrix/zero/purity",
+          "value": {
+            "type": "complex128",
+            "real": 0,
+            "imag": 0
+          }
+        },
+        {
+          "case": "DensityMatrix/zero/to_dict",
+          "value": {}
+        },
+        {
+          "case": "DensityMatrix/zero/trace",
+          "value": {
+            "type": "complex128",
+            "real": 0,
+            "imag": 0
+          }
+        },
+        {
+          "case": "DensityMatrix/zero/inner",
+          "error": "AttributeError",
+          "message": "'DensityMatrix' object has no attribute 'inner'"
+        },
+        {
+          "case": "DensityMatrix/valid-tolerances/(None, None)",
+          "value": true
+        },
+        {
+          "case": "DensityMatrix/valid-tolerances/(0, 0)",
+          "value": true
+        },
+        {
+          "case": "DensityMatrix/valid-tolerances/(0.001, 0)",
+          "value": true
+        },
+        {
+          "case": "DensityMatrix/valid-tolerances/(-1, 0)",
+          "value": false
+        },
+        {
+          "case": "DensityMatrix/valid-tolerances/(nan, 0)",
+          "value": true,
+          "warnings": [
+            {
+              "type": "RuntimeWarning",
+              "message": "One of rtol or atol is not valid, atol: nan, rtol: 0"
+            },
+            {
+              "type": "RuntimeWarning",
+              "message": "One of rtol or atol is not valid, atol: nan, rtol: 0"
+            },
+            {
+              "type": "RuntimeWarning",
+              "message": "One of rtol or atol is not valid, atol: nan, rtol: 0"
+            }
+          ]
+        },
+        {
+          "case": "DensityMatrix/dict-format/(3,)/None",
+          "value": {
+            "0|0": {
+              "type": "complex128",
+              "real": 1.0099999999999999e-32,
+              "imag": 5.3270991975853754e-51
+            },
+            "1|0": {
+              "type": "complex128",
+              "real": 1.2343e-17,
+              "imag": 1.2040000000000001e-18
+            },
+            "0|1": {
+              "type": "complex128",
+              "real": 1.2343e-17,
+              "imag": -1.2040000000000001e-18
+            },
+            "1|1": {
+              "type": "complex128",
+              "real": 0.015227649999999999,
+              "imag": -9.636215436703567e-22
+            }
+          }
+        },
+        {
+          "case": "DensityMatrix/dict-format/(3,)/2",
+          "value": {
+            "1|1": {
+              "type": "complex128",
+              "real": 0.02,
+              "imag": 0
+            }
+          }
+        },
+        {
+          "case": "DensityMatrix/dict-format/(3,)/0",
+          "value": {}
+        },
+        {
+          "case": "DensityMatrix/dict-format/(3,)/-1",
+          "value": {}
+        },
+        {
+          "case": "DensityMatrix/dict-format/(11,)/None",
+          "value": {
+            "0|0": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            },
+            "10|0": {
+              "type": "complex128",
+              "real": 0,
+              "imag": -1
+            },
+            "0|10": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 1
+            },
+            "10|10": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            }
+          }
+        },
+        {
+          "case": "DensityMatrix/dict-format/(11,)/2",
+          "value": {
+            "0|0": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            },
+            "10|0": {
+              "type": "complex128",
+              "real": 0,
+              "imag": -1
+            },
+            "0|10": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 1
+            },
+            "10|10": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            }
+          }
+        },
+        {
+          "case": "DensityMatrix/dict-format/(11,)/0",
+          "value": {
+            "0|0": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            },
+            "10|0": {
+              "type": "complex128",
+              "real": 0,
+              "imag": -1
+            },
+            "0|10": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 1
+            },
+            "10|10": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            }
+          }
+        },
+        {
+          "case": "DensityMatrix/dict-format/(11,)/-1",
+          "value": {}
+        },
+        {
+          "case": "DensityMatrix/dict-format/(2, 11)/None",
+          "value": {
+            "0,0|0,0": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            },
+            "10,1|0,0": {
+              "type": "complex128",
+              "real": 0,
+              "imag": -1
+            },
+            "0,0|10,1": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 1
+            },
+            "10,1|10,1": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            }
+          }
+        },
+        {
+          "case": "DensityMatrix/dict-format/(2, 11)/2",
+          "value": {
+            "0,0|0,0": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            },
+            "10,1|0,0": {
+              "type": "complex128",
+              "real": 0,
+              "imag": -1
+            },
+            "0,0|10,1": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 1
+            },
+            "10,1|10,1": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            }
+          }
+        },
+        {
+          "case": "DensityMatrix/dict-format/(2, 11)/0",
+          "value": {
+            "0,0|0,0": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            },
+            "10,1|0,0": {
+              "type": "complex128",
+              "real": 0,
+              "imag": -1
+            },
+            "0,0|10,1": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 1
+            },
+            "10,1|10,1": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            }
+          }
+        },
+        {
+          "case": "DensityMatrix/dict-format/(2, 11)/-1",
+          "value": {}
+        },
+        {
+          "case": "DensityMatrix/complex-trace/trace",
+          "value": {
+            "type": "complex128",
+            "real": 1.4,
+            "imag": -0.49999999999999994
+          }
+        },
+        {
+          "case": "DensityMatrix/complex-trace/purity",
+          "value": {
+            "type": "complex128",
+            "real": 0.6300000000000001,
+            "imag": -0.09999999999999998
+          }
+        },
+        {
+          "case": "DensityMatrix/complex-trace/is_valid",
+          "value": false
+        },
+        {
+          "case": "DensityMatrix/complex-trace/to_dict",
+          "value": {
+            "0|0": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0.2
+            },
+            "1|0": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 0.3
+            },
+            "0|1": {
+              "type": "complex128",
+              "real": 0.1,
+              "imag": 0
+            },
+            "1|1": {
+              "type": "complex128",
+              "real": 0.4,
+              "imag": -0.7
+            }
+          }
+        },
+        {
+          "case": "DensityMatrix/nonhermitian-real-trace/trace",
+          "value": {
+            "type": "complex128",
+            "real": 1,
+            "imag": 0
+          }
+        },
+        {
+          "case": "DensityMatrix/nonhermitian-real-trace/purity",
+          "value": {
+            "type": "complex128",
+            "real": 0.1799999999999999,
+            "imag": 0
+          }
+        },
+        {
+          "case": "DensityMatrix/nonhermitian-real-trace/is_valid",
+          "value": false
+        },
+        {
+          "case": "DensityMatrix/nonhermitian-real-trace/to_dict",
+          "value": {
+            "0|0": {
+              "type": "complex128",
+              "real": 0.3,
+              "imag": 0
+            },
+            "1|0": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 1
+            },
+            "0|1": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 0.2
+            },
+            "1|1": {
+              "type": "complex128",
+              "real": 0.7,
+              "imag": 0
+            }
+          }
+        },
+        {
+          "case": "Statevector/coercion/statevector/add",
+          "value": {
+            "type": "Statevector",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2
+            ],
+            "data": [
+              [
+                2,
+                0
+              ],
+              [
+                0,
+                2
+              ]
+            ]
+          }
+        },
+        {
+          "case": "Statevector/coercion/statevector/sub",
+          "value": {
+            "type": "Statevector",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2
+            ],
+            "data": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "case": "Statevector/coercion/statevector/inner",
+          "value": {
+            "type": "complex128",
+            "real": 2,
+            "imag": 0
+          }
+        },
+        {
+          "case": "Statevector/coercion/density/add",
+          "error": "QiskitError",
+          "message": "'Invalid input data format for Statevector'"
+        },
+        {
+          "case": "Statevector/coercion/density/sub",
+          "error": "QiskitError",
+          "message": "'Invalid input data format for Statevector'"
+        },
+        {
+          "case": "Statevector/coercion/density/inner",
+          "error": "QiskitError",
+          "message": "'Invalid input data format for Statevector'"
+        },
+        {
+          "case": "Statevector/coercion/list-vector/add",
+          "value": {
+            "type": "Statevector",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2
+            ],
+            "data": [
+              [
+                2,
+                0
+              ],
+              [
+                0,
+                2
+              ]
+            ]
+          }
+        },
+        {
+          "case": "Statevector/coercion/list-vector/sub",
+          "error": "TypeError",
+          "message": "bad operand type for unary -: 'list'"
+        },
+        {
+          "case": "Statevector/coercion/list-vector/inner",
+          "value": {
+            "type": "complex128",
+            "real": 2,
+            "imag": 0
+          }
+        },
+        {
+          "case": "Statevector/coercion/raw-vector/add",
+          "value": {
+            "type": "Statevector",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2
+            ],
+            "data": [
+              [
+                2,
+                0
+              ],
+              [
+                0,
+                2
+              ]
+            ]
+          }
+        },
+        {
+          "case": "Statevector/coercion/raw-vector/sub",
+          "value": {
+            "type": "Statevector",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2
+            ],
+            "data": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "case": "Statevector/coercion/raw-vector/inner",
+          "value": {
+            "type": "complex128",
+            "real": 2,
+            "imag": 0
+          }
+        },
+        {
+          "case": "Statevector/coercion/list-matrix/add",
+          "error": "QiskitError",
+          "message": "'Invalid input: not a vector or column-vector.'"
+        },
+        {
+          "case": "Statevector/coercion/list-matrix/sub",
+          "error": "TypeError",
+          "message": "bad operand type for unary -: 'list'"
+        },
+        {
+          "case": "Statevector/coercion/list-matrix/inner",
+          "error": "QiskitError",
+          "message": "'Invalid input: not a vector or column-vector.'"
+        },
+        {
+          "case": "Statevector/coercion/raw-matrix/add",
+          "error": "QiskitError",
+          "message": "'Invalid input: not a vector or column-vector.'"
+        },
+        {
+          "case": "Statevector/coercion/raw-matrix/sub",
+          "error": "QiskitError",
+          "message": "'Invalid input: not a vector or column-vector.'"
+        },
+        {
+          "case": "Statevector/coercion/raw-matrix/inner",
+          "error": "QiskitError",
+          "message": "'Invalid input: not a vector or column-vector.'"
+        },
+        {
+          "case": "Statevector/coercion/scalar/add",
+          "error": "QiskitError",
+          "message": "'Invalid input data format for Statevector'"
+        },
+        {
+          "case": "Statevector/coercion/scalar/sub",
+          "error": "QiskitError",
+          "message": "'Invalid input data format for Statevector'"
+        },
+        {
+          "case": "Statevector/coercion/scalar/inner",
+          "error": "QiskitError",
+          "message": "'Invalid input data format for Statevector'"
+        },
+        {
+          "case": "Statevector/validity/default-close/{}",
+          "value": true
+        },
+        {
+          "case": "Statevector/validity/default-close/{'atol': 0, 'rtol': 0}",
+          "value": false
+        },
+        {
+          "case": "Statevector/validity/default-close/{'atol': 1e-08, 'rtol': 0}",
+          "value": true
+        },
+        {
+          "case": "Statevector/validity/rtol-close/{}",
+          "value": true
+        },
+        {
+          "case": "Statevector/validity/rtol-close/{'atol': 0, 'rtol': 0}",
+          "value": false
+        },
+        {
+          "case": "Statevector/validity/rtol-close/{'atol': 1e-08, 'rtol': 0}",
+          "value": false
+        },
+        {
+          "case": "Statevector/validity/norm-not-normsquare/{}",
+          "value": true
+        },
+        {
+          "case": "Statevector/validity/norm-not-normsquare/{'atol': 0, 'rtol': 0}",
+          "value": false
+        },
+        {
+          "case": "Statevector/validity/norm-not-normsquare/{'atol': 1e-08, 'rtol': 0}",
+          "value": false
+        },
+        {
+          "case": "DensityMatrix/coercion/statevector/add",
+          "value": {
+            "type": "DensityMatrix",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2,
+              2
+            ],
+            "data": [
+              [
+                1.6,
+                0
+              ],
+              [
+                0,
+                -0.8
+              ],
+              [
+                0,
+                0.8
+              ],
+              [
+                1.4,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "case": "DensityMatrix/coercion/statevector/sub",
+          "value": {
+            "type": "DensityMatrix",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2,
+              2
+            ],
+            "data": [
+              [
+                1.6,
+                0
+              ],
+              [
+                0,
+                -0.8
+              ],
+              [
+                0,
+                0.8
+              ],
+              [
+                1.4,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "case": "DensityMatrix/coercion/density/add",
+          "value": {
+            "type": "DensityMatrix",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2,
+              2
+            ],
+            "data": [
+              [
+                1.2,
+                0
+              ],
+              [
+                0,
+                0.4
+              ],
+              [
+                0,
+                -0.4
+              ],
+              [
+                0.8,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "case": "DensityMatrix/coercion/density/sub",
+          "value": {
+            "type": "DensityMatrix",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2,
+              2
+            ],
+            "data": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "case": "DensityMatrix/coercion/list-vector/add",
+          "value": {
+            "type": "DensityMatrix",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2,
+              2
+            ],
+            "data": [
+              [
+                1.6,
+                0
+              ],
+              [
+                0,
+                -0.8
+              ],
+              [
+                0,
+                0.8
+              ],
+              [
+                1.4,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "case": "DensityMatrix/coercion/list-vector/sub",
+          "error": "TypeError",
+          "message": "bad operand type for unary -: 'list'"
+        },
+        {
+          "case": "DensityMatrix/coercion/raw-vector/add",
+          "value": {
+            "type": "DensityMatrix",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2,
+              2
+            ],
+            "data": [
+              [
+                1.6,
+                0
+              ],
+              [
+                0,
+                -0.8
+              ],
+              [
+                0,
+                0.8
+              ],
+              [
+                1.4,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "case": "DensityMatrix/coercion/raw-vector/sub",
+          "value": {
+            "type": "DensityMatrix",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2,
+              2
+            ],
+            "data": [
+              [
+                1.6,
+                0
+              ],
+              [
+                0,
+                -0.8
+              ],
+              [
+                0,
+                0.8
+              ],
+              [
+                1.4,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "case": "DensityMatrix/coercion/list-matrix/add",
+          "value": {
+            "type": "DensityMatrix",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2,
+              2
+            ],
+            "data": [
+              [
+                1.6,
+                0
+              ],
+              [
+                0,
+                0.2
+              ],
+              [
+                0,
+                -0.2
+              ],
+              [
+                0.4,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "case": "DensityMatrix/coercion/list-matrix/sub",
+          "error": "TypeError",
+          "message": "bad operand type for unary -: 'list'"
+        },
+        {
+          "case": "DensityMatrix/coercion/raw-matrix/add",
+          "value": {
+            "type": "DensityMatrix",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2,
+              2
+            ],
+            "data": [
+              [
+                1.6,
+                0
+              ],
+              [
+                0,
+                0.2
+              ],
+              [
+                0,
+                -0.2
+              ],
+              [
+                1.4,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "case": "DensityMatrix/coercion/raw-matrix/sub",
+          "value": {
+            "type": "DensityMatrix",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2,
+              2
+            ],
+            "data": [
+              [
+                -0.4,
+                0
+              ],
+              [
+                0,
+                0.2
+              ],
+              [
+                0,
+                -0.2
+              ],
+              [
+                -0.6,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "case": "DensityMatrix/coercion/scalar/add",
+          "error": "QiskitError",
+          "message": "'Invalid input data format for DensityMatrix'"
+        },
+        {
+          "case": "DensityMatrix/coercion/scalar/sub",
+          "error": "QiskitError",
+          "message": "'Invalid input data format for DensityMatrix'"
+        },
+        {
+          "case": "DensityMatrix/validity/default-close/{}",
+          "value": true
+        },
+        {
+          "case": "DensityMatrix/validity/default-close/{'atol': 0, 'rtol': 0}",
+          "value": false
+        },
+        {
+          "case": "DensityMatrix/validity/default-close/{'atol': 1e-08, 'rtol': 0}",
+          "value": true
+        },
+        {
+          "case": "DensityMatrix/validity/rtol-close/{}",
+          "value": true
+        },
+        {
+          "case": "DensityMatrix/validity/rtol-close/{'atol': 0, 'rtol': 0}",
+          "value": false
+        },
+        {
+          "case": "DensityMatrix/validity/rtol-close/{'atol': 1e-08, 'rtol': 0}",
+          "value": false
+        },
+        {
+          "case": "DensityMatrix/validity/norm-not-normsquare/{}",
+          "value": false
+        },
+        {
+          "case": "DensityMatrix/validity/norm-not-normsquare/{'atol': 0, 'rtol': 0}",
+          "value": false
+        },
+        {
+          "case": "DensityMatrix/validity/norm-not-normsquare/{'atol': 1e-08, 'rtol': 0}",
+          "value": false
+        }
+      ]
+    },
+    {
+      "qiskit_version": "2.6.0",
+      "process_exit": 0,
+      "log_prefix": "/tmp/qb-stage12a-p05-public-v4-qiskit260",
+      "total_records_excluding_version_header": 443,
+      "case_records": 417,
+      "exception_records": 51,
+      "selected_outcomes": [
+        {
+          "tolerance_defaults": "Statevector",
+          "atol": 1e-8,
+          "rtol": 0.00001
+        },
+        {
+          "signature": "Statevector.__add__",
+          "value": "(self, other)"
+        },
+        {
+          "signature": "Statevector.__sub__",
+          "value": "(self, other)"
+        },
+        {
+          "signature": "Statevector.__mul__",
+          "value": "(self, other)"
+        },
+        {
+          "signature": "Statevector.__rmul__",
+          "value": "(self, other)"
+        },
+        {
+          "signature": "Statevector.__truediv__",
+          "value": "(self, other)"
+        },
+        {
+          "signature": "Statevector.__neg__",
+          "value": "(self)"
+        },
+        {
+          "signature": "Statevector.inner",
+          "value": "(self, other: 'Statevector') -> 'np.complex128'"
+        },
+        {
+          "signature": "Statevector.norm",
+          "value": null
+        },
+        {
+          "signature": "Statevector.trace",
+          "value": "(self) -> 'np.float64'"
+        },
+        {
+          "signature": "Statevector.purity",
+          "value": "(self) -> 'np.float64'"
+        },
+        {
+          "signature": "Statevector.is_valid",
+          "value": "(self, atol: 'float | None' = None, rtol: 'float | None' = None) -> 'bool'"
+        },
+        {
+          "signature": "Statevector.to_dict",
+          "value": "(self, decimals: 'None | int' = None) -> 'dict'"
+        },
+        {
+          "case": "Statevector/partition/(2, 2, 2)/inner",
+          "error": "QiskitError",
+          "message": "'Statevector dimensions do not match: (2, 4) and (2, 2, 2).'"
+        },
+        {
+          "case": "Statevector/partition/(8,)/inner",
+          "error": "QiskitError",
+          "message": "'Statevector dimensions do not match: (2, 4) and (8,).'"
+        },
+        {
+          "case": "Statevector/partition/(4, 2)/inner",
+          "error": "QiskitError",
+          "message": "'Statevector dimensions do not match: (2, 4) and (4, 2).'"
+        },
+        {
+          "case": "Statevector/partition/(4,)/add",
+          "error": "QiskitError",
+          "message": "'Cannot add shapes with different total left dimension 8 != 4'"
+        },
+        {
+          "case": "Statevector/partition/(4,)/sub",
+          "error": "QiskitError",
+          "message": "'Cannot add shapes with different total left dimension 8 != 4'"
+        },
+        {
+          "case": "Statevector/partition/(4,)/inner",
+          "error": "QiskitError",
+          "message": "'Statevector dimensions do not match: (2, 4) and (4,).'"
+        },
+        {
+          "case": "Statevector/unnormalized/purity",
+          "value": {
+            "type": "float64",
+            "real": 25
+          }
+        },
+        {
+          "case": "Statevector/zero/is_valid",
+          "value": false
+        },
+        {
+          "case": "Statevector/zero/purity",
+          "value": {
+            "type": "float64",
+            "real": 0
+          }
+        },
+        {
+          "case": "Statevector/zero/to_dict",
+          "value": {}
+        },
+        {
+          "case": "Statevector/zero/trace",
+          "value": {
+            "type": "float64",
+            "real": 0
+          }
+        },
+        {
+          "case": "Statevector/zero/inner",
+          "value": {
+            "type": "complex128",
+            "real": 0,
+            "imag": 0
+          }
+        },
+        {
+          "case": "Statevector/valid-tolerances/(None, None)",
+          "value": true
+        },
+        {
+          "case": "Statevector/valid-tolerances/(0, 0)",
+          "value": true
+        },
+        {
+          "case": "Statevector/valid-tolerances/(0.001, 0)",
+          "value": true
+        },
+        {
+          "case": "Statevector/valid-tolerances/(-1, 0)",
+          "value": true
+        },
+        {
+          "case": "Statevector/valid-tolerances/(nan, 0)",
+          "value": true,
+          "warnings": [
+            {
+              "type": "RuntimeWarning",
+              "message": "One of rtol or atol is not valid, atol: nan, rtol: 0"
+            }
+          ]
+        },
+        {
+          "case": "Statevector/dict-format/(3,)/None",
+          "value": {
+            "0": {
+              "type": "complex128",
+              "real": 1e-16,
+              "imag": 1e-17
+            },
+            "1": {
+              "type": "complex128",
+              "real": 0.1234,
+              "imag": 0.0003
+            }
+          }
+        },
+        {
+          "case": "Statevector/dict-format/(3,)/2",
+          "value": {
+            "1": {
+              "type": "complex128",
+              "real": 0.12,
+              "imag": 0
+            }
+          }
+        },
+        {
+          "case": "Statevector/dict-format/(3,)/0",
+          "value": {}
+        },
+        {
+          "case": "Statevector/dict-format/(3,)/-1",
+          "value": {}
+        },
+        {
+          "case": "Statevector/dict-format/(11,)/None",
+          "value": {
+            "0": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            },
+            "10": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 1
+            }
+          }
+        },
+        {
+          "case": "Statevector/dict-format/(11,)/2",
+          "value": {
+            "0": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            },
+            "10": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 1
+            }
+          }
+        },
+        {
+          "case": "Statevector/dict-format/(11,)/0",
+          "value": {
+            "0": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            },
+            "10": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 1
+            }
+          }
+        },
+        {
+          "case": "Statevector/dict-format/(11,)/-1",
+          "value": {}
+        },
+        {
+          "case": "Statevector/dict-format/(2, 11)/None",
+          "value": {
+            "0,0": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            },
+            "10,1": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 1
+            }
+          }
+        },
+        {
+          "case": "Statevector/dict-format/(2, 11)/2",
+          "value": {
+            "0,0": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            },
+            "10,1": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 1
+            }
+          }
+        },
+        {
+          "case": "Statevector/dict-format/(2, 11)/0",
+          "value": {
+            "0,0": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            },
+            "10,1": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 1
+            }
+          }
+        },
+        {
+          "case": "Statevector/dict-format/(2, 11)/-1",
+          "value": {}
+        },
+        {
+          "tolerance_defaults": "DensityMatrix",
+          "atol": 1e-8,
+          "rtol": 0.00001
+        },
+        {
+          "signature": "DensityMatrix.__add__",
+          "value": "(self, other)"
+        },
+        {
+          "signature": "DensityMatrix.__sub__",
+          "value": "(self, other)"
+        },
+        {
+          "signature": "DensityMatrix.__mul__",
+          "value": "(self, other)"
+        },
+        {
+          "signature": "DensityMatrix.__rmul__",
+          "value": "(self, other)"
+        },
+        {
+          "signature": "DensityMatrix.__truediv__",
+          "value": "(self, other)"
+        },
+        {
+          "signature": "DensityMatrix.__neg__",
+          "value": "(self)"
+        },
+        {
+          "signature": "DensityMatrix.inner",
+          "value": null
+        },
+        {
+          "signature": "DensityMatrix.norm",
+          "value": null
+        },
+        {
+          "signature": "DensityMatrix.trace",
+          "value": "(self)"
+        },
+        {
+          "signature": "DensityMatrix.purity",
+          "value": "(self)"
+        },
+        {
+          "signature": "DensityMatrix.is_valid",
+          "value": "(self, atol=None, rtol=None)"
+        },
+        {
+          "signature": "DensityMatrix.to_dict",
+          "value": "(self, decimals: 'None | int' = None) -> 'dict'"
+        },
+        {
+          "case": "DensityMatrix/partition/(4,)/add",
+          "error": "QiskitError",
+          "message": "'Cannot add shapes with different total left dimension 8 != 4'"
+        },
+        {
+          "case": "DensityMatrix/partition/(4,)/sub",
+          "error": "QiskitError",
+          "message": "'Cannot add shapes with different total left dimension 8 != 4'"
+        },
+        {
+          "case": "DensityMatrix/unnormalized/purity",
+          "value": {
+            "type": "complex128",
+            "real": 3,
+            "imag": 0
+          }
+        },
+        {
+          "case": "DensityMatrix/zero/is_valid",
+          "value": false
+        },
+        {
+          "case": "DensityMatrix/zero/purity",
+          "value": {
+            "type": "complex128",
+            "real": 0,
+            "imag": 0
+          }
+        },
+        {
+          "case": "DensityMatrix/zero/to_dict",
+          "value": {}
+        },
+        {
+          "case": "DensityMatrix/zero/trace",
+          "value": {
+            "type": "complex128",
+            "real": 0,
+            "imag": 0
+          }
+        },
+        {
+          "case": "DensityMatrix/zero/inner",
+          "error": "AttributeError",
+          "message": "'DensityMatrix' object has no attribute 'inner'"
+        },
+        {
+          "case": "DensityMatrix/valid-tolerances/(None, None)",
+          "value": true
+        },
+        {
+          "case": "DensityMatrix/valid-tolerances/(0, 0)",
+          "value": true
+        },
+        {
+          "case": "DensityMatrix/valid-tolerances/(0.001, 0)",
+          "value": true
+        },
+        {
+          "case": "DensityMatrix/valid-tolerances/(-1, 0)",
+          "value": false
+        },
+        {
+          "case": "DensityMatrix/valid-tolerances/(nan, 0)",
+          "value": true,
+          "warnings": [
+            {
+              "type": "RuntimeWarning",
+              "message": "One of rtol or atol is not valid, atol: nan, rtol: 0"
+            },
+            {
+              "type": "RuntimeWarning",
+              "message": "One of rtol or atol is not valid, atol: nan, rtol: 0"
+            },
+            {
+              "type": "RuntimeWarning",
+              "message": "One of rtol or atol is not valid, atol: nan, rtol: 0"
+            }
+          ]
+        },
+        {
+          "case": "DensityMatrix/dict-format/(3,)/None",
+          "value": {
+            "0|0": {
+              "type": "complex128",
+              "real": 1.0099999999999999e-32,
+              "imag": 5.3270991975853754e-51
+            },
+            "1|0": {
+              "type": "complex128",
+              "real": 1.2343e-17,
+              "imag": 1.2040000000000001e-18
+            },
+            "0|1": {
+              "type": "complex128",
+              "real": 1.2343e-17,
+              "imag": -1.2040000000000001e-18
+            },
+            "1|1": {
+              "type": "complex128",
+              "real": 0.015227649999999999,
+              "imag": -9.636215436703567e-22
+            }
+          }
+        },
+        {
+          "case": "DensityMatrix/dict-format/(3,)/2",
+          "value": {
+            "1|1": {
+              "type": "complex128",
+              "real": 0.02,
+              "imag": 0
+            }
+          }
+        },
+        {
+          "case": "DensityMatrix/dict-format/(3,)/0",
+          "value": {}
+        },
+        {
+          "case": "DensityMatrix/dict-format/(3,)/-1",
+          "value": {}
+        },
+        {
+          "case": "DensityMatrix/dict-format/(11,)/None",
+          "value": {
+            "0|0": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            },
+            "10|0": {
+              "type": "complex128",
+              "real": 0,
+              "imag": -1
+            },
+            "0|10": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 1
+            },
+            "10|10": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            }
+          }
+        },
+        {
+          "case": "DensityMatrix/dict-format/(11,)/2",
+          "value": {
+            "0|0": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            },
+            "10|0": {
+              "type": "complex128",
+              "real": 0,
+              "imag": -1
+            },
+            "0|10": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 1
+            },
+            "10|10": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            }
+          }
+        },
+        {
+          "case": "DensityMatrix/dict-format/(11,)/0",
+          "value": {
+            "0|0": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            },
+            "10|0": {
+              "type": "complex128",
+              "real": 0,
+              "imag": -1
+            },
+            "0|10": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 1
+            },
+            "10|10": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            }
+          }
+        },
+        {
+          "case": "DensityMatrix/dict-format/(11,)/-1",
+          "value": {}
+        },
+        {
+          "case": "DensityMatrix/dict-format/(2, 11)/None",
+          "value": {
+            "0,0|0,0": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            },
+            "10,1|0,0": {
+              "type": "complex128",
+              "real": 0,
+              "imag": -1
+            },
+            "0,0|10,1": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 1
+            },
+            "10,1|10,1": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            }
+          }
+        },
+        {
+          "case": "DensityMatrix/dict-format/(2, 11)/2",
+          "value": {
+            "0,0|0,0": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            },
+            "10,1|0,0": {
+              "type": "complex128",
+              "real": 0,
+              "imag": -1
+            },
+            "0,0|10,1": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 1
+            },
+            "10,1|10,1": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            }
+          }
+        },
+        {
+          "case": "DensityMatrix/dict-format/(2, 11)/0",
+          "value": {
+            "0,0|0,0": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            },
+            "10,1|0,0": {
+              "type": "complex128",
+              "real": 0,
+              "imag": -1
+            },
+            "0,0|10,1": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 1
+            },
+            "10,1|10,1": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0
+            }
+          }
+        },
+        {
+          "case": "DensityMatrix/dict-format/(2, 11)/-1",
+          "value": {}
+        },
+        {
+          "case": "DensityMatrix/complex-trace/trace",
+          "value": {
+            "type": "complex128",
+            "real": 1.4,
+            "imag": -0.49999999999999994
+          }
+        },
+        {
+          "case": "DensityMatrix/complex-trace/purity",
+          "value": {
+            "type": "complex128",
+            "real": 0.6300000000000001,
+            "imag": -0.09999999999999998
+          }
+        },
+        {
+          "case": "DensityMatrix/complex-trace/is_valid",
+          "value": false
+        },
+        {
+          "case": "DensityMatrix/complex-trace/to_dict",
+          "value": {
+            "0|0": {
+              "type": "complex128",
+              "real": 1,
+              "imag": 0.2
+            },
+            "1|0": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 0.3
+            },
+            "0|1": {
+              "type": "complex128",
+              "real": 0.1,
+              "imag": 0
+            },
+            "1|1": {
+              "type": "complex128",
+              "real": 0.4,
+              "imag": -0.7
+            }
+          }
+        },
+        {
+          "case": "DensityMatrix/nonhermitian-real-trace/trace",
+          "value": {
+            "type": "complex128",
+            "real": 1,
+            "imag": 0
+          }
+        },
+        {
+          "case": "DensityMatrix/nonhermitian-real-trace/purity",
+          "value": {
+            "type": "complex128",
+            "real": 0.1799999999999999,
+            "imag": 0
+          }
+        },
+        {
+          "case": "DensityMatrix/nonhermitian-real-trace/is_valid",
+          "value": false
+        },
+        {
+          "case": "DensityMatrix/nonhermitian-real-trace/to_dict",
+          "value": {
+            "0|0": {
+              "type": "complex128",
+              "real": 0.3,
+              "imag": 0
+            },
+            "1|0": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 1
+            },
+            "0|1": {
+              "type": "complex128",
+              "real": 0,
+              "imag": 0.2
+            },
+            "1|1": {
+              "type": "complex128",
+              "real": 0.7,
+              "imag": 0
+            }
+          }
+        },
+        {
+          "case": "Statevector/coercion/statevector/add",
+          "value": {
+            "type": "Statevector",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2
+            ],
+            "data": [
+              [
+                2,
+                0
+              ],
+              [
+                0,
+                2
+              ]
+            ]
+          }
+        },
+        {
+          "case": "Statevector/coercion/statevector/sub",
+          "value": {
+            "type": "Statevector",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2
+            ],
+            "data": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "case": "Statevector/coercion/statevector/inner",
+          "value": {
+            "type": "complex128",
+            "real": 2,
+            "imag": 0
+          }
+        },
+        {
+          "case": "Statevector/coercion/density/add",
+          "error": "QiskitError",
+          "message": "'Invalid input data format for Statevector'"
+        },
+        {
+          "case": "Statevector/coercion/density/sub",
+          "error": "QiskitError",
+          "message": "'Invalid input data format for Statevector'"
+        },
+        {
+          "case": "Statevector/coercion/density/inner",
+          "error": "QiskitError",
+          "message": "'Invalid input data format for Statevector'"
+        },
+        {
+          "case": "Statevector/coercion/list-vector/add",
+          "value": {
+            "type": "Statevector",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2
+            ],
+            "data": [
+              [
+                2,
+                0
+              ],
+              [
+                0,
+                2
+              ]
+            ]
+          }
+        },
+        {
+          "case": "Statevector/coercion/list-vector/sub",
+          "error": "TypeError",
+          "message": "bad operand type for unary -: 'list'"
+        },
+        {
+          "case": "Statevector/coercion/list-vector/inner",
+          "value": {
+            "type": "complex128",
+            "real": 2,
+            "imag": 0
+          }
+        },
+        {
+          "case": "Statevector/coercion/raw-vector/add",
+          "value": {
+            "type": "Statevector",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2
+            ],
+            "data": [
+              [
+                2,
+                0
+              ],
+              [
+                0,
+                2
+              ]
+            ]
+          }
+        },
+        {
+          "case": "Statevector/coercion/raw-vector/sub",
+          "value": {
+            "type": "Statevector",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2
+            ],
+            "data": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "case": "Statevector/coercion/raw-vector/inner",
+          "value": {
+            "type": "complex128",
+            "real": 2,
+            "imag": 0
+          }
+        },
+        {
+          "case": "Statevector/coercion/list-matrix/add",
+          "error": "QiskitError",
+          "message": "'Invalid input: not a vector or column-vector.'"
+        },
+        {
+          "case": "Statevector/coercion/list-matrix/sub",
+          "error": "TypeError",
+          "message": "bad operand type for unary -: 'list'"
+        },
+        {
+          "case": "Statevector/coercion/list-matrix/inner",
+          "error": "QiskitError",
+          "message": "'Invalid input: not a vector or column-vector.'"
+        },
+        {
+          "case": "Statevector/coercion/raw-matrix/add",
+          "error": "QiskitError",
+          "message": "'Invalid input: not a vector or column-vector.'"
+        },
+        {
+          "case": "Statevector/coercion/raw-matrix/sub",
+          "error": "QiskitError",
+          "message": "'Invalid input: not a vector or column-vector.'"
+        },
+        {
+          "case": "Statevector/coercion/raw-matrix/inner",
+          "error": "QiskitError",
+          "message": "'Invalid input: not a vector or column-vector.'"
+        },
+        {
+          "case": "Statevector/coercion/scalar/add",
+          "error": "QiskitError",
+          "message": "'Invalid input data format for Statevector'"
+        },
+        {
+          "case": "Statevector/coercion/scalar/sub",
+          "error": "QiskitError",
+          "message": "'Invalid input data format for Statevector'"
+        },
+        {
+          "case": "Statevector/coercion/scalar/inner",
+          "error": "QiskitError",
+          "message": "'Invalid input data format for Statevector'"
+        },
+        {
+          "case": "Statevector/validity/default-close/{}",
+          "value": true
+        },
+        {
+          "case": "Statevector/validity/default-close/{'atol': 0, 'rtol': 0}",
+          "value": false
+        },
+        {
+          "case": "Statevector/validity/default-close/{'atol': 1e-08, 'rtol': 0}",
+          "value": true
+        },
+        {
+          "case": "Statevector/validity/rtol-close/{}",
+          "value": true
+        },
+        {
+          "case": "Statevector/validity/rtol-close/{'atol': 0, 'rtol': 0}",
+          "value": false
+        },
+        {
+          "case": "Statevector/validity/rtol-close/{'atol': 1e-08, 'rtol': 0}",
+          "value": false
+        },
+        {
+          "case": "Statevector/validity/norm-not-normsquare/{}",
+          "value": true
+        },
+        {
+          "case": "Statevector/validity/norm-not-normsquare/{'atol': 0, 'rtol': 0}",
+          "value": false
+        },
+        {
+          "case": "Statevector/validity/norm-not-normsquare/{'atol': 1e-08, 'rtol': 0}",
+          "value": false
+        },
+        {
+          "case": "DensityMatrix/coercion/statevector/add",
+          "value": {
+            "type": "DensityMatrix",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2,
+              2
+            ],
+            "data": [
+              [
+                1.6,
+                0
+              ],
+              [
+                0,
+                -0.8
+              ],
+              [
+                0,
+                0.8
+              ],
+              [
+                1.4,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "case": "DensityMatrix/coercion/statevector/sub",
+          "value": {
+            "type": "DensityMatrix",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2,
+              2
+            ],
+            "data": [
+              [
+                1.6,
+                0
+              ],
+              [
+                0,
+                -0.8
+              ],
+              [
+                0,
+                0.8
+              ],
+              [
+                1.4,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "case": "DensityMatrix/coercion/density/add",
+          "value": {
+            "type": "DensityMatrix",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2,
+              2
+            ],
+            "data": [
+              [
+                1.2,
+                0
+              ],
+              [
+                0,
+                0.4
+              ],
+              [
+                0,
+                -0.4
+              ],
+              [
+                0.8,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "case": "DensityMatrix/coercion/density/sub",
+          "value": {
+            "type": "DensityMatrix",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2,
+              2
+            ],
+            "data": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "case": "DensityMatrix/coercion/list-vector/add",
+          "value": {
+            "type": "DensityMatrix",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2,
+              2
+            ],
+            "data": [
+              [
+                1.6,
+                0
+              ],
+              [
+                0,
+                -0.8
+              ],
+              [
+                0,
+                0.8
+              ],
+              [
+                1.4,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "case": "DensityMatrix/coercion/list-vector/sub",
+          "error": "TypeError",
+          "message": "bad operand type for unary -: 'list'"
+        },
+        {
+          "case": "DensityMatrix/coercion/raw-vector/add",
+          "value": {
+            "type": "DensityMatrix",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2,
+              2
+            ],
+            "data": [
+              [
+                1.6,
+                0
+              ],
+              [
+                0,
+                -0.8
+              ],
+              [
+                0,
+                0.8
+              ],
+              [
+                1.4,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "case": "DensityMatrix/coercion/raw-vector/sub",
+          "value": {
+            "type": "DensityMatrix",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2,
+              2
+            ],
+            "data": [
+              [
+                1.6,
+                0
+              ],
+              [
+                0,
+                -0.8
+              ],
+              [
+                0,
+                0.8
+              ],
+              [
+                1.4,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "case": "DensityMatrix/coercion/list-matrix/add",
+          "value": {
+            "type": "DensityMatrix",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2,
+              2
+            ],
+            "data": [
+              [
+                1.6,
+                0
+              ],
+              [
+                0,
+                0.2
+              ],
+              [
+                0,
+                -0.2
+              ],
+              [
+                0.4,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "case": "DensityMatrix/coercion/list-matrix/sub",
+          "error": "TypeError",
+          "message": "bad operand type for unary -: 'list'"
+        },
+        {
+          "case": "DensityMatrix/coercion/raw-matrix/add",
+          "value": {
+            "type": "DensityMatrix",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2,
+              2
+            ],
+            "data": [
+              [
+                1.6,
+                0
+              ],
+              [
+                0,
+                0.2
+              ],
+              [
+                0,
+                -0.2
+              ],
+              [
+                1.4,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "case": "DensityMatrix/coercion/raw-matrix/sub",
+          "value": {
+            "type": "DensityMatrix",
+            "dims": [
+              2
+            ],
+            "shape": [
+              2,
+              2
+            ],
+            "data": [
+              [
+                -0.4,
+                0
+              ],
+              [
+                0,
+                0.2
+              ],
+              [
+                0,
+                -0.2
+              ],
+              [
+                -0.6,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "case": "DensityMatrix/coercion/scalar/add",
+          "error": "QiskitError",
+          "message": "'Invalid input data format for DensityMatrix'"
+        },
+        {
+          "case": "DensityMatrix/coercion/scalar/sub",
+          "error": "QiskitError",
+          "message": "'Invalid input data format for DensityMatrix'"
+        },
+        {
+          "case": "DensityMatrix/validity/default-close/{}",
+          "value": true
+        },
+        {
+          "case": "DensityMatrix/validity/default-close/{'atol': 0, 'rtol': 0}",
+          "value": false
+        },
+        {
+          "case": "DensityMatrix/validity/default-close/{'atol': 1e-08, 'rtol': 0}",
+          "value": true
+        },
+        {
+          "case": "DensityMatrix/validity/rtol-close/{}",
+          "value": true
+        },
+        {
+          "case": "DensityMatrix/validity/rtol-close/{'atol': 0, 'rtol': 0}",
+          "value": false
+        },
+        {
+          "case": "DensityMatrix/validity/rtol-close/{'atol': 1e-08, 'rtol': 0}",
+          "value": false
+        },
+        {
+          "case": "DensityMatrix/validity/norm-not-normsquare/{}",
+          "value": false
+        },
+        {
+          "case": "DensityMatrix/validity/norm-not-normsquare/{'atol': 0, 'rtol': 0}",
+          "value": false
+        },
+        {
+          "case": "DensityMatrix/validity/norm-not-normsquare/{'atol': 1e-08, 'rtol': 0}",
+          "value": false
+        }
+      ]
+    }
+  ],
+  "native_boundaries": [
+    "Arithmetic is native numerical linear algebra; no upstream SDK execution engine.",
+    "Generic query tolerance defaults do not relax physical simulator admission: initial-state and Set Density callers explicitly retain atol=1e-10 and rtol=0.",
+    "Preexisting unmanaged Number arithmetic such as Fraction is retained through numeric scalar conversion after reciprocal evaluation; managed foreign numeric protocols remain explicitly rejected.",
+    "Add/sub use equal total size and retain left subsystem metadata, not structural subsystem equivalence; inner requires matching ordered partitions.",
+    "Native DensityMatrix minus a vector subtracts its outer product. The observed public subtraction result instead equals addition of that outer product. Negation before conversion is an interpretation consistent with the numeric observations, not a claim about upstream implementation internals; explicit Partial Public Compatibility.",
+    "Native accepts builtin numeric list subtraction, while the sampled public list subtraction raises TypeError.",
+    "Native zero-register dictionary labels 0 and 0|0 remain an explicit extension; public sampled to_dict raises ValueError.",
+    "Managed foreign protocols and nonnumeric arrays are rejected; explicit numeric ndarray subclasses are sanitized. This is not a full external object ABI.",
+    "Negative/nonfinite validity tolerances are rejected natively rather than copying sampled public permissive/warning behavior.",
+    "Native q0-first wire convention and dictionary probabilities/density shape-tuple dim are unchanged; reference tests explicitly reverse public dimension metadata.",
+    "Public norm() and DensityMatrix.inner() are absent; they are not invented. Mutable upstream tolerance-mixin settings are not claimed.",
+    "P0.2/P0.3 PUBLIC_DIFFERENTIAL_MISMATCH artifacts and existing evolution math remain unchanged."
+  ]
+}

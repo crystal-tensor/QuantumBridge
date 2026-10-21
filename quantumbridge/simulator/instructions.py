@@ -53,7 +53,7 @@ def set_state(circuit,kind,value):
         if kind=="statevector" and not np.isclose(np.vdot(array,array),1,atol=1e-10,rtol=0): raise ValueError("Replacement vector is not normalized.")
         if kind=="density_matrix":
             from quantumbridge.information import DensityMatrix
-            if not DensityMatrix(array).is_valid(): raise ValueError("Replacement density is not positive Hermitian trace-one.")
+            if not DensityMatrix(array).is_valid(atol=1e-10,rtol=0): raise ValueError("Replacement density is not positive Hermitian trace-one.")
         if kind=="unitary" and not np.allclose(array.conj().T@array,np.eye(dimension),atol=1e-10,rtol=0): raise ValueError("Replacement unitary is not unitary.")
         if kind=="superop":
             from quantumbridge.information import SuperOp

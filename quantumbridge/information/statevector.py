@@ -189,6 +189,206 @@ def _expectation_value(data, dimensions, observable, qargs, *, density=False):
     return _expectation_local_operator(data,matrix,selected,dimensions,density=density)
 
 
+def _state_data(state):
+    from .density_matrix import DensityMatrix
+    from quantumbridge.execution.array_reservations import numeric_shape
+    from quantumbridge.core.classical import UnsupportedFeature
+    scope=current_resources()
+    if scope is not None and type(state) not in (Statevector,DensityMatrix):
+        raise UnsupportedFeature("managed_state_math","Managed state mathematics requires a native state object.")
+    dimensions=state_dimensions(state._dims)
+    density=isinstance(state,DensityMatrix)
+    size=prod(dimensions)
+    raw=state.data
+    if scope is not None:
+        shape=numeric_shape(raw)
+        if not issubclass(type(raw),np.ndarray):
+            raise UnsupportedFeature("managed_state_buffer","Native state queries require explicit numeric ndarray storage.")
+        data=np.ndarray.view(raw,np.ndarray)
+    else:
+        data=np.asarray(raw,dtype=complex)
+        shape=data.shape
+    if shape!=((size,size) if density else (size,)):
+        raise ValueError("State dimensions do not match its numeric buffer.")
+    return data,dimensions,density
+
+
+def _state_operand(value, size, *, density):
+    from .density_matrix import DensityMatrix
+    from quantumbridge.execution.array_reservations import numeric_shape
+    scope=current_resources()
+    dimensions=None
+    native=type(value) in (Statevector,DensityMatrix) if scope is not None else isinstance(value,(Statevector,DensityMatrix))
+    if native:
+        raw,dimensions,is_density=_state_data(value)
+        if is_density and not density:raise ValueError("Statevector arithmetic requires a vector operand.")
+        shape=raw.shape
+    else:
+        raw=value if scope is not None else np.asarray(value,dtype=complex)
+        shape=numeric_shape(raw) if scope is not None else raw.shape
+    # A 1x1 density operand is a matrix, not another pure-state outer product.
+    vector=shape in ((size,),(size,1)) and not (density and shape==(size,size))
+    if not (vector or density and shape==(size,size)):
+        raise ValueError("State arithmetic operands must have matching total dimensions.")
+    return raw,shape,vector,dimensions
+
+
+def _state_arrays(values, *, output_bytes=0, ledger=None):
+    from quantumbridge.execution.array_reservations import numeric_array, numeric_shape, array_layout
+    scope=current_resources()
+    needed=output_bytes
+    if scope is not None:
+        for value in values:
+            shape=numeric_shape(value)
+            if not issubclass(type(value),np.ndarray) or np.ndarray.view(value,np.ndarray).dtype!=np.dtype(complex):
+                needed+=array_layout(shape,complex)[2]
+    if ledger is not None:
+        ledger.preflight(memory_bytes=needed)
+        ledger.unavailable("state_math_iterator_workspace",
+            "Explicit conversions and outputs are admitted; scalar/ufunc iterator and Python storage are not measured RSS.")
+    return tuple(numeric_array(value,category="state_math_input") if scope is not None
+        else np.asarray(value,dtype=complex) for value in values)
+
+
+def _state_scalar(value, *, reciprocal=False):
+    from quantumbridge.execution.array_reservations import numeric_shape
+    if current_resources() is not None:
+        if numeric_shape(value)!=():raise TypeError("State scalar arithmetic requires a number.")
+    if issubclass(type(value),np.ndarray):
+        if not reciprocal or numeric_shape(value)!=():raise TypeError("State multiplication requires a numeric scalar, not an ndarray.")
+        value=np.ndarray.view(value,np.ndarray)[()]
+    if not isinstance(value,Number):return NotImplemented
+    value=1/value if reciprocal else value
+    if current_resources() is None and not isinstance(value,(bool,int,float,complex,np.number)):
+        value=complex(value)
+    return value
+
+
+def _state_arithmetic(state, other, operation):
+    from quantumbridge.execution.array_reservations import array_layout
+    from quantumbridge.execution.array_ownership import retained_array, storage_ledger
+    data,dimensions,density=_state_data(state)
+    scope=current_resources()
+    ledger=storage_ledger(data) if scope is None else scope.ledger
+    vector=False
+    if operation in ("add","subtract"):
+        raw,shape,vector,_=_state_operand(other,prod(dimensions),density=density)
+        inputs=(data,raw)
+    else:
+        other=_state_scalar(other,reciprocal=operation=="divide")
+        if other is NotImplemented:return NotImplemented
+        inputs=(data,)
+    arrays=_state_arrays(inputs,output_bytes=array_layout(data.shape,complex)[2],ledger=ledger)
+    data=arrays[0]
+    output=retained_array(ledger,"state_arithmetic_output",data.shape,complex)
+    if len(arrays)==1:
+        np.multiply(data,other,out=output)
+    else:
+        right=arrays[1]
+        if vector and right.ndim==2:right=right[:,0]
+        if density and vector:
+            sign=1 if operation=="add" else -1
+            for row in range(len(data)):
+                for column in range(len(data)):
+                    output[row,column]=data[row,column]+sign*right[row]*right[column].conjugate()
+        else:
+            (np.add if operation=="add" else np.subtract)(data,right,out=output)
+    return output,dimensions
+
+
+def _state_norm(data):
+    length=np.float64(0)
+    for entry in data:
+        if np.isnan(entry):return np.float64(np.nan)
+        length=np.hypot(length,np.abs(entry))
+    return length
+
+
+def _state_trace(state, *, square=False):
+    data,_,density=_state_data(state)
+    if density:
+        value=(sum(data[row,column]*data[column,row] for row in range(len(data)) for column in range(len(data)))
+            if square else sum(data[index,index] for index in range(len(data))))
+        return np.complex128(value)
+    length=_state_norm(data)
+    trace=length*length
+    return np.float64(trace*trace if square else trace)
+
+
+def _state_inner(state, other):
+    data,dimensions,_=_state_data(state)
+    raw,shape,_,other_dims=_state_operand(other,len(data),density=False)
+    if (state_dimensions(len(data)) if other_dims is None else other_dims)!=dimensions:
+        raise ValueError("Statevector inner product requires matching subsystem dimensions.")
+    scope=current_resources()
+    data,right=_state_arrays((data,raw),ledger=None if scope is None else scope.ledger)
+    if len(shape)==2:right=right[:,0]
+    return np.complex128(sum(left.conjugate()*value for left,value in zip(data,right)))
+
+
+def _state_dictionary(state, decimals):
+    data,dimensions,density=_state_data(state)
+    if decimals is not None:
+        if current_resources() is not None:
+            from quantumbridge.execution.array_reservations import numeric_shape
+            numeric_shape(decimals,real_only=True)
+        if not isinstance(decimals,Integral):raise TypeError("State dictionary decimals must be an integer or None.")
+        decimals=int(decimals)
+    separator="," if len(dimensions)>1 and any(dim>10 for dim in dimensions) else ""
+    def label(index):
+        return separator.join(str(digit) for digit in basis_digits(index,dimensions)) if dimensions else "0"
+    scope=current_resources()
+    if scope is not None:
+        scope.ledger.unavailable("state_dictionary_python_storage",
+            "Dictionary entries and scalar rounding are Python/scalar storage, not retained ndarray bytes or measured RSS.")
+    result={}
+    for index,entry in enumerate(data.flat):
+        entry=np.complex128(entry)
+        if decimals is not None:entry=np.round(entry,decimals=decimals)
+        if entry==0:continue
+        if density:
+            row,column=divmod(index,len(data))
+            key=label(column)+"|"+label(row)
+        else:key=label(index)
+        result[key]=entry
+    return result
+
+
+def _state_valid(state, atol, rtol):
+    from quantumbridge.execution.array_ownership import retained_array
+    data,_,density=_state_data(state)
+    atol,rtol=1e-8 if atol is None else atol,1e-5 if rtol is None else rtol
+    if current_resources() is not None:
+        from quantumbridge.execution.array_reservations import numeric_shape
+        numeric_shape(atol,real_only=True)
+        numeric_shape(rtol,real_only=True)
+    atol,rtol=float(atol),float(rtol)
+    if not isfinite(atol) or not isfinite(rtol) or atol<0 or rtol<0:
+        raise ValueError("State validity tolerances must be finite and nonnegative.")
+    if any(not np.isfinite(entry) for entry in data.flat):return False
+    if not density:return bool(np.isclose(_state_norm(data),1.,atol=atol,rtol=rtol))
+    for row in range(len(data)):
+        for column in range(len(data)):
+            reference=data[column,row].conjugate()
+            if abs(data[row,column]-reference)>atol+rtol*abs(reference):return False
+    if not np.isclose(sum(data[index,index] for index in range(len(data))),1.,atol=atol,rtol=rtol):return False
+    scope=current_resources()
+    ledger=None if scope is None else scope.ledger
+    needs_copy=data.dtype!=np.dtype(complex) or not (data.flags.c_contiguous or data.flags.f_contiguous)
+    if ledger is not None:
+        ledger.preflight(memory_bytes=len(data)*8+(data.size*16 if needs_copy else 0))
+        ledger.unavailable("density_validity_lapack_workspace",
+            "Known input packing and eigenvalue output are admitted; unexposed NumPy/LAPACK workspace is not measured RSS.")
+    if needs_copy:
+        packed=retained_array(ledger,"density_validity_input",data.shape,complex,
+            lambda:np.empty(data.shape,complex,order="F"))
+        np.copyto(packed,data,casting="unsafe")
+        data=packed
+    values=retained_array(ledger,"density_validation_eigenvalues",(len(data),),float,
+        lambda:np.linalg.eigvalsh(data))
+    return bool(np.min(values)>=-atol)
+
+
 class Statevector:
     def __init__(self, data, normalize: bool = False, *, dims=None):
         from quantumbridge.execution.resource_context import current_resources
@@ -256,11 +456,14 @@ class Statevector:
             data[index]=value
         return cls(data)
 
-    def is_valid(self, atol: float = 1e-10) -> bool:
-        if current_resources() is not None:
-            from quantumbridge.execution import mps_arrays as arrays
-            return bool(np.isclose(arrays.norm_squared(self.data),1.,atol=atol))
-        return bool(np.isclose(np.vdot(self.data, self.data), 1.0, atol=atol))
+    def is_valid(self, atol: float | None = None, rtol: float | None = None) -> bool:
+        return _state_valid(self,atol,rtol)
+
+    def trace(self) -> np.float64:
+        return _state_trace(self)
+
+    def purity(self) -> np.float64:
+        return _state_trace(self,square=True)
 
     def probabilities(self, wires=None) -> dict[str, float]:
         selected=_validate_qargs(wires,len(self._dims))
@@ -338,10 +541,7 @@ class Statevector:
         return Statevector(data,dims=self._dims[::-1])
 
     def inner(self, other) -> complex:
-        other_state = other if isinstance(other, Statevector) else Statevector(other)
-        if len(self.data) != len(other_state.data):
-            raise ValueError("QuantumBridge Statevector inner product requires equal dimensions.")
-        return np.vdot(self.data, other_state.data)
+        return _state_inner(self,other)
 
     def equiv(self, other, atol: float = 1e-10) -> bool:
         other_state = other if isinstance(other, Statevector) else Statevector(other)
@@ -438,31 +638,36 @@ class Statevector:
         return Statevector(copied_array(self.data,category="statevector_copy"),dims=self._dims)
 
     def to_dict(self, decimals: int | None = None) -> dict[str, complex]:
-        out = {}
-        for index, amplitude in enumerate(self.data):
-            if abs(amplitude) <= 1e-15:
-                continue
-            if decimals is not None:
-                amplitude = np.round(amplitude, decimals=decimals)
-            label=basis_label(index,self._dims,tuple(range(len(self._dims)))) if self._dims else "0"
-            out[label] = complex(amplitude)
-        return out
+        return _state_dictionary(self,decimals)
 
     def __len__(self) -> int:
         return len(self.data)
 
+    def __add__(self, other):
+        data,dimensions=_state_arithmetic(self,other,"add")
+        return Statevector(data,dims=dimensions)
+
+    def __sub__(self, other):
+        data,dimensions=_state_arithmetic(self,other,"subtract")
+        return Statevector(data,dims=dimensions)
+
+    def __neg__(self):
+        return self.__mul__(-1)
+
     def __mul__(self, scalar):
-        if not isinstance(scalar, Number):
-            return NotImplemented
-        return Statevector(self.data * scalar,dims=self._dims)
+        result=_state_arithmetic(self,scalar,"multiply")
+        if result is NotImplemented:return NotImplemented
+        data,dimensions=result
+        return Statevector(data,dims=dimensions)
 
     def __rmul__(self, scalar):
         return self.__mul__(scalar)
 
     def __truediv__(self, scalar):
-        if not isinstance(scalar, Number):
-            return NotImplemented
-        return Statevector(self.data / scalar,dims=self._dims)
+        result=_state_arithmetic(self,scalar,"divide")
+        if result is NotImplemented:return NotImplemented
+        data,dimensions=result
+        return Statevector(data,dims=dimensions)
 
     def __eq__(self, other) -> bool:
         try:

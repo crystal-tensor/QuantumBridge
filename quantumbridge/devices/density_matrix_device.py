@@ -82,7 +82,7 @@ class DensityMatrixDevice(NativeDeviceDerivatives):
                 density=arrays.contracted(density[:,None],arrays.conjugated(density)[None,:])
         if density.shape != (dimension, dimension) or scope is None and not np.all(np.isfinite(density)):
             raise ValueError("QuantumBridge initial state must match circuit width and contain finite values.")
-        if not DensityMatrix(density).is_valid():
+        if not DensityMatrix(density).is_valid(atol=1e-10,rtol=0):
             raise ValueError("QuantumBridge initial density matrix must be positive, Hermitian and trace one.")
         if scope is not None:
             from quantumbridge.execution import mps_arrays as arrays
