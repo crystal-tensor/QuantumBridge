@@ -1507,3 +1507,196 @@ reduction 在现有 Statevector/DensityMatrix 中究竟还缺什么。只有发�
 commit 执行。整个项目继续以完整 Qiskit/PennyLane 原生函数库替代为最高目标，
 绝不把当前 90.62% 行覆盖率解释为 SDK 完成度。C3 PARTIAL，不进入 Capture/Studio，
 Studio 最后。
+
+## Stage 12-A P0.7 Received Execution Prompt
+
+Received 2026-10-22 from the designated conversation after the evidence-first
+P0.6 audit. This is report-based collaboration, not independent source/log audit.
+Formatting and equations are normalized here; all functional and gate requirements
+are retained. An initially completed-marked snapshot ended at Task 11; a request
+for the tail was sent before a later snapshot exposed original Tasks 12-13.
+Both the original tail and the completed supplemental reply were read. The
+supplement clarifies the same scope, not a new feature or a product red.
+
+### P0.6 Decision And P0.7 Scope
+
+确认 P0.6 原调查范围为 NO_NEW_FUNCTIONAL_GAP_IN_SURVEYED_EXISTING_OPERATIONS。
+432 组断言支持被调查原生函数的数学，不等于完整公开对等；公开异常和 metadata 差异
+仍 Partial。下一批选择真实缺失的 DensityMatrix.partial_transpose(qargs)，复用现有
+mixed-radix DensityMatrix 引擎，不再重写 reverse_qargs 或 partial_trace。
+
+### Task 0 - 基线与范围
+
+当前本地 HEAD ac34b6d79fc00291f72ea132248c822895057a74，P0.5 原生代码
+87076d532084f993842859318802ef8155455776。P0.6 保持上述无新数学缺口结论。
+不修改正确 reverse_qargs、partial_trace 及既有 native 契约。本批只实现既有
+DensityMatrix 的 mixed-radix partial transpose，不开发 general channels、negativity
+计算器、任意 subsystem permutation API 或新引擎。完整独立原生 Qiskit/PennyLane
+full functional parity/full replacement ACTIVE / INCOMPLETE，C3 PARTIAL，Studio 最后。
+
+### Task 1 - 公开 API 黑盒契约
+
+在已安装 Qiskit 2.4.1/2.6.0 调查实际 DensityMatrix.partial_transpose(qargs) 类方法、
+签名、参数和返回契约；覆盖 qubit/qutrit/qudit/mixed-radix dimensions，单个/多个、
+非连续/反向、空/全部、重复/越界/bool/非法 qargs，Hermitian/非 Hermitian、归一化/
+未归一化/非物理矩阵，dtype、dims、num_qubits、异常类型。分别保存两版本公开实验，
+不读或移植上游源码和测试，不把 public probe records 算作 native passed tests。
+
+### Task 2 - 先建立真正数学红灯
+
+在未修改 DensityMatrix 上新增、执行测试，至少复现：
+
+1. 单 qubit partial transpose 未实现。
+2. 单 qutrit partial transpose 未实现。
+3. (3,2) 纠缠 density 的真正 partial transpose。
+4. (2,3,2) 的单个中间子系统。
+5. (2,3,2) 非连续 (0,2)。
+6. 多个 qargs 的反向选择。
+7. 非 Hermitian 复矩阵的虚部或行列交换错误。
+8. mixed-radix dims 正确但索引错误。
+9. strided/noncontiguous 输入。
+10. 合法输入但输出超过预算。
+
+保存原始 red 和独立 exit，不人为破坏已正确 tensor/reshape/trace，测试作者错误与
+production 缺陷分开报告。已经完成的 197 failed 初始红不需再次制造。
+
+### Task 3 - 最小原生数学实现
+
+在既有 DensityMatrix 类及共享 native 数值工具实现 partial_transpose(qargs)。
+维度 d0,...,d(n-1)，行列多重指标 i,j，对所选子系统集合 S 交换 i[k],j[k]：
+
+```text
+(rho^T_S)[i,j] = rho[i',j']
+i'[k] = j[k], j'[k] = i[k] for k in S; otherwise unchanged.
+```
+
+这是行列索引交换，不是 adjoint，不额外共轭。复用现有 dimensions、数组表示和
+ResourceScope，不建第二套引擎；输入不变，输出分区不变；支持不同维度、非连续
+qargs、complex128、strided、非 Hermitian。没有 normalization、PSD projection 或
+物理态修正，不为局部 PT 构造全系统 superoperator。可用已有受控 tensor 重排，
+必须保证实际 row/column 轴映射正确。
+
+### Task 4 - 严格数学不变量
+
+验证 (rho^T_S)^T_S=rho、Tr(rho^T_S)=Tr(rho)、rho^T_all=rho.T，后者不是共轭转置。
+Hermitian 输入的 PT 保持 Hermitian，但不要求 PSD。纠缠态 PT 的负特征值不能截断。
+对非 Hermitian、未归一化输入只检验适用线性代数，不强求物理密度矩阵性质。
+
+### Task 5 - 两套独立数学 Oracle
+
+Oracle A 显式枚举行列 mixed-radix basis index，交换选中行列数字并独立填充矩阵。
+Oracle B 独立 NumPy 2n 维 tensor-axis 交换再恢复矩阵。都不得使用 production
+stride/index helper。至少 (2,2)、(3,2)、(2,3,2)、(3,2,4)，以及纯态外积、混态、
+非 Hermitian、未归一化、非连续输入；比较完整复矩阵，不只 trace/eigenvalues/probs。
+
+### Task 6 - 公开 Qiskit 差分
+
+两版本公开黑盒逐项对照完整复矩阵、dims/dim/num_qubits、qargs 顺序、返回类型、
+空/重复/非法 qargs、异常类别和消息。明确 native q0-first 参数转换。边界行为不同
+时分列 Verified Native Math 与 Partial Public Compatibility，不让 Qiskit 生成
+生产结果，不为模仿未解释公开行为破坏 native 数学。
+
+### Task 7 - 真实组合调用
+
+```text
+A: Mixed-radix Statevector -> DensityMatrix -> partial_transpose
+   -> eigenvalue inspection
+B: Mixed-radix Statevector -> mapped Operator evolve -> DensityMatrix
+   -> partial_trace -> partial_transpose -> expectation
+```
+
+A 用 (3,2) 等真实纠缠输入，与公开两版及独立谱比较，原报告约
+[-0.5,0,0,0.5,0.5,0.5] 例子必须按真实输入重算，不硬编码代替推导。
+B 核对 dims、完整复矩阵、最终 expectation，实际调用既有 native kernel。
+只允许测试中 NumPy eigenvalues 验证，不新增 negativity/monotone/channel API。
+
+### Task 8 - 有界资源与异常
+
+只管理新函数输出 ndarray 和可确定临时 workspace；证明分配前 shape/dtype/nbytes
+确定且预约、非连续复制受控、root/view 生命周期、超限在真实 factory 前拒绝、
+valid -> overbudget -> valid、失败不改输入、foreign ndarray protocol 不被擅自执行。
+沿用 UnifiedResourceLedger/ArrayOwnership，不开全局 allocator 审计，不称严格 RSS 上界。
+
+### Task 9 - 回归保护和停止边界
+
+保护 P0.1-P0.5 mixed-radix State/Density、mapped evolve/compose、expectation、state
+arithmetic/purity/validity、partial trace/reverse、C2A second-adjoint/HVP、100-qubit MPS、
+四框架、H2、QASM/QPY、Aer Noise/Save/Set、Result/Snapshot ownership。保留 P0.2/P0.3
+公开 mismatch 原始证据。本批不做 general channels、negativity、Circuit、Capture、
+Studio、RNG、fractional Operator.power、全面 allocator 或新 public facade。
+
+### Task 10 - 验收用例
+
+至少 12 个 mixed-radix 完整复矩阵数学场景、8 个 qargs/顺序场景、6 个非 Hermitian/
+未归一化/纠缠场景、6 个失败/预算/所有权场景、双版本实际公开差分及两条端到端链。
+数字是最低要求，不以大量重复参数化代替独立数学覆盖。先真实 red，再最小 native
+修复，再专项及广域回归。
+
+### Task 11 - 冻结和完整质量门禁
+
+冻结唯一 production/tests/examples，记录 tree SHA、export 路径和归属清单。同树执行：
+
+1. SDK-free FULL pytest。
+2. Main FULL pytest + explicit full coverage。
+3. Alternate FULL pytest。
+4. 独立 JAX、独立 TF、Torch/Autograd focused。
+5. 原始完整 28 段 scripts/run_local_matrix.sh，实际 shell exit。
+6. Compileall、controlled legal、privacy/security/no-token/no-vendor。
+7. 五环境真实 versions、import origins、pipcheck。
+8. Frozen/export/workspace/staged/committed production/tests/examples 一致性。
+
+Coverage 基线 90.62125675806922%，excluded 68 不增加，不是功能完成率。
+缺依赖 lanes 标 NOT_EXECUTED；QOS/Quafu/Runtime 离线不当作真机。Whole dirty workspace
+Router ledger 与 controlled-export legal 分开披露。所有必要进程真实终止，完整日志及
+独立退出码保留。回归先留失败证据、最小修复、重新冻结并重跑必要完整门禁，不借旧树绿。
+
+### Task 12 - Scoped 正常本地提交与一致性核验
+
+只在最终同树必要门禁达到既定验收条件且相关进程真实结束后提交：
+
+1. 记录 frozen tree、production/tests/examples subtrees、独立 export 和归属清单。
+2. 检查真实 index，仅 stage 本批 production/tests/字面公开证据/必要报告，不 git add .。
+3. Tested/export/workspace/staged runtime 差异检查全部 exit 0。
+4. git diff --cached --check，确认无无关、vendor 或用户 Studio/Router 改动。
+5. 正常 git commit，不 amend 或历史改写。
+6. Committed runtime 再比最终冻结树，保存退出码。
+7. 报实际 SHA、文件数量、改动摘要、最终 tree SHA。
+
+不触碰、暂存、提交用户 Studio/Router；不 push，除非 Owner 之后恢复授权且 fresh
+fetch 证明正常 fast-forward；不改 OAuth/Git认证/TLS/凭证/workflow权限；不读取、输出、
+传送 token/private keys；不云/真机；不 vendor 源码/测试/wheel/site-packages；不
+force/reset/rebase/amend/tag/release；不 Capture/Studio/第二引擎/无界 allocator。
+本地提交不等于远端验证，新 SHA CI 为 NOT_VERIFIED。门禁、一致性或范围失败不得提交；
+留原始证据、最小修复、重新冻结并重跑必要门禁。
+
+### Task 13 - P0.7 有界最终验收与完整实施报告
+
+报告至少包括：
+
+1. 新增 partial_transpose(qargs) 的签名、实际调用、mixed-radix 范围、返回契约。
+2. 双版各 196 records 分类、35 exceptions、153 正常数学对照，不当 native pass；
+   显式 sorted compact JSON UTF-8 无尾换行 SHA256
+   4207d5d5e3316bd221a5a0da19d1559f55380ecc4e8d1c34dbfffe392c660062。
+3. 初始 197 failed、qb-stage12a-p07-native-red.log/.exit1、实际修复、测试作者错误、
+   最终专项结果，不能重复制造 red。
+4. 完整复矩阵、mixed-radix 索引、非连续/反向targets、非 Hermitian/未归一化数学。
+5. 对合性、trace、全转置、Hermitian保持及非PSD边界。
+6. 两个真正独立 oracle 的完整矩阵比较。
+7. 两条真实调用链及实际结果。
+8. 独立 owned output、预约、root/view、失败恢复；public 空/全可能shares_input=True，
+   native copy语义单列 Partial Public Compatibility。
+9. public 重复/部分越界/bool 与 native 严格校验差异；shape-tuple dim 和历史 metadata
+   差异保留，不能为逐字兼容破坏数学。
+10. SDK-free/main/alternate FULL、独立JAX/TF、Torch/Autograd、coverage、28段matrix
+    实际日志和退出码。
+11. compile/legal/privacy/no-token/no-vendor、五环境版本/origin/pip，dirty Router单列。
+12. tested/export/workspace/staged/committed hashes、exit、本地SHA、文件数、远端CI未验证。
+13. 完整State/Density/Operator/general mapped channels/Circuit/PennyLane等真实剩余缺口。
+
+P0.7 Verified Native Slice 仅在数学、专项和必要门禁全部通过后认定；DensityMatrix Full
+Public Parity PARTIAL；C3 PARTIAL；完整 Qiskit/PennyLane native full replacement
+ACTIVE / INCOMPLETE；新SHA CI NOT_VERIFIED；Studio DEFERRED。
+
+最终沿用 Tasks 0-11，加以上 Tasks 12-13，继续实际原生数学、双oracle、公开差分、
+组合、同树完整门禁、限定本地commit和有界报告。无 negativity/general channels/RNG/
+Circuit/Capture/Studio，不以 facade/passthrough 冒充native。最终目标不缩小。

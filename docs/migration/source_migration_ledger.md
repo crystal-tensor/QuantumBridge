@@ -1,6 +1,9 @@
 # Source Migration Ledger
 
-Status: P0.5 native state arithmetic local code 87076d5, frozen tree e6f261f5 validated;
+Status: P0.7 native partial transpose frozen tree 03424712 validated;
+tested production subtree 7d983011, local code SHA follows actual scoped commit;
+P0.6 existing subsystem audit makes no runtime change;
+P0.5 native state arithmetic local code 87076d5, frozen tree e6f261f5 validated;
 tested production subtree c69bbb07, committed full tree 81f453ac;
 P0.4 local code checkpoint 84623f0, frozen runtime 6b5b3927 validated;
 P0.3 local code checkpoint be9d5e3, frozen runtime 7a9ebe78 validated;
@@ -14,6 +17,24 @@ uses Native Implementation, Adapter Integration and Upstream Dependency, with
 their boundaries stated separately. Historical checkpoint limitations are not
 the current status view; use core_parity_ledger.md for that view.
 No Source Port with Attribution was performed.
+
+## Stage 12-A P0.7 Native Partial Transpose Inventory
+
+Independent Native Implementation, not upstream source/test port. The existing
+`quantumbridge/information/density_matrix.py` adds partial_transpose(qargs) using
+existing state-data, dimensions/index, known-array admission and storage-owner
+helpers. No new simulator, public facade or upstream execution dependency.
+`tests/information/test_native_partial_transpose.py` independently authors full
+complex index-enumeration/tensor oracles, real composition, validity boundaries
+and output/conversion/root-view tests. The selected literal public contract JSON
+is generated from installed public calls, not implementation or test source.
+The P0.6 audit and P0.7 report/prompt preserve actual mathematical/public limits.
+Focused and bounded broad regressions pass. Fresh frozen SDK-free/main/alternate
+FULL have 3451/4229/4227 passed with skips/xfails disclosed; frameworks and the
+original 28-section matrix exit 0. Main/matrix per-file coverage agrees at
+90.6279318042121%, excluded 68 unchanged. Seven optional subsets and known
+environment conflicts remain, not reclassified as executed/clean.
+No Router/Studio, credential, cloud, vendor, tag/release or history work is included.
 
 ## Stage 12-A P0.5 Native State Arithmetic Inventory
 

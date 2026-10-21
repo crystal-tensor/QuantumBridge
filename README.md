@@ -1231,6 +1231,20 @@ and configuration boundaries remain Partial; physical simulator admission keeps
 its stricter tolerance. This is not full class or SDK parity. See the
 [P0.5 report](docs/implementation/stage12_a_p05_state_arithmetic_progress.md).
 
+Stage 12-A P0.7 adds actual native DensityMatrix.partial_transpose(qargs) for
+mixed-radix subsystem row/column index exchange, retaining complex entries and
+negative partial-transpose eigenvalues without normalization or PSD projection.
+Focused tests pass 197 cases in each installed reference environment, or 149
+native cases with 48 optional reference skips without SDKs; bounded broad
+regression has 1501 passed. Fresh frozen SDK-free/main/alternate FULL have
+3451/4229/4227 passed with skips/xfails disclosed; frameworks and original
+28-section matrix exit 0. Main/matrix coverage agrees at 90.6279%, excluded 68.
+Seven missing-dependency subsets and two known environment conflicts remain. Native
+owned-copy and strict-target conventions retain explicit public compatibility
+limits. Correct reverse/partial_trace are not rewritten. This is not complete
+State/DensityMatrix or Qiskit/PennyLane parity. See the
+[P0.7 report](docs/implementation/stage12_a_p07_partial_transpose_progress.md).
+
 ## Native Molecular Chemistry Checkpoint
 
 `quantumbridge.qchem` now computes a bounded hydrogen/STO-3G s-shell workflow

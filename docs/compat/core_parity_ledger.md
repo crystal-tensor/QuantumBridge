@@ -1,5 +1,28 @@
 # Core Functional Parity Ledger
 
+P0.7 adds actual native DensityMatrix.partial_transpose(qargs), exchanging the
+selected mixed-radix row/column digits without conjugation, normalization or PSD
+projection. Focuses recover a genuine missing-method red to 197 passed in each
+installed reference environment and 149 native passed / 48 optional skips without
+SDKs; the bounded broad regression has 1501 passed. Fresh frozen SDK-free/main/
+alternate FULL finish with 3451/4229/4227 passed, with skips/xfails disclosed.
+Frameworks and original 28-section matrix exit 0. Main/matrix per-file coverage
+agrees: 28014/30911 = 90.6279318042121%, excluded 68 unchanged. Seven optional
+subsets remain NOT_EXECUTED, main/alternate pip retain two known conflicts, and
+dirty Router legal still fails separately from the passing controlled export.
+No push, real hardware or whole-SDK completion is claimed. Copy/invalid-target/
+external-protocol compatibility remains Partial. See the
+[P0.7 progress report](../implementation/stage12_a_p07_partial_transpose_progress.md).
+
+P0.6's evidence-first audit finds no new mathematical gap in the surveyed existing
+mixed-radix reverse/reduction operations: 432 independent native assertion groups
+pass in main, alternate and SDK-free runtimes, including actual nontrivial
+reduction and post-reversal mapped evolution. No runtime feature is rewritten.
+Public trace-all/one-dimensional return/metadata differences remain Partial.
+At that audit checkpoint DensityMatrix.partial_transpose(qargs) was a next
+candidate; the later actual P0.7 implementation is recorded above. See the
+[P0.6 gap audit](../implementation/stage12_a_p06_subsystem_gap_audit.md).
+
 Stage 12-A P0.5 implements actual native state add/sub/neg/scalar arithmetic,
 Statevector trace/purity, strict-partition inner, complex density trace-square
 purity and state/density dictionary export. Development focuses pass 288 cases

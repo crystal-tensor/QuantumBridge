@@ -1,12 +1,13 @@
 # Stage 12-A State API Contract Matrix
 
-Date: 2026-10-22. Status: bounded P0.5 state arithmetic frozen-runtime gates validated;
+Date: 2026-10-22. Status: bounded native P0.7 partial transpose frozen-runtime gates validated;
+P0.5 state arithmetic frozen-runtime gates validated;
 P0.4 expectation frozen-runtime gates validated;
 P0.1/P0.2-A/P0.3 slices validated, complete classes/public compatibility PARTIAL.
 Native baseline: b1d345b3731276f5f2721cb42c2397d98981ac5c.
 This is a bounded initial matrix, not the complete SDK/API inventory.
 The table below records that baseline, not the later candidate implementation.
-See [the current P0.5 progress report](../implementation/stage12_a_p05_state_arithmetic_progress.md)
+See [the current P0.7 progress report](../implementation/stage12_a_p07_partial_transpose_progress.md)
 and the historical P0.1 construction/propagation report for actual receipts.
 
 ## Evidence And Limits
@@ -196,3 +197,23 @@ zero-register export, strict invalid tolerance rejection, external-object ABI
 and mutable upstream tolerance settings remain explicit Partial/Unverified
 boundaries. Existing P0.2/P0.3 mismatch artifacts are unchanged. General channels,
 RNG, full analysis/state/Operator and whole SDK parity remain open.
+
+## P0.6 Audit And P0.7 Actual Function Delta
+
+Existing mixed-radix reverse/reduction passes 432 independent assertion groups
+in each surveyed main/alternate/SDK-free runtime. The audit does not invent a
+permutation API or relabel already-correct functions as new implementations.
+Its public trace-all/one-level return/metadata differences remain Partial.
+
+The actually absent public DensityMatrix.partial_transpose(qargs) is implemented
+by exchanging only selected row/column subsystem digits, preserving partition,
+complex non-Hermitian/unnormalized entries and independent output ownership.
+Two independent complete-matrix oracles, real entangled and mapped-evolve/
+reduce/expectation chains, negative eigenvalues and budget/root/view tests pass.
+197 focused tests pass in each installed reference version; 149 native tests
+pass without SDKs and 48 optional public comparisons skip. Fresh SDK-free/main/
+alternate FULL have 3451/4229/4227 passed with skips/xfails disclosed. Frameworks
+and original 28-section matrix exit 0; main/matrix per-file coverage agrees at
+90.6279318042121%, excluded 68. Seven optional subsets remain NOT_EXECUTED and
+known dependency conflicts remain. Native strict invalid-target checks and owned copies differ from some
+public invalid-input/aliasing behavior; complete public object ABI remains open.

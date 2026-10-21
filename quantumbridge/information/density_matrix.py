@@ -10,7 +10,7 @@ import numpy as np
 from typing import Union
 
 from .statevector import Statevector, _sample_measurements, _tensor_arrays, _mapped_evolution_data, _expectation_value
-from .statevector import _state_arithmetic, _state_trace, _state_dictionary, _state_valid
+from .statevector import _state_arithmetic, _state_trace, _state_dictionary, _state_valid, _state_data, _state_arrays
 from quantumbridge.execution.resource_context import current_resources, meter_native_samples
 from .state_dimensions import (
     state_dimensions, qubit_count, basis_digits, basis_index, basis_label,
@@ -126,6 +126,30 @@ class DensityMatrix:
         selected=_validate_qargs(keep,len(self._dims))
         dimensions=tuple(dim for position,dim in enumerate(self._dims) if position in selected)
         return DensityMatrix(partial_trace(self.data,selected,dims=self._dims),dims=dimensions)
+
+    def partial_transpose(self, qargs) -> "DensityMatrix":
+        """Transpose selected row/column subsystem indices without conjugation."""
+        from quantumbridge.execution.array_ownership import retained_array, storage_ledger
+        from quantumbridge.execution.array_reservations import array_layout, numeric_shape
+        data,dimensions,_=_state_data(self)
+        scope=current_resources()
+        if qargs is None:raise TypeError("Partial transpose requires explicit subsystem targets.")
+        if scope is not None:
+            if type(qargs) not in (tuple,list):
+                from quantumbridge.core.classical import UnsupportedFeature
+                raise UnsupportedFeature("managed_partial_transpose_targets","Managed partial transpose requires explicit builtin subsystem targets.")
+            numeric_shape(qargs,real_only=True)
+        selected=_validate_qargs(qargs,len(dimensions))
+        ledger=storage_ledger(data) if scope is None else scope.ledger
+        data,=_state_arrays((data,),output_bytes=array_layout(data.shape,complex)[2],ledger=ledger)
+        result=retained_array(ledger,"density_partial_transpose",data.shape,complex)
+        for row in range(len(data)):
+            digits=basis_digits(row,dimensions)
+            for column in range(len(data)):
+                r,c=list(digits),list(basis_digits(column,dimensions))
+                for axis in selected:r[axis],c[axis]=c[axis],r[axis]
+                result[row,column]=data[basis_index(r,dimensions),basis_index(c,dimensions)]
+        return DensityMatrix(result,dims=dimensions)
 
     def probabilities(self, wires=None) -> dict[str, float]:
         selected = _validate_qargs(wires,len(self._dims))
