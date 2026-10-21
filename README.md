@@ -1197,6 +1197,15 @@ and measured numerical differences remain explicit, and this is not complete
 state/Operator/channel or SDK parity. See the
 [P0.2-A report](docs/implementation/stage12_a_p02_mapped_operator_progress.md).
 
+Stage 12-A P0.3 adds bounded native mixed-radix Operator composition, including
+rectangular local maps and actual input/output-side propagation. Focused native
+and explicit public-reference tests, fresh three-environment FULL/framework
+gates and the complete local matrix finish with exits 0. Seven optional subsets
+remain unexecuted, known pip conflicts remain, and independent main/matrix line
+coverage is 90.4753%, not SDK function completion.
+Native multiplication order is retained, not silently relabeled as Qiskit parity.
+See the [P0.3 report](docs/implementation/stage12_a_p03_operator_composition_progress.md).
+
 ## Native Molecular Chemistry Checkpoint
 
 `quantumbridge.qchem` now computes a bounded hydrogen/STO-3G s-shell workflow

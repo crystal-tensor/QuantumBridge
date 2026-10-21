@@ -622,3 +622,103 @@ Coverage 历史值 90.45969876172117%，68 exclusions 不增加。不得把行�
 
 完整 Qiskit/PennyLane full native functional parity/full replacement 仍为
 ACTIVE / INCOMPLETE，C3 仍为 PARTIAL，Studio 最后。
+
+## Completed P0.3 Freeze Clarification
+
+The designated reply completed on 2026-10-21. It permits freezing, not acceptance
+or an independent audit. The existing tests cover the actual native A @ B versus
+B @ A convention and explicit public conversion; a rectangular type chain with
+different total input/output sizes; and validation/budget/foreign protocols
+before allocation. A final minimal forbidden-factory assertion strengthens the
+existing invalid-dimension test before the one final runtime tree is frozen.
+No new feature, allocator audit or facade is requested.
+
+### QuantumBridge Stage 12-A P0.3 — Freeze, Full Gates & Bounded Acceptance
+
+当前开发基线：9e3224b，P0.2 代码基线 12098c9。本批只验收现有 Mixed-Radix Native
+Operator Composition，不实现新的 API。
+
+#### Task 1 — 冻结
+
+将当前归属 P0.3 的 production/tests/examples 和必要文档通过独立 Git index 导出，记录
+完整 frozen tree SHA、production subtree SHA 和限定文件清单。排除用户 Studio/Router
+脏文件，保持真实 index 状态可追溯。冻结后不得继续修改生产代码、测试或示例；如发现
+回归，必须修复并重新冻结。
+
+#### Task 2 — 完整质量门禁
+
+在同一冻结树顺序执行：
+
+1. SDK-free FULL。
+2. Main FULL + explicit coverage。
+3. Alternate FULL。
+4. 独立 JAX 0.12、TF 2.21 derivative/interfaces。
+5. Torch/Autograd focused。
+6. 完整、未缩减的 28 段 scripts/run_local_matrix.sh，保存 shell exit。
+7. Compileall、受控 legal、privacy/security、no-token/no-vendor。
+8. 五环境版本及实际 import origins、pipcheck。
+9. 最终 production/tests/examples、export、staged tree 一致性验证。
+
+每项保存完整 .log、独立 .exit 和耗时。历史 coverage 为 90.45969876172117%，68 exclusions
+不增加；不得以行覆盖率代表 SDK 功能对等率。七个依赖未安装的生态子集必须如实标记
+NOT_EXECUTED。Quafu/QOS/Runtime 离线测试不能当作云或真机验证。
+
+#### Task 3 — 有界功能验收
+
+仅对本批真实实现的函数切片逐项判断：
+
+- Full-system Operator composition；
+- Mapped square/rectangular Operator composition；
+- front 与左右乘法；
+- 非连续/反序 qargs；
+- input/output mixed dimensions；
+- Operator 与 State 数值组合一致性；
+- 真实资源准入及结果生命周期。
+
+保留明确限制：
+
+- Local subsystem-count change：Unsupported；
+- Public negative/repeated/bool qargs：Partial Compatibility；
+- Public Operator.power 浮点等扩展：Partial；
+- 公开 Statevector 最小差异：PUBLIC_DIFFERENTIAL_MISMATCH；
+- General channels/circuits：本批未实现。
+
+不得将本次测试通过扩展表述为完整 Operator、State 或 SDK parity。
+
+#### Task 4 — 限定提交
+
+只有所有必要本地门禁满足验收条件后：
+
+- 仅 stage P0.3 归属文件；
+- 核对 staged 与 frozen tree；
+- 正常本地 commit；
+- 提交后再次比较 production/tests/examples；
+- 报告真实 commit SHA。
+
+不得触碰用户 Studio/Router，不修改认证/TLS，不读取 token，不访问云/硬件，不 push，
+不 force/rebase/reset/amend，不创建 tag/release，不 vendor。
+没有本轮提交 SHA 的远端 CI 证据，必须标记 NOT_VERIFIED。
+
+#### Task 5 — 交付报告
+
+输出：
+
+- 实际 native composition 能力；
+- 红灯与修复；
+- 独立数学及 Qiskit 2.4.1/2.6 差分；
+- 公开 Statevector 最小反例；
+- 三环境 FULL；
+- 独立框架专项；
+- Coverage；
+- 28 段 matrix 实际退出码；
+- Frozen/committed tree 一致性；
+- 本地 SHA；
+- 仍未实现的核心函数。
+
+不要在 P0.3 最终报告中启动 P0.4 或其他下一批开发。
+
+现在冻结 P0.3，并执行完整门禁。暂时不需要新增 allocator、facade、Channel、Circuit、RNG
+或 Studio 工作。完成全部测试后，再依据最终结果判断本批哪些 Operator 函数切片可以列为
+Verified Native，哪些仍属于 Partial Public Compatibility。
+最高目标继续保持 Qiskit + PennyLane 完整独立原生 full functional parity/full replacement：
+ACTIVE / INCOMPLETE。C3 仍为 PARTIAL，Studio 最后。

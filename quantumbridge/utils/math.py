@@ -141,6 +141,30 @@ def _local_operator_indices(dimensions, targets, output_dims):
             yield source,destination,row,column
 
 
+def _compose_local_operator(data, matrix, targets, dimensions, changed, *, front):
+    from quantumbridge.execution.array_reservations import owned_arrays
+    from quantumbridge.execution.resource_context import current_resources
+    outgoing,_=_local_operator_shapes(dimensions,targets,changed)
+    shape=(prod(outgoing),data.shape[1]) if front else (data.shape[0],prod(outgoing))
+    width=data.shape[1] if front else data.shape[0]
+    scope=current_resources()
+    if scope is not None:
+        scope.ledger.unavailable("operator_compose_iterator_workspace",
+            "The final dense Operator and one row/column scratch are owned; Python indices/scalars and hidden ufunc iterator workspace are not measured RSS.")
+    result,scratch=owned_arrays([(shape,complex),((width,),complex)],category="operator_mapped_composition")
+    result.fill(0)
+    old_local=tuple(dimensions[position] for position in targets)
+    indices=_local_operator_indices(dimensions,targets,changed) if front else _local_operator_indices(outgoing,targets,old_local)
+    # Right multiplication maps each new input column into an old input
+    # column; it is linear B, not the conjugated right action in A rho A-dagger.
+    for source,destination,row,column in indices:
+        old=data[source,:] if front else data[:,destination]
+        new=result[destination,:] if front else result[:,source]
+        np.multiply(old,matrix[row,column],out=scratch)
+        np.add(new,scratch,out=new)
+    return result
+
+
 def _apply_mixed_operator(data, matrix, targets, dimensions, output_dims, *, density=False):
     from quantumbridge.execution import mps_arrays as arrays
     from quantumbridge.execution.array_reservations import numeric_shape, numeric_array, owned_arrays, array_layout

@@ -1,6 +1,7 @@
 # Source Migration Ledger
 
-Status: P0.2-A local checkpoint 12098c9, frozen runtime 2973040c validated;
+Status: P0.3 frozen runtime 7a9ebe78 validated, scoped checkpoint pending;
+P0.2-A local checkpoint 12098c9, frozen runtime 2973040c validated;
 P0.1 checkpoint 89f4dc9;
 R2 baseline b1d345b; C3 remains partial and full replacement incomplete
 Date: 2026-10-21
@@ -10,6 +11,22 @@ uses Native Implementation, Adapter Integration and Upstream Dependency, with
 their boundaries stated separately. Historical checkpoint limitations are not
 the current status view; use core_parity_ledger.md for that view.
 No Source Port with Attribution was performed.
+
+## Stage 12-A P0.3 Native Operator Composition Inventory
+
+Independent Native Implementation, bounded frozen-runtime gates complete. Existing
+Operator.compose and reflected @ gain validated mixed-radix mapped/full raw
+rectangular products in `quantumbridge/information/operator.py`. The shared
+stride/index machinery in `quantumbridge/utils/math.py` gains direct row/column
+contraction into the final output, not a separate full embedded operator.
+`tests/information/test_mixed_radix_operator_composition.py` contains independent
+enumeration/tensor mathematics, actual state consistency and known-storage/error
+tests. `docs/implementation/stage12_a_p03_operator_composition_progress.md`
+records genuine gaps, test-author errors, actual recovery and public differences.
+`docs/compat/stage12_a_p03_minimal_public_differential_case.json` is generated
+literal native/public two-version experiment data, not upstream source or tests.
+Public Qiskit is a black-box reference in optional tests only. No source/test
+port, upstream engine, Router/Studio change or cloud/credential work is included.
 
 ## Stage 12-A P0.2-A Native Local Operator Inventory
 

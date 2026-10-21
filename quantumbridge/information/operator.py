@@ -6,7 +6,7 @@
 from __future__ import annotations
 
 from cmath import phase as scalar_phase, rect
-from math import isfinite
+from math import isfinite, prod
 from numbers import Number
 
 import numpy as np
@@ -172,29 +172,61 @@ class Operator:
                         output_dims=self._output_dims if output_dims is None else output_dims)
 
     def compose(self, other: "Operator", qargs=None, front: bool = False) -> "Operator":
-        if qargs is not None and self.num_qubits is None:
-            from quantumbridge.core.classical import UnsupportedFeature
-            raise UnsupportedFeature("mixed_radix_operator_compose","Mapped operator-on-operator composition is not mixed-radix state evolution.")
-        if not isinstance(other,Operator):
-            dims=self._output_dims if front else self._input_dims
-            other=Operator(other) if qargs is not None else Operator(other,input_dims=dims,output_dims=dims)
-        other_data = other.data
-        if qargs is not None:
-            if other.num_qubits is None:
-                from quantumbridge.core.classical import UnsupportedFeature
-                raise UnsupportedFeature("mixed_radix_operator_compose")
-            qargs_tuple = _validate_qargs(qargs, self.num_qubits, other.num_qubits)
-            other_data = _expand_subsystem_operator(other.data, qargs_tuple, self.num_qubits)
-            incoming,outgoing=self._input_dims,self._output_dims
-        else:
-            if (other._input_dims!=self._output_dims if front else self._input_dims!=other._output_dims):
-                raise ValueError("QuantumBridge Operator composition subsystem dimensions do not match.")
-            incoming,outgoing=(self._input_dims,other._output_dims) if front else (other._input_dims,self._output_dims)
         from quantumbridge.execution.resource_context import current_resources
-        if current_resources() is not None:
+        from quantumbridge.execution.array_reservations import numeric_shape, numeric_array, array_layout
+        from quantumbridge.core.classical import UnsupportedFeature
+        from quantumbridge.utils.math import _local_operator_shapes, _compose_local_operator
+        scope=current_resources()
+        if scope is not None and type(self) is not Operator:
+            raise UnsupportedFeature("managed_operator_compose","Managed composition requires native operators or explicit numeric buffers.")
+        side=self._output_dims if front else self._input_dims
+        selected=None if qargs is None else subsystem_positions(qargs,len(side))
+        native=type(other) is Operator if scope is not None else isinstance(other,Operator)
+        raw=other.data if native else other
+        if scope is None:raw=np.asarray(raw,dtype=complex)
+        shape=numeric_shape(raw) if scope is not None else raw.shape
+        if len(shape)!=2 or not all(shape):raise ValueError("Operator composition requires a nonempty matrix.")
+        if native:other_input,other_output=other._input_dims,other._output_dims
+        elif shape[0]==shape[1]:
+            other_input=other_output=side if selected is None else tuple(side[position] for position in selected)
+        else:
+            if selected is not None:raise ValueError("Rectangular local composition requires explicit Operator dimensions.")
+            other_input,other_output=state_dimensions(shape[1]),state_dimensions(shape[0])
+        if shape!=(prod(other_output),prod(other_input)):
+            raise ValueError("Operator composition dimensions do not match its numeric buffer.")
+        contracted=other_input if front else other_output
+        changed=other_output if front else other_input
+        if selected is None:
+            if contracted!=side:raise ValueError("QuantumBridge Operator composition subsystem dimensions do not match.")
+            result_side=changed
+        else:
+            if len(other_input)!=len(selected) or len(other_output)!=len(selected):
+                raise UnsupportedFeature("mixed_radix_output_subsystem_count","Mapped composition cannot insert or remove subsystem positions.")
+            if contracted!=tuple(side[position] for position in selected):
+                raise ValueError("Operator composition dimensions do not match qargs order.")
+            result_side,_=_local_operator_shapes(side,selected,changed)
+        incoming,outgoing=(self._input_dims,result_side) if front else (result_side,self._output_dims)
+        host_shape=numeric_shape(self.data) if scope is not None else self.data.shape
+        if host_shape!=(prod(self._output_dims),prod(self._input_dims)):
+            raise ValueError("Operator dimensions do not match its numeric buffer.")
+        if scope is not None:
+            needed=array_layout((prod(outgoing),prod(incoming)),complex)[2]
+            if selected is not None:needed+=array_layout((host_shape[1] if front else host_shape[0],),complex)[2]
+            for value,layout in ((self.data,host_shape),(raw,shape)):
+                array=np.ndarray.view(value,np.ndarray) if issubclass(type(value),np.ndarray) else None
+                if array is None or array.dtype!=np.dtype(complex) or selected is None and not (array.flags.c_contiguous or array.flags.f_contiguous):
+                    needed+=array_layout(layout,complex)[2]
+            scope.ledger.preflight(memory_bytes=needed)
+            host_data=numeric_array(self.data,category="operator_compose_input")
+            other_data=numeric_array(raw,category="operator_compose_input")
+        else:host_data,other_data=self.data,raw
+        if selected is not None:
+            data=_compose_local_operator(host_data,other_data,selected,side,changed,front=front)
+        elif scope is not None:
             from quantumbridge.execution import mps_arrays as arrays
-            return self._new(arrays.contracted(other_data,self.data) if front else arrays.contracted(self.data,other_data),input_dims=incoming,output_dims=outgoing)
-        return self._new(other_data @ self.data if front else self.data @ other_data,input_dims=incoming,output_dims=outgoing)
+            data=arrays.contracted(other_data,host_data) if front else arrays.contracted(host_data,other_data)
+        else:data=other_data @ host_data if front else host_data @ other_data
+        return self._new(data,input_dims=incoming,output_dims=outgoing)
 
     def dot(self, other: "Operator", qargs=None) -> "Operator":
         return self.compose(other, qargs=qargs)
@@ -303,7 +335,7 @@ class Operator:
         return self.compose(other)
 
     def __rmatmul__(self, other) -> "Operator":
-        return Operator(other,input_dims=self._output_dims,output_dims=self._output_dims).compose(self)
+        return self.compose(other,front=True)
 
     def _arithmetic(self, other, operation, *, scalar=False, reverse=False):
         from quantumbridge.execution.resource_context import current_resources

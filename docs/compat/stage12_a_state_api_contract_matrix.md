@@ -1,11 +1,11 @@
 # Stage 12-A State API Contract Matrix
 
-Date: 2026-10-21. Status: baseline audit recorded; bounded P0.1 and P0.2-A native
+Date: 2026-10-21. Status: baseline audit recorded; bounded P0.1/P0.2-A/P0.3 native
 slices implemented and validated, complete classes/public compatibility PARTIAL.
 Native baseline: b1d345b3731276f5f2721cb42c2397d98981ac5c.
 This is a bounded initial matrix, not the complete SDK/API inventory.
 The table below records that baseline, not the later candidate implementation.
-See [the current P0.2-A progress report](../implementation/stage12_a_p02_mapped_operator_progress.md)
+See [the current P0.3 progress report](../implementation/stage12_a_p03_operator_composition_progress.md)
 and the historical P0.1 construction/propagation report for actual receipts.
 
 ## Evidence And Limits
@@ -110,3 +110,23 @@ that run without Qiskit; the SDK-free FULL has 2743 passed. Full classes and the
 highest replacement objective remain incomplete. The separate generated
 PUBLIC_DIFFERENTIAL_MISMATCH artifact preserves literal two-version outputs;
 process success of its reporter must not be relabeled public numerical equality.
+
+## P0.3 Current Function Delta
+
+Operator.compose now has native mixed-radix mapped mathematics on the actual
+input side for default A @ B and output side for front=True B @ A, typed local
+rectangles with unchanged subsystem counts, and full raw-rectangle/reflected
+products when inferred partitions match. The P0.2 mapped-composition Unsupported
+row is historical. 140-case focuses pass in both SDK versions; 114 native cases
+run without Qiskit. Frozen SDK-free/main/alternate FULL, independent frameworks
+and the original full 28-section matrix now finish with exits 0. Independent
+main/matrix coverage is 90.47525850539844%, 68 exclusions unchanged. These are
+bounded code-quality/math receipts, not complete public class/API coverage.
+
+Default compose remains intentionally different from public Qiskit; dot/@,
+strict target validation, native empty targets and raw-square partition inference
+are described separately. General channels, local subsystem insertion/removal
+and complete power/state/Operator public contracts are not implemented. The
+two-subsystem identity/basis counterexample still records a public state versus
+public density/composition mismatch, not an established upstream defect. See
+the P0.3 report for actual mathematics, support boundaries and gate receipts.
