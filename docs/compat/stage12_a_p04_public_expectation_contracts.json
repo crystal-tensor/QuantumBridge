@@ -1,0 +1,1267 @@
+{
+  "schema": "quantumbridge.public-expectation-contracts.v1",
+  "date": "2026-10-21",
+  "native_development_baseline": "d2d1d37",
+  "scope": "Selected installed-public-API outcomes plus statistics from the complete v2 probes; not an exhaustive API inventory and not counts of passing native tests. Full logs/exits: /tmp/qb-stage12a-p04-public-v2-qiskit{241,260}.",
+  "compatibility": "Native q0-first/container/strict validation and legacy full numeric partition contracts remain explicit. The prior P0.2/P0.3 PUBLIC_DIFFERENTIAL_MISMATCH artifacts are unchanged.",
+  "versions": [
+    {
+      "qiskit_version": "2.4.1",
+      "process_exit": 0,
+      "total_records_excluding_version_header": 182,
+      "numerical_oracle_records": 84,
+      "max_numerical_oracle_error": 4.440892098500626e-16,
+      "exception_records": 68,
+      "selected_outcomes": [
+        {
+          "signature": "Statevector.expectation_value",
+          "value": "(self, oper: 'BaseOperator | QuantumCircuit | Instruction', qargs: 'None | list[int]' = None) -> 'complex'"
+        },
+        {
+          "signature": "Statevector.variance",
+          "value": null
+        },
+        {
+          "signature": "DensityMatrix.expectation_value",
+          "value": "(self, oper: 'Operator', qargs: 'None | list[int]' = None) -> 'complex'"
+        },
+        {
+          "signature": "DensityMatrix.variance",
+          "value": null
+        },
+        {
+          "case": "Statevector/(3,)/(0,)/diagonal",
+          "type": "complex128",
+          "real": 0.758719187356963,
+          "imag": 3.469446951953614e-18,
+          "expected_real": 0.758719187356963,
+          "expected_imag": 3.469446951953614e-18,
+          "max_error": 0
+        },
+        {
+          "case": "Statevector/(3,)/(0,)/hermitian",
+          "type": "complex128",
+          "real": 0.4061264933251847,
+          "imag": 3.469446951953614e-17,
+          "expected_real": 0.4061264933251847,
+          "expected_imag": 3.469446951953614e-17,
+          "max_error": 0
+        },
+        {
+          "case": "Statevector/(3,)/(0,)/nonhermitian",
+          "type": "complex128",
+          "real": 0.40306324666259247,
+          "imag": 0.7258806767346389,
+          "expected_real": 0.40306324666259247,
+          "expected_imag": 0.7258806767346389,
+          "max_error": 0
+        },
+        {
+          "case": "DensityMatrix/(3,)/(0,)/diagonal",
+          "type": "complex128",
+          "real": 0.7587191873569629,
+          "imag": -3.7401744408992794e-18,
+          "expected_real": 0.7587191873569629,
+          "expected_imag": -3.7401744408992794e-18,
+          "max_error": 0
+        },
+        {
+          "case": "DensityMatrix/(3,)/(0,)/hermitian",
+          "type": "complex128",
+          "real": 0.3250083475475249,
+          "imag": 0,
+          "expected_real": 0.32500834754752495,
+          "expected_imag": 0,
+          "max_error": 5.551115123125783e-17
+        },
+        {
+          "case": "DensityMatrix/(3,)/(0,)/nonhermitian",
+          "type": "complex128",
+          "real": 0.3625041737737625,
+          "imag": 0.7637384470706056,
+          "expected_real": 0.3625041737737625,
+          "expected_imag": 0.7637384470706056,
+          "max_error": 0
+        },
+        {
+          "case": "Statevector/typed-partition/(3, 2)/(3, 2)/None",
+          "type": "complex128",
+          "real": 0.18919707843706232,
+          "imag": 0.7711392513513153
+        },
+        {
+          "case": "Statevector/typed-partition/(3, 2)/(3, 2)/(0, 1)",
+          "type": "complex128",
+          "real": 0.18919707843706232,
+          "imag": 0.7711392513513153
+        },
+        {
+          "case": "Statevector/typed-partition/(3, 2)/(3, 2)/(1, 0)",
+          "error": "QiskitError",
+          "message": "'Operator input dimensions are not equal to statevector subsystem dimensions.'"
+        },
+        {
+          "case": "Statevector/typed-partition/(2, 3)/(2, 3)/None",
+          "error": "QiskitError",
+          "message": "'Operator input dimensions are not equal to statevector subsystem dimensions.'"
+        },
+        {
+          "case": "Statevector/typed-partition/(2, 3)/(2, 3)/(0, 1)",
+          "error": "QiskitError",
+          "message": "'Operator input dimensions are not equal to statevector subsystem dimensions.'"
+        },
+        {
+          "case": "Statevector/typed-partition/(2, 3)/(2, 3)/(1, 0)",
+          "type": "complex128",
+          "real": 0.19028002321305776,
+          "imag": 0.7216292031302196
+        },
+        {
+          "case": "Statevector/typed-partition/(6,)/(6,)/None",
+          "error": "QiskitError",
+          "message": "'Operator input dimensions are not equal to statevector subsystem dimensions.'"
+        },
+        {
+          "case": "Statevector/typed-partition/(6,)/(6,)/(0, 1)",
+          "error": "QiskitError",
+          "message": "'Operator input dimensions are not equal to statevector subsystem dimensions.'"
+        },
+        {
+          "case": "Statevector/typed-partition/(6,)/(6,)/(1, 0)",
+          "error": "QiskitError",
+          "message": "'Operator input dimensions are not equal to statevector subsystem dimensions.'"
+        },
+        {
+          "case": "Statevector/typed-partition/(3, 2)/(2, 3)/None",
+          "type": "complex128",
+          "real": 0.18919707843706232,
+          "imag": 0.7711392513513153
+        },
+        {
+          "case": "Statevector/typed-partition/(3, 2)/(2, 3)/(0, 1)",
+          "type": "complex128",
+          "real": 0.18919707843706232,
+          "imag": 0.7711392513513153
+        },
+        {
+          "case": "Statevector/typed-partition/(3, 2)/(2, 3)/(1, 0)",
+          "error": "QiskitError",
+          "message": "'Operator input dimensions are not equal to statevector subsystem dimensions.'"
+        },
+        {
+          "case": "Statevector/raw/ndarray/(6, 6)/None",
+          "type": "complex128",
+          "real": 1.0000000000000002,
+          "imag": 0
+        },
+        {
+          "case": "Statevector/raw/list/(6, 6)/None",
+          "type": "complex128",
+          "real": 1.0000000000000002,
+          "imag": 0
+        },
+        {
+          "case": "Statevector/raw/ndarray/(1, 1)/None",
+          "error": "QiskitError",
+          "message": "'Output dimensions do not match matrix shape (6 != 1)'"
+        },
+        {
+          "case": "Statevector/raw/float/()/None",
+          "error": "QiskitError",
+          "message": "'Invalid input data format for Operator'"
+        },
+        {
+          "case": "Statevector/raw/list/(2, 3)/None",
+          "error": "QiskitError",
+          "message": "'Output dimensions do not match matrix shape (6 != 2)'"
+        },
+        {
+          "case": "Statevector/invalid/(0, 0)",
+          "error": "ValueError",
+          "message": "axes don't match array"
+        },
+        {
+          "case": "Statevector/invalid/(-1,)",
+          "error": "ValueError",
+          "message": "axes don't match array"
+        },
+        {
+          "case": "Statevector/invalid/(2,)",
+          "error": "IndexError",
+          "message": "tuple index out of range"
+        },
+        {
+          "case": "Statevector/invalid/(True,)",
+          "type": "complex128",
+          "real": 1.0000000000000002,
+          "imag": 0
+        },
+        {
+          "case": "Statevector/invalid/(0.0,)",
+          "error": "TypeError",
+          "message": "tuple indices must be integers or slices, not float"
+        },
+        {
+          "case": "DensityMatrix/typed-partition/(3, 2)/(3, 2)/None",
+          "type": "complex128",
+          "real": 0.1891970784370623,
+          "imag": 0.7711392513513153
+        },
+        {
+          "case": "DensityMatrix/typed-partition/(3, 2)/(3, 2)/(0, 1)",
+          "type": "complex128",
+          "real": 0.1891970784370623,
+          "imag": 0.7711392513513153
+        },
+        {
+          "case": "DensityMatrix/typed-partition/(3, 2)/(3, 2)/(1, 0)",
+          "error": "QiskitError",
+          "message": "'Subsystem dimension do not match on specified qargs (2, 3) != (3, 2)'"
+        },
+        {
+          "case": "DensityMatrix/typed-partition/(2, 3)/(2, 3)/None",
+          "error": "QiskitError",
+          "message": "\"Left and right compose dimensions don't match ((3, 2) != (2, 3))\""
+        },
+        {
+          "case": "DensityMatrix/typed-partition/(2, 3)/(2, 3)/(0, 1)",
+          "error": "QiskitError",
+          "message": "'Subsystem dimension do not match on specified qargs (3, 2) != (2, 3)'"
+        },
+        {
+          "case": "DensityMatrix/typed-partition/(2, 3)/(2, 3)/(1, 0)",
+          "type": "complex128",
+          "real": 0.19028002321305776,
+          "imag": 0.7216292031302196
+        },
+        {
+          "case": "DensityMatrix/typed-partition/(6,)/(6,)/None",
+          "error": "QiskitError",
+          "message": "\"Left and right compose dimensions don't match ((3, 2) != (6,))\""
+        },
+        {
+          "case": "DensityMatrix/typed-partition/(6,)/(6,)/(0, 1)",
+          "error": "QiskitError",
+          "message": "'Number of qargs does not match (2 != 1)'"
+        },
+        {
+          "case": "DensityMatrix/typed-partition/(6,)/(6,)/(1, 0)",
+          "error": "QiskitError",
+          "message": "'Number of qargs does not match (2 != 1)'"
+        },
+        {
+          "case": "DensityMatrix/typed-partition/(3, 2)/(2, 3)/None",
+          "error": "QiskitError",
+          "message": "\"Left and right compose dimensions don't match ((3, 2) != (2, 3))\""
+        },
+        {
+          "case": "DensityMatrix/typed-partition/(3, 2)/(2, 3)/(0, 1)",
+          "error": "QiskitError",
+          "message": "'Subsystem dimension do not match on specified qargs (3, 2) != (2, 3)'"
+        },
+        {
+          "case": "DensityMatrix/typed-partition/(3, 2)/(2, 3)/(1, 0)",
+          "type": "complex128",
+          "real": 0.17267847554119214,
+          "imag": 0.6202810013472685
+        },
+        {
+          "case": "DensityMatrix/raw/ndarray/(6, 6)/None",
+          "error": "QiskitError",
+          "message": "\"Left and right compose dimensions don't match ((3, 2) != (6,))\""
+        },
+        {
+          "case": "DensityMatrix/raw/list/(6, 6)/None",
+          "error": "QiskitError",
+          "message": "\"Left and right compose dimensions don't match ((3, 2) != (6,))\""
+        },
+        {
+          "case": "DensityMatrix/raw/ndarray/(1, 1)/None",
+          "error": "QiskitError",
+          "message": "\"Left and right compose dimensions don't match ((3, 2) != ())\""
+        },
+        {
+          "case": "DensityMatrix/raw/float/()/None",
+          "error": "QiskitError",
+          "message": "'Invalid input data format for Operator'"
+        },
+        {
+          "case": "DensityMatrix/raw/list/(2, 3)/None",
+          "error": "QiskitError",
+          "message": "\"Left and right compose dimensions don't match ((3, 2) != (2,))\""
+        },
+        {
+          "case": "DensityMatrix/invalid/(0, 0)",
+          "type": "complex128",
+          "real": 1.0000000000000002,
+          "imag": -5.315123802213151e-18
+        },
+        {
+          "case": "DensityMatrix/invalid/(-1,)",
+          "error": "IndexError",
+          "message": "list assignment index out of range"
+        },
+        {
+          "case": "DensityMatrix/invalid/(2,)",
+          "error": "IndexError",
+          "message": "tuple index out of range"
+        },
+        {
+          "case": "DensityMatrix/invalid/(True,)",
+          "type": "complex128",
+          "real": 1.0000000000000002,
+          "imag": -5.315123802213151e-18
+        },
+        {
+          "case": "DensityMatrix/invalid/(0.0,)",
+          "error": "TypeError",
+          "message": "tuple indices must be integers or slices, not float"
+        },
+        {
+          "case": "Statevector/Pauli/(3, 2)/(0,)/X",
+          "error": "TypeError",
+          "message": "argument 'num_qubits': 'NoneType' object cannot be interpreted as an integer"
+        },
+        {
+          "case": "Statevector/Sparse/(3, 2)/(0,)/X",
+          "error": "TypeError",
+          "message": "argument 'num_qubits': 'NoneType' object cannot be interpreted as an integer"
+        },
+        {
+          "case": "Statevector/Pauli/(2, 3, 2)/(0, 2)/XI",
+          "error": "TypeError",
+          "message": "argument 'num_qubits': 'NoneType' object cannot be interpreted as an integer"
+        },
+        {
+          "case": "Statevector/Sparse/(2, 3, 2)/(0, 2)/XI",
+          "error": "TypeError",
+          "message": "argument 'num_qubits': 'NoneType' object cannot be interpreted as an integer"
+        },
+        {
+          "case": "Statevector/Pauli/(2, 3, 2)/(1,)/X",
+          "error": "TypeError",
+          "message": "argument 'num_qubits': 'NoneType' object cannot be interpreted as an integer"
+        },
+        {
+          "case": "Statevector/Sparse/(2, 3, 2)/(1,)/X",
+          "error": "TypeError",
+          "message": "argument 'num_qubits': 'NoneType' object cannot be interpreted as an integer"
+        },
+        {
+          "case": "Statevector/Pauli/(2, 2)/None/iXZ",
+          "type": "complex128",
+          "real": 0,
+          "imag": -0.290292926634806
+        },
+        {
+          "case": "Statevector/Sparse/(2, 2)/None/iXZ",
+          "type": "complex128",
+          "real": 0.20320504864436417,
+          "imag": -0.058058585326961204
+        },
+        {
+          "case": "Statevector/Pauli/(2, 2)/(0,)/Y",
+          "type": "float",
+          "real": -0.2026033571447659,
+          "imag": 0
+        },
+        {
+          "case": "Statevector/Sparse/(2, 2)/(0,)/Y",
+          "type": "complex128",
+          "real": -0.04052067142895319,
+          "imag": -0.1418223500013361
+        },
+        {
+          "case": "DensityMatrix/Pauli/(3, 2)/(0,)/X",
+          "error": "TypeError",
+          "message": "argument 'num_qubits': 'NoneType' object cannot be interpreted as an integer"
+        },
+        {
+          "case": "DensityMatrix/Sparse/(3, 2)/(0,)/X",
+          "error": "TypeError",
+          "message": "argument 'num_qubits': 'NoneType' object cannot be interpreted as an integer"
+        },
+        {
+          "case": "DensityMatrix/Pauli/(2, 3, 2)/(0, 2)/XI",
+          "error": "TypeError",
+          "message": "argument 'num_qubits': 'NoneType' object cannot be interpreted as an integer"
+        },
+        {
+          "case": "DensityMatrix/Sparse/(2, 3, 2)/(0, 2)/XI",
+          "error": "TypeError",
+          "message": "argument 'num_qubits': 'NoneType' object cannot be interpreted as an integer"
+        },
+        {
+          "case": "DensityMatrix/Pauli/(2, 3, 2)/(1,)/X",
+          "error": "TypeError",
+          "message": "argument 'num_qubits': 'NoneType' object cannot be interpreted as an integer"
+        },
+        {
+          "case": "DensityMatrix/Sparse/(2, 3, 2)/(1,)/X",
+          "error": "TypeError",
+          "message": "argument 'num_qubits': 'NoneType' object cannot be interpreted as an integer"
+        },
+        {
+          "case": "DensityMatrix/Pauli/(2, 2)/None/iXZ",
+          "type": "complex128",
+          "real": 0,
+          "imag": -0.290292926634806
+        },
+        {
+          "case": "DensityMatrix/Sparse/(2, 2)/None/iXZ",
+          "type": "complex128",
+          "real": 0.20320504864436417,
+          "imag": -0.058058585326961204
+        },
+        {
+          "case": "DensityMatrix/Pauli/(2, 2)/(0,)/Y",
+          "type": "float",
+          "real": -0.2026033571447659,
+          "imag": 0
+        },
+        {
+          "case": "DensityMatrix/Sparse/(2, 2)/(0,)/Y",
+          "type": "complex128",
+          "real": -0.04052067142895319,
+          "imag": -0.1418223500013361
+        },
+        {
+          "case": "Statevector/explicit-trivial-partition/()/None",
+          "type": "complex128",
+          "real": 0.2,
+          "imag": 0.7,
+          "expected_real": 0.2,
+          "expected_imag": 0.7,
+          "max_error": 0
+        },
+        {
+          "case": "Statevector/explicit-trivial-partition/()/()",
+          "type": "complex128",
+          "real": 0.2,
+          "imag": 0.7,
+          "expected_real": 0.2,
+          "expected_imag": 0.7,
+          "max_error": 0
+        },
+        {
+          "case": "Statevector/explicit-trivial-partition/()/(0,)",
+          "error": "QiskitError",
+          "message": "'Operator input dimensions are not equal to statevector subsystem dimensions.'"
+        },
+        {
+          "case": "Statevector/explicit-trivial-partition/(1,)/None",
+          "type": "complex128",
+          "real": 0.2,
+          "imag": 0.7,
+          "expected_real": 0.2,
+          "expected_imag": 0.7,
+          "max_error": 0
+        },
+        {
+          "case": "Statevector/explicit-trivial-partition/(1,)/()",
+          "error": "QiskitError",
+          "message": "'Number of qargs does not match (0 != 1)'"
+        },
+        {
+          "case": "Statevector/explicit-trivial-partition/(1,)/(0,)",
+          "type": "complex128",
+          "real": 0.2,
+          "imag": 0.7,
+          "expected_real": 0.2,
+          "expected_imag": 0.7,
+          "max_error": 0
+        },
+        {
+          "case": "Statevector/unnormalized",
+          "type": "complex128",
+          "real": 1.6776640487603263,
+          "imag": 2.7617861487512596,
+          "expected_real": 1.6776640487603263,
+          "expected_imag": 2.761786148751259,
+          "max_error": 4.440892098500626e-16
+        },
+        {
+          "case": "Statevector/tiny-sparse-imaginary",
+          "type": "complex128",
+          "real": 1,
+          "imag": 5e-13,
+          "expected_real": 1,
+          "expected_imag": 5e-13,
+          "max_error": 0
+        },
+        {
+          "case": "DensityMatrix/explicit-trivial-partition/()/None",
+          "type": "complex128",
+          "real": 0.2,
+          "imag": 0.7,
+          "expected_real": 0.2,
+          "expected_imag": 0.7,
+          "max_error": 0
+        },
+        {
+          "case": "DensityMatrix/explicit-trivial-partition/()/()",
+          "type": "complex128",
+          "real": 0.2,
+          "imag": 0.7,
+          "expected_real": 0.2,
+          "expected_imag": 0.7,
+          "max_error": 0
+        },
+        {
+          "case": "DensityMatrix/explicit-trivial-partition/()/(0,)",
+          "error": "QiskitError",
+          "message": "'Number of qargs does not match (1 != 0)'"
+        },
+        {
+          "case": "DensityMatrix/explicit-trivial-partition/(1,)/None",
+          "type": "complex128",
+          "real": 0.2,
+          "imag": 0.7,
+          "expected_real": 0.2,
+          "expected_imag": 0.7,
+          "max_error": 0
+        },
+        {
+          "case": "DensityMatrix/explicit-trivial-partition/(1,)/()",
+          "error": "QiskitError",
+          "message": "'Number of qargs does not match (0 != 1)'"
+        },
+        {
+          "case": "DensityMatrix/explicit-trivial-partition/(1,)/(0,)",
+          "type": "complex128",
+          "real": 0.2,
+          "imag": 0.7,
+          "expected_real": 0.2,
+          "expected_imag": 0.7,
+          "max_error": 0
+        },
+        {
+          "case": "DensityMatrix/unnormalized",
+          "type": "complex128",
+          "real": 1.2582480365702446,
+          "imag": 2.0713396115634444,
+          "expected_real": 1.2582480365702446,
+          "expected_imag": 2.0713396115634444,
+          "max_error": 0
+        },
+        {
+          "case": "DensityMatrix/tiny-sparse-imaginary",
+          "type": "complex128",
+          "real": 1,
+          "imag": 5e-13,
+          "expected_real": 1,
+          "expected_imag": 5e-13,
+          "max_error": 0
+        }
+      ]
+    },
+    {
+      "qiskit_version": "2.6.0",
+      "process_exit": 0,
+      "total_records_excluding_version_header": 182,
+      "numerical_oracle_records": 84,
+      "max_numerical_oracle_error": 4.440892098500626e-16,
+      "exception_records": 68,
+      "selected_outcomes": [
+        {
+          "signature": "Statevector.expectation_value",
+          "value": "(self, oper: 'BaseOperator | QuantumCircuit | Instruction', qargs: 'None | list[int]' = None) -> 'complex'"
+        },
+        {
+          "signature": "Statevector.variance",
+          "value": null
+        },
+        {
+          "signature": "DensityMatrix.expectation_value",
+          "value": "(self, oper: 'Operator', qargs: 'None | list[int]' = None) -> 'complex'"
+        },
+        {
+          "signature": "DensityMatrix.variance",
+          "value": null
+        },
+        {
+          "case": "Statevector/(3,)/(0,)/diagonal",
+          "type": "complex128",
+          "real": 0.758719187356963,
+          "imag": 3.469446951953614e-18,
+          "expected_real": 0.758719187356963,
+          "expected_imag": 3.469446951953614e-18,
+          "max_error": 0
+        },
+        {
+          "case": "Statevector/(3,)/(0,)/hermitian",
+          "type": "complex128",
+          "real": 0.4061264933251847,
+          "imag": 3.469446951953614e-17,
+          "expected_real": 0.4061264933251847,
+          "expected_imag": 3.469446951953614e-17,
+          "max_error": 0
+        },
+        {
+          "case": "Statevector/(3,)/(0,)/nonhermitian",
+          "type": "complex128",
+          "real": 0.40306324666259247,
+          "imag": 0.7258806767346389,
+          "expected_real": 0.40306324666259247,
+          "expected_imag": 0.7258806767346389,
+          "max_error": 0
+        },
+        {
+          "case": "DensityMatrix/(3,)/(0,)/diagonal",
+          "type": "complex128",
+          "real": 0.7587191873569629,
+          "imag": -3.7401744408992794e-18,
+          "expected_real": 0.7587191873569629,
+          "expected_imag": -3.7401744408992794e-18,
+          "max_error": 0
+        },
+        {
+          "case": "DensityMatrix/(3,)/(0,)/hermitian",
+          "type": "complex128",
+          "real": 0.3250083475475249,
+          "imag": 0,
+          "expected_real": 0.32500834754752495,
+          "expected_imag": 0,
+          "max_error": 5.551115123125783e-17
+        },
+        {
+          "case": "DensityMatrix/(3,)/(0,)/nonhermitian",
+          "type": "complex128",
+          "real": 0.3625041737737625,
+          "imag": 0.7637384470706056,
+          "expected_real": 0.3625041737737625,
+          "expected_imag": 0.7637384470706056,
+          "max_error": 0
+        },
+        {
+          "case": "Statevector/typed-partition/(3, 2)/(3, 2)/None",
+          "type": "complex128",
+          "real": 0.18919707843706232,
+          "imag": 0.7711392513513153
+        },
+        {
+          "case": "Statevector/typed-partition/(3, 2)/(3, 2)/(0, 1)",
+          "type": "complex128",
+          "real": 0.18919707843706232,
+          "imag": 0.7711392513513153
+        },
+        {
+          "case": "Statevector/typed-partition/(3, 2)/(3, 2)/(1, 0)",
+          "error": "QiskitError",
+          "message": "'Operator input dimensions are not equal to statevector subsystem dimensions.'"
+        },
+        {
+          "case": "Statevector/typed-partition/(2, 3)/(2, 3)/None",
+          "error": "QiskitError",
+          "message": "'Operator input dimensions are not equal to statevector subsystem dimensions.'"
+        },
+        {
+          "case": "Statevector/typed-partition/(2, 3)/(2, 3)/(0, 1)",
+          "error": "QiskitError",
+          "message": "'Operator input dimensions are not equal to statevector subsystem dimensions.'"
+        },
+        {
+          "case": "Statevector/typed-partition/(2, 3)/(2, 3)/(1, 0)",
+          "type": "complex128",
+          "real": 0.19028002321305776,
+          "imag": 0.7216292031302196
+        },
+        {
+          "case": "Statevector/typed-partition/(6,)/(6,)/None",
+          "error": "QiskitError",
+          "message": "'Operator input dimensions are not equal to statevector subsystem dimensions.'"
+        },
+        {
+          "case": "Statevector/typed-partition/(6,)/(6,)/(0, 1)",
+          "error": "QiskitError",
+          "message": "'Operator input dimensions are not equal to statevector subsystem dimensions.'"
+        },
+        {
+          "case": "Statevector/typed-partition/(6,)/(6,)/(1, 0)",
+          "error": "QiskitError",
+          "message": "'Operator input dimensions are not equal to statevector subsystem dimensions.'"
+        },
+        {
+          "case": "Statevector/typed-partition/(3, 2)/(2, 3)/None",
+          "type": "complex128",
+          "real": 0.18919707843706232,
+          "imag": 0.7711392513513153
+        },
+        {
+          "case": "Statevector/typed-partition/(3, 2)/(2, 3)/(0, 1)",
+          "type": "complex128",
+          "real": 0.18919707843706232,
+          "imag": 0.7711392513513153
+        },
+        {
+          "case": "Statevector/typed-partition/(3, 2)/(2, 3)/(1, 0)",
+          "error": "QiskitError",
+          "message": "'Operator input dimensions are not equal to statevector subsystem dimensions.'"
+        },
+        {
+          "case": "Statevector/raw/ndarray/(6, 6)/None",
+          "type": "complex128",
+          "real": 1.0000000000000002,
+          "imag": 0
+        },
+        {
+          "case": "Statevector/raw/list/(6, 6)/None",
+          "type": "complex128",
+          "real": 1.0000000000000002,
+          "imag": 0
+        },
+        {
+          "case": "Statevector/raw/ndarray/(1, 1)/None",
+          "error": "QiskitError",
+          "message": "'Output dimensions do not match matrix shape (6 != 1)'"
+        },
+        {
+          "case": "Statevector/raw/float/()/None",
+          "error": "QiskitError",
+          "message": "'Invalid input data format for Operator'"
+        },
+        {
+          "case": "Statevector/raw/list/(2, 3)/None",
+          "error": "QiskitError",
+          "message": "'Output dimensions do not match matrix shape (6 != 2)'"
+        },
+        {
+          "case": "Statevector/invalid/(0, 0)",
+          "error": "ValueError",
+          "message": "axes don't match array"
+        },
+        {
+          "case": "Statevector/invalid/(-1,)",
+          "error": "ValueError",
+          "message": "axes don't match array"
+        },
+        {
+          "case": "Statevector/invalid/(2,)",
+          "error": "IndexError",
+          "message": "tuple index out of range"
+        },
+        {
+          "case": "Statevector/invalid/(True,)",
+          "type": "complex128",
+          "real": 1.0000000000000002,
+          "imag": 0
+        },
+        {
+          "case": "Statevector/invalid/(0.0,)",
+          "error": "TypeError",
+          "message": "tuple indices must be integers or slices, not float"
+        },
+        {
+          "case": "DensityMatrix/typed-partition/(3, 2)/(3, 2)/None",
+          "type": "complex128",
+          "real": 0.1891970784370623,
+          "imag": 0.7711392513513153
+        },
+        {
+          "case": "DensityMatrix/typed-partition/(3, 2)/(3, 2)/(0, 1)",
+          "type": "complex128",
+          "real": 0.1891970784370623,
+          "imag": 0.7711392513513153
+        },
+        {
+          "case": "DensityMatrix/typed-partition/(3, 2)/(3, 2)/(1, 0)",
+          "error": "QiskitError",
+          "message": "'Subsystem dimension do not match on specified qargs (2, 3) != (3, 2)'"
+        },
+        {
+          "case": "DensityMatrix/typed-partition/(2, 3)/(2, 3)/None",
+          "error": "QiskitError",
+          "message": "\"Left and right compose dimensions don't match ((3, 2) != (2, 3))\""
+        },
+        {
+          "case": "DensityMatrix/typed-partition/(2, 3)/(2, 3)/(0, 1)",
+          "error": "QiskitError",
+          "message": "'Subsystem dimension do not match on specified qargs (3, 2) != (2, 3)'"
+        },
+        {
+          "case": "DensityMatrix/typed-partition/(2, 3)/(2, 3)/(1, 0)",
+          "type": "complex128",
+          "real": 0.19028002321305776,
+          "imag": 0.7216292031302196
+        },
+        {
+          "case": "DensityMatrix/typed-partition/(6,)/(6,)/None",
+          "error": "QiskitError",
+          "message": "\"Left and right compose dimensions don't match ((3, 2) != (6,))\""
+        },
+        {
+          "case": "DensityMatrix/typed-partition/(6,)/(6,)/(0, 1)",
+          "error": "QiskitError",
+          "message": "'Number of qargs does not match (2 != 1)'"
+        },
+        {
+          "case": "DensityMatrix/typed-partition/(6,)/(6,)/(1, 0)",
+          "error": "QiskitError",
+          "message": "'Number of qargs does not match (2 != 1)'"
+        },
+        {
+          "case": "DensityMatrix/typed-partition/(3, 2)/(2, 3)/None",
+          "error": "QiskitError",
+          "message": "\"Left and right compose dimensions don't match ((3, 2) != (2, 3))\""
+        },
+        {
+          "case": "DensityMatrix/typed-partition/(3, 2)/(2, 3)/(0, 1)",
+          "error": "QiskitError",
+          "message": "'Subsystem dimension do not match on specified qargs (3, 2) != (2, 3)'"
+        },
+        {
+          "case": "DensityMatrix/typed-partition/(3, 2)/(2, 3)/(1, 0)",
+          "type": "complex128",
+          "real": 0.17267847554119214,
+          "imag": 0.6202810013472685
+        },
+        {
+          "case": "DensityMatrix/raw/ndarray/(6, 6)/None",
+          "error": "QiskitError",
+          "message": "\"Left and right compose dimensions don't match ((3, 2) != (6,))\""
+        },
+        {
+          "case": "DensityMatrix/raw/list/(6, 6)/None",
+          "error": "QiskitError",
+          "message": "\"Left and right compose dimensions don't match ((3, 2) != (6,))\""
+        },
+        {
+          "case": "DensityMatrix/raw/ndarray/(1, 1)/None",
+          "error": "QiskitError",
+          "message": "\"Left and right compose dimensions don't match ((3, 2) != ())\""
+        },
+        {
+          "case": "DensityMatrix/raw/float/()/None",
+          "error": "QiskitError",
+          "message": "'Invalid input data format for Operator'"
+        },
+        {
+          "case": "DensityMatrix/raw/list/(2, 3)/None",
+          "error": "QiskitError",
+          "message": "\"Left and right compose dimensions don't match ((3, 2) != (2,))\""
+        },
+        {
+          "case": "DensityMatrix/invalid/(0, 0)",
+          "type": "complex128",
+          "real": 1.0000000000000002,
+          "imag": -5.315123802213151e-18
+        },
+        {
+          "case": "DensityMatrix/invalid/(-1,)",
+          "error": "IndexError",
+          "message": "list assignment index out of range"
+        },
+        {
+          "case": "DensityMatrix/invalid/(2,)",
+          "error": "IndexError",
+          "message": "tuple index out of range"
+        },
+        {
+          "case": "DensityMatrix/invalid/(True,)",
+          "type": "complex128",
+          "real": 1.0000000000000002,
+          "imag": -5.315123802213151e-18
+        },
+        {
+          "case": "DensityMatrix/invalid/(0.0,)",
+          "error": "TypeError",
+          "message": "tuple indices must be integers or slices, not float"
+        },
+        {
+          "case": "Statevector/Pauli/(3, 2)/(0,)/X",
+          "error": "TypeError",
+          "message": "'NoneType' object cannot be interpreted as an integer"
+        },
+        {
+          "case": "Statevector/Sparse/(3, 2)/(0,)/X",
+          "error": "TypeError",
+          "message": "'NoneType' object cannot be interpreted as an integer"
+        },
+        {
+          "case": "Statevector/Pauli/(2, 3, 2)/(0, 2)/XI",
+          "error": "TypeError",
+          "message": "'NoneType' object cannot be interpreted as an integer"
+        },
+        {
+          "case": "Statevector/Sparse/(2, 3, 2)/(0, 2)/XI",
+          "error": "TypeError",
+          "message": "'NoneType' object cannot be interpreted as an integer"
+        },
+        {
+          "case": "Statevector/Pauli/(2, 3, 2)/(1,)/X",
+          "error": "TypeError",
+          "message": "'NoneType' object cannot be interpreted as an integer"
+        },
+        {
+          "case": "Statevector/Sparse/(2, 3, 2)/(1,)/X",
+          "error": "TypeError",
+          "message": "'NoneType' object cannot be interpreted as an integer"
+        },
+        {
+          "case": "Statevector/Pauli/(2, 2)/None/iXZ",
+          "type": "complex128",
+          "real": 0,
+          "imag": -0.290292926634806
+        },
+        {
+          "case": "Statevector/Sparse/(2, 2)/None/iXZ",
+          "type": "complex128",
+          "real": 0.20320504864436417,
+          "imag": -0.058058585326961204
+        },
+        {
+          "case": "Statevector/Pauli/(2, 2)/(0,)/Y",
+          "type": "float",
+          "real": -0.2026033571447659,
+          "imag": 0
+        },
+        {
+          "case": "Statevector/Sparse/(2, 2)/(0,)/Y",
+          "type": "complex128",
+          "real": -0.04052067142895319,
+          "imag": -0.1418223500013361
+        },
+        {
+          "case": "DensityMatrix/Pauli/(3, 2)/(0,)/X",
+          "error": "TypeError",
+          "message": "'NoneType' object cannot be interpreted as an integer"
+        },
+        {
+          "case": "DensityMatrix/Sparse/(3, 2)/(0,)/X",
+          "error": "TypeError",
+          "message": "'NoneType' object cannot be interpreted as an integer"
+        },
+        {
+          "case": "DensityMatrix/Pauli/(2, 3, 2)/(0, 2)/XI",
+          "error": "TypeError",
+          "message": "'NoneType' object cannot be interpreted as an integer"
+        },
+        {
+          "case": "DensityMatrix/Sparse/(2, 3, 2)/(0, 2)/XI",
+          "error": "TypeError",
+          "message": "'NoneType' object cannot be interpreted as an integer"
+        },
+        {
+          "case": "DensityMatrix/Pauli/(2, 3, 2)/(1,)/X",
+          "error": "TypeError",
+          "message": "'NoneType' object cannot be interpreted as an integer"
+        },
+        {
+          "case": "DensityMatrix/Sparse/(2, 3, 2)/(1,)/X",
+          "error": "TypeError",
+          "message": "'NoneType' object cannot be interpreted as an integer"
+        },
+        {
+          "case": "DensityMatrix/Pauli/(2, 2)/None/iXZ",
+          "type": "complex128",
+          "real": 0,
+          "imag": -0.290292926634806
+        },
+        {
+          "case": "DensityMatrix/Sparse/(2, 2)/None/iXZ",
+          "type": "complex128",
+          "real": 0.20320504864436417,
+          "imag": -0.058058585326961204
+        },
+        {
+          "case": "DensityMatrix/Pauli/(2, 2)/(0,)/Y",
+          "type": "float",
+          "real": -0.2026033571447659,
+          "imag": 0
+        },
+        {
+          "case": "DensityMatrix/Sparse/(2, 2)/(0,)/Y",
+          "type": "complex128",
+          "real": -0.04052067142895319,
+          "imag": -0.1418223500013361
+        },
+        {
+          "case": "Statevector/explicit-trivial-partition/()/None",
+          "type": "complex128",
+          "real": 0.2,
+          "imag": 0.7,
+          "expected_real": 0.2,
+          "expected_imag": 0.7,
+          "max_error": 0
+        },
+        {
+          "case": "Statevector/explicit-trivial-partition/()/()",
+          "type": "complex128",
+          "real": 0.2,
+          "imag": 0.7,
+          "expected_real": 0.2,
+          "expected_imag": 0.7,
+          "max_error": 0
+        },
+        {
+          "case": "Statevector/explicit-trivial-partition/()/(0,)",
+          "error": "QiskitError",
+          "message": "'Operator input dimensions are not equal to statevector subsystem dimensions.'"
+        },
+        {
+          "case": "Statevector/explicit-trivial-partition/(1,)/None",
+          "type": "complex128",
+          "real": 0.2,
+          "imag": 0.7,
+          "expected_real": 0.2,
+          "expected_imag": 0.7,
+          "max_error": 0
+        },
+        {
+          "case": "Statevector/explicit-trivial-partition/(1,)/()",
+          "error": "QiskitError",
+          "message": "'Number of qargs does not match (0 != 1)'"
+        },
+        {
+          "case": "Statevector/explicit-trivial-partition/(1,)/(0,)",
+          "type": "complex128",
+          "real": 0.2,
+          "imag": 0.7,
+          "expected_real": 0.2,
+          "expected_imag": 0.7,
+          "max_error": 0
+        },
+        {
+          "case": "Statevector/unnormalized",
+          "type": "complex128",
+          "real": 1.6776640487603263,
+          "imag": 2.7617861487512596,
+          "expected_real": 1.6776640487603263,
+          "expected_imag": 2.761786148751259,
+          "max_error": 4.440892098500626e-16
+        },
+        {
+          "case": "Statevector/tiny-sparse-imaginary",
+          "type": "complex128",
+          "real": 1,
+          "imag": 5e-13,
+          "expected_real": 1,
+          "expected_imag": 5e-13,
+          "max_error": 0
+        },
+        {
+          "case": "DensityMatrix/explicit-trivial-partition/()/None",
+          "type": "complex128",
+          "real": 0.2,
+          "imag": 0.7,
+          "expected_real": 0.2,
+          "expected_imag": 0.7,
+          "max_error": 0
+        },
+        {
+          "case": "DensityMatrix/explicit-trivial-partition/()/()",
+          "type": "complex128",
+          "real": 0.2,
+          "imag": 0.7,
+          "expected_real": 0.2,
+          "expected_imag": 0.7,
+          "max_error": 0
+        },
+        {
+          "case": "DensityMatrix/explicit-trivial-partition/()/(0,)",
+          "error": "QiskitError",
+          "message": "'Number of qargs does not match (1 != 0)'"
+        },
+        {
+          "case": "DensityMatrix/explicit-trivial-partition/(1,)/None",
+          "type": "complex128",
+          "real": 0.2,
+          "imag": 0.7,
+          "expected_real": 0.2,
+          "expected_imag": 0.7,
+          "max_error": 0
+        },
+        {
+          "case": "DensityMatrix/explicit-trivial-partition/(1,)/()",
+          "error": "QiskitError",
+          "message": "'Number of qargs does not match (0 != 1)'"
+        },
+        {
+          "case": "DensityMatrix/explicit-trivial-partition/(1,)/(0,)",
+          "type": "complex128",
+          "real": 0.2,
+          "imag": 0.7,
+          "expected_real": 0.2,
+          "expected_imag": 0.7,
+          "max_error": 0
+        },
+        {
+          "case": "DensityMatrix/unnormalized",
+          "type": "complex128",
+          "real": 1.2582480365702446,
+          "imag": 2.0713396115634444,
+          "expected_real": 1.2582480365702446,
+          "expected_imag": 2.0713396115634444,
+          "max_error": 0
+        },
+        {
+          "case": "DensityMatrix/tiny-sparse-imaginary",
+          "type": "complex128",
+          "real": 1,
+          "imag": 5e-13,
+          "expected_real": 1,
+          "expected_imag": 5e-13,
+          "max_error": 0
+        }
+      ]
+    }
+  ],
+  "actual_version_differences": [
+    {
+      "case": "Statevector/Pauli/(3, 2)/(0,)/X",
+      "version_241": {
+        "case": "Statevector/Pauli/(3, 2)/(0,)/X",
+        "error": "TypeError",
+        "message": "argument 'num_qubits': 'NoneType' object cannot be interpreted as an integer"
+      },
+      "version_260": {
+        "case": "Statevector/Pauli/(3, 2)/(0,)/X",
+        "error": "TypeError",
+        "message": "'NoneType' object cannot be interpreted as an integer"
+      }
+    },
+    {
+      "case": "Statevector/Sparse/(3, 2)/(0,)/X",
+      "version_241": {
+        "case": "Statevector/Sparse/(3, 2)/(0,)/X",
+        "error": "TypeError",
+        "message": "argument 'num_qubits': 'NoneType' object cannot be interpreted as an integer"
+      },
+      "version_260": {
+        "case": "Statevector/Sparse/(3, 2)/(0,)/X",
+        "error": "TypeError",
+        "message": "'NoneType' object cannot be interpreted as an integer"
+      }
+    },
+    {
+      "case": "Statevector/Pauli/(2, 3, 2)/(0, 2)/XI",
+      "version_241": {
+        "case": "Statevector/Pauli/(2, 3, 2)/(0, 2)/XI",
+        "error": "TypeError",
+        "message": "argument 'num_qubits': 'NoneType' object cannot be interpreted as an integer"
+      },
+      "version_260": {
+        "case": "Statevector/Pauli/(2, 3, 2)/(0, 2)/XI",
+        "error": "TypeError",
+        "message": "'NoneType' object cannot be interpreted as an integer"
+      }
+    },
+    {
+      "case": "Statevector/Sparse/(2, 3, 2)/(0, 2)/XI",
+      "version_241": {
+        "case": "Statevector/Sparse/(2, 3, 2)/(0, 2)/XI",
+        "error": "TypeError",
+        "message": "argument 'num_qubits': 'NoneType' object cannot be interpreted as an integer"
+      },
+      "version_260": {
+        "case": "Statevector/Sparse/(2, 3, 2)/(0, 2)/XI",
+        "error": "TypeError",
+        "message": "'NoneType' object cannot be interpreted as an integer"
+      }
+    },
+    {
+      "case": "Statevector/Pauli/(2, 3, 2)/(1,)/X",
+      "version_241": {
+        "case": "Statevector/Pauli/(2, 3, 2)/(1,)/X",
+        "error": "TypeError",
+        "message": "argument 'num_qubits': 'NoneType' object cannot be interpreted as an integer"
+      },
+      "version_260": {
+        "case": "Statevector/Pauli/(2, 3, 2)/(1,)/X",
+        "error": "TypeError",
+        "message": "'NoneType' object cannot be interpreted as an integer"
+      }
+    },
+    {
+      "case": "Statevector/Sparse/(2, 3, 2)/(1,)/X",
+      "version_241": {
+        "case": "Statevector/Sparse/(2, 3, 2)/(1,)/X",
+        "error": "TypeError",
+        "message": "argument 'num_qubits': 'NoneType' object cannot be interpreted as an integer"
+      },
+      "version_260": {
+        "case": "Statevector/Sparse/(2, 3, 2)/(1,)/X",
+        "error": "TypeError",
+        "message": "'NoneType' object cannot be interpreted as an integer"
+      }
+    },
+    {
+      "case": "DensityMatrix/Pauli/(3, 2)/(0,)/X",
+      "version_241": {
+        "case": "DensityMatrix/Pauli/(3, 2)/(0,)/X",
+        "error": "TypeError",
+        "message": "argument 'num_qubits': 'NoneType' object cannot be interpreted as an integer"
+      },
+      "version_260": {
+        "case": "DensityMatrix/Pauli/(3, 2)/(0,)/X",
+        "error": "TypeError",
+        "message": "'NoneType' object cannot be interpreted as an integer"
+      }
+    },
+    {
+      "case": "DensityMatrix/Sparse/(3, 2)/(0,)/X",
+      "version_241": {
+        "case": "DensityMatrix/Sparse/(3, 2)/(0,)/X",
+        "error": "TypeError",
+        "message": "argument 'num_qubits': 'NoneType' object cannot be interpreted as an integer"
+      },
+      "version_260": {
+        "case": "DensityMatrix/Sparse/(3, 2)/(0,)/X",
+        "error": "TypeError",
+        "message": "'NoneType' object cannot be interpreted as an integer"
+      }
+    },
+    {
+      "case": "DensityMatrix/Pauli/(2, 3, 2)/(0, 2)/XI",
+      "version_241": {
+        "case": "DensityMatrix/Pauli/(2, 3, 2)/(0, 2)/XI",
+        "error": "TypeError",
+        "message": "argument 'num_qubits': 'NoneType' object cannot be interpreted as an integer"
+      },
+      "version_260": {
+        "case": "DensityMatrix/Pauli/(2, 3, 2)/(0, 2)/XI",
+        "error": "TypeError",
+        "message": "'NoneType' object cannot be interpreted as an integer"
+      }
+    },
+    {
+      "case": "DensityMatrix/Sparse/(2, 3, 2)/(0, 2)/XI",
+      "version_241": {
+        "case": "DensityMatrix/Sparse/(2, 3, 2)/(0, 2)/XI",
+        "error": "TypeError",
+        "message": "argument 'num_qubits': 'NoneType' object cannot be interpreted as an integer"
+      },
+      "version_260": {
+        "case": "DensityMatrix/Sparse/(2, 3, 2)/(0, 2)/XI",
+        "error": "TypeError",
+        "message": "'NoneType' object cannot be interpreted as an integer"
+      }
+    },
+    {
+      "case": "DensityMatrix/Pauli/(2, 3, 2)/(1,)/X",
+      "version_241": {
+        "case": "DensityMatrix/Pauli/(2, 3, 2)/(1,)/X",
+        "error": "TypeError",
+        "message": "argument 'num_qubits': 'NoneType' object cannot be interpreted as an integer"
+      },
+      "version_260": {
+        "case": "DensityMatrix/Pauli/(2, 3, 2)/(1,)/X",
+        "error": "TypeError",
+        "message": "'NoneType' object cannot be interpreted as an integer"
+      }
+    },
+    {
+      "case": "DensityMatrix/Sparse/(2, 3, 2)/(1,)/X",
+      "version_241": {
+        "case": "DensityMatrix/Sparse/(2, 3, 2)/(1,)/X",
+        "error": "TypeError",
+        "message": "argument 'num_qubits': 'NoneType' object cannot be interpreted as an integer"
+      },
+      "version_260": {
+        "case": "DensityMatrix/Sparse/(2, 3, 2)/(1,)/X",
+        "error": "TypeError",
+        "message": "'NoneType' object cannot be interpreted as an integer"
+      }
+    }
+  ]
+}

@@ -141,6 +141,18 @@ def _local_operator_indices(dimensions, targets, output_dims):
             yield source,destination,row,column
 
 
+def _expectation_local_operator(data, matrix, targets, dimensions, *, density=False):
+    """The existing ordered local map, contracted with the original state."""
+    local=tuple(dimensions[position] for position in targets)
+    if density:
+        value=sum(complex(data[source,destination])*complex(matrix[row,column])
+            for source,destination,row,column in _local_operator_indices(dimensions,targets,local))
+    else:
+        applied=apply_unitary(data,matrix,targets,None,dims=dimensions)
+        value=sum(complex(original).conjugate()*complex(result) for original,result in zip(data,applied))
+    return np.complex128(value)
+
+
 def _compose_local_operator(data, matrix, targets, dimensions, changed, *, front):
     from quantumbridge.execution.array_reservations import owned_arrays
     from quantumbridge.execution.resource_context import current_resources

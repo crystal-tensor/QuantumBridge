@@ -1206,6 +1206,18 @@ coverage is 90.4753%, not SDK function completion.
 Native multiplication order is retained, not silently relabeled as Qiskit parity.
 See the [P0.3 report](docs/implementation/stage12_a_p03_operator_composition_progress.md).
 
+Stage 12-A P0.4 implements native mixed-radix local observable expectation for
+Statevector and DensityMatrix, including reversed targets and complex
+non-Hermitian results, without embedding a whole-system observable. Development
+focuses pass 183 cases in each installed SDK environment and 171 native cases
+without SDKs. Fresh frozen-runtime SDK-free/main/alternate FULL and the original
+28-section matrix terminate with exits 0; main and matrix independently record
+90.4959% coverage, 68 exclusions unchanged. Seven missing-dependency matrix
+subsets remain unexecuted and known environment conflicts remain disclosed.
+Public partition, scalar and target-validation differences remain explicit;
+this is not complete state-class or Qiskit/PennyLane parity. See the
+[P0.4 report](docs/implementation/stage12_a_p04_observable_expectation_progress.md).
+
 ## Native Molecular Chemistry Checkpoint
 
 `quantumbridge.qchem` now computes a bounded hydrogen/STO-3G s-shell workflow

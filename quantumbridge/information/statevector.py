@@ -137,6 +137,58 @@ def _mapped_evolution_data(operator, qargs, dimensions, *, density=False):
     return matrix,selected,outgoing,result_dims
 
 
+def _expectation_value(data, dimensions, observable, qargs, *, density=False):
+    from quantumbridge.information.operator import Operator
+    from quantumbridge.operators import Pauli, SparsePauliOperator
+    from quantumbridge.execution.array_reservations import numeric_shape, numeric_array, array_layout
+    from quantumbridge.utils.math import _expectation_local_operator
+    scope=current_resources()
+    selected=subsystem_positions(qargs,len(dimensions))
+    incoming=tuple(dimensions[position] for position in selected)
+    size,local_size=prod(dimensions),prod(incoming)
+    native=type(observable) is Operator if scope is not None else isinstance(observable,Operator)
+    pauli=type(observable) in (Pauli,SparsePauliOperator) if scope is not None else isinstance(observable,(Pauli,SparsePauliOperator))
+    factory=None
+    if native:
+        if observable._input_dims!=observable._output_dims:
+            raise ValueError("An observable must preserve its declared input/output subsystem dimensions.")
+        if qargs is not None and observable._input_dims!=incoming:
+            raise ValueError("Observable dimensions do not match the ordered selected subsystems.")
+        raw=observable.data
+    elif pauli:
+        require_qubits(dimensions,"mixed_radix_pauli_expectation")
+        if (2,)*observable.num_qubits!=incoming:
+            raise ValueError("Pauli observable width does not match the selected qubits.")
+        factory=observable.to_matrix
+        raw=None
+    else:
+        raw=observable
+        if scope is None:
+            if hasattr(observable,"to_matrix"):raw=observable.to_matrix()
+            elif not isinstance(observable,np.ndarray) and hasattr(observable,"data"):raw=observable.data
+    if scope is None:
+        data=np.asarray(data,dtype=complex)
+        if factory is None:raw=np.asarray(raw,dtype=complex)
+    shape=(local_size,local_size) if factory is not None else numeric_shape(raw) if scope is not None else raw.shape
+    data_shape=numeric_shape(data) if scope is not None else data.shape
+    if shape!=(local_size,local_size):raise ValueError("Observable must be a dimension-preserving square matrix for these subsystems.")
+    if data_shape!=((size,size) if density else (size,)):
+        raise ValueError("State dimensions do not match its numeric buffer.")
+    if scope is not None:
+        needed=0 if density else array_layout((size,),complex)[2]
+        if factory is not None:needed+=array_layout(shape,complex)[2]
+        for value,layout in ((data,data_shape),) if factory is not None else ((data,data_shape),(raw,shape)):
+            if not issubclass(type(value),np.ndarray) or np.ndarray.view(value,np.ndarray).dtype!=np.dtype(complex):
+                needed+=array_layout(layout,complex)[2]
+        scope.ledger.preflight(memory_bytes=needed)
+        scope.ledger.unavailable("expectation_scalar_iterator_workspace",
+            "Known numeric conversions and the pure-state action buffer are admitted; density uses direct indices. Python/scalar iterator storage is not measured RSS.")
+        data=numeric_array(data,category="expectation_state_input")
+        if factory is None:raw=numeric_array(raw,category="expectation_observable_input")
+    matrix=factory() if factory is not None else raw
+    return _expectation_local_operator(data,matrix,selected,dimensions,density=density)
+
+
 class Statevector:
     def __init__(self, data, normalize: bool = False, *, dims=None):
         from quantumbridge.execution.resource_context import current_resources
@@ -222,22 +274,30 @@ class Statevector:
         return self.probabilities(qargs)
 
     def expectation_value(self, observable, qargs=None) -> complex:
-        from quantumbridge.information.operator import Operator
-
-        if qargs is not None:require_qubits(self._dims,"mixed_radix_subsystem_expectation")
-        if hasattr(observable, "to_hamiltonian"):
+        from quantumbridge.operators import SparsePauliOperator
+        from quantumbridge.core.classical import UnsupportedFeature
+        scope=current_resources()
+        if scope is not None and type(self) is not Statevector:
+            raise UnsupportedFeature("managed_expectation_state","Managed expectation requires a native state with explicit numeric storage.")
+        if type(observable) is SparsePauliOperator and qargs is None:
+            require_qubits(self._dims,"mixed_radix_hamiltonian")
+            if observable.terms and observable.num_qubits!=self.num_qubits:
+                raise ValueError("Sparse Pauli observable width must match the state.")
+            data=self.data
+            if scope is not None:
+                from quantumbridge.execution.array_reservations import numeric_shape, numeric_array
+                if numeric_shape(data)!=(prod(self._dims),):raise ValueError("State dimensions do not match its numeric buffer.")
+                data=numeric_array(data,category="sparse_expectation_state_input")
+            if all(coefficient.imag==0 for _,coefficient in observable.terms):
+                return expectation_hamiltonian(data,self.num_qubits,observable.to_hamiltonian())
+            from quantumbridge.utils.math import expectation_pauli_string, PauliString
+            return np.complex128(sum(coefficient*expectation_pauli_string(data,self.num_qubits,
+                PauliString((wire,symbol) for wire,symbol in enumerate(label) if symbol!="I"))
+                for label,coefficient in observable.terms))
+        if scope is None and qargs is None and hasattr(observable,"to_hamiltonian"):
             require_qubits(self._dims,"mixed_radix_hamiltonian")
             return expectation_hamiltonian(self.data, self.num_qubits, observable.to_hamiltonian())
-        if hasattr(observable, "to_matrix"):
-            matrix = np.asarray(observable.to_matrix(), dtype=complex)
-        else:
-            matrix = observable.data if hasattr(observable, "data") else np.asarray(observable, dtype=complex)
-        if qargs is not None:
-            qargs_tuple = _validate_qargs(qargs, self.num_qubits)
-            matrix = Operator(np.eye(len(self.data), dtype=complex)).compose(Operator(matrix), qargs=qargs_tuple).data
-        if matrix.shape != (len(self.data), len(self.data)):
-            raise ValueError("QuantumBridge observable dimension must match Statevector dimension.")
-        return np.vdot(self.data, matrix @ self.data)
+        return _expectation_value(self.data,self._dims,observable,qargs)
 
     def evolve(self, operator, qargs=None) -> "Statevector":
         from quantumbridge.information.operator import Operator

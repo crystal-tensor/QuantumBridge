@@ -1,16 +1,38 @@
 # Source Migration Ledger
 
-Status: P0.3 local code checkpoint be9d5e3, frozen runtime 7a9ebe78 validated;
+Status: P0.4 native expectation, frozen runtime 6b5b3927 validated;
+P0.3 local code checkpoint be9d5e3, frozen runtime 7a9ebe78 validated;
 P0.2-A local checkpoint 12098c9, frozen runtime 2973040c validated;
 P0.1 checkpoint 89f4dc9;
 R2 baseline b1d345b; C3 remains partial and full replacement incomplete
-Date: 2026-10-21
+Date: 2026-10-22
 
 This ledger retains historical release and checkpoint sections. Current work
 uses Native Implementation, Adapter Integration and Upstream Dependency, with
 their boundaries stated separately. Historical checkpoint limitations are not
 the current status view; use core_parity_ledger.md for that view.
 No Source Port with Attribution was performed.
+
+## Stage 12-A P0.4 Native Observable Expectation Inventory
+
+Independent Native Implementation, not source/test port or an upstream engine.
+`quantumbridge/information/statevector.py` shares native observable validation,
+known-array admission and complex local expectation with
+`quantumbridge/information/density_matrix.py`; the existing full sparse-Pauli
+path is retained and complex coefficients are not discarded.
+`quantumbridge/utils/math.py` contracts the existing ordered local index/action
+map, not a second simulator or a whole-system embedded observable.
+`tests/information/test_mixed_radix_observable_expectation.py` independently
+authors basis-enumeration and tensor-reduction mathematics, actual composition
+with evolution/trace, strided-array, error and storage-lifetime tests.
+`docs/compat/stage12_a_p04_public_expectation_contracts.json` contains generated
+installed-public API observations and version statistics, not upstream source.
+`docs/implementation/stage12_a_p04_observable_expectation_progress.md` records
+actual red/recovery, public differences and final acceptance receipts.
+Qiskit is optional black-box test reference only. No cloud/credential, vendor,
+Studio/Router or unrelated feature work is part of this batch. Bounded frozen
+FULL/framework/matrix gates terminate with exits 0; full replacement and
+complete state/public parity are not claimed.
 
 ## Stage 12-A P0.3 Native Operator Composition Inventory
 

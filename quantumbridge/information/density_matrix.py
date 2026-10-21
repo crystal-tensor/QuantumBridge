@@ -9,7 +9,7 @@ import numpy as np
 
 from typing import Union
 
-from .statevector import Statevector, _sample_measurements, _tensor_arrays, _mapped_evolution_data
+from .statevector import Statevector, _sample_measurements, _tensor_arrays, _mapped_evolution_data, _expectation_value
 from quantumbridge.execution.resource_context import current_resources, meter_native_samples
 from .state_dimensions import (
     state_dimensions, qubit_count, basis_digits, basis_index, basis_label,
@@ -123,19 +123,10 @@ class DensityMatrix:
         return self.probabilities(qargs)
 
     def expectation_value(self, observable, qargs=None) -> complex:
-        from quantumbridge.information.operator import Operator
-
-        if qargs is not None:require_qubits(self._dims,"mixed_radix_subsystem_expectation")
-        if hasattr(observable, "to_matrix"):
-            matrix = np.asarray(observable.to_matrix(), dtype=complex)
-        else:
-            matrix = observable.data if hasattr(observable, "data") else np.asarray(observable, dtype=complex)
-        if qargs is not None:
-            qargs_tuple = _validate_qargs(qargs, self.num_qubits)
-            matrix = Operator(np.eye(self.data.shape[0], dtype=complex)).compose(Operator(matrix), qargs=qargs_tuple).data
-        if matrix.shape != self.data.shape:
-            raise ValueError("QuantumBridge observable dimension must match DensityMatrix dimension.")
-        return np.trace(self.data @ matrix)
+        if current_resources() is not None and type(self) is not DensityMatrix:
+            from quantumbridge.core.classical import UnsupportedFeature
+            raise UnsupportedFeature("managed_expectation_state","Managed expectation requires a native state with explicit numeric storage.")
+        return _expectation_value(self.data,self._dims,observable,qargs,density=True)
 
     def evolve(self, operator, qargs=None) -> "DensityMatrix":
         from quantumbridge.information.channels import _QuantumChannel

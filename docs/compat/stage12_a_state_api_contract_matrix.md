@@ -1,11 +1,11 @@
 # Stage 12-A State API Contract Matrix
 
-Date: 2026-10-21. Status: baseline audit recorded; bounded P0.1/P0.2-A/P0.3 native
-slices implemented and validated, complete classes/public compatibility PARTIAL.
+Date: 2026-10-22. Status: bounded P0.4 expectation frozen-runtime gates validated;
+P0.1/P0.2-A/P0.3 slices validated, complete classes/public compatibility PARTIAL.
 Native baseline: b1d345b3731276f5f2721cb42c2397d98981ac5c.
 This is a bounded initial matrix, not the complete SDK/API inventory.
 The table below records that baseline, not the later candidate implementation.
-See [the current P0.3 progress report](../implementation/stage12_a_p03_operator_composition_progress.md)
+See [the current P0.4 progress report](../implementation/stage12_a_p04_observable_expectation_progress.md)
 and the historical P0.1 construction/propagation report for actual receipts.
 
 ## Evidence And Limits
@@ -130,3 +130,33 @@ and complete power/state/Operator public contracts are not implemented. The
 two-subsystem identity/basis counterexample still records a public state versus
 public density/composition mismatch, not an established upstream defect. See
 the P0.3 report for actual mathematics, support boundaries and gate receipts.
+
+## P0.4 Current Function Delta
+
+Existing Statevector/DensityMatrix.expectation_value now compute native complex
+local square observables on actual ordered qubit/qutrit/qudit dimensions.
+Pure states reuse the native O|psi> action and a complex inner product; densities
+directly contract rho[source,destination] O[destination,source], not A rho A-dagger
+and not a full embedded matrix. No input/state normalization is added.
+Known conversions and pure-state action storage are admitted before factories;
+strided numeric buffers are borrowed. Python/scalar iterator workspace is not
+measured RSS. Existing full sparse-Pauli behavior remains matrix-free, with
+complex coefficients retained and managed numeric state buffers sanitized.
+
+Independent basis and tensor/reduced-density oracles, evolve -> density ->
+partial_trace -> expectation and a finite-difference objective pass the current
+183-case focuses (171 native + 12 optional SDK references). Fresh SDK-free/main/
+alternate FULL finish with 3028/3744/3742 passed, respectively; framework and
+original matrix gates exit 0. Main and matrix coverage independently agree at
+90.49588122293491%, exclusions 68. Seven optional subsets remain unexecuted and
+known pip conflicts remain; this is not complete state API acceptance. Public probes
+each record 182 outcomes excluding the version header, 84 numerical oracles,
+68 exceptions, and only 12 observed exception-message differences across the
+sampled versions. These are NOT native test counts or exhaustive compatibility.
+
+Strict native target validation, typed local endomorphism partitions, native
+empty-target scalars and legacy full flat numeric partitions differ from sampled
+public APIs. Pauli/Sparse objects remain binary-only. Both public classes lack
+variance(); none is invented here. The P0.2/P0.3 PUBLIC_DIFFERENTIAL_MISMATCH
+artifacts and correct mapped-evolution math remain unchanged. General mapped
+channels, RNG/analysis/arithmetic and whole class/public parity remain open.
