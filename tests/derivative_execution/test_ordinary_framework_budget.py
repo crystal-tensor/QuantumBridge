@@ -4,6 +4,7 @@
 
 import numpy as np
 import pytest
+import gc
 
 from quantumbridge import Hamiltonian, PauliX, PauliZ, StatevectorDevice
 from quantumbridge.execution import DerivativeExecutionError, UnifiedExecutionLimits as Limits
@@ -16,6 +17,29 @@ def node(interface, limits):
         t.ry(x[0], 0)
         return t.expval(PauliZ(0))
     return QNode(fn, 1, interface=interface, max_diff=2, unified_limits=limits)
+
+
+@pytest.fixture
+def native_accounts(monkeypatch):
+    from quantumbridge.interfaces import ordinary_resources
+    original = ordinary_resources.managed_framework_plan
+    accounts = []
+    def capture(plan):
+        result = original(plan)
+        accounts.append(result.ledger)
+        return result
+    monkeypatch.setattr(ordinary_resources, "managed_framework_plan", capture)
+    return accounts
+
+
+def assert_snapshot_consistent(receipt):
+    assert receipt["active_tapes"] == 0
+    assert receipt["live_memory_bytes"] == receipt["total_reserved_memory_bytes"]-receipt["total_released_memory_bytes"]
+
+
+def assert_accounts_released(accounts):
+    gc.collect()
+    assert all(account.receipt()["live_memory_bytes"] == 0 for account in accounts)
 
 
 def test_torch_forward_memory_rejects_before_native_allocation(monkeypatch):
@@ -50,7 +74,7 @@ def test_torch_second_backward_shares_forward_and_first_backward_account():
     assert failure.value.receipt["consumed_derivative_work"] == 3
 
 
-def test_torch_transformed_valid_overbudget_valid_recovers_math_and_ownership():
+def test_torch_transformed_valid_overbudget_valid_recovers_math_and_ownership(native_accounts):
     torch = pytest.importorskip("torch")
     def fn(t, x):
         t.ry(x[0], 0)
@@ -65,7 +89,8 @@ def test_torch_transformed_valid_overbudget_valid_recovers_math_and_ownership():
     qnode.unified_limits = Limits()
     np.testing.assert_allclose(gradient(), initial, atol=1e-12)
     receipt = qnode.last_metadata["unified_resource_receipt"]
-    assert receipt["live_memory_bytes"] == receipt["active_tapes"] == 0
+    assert_snapshot_consistent(receipt)
+    assert_accounts_released(native_accounts)
 
 
 def test_autograd_forward_memory_rejects_before_native_allocation(monkeypatch):
@@ -98,7 +123,7 @@ def test_autograd_second_backward_shares_forward_and_first_backward_account():
     assert failure.value.receipt["consumed_derivative_work"] == 3
 
 
-def test_autograd_transformed_valid_overbudget_valid_recovers_math_and_ownership():
+def test_autograd_transformed_valid_overbudget_valid_recovers_math_and_ownership(native_accounts):
     autograd = pytest.importorskip("autograd")
     anp = pytest.importorskip("autograd.numpy")
     def fn(t, x):
@@ -112,10 +137,11 @@ def test_autograd_transformed_valid_overbudget_valid_recovers_math_and_ownership
     qnode.unified_limits = Limits()
     np.testing.assert_allclose(gradient(anp.array([.3])), initial, atol=1e-12)
     receipt = qnode.last_metadata["unified_resource_receipt"]
-    assert receipt["live_memory_bytes"] == receipt["active_tapes"] == 0
+    assert_snapshot_consistent(receipt)
+    assert_accounts_released(native_accounts)
 
 
-def test_torch_successful_second_graph_still_reaches_native_hvp_with_shared_receipt():
+def test_torch_successful_second_graph_still_reaches_native_hvp_with_shared_receipt(native_accounts):
     torch = pytest.importorskip("torch")
     qnode = node("torch", Limits())
     x = torch.tensor([.3], dtype=torch.float64, requires_grad=True)
@@ -124,10 +150,13 @@ def test_torch_successful_second_graph_still_reaches_native_hvp_with_shared_rece
     np.testing.assert_allclose(product.detach(), [-.4*np.cos(.3)], atol=1e-12)
     receipt = qnode.last_metadata["unified_resource_receipt"]
     assert receipt["consumed_derivative_work"] == receipt["consumed_tapes"] == 11
-    assert receipt["live_memory_bytes"] == 0
+    assert_snapshot_consistent(receipt)
+    assert native_accounts[0].receipt()["live_memory_bytes"] >= 8
+    del first, product
+    assert_accounts_released(native_accounts)
 
 
-def test_autograd_successful_second_graph_still_reaches_native_hvp_with_shared_receipt():
+def test_autograd_successful_second_graph_still_reaches_native_hvp_with_shared_receipt(native_accounts):
     autograd = pytest.importorskip("autograd")
     anp = pytest.importorskip("autograd.numpy")
     qnode = node("autograd", Limits())
@@ -136,10 +165,12 @@ def test_autograd_successful_second_graph_still_reaches_native_hvp_with_shared_r
     np.testing.assert_allclose(product, [-.4*np.cos(.3)], atol=1e-12)
     receipt = qnode.last_metadata["unified_resource_receipt"]
     assert receipt["consumed_derivative_work"] == receipt["consumed_tapes"] == 11
-    assert receipt["live_memory_bytes"] == 0
+    assert_snapshot_consistent(receipt)
+    del product
+    assert_accounts_released(native_accounts)
 
 
-def test_torch_repeated_backward_retains_consumption_but_fresh_invocation_recovers():
+def test_torch_repeated_backward_retains_consumption_but_fresh_invocation_recovers(native_accounts):
     torch = pytest.importorskip("torch")
     qnode = node("torch", Limits(max_derivative_work=3))
     point = torch.tensor([.3], dtype=torch.float64, requires_grad=True)
@@ -150,12 +181,15 @@ def test_torch_repeated_backward_retains_consumption_but_fresh_invocation_recove
         torch.autograd.grad(value, point, retain_graph=True)
     assert failure.value.code == 3
     assert failure.value.receipt["consumed_derivative_work"] == 3
-    assert failure.value.receipt["live_memory_bytes"] == 0
+    assert_snapshot_consistent(failure.value.receipt)
+    assert native_accounts[0].receipt()["live_memory_bytes"] >= 8
     recovered = torch.autograd.grad(qnode(point), point)[0]
     np.testing.assert_allclose(recovered, first, atol=1e-12)
+    del failure, value, first, recovered
+    assert_accounts_released(native_accounts)
 
 
-def test_autograd_reused_pullback_cannot_refund_prior_derivative_work():
+def test_autograd_reused_pullback_cannot_refund_prior_derivative_work(native_accounts):
     autograd = pytest.importorskip("autograd")
     anp = pytest.importorskip("autograd.numpy")
     qnode = node("autograd", Limits(max_derivative_work=3))
@@ -164,5 +198,8 @@ def test_autograd_reused_pullback_cannot_refund_prior_derivative_work():
     np.testing.assert_allclose(first, [-np.sin(.3)], atol=1e-12)
     with pytest.raises(DerivativeExecutionError) as failure: pullback(1.)
     assert failure.value.code == 3 and failure.value.receipt["consumed_derivative_work"] == 3
-    assert failure.value.receipt["live_memory_bytes"] == 0
+    assert_snapshot_consistent(failure.value.receipt)
+    assert native_accounts[0].receipt()["live_memory_bytes"] >= 8
     np.testing.assert_allclose(autograd.grad(qnode)(anp.array([.3])), first, atol=1e-12)
+    del failure, pullback, first, _
+    assert_accounts_released(native_accounts)

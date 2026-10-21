@@ -30,7 +30,7 @@ def prepare_program(circuit, parameters=None, max_qubits=None, noise_model=None,
     import numpy as np
 
     from quantumbridge.core import Circuit, Measurement
-    from quantumbridge.utils.math import gate_matrix, validate_kraus_operators
+    from quantumbridge.utils.math import gate_matrix, validate_kraus_operators, validate_unitary_matrix
 
     if not isinstance(circuit, Circuit):
         raise TypeError("QuantumBridge simulation requires a native Circuit.")
@@ -52,7 +52,7 @@ def prepare_program(circuit, parameters=None, max_qubits=None, noise_model=None,
             validate_wires((wire,), bound.num_qubits)
             if any(not np.isfinite(p) or not 0 <= p <= 1 for p in (error.p0_to_1, error.p1_to_0)):
                 raise ValueError("QuantumBridge readout probabilities must be between zero and one.")
-    reset = (np.array([[1, 0], [0, 0]], complex), np.array([[0, 1], [0, 0]], complex))
+    reset = None
     program, inserted = [], False
     for item in bound.iter_instructions():
         validate_conditions(item.metadata, bound.num_bits)
@@ -70,6 +70,7 @@ def prepare_program(circuit, parameters=None, max_qubits=None, noise_model=None,
         if item.name == "reset":
             if item.controls or len(item.targets) != 1:
                 raise ValueError("QuantumBridge reset requires one target and no controls.")
+            if reset is None:reset = validate_kraus_operators(([[1, 0], [0, 0]], [[0, 1], [0, 0]]), 2)
             program.append(("channel", reset, wires, item.metadata))
         elif item.name == "kraus":
             if item.controls:
@@ -79,7 +80,7 @@ def prepare_program(circuit, parameters=None, max_qubits=None, noise_model=None,
         else:
             matrix = np.asarray(gate_matrix(item.name, item.params, item.metadata), dtype=complex)
             dimension = 1 << len(wires)
-            if matrix.shape != (dimension, dimension) or not np.all(np.isfinite(matrix)) or not np.allclose(matrix.conj().T @ matrix, np.eye(dimension), atol=1e-10, rtol=0):
+            if not validate_unitary_matrix(matrix, dimension):
                 raise ValueError("QuantumBridge gate matrices must be finite unitaries matching their wires.")
             program.append(("gate", matrix, wires, item.metadata))
     if not inserted:

@@ -196,6 +196,10 @@ class SparsePauliOperator:
         return (self.compose(other) - other.compose(self)).simplify()
 
     def matrix(self):
+        from quantumbridge.execution.resource_context import current_resources
+        if current_resources() is not None:
+            from quantumbridge.utils.math import _sum_pauli_dense
+            return _sum_pauli_dense(self.num_qubits, self.terms)
         import numpy as np
 
         if not self.terms:

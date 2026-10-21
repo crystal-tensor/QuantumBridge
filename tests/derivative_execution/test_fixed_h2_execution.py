@@ -3,6 +3,7 @@
 """One geometry/integral/RHF/JW build, then real multi-interface derivatives."""
 
 from importlib import import_module
+import gc
 
 import numpy as np
 import pytest
@@ -57,13 +58,28 @@ def make_node(circuit, interface="numpy", transformed=True):
     return TransformProgram((merge_rotations, split_non_commuting))(node) if transformed else node
 
 
-def assert_receipt(receipt):
-    assert receipt["live_memory_bytes"] == receipt["active_tapes"] == receipt["consumed_shots"] == 0
+def assert_receipt(receipt, *, retained=False):
+    assert receipt["active_tapes"] == receipt["consumed_shots"] == 0
     assert receipt["consumed_tapes"] > 0 and receipt["consumed_derivative_work"] > 0
-    assert receipt["total_reserved_memory_bytes"] == receipt["total_released_memory_bytes"]
+    assert receipt["live_memory_bytes"] == receipt["total_reserved_memory_bytes"]-receipt["total_released_memory_bytes"]
+    if retained: assert receipt["live_memory_bytes"] > 0
+    else: assert receipt["live_memory_bytes"] == 0
 
 
-def test_fixed_h2_device_and_native_qnode_reuse_one_build_for_multiple_directions(fixed_problem):
+@pytest.fixture
+def native_accounts(monkeypatch):
+    from quantumbridge.interfaces import ordinary_resources
+    original = ordinary_resources.managed_framework_plan
+    accounts = []
+    def capture(plan):
+        managed = original(plan)
+        accounts.append(managed.ledger)
+        return managed
+    monkeypatch.setattr(ordinary_resources, "managed_framework_plan", capture)
+    return accounts
+
+
+def test_fixed_h2_device_and_native_qnode_reuse_one_build_for_multiple_directions(fixed_problem, derivative_accounts):
     circuit, reference, counts = fixed_problem
     energy, _, second = reference(.3)
     for transformed in (False, True):
@@ -72,13 +88,16 @@ def test_fixed_h2_device_and_native_qnode_reuse_one_build_for_multiple_direction
             result = node.device.execute_derivatives(Request(node, (.3,), method="second_adjoint",
                 derivative_order=2, derivative_kind="hvp", tangent=direction))
             np.testing.assert_allclose([result.value, result.derivative], [energy, direction*second], atol=2e-10)
-            assert_receipt(result.receipt)
+            assert_receipt(result.receipt, retained=True)
             np.testing.assert_allclose(node.compute_hvp(direction, .3), direction*second, atol=2e-10)
-            assert_receipt(node.last_metadata["unified_resource_receipt"])
+            assert_receipt(node.last_metadata["unified_resource_receipt"], retained=True)
     assert counts == dict(integrals=1, rhf=1, fermionic=1, jw=1)
+    del result
+    gc.collect()
+    assert all(account.receipt()["live_memory_bytes"] == 0 for account in derivative_accounts)
 
 
-def test_fixed_h2_torch_true_double_backward_has_shared_native_receipt(fixed_problem):
+def test_fixed_h2_torch_true_double_backward_has_shared_native_receipt(fixed_problem, native_accounts):
     torch = pytest.importorskip("torch")
     circuit, reference, _ = fixed_problem
     node = make_node(circuit, "torch")
@@ -87,17 +106,24 @@ def test_fixed_h2_torch_true_double_backward_has_shared_native_receipt(fixed_pro
     first = torch.autograd.grad(value, point, create_graph=True)[0]
     second = torch.autograd.grad(.4*first, point)[0]
     np.testing.assert_allclose([value.detach(), first.detach(), second], np.array(reference(.3))*[1, 1, .4], atol=2e-10)
-    assert_receipt(node.last_metadata["unified_resource_receipt"])
+    assert_receipt(node.last_metadata["unified_resource_receipt"], retained=True)
+    assert native_accounts[0].receipt()["live_memory_bytes"] > 0
+    del value, first, second
+    gc.collect()
+    assert native_accounts[0].receipt()["live_memory_bytes"] == 0
 
 
-def test_fixed_h2_autograd_true_double_backward_has_shared_native_receipt(fixed_problem):
+def test_fixed_h2_autograd_true_double_backward_has_shared_native_receipt(fixed_problem, native_accounts):
     autograd = pytest.importorskip("autograd")
     circuit, reference, _ = fixed_problem
     node = make_node(circuit, "autograd")
     first = autograd.grad(node)
     product = autograd.grad(lambda angle: .4*first(angle))(.3)
     np.testing.assert_allclose(product, .4*reference(.3)[2], atol=2e-10)
-    assert_receipt(node.last_metadata["unified_resource_receipt"])
+    assert_receipt(node.last_metadata["unified_resource_receipt"], retained=True)
+    del product
+    gc.collect()
+    assert native_accounts[0].receipt()["live_memory_bytes"] == 0
 
 
 def test_fixed_h2_jax_real_compiled_hvp_and_budget_status(fixed_problem):

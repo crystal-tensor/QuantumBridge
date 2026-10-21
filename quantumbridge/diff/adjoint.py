@@ -35,7 +35,8 @@ def apply_observable(state, observable, width):
         return sum((coefficient * apply_observable(state, pauli, width) for coefficient, pauli in observable.terms), np.zeros_like(state))
     if width > 12: raise UnsupportedFeature("dense_observable", "Large adjoint observables require native Pauli/Hamiltonian form.")
     matrix = observable_matrix(observable, width)
-    if matrix.shape != (state.size, state.size) or not np.allclose(matrix, matrix.conj().T): raise ValueError("Adjoint requires a Hermitian observable matching circuit width.")
+    from quantumbridge.utils.math import validate_observable_matrix
+    if not validate_observable_matrix(matrix, width, atol=1e-8, rtol=1e-5): raise ValueError("Adjoint requires a Hermitian observable matching circuit width.")
     return matrix @ state
 
 

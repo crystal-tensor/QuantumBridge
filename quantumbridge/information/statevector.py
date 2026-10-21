@@ -28,16 +28,28 @@ def _index_bits(index: int, qargs: tuple[int, ...], num_qubits: int) -> str:
 
 class Statevector:
     def __init__(self, data, normalize: bool = False):
-        self.data = np.asarray(data, dtype=complex)
+        from quantumbridge.execution.resource_context import current_resources
+        scope = current_resources()
+        if scope is None:self.data = np.asarray(data, dtype=complex)
+        else:
+            from quantumbridge.execution.array_reservations import numeric_array
+            self.data = numeric_array(data, category="statevector_input_conversion")
         if self.data.ndim != 1:
             raise ValueError("QuantumBridge Statevector data must be one-dimensional.")
         if len(self.data) == 0 or len(self.data) & (len(self.data) - 1):
             raise ValueError("QuantumBridge Statevector dimension must be a power of two.")
         if normalize:
-            norm = np.linalg.norm(self.data)
+            if scope is None:norm = np.linalg.norm(self.data)
+            else:
+                from quantumbridge.execution import mps_arrays as arrays
+                norm = np.sqrt(arrays.norm_squared(self.data))
             if norm == 0:
                 raise ValueError("QuantumBridge cannot normalize a zero Statevector.")
-            self.data = self.data / norm
+            if scope is None:self.data = self.data / norm
+            else:
+                output = arrays.owned("statevector_normalized", self.data.shape, complex)
+                np.divide(self.data, norm, out=output)
+                self.data = output
         self.num_qubits = int(np.log2(len(self.data)))
 
     @property
@@ -100,9 +112,14 @@ class Statevector:
 
     def evolve(self, operator, qargs=None) -> "Statevector":
         from quantumbridge.information.operator import Operator
+        from quantumbridge.execution.resource_context import current_resources
+        scope=current_resources()
 
         op = Operator.from_circuit(operator) if hasattr(operator, "operations") else operator
-        matrix = np.asarray(op.to_matrix(), dtype=complex) if hasattr(op, "to_matrix") else np.asarray(op, dtype=complex)
+        if scope is not None:
+            from quantumbridge.information.channels import _operator_data
+            matrix=_operator_data(op)
+        else:matrix = np.asarray(op.to_matrix(), dtype=complex) if hasattr(op, "to_matrix") else np.asarray(op, dtype=complex)
         if qargs is not None:
             qargs_tuple = _validate_qargs(qargs, self.num_qubits)
             dim = 1 << len(qargs_tuple)
@@ -111,6 +128,9 @@ class Statevector:
             return Statevector(apply_unitary(self.data, matrix, qargs_tuple, self.num_qubits))
         if matrix.shape != (len(self.data), len(self.data)):
             raise ValueError("QuantumBridge evolution operator dimension must match Statevector dimension.")
+        if scope is not None:
+            from quantumbridge.execution import mps_arrays as arrays
+            return Statevector(arrays.contracted(matrix,self.data))
         return Statevector(matrix @ self.data)
 
     def tensor(self, other) -> "Statevector":

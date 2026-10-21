@@ -6,6 +6,14 @@
 import numpy as np
 
 
+def _kraus_arrays(values):
+    from quantumbridge.execution.resource_context import current_resources
+    if current_resources() is not None:
+        from quantumbridge.execution.array_reservations import numeric_array_copies
+        return list(numeric_array_copies(values, category="noise_kraus_matrix"))
+    return [np.asarray(value, dtype=complex) for value in values]
+
+
 def _validate_probability(p: float) -> float:
     p = float(p)
     if not 0.0 <= p <= 1.0:
@@ -14,6 +22,12 @@ def _validate_probability(p: float) -> float:
 
 
 def _is_trace_preserving(kraus_ops, atol: float = 1e-10) -> bool:
+    from quantumbridge.execution.resource_context import current_resources
+    if current_resources() is not None:
+        from quantumbridge.utils.math import _validate_isometry_sum
+        shape = kraus_ops[0].shape
+        if len(shape)!=2 or any(op.shape!=shape for op in kraus_ops):return False
+        return _validate_isometry_sum(kraus_ops, shape[1], atol=atol, rtol=1e-5)
     total = sum(op.conj().T @ op for op in kraus_ops)
     return bool(np.allclose(total, np.eye(total.shape[0]), atol=atol))
 
@@ -30,7 +44,8 @@ class BitFlipChannel:
 
     def kraus(self):
         p = self.probability
-        return [np.sqrt(1 - p) * np.eye(2, dtype=complex), np.sqrt(p) * np.array([[0, 1], [1, 0]], dtype=complex)]
+        a,b=np.sqrt(1-p),np.sqrt(p)
+        return _kraus_arrays([[[a,0],[0,a]],[[0,b],[b,0]]])
 
     def is_trace_preserving(self, atol: float = 1e-10) -> bool:
         return _is_trace_preserving(self.kraus(), atol)
@@ -44,7 +59,8 @@ class PhaseFlipChannel:
 
     def kraus(self):
         p = self.probability
-        return [np.sqrt(1 - p) * np.eye(2, dtype=complex), np.sqrt(p) * np.array([[1, 0], [0, -1]], dtype=complex)]
+        a,b=np.sqrt(1-p),np.sqrt(p)
+        return _kraus_arrays([[[a,0],[0,a]],[[b,0],[0,-b]]])
 
     def is_trace_preserving(self, atol: float = 1e-10) -> bool:
         return _is_trace_preserving(self.kraus(), atol)
@@ -58,11 +74,8 @@ class DepolarizingChannel:
 
     def kraus(self):
         p = self.probability
-        identity = np.eye(2, dtype=complex)
-        x = np.array([[0, 1], [1, 0]], dtype=complex)
-        y = np.array([[0, -1j], [1j, 0]], dtype=complex)
-        z = np.array([[1, 0], [0, -1]], dtype=complex)
-        return [np.sqrt(1 - p) * identity, np.sqrt(p / 3) * x, np.sqrt(p / 3) * y, np.sqrt(p / 3) * z]
+        a,b=np.sqrt(1-p),np.sqrt(p/3)
+        return _kraus_arrays([[[a,0],[0,a]],[[0,b],[b,0]],[[0,-1j*b],[1j*b,0]],[[b,0],[0,-b]]])
 
     def is_trace_preserving(self, atol: float = 1e-10) -> bool:
         return _is_trace_preserving(self.kraus(), atol)
@@ -82,12 +95,15 @@ class KrausChannel(QuantumChannel):
     name = "kraus"
 
     def __init__(self, kraus_ops, name: str = "kraus"):
-        self._kraus = [np.asarray(op, dtype=complex) for op in kraus_ops]
+        from quantumbridge.execution.resource_context import current_resources
+        self._kraus = _kraus_arrays(kraus_ops) if current_resources() is not None else [np.asarray(op, dtype=complex) for op in kraus_ops]
         if not self._kraus:
             raise ValueError("QuantumBridge KrausChannel requires at least one operator.")
         self.name = name
 
     def kraus(self):
+        from quantumbridge.execution.resource_context import current_resources
+        if current_resources() is not None:return _kraus_arrays(self._kraus)
         return [op.copy() for op in self._kraus]
 
 
@@ -99,10 +115,7 @@ class AmplitudeDampingChannel:
 
     def kraus(self):
         p = self.probability
-        return [
-            np.array([[1, 0], [0, np.sqrt(1 - p)]], dtype=complex),
-            np.array([[0, np.sqrt(p)], [0, 0]], dtype=complex),
-        ]
+        return _kraus_arrays([[[1,0],[0,np.sqrt(1-p)]],[[0,np.sqrt(p)],[0,0]]])
 
     def is_trace_preserving(self, atol: float = 1e-10) -> bool:
         return _is_trace_preserving(self.kraus(), atol)
@@ -116,10 +129,7 @@ class PhaseDampingChannel:
 
     def kraus(self):
         p = self.probability
-        return [
-            np.diag([1, np.sqrt(1 - p)]).astype(complex),
-            np.diag([0, np.sqrt(p)]).astype(complex),
-        ]
+        return _kraus_arrays([[[1,0],[0,np.sqrt(1-p)]],[[0,0],[0,np.sqrt(p)]]])
 
     def is_trace_preserving(self, atol: float = 1e-10) -> bool:
         return _is_trace_preserving(self.kraus(), atol)

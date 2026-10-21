@@ -12,7 +12,8 @@ from quantumbridge.core.control_flow import ExecutionLimits, validate_control_fl
 from quantumbridge.core.parameters import resolve_parameter
 from quantumbridge.devices.execution import prepare_program, condition_enabled, readout_probability
 from quantumbridge.results import Result
-from quantumbridge.utils.math import apply_unitary, apply_density_channel, gate_matrix, validate_kraus_operators
+from quantumbridge.execution.resource_context import meter_native_samples, record_completed_native_shot, result_shots
+from quantumbridge.utils.math import apply_unitary, apply_density_channel, gate_matrix, validate_kraus_operators, validate_unitary_matrix
 
 
 @dataclass
@@ -31,6 +32,14 @@ class Branch:
 
 class ExecutionRecords(list):
     pass
+
+
+def _state_copy(state):
+    from quantumbridge.execution.resource_context import current_resources
+    if current_resources() is not None and issubclass(type(state),np.ndarray):
+        from quantumbridge.execution import mps_arrays as arrays
+        return arrays.copied(state,category="dynamic_state_copy")
+    return state.copy()
 
 
 class QuantumStateAdapter:
@@ -66,10 +75,19 @@ class QuantumStateAdapter:
                 child = state.copy()
                 _, probability = child._measure_z(self.width - 1 - wire, forced=outcome)
             else:
-                mask = ((np.arange(1 << self.width) >> (self.width - 1 - wire)) & 1) == outcome
-                child = state * mask
+                from quantumbridge.execution.resource_context import current_resources
+                if current_resources() is None:
+                    mask = ((np.arange(1 << self.width) >> (self.width - 1 - wire)) & 1) == outcome
+                    child = state * mask
+                else:
+                    from quantumbridge.execution import mps_arrays as arrays
+                    child=arrays.filled("dynamic_vector_projection",state.shape,complex,0)
+                    for index in range(1<<self.width):
+                        if (index>>(self.width-1-wire))&1==outcome:child[index]=state[index]
                 probability = float(np.vdot(child, child).real)
-                if probability: child = child / np.sqrt(probability)
+                if probability:
+                    if current_resources() is None:child = child / np.sqrt(probability)
+                    else:np.divide(child,np.sqrt(probability),out=child)
             if probability > 0: results.append((probability, child, outcome))
         return results
 
@@ -77,32 +95,42 @@ class QuantumStateAdapter:
         if self.kind in {"unitary","superop"}:return [(1.,self.device.map_channel(state,operators,wires,self.width))]
         if self.kind == "exact_density_matrix":
             return [(1.0, apply_density_channel(state, operators, wires, self.width))]
+        if self.kind == "matrix_product_state":
+            return [(probability, state.copy().apply(operator, wires))
+                    for probability, operator in self.device._kraus_choices(state, operators, wires)]
         results = []
         for operator in operators:
-            if self.kind == "matrix_product_state":
-                rho = state.reduced_density_matrix(wires)
-                probability = float(np.trace(operator @ rho @ operator.conj().T).real)
-                if probability > 0: results.append((probability, state.copy().apply(operator, wires)))
-            elif self.kind == "exact_stabilizer":
+            if self.kind == "exact_stabilizer":
                 dimension = operator.shape[0]
-                probability = float(np.trace(operator.conj().T @ operator).real / dimension)
+                from quantumbridge.execution.resource_context import current_resources
+                if current_resources() is None:probability=float(np.trace(operator.conj().T@operator).real/dimension)
+                else:
+                    from quantumbridge.execution import mps_arrays as arrays
+                    probability=arrays.norm_squared(operator)/dimension
                 if probability <= 0: continue
-                unitary = operator / np.sqrt(probability)
-                if not np.allclose(unitary.conj().T @ unitary, np.eye(dimension), atol=1e-10, rtol=0):
+                unitary = operator / np.sqrt(probability) if current_resources() is None else arrays.divided(operator,np.sqrt(probability))
+                if not validate_unitary_matrix(unitary, dimension):
                     raise UnsupportedFeature("tableau_kraus", "QuantumBridge tableau supports unitary Clifford mixtures, not arbitrary selective Kraus maps.")
                 results.append((probability, self.gate(state.copy(), unitary, wires)))
             else:
                 child = apply_unitary(state, operator, tuple(wires), self.width)
                 probability = float(np.vdot(child, child).real)
-                if probability > 0: results.append((probability, child / np.sqrt(probability)))
+                if probability > 0:
+                    from quantumbridge.execution.resource_context import current_resources
+                    if current_resources() is None:child=child/np.sqrt(probability)
+                    else:np.divide(child,np.sqrt(probability),out=child)
+                    results.append((probability,child))
         return results
 
     def sample(self, state, rng):
         label = []
         for wire in range(self.width):
             choices = self.project(state, wire)
-            weights = np.asarray([p for p, _, _ in choices])
-            _, state, outcome = choices[int(rng.choice(len(choices), p=weights / weights.sum()))]
+            from quantumbridge.execution.resource_context import current_resources
+            if current_resources() is None:
+                weights = np.asarray([p for p, _, _ in choices])
+                _, state, outcome = choices[int(rng.choice(len(choices), p=weights / weights.sum()))]
+            else:_,state,outcome=DynamicExecutionEngine._choose(choices,rng)[0]
             p = readout_probability(getattr(self.device, "noise_model", None), wire, outcome)
             label.append(str(outcome ^ int(p > 0 and rng.random() < p)))
         return "".join(label)
@@ -130,7 +158,15 @@ class DynamicExecutionEngine:
         if self.noise_model is not None:
             if self.adapter.kind == "exact_stabilizer":
                 for _, choices, wires, _ in device._noise_instructions(circuit.num_qubits):
-                    self.noise.append(("channel", tuple(np.sqrt(p) * matrix for p, matrix in choices), tuple(circuit.num_qubits - 1 - wire for wire in reversed(wires)), {}))
+                    from quantumbridge.execution.resource_context import current_resources
+                    if current_resources() is None:operators=tuple(np.sqrt(p)*matrix for p,matrix in choices)
+                    else:
+                        from quantumbridge.execution.array_reservations import numeric_shape, numeric_array, owned_arrays
+                        shapes=[numeric_shape(matrix) for _,matrix in choices]
+                        operators=owned_arrays([(shape,complex) for shape in shapes],category="dynamic_noise_weighted_operator")
+                        for (p,matrix),output in zip(choices,operators):
+                            np.multiply(numeric_array(matrix),np.sqrt(p),out=output)
+                    self.noise.append(("channel", operators, tuple(circuit.num_qubits - 1 - wire for wire in reversed(wires)), {}))
             else:
                 _, self.noise = prepare_program(Circuit(circuit.num_qubits, circuit.num_bits), noise_model=self.noise_model,_leaf_only=True)
 
@@ -191,7 +227,7 @@ class DynamicExecutionEngine:
         for current,truth in active:
             choices=[(p,index) for index,p in enumerate(error.probabilities[truth]) if p>0]
             for p,recorded in self._choose(choices,rng):
-                child=current.child(current.state.copy(),p)
+                child=current.child(_state_copy(current.state),p)
                 for index,item in enumerate(measurements):child.store.bits[item.bit]=(recorded>>index)&1
                 result.append(child)
         return result
@@ -216,8 +252,14 @@ class DynamicExecutionEngine:
     @staticmethod
     def _choose(choices, rng):
         if rng is None: return choices
-        weights = np.asarray([choice[0] for choice in choices], float)
-        selected = choices[int(rng.choice(len(choices), p=weights / weights.sum()))]
+        from quantumbridge.execution.resource_context import current_resources
+        from quantumbridge.execution.array_ownership import retained_array
+        resources = current_resources()
+        weights = retained_array(None if resources is None else resources.ledger,
+            "dynamic_choice_probabilities", (len(choices),), float,
+            lambda: np.fromiter((choice[0] for choice in choices), dtype=float, count=len(choices)))
+        np.divide(weights, weights.sum(), out=weights)
+        selected = choices[int(rng.choice(len(choices), p=weights))]
         return [(1.0, *selected[1:])]
 
     def _quantum(self, branch, kind, value, wires, rng):
@@ -236,7 +278,7 @@ class DynamicExecutionEngine:
             flips = self._choose([(1 - readout, 0), (readout, 1)], rng)
             for factor, flip in flips:
                 if factor:
-                    child = branch.child(state.copy(), probability * factor)
+                    child = branch.child(_state_copy(state), probability * factor)
                     child.store.bits[wires] = outcome ^ flip
                     children.append(child)
         return children
@@ -255,7 +297,7 @@ class DynamicExecutionEngine:
         if item.metadata.get("directive") and item.name in {"barrier", "delay"}: return [branch]
         if item.name == "reset":
             if self.adapter.kind=="superop":
-                reset=(np.array([[1,0],[0,0]],complex),np.array([[0,1],[0,0]],complex))
+                reset=validate_kraus_operators(([[1,0],[0,0]],[[0,1],[0,0]]),2)
                 return self._gate_error(self._quantum(branch,"channel",reset,item.wires,rng),"reset",item.wires,rng)
             return self._gate_error(self._quantum(branch,"reset",item.targets[0],None,rng),"reset",item.wires,rng)
         if item.name == "kraus":
@@ -268,7 +310,7 @@ class DynamicExecutionEngine:
         try: matrix = gate_matrix(item.name, parameters, item.metadata)
         except ValueError as exc: raise UnsupportedFeature("quantum_operation", str(exc)) from exc
         dimension = 1 << len(item.wires)
-        if matrix.shape != (dimension, dimension) or not np.all(np.isfinite(matrix)) or not np.allclose(matrix.conj().T @ matrix, np.eye(dimension), atol=1e-10, rtol=0):
+        if not validate_unitary_matrix(matrix, dimension):
             raise ValueError("QuantumBridge dynamic gate must be a finite unitary matching its wires.")
         return self._gate_error(self._quantum(branch,"gate",matrix,item.wires,rng),item.name,item.wires,rng)
 
@@ -369,7 +411,9 @@ class DynamicExecutionEngine:
             records.metadata.update(max_bond_observed=max(b.state.peak_bond_dimension for b in result),
                 max_discarded_weight=max(b.state.discarded_weight for b in result),
                 tensor_storage_bytes=sum(t.nbytes for b in result for t in b.state._tensors),**self.device.state_options)
-        if self.snapshots is not None: records.metadata.update(self.snapshots.metadata())
+        if self.snapshots is not None:
+            records.metadata.update(self.snapshots.metadata())
+            records.mps_snapshots=self.snapshots.native_mps_snapshots()
         return records
 
     def trajectories(self, shots, seed=None):
@@ -397,6 +441,7 @@ class DynamicExecutionEngine:
             samples.append("".join(label))
         return samples
 
+    @meter_native_samples(result_count=result_shots)
     def shots(self, shots, seed=None, memory=False):
         if isinstance(shots, bool) or not isinstance(shots, (int, np.integer)) or not 0 < shots <= self.limits.max_shots:
             raise ValueError("QuantumBridge dynamic shots must be positive and within max_shots.")
@@ -413,6 +458,7 @@ class DynamicExecutionEngine:
                 bond_profile = [max(old, current) for old, current in zip(bond_profile, branch.state.bond_dimensions)]
             label = "".join(map(str, branch.store.bits)) if self.circuit.has_measurements else self.adapter.sample(branch.state, rng)
             samples.append(label)
+            record_completed_native_shot()
             if memory: stores.append(branch.store.to_dict())
             steps, loops = max(steps, branch.steps), max(loops, branch.iterations)
             if self.adapter.kind == "matrix_product_state":
@@ -429,7 +475,8 @@ class DynamicExecutionEngine:
             max_bond_dimensions_observed=bond_profile,tensor_storage_bytes=tensor_bytes, **self.device.state_options)
         if memory: metadata.update(memory=samples, classical_memory=stores)
         if self.snapshots is not None: metadata.update(self.snapshots.metadata())
-        return Result(counts_data=counts, probabilities_data={key: count / shots for key, count in counts.items()}, metadata_data=metadata)
+        return Result(counts_data=counts, probabilities_data={key: count / shots for key, count in counts.items()}, metadata_data=metadata,
+                      mps_snapshots={} if self.snapshots is None else self.snapshots.native_mps_snapshots())
 
 
 def dynamic_branches(device, circuit, parameters=None):

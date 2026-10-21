@@ -1082,6 +1082,69 @@ memory bounds. The full functional replacement goal remains incomplete.
 See the [resource progress report](docs/implementation/stage11p_c3_unified_resource_report.md)
 and [status progress report](docs/implementation/stage11p_c3_derivative_status_report.md).
 
+C3-R1 is correcting native matrix preallocation and retained Torch/Autograd
+array ownership. Graph snapshots and returned native buffers can remain charged
+after a callback returns; views share a storage lease and real copies do not.
+Public Device derivative Results now retain their array leases too; status
+errors omit traceback references to failed native temporaries. Known Tape and
+host-device ndarray copies are pre-reserved inside an active resource scope.
+Native JAX/TF kernels now use a separate construction pool for known ndarray
+snapshots, with per-request resident admission before quantum work. Classical
+source-map tracing reuses the description without copying the snapshot again.
+Persistent bytes, resident admission and new-allocation reservations are
+separate quantities, not an RSS bound. Focused compiled-query tests cover
+runtime rejection/reuse and graph lifetime; ordinary graph-wide budgets and
+universal allocator ownership remain incomplete.
+This is ongoing work, not universal memory safety or full SDK parity. See the
+[ownership progress report](docs/implementation/stage11p_c3_r1_resource_ownership_report.md).
+
+The ongoing R1 slice also tests ordinary TensorFlow gradient graph lifetimes
+and retained ConcreteFunctions, rejects unbounded foreign persistent-copy
+protocols before dispatch, and reserves strided flatten/reconstruction copies.
+MPS workspace auditing and complete framework graph budgeting remain unfinished;
+passing focused tests is not full Qiskit/PennyLane functional parity.
+
+The MPS foundation now pre-reserves known tensor/contraction/QR/SVD/reduction
+arrays and retains their actual roots, with tested gate-failure rollback and
+raw Result/view lifetimes. Live MPS saves now retain native tensors through
+Context/Backend/Job/Result; `result.matrix_product_state(label)` defensively
+copies labeled native saves, preserving conditional/pershot nesting. Existing
+`data()` and JSON retain serialized dict/list formats. JSON-loaded Results do
+not claim restored native snapshot ownership. Completed MPS trajectories are
+counted even if later measurement/Kraus/snapshot work fails; unknown internal
+partial work remains unavailable. General serialization/observable scratch,
+complete failure auditing and final R1 gates remain unfinished; external
+LAPACK workspace is not measured RSS.
+
+Scoped observable/IR conversions now reserve known dense outputs and numeric
+dtype copies, and Hermitian checks use an explicit validation arena. Native
+Pauli phase/wire order and the H2 QubitHamiltonian path are retained. Result
+state/density and saved-array imports own their numerical roots inside an
+active ResourceScope. Existing JSON codecs additionally bound UTF-8 transport,
+nodes, depth, numeric elements and labels using `SerializationLimits`;
+Result JSON methods accept `serialization_limits=`. Defaults include 16 MiB
+transport, JSON depth 256, 100000 nodes, 1048576 numeric elements and 1024 saved labels.
+These are not strict Python heap/RSS bounds. Opaque managed matrix factories
+remain explicit Unsupported rather than unbounded callbacks. Other native
+gate construction and full-engine arrays still need audit; final R1 acceptance
+is not claimed. The next scoped slice controls column-based unitary/Kraus
+validation, CP/TP checks for six native channel representations, direct Pauli
+CSR roots and dense snapshot aggregates. Failed snapshot updates preserve the
+previous cell. These allocation fixes are not additional SDK function parity.
+
+The next R1 development slice also owns explicit named-gate/noise factories,
+six native channel representations' conversions/algebra, dense evolution and
+reset, integer-power products and analytic Aer ensemble density outputs inside
+ResourceScope. Numeric stacked Kraus arrays are admitted without foreign
+dispatch. Independent analytic phase/wire-order and surviving-view tests are
+included. Tableau internals and unrelated public state/Operator methods remain
+unclosed; a dense tableau preflight is not a complete allocation audit. Final
+Task 3E validation includes three-environment FULL and the complete 28-section
+local script, exit 0. Main full coverage is 90.1735% with 68 exclusions; seven
+optional dependency subsets were not executed. This is line coverage, not SDK
+function completion, real-cloud proof or a clean all-in-one dependency stack.
+These changes do not complete the full Qiskit/PennyLane replacement goal.
+
 ## Native Molecular Chemistry Checkpoint
 
 `quantumbridge.qchem` now computes a bounded hydrogen/STO-3G s-shell workflow

@@ -23,6 +23,9 @@ class SerializationLimits:
     max_custom_definitions: int = 1024
     max_nesting_depth: int = 32
     max_symbolic_expression_depth: int = 48
+    max_numeric_elements: int = 1048576
+    max_result_labels: int = 1024
+    max_json_depth: int = 256
 
     def __post_init__(self):
         if any(isinstance(value,bool) or not isinstance(value,Integral) or value < 1 for value in self.__dict__.values()):

@@ -6,7 +6,6 @@
 
 from __future__ import annotations
 
-import json
 from dataclasses import dataclass, field
 from typing import Any, Optional, Union
 
@@ -22,9 +21,43 @@ def _complex_list(values: Optional[np.ndarray]) -> Optional[list[dict[str, float
     return [{"real": float(np.real(value)), "imag": float(np.imag(value))} for value in values]
 
 
-def _complex_array(values) -> Optional[np.ndarray]:
+def _complex_array(values, *, matrix=False) -> Optional[np.ndarray]:
     if values is None:
         return None
+    from quantumbridge.execution.resource_context import current_resources
+    scope = current_resources()
+    if scope is not None:
+        from quantumbridge.execution.array_reservations import numeric_array, numeric_shape
+        from quantumbridge.execution.array_ownership import retained_array
+        from quantumbridge.core.classical import UnsupportedFeature
+        if issubclass(type(values), np.ndarray):
+            if len(numeric_shape(values)) != (2 if matrix else 1):raise ValueError("Result numeric payload has an invalid rank.")
+            return numeric_array(values, category="result_complex_import", copy=True)
+        if type(values) is not list and type(values) is not tuple:raise UnsupportedFeature("result_numeric_import")
+        rows = values if matrix else (values,)
+        if matrix and rows and type(rows[0]) is not list and type(rows[0]) is not tuple:raise UnsupportedFeature("result_density_rows")
+        width = len(rows[0]) if matrix and rows else len(values) if not matrix else 0
+        if any(type(row) is not list and type(row) is not tuple or len(row) != width for row in rows):
+            raise ValueError("Result density rows must have matching lengths.")
+        def scalar(item):
+            if type(item) is dict:
+                real, imag = item.get("real", 0.), item.get("imag", 0.)
+                if numeric_shape(real, real_only=True) or numeric_shape(imag, real_only=True):
+                    raise ValueError("Result complex components must be real scalars.")
+                return complex(real, imag)
+            if numeric_shape(item):raise ValueError("Result values must be numeric scalars.")
+            return complex(item)
+        for row in rows:
+            for item in row:scalar(item)
+        shape = (len(rows), width) if matrix else (width,)
+        result = retained_array(scope.ledger, "result_complex_import", shape, complex)
+        scope.ledger.unavailable("result_import_python_heap",
+            "Result import owns its numerical destination; decoder containers/scalars and Python allocator memory are not measured RSS.")
+        for index, row in enumerate(rows):
+            target = result[index] if matrix else result
+            for column, item in enumerate(row):target[column] = scalar(item)
+        return result
+    if matrix:return np.array([_complex_array(row) for row in values])
     return np.asarray([complex(item.get("real", 0.0), item.get("imag", 0.0)) if isinstance(item, dict) else complex(item) for item in values], dtype=complex)
 
 
@@ -38,6 +71,7 @@ class Result:
     trace: Optional[list[dict[str, Any]]] = None
     density: Optional[np.ndarray] = None
     mps: Any = None
+    mps_snapshots: dict[str, Any] = field(default_factory=dict, repr=False)
 
     def statevector(self) -> Optional[np.ndarray]:
         return None if self.state is None else self.state.copy()
@@ -45,8 +79,21 @@ class Result:
     def density_matrix(self) -> Optional[np.ndarray]:
         return None if self.density is None else self.density.copy()
 
-    def matrix_product_state(self):
-        return None if self.mps is None else self.mps.copy()
+    def matrix_product_state(self, label=None):
+        """Copy the final MPS or a native labeled save, preserving group nesting.
+
+        data()/JSON retain their serialized dict/list contract. Labeled native
+        saves are available on live execution Results, not inferred from JSON.
+        """
+        if label is None:
+            return None if self.mps is None else self.mps.copy()
+        if label not in self.mps_snapshots:
+            raise KeyError("Unknown native MPS snapshot label: "+str(label))
+        def copied(value):
+            if isinstance(value, dict): return {key: copied(child) for key, child in value.items()}
+            if isinstance(value, list): return [copied(child) for child in value]
+            return value.copy()
+        return copied(self.mps_snapshots[label])
 
     def probabilities(self) -> Optional[dict[str, float]]:
         return None if self.probabilities_data is None else dict(self.probabilities_data)
@@ -74,7 +121,9 @@ class Result:
     def metadata(self) -> dict[str, Any]:
         return dict(self.metadata_data)
 
-    def to_dict(self) -> dict[str, Any]:
+    def to_dict(self, *, serialization_limits=None) -> dict[str, Any]:
+        from quantumbridge.schema.serialization import check_numeric_export
+        check_numeric_export([array for array in (self.state, self.density) if array is not None], limits=serialization_limits)
         metadata = self.metadata()
         expectation_values = self.expectation_data if isinstance(self.expectation_data, dict) else None
         if self.expectation_data is not None and not isinstance(self.expectation_data, dict):
@@ -103,11 +152,13 @@ class Result:
         payload["expectation"] = self.expectation_data
         payload["trace"] = self.trace
         if self.mps is not None:
-            payload["matrix_product_state"] = self.mps.to_dict()
+            payload["matrix_product_state"] = self.mps.to_dict(serialization_limits=serialization_limits)
         return payload
 
     @classmethod
-    def from_dict(cls, payload: dict[str, Any]) -> "Result":
+    def from_dict(cls, payload: dict[str, Any], *, serialization_limits=None) -> "Result":
+        from quantumbridge.schema.serialization import validate_payload_structure
+        validate_payload_structure(payload, limits=serialization_limits)
         if "schema_version" not in payload:
             payload = {
                 "schema_version": "0.1",
@@ -155,16 +206,18 @@ class Result:
             expectation_data=expectation,
             metadata_data=metadata,
             trace=payload.get("trace"),
-            density=None if payload.get("density_matrix") is None else np.array([_complex_array(row) for row in payload["density_matrix"]]),
-            mps=None if payload.get("matrix_product_state") is None else MatrixProductState.from_dict(payload["matrix_product_state"]),
+            density=_complex_array(payload.get("density_matrix"), matrix=True),
+            mps=None if payload.get("matrix_product_state") is None else MatrixProductState.from_dict(payload["matrix_product_state"], serialization_limits=serialization_limits),
         )
 
-    def to_json(self, *, indent: int | None = None) -> str:
-        return json.dumps(self.to_dict(), sort_keys=True, indent=indent)
+    def to_json(self, *, indent: int | None = None, serialization_limits=None) -> str:
+        from quantumbridge.schema.serialization import to_json
+        return to_json(self.to_dict(serialization_limits=serialization_limits), indent=indent, limits=serialization_limits)
 
     @classmethod
-    def from_json(cls, text: str) -> "Result":
-        return cls.from_dict(json.loads(text))
+    def from_json(cls, text: str, *, serialization_limits=None) -> "Result":
+        from quantumbridge.schema.serialization import from_json
+        return cls.from_dict(from_json(text, limits=serialization_limits), serialization_limits=serialization_limits)
 
     def validate_schema(self) -> bool:
         return validate_result_schema(self.to_dict())

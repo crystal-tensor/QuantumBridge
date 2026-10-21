@@ -3,6 +3,7 @@
 """Actual Device requests, independently checked against mathematical formulas."""
 
 from dataclasses import replace
+import gc
 
 import numpy as np
 import pytest
@@ -23,11 +24,15 @@ def test_native_circuit_device_jacobian_does_not_call_qnode_gradient(monkeypatch
     request = circuit_request(method="parameter-shift")
     device = StatevectorDevice()
     assert device.supports_derivatives(request)
-    result = device.execute_derivatives(request)
+    ledger = UnifiedResourceLedger()
+    result = device.execute_derivatives(request, ledger=ledger)
     assert result.code == 0 and result.metadata["device_derivative_protocol"]
     np.testing.assert_allclose(result.value, np.cos(.3), atol=1e-12)
     np.testing.assert_allclose(result.derivative, [-np.sin(.3)], atol=1e-12)
-    assert result.receipt["live_memory_bytes"] == result.receipt["active_tapes"] == 0
+    assert result.receipt["live_memory_bytes"] > 0 and result.receipt["active_tapes"] == 0
+    del result
+    gc.collect()
+    assert ledger.receipt()["live_memory_bytes"] == 0
 
 
 def test_native_circuit_device_second_adjoint_hessian_forbids_shift(monkeypatch):

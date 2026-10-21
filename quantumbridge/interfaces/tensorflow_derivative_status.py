@@ -9,8 +9,9 @@ import numpy as np
 from quantumbridge.core.classical import UnsupportedFeature
 from quantumbridge.diff.trace import flatten_tree, unflatten_tree
 from .framework_derivatives import execute_mapped_derivative
-from .native_host import NativeHostKernel
+from .native_host import NativeHostKernel, describe_native_source
 from .tensorflow_autodiff import TensorFlowBridgeLimits
+from .tensorflow_callbacks import TensorFlowCallback, status_numpy_function
 
 
 def execute_tensorflow_derivative_status(node, args, kwargs, *, kind, tangent=None, cotangent=None):
@@ -47,9 +48,8 @@ def execute_tensorflow_derivative_status(node, args, kwargs, *, kind, tangent=No
 
     def prepare_pack(raw):
         source, recorder, program = owner._construct((tf.reshape(raw, input_shape),), {}, prepare_only=True)
-        description = NativeHostKernel(owner, source, recorder, program, limits,
-            interface="tensorflow", validate_derivatives=False)
-        if description.size != kernel.size or description.spec != kernel.spec:
+        description = describe_native_source(owner, source, recorder, limits, interface="tensorflow")
+        if len(description.angles) != kernel.size or description.spec != kernel.spec:
             raise UnsupportedFeature("tensorflow_derivative_structure", "Derivative query source structure must be static.")
         return tf.stack([tf.cast(a, dtype) for a in description.angles]) if description.angles else tf.zeros((0,), dtype)
 
@@ -108,15 +108,12 @@ def execute_tensorflow_derivative_status(node, args, kwargs, *, kind, tangent=No
         payload = np.full(flat_shape, np.nan, dtype.as_numpy_dtype) if result.code else flatten_tree(value)[0].reshape(flat_shape).astype(dtype.as_numpy_dtype)
         return payload, np.int32(result.code)
 
-    @tf.custom_gradient
-    def checked(*inputs):
-        payload, status = tf.numpy_function(callback, inputs, (dtype, tf.int32))
+    callback_owner = TensorFlowCallback(callback)
+
+    with tf.device("/CPU:0"):
+        payload, status = status_numpy_function(callback_owner,
+            (raw, packed, classical, second_map, direction, cotangent_flat), (dtype, tf.int32))
         payload.set_shape(flat_shape)
         status.set_shape(())
-        def reject_extra_derivative(*cotangents):
-            raise UnsupportedFeature("derivative_status_higher_order", "Differentiate the QNode graph; explicit derivative-query payloads do not supply additional derivative rules.")
-        return (payload, status), reject_extra_derivative
-    with tf.device("/CPU:0"):
-        payload, status = checked(raw, packed, classical, second_map, direction, cotangent_flat)
     value = tf.reshape(payload, input_shape) if kind == "vjp" else unflatten_tree(payload, kernel.spec, tail, reshape=tf.reshape)
     return value, status

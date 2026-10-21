@@ -39,8 +39,8 @@ def _observable_check(observable, width):
     if width > 12:
         raise UnsupportedFeature("dense_observable", "Large adjoint observables require native Pauli/Hamiltonian form.")
     matrix = observable_matrix(observable, width)
-    if (matrix.shape != (1 << width, 1 << width) or not np.all(np.isfinite(matrix))
-            or not np.allclose(matrix, matrix.conj().T)):
+    from quantumbridge.utils.math import validate_observable_matrix
+    if not validate_observable_matrix(matrix, width, atol=1e-8, rtol=1e-5):
         raise ValueError("Adjoint requires a finite Hermitian observable matching circuit width.")
 
 
@@ -101,7 +101,8 @@ def second_adjoint_work(plan, values, classical, classical_second, direction, li
         if operation.metadata.get("directive") and operation.name in {"barrier", "delay"}:
             continue
         matrix = gate_matrix(operation.name, operation.params, operation.metadata)
-        if matrix.shape != (1 << len(operation.wires),)*2 or not np.all(np.isfinite(matrix)) or not np.allclose(matrix.conj().T @ matrix, np.eye(len(matrix))):
+        from quantumbridge.utils.math import validate_unitary_matrix
+        if not validate_unitary_matrix(matrix, 1 << len(operation.wires), atol=1e-8, rtol=1e-5):
             raise UnsupportedFeature("adjoint_unitary", "Second adjoint requires finite unitary gate matrices.")
     for request in _terminals(plan):
         if request.kind != "probs":

@@ -4,6 +4,7 @@
 
 import numpy as np
 import pytest
+import gc
 
 from quantumbridge import Circuit, Hamiltonian, PauliX, PauliZ, StatevectorDevice
 from quantumbridge.execution import DerivativeExecutionRequest as Request, ResourceLimitError, UnifiedExecutionLimits as Limits, UnifiedResourceLedger as Ledger
@@ -92,11 +93,17 @@ def test_seeded_shot_vector_hvp_records_actual_qwc_calls_and_retained_payload(po
         t.ry(x, 0)
         return t.expval(Hamiltonian([(1., PauliX(0)), (.3, PauliZ(0))]))
     node = split_non_commuting(QNode(circuit, 1, max_diff=2, shots=[101, (151, 2)], seed=17), shot_dist=policy)
+    ledger = Ledger()
     result = node.device.execute_derivatives(Request(node, (.3,), derivative_order=2,
-        derivative_kind="hvp", method="parameter-shift", tangent=.4))
+        derivative_kind="hvp", method="parameter-shift", tangent=.4), ledger=ledger)
     assert result.code == 0 and len(result.derivative) == 3
     assert sum(n for n, _ in samples) == result.receipt["consumed_shots"] == result.metadata["total_physical_shots"]
     assert len({seed for _, seed in samples}) == len(samples)
     assert result.receipt["observed_array_bytes"]["qwc_retained_arrays_and_bitstrings"] > 0
     assert result.receipt["observed_array_bytes"]["retained_receipt_payload"] > 0
-    assert result.receipt["live_memory_bytes"] == result.receipt["reserved_shots"] == 0
+    assert result.receipt["live_memory_bytes"] > 0 and result.receipt["reserved_shots"] == 0
+    shots = ledger.receipt()["consumed_shots"]
+    del result
+    gc.collect()
+    assert ledger.receipt()["live_memory_bytes"] == 0
+    assert ledger.receipt()["consumed_shots"] == shots

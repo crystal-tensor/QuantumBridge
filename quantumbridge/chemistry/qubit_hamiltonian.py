@@ -53,6 +53,11 @@ class QubitHamiltonian:
             raise ValueError("Requested matrix width cannot omit qubit operator wires.")
         if num_qubits > 10:
             raise MemoryError("Dense qubit operator exceeds the ten-wire budget.")
+        from quantumbridge.execution.resource_context import current_resources
+        if current_resources() is not None:
+            from quantumbridge.utils.math import _sum_pauli_dense
+            return _sum_pauli_dense(num_qubits, (("".join(dict(pauli.terms).get(wire, "I") for wire in range(num_qubits)), coefficient)
+                for coefficient, pauli in self.terms))
         out = np.zeros((1 << num_qubits, 1 << num_qubits), dtype=complex)
         for coeff, pauli in self.terms:
             out += coeff * pauli.matrix(num_qubits)

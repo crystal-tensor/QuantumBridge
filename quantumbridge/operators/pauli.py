@@ -136,14 +136,49 @@ class Pauli:
         return _PHASE_PREFIXES[self.phase] + self._body
 
     def to_matrix(self, sparse: bool = False):
-        matrix = np.array([[_PHASE_FACTORS[self.phase]]], dtype=complex)
-        for char in self._body:
-            matrix = np.kron(matrix, pauli_matrix(char))
+        from quantumbridge.utils.math import _pauli_dense
         if sparse:
-            from scipy.sparse import csr_matrix
+            return self._csr_matrix()
+        return _pauli_dense(self._body, _PHASE_FACTORS[self.phase])
 
-            return csr_matrix(matrix)
-        return matrix
+    def _csr_matrix(self):
+        from scipy.sparse import csr_matrix
+        from quantumbridge.core.classical import UnsupportedFeature
+        from quantumbridge.execution.resource_context import current_resources
+        from quantumbridge.execution.array_reservations import ArrayReservation
+        from quantumbridge.execution.array_ownership import retain_reservation
+        scope = current_resources()
+        ledger = None if scope is None else scope.ledger
+        dimension = 1 << self.num_qubits
+        index_dtype = np.int32 if dimension <= np.iinfo(np.int32).max else np.int64
+        layouts = (((dimension,), complex), ((dimension,), index_dtype), ((dimension+1,), index_dtype))
+        reservations, buffers = [], []
+        try:
+            for name, (shape, dtype) in zip(("data", "indices", "indptr"), layouts):
+                reservations.append(ArrayReservation(ledger, "pauli_csr_"+name, shape, dtype))
+            for reservation in reservations:
+                buffer = reservation.create()
+                retain_reservation(reservation, buffer)
+                buffers.append(buffer)
+            data, indices, indptr = buffers
+            from quantumbridge.utils.math import _pauli_permutation
+            flip, parity, phase = _pauli_permutation(self._body, _PHASE_FACTORS[self.phase])
+            for row in range(dimension):
+                column = row ^ flip
+                data[row] = -phase if (column & parity).bit_count() & 1 else phase
+                indices[row], indptr[row] = column, row
+            indptr[dimension] = dimension
+            # Matching index dtypes permit SciPy to borrow our three roots.
+            result = csr_matrix((data, indices, indptr), shape=(dimension, dimension), copy=False)
+            for actual, expected in zip((result.data, result.indices, result.indptr), buffers):
+                if actual.dtype != expected.dtype or actual.shape != expected.shape or not np.shares_memory(actual, expected):
+                    raise UnsupportedFeature("pauli_csr_storage", "This SciPy implementation did not borrow the admitted CSR buffers.")
+            if ledger is not None:
+                ledger.unavailable("scipy_csr_constructor_workspace",
+                    "CSR data/index/pointer roots are separately owned; SciPy validation and Python allocator workspace is not measured RSS.")
+            return result
+        finally:
+            for reservation in reservations[len(buffers):]:reservation.release()
 
     def _embedded(self, qargs, target_width: int) -> "Pauli":
         selected = _validate_qargs(qargs, self.num_qubits, target_width)

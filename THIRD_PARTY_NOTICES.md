@@ -7,6 +7,57 @@ QuantumBridge is an independent project. References to Qiskit and PennyLane are 
 
 ## Native Template Verification
 
+Stage 11P-C3-R1 Task 3E additionally applies independently authored allocation
+contracts to existing native gates, noise, channel conversions/algebra and
+dense evolution. Positive tests use mathematical identities and optional
+installed public behavioral oracles, not ported implementation/test source.
+No additional third-party code, quantum engine or vendored dependency is
+included; this is not a claim of complete SDK parity or process RSS control.
+
+Stage 11P-C3-R1 independently adds native array preallocation and storage-root
+lifetime contracts around the existing plans. Optional Torch and Autograd
+public differentiation APIs supply classical graph plumbing only. NumPy's
+documented no-copy DLPack interface informs CPU input borrowing; no upstream
+implementation/test source is ported. Independently authored weak-reference,
+budget, matrix and framework tests are not full SDK/allocator certification.
+Source ports remain zero; the full replacement objective remains incomplete.
+
+The R1 persistent-storage slice independently adds construction-pool leases,
+request-local resident admission and compiled-query ownership tests. Optional
+TensorFlow's public numpy_function, Graph and RegisterGradient APIs inform
+callback integration; their implementation/test source is not ported. The
+registered status-gradient rejection has no per-request graph/kernel payload.
+This is bounded native storage accounting, not complete framework/RSS parity.
+
+The ordinary TF ownership slice also uses public function/IdentityN gradient
+overrides, not private registry changes or upstream source. Strided tree copies
+use documented NumPy destination copying and view/reshape behavior. Foreign
+copy-protocol tests and all implementation remain independently authored.
+
+The R1 MPS foundation independently adds allocation/ownership boundaries around
+the existing native contractions and NumPy QR/SVD calls. Public NumPy API
+shapes are references, not implementation/test source ports. Physics, noise,
+SWAP and framework regressions use independently authored fixtures and public
+black-box comparisons. Native snapshot/root transfers and explicit completed-
+trajectory accounting are independently authored extensions of the existing
+Context/Result/Job/ledger, not source ports or a second simulator. Hidden
+allocator workspace and general serialization paths are not claimed fully
+controlled; full replacement remains incomplete.
+
+The observable/IR/JSON allocation slice independently implements dense Pauli
+matrix filling from signed basis permutations, controlled numeric conversion
+and explicit Hermitian-validation scratch. Existing public formats use the
+Python standard JSON encoder/decoder with structural limits; no second
+serializer, upstream implementation/test port or SDK quantum engine is added.
+Python/NumPy internal allocator memory remains explicitly distinct from owned
+numerical arrays and logical serialized byte estimates.
+
+The native validation/CSR/snapshot slice independently applies column inner
+products, existing Choi/Pauli-basis conversions and signed Pauli permutations
+around existing native numerical routines. NumPy/SciPy remain classical array
+dependencies, not quantum SDK engines. No implementation/test source ports or
+vendored dependencies are added; full functional replacement is incomplete.
+
 Stage 11P-C3 currently adds independently authored native Device requests,
 resource reservations and structured derivative outcomes around the existing
 native plans, plus explicit optional CPU JAX/TF derivative-status queries.

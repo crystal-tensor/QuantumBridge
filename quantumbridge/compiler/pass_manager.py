@@ -3,11 +3,22 @@
 # Bounded native analysis/transformation execution with versioned properties.
 
 from copy import deepcopy
+import json
 from time import perf_counter
 
 from .limits import CompilationLimits
 from .pass_base import CompilerPass, AnalysisPass, PassResult
 from .report import CompilerReport
+
+
+def _comparison_snapshot(circuit):
+    # Internal pass mutation detection is not a wire-format import/export.
+    from quantumbridge.execution.resource_context import current_resources
+    scope = current_resources()
+    if scope is not None:
+        scope.ledger.unavailable("compiler_comparison_python_heap",
+            "Canonical pass-comparison strings use the existing JSON encoder; Python container/string allocator memory is not an owned-array or strict RSS bound.")
+    return json.dumps(circuit.to_ir().to_dict(), sort_keys=True)
 
 
 class PropertySet(dict):
@@ -48,7 +59,7 @@ class PassManager:
                 missing = set(getattr(compiler_pass, "requires", ())) - self.property_set.keys()
                 if missing: raise ValueError(f"Pass requirements are absent or invalidated: {sorted(missing)}.")
                 compiler_pass.property_set, compiler_pass.seed = self.property_set, self.seed
-                before = current.to_ir().to_json()
+                before = _comparison_snapshot(current)
                 started = perf_counter()
                 if current.has_dynamic_operations and not getattr(compiler_pass, "handles_dynamic", False) and not isinstance(compiler_pass, AnalysisPass):
                     results = []
@@ -62,8 +73,8 @@ class PassManager:
                 else:
                     result = compiler_pass.run(current)
                 if not isinstance(result, PassResult): raise TypeError("Compiler passes must return PassResult.")
-                actual_change = before != result.circuit.to_ir().to_json()
-                if isinstance(compiler_pass, AnalysisPass) and (actual_change or before != current.to_ir().to_json() or result.changed):
+                actual_change = before != _comparison_snapshot(result.circuit)
+                if isinstance(compiler_pass, AnalysisPass) and (actual_change or before != _comparison_snapshot(current) or result.changed):
                     raise ValueError("AnalysisPass must not mutate the native circuit.")
                 current = result.circuit
                 circuit_to_dag(current, self.limits)

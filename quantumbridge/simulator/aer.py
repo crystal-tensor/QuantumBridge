@@ -5,7 +5,6 @@ from copy import deepcopy
 from dataclasses import replace
 from itertools import count
 from numbers import Integral
-import json
 import numpy as np
 from quantumbridge.core import Circuit
 from quantumbridge.core.classical import UnsupportedFeature
@@ -26,16 +25,36 @@ class LinearMapDevice:
         size=1<<width
         if self.simulation=="superop":size*=size
         self.limits.check("max_matrix_dimension",size);self.limits.check("max_state_bytes",16*size*size*4)
-        return np.eye(size,dtype=complex)
+        from quantumbridge.execution.resource_context import current_resources
+        if current_resources() is None:return np.eye(size,dtype=complex)
+        from quantumbridge.execution import mps_arrays as arrays
+        result=arrays.filled("linear_map_initial",(size,size),complex,0)
+        result.flat[::size+1]=1
+        return result
 
     def map_gate(self,state,matrix,wires,width):
         from quantumbridge.information.operator import _expand_subsystem_operator
         full=_expand_subsystem_operator(matrix,tuple(wires),width)
+        from quantumbridge.execution.resource_context import current_resources
+        if current_resources() is not None:
+            from quantumbridge.execution import mps_arrays as arrays
+            from quantumbridge.information import SuperOp
+            return arrays.contracted(full if self.simulation=="unitary" else SuperOp.from_operator(full).data,state)
         return full@state if self.simulation=="unitary" else np.kron(full.conj(),full)@state
 
     def map_channel(self,state,operators,wires,width):
         if self.simulation!="superop":raise UnsupportedFeature("unitary_channel")
         from quantumbridge.information.operator import _expand_subsystem_operator
+        from quantumbridge.execution.resource_context import current_resources
+        if current_resources() is not None:
+            from quantumbridge.execution import mps_arrays as arrays
+            from quantumbridge.information import SuperOp
+            result=arrays.filled("linear_map_channel",state.shape,complex,0)
+            for operator in operators:
+                full=_expand_subsystem_operator(operator,tuple(wires),width)
+                channel=SuperOp.from_operator(full).data
+                np.add(result,channel,out=result)
+            return arrays.contracted(result,state)
         full=[_expand_subsystem_operator(op,tuple(wires),width) for op in operators]
         return sum(np.kron(op.conj(),op) for op in full)@state
 
@@ -49,17 +68,23 @@ class AerResult:
         if index is None:return self.results[0].counts() if len(self.results)==1 else [r.counts() for r in self.results]
         return self.results[index].counts()
     def get_memory(self,index=0):return self.results[index].memory()
-    def to_dict(self):return {"format":"qb-aer-result-v1","success":self.success,"status":self.status,"results":[r.to_dict() for r in self.results]}
-    def to_json(self):return json.dumps(self.to_dict(),allow_nan=False)
+    def to_dict(self,*,serialization_limits=None):return {"format":"qb-aer-result-v1","success":self.success,"status":self.status,"results":[r.to_dict(serialization_limits=serialization_limits) for r in self.results]}
+    def to_json(self,*,serialization_limits=None):
+        from quantumbridge.schema.serialization import to_json
+        return to_json(self.to_dict(serialization_limits=serialization_limits),limits=serialization_limits,allow_nan=False)
     @classmethod
-    def from_dict(cls,value):
+    def from_dict(cls,value,*,serialization_limits=None):
+        from quantumbridge.schema.serialization import validate_payload_structure
+        validate_payload_structure(value,limits=serialization_limits)
         if set(value)!={"format","success","status","results"} or value["format"]!="qb-aer-result-v1" or value["success"] is not True or value["status"]!="COMPLETED":raise ValueError("Invalid native Aer result envelope.")
         if not isinstance(value["results"],list) or not value["results"]:raise ValueError("Native Aer result needs experiments.")
-        result=cls([Result.from_dict(v) for v in value["results"]])
+        result=cls([Result.from_dict(v,serialization_limits=serialization_limits) for v in value["results"]])
         for item in result.results:item.data()
         return result
     @classmethod
-    def from_json(cls,value):return cls.from_dict(json.loads(value))
+    def from_json(cls,value,*,serialization_limits=None):
+        from quantumbridge.schema.serialization import from_json
+        return cls.from_dict(from_json(value,limits=serialization_limits),serialization_limits=serialization_limits)
 
 
 _COUNTER=count(1)
@@ -181,14 +206,26 @@ class NativeAerSimulator(Backend):
                     for _,bits,_,weight in records:
                         label="".join(map(str,bits));probs[label]=probs.get(label,0.)+weight
                 state=density=mps=None
+                from quantumbridge.execution.resource_context import current_resources
+                scope=current_resources()
                 if method=="statevector":
                     if len(records)==1:state=records[0][0]
                     else:
                         limits.check("max_state_bytes",16*(1<<(2*circuit.num_qubits)))
-                        density=sum(w*np.outer(s,s.conj()) for s,_,_,w in records)
-                elif method=="density_matrix":density=sum(w*s for s,_,_,w in records)
+                        if scope is None:density=sum(w*np.outer(s,s.conj()) for s,_,_,w in records)
+                elif method=="density_matrix" and scope is None:density=sum(w*s for s,_,_,w in records)
                 elif method=="matrix_product_state" and len(records)==1:mps=records[0][0]
-                result=Result(state=state,density=density,mps=mps,probabilities_data=probs or None,metadata_data=records.metadata)
+                if scope is not None and (method=="density_matrix" or method=="statevector" and len(records)>1):
+                    from quantumbridge.execution import mps_arrays as arrays
+                    dimension=1<<circuit.num_qubits
+                    density=arrays.filled("aer_ensemble_density",(dimension,dimension),complex,0)
+                    for value,_,_,weight in records:
+                        contribution=(arrays.einsum("i,j->ij",(dimension,dimension),value,arrays.conjugated(value))
+                            if method=="statevector" else arrays.copied(value,category="aer_ensemble_contribution"))
+                        np.multiply(contribution,weight,out=contribution)
+                        np.add(density,contribution,out=density)
+                result=Result(state=state,density=density,mps=mps,probabilities_data=probs or None,metadata_data=records.metadata,
+                              mps_snapshots=getattr(records,"mps_snapshots",{}))
             result.metadata_data.update(method=method,requested_method=options["method"],backend_name=self.name,
                 shots=None if method in {"unitary","superop"} else shots,requested_shots=shots,
                 seed=options["seed_simulator"],success=True,noise_model_metadata={} if model is None else model.summary(),

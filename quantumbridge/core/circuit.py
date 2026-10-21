@@ -322,11 +322,16 @@ class Circuit:
         return self
 
     def unitary(self, matrix: Any, wires: Sequence[int], name: str = "unitary") -> "Circuit":
-        arr = np.asarray(matrix, dtype=complex)
+        from quantumbridge.execution.resource_context import current_resources
+        from quantumbridge.utils.math import validate_unitary_matrix
+        if current_resources() is not None:
+            from quantumbridge.execution.array_reservations import numeric_array
+            arr = numeric_array(matrix, category="circuit_unitary_conversion")
+        else:arr = np.asarray(matrix, dtype=complex)
         dim = 1 << len(tuple(wires))
         if arr.shape != (dim, dim):
             raise ValueError("QuantumBridge custom unitary shape must match target wires.")
-        if not np.allclose(arr.conj().T @ arr, np.eye(dim), atol=1e-10):
+        if not validate_unitary_matrix(arr, dim, atol=1e-10, rtol=1e-5):
             raise ValueError("QuantumBridge custom unitary matrix must be unitary within tolerance.")
         return self.append(name, tuple(wires), metadata={"matrix": arr})
 
@@ -714,7 +719,8 @@ class Circuit:
         return max_layer
 
     def copy(self) -> "Circuit":
-        return deepcopy(self)
+        from quantumbridge.execution.array_ownership import native_configuration_copy
+        return native_configuration_copy(self, category="native_circuit_array_copy")
 
     def to_instruction(self, name: Optional[str] = None, label: Optional[str] = None) -> Instruction:
         instruction_name = name or label or self.name or "circuit"
@@ -758,14 +764,18 @@ class Circuit:
         parameters: Union[Mapping[Union[Parameter, str], ParameterValue], Sequence[ParameterValue]],
         inplace: bool = False,
         strict: bool = True,
+        *,
+        _copy_memo=None,
     ) -> "Circuit":
         mapping = _parameter_mapping_from_values(self.parameters, parameters, strict=strict)
-        bound = Circuit(self.num_qubits, self.num_bits, self.name, self.metadata)
+        from quantumbridge.execution.array_ownership import native_configuration_copy
+        bound = Circuit(self.num_qubits, self.num_bits, self.name,
+            native_configuration_copy(self.metadata, memo=_copy_memo, category="native_bound_metadata_copy"))
         if "global_phase" in self.metadata:
             bound.global_phase = resolve_parameter(self.global_phase, mapping, allow_partial=not strict)
         for op in self.operations:
             params = tuple(resolve_parameter(param, mapping, allow_partial=not strict) for param in op.params)
-            metadata = deepcopy(op.metadata)
+            metadata = native_configuration_copy(op.metadata, memo=_copy_memo, category="native_bound_metadata_copy")
             if "control_node" in metadata:
                 metadata["control_node"] = metadata["control_node"].bind(mapping)
             bound.operations.append(Operation(op.name, op.targets, op.controls, params, metadata))

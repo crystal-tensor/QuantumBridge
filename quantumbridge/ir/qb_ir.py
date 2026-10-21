@@ -9,13 +9,28 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from numbers import Real
 from typing import Any, Optional
-import json
 
 from quantumbridge.core.parameters import Parameter, ParameterExpression
 
 
 def matrix_from_ir(value):
     import numpy as np
+    from quantumbridge.execution.resource_context import current_resources
+    scope = current_resources()
+    if scope is not None:
+        from quantumbridge.execution.array_reservations import numeric_array, numeric_shape, numeric_into
+        from quantumbridge.execution.array_ownership import retained_array
+        if type(value) is dict and set(value) == {"real", "imag"}:
+            shape = numeric_shape(value["real"], real_only=True)
+            if shape != numeric_shape(value["imag"], real_only=True):
+                raise ValueError("QuantumBridge matrix real/imag shapes must match.")
+            result = retained_array(scope.ledger, "ir_complex_conversion", shape, complex)
+            scope.ledger.unavailable("ir_python_conversion_workspace",
+                "IR conversion owns its complex output; Python containers and internal iterator workspace are not measured RSS.")
+            numeric_into(result.real, value["real"])
+            numeric_into(result.imag, value["imag"])
+            return result
+        return numeric_array(value, category="ir_numeric_conversion")
 
     if isinstance(value, dict) and set(value) == {"real", "imag"}:
         real, imag = np.asarray(value["real"]), np.asarray(value["imag"])
@@ -131,9 +146,13 @@ class IRProgram:
         return result
 
     @classmethod
-    def from_json(cls, text): return cls.from_dict(json.loads(text))
+    def from_json(cls, text, *, serialization_limits=None):
+        from quantumbridge.schema.serialization import from_json
+        return cls.from_dict(from_json(text, limits=serialization_limits))
 
-    def to_json(self): return json.dumps(self.to_dict(), sort_keys=True)
+    def to_json(self, *, serialization_limits=None):
+        from quantumbridge.schema.serialization import to_json
+        return to_json(self.to_dict(), limits=serialization_limits)
 
     def validate(self):
         from quantumbridge.compat.qiskit_adapter import circuit_from_ir

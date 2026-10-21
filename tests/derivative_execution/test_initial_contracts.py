@@ -34,7 +34,14 @@ def test_joint_live_budget_rejects_a_plan_that_passes_existing_local_caps(monkey
     assert caught.value.category == "memory"
     assert caught.value.estimated > 512
     receipt = ledger.receipt()
-    assert receipt["live_memory_bytes"] == 0
+    # The raising API intentionally retains its debugging traceback, including
+    # the newly owned packed tangent. A returned status would detach it.
+    assert receipt["live_memory_bytes"] == tangent.nbytes
+    assert receipt["live_memory_bytes"] == receipt["total_reserved_memory_bytes"]-receipt["total_released_memory_bytes"]
+    del caught
+    import gc
+    gc.collect()
+    assert ledger.receipt()["live_memory_bytes"] == 0
     assert receipt["consumed_shots"] == 0
 
 

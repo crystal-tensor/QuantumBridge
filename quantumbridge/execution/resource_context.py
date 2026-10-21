@@ -7,6 +7,7 @@ from contextvars import ContextVar
 from functools import wraps
 from numbers import Integral
 from copy import deepcopy
+from inspect import signature
 
 import numpy as np
 
@@ -60,14 +61,29 @@ def measurement_shots(ledger, shots):
             _sample_ticket.reset(token)
 
 
-def meter_native_samples(function):
+def record_completed_native_shot():
+    """Record one explicitly completed trajectory, not unknown partial work."""
+    ticket = _sample_ticket.get()
+    if ticket is not None: ticket.consume(shots=1)
+
+
+def result_shots(result):
+    return sum((result.counts_data or {}).values())
+
+
+def meter_native_samples(function=None, *, result_count=len):
     """Charge completed buffers before any downstream statistics can fail."""
+    if function is None:
+        return lambda function: meter_native_samples(function, result_count=result_count)
+    parameters = signature(function)
     @wraps(function)
-    def sampled(self, circuit, *args, **kwargs):
+    def sampled(self, *args, **kwargs):
         resources = current_resources()
         if resources is None:
-            return function(self, circuit, *args, **kwargs)
-        shots = kwargs.get("shots", args[1] if len(args) > 1 else 1)
+            return function(self, *args, **kwargs)
+        bound = parameters.bind(self, *args, **kwargs)
+        bound.apply_defaults()
+        shots = bound.arguments["shots"]
         if isinstance(shots, bool) or not isinstance(shots, Integral) or shots < 0:
             raise ValueError("Native sampling shots must be nonnegative integers.")
         def execute(ticket):
@@ -75,13 +91,18 @@ def meter_native_samples(function):
                 from .derivative_status import ResourceLimitError
                 raise ResourceLimitError("shots", shots, ticket.amounts["shots"],
                     stage="sample_dispatch", receipt=resources.ledger.receipt())
+            before = ticket.amounts["shots"]
             try:
-                result = function(self, circuit, *args, **kwargs)
+                result = function(self, *args, **kwargs)
             except Exception:
                 resources.ledger.unavailable("failed_native_sample_completion",
-                    "A failed native sampler did not return a complete buffer; internal partial work is not observable.")
+                    "Explicitly completed trajectories remain consumed; additional internal partial work in the failed trajectory/buffer is unavailable, not zero.")
                 raise
-            ticket.consume(shots=len(result))
+            count = result_count(result)
+            completed = before-ticket.amounts["shots"]
+            if isinstance(count, bool) or not isinstance(count, Integral) or not completed <= count <= shots:
+                raise RuntimeError("Native sample completion differs from its declared trajectory/buffer count.")
+            ticket.consume(shots=count-completed)
             return result
         ticket = _sample_ticket.get()
         if ticket is not None:
@@ -92,10 +113,14 @@ def meter_native_samples(function):
 
 
 class ResourceScope:
-    def __init__(self, ledger):
+    def __init__(self, ledger, *, new_request=False):
         self.ledger, self.stack = ledger, ExitStack()
+        self.new_request = new_request
 
     def __enter__(self):
+        parent = _current.get()
+        self.request_token = parent.request_token if (not self.new_request and parent is not None
+            and parent.ledger is self.ledger) else object()
         self.token = _current.set(self)
         return self
 

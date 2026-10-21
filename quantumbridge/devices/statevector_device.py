@@ -35,7 +35,11 @@ class StatevectorDevice(NativeDeviceDerivatives):
     def _initial(self, width):
         if self.max_memory_mb is not None and 16 * (1 << width) * 8 > self.max_memory_mb * 1024 ** 2:
             raise MemoryError("QuantumBridge dynamic statevector exceeds max_memory_mb.")
-        state = np.zeros(1 << width, dtype=complex)
+        from quantumbridge.execution.resource_context import current_resources
+        if current_resources() is None:state = np.zeros(1 << width, dtype=complex)
+        else:
+            from quantumbridge.execution import mps_arrays as arrays
+            state = arrays.filled("statevector_initial", (1 << width,), complex, 0)
         state[0] = 1
         return state
 
@@ -62,7 +66,12 @@ class StatevectorDevice(NativeDeviceDerivatives):
                 from .execution import validate_preparation_input
                 validate_preparation_input(state,wires,circuit.num_qubits,"statevector")
             state = apply_unitary(state, matrix, wires, circuit.num_qubits)
-        return np.exp(1j * float(circuit.global_phase)) * state
+        from quantumbridge.execution.resource_context import current_resources
+        if current_resources() is None:return np.exp(1j * float(circuit.global_phase)) * state
+        from quantumbridge.execution import mps_arrays as arrays
+        output = arrays.owned("statevector_global_phase", state.shape, complex)
+        np.multiply(state, np.exp(1j*float(circuit.global_phase)), out=output)
+        return output
 
     def probabilities(self, circuit, wires=None, parameters: Optional[Mapping[Union[Parameter, str], Real]] = None) -> dict[str, float]:
         if circuit.has_dynamic_operations:

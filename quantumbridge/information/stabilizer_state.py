@@ -267,6 +267,11 @@ class StabilizerState:
 
     def to_statevector(self):
         from quantumbridge.information.statevector import Statevector
+        from quantumbridge.execution.resource_context import current_resources
+        scope = current_resources()
+        if scope is not None:
+            from quantumbridge.execution.array_reservations import array_layout
+            scope.ledger.preflight(memory_bytes=array_layout((1 << self.num_qubits,), complex)[2])
 
         if self.num_qubits == 0:
             return Statevector([1])

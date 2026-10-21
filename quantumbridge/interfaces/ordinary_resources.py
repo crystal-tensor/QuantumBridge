@@ -10,6 +10,7 @@ from quantumbridge.execution import DerivativeExecutionRequest, UnifiedResourceL
 from quantumbridge.execution.derivative_planning import finish_derivative
 from quantumbridge.execution.device_derivatives import execute_device_derivatives
 from quantumbridge.execution.resource_context import ResourceScope, current_resources
+from quantumbridge.execution.array_reservations import scope_array
 from quantumbridge.qml.shot_vector import ShotSpec
 
 
@@ -57,15 +58,20 @@ class _ManagedFrameworkPlan:
         try:
             with ResourceScope(self.ledger) as scope:
                 if classical is None:
-                    scope.retain("framework_identity_map", 8*count*size)
-                    classical = np.eye(count)
+                    classical = scope_array(scope, "framework_identity_map", (count, size), float,
+                        lambda: np.eye(count))
                 if order == 2 and classical_second is None:
-                    scope.retain("framework_zero_second_map", 8*count*size*columns)
-                    classical_second = np.zeros((count, size, columns))
+                    classical_second = scope_array(scope, "framework_zero_second_map", (count, size, columns), float,
+                        lambda: np.zeros((count, size, columns)))
                 def prepare(device, request):
-                    return finish_derivative(request, self.plan.node, self.plan, np.asarray(values),
+                    prepared = finish_derivative(request, self.plan.node, self.plan, np.asarray(values),
                         classical, classical_second, direction, size,
                         [((size,), slice(0, size))], True, self.output_spec, self.output_size)
+                    # Source maps are already owned by the surrounding callback
+                    # scope; the retained result lease must not count them again.
+                    prepared.buffer_bytes -= classical.nbytes
+                    if order == 2: prepared.buffer_bytes -= classical_second.nbytes
+                    return prepared
                 result = execute_device_derivatives(self.plan.node.device, request,
                     ledger=self.ledger, _prepare=prepare)
             self._publish()

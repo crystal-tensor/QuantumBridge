@@ -11,7 +11,8 @@ import numpy as np
 from quantumbridge.information.matrix_product_state import MatrixProductState
 from quantumbridge.results import Result
 from quantumbridge.execution.device_derivatives import NativeDeviceDerivatives
-from quantumbridge.execution.resource_context import meter_native_samples
+from quantumbridge.execution.resource_context import meter_native_samples, record_completed_native_shot, result_shots
+from quantumbridge.execution import mps_arrays as arrays
 from quantumbridge.utils.math import Hamiltonian, PauliString, observable_matrix
 from .execution import (
     condition_enabled, decision_liveness, prepare_program, readout_probability, needs_dynamic_engine,
@@ -53,7 +54,9 @@ class MatrixProductStateDevice(NativeDeviceDerivatives):
     def _prepare(self, circuit, parameters=None):
         bound, program = prepare_program(circuit, parameters, self.max_qubits, self.noise_model)
         if not needs_dynamic_engine(bound,self.noise_model) and bound.global_phase != 0:
-            program.insert(0, ("gate", np.exp(1j * float(bound.global_phase)) * np.eye(2), (0,), {}))
+            matrix = arrays.filled("mps_global_phase_matrix", (2, 2), complex, 0)
+            matrix[0, 0] = matrix[1, 1] = np.exp(1j * float(bound.global_phase))
+            program.insert(0, ("gate", matrix, (0,), {}))
         return bound, program
 
     def _initial(self, width):
@@ -80,7 +83,11 @@ class MatrixProductStateDevice(NativeDeviceDerivatives):
     @staticmethod
     def _kraus_choices(state, operators, wires):
         density = state.reduced_density_matrix(wires)
-        probabilities = [max(0.0, float(np.trace(operator @ density @ operator.conj().T).real)) for operator in operators]
+        probabilities = []
+        for operator in operators:
+            first = arrays.contracted(operator, density)
+            product = arrays.contracted(first, arrays.conjugated(operator).T)
+            probabilities.append(max(0.0, float(np.trace(product).real)))
         return [(p, operator) for p, operator in zip(probabilities, operators) if p > 0]
 
     def _branches(self, circuit, program):
@@ -144,8 +151,10 @@ class MatrixProductStateDevice(NativeDeviceDerivatives):
                     self._gate(state,value,wires,metadata)
                 elif kind == "channel":
                     choices = self._kraus_choices(state, value, wires)
-                    weights = np.array([p for p, _ in choices])
-                    selected = int(rng.choice(len(choices), p=weights / weights.sum()))
+                    weights = arrays.owned("mps_trajectory_probabilities", (len(choices),), float,
+                        lambda: np.fromiter((p for p, _ in choices), dtype=float, count=len(choices)))
+                    np.divide(weights, weights.sum(), out=weights)
+                    selected = int(rng.choice(len(choices), p=weights))
                     state.apply(choices[selected][1], wires)
                 else:
                     outcome = state.measure(value, rng)
@@ -171,9 +180,15 @@ class MatrixProductStateDevice(NativeDeviceDerivatives):
     def reduced_density_matrix(self, circuit, wires=None, parameters=None):
         bound, program = self._prepare(circuit, parameters)
         branches = self._branches(bound, program)
-        result = sum(weight * state.reduced_density_matrix(wires) for state, _, _, weight in branches)
+        result = None
+        for state, _, _, weight in branches:
+            density = state.reduced_density_matrix(wires)
+            weighted = arrays.owned("mps_weighted_density", density.shape, density.dtype)
+            np.multiply(density, weight, out=weighted)
+            if result is None: result = weighted
+            else: np.add(result, weighted, out=result)
         self.last_execution_metadata = self._metadata(bound,[state for state,_,_,_ in branches])
-        return result
+        return 0 if result is None else result
 
     def density_matrix(self, circuit, parameters=None):
         return self.reduced_density_matrix(circuit, parameters=parameters)
@@ -233,12 +248,14 @@ class MatrixProductStateDevice(NativeDeviceDerivatives):
             else:
                 state._guard((1 << (2 * bound.num_qubits)) * 8)
                 matrix = observable_matrix(observable, bound.num_qubits)
-                if matrix.shape != (1 << bound.num_qubits, 1 << bound.num_qubits) or not np.all(np.isfinite(matrix)) or not np.allclose(matrix, matrix.conj().T, atol=1e-10, rtol=0):
+                from quantumbridge.utils.math import validate_observable_matrix
+                if not validate_observable_matrix(matrix, bound.num_qubits):
                     raise ValueError("QuantumBridge MPS observables must be finite Hermitian matrices matching the state.")
                 density = state.reduced_density_matrix()
-                first += weight * np.trace(density @ matrix).real
+                product = arrays.contracted(density, matrix)
+                first += weight * np.trace(product).real
                 if variance:
-                    second += weight * np.trace(density @ matrix @ matrix).real
+                    second += weight * np.trace(arrays.contracted(product, matrix)).real
         self.last_execution_metadata = self._metadata(bound,states)
         return max(0.0, float(second - first ** 2)) if variance else float(first)
 
@@ -271,6 +288,7 @@ class MatrixProductStateDevice(NativeDeviceDerivatives):
                 p = readout_probability(self.noise_model, wire, outcome)
                 outcomes.append(str(outcome ^ int(p > 0 and rng.random() < p)))
             memory.append("".join(outcomes))
+            record_completed_native_shot()
         self.last_execution_metadata = {**resource,"shots":shots,"seed":seed}
         return memory
 
@@ -296,6 +314,7 @@ class MatrixProductStateDevice(NativeDeviceDerivatives):
                 "max_bond_dimensions_observed":[max((state.bond_dimensions[index] for state in states),default=1) for index in range(bound.num_qubits-1)],
                 "noise_model_metadata": {} if self.noise_model is None else self.noise_model.summary()}
 
+    @meter_native_samples(result_count=result_shots)
     def run_shots(self, circuit, shots=1024, seed=None, parameters=None, memory=False):
         if needs_dynamic_engine(circuit,self.noise_model):
             from quantumbridge.execution.control_flow_engine import dynamic_shots
@@ -313,6 +332,7 @@ class MatrixProductStateDevice(NativeDeviceDerivatives):
                     p = readout_probability(self.noise_model, wire, outcome)
                     bits.append(outcome ^ int(p > 0 and rng.random() < p))
             samples.append("".join(map(str, bits)))
+            record_completed_native_shot()
             max_bond = max(max_bond, state.peak_bond_dimension)
             discarded = max(discarded, state.discarded_weight)
         counts = self._counts(samples)
@@ -337,4 +357,5 @@ class MatrixProductStateDevice(NativeDeviceDerivatives):
         if pure is None:
             metadata["mps_ensemble"] = [{"weight": weight, "classical_bits": bits, "state": state.to_dict()} for state, bits, _, weight in branches]
         return Result(mps=pure, probabilities_data=probabilities, metadata_data=metadata,
+                      mps_snapshots=getattr(branches, "mps_snapshots", {}),
                       expectation_data=None if observable is None else self.expectation(bound, observable))

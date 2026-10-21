@@ -7,6 +7,8 @@ import numpy as np
 
 from quantumbridge.core.classical import UnsupportedFeature
 
+_NO_COPY_RESHAPE = np.lib.NumpyVersion(np.__version__) >= "2.1.0"
+
 
 class Dual:
     __array_priority__ = 1000
@@ -138,17 +140,50 @@ def trace_arguments(args, kwargs, argnums=0, argnames=(), *, order=1, direction=
 
 
 def flatten_tree(value):
-    leaves = []
+    from quantumbridge.execution.resource_context import current_resources
+    from quantumbridge.execution.array_ownership import retained_array, _defined_type
+    scope = current_resources()
+    leaves, offset = [], 0
     def visit(item):
-        if isinstance(item, dict): return ("dict", tuple((key, visit(child)) for key, child in item.items()))
-        if isinstance(item, (tuple, list)): return ("tuple" if isinstance(item, tuple) else "list", tuple(visit(child) for child in item))
-        array = np.asarray(item)
-        if array.dtype.kind not in "fiu": raise UnsupportedFeature("differentiable_output", "Derivatives currently require real numeric outputs.")
-        start = sum(leaf.size for leaf in leaves)
-        leaves.append(array.astype(float).reshape(-1))
-        return ("leaf", array.shape, start, array.size)
-    spec = visit(value)
-    return np.concatenate(leaves) if leaves else np.empty(0), spec
+        nonlocal offset
+        kind = type(item)
+        mapping, sequence = issubclass(kind, dict), issubclass(kind, (tuple, list))
+        if scope is not None and (mapping or sequence) and not any(kind is base for base in (dict, tuple, list)):
+            raise UnsupportedFeature("differentiable_output_conversion", "Managed output containers require a controlled builtin tree layout.")
+        if mapping: return ("dict", tuple((key, visit(child)) for key, child in item.items()))
+        if sequence: return ("tuple" if issubclass(kind, tuple) else "list", tuple(visit(child) for child in item))
+        if issubclass(kind, np.ndarray):
+            # A base view bypasses subclass conversion/copy hooks. Source
+            # strides remain intact; only the contiguous destination reshapes.
+            item = np.ndarray.view(item, np.ndarray)
+            shape, size, kind = item.shape, item.size, item.dtype.kind
+        elif issubclass(kind, np.generic):
+            if scope is not None and not _defined_type(kind, "numpy"):
+                raise UnsupportedFeature("differentiable_output_conversion", "Managed output scalars require a known numeric storage layout.")
+            shape, size, kind = (), 1, item.dtype.kind
+        elif kind is float or kind is int:
+            shape, size, kind = (), 1, "f"
+        else:
+            if scope is not None:
+                raise UnsupportedFeature("differentiable_output_conversion", "Managed native output trees cannot execute an opaque array conversion protocol.")
+            item = np.asarray(item)
+            shape, size, kind = item.shape, item.size, item.dtype.kind
+        if kind not in "fiu": raise UnsupportedFeature("differentiable_output", "Derivatives currently require real numeric outputs.")
+        start = offset
+        offset += size
+        leaves.append((item, shape, start, size))
+        return ("leaf", shape, start, size)
+    try:
+        spec = visit(value)
+        flat = retained_array(None if scope is None else scope.ledger, "native_tree_flatten", (offset,), float)
+        for item, shape, start, size in leaves:
+            np.copyto(flat[start:start+size].reshape(shape), item, casting="unsafe")
+        return flat, spec
+    finally:
+        # The recursive visitor must not keep borrowed source storage in an
+        # unreachable closure cycle until a future framework GC happens.
+        visit = None
+        leaves.clear()
 
 
 def unflatten_tree(flat, spec, trailing_shape=(), *, reshape=None):
@@ -159,5 +194,27 @@ def unflatten_tree(flat, spec, trailing_shape=(), *, reshape=None):
         return tuple(values) if kind == "tuple" else values
     _, shape, start, size = spec
     part = flat[start:start + size]
-    value = part.reshape(shape + trailing_shape) if reshape is None else reshape(part, shape + trailing_shape)
+    target = shape + trailing_shape
+    if reshape is not None:
+        value = reshape(part, target)
+    elif isinstance(part, np.ndarray):
+        value = np.ndarray.view(part, np.ndarray)
+        try:
+            if _NO_COPY_RESHAPE:
+                value = np.reshape(value, target, copy=False)
+            else:
+                # NumPy 1.x has no copy=False; shape assignment is view-only.
+                value.shape = target
+        except (AttributeError, ValueError):
+            from math import prod
+            if prod(target) != part.size:
+                raise ValueError("Tree reconstruction shape does not match its numerical payload.") from None
+            from quantumbridge.execution.resource_context import current_resources
+            from quantumbridge.execution.array_ownership import retained_array
+            scope = current_resources()
+            value = retained_array(None if scope is None else scope.ledger,
+                "native_tree_reconstruction", target, part.dtype)
+            np.copyto(value.reshape(part.shape), part, casting="no")
+    else:
+        value = part.reshape(target)
     return value.item() if not shape and not trailing_shape and isinstance(value, np.ndarray) else value

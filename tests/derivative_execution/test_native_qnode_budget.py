@@ -4,6 +4,7 @@
 
 import numpy as np
 import pytest
+import gc
 
 from quantumbridge import PauliZ, StatevectorDevice
 from quantumbridge.execution import DerivativeExecutionError, UnifiedExecutionLimits as Limits
@@ -26,7 +27,7 @@ def test_direct_native_qnode_budget_rejects_before_simulation(operation, monkeyp
     assert failed.value.code == 3 and failed.value.receipt["live_memory_bytes"] == 0
 
 
-def test_native_budgeted_selected_and_keyword_inputs_keep_the_same_layout():
+def test_native_budgeted_selected_and_keyword_inputs_keep_the_same_layout(derivative_accounts):
     def fn(t, x, fixed, *, y):
         t.ry(x*y+fixed, 0)
         return t.expval(PauliZ(0))
@@ -38,4 +39,9 @@ def test_native_budgeted_selected_and_keyword_inputs_keep_the_same_layout():
     np.testing.assert_allclose(actual, expected, atol=1e-12)
     product = node.compute_hvp((.4, -.1), x, fixed, y=y, argnums=(0,), argnames=("y",))
     np.testing.assert_allclose(product, expected @ [.4, -.1], atol=1e-12)
-    assert node.last_metadata["unified_resource_receipt"]["live_memory_bytes"] == 0
+    receipt = node.last_metadata["unified_resource_receipt"]
+    assert receipt["live_memory_bytes"] > 0
+    assert receipt["live_memory_bytes"] == receipt["total_reserved_memory_bytes"]-receipt["total_released_memory_bytes"]
+    del actual, product
+    gc.collect()
+    assert all(account.receipt()["live_memory_bytes"] == 0 for account in derivative_accounts)

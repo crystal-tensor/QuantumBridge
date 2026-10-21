@@ -3,8 +3,9 @@
 """Framework-free host planning shared by optional autodiff graph bridges."""
 
 from copy import copy, deepcopy
-from dataclasses import replace
+from dataclasses import dataclass, replace
 from numbers import Integral
+from functools import wraps
 
 import numpy as np
 
@@ -14,6 +15,26 @@ from quantumbridge.diff.trace import Dual, flatten_tree
 from quantumbridge.qml.shot_vector import ShotSpec
 from quantumbridge.qml.tape import Tape
 from quantumbridge.utils.math import Hamiltonian, PauliString
+from quantumbridge.execution.array_ownership import native_configuration_copy
+from quantumbridge.execution.persistent_storage import PersistentStoragePool
+
+
+def _host_resources(function):
+    @wraps(function)
+    def execute(self, *args, **kwargs):
+        from quantumbridge.execution.resource_context import ResourceScope, current_resources
+        from quantumbridge.execution.resource_ledger import UnifiedResourceLedger
+        active = current_resources()
+        if active is not None:
+            self.admit(active)
+            return function(self, *args, **kwargs)
+        # Local callback admission is not an ordinary graph-wide budget. There
+        # is no request ledger captured during tracing or shared between calls.
+        ledger = UnifiedResourceLedger()
+        with ResourceScope(ledger, new_request=True) as scope:
+            self.admit(scope)
+            return function(self, *args, **kwargs)
+    return execute
 
 
 class MissingOptionalDependency(ImportError):
@@ -44,70 +65,104 @@ def _shape_tree(tree, width, shots, limits, interface):
     return result
 
 
+@dataclass
+class NativeHostDescription:
+    parameters: tuple
+    angles: list
+    frozen: dict
+    coefficients: list
+    output_tree: object
+    shape_tree: object
+    spec: object
+
+
+def describe_native_source(node, source, recorder, limits, *, interface="jax"):
+    """Read live classical occurrences without copying persistent configuration.
+
+    Classical jacobian/HVP tracing needs the packed angles and output layout,
+    not another device/circuit snapshot or a quantum execution plan.
+    """
+    prefixes = ("jax", "jaxlib") if interface == "jax" else ("tensorflow",)
+    live = [index for index, value in enumerate(recorder.angles) if type(value).__module__.startswith(prefixes)]
+    parameters = tuple(recorder.parameters[index] for index in live)
+    angles = [recorder.angles[index] for index in live]
+    from quantumbridge.diff.scalars import scalar_primal
+    frozen = {parameter: scalar_primal(value) for parameter, value in zip(recorder.parameters, recorder.angles)
+              if not type(value).__module__.startswith(prefixes)}
+    pending = [source.circuit]
+    while pending:
+        circuit = pending.pop()
+        values = [circuit.global_phase]
+        for operation in circuit.operations:
+            values.extend(operation.params)
+            control = operation.metadata.get("control_node")
+            if control is not None:
+                pending.extend(control.bodies)
+        if any(type(value).__module__.startswith(prefixes) for value in values):
+            raise UnsupportedFeature(interface + "_unrecorded_parameter", "Use native Tape parameter recording; raw live circuit parameters cannot enter a host callback.")
+    for value in angles:
+        if isinstance(value, (tuple, list)) or getattr(value, "shape", ()) != ():
+            raise UnsupportedFeature(interface + "_gate_broadcast", "Native framework gate parameters must be scalar occurrences.")
+        if isinstance(value, complex) or getattr(getattr(value, "dtype", None), "kind", None) == "c":
+            raise UnsupportedFeature(interface + "_complex", "Native framework gate parameters must be real.")
+    coefficients = []
+    def clean(request):
+        observable = request.observable
+        if hasattr(observable, "to_quantumbridge"):
+            observable = observable.to_quantumbridge()
+        elif hasattr(observable, "to_hamiltonian"):
+            observable = observable.to_hamiltonian()
+        references = []
+        if isinstance(observable, Hamiltonian):
+            terms = []
+            for value, word in observable.terms:
+                if type(value).__module__.startswith(prefixes):
+                    references.append(len(angles))
+                    angles.append(value)
+                    terms.append((1., word))
+                else:
+                    references.append(None)
+                    terms.append((value, word))
+            observable = Hamiltonian(terms)
+        elif request.kind in {"expval", "var"} and not isinstance(observable, PauliString):
+            raise UnsupportedFeature(interface + "_observable", "framework bridge observables require native Pauli/Hamiltonian form.")
+        coefficients.append(tuple(references))
+        return replace(request, observable=observable)
+    cleaned = map_measurements(source.output_tree, clean)
+    shape_tree = _shape_tree(cleaned, node.num_qubits, ShotSpec.parse(node.shots), limits, interface)
+    _, spec = flatten_tree(shape_tree)
+    return NativeHostDescription(parameters, angles, frozen, coefficients, cleaned, shape_tree, spec)
+
+
 class NativeHostKernel:
     """A tracer-free source description; every call builds fresh native plans."""
 
-    def __init__(self, node, source, recorder, program, limits, *, interface="jax", validate_derivatives=True):
+    def __init__(self, node, source, recorder, program, limits, *, interface="jax", validate_derivatives=True,
+                 storage_pool=None):
         self.interface = interface
-        prefixes = ("jax", "jaxlib") if interface == "jax" else ("tensorflow",)
         self.node, self.limits = copy(node), limits
         self.node.fn = None
-        self.node.device = deepcopy(node.device)
         self.node.gradient_kwargs = dict(node.gradient_kwargs)
         self.node.transform_program = self.node.compiler_options = None
-        if program is None:
+        self.node.last_metadata = {}
+        description = describe_native_source(node, source, recorder, limits, interface=interface)
+        self.parameters, self.angles = description.parameters, description.angles
+        self.coefficients = description.coefficients
+        self.source = Tape(source.circuit.num_qubits, shots=ShotSpec.parse(source.shots), seed=source.seed)
+        pool = PersistentStoragePool() if storage_pool is None else storage_pool
+        if not isinstance(pool, PersistentStoragePool): raise TypeError("Kernel storage requires PersistentStoragePool.")
+        self.storage_owner = pool.freeze((node.device, source.circuit, description.output_tree,
+            None if program is None else program.transforms))
+        device, circuit, tree, stages = self.storage_owner.payload
+        self.node.device = device
+        self.source.circuit = circuit.assign_parameters(description.frozen, strict=False,
+            _copy_memo=self.storage_owner.copy_memo())
+        self.source.output_tree = tree
+        if stages is None:
             self.program = None
         else:
             from quantumbridge.transforms.program import TransformProgram
-            self.program = TransformProgram(tuple(deepcopy(stage) for stage in program.transforms), limits=program.limits)
-        self.node.last_metadata = {}
-        live = [index for index, value in enumerate(recorder.angles) if type(value).__module__.startswith(prefixes)]
-        self.parameters = tuple(recorder.parameters[index] for index in live)
-        self.angles = [recorder.angles[index] for index in live]
-        frozen = {parameter: value for parameter, value in zip(recorder.parameters, recorder.angles)
-                  if not type(value).__module__.startswith(prefixes)}
-        pending = [source.circuit]
-        while pending:
-            circuit = pending.pop()
-            values = [circuit.global_phase]
-            for operation in circuit.operations:
-                values.extend(operation.params)
-                control = operation.metadata.get("control_node")
-                if control is not None:
-                    pending.extend(control.bodies)
-            if any(type(value).__module__.startswith(prefixes) for value in values):
-                raise UnsupportedFeature(interface + "_unrecorded_parameter", "Use native Tape parameter recording; raw live circuit parameters cannot enter a host callback.")
-        for value in self.angles:
-            if isinstance(value, (tuple, list)) or getattr(value, "shape", ()) != ():
-                raise UnsupportedFeature(interface + "_gate_broadcast", "Native framework gate parameters must be scalar occurrences.")
-            if isinstance(value, complex) or getattr(getattr(value, "dtype", None), "kind", None) == "c":
-                raise UnsupportedFeature(interface + "_complex", "Native framework gate parameters must be real.")
-        self.coefficients = []
-        self.source = Tape(source.circuit.num_qubits, shots=ShotSpec.parse(source.shots), seed=source.seed)
-        self.source.circuit = source.circuit.assign_parameters(frozen, strict=False)
-        def clean(request):
-            observable = request.observable
-            if hasattr(observable, "to_quantumbridge"):
-                observable = observable.to_quantumbridge()
-            elif hasattr(observable, "to_hamiltonian"):
-                observable = observable.to_hamiltonian()
-            references = []
-            if isinstance(observable, Hamiltonian):
-                terms = []
-                for value, word in observable.terms:
-                    if type(value).__module__.startswith(prefixes):
-                        references.append(len(self.angles))
-                        self.angles.append(value)
-                        terms.append((1., word))
-                    else:
-                        references.append(None)
-                        terms.append((value, word))
-                observable = Hamiltonian(terms)
-            elif request.kind in {"expval", "var"} and not isinstance(observable, PauliString):
-                raise UnsupportedFeature(interface + "_observable", "framework bridge observables require native Pauli/Hamiltonian form.")
-            self.coefficients.append(tuple(references))
-            return replace(request, observable=observable, metadata=deepcopy(request.metadata))
-        self.source.output_tree = map_measurements(source.output_tree, clean)
+            self.program = TransformProgram(stages, limits=program.limits)
         self.size = len(self.angles)
         limits.check("max_parameter_elements", self.size)
         self.shots = ShotSpec.parse(node.shots)
@@ -119,7 +174,7 @@ class NativeHostKernel:
             raise UnsupportedFeature(interface + "_random_seed", "Finite-shot framework execution requires an explicit immutable seed.")
         if node.seed is not None and (isinstance(node.seed, bool) or not isinstance(node.seed, Integral) or node.seed < 0):
             raise UnsupportedFeature(interface + "_random_seed", "framework node seeds must be immutable nonnegative integers; dynamic PRNG keys are not implemented.")
-        self.shape_tree = _shape_tree(self.source.output_tree, node.num_qubits, self.shots, limits, interface)
+        self.shape_tree = description.shape_tree
         flat, self.spec = flatten_tree(self.shape_tree)
         self.output_size = len(flat)
         limits.check("max_jacobian_elements", self.output_size * max(1, self.size))
@@ -168,8 +223,15 @@ class NativeHostKernel:
                 work += sum(x or 0 for x in effective) * terms * repetitions
         return forward_work, work
 
+    def admit(self, scope):
+        if hasattr(self, "storage_owner"):
+            return self.storage_owner.admit(scope)
+
     def plan(self, values, *, derivative=False, direction=None):
         from quantumbridge.transforms.program import TransformedExecutionPlan
+        from quantumbridge.execution.resource_context import current_resources
+        scope = current_resources()
+        if scope is not None: self.admit(scope)
         if np.asarray(values).shape != (self.size,) or not np.all(np.isfinite(values)):
             raise ValueError("framework packed parameters must have the declared shape and finite real values.")
         if derivative == 2:
@@ -177,9 +239,16 @@ class NativeHostKernel:
             context = SecondContext(self.size, direction, limits=self.node.higher_order_limits)
             traced = [context.variable(value, index) for index, value in enumerate(values)]
         else:
-            eye = np.eye(self.size) if derivative else None
-            traced = [Dual(value, eye[index] if derivative else np.empty(0)) for index, value in enumerate(values)]
-        source = self.source.copy()
+            from quantumbridge.execution.array_reservations import scope_array
+            from quantumbridge.execution.resource_context import current_resources
+            eye = scope_array(current_resources(), "native_first_seed_identity", (self.size, self.size),
+                float, lambda: np.eye(self.size)) if derivative else None
+            # Each seed is a view of the one pre-reserved identity, not another
+            # owned row allocation. Later Dual arithmetic reserves its own data.
+            traced = [Dual(value, eye[index] if derivative else np.empty(0), _reserved=bool(derivative))
+                      for index, value in enumerate(values)]
+        memo = self.storage_owner.copy_memo() if hasattr(self, "storage_owner") else None
+        source = self.source.copy(_copy_memo=memo)
         references = iter(self.coefficients)
         def restore(request):
             indices = next(references)
@@ -195,11 +264,14 @@ class NativeHostKernel:
         recorder.parameters = list(self.parameters)
         recorder.angles = traced[:len(self.parameters)]
         owner = copy(self.node)
-        owner.device = deepcopy(self.node.device)
+        owner.device = native_configuration_copy(self.node.device, memo=memo, category="native_host_device_copy")
         if self.program is None:
             return ExecutionPlan(owner, source, source.output_tree, recorder)
-        return TransformedExecutionPlan(owner, source, recorder, self.program)
+        from quantumbridge.transforms.program import TransformProgram
+        program = TransformProgram(self.program.transforms, limits=self.program.limits)
+        return TransformedExecutionPlan(owner, source, recorder, program)
 
+    @_host_resources
     def run(self, values, derivative, *, remaining_shots=None):
         plan = self.plan(values, derivative=derivative)
         self.limits.check("max_transform_tapes", len(getattr(plan, "child_plans", (plan,))))
@@ -211,8 +283,18 @@ class NativeHostKernel:
             raise MemoryError("Native framework bridge exceeded cumulative max_total_shots before execution.")
         point = plan.recorder.native_values()
         if derivative:
+            from quantumbridge.execution.array_reservations import scope_array, matmul_layout, matmul_into
+            from quantumbridge.execution.array_ownership import retained_array
+            from quantumbridge.execution.resource_context import current_resources
+            scope = current_resources()
+            classical = scope_array(scope, "ordinary_native_classical_map",
+                (len(plan.recorder.parameters), self.size), float,
+                lambda: plan.recorder.classical_jacobian(self.size))
             value, matrix, spec = plan.jacobian(point, **self.node.gradient_kwargs)
-            matrix = matrix @ plan.recorder.classical_jacobian(self.size)
+            shape, dtype = matmul_layout(matrix, classical)
+            mapped = retained_array(scope.ledger, "ordinary_native_mapped_jacobian", shape, dtype)
+            matmul_into(matrix, classical, mapped, scope=scope)
+            matrix = mapped
             self.limits.check("max_total_shots", plan.metadata.get("total_physical_shots", plan.metadata.get("gradient_physical_shots", 0)))
         else:
             value = plan.evaluate(point)
@@ -249,6 +331,7 @@ class NativeHostKernel:
             work = second_work(plan, point, classical, second_map, direction, limits)[3]
         return plan, point, classical, second_map, limits, work
 
+    @_host_resources
     def run_second(self, values, *, direction=None, remaining_shots=None):
         prepared = self.prepare_second(values, direction=direction, remaining_shots=remaining_shots)
         return self._execute_second(prepared, direction)
@@ -265,6 +348,7 @@ class NativeHostKernel:
         return flat, matrix, second, {**plan.metadata, "interface": self.interface, "higher_order": True,
                                     "native_"+self.interface: True, "native_quantum_derivative": True}
 
+    @_host_resources
     def run_second_transpose(self, values, incoming):
         """Transpose the linear HVP map without building an output Hessian.
 

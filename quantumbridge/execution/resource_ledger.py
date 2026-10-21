@@ -6,6 +6,7 @@ from copy import deepcopy
 from collections import deque
 from numbers import Integral
 from threading import RLock
+import numpy as np
 
 from .derivative_status import ResourceLimitError
 from .resource_limits import resolve_unified_limits
@@ -19,8 +20,9 @@ def _counts(**values):
 
 
 class _Reservation:
-    def __init__(self, ledger, category, amounts):
+    def __init__(self, ledger, category, amounts, *, resident=False):
         self.ledger, self.category, self.amounts = ledger, category, amounts
+        self.resident = resident
         self.released = False
 
     def __enter__(self):
@@ -39,10 +41,15 @@ class _Reservation:
                 for name, value in self.amounts.items():
                     account._reserved[name] -= value
                 account._released_memory += self.amounts["memory_bytes"]
+                if self.resident:
+                    account._resident_memory -= self.amounts["memory_bytes"]
+                    account._released_resident_memory += self.amounts["memory_bytes"]
                 account._event("release", self.category, self.amounts)
             self.released = True
 
     def observe(self, memory_bytes):
+        if self.resident:
+            raise ValueError("Resident admission is not a new owned-array allocation observation.")
         memory_bytes = _counts(memory_bytes=memory_bytes)["memory_bytes"]
         with self.ledger._lock:
             if self.released:
@@ -73,6 +80,46 @@ class _Reservation:
                 self.amounts[name] -= values[name]
 
 
+class _ResidentLease:
+    def __init__(self, ledger, roots, request_token):
+        self.ledger, self.released = ledger, False
+        unique = {(request_token, id(root)): root for root in roots}
+        self.roots = tuple(unique.values())
+        if any(type(root) is not np.ndarray or not root.flags.owndata or root.flags.writeable
+               for root in self.roots):
+            raise ValueError("Resident admission requires identified immutable owned ndarray roots.")
+        self.keys = tuple(unique)
+        with ledger._lock:
+            needed = sum(root.nbytes for key, root in unique.items() if key not in ledger._resident_roots)
+            ledger._check({"memory_bytes": needed, "tapes": 0, "shots": 0, "derivative_work": 0},
+                stage="resident_admission")
+            for key, root in unique.items():
+                if key in ledger._resident_roots:
+                    ledger._resident_roots[key][0] += 1
+                else:
+                    ticket = ledger.reserve("resident_storage_admission", memory_bytes=root.nbytes, _resident=True)
+                    ledger._resident_roots[key] = [1, ticket]
+
+    def __enter__(self):
+        if self.released: raise ValueError("Cannot reopen a released resident lease.")
+        return self
+
+    def __exit__(self, *exception):
+        self.release()
+
+    def release(self):
+        with self.ledger._lock:
+            if self.released: return
+            for key in self.keys:
+                record = self.ledger._resident_roots[key]
+                record[0] -= 1
+                if record[0] == 0:
+                    record[1].release()
+                    del self.ledger._resident_roots[key]
+            self.roots = ()
+            self.released = True
+
+
 class UnifiedResourceLedger:
     """Child accounts constrain their subtree and share every ancestor's cap.
 
@@ -97,6 +144,10 @@ class UnifiedResourceLedger:
         self._observed, self._unavailable, self._events = {}, {}, deque(maxlen=4096)
         self._event_count = 0
         self._reserved_memory = self._released_memory = 0
+        self._resident_memory = self._resident_total = self._released_resident_memory = 0
+        self._resident_peak = self._new_memory_peak = 0
+        self._resident_roots = {}
+        self._default_resident_token = object()
 
     def _accounts(self):
         account = self
@@ -132,7 +183,7 @@ class UnifiedResourceLedger:
             self._check(values, stage="preflight")
         return values
 
-    def reserve(self, category, *, memory_bytes=0, tapes=0, shots=0, derivative_work=0):
+    def reserve(self, category, *, memory_bytes=0, tapes=0, shots=0, derivative_work=0, _resident=False):
         if not isinstance(category, str) or not category:
             raise ValueError("Resource category requires a nonempty name.")
         values = _counts(memory_bytes=memory_bytes, tapes=tapes, shots=shots, derivative_work=derivative_work)
@@ -143,8 +194,19 @@ class UnifiedResourceLedger:
                     account._reserved[name] += value
                     account._peak[name] = max(account._peak[name], account._reserved[name])
                 account._reserved_memory += memory_bytes
-                account._event("reserve", category, values)
-        return _Reservation(self, category, values)
+                if _resident:
+                    account._resident_memory += memory_bytes
+                    account._resident_total += memory_bytes
+                    account._resident_peak = max(account._resident_peak, account._resident_memory)
+                account._new_memory_peak = max(account._new_memory_peak,
+                    account._reserved["memory_bytes"]-account._resident_memory)
+                account._event("reserve", category, {**values, "resident_admission": _resident})
+        return _Reservation(self, category, values, resident=_resident)
+
+    def borrow_resident(self, roots, *, request_token=None):
+        """Charge each immutable root once in this request, not as a new copy."""
+        return _ResidentLease(self, roots,
+            self._default_resident_token if request_token is None else request_token)
 
     def consume(self, *, shots=0, derivative_work=0, tapes=0, category="execution"):
         values = _counts(shots=shots, derivative_work=derivative_work, tapes=tapes)
@@ -162,8 +224,15 @@ class UnifiedResourceLedger:
 
     def receipt(self):
         with self._lock:
-            return deepcopy({"protocol_version": 1, "scope": "owned numerical resources, not process RSS",
+            return deepcopy({"protocol_version": 1, "scope": "native allocation reservations plus resident admission, not process RSS",
                 "live_memory_bytes": self._reserved["memory_bytes"], "active_tapes": self._reserved["tapes"],
+                "request_resident_charge_bytes": self._resident_memory,
+                "total_resident_charge_bytes": self._resident_total,
+                "total_released_resident_charge_bytes": self._released_resident_memory,
+                "peak_resident_charge_bytes": self._resident_peak,
+                "local_resident_storage_count": len(self._resident_roots),
+                "request_new_allocation_reserved_bytes": self._reserved["memory_bytes"]-self._resident_memory,
+                "peak_new_allocation_reserved_bytes": self._new_memory_peak,
                 "reserved_shots": self._reserved["shots"], "reserved_derivative_work": self._reserved["derivative_work"],
                 "consumed_shots": self._consumed["shots"], "consumed_tapes": self._consumed["tapes"],
                 "consumed_derivative_work": self._consumed["derivative_work"],

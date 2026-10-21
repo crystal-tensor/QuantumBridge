@@ -12,6 +12,7 @@ from quantumbridge.core.classical import UnsupportedFeature
 from quantumbridge.diff.trace import unflatten_tree
 from .native_host import MissingOptionalDependency, NativeHostKernel
 from .qnode_autodiff import _leaves
+from .tensorflow_callbacks import ordinary_status_code
 
 
 @dataclass(frozen=True)
@@ -101,9 +102,22 @@ def execute_tensorflow(node, args, kwargs, *, return_status=False):
         # Trace classical recording even in eager mode: float(x)/x.numpy()
         # cannot silently erase a trainable quantum parameter's graph.
         packed = prepare(*args, **kwargs) if not tf.executing_eagerly() else tf.function(prepare, autograph=False)(*args, **kwargs)
-    kernel, dtype = kernels[-1], packed.dtype
+    kernel, dtype = kernels.pop(), packed.dtype
+    # The classical recording FuncGraph can outlive its tracing callable.
+    # Its closure must not become another persistent owner of quantum kernels.
+    kernels.clear()
     numpy_dtype = dtype.as_numpy_dtype
     graph = not tf.executing_eagerly()
+    if graph:
+        from .tensorflow_graph import TensorFlowGraphKernel
+        node.last_metadata = {"interface": "tensorflow", "execution": "CPU host callback",
+            "trace_configuration_only": True,
+            "callback_budget_semantics": "logical forward/backward per QNode call; not global TF scheduling",
+            "observed_callback_count": "not reported from tracing",
+            "runtime_failure": "explicit tensorflow_with_status or graph assertion"}
+        flat, status = TensorFlowGraphKernel(kernel, dtype, return_status=return_status).evaluate(0, (packed,))
+        result = unflatten_tree(flat, kernel.spec, reshape=tf.reshape)
+        return (result, status) if return_status else result
     forward_metadata = {}
     backward_calls = 0
     observed_shots = 0
@@ -141,9 +155,7 @@ def execute_tensorflow(node, args, kwargs, *, return_status=False):
         try:
             return host(values, derivative, direction)
         except Exception as error:
-            while error.__cause__ is not None:
-                error = error.__cause__
-            code = 2 if isinstance(error, UnsupportedFeature) else 3 if isinstance(error, MemoryError) else 1 if isinstance(error, (ValueError, FloatingPointError)) else 4
+            code = ordinary_status_code(error)
         arrays = (np.full((kernel.output_size,), np.nan, numpy_dtype),)
         if derivative:
             arrays += (np.full((kernel.output_size, kernel.size), np.nan, numpy_dtype),)
@@ -153,22 +165,9 @@ def execute_tensorflow(node, args, kwargs, *, return_status=False):
 
     def evaluate(values, derivative, direction=None):
         limits.check("max_callback_executions", 3 if derivative == 2 else 2 if derivative else 1)
-        if graph:
-            node.last_metadata = {"interface": "tensorflow", "execution": "CPU host callback",
-                                  "trace_configuration_only": True,
-                                  "callback_budget_semantics": "logical forward/backward per QNode call; not global TF scheduling",
-                                  "observed_callback_count": "not reported from tracing",
-                                  "runtime_failure": "explicit tensorflow_with_status or graph assertion"}
-            with tf.device("/CPU:0"):
-                callback = (lambda x, vector: checked(x, derivative, vector)) if derivative == 2 else (lambda x: checked(x, derivative))
-                inputs = [values, direction] if derivative == 2 else [values]
-                outputs = tf.numpy_function(callback, inputs,
-                                            [dtype, dtype, dtype, tf.int32] if derivative == 2 else [dtype, dtype, tf.int32] if derivative else [dtype, tf.int32],
-                                            stateful=True, name="quantumbridge_native_derivative" if derivative else "quantumbridge_native_forward")
-        else:
-            vector = direction.numpy() if derivative == 2 else None
-            arrays = checked(values.numpy(), derivative, vector) if return_status else host(values.numpy(), derivative, vector)
-            outputs = [tf.convert_to_tensor(value) for value in arrays]
+        vector = direction.numpy() if derivative == 2 else None
+        arrays = checked(values.numpy(), derivative, vector) if return_status else host(values.numpy(), derivative, vector)
+        outputs = [tf.convert_to_tensor(value) for value in arrays]
         outputs[0].set_shape((kernel.output_size,))
         if derivative:
             outputs[1].set_shape((kernel.output_size, kernel.size))

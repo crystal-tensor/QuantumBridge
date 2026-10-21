@@ -3,7 +3,6 @@
 # This file is part of QuantumBridge SDK.
 # This implementation is developed for the QuantumBridge native architecture.
 
-from copy import deepcopy
 
 from quantumbridge.core import Circuit
 from .measurements import MeasurementRequest, normalize_wires
@@ -42,9 +41,10 @@ class Tape:
         self.output_tree = tree
         return self
 
-    def copy(self):
+    def copy(self, *, _copy_memo=None):
         """Copy owned structure without detaching scalar parameter graphs."""
-        memo = {id(self.parameter_transform): self.parameter_transform}
+        memo = {} if _copy_memo is None else dict(_copy_memo)
+        memo[id(self.parameter_transform)] = self.parameter_transform
         from quantumbridge.utils.math import Hamiltonian
         measurements = [self.observable, self.output_tree, *self.measurements]
         coefficient_seen = set()
@@ -72,7 +72,8 @@ class Tape:
                 node = operation.metadata.get("control_node")
                 if node is not None:
                     pending.extend(node.bodies)
-        return deepcopy(self, memo)
+        from quantumbridge.execution.array_ownership import native_configuration_copy
+        return native_configuration_copy(self, memo=memo, category="native_tape_array_copy")
 
     def _record_measurement(self, request: MeasurementRequest):
         self.measurements.append(request)

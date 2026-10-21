@@ -116,7 +116,8 @@ class ExecutionPlan:
         else:
             if width > 10: raise UnsupportedFeature("finite_shot_observable", "Large finite-shot observables require Pauli/Hamiltonian form.")
             matrix = observable_matrix(observable, width)
-            if matrix.shape != (1 << width, 1 << width) or not np.allclose(matrix, matrix.conj().T): raise ValueError("Sampled observable must be Hermitian.")
+            from quantumbridge.utils.math import validate_observable_matrix
+            if not validate_observable_matrix(matrix, width, atol=1e-8, rtol=1e-5): raise ValueError("Sampled observable must be Hermitian.")
             eigenvalues, vectors = np.linalg.eigh(matrix)
             rotated = circuit.copy().unitary(vectors.conj().T, list(range(width)))
             labels = device.sample(rotated, shots=shots, seed=seed)
@@ -130,7 +131,7 @@ class ExecutionPlan:
             return self._evaluate(values, linear, sampling_seed=sampling_seed)
         from quantumbridge.execution.derivative_planning import device_working_bytes
         ledger = resources.ledger
-        workspace = device_working_bytes(self.node.device, self.circuit)
+        workspace = device_working_bytes(self.node.device, self.circuit, mps_external_only=True)
         with ledger.reserve("native_device_workspace", memory_bytes=workspace), ledger.reserve("active_native_tape", tapes=1):
             result = self._evaluate(values, linear, sampling_seed=sampling_seed)
             return result

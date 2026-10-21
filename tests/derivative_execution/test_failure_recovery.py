@@ -106,6 +106,13 @@ def test_complex_circuit_bindings_are_not_silently_cast_real():
 
 def test_second_adjoint_shared_work_and_separate_state_reservations(monkeypatch):
     from quantumbridge.diff.qnode_engine import ExecutionPlan
+    from quantumbridge.execution import UnifiedResourceLedger
+    categories = set()
+    event = UnifiedResourceLedger._event
+    def observe(ledger, action, category, amounts):
+        if action == "reserve":categories.add(category)
+        return event(ledger, action, category, amounts)
+    monkeypatch.setattr(UnifiedResourceLedger, "_event", observe)
     monkeypatch.setattr(ExecutionPlan, "shift_recipe", lambda *a: pytest.fail("second adjoint cannot shift"))
     def repeated(count):
         def fn(t, x):
@@ -114,10 +121,11 @@ def test_second_adjoint_shared_work_and_separate_state_reservations(monkeypatch)
         return Request(QNode(fn, 1, max_diff=2), (.003,), method="second_adjoint",
             derivative_order=2, derivative_kind="hvp", tangent=.4)
     one = StatevectorDevice().execute_derivatives(repeated(1))
+    categories.clear()
     many = StatevectorDevice().execute_derivatives(repeated(64))
     np.testing.assert_allclose(many.derivative, -.4*64**2*np.cos(64*.003), atol=1e-9)
     assert many.receipt["consumed_derivative_work"]-one.receipt["consumed_derivative_work"] == 2*63*2*19
-    categories = {event["category"] for event in many.receipt["events"] if event["action"] == "reserve"}
+    # The bounded receipt can omit old events; observe real reservations instead.
     assert {"adjoint_forward_states", "adjoint_tangent_states", "adjoint_reverse_states",
             "adjoint_temporary_states", "adjoint_local_matrices", "retained_derivative_buffers"} <= categories
     assert many.receipt["consumed_tapes"] == many.metadata["second_order_work"]["tape_count"] == 2

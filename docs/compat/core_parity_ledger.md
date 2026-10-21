@@ -1,6 +1,17 @@
 # Core Functional Parity Ledger
 
-Updated: 2026-10-21, Stage 11P-C3 IN_PROGRESS, starting from committed C2A `d05ad74`.
+Updated: 2026-10-21, Stage 11P-C3-R1 IN_PROGRESS, starting from C3 checkpoint `71f211d`.
+
+Task 3E development extends prior allocation/ownership to named gates, builtin
+noise, six native channel representations, dense evolution/reset, integer
+powers and Aer analytic ensembles. Actual analytic phase/wire/generalized-map
+and view-lifetime tests are recorded in the R1 report. This is not new full
+SDK parity: tableau internals and unrelated public methods remain unclosed,
+despite fresh final Task 3E three-environment FULL and complete matrix exits 0.
+Coverage is 90.17352569642976% with 68 exclusions, not SDK function coverage;
+seven optional matrix subsets were unavailable and not executed. Known pip
+conflicts and exact receipts remain in the R1 report. Full replacement is
+ACTIVE/INCOMPLETE and R1/C3 remains PARTIAL.
 This is the single current-status view. Full Qiskit/PennyLane functional
 replacement remains **incomplete**. Line coverage, inventories, passthrough and
 green CI are not proof of complete API coverage.
@@ -46,6 +57,57 @@ publication/exact-SHA CI is a separate receipt, not inferred from prior CI.
 | Quafu/QOS-UQCI/industry taxonomy | PARTIAL: offline target/configuration and existing adapters, four categories/19 subdomains | Real authorized backend/job evidence and complete industry workflows |
 
 ## Stage 11P-C3 Work In Progress
+
+C3-R1 development now pre-reserves mapped native arrays and controlled
+contraction workspace, and binds ordinary Torch/Autograd native graph storage
+to actual buffer lifetimes. Generic framework callback registrations no longer
+capture every invocation owner. Actual weak-reference and failure/reuse tests
+pass in focused runs; final R1 full gates and universal ownership remain open.
+Public Device derivative results also retain native array leases until the
+last root/view dies. Known Tape/host-device arrays copy through a pre-reserved
+memo inside active scopes; returned status errors drop execution tracebacks.
+Known JAX/TF kernel ndarray snapshots now have a separate persistent pool and
+per-request resident admission. Classical derivative-map tracing no longer
+recopies a kernel. Focused public compiled-query tests cover lifetime, reuse,
+low-cap status and concurrent native requests. This does not close all foreign
+configuration/closure storage, ordinary graph-wide ownership or allocator gaps.
+See the [R1 progress report](../implementation/stage11p_c3_r1_resource_ownership_report.md).
+
+Further focused tests cover ordinary TF eager/compiled/nested/persistent tape
+and ConcreteFunction ownership with actual first/second derivatives. Unknown
+foreign persistent-copy protocols reject before dispatch. Strided output trees
+now reserve real flatten/reconstruction copies and retain their actual roots.
+These are bounded native contracts, not complete framework graph/RSS budgets;
+MPS QR/SVD/contraction site ownership and final R1 acceptance remain open.
+
+Task 3 now adds per-root reservations around the native MPS constructor,
+QR/SVD, contraction and reduction buffers, with failure rollback, source
+adoption, raw Result/view and concurrent-request tests. Live labeled native
+MPS snapshots now retain roots through Context/Result/Job, with defensive
+copies, conditional/pershot nesting and 100-wire no-dense tests. Existing
+serialized data()/JSON behavior remains; JSON imports do not reconstruct the
+new native snapshot map. Completed MPS shots survive later failure without
+double-charging nested meters; unknown partial work stays unavailable.
+This remains partial: general serialization/observable/validation scratch,
+complete failure auditing and final frozen-source R1 coverage/matrix gates
+still require evidence. The existing
+external-workspace allowance is conservative, not an observed RSS bound.
+
+The next slice adds scoped dense Pauli/observable/IR output leases, explicit
+Hermitian validation scratch, single-root Result state/density and snapshot
+array imports, and bounded existing JSON wrappers. Native QubitHamiltonian
+support was restored after an actual H2 regression exposed an incomplete
+conversion whitelist. JSON numeric/label/depth/byte limits are configurable;
+Python containers, decoder internals and allocator peaks are not owned ndarray
+measurements. Foreign matrix factories are explicitly unsupported under a
+managed scope. Known other gate/Kraus/sparse conversion allocations and final
+R1 coverage/matrix gates remain open; full SDK parity is not claimed.
+
+Task 3D adds column-arena unitary/Kraus validation, controlled CP/TP checks for
+six native channel representations, separate direct Pauli CSR roots and
+transactional dense-snapshot aggregates. Known general gate-construction,
+channel-algebra and full-engine allocations are still not certified. These
+scoped fixes remain PARTIAL and must not be counted as full SDK function parity.
 
 Real native Device request dispatch now exists for Circuit/Tape/QNode sources,
 Jacobian/VJP/JVP/Hessian/HVP and analytic Statevector second adjoint. Focused

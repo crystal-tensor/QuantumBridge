@@ -3,12 +3,13 @@
 """Actual 100-qubit Device derivative path with separate budget boundaries."""
 
 from dataclasses import replace
+import gc
 
 import numpy as np
 import pytest
 
 from quantumbridge import Hamiltonian, PauliZ, StatevectorDevice, DensityMatrixDevice, MatrixProductStateDevice
-from quantumbridge.execution import DerivativeExecutionRequest as Request, UnifiedExecutionLimits as Limits
+from quantumbridge.execution import DerivativeExecutionRequest as Request, UnifiedExecutionLimits as Limits, UnifiedResourceLedger as Ledger
 from quantumbridge.information.matrix_product_state import MatrixProductState
 from quantumbridge.qml import QNode
 from quantumbridge.transforms import TransformProgram, merge_rotations, split_non_commuting
@@ -27,11 +28,12 @@ def test_100_qubit_device_hvp_has_no_dense_path_and_real_budget_boundaries(monke
     device = MatrixProductStateDevice(max_bond_dim=4, max_memory_mb=2, cutoff=0)
     node = TransformProgram((merge_rotations, split_non_commuting))(QNode(circuit, 100, device=device, max_diff=2))
     request = Request(node, (.3,), derivative_order=2, derivative_kind="hvp", tangent=1.)
-    result = device.execute_derivatives(request)
+    ledger = Ledger()
+    result = device.execute_derivatives(request, ledger=ledger)
     assert result.code == 0
     np.testing.assert_allclose([result.value, result.derivative], [np.cos(.3), -np.cos(.3)], atol=1e-10)
     receipt = result.receipt
-    assert receipt["live_memory_bytes"] == receipt["active_tapes"] == receipt["consumed_shots"] == 0
+    assert receipt["live_memory_bytes"] > 0 and receipt["active_tapes"] == receipt["consumed_shots"] == 0
     assert receipt["consumed_tapes"] == result.metadata["second_order_work"]["tape_count"] == 8
     assert "mps_svd_allocator_peak" in receipt["unavailable"]
     assert "mps_svd_allocator_peak" not in receipt["observed_array_bytes"]
@@ -52,3 +54,6 @@ def test_100_qubit_device_hvp_has_no_dense_path_and_real_budget_boundaries(monke
     monkeypatch.setattr(MatrixProductStateDevice, "_branches", forbidden)
     failed = device.execute_derivatives(replace(request, limits=Limits(max_total_memory_bytes=boundary)), return_status=True)
     assert failed.code == 3 and failed.receipt["consumed_tapes"] == 0
+    del result
+    gc.collect()
+    assert ledger.receipt()["live_memory_bytes"] == 0

@@ -14,7 +14,7 @@ from quantumbridge.core.classical import UnsupportedFeature
 from quantumbridge.diff.trace import flatten_tree, unflatten_tree
 from .framework_derivatives import execute_mapped_derivative
 from .jax_autodiff import JAXBridgeLimits
-from .native_host import NativeHostKernel
+from .native_host import NativeHostKernel, describe_native_source
 
 
 def execute_jax_derivative_status(node, args, kwargs, *, kind, tangent=None):
@@ -52,8 +52,8 @@ def execute_jax_derivative_status(node, args, kwargs, *, kind, tangent=None):
 
     def pack(raw):
         source, recorder, program = owner._construct((raw.reshape(input_shape),), {}, prepare_only=True)
-        description = NativeHostKernel(owner, source, recorder, program, limits, validate_derivatives=False)
-        if description.size != kernel.size or description.spec != kernel.spec:
+        description = describe_native_source(owner, source, recorder, limits)
+        if len(description.angles) != kernel.size or description.spec != kernel.spec:
             raise UnsupportedFeature("jax_derivative_structure", "Derivative query source structure must be static.")
         return jnp.stack([jnp.asarray(a, dtype=x.dtype) for a in description.angles]) if description.angles else jnp.empty(0, x.dtype)
 

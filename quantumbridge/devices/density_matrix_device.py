@@ -53,23 +53,40 @@ class DensityMatrixDevice(NativeDeviceDerivatives):
 
     def _initial(self, width):
         from quantumbridge.information.density_matrix import DensityMatrix
+        from quantumbridge.execution.resource_context import current_resources
+        scope=current_resources()
 
         self._check_memory(width)
         dimension = 1 << width
         if self.initial_state is None:
-            density = np.zeros((dimension, dimension), dtype=complex)
+            if scope is None:density = np.zeros((dimension, dimension), dtype=complex)
+            else:
+                from quantumbridge.execution import mps_arrays as arrays
+                density=arrays.filled("density_initial",(dimension,dimension),complex,0)
             density[0, 0] = 1
             return density
         value = self.initial_state
-        if hasattr(value, "data") and not isinstance(value, np.ndarray):
-            value = value.data
-        density = np.asarray(value, dtype=complex)
+        if scope is None:
+            if hasattr(value, "data") and not isinstance(value, np.ndarray):value=value.data
+        else:
+            from quantumbridge.information.statevector import Statevector
+            if type(value) is DensityMatrix or type(value) is Statevector:value=value.data
+        if scope is None:density = np.asarray(value, dtype=complex)
+        else:
+            from quantumbridge.execution.array_reservations import numeric_array
+            density=numeric_array(value,category="density_initial_input")
         if density.ndim == 1:
-            density = np.outer(density, density.conj())
-        if density.shape != (dimension, dimension) or not np.all(np.isfinite(density)):
+            if scope is None:density = np.outer(density, density.conj())
+            else:
+                from quantumbridge.execution import mps_arrays as arrays
+                density=arrays.contracted(density[:,None],arrays.conjugated(density)[None,:])
+        if density.shape != (dimension, dimension) or scope is None and not np.all(np.isfinite(density)):
             raise ValueError("QuantumBridge initial state must match circuit width and contain finite values.")
         if not DensityMatrix(density).is_valid():
             raise ValueError("QuantumBridge initial density matrix must be positive, Hermitian and trace one.")
+        if scope is not None:
+            from quantumbridge.execution import mps_arrays as arrays
+            return arrays.copied(density,category="density_initial_copy")
         return np.array(density, copy=True)
 
     def _prepare(self, circuit, parameters=None):
@@ -88,6 +105,16 @@ class DensityMatrixDevice(NativeDeviceDerivatives):
 
     @staticmethod
     def _project(density, wire, outcome, width):
+        from quantumbridge.execution.resource_context import current_resources
+        if current_resources() is not None:
+            from quantumbridge.execution import mps_arrays as arrays
+            selected=tuple(index for index in range(1<<width) if ((index>>(width-1-wire))&1)==outcome)
+            probability=float(np.clip(sum(complex(density[index,index]).real for index in selected),0,1))
+            if probability<=0:return None,0.
+            result=arrays.filled("density_projection",density.shape,complex,0)
+            for row in selected:
+                for column in selected:result[row,column]=density[row,column]/probability
+            return result,probability
         mask = ((np.arange(1 << width) >> (width - 1 - wire)) & 1) == outcome
         probability = float(np.trace(density[np.ix_(mask, mask)]).real)
         probability = float(np.clip(probability, 0, 1))
@@ -106,16 +133,33 @@ class DensityMatrixDevice(NativeDeviceDerivatives):
 
     @staticmethod
     def _merge(branches):
+        from quantumbridge.execution.resource_context import current_resources
+        scope=current_resources()
+        if scope is not None:
+            from quantumbridge.execution import mps_arrays as arrays
         grouped = {}
         for density, bits, decisions, weight in branches:
             key = (tuple(bits), tuple(sorted(decisions.items())))
             if key in grouped:
                 value = grouped[key]
-                value[0] += density * weight
+                if scope is None:value[0] += density * weight
+                else:
+                    scaled=arrays.owned("density_merge_scaled",density.shape,complex)
+                    np.multiply(density,weight,out=scaled);np.add(value[0],scaled,out=value[0])
                 value[3] += weight
             else:
-                grouped[key] = [density * weight, bits, decisions, weight]
-        return [(value / weight, bits, decisions, weight) for value, bits, decisions, weight in grouped.values()]
+                if scope is None:scaled=density*weight
+                else:
+                    scaled=arrays.owned("density_merge_scaled",density.shape,complex)
+                    np.multiply(density,weight,out=scaled)
+                grouped[key] = [scaled, bits, decisions, weight]
+        if scope is None:return [(value / weight, bits, decisions, weight) for value, bits, decisions, weight in grouped.values()]
+        result=[]
+        for value,bits,decisions,weight in grouped.values():
+            normalized=arrays.owned("density_merge_normalized",value.shape,complex)
+            np.divide(value,weight,out=normalized)
+            result.append((normalized,bits,decisions,weight))
+        return result
 
     def _branches(self, circuit, program):
         if needs_dynamic_engine(circuit,self.noise_model):
@@ -166,7 +210,12 @@ class DensityMatrixDevice(NativeDeviceDerivatives):
             prefix = self._apply(prefix, kind, value, wires, width, metadata)
             offset += 1
         for _ in range(shots):
-            density, bits, decisions = prefix.copy(), [0] * circuit.num_bits, {}
+            from quantumbridge.execution.resource_context import current_resources
+            if current_resources() is None:density=prefix.copy()
+            else:
+                from quantumbridge.execution import mps_arrays as arrays
+                density=arrays.copied(prefix,category="density_trajectory_copy")
+            bits, decisions = [0] * circuit.num_bits, {}
             for kind, value, wires, metadata in program[offset:]:
                 if not condition_enabled(metadata, bits, decisions):
                     continue
@@ -188,6 +237,15 @@ class DensityMatrixDevice(NativeDeviceDerivatives):
 
     def density_matrix(self, circuit, parameters=None):
         bound, program = self._prepare(circuit, parameters)
+        from quantumbridge.execution.resource_context import current_resources
+        if current_resources() is not None:
+            from quantumbridge.execution import mps_arrays as arrays
+            dimension=1<<bound.num_qubits
+            result=arrays.filled("density_ensemble_output",(dimension,dimension),complex,0)
+            scratch=arrays.owned("density_ensemble_scaled",(dimension,dimension),complex)
+            for density,_,_,weight in self._branches(bound,program):
+                np.multiply(density,weight,out=scratch);np.add(result,scratch,out=result)
+            return result
         return sum(weight * density for density, _, _, weight in self._branches(bound, program))
 
     state = density_matrix
@@ -197,9 +255,17 @@ class DensityMatrixDevice(NativeDeviceDerivatives):
         remaining = tuple(wire for wire in range(circuit.num_qubits) if wire not in selected)
         order = selected + remaining
         axes = order + tuple(circuit.num_qubits + wire for wire in order)
-        tensor = self.density_matrix(circuit, parameters).reshape((2,) * (2 * circuit.num_qubits)).transpose(axes)
+        density=self.density_matrix(circuit,parameters)
+        from quantumbridge.execution.resource_context import current_resources
+        if current_resources() is None:tensor=density.reshape((2,)*(2*circuit.num_qubits)).transpose(axes)
+        else:
+            from quantumbridge.execution import mps_arrays as arrays
+            tensor=arrays.reshaped(density,(2,)*(2*circuit.num_qubits)).transpose(axes)
         size = 1 << len(selected)
         rest = 1 << len(remaining)
+        if current_resources() is not None:
+            shaped=arrays.reshaped(tensor,(size,rest,size,rest))
+            return arrays.einsum("aibi->ab",(size,size),shaped)
         return np.trace(tensor.reshape(size, rest, size, rest), axis1=1, axis2=3)
 
     def statevector(self, circuit, parameters=None):
@@ -214,17 +280,28 @@ class DensityMatrixDevice(NativeDeviceDerivatives):
     @staticmethod
     def _observable(observable, width):
         matrix = observable_matrix(observable, width)
-        if matrix.shape != (1 << width, 1 << width) or not np.all(np.isfinite(matrix)) or not np.allclose(matrix, matrix.conj().T, atol=1e-10, rtol=0):
+        from quantumbridge.utils.math import validate_observable_matrix
+        if not validate_observable_matrix(matrix, width):
             raise ValueError("QuantumBridge density observables must be finite Hermitian matrices matching the circuit.")
         return matrix
 
     def expectation(self, circuit, observable, parameters=None):
         density = self.density_matrix(circuit, parameters)
+        from quantumbridge.execution.resource_context import current_resources
+        if current_resources() is not None:
+            from quantumbridge.execution import mps_arrays as arrays
+            return float(np.trace(arrays.contracted(density,self._observable(observable,circuit.num_qubits))).real)
         return float(np.trace(density @ self._observable(observable, circuit.num_qubits)).real)
 
     def variance(self, circuit, observable, parameters=None):
         density = self.density_matrix(circuit, parameters)
         matrix = self._observable(observable, circuit.num_qubits)
+        from quantumbridge.execution.resource_context import current_resources
+        if current_resources() is not None:
+            from quantumbridge.execution import mps_arrays as arrays
+            product=arrays.contracted(density,matrix)
+            mean=np.trace(product).real
+            return max(0.,float(np.trace(arrays.contracted(product,matrix)).real-mean**2))
         mean = np.trace(density @ matrix).real
         return max(0.0, float(np.trace(density @ matrix @ matrix).real - mean ** 2))
 

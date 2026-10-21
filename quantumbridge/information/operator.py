@@ -45,7 +45,14 @@ def _bits_to_index(bits: list[int] | tuple[int, ...]) -> int:
 def _expand_subsystem_operator(data: np.ndarray, qargs: tuple[int, ...], num_qubits: int) -> np.ndarray:
     size = 1 << num_qubits
     sub_dim = 1 << len(qargs)
-    out = np.zeros((size, size), dtype=complex)
+    from quantumbridge.execution.resource_context import current_resources
+    if current_resources() is None:out = np.zeros((size, size), dtype=complex)
+    else:
+        from quantumbridge.execution.array_reservations import numeric_array, numeric_shape
+        from quantumbridge.execution import mps_arrays as arrays
+        if numeric_shape(data)!=(sub_dim,sub_dim):raise ValueError("Subsystem operator shape does not match qargs.")
+        data=numeric_array(data,category="subsystem_operator_input")
+        out=arrays.filled("subsystem_operator_expansion",(size,size),complex,0)
     for col in range(size):
         basis_bits = _index_to_bits(col, num_qubits)
         sub_col = _bits_to_index([basis_bits[qarg] for qarg in qargs])
@@ -73,7 +80,11 @@ class Operator:
     """Dense linear operator with a Qiskit quantum_info-like core API."""
 
     def __init__(self, data):
-        self.data = np.asarray(data, dtype=complex)
+        from quantumbridge.execution.resource_context import current_resources
+        if current_resources() is None:self.data = np.asarray(data, dtype=complex)
+        else:
+            from quantumbridge.execution.array_reservations import numeric_array
+            self.data=numeric_array(data,category="operator_input_conversion")
         if self.data.ndim != 2 or self.data.shape[0] != self.data.shape[1]:
             raise ValueError("QuantumBridge Operator data must be a square matrix.")
         self.num_qubits = _num_qubits_from_dim(self.data.shape[0])
@@ -110,32 +121,53 @@ class Operator:
         if circuit.has_dynamic_operations:
             raise ValueError("QuantumBridge Operator cannot represent measurement, reset or classical control flow as a unitary.")
         size = 1 << circuit.num_qubits
-        matrix = np.zeros((size, size), dtype=complex)
+        from quantumbridge.execution.resource_context import current_resources
+        scope=current_resources()
+        if scope is None:matrix = np.zeros((size, size), dtype=complex)
+        else:
+            from quantumbridge.execution import mps_arrays as arrays
+            matrix=arrays.filled("circuit_operator_output",(size,size),complex,0)
         for col in range(size):
-            state = np.zeros(size, dtype=complex)
+            state = np.zeros(size, dtype=complex) if scope is None else arrays.filled("circuit_operator_column",(size,),complex,0)
             state[col] = 1.0
             for op in circuit.operations:
                 if op.metadata.get("directive") and op.name in {"barrier", "delay"}:
                     continue
                 gate = gate_matrix(op.name, op.params, op.metadata)
                 state = apply_unitary(state, gate, op.controls + op.targets, circuit.num_qubits)
-            matrix[:, col] = np.exp(1j * float(circuit.global_phase)) * state
+            np.multiply(state,np.exp(1j*float(circuit.global_phase)),out=matrix[:,col])
         return cls(matrix)
 
     def is_unitary(self, atol: float = 1e-10) -> bool:
+        from quantumbridge.execution.resource_context import current_resources
+        if current_resources() is not None:
+            from quantumbridge.utils.math import validate_unitary_matrix
+            return validate_unitary_matrix(self.data,atol=atol,rtol=1e-5)
         eye = np.eye(self.data.shape[0], dtype=complex)
         return bool(np.allclose(self.data.conj().T @ self.data, eye, atol=atol))
 
     def adjoint(self) -> "Operator":
+        from quantumbridge.execution.resource_context import current_resources
+        if current_resources() is not None:
+            from quantumbridge.execution import mps_arrays as arrays
+            return Operator(arrays.conjugated(self.data).T)
         return Operator(self.data.conj().T)
 
     def transpose(self) -> "Operator":
         return Operator(self.data.T)
 
     def conjugate(self) -> "Operator":
+        from quantumbridge.execution.resource_context import current_resources
+        if current_resources() is not None:
+            from quantumbridge.execution import mps_arrays as arrays
+            return Operator(arrays.conjugated(self.data))
         return Operator(np.conjugate(self.data))
 
     def copy(self) -> "Operator":
+        from quantumbridge.execution.resource_context import current_resources
+        if current_resources() is not None:
+            from quantumbridge.execution.array_reservations import numeric_array
+            return Operator(numeric_array(self.data,copy=True,category="operator_copy"))
         return Operator(np.array(self.data, copy=True))
 
     def compose(self, other: "Operator", qargs=None, front: bool = False) -> "Operator":
@@ -146,6 +178,10 @@ class Operator:
             other_data = _expand_subsystem_operator(other.data, qargs_tuple, self.num_qubits)
         elif self.data.shape != other.data.shape:
             raise ValueError("QuantumBridge Operator compose requires equal dimensions unless qargs are provided.")
+        from quantumbridge.execution.resource_context import current_resources
+        if current_resources() is not None:
+            from quantumbridge.execution import mps_arrays as arrays
+            return Operator(arrays.contracted(other_data,self.data) if front else arrays.contracted(self.data,other_data))
         return Operator(other_data @ self.data if front else self.data @ other_data)
 
     def dot(self, other: "Operator", qargs=None) -> "Operator":
@@ -153,16 +189,26 @@ class Operator:
 
     def tensor(self, other: "Operator") -> "Operator":
         other = other if isinstance(other, Operator) else Operator(other)
+        from quantumbridge.execution.resource_context import current_resources
+        if current_resources() is not None:
+            from quantumbridge.execution import mps_arrays as arrays
+            from quantumbridge.execution.array_reservations import kron_into
+            out=arrays.owned("operator_tensor",(self.data.shape[0]*other.data.shape[0],)*2,complex)
+            kron_into(self.data,other.data,out,scope=current_resources())
+            return Operator(out)
         return Operator(np.kron(self.data, other.data))
 
     def expand(self, other: "Operator") -> "Operator":
         other = other if isinstance(other, Operator) else Operator(other)
+        from quantumbridge.execution.resource_context import current_resources
+        if current_resources() is not None:return other.tensor(self)
         return Operator(np.kron(other.data, self.data))
 
     def power(self, n: int) -> "Operator":
         if not isinstance(n, int):
             raise ValueError("QuantumBridge Operator power requires an integer exponent.")
-        return Operator(np.linalg.matrix_power(self.data, n))
+        from quantumbridge.execution import mps_arrays as arrays
+        return Operator(arrays.matrix_power(self.data, n))
 
     def tensorpower(self, n: int) -> "Operator":
         if not isinstance(n, int) or n < 0:
@@ -212,6 +258,10 @@ class Operator:
         )
 
     def to_matrix(self) -> np.ndarray:
+        from quantumbridge.execution.resource_context import current_resources
+        if current_resources() is not None:
+            from quantumbridge.execution.array_reservations import numeric_array
+            return numeric_array(self.data,copy=True,category="operator_matrix_export")
         return np.array(self.data, copy=True)
 
     def __matmul__(self, other: "Operator") -> "Operator":

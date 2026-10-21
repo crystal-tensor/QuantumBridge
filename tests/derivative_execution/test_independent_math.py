@@ -3,6 +3,7 @@
 """Independent mathematical Device contracts, not SDK implementation fixtures."""
 
 import numpy as np
+import gc
 
 from quantumbridge import Hamiltonian, PauliX, PauliZ, StatevectorDevice
 from quantumbridge.utils.math import PauliString
@@ -86,7 +87,7 @@ def test_identity_coefficient_mixed_curvature_has_no_quantum_work():
     assert result.receipt["consumed_tapes"] == result.receipt["consumed_shots"] == 0
 
 
-def test_seeded_finite_shift_hvp_is_an_estimate_with_actual_shots():
+def test_seeded_finite_shift_hvp_is_an_estimate_with_actual_shots(derivative_accounts):
     def fn(t, x):
         t.ry(x, 0)
         return t.expval(PauliZ(0))
@@ -96,4 +97,7 @@ def test_seeded_finite_shift_hvp_is_an_estimate_with_actual_shots():
     assert result.metadata["total_physical_shots"] == result.receipt["consumed_shots"] == 8*4096
     seeds = [entry["root_seed"] for entry in result.metadata["second_order_evaluations"]]
     assert len(set(seeds)) == len(seeds) == 8
-    assert result.receipt["live_memory_bytes"] == 0
+    assert result.receipt["live_memory_bytes"] > 0
+    del result
+    gc.collect()
+    assert all(account.receipt()["live_memory_bytes"] == 0 for account in derivative_accounts)

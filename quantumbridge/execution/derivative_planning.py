@@ -49,10 +49,10 @@ def _direction(request, args, size):
     arrays = [np.asarray(value) for value in selected]
     if any(value.dtype.kind not in "fiu" or not np.all(np.isfinite(value)) for value in arrays):
         raise ValueError("Derivative tangent must be finite and real.")
-    return np.concatenate([value.astype(float).reshape(-1) for value in arrays]).reshape(size)
+    return flatten_tree(tuple(arrays))[0]
 
 
-def device_working_bytes(device, circuit):
+def device_working_bytes(device, circuit, *, mps_external_only=False):
     """Conservative numerical buffers, not observed BLAS allocator memory."""
     width = circuit.num_qubits
     if getattr(device, "simulation", None) == "matrix_product_state":
@@ -64,9 +64,11 @@ def device_working_bytes(device, circuit):
         bonds = [1]*(max(0, width-1))
         initial = getattr(device, "initial_state", None)
         if initial is not None:
-            if not hasattr(initial, "tensors"):
+            from quantumbridge.information.matrix_product_state import MatrixProductState
+            if not isinstance(initial, MatrixProductState):
                 raise UnsupportedFeature("derivative_mps_dense_initial_state")
-            bonds = [tensor.shape[-1] for tensor in initial.tensors[:-1]]
+            # tensors returns owned copies; an estimate must only inspect shapes.
+            bonds = list(initial.bond_dimensions)
         cap = device.state_options["max_bond_dim"]
         largest = max(bonds, default=1)
         for operation in circuit.operations:
@@ -80,7 +82,10 @@ def device_working_bytes(device, circuit):
                     largest = max(largest, bonds[cut])
         dimensions = [1, *bonds, 1]
         stored = 16*sum(2*a*b for a, b in zip(dimensions, dimensions[1:]))
-        return int(12*stored+128*(2*largest)**2)
+        # Full estimates remain admission guards. During actual MPS execution,
+        # native tensor/output roots have individual leases; keep only the
+        # existing conservative external-workspace allowance here.
+        return int((0 if mps_external_only else 12*stored)+128*(2*largest)**2)
     if getattr(device, "simulation", None) == "exact_stabilizer":
         raise UnsupportedFeature("tableau_continuous_gradient")
     from quantumbridge.devices.density_matrix_device import DensityMatrixDevice

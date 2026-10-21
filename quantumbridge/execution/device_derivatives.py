@@ -7,14 +7,15 @@ from dataclasses import replace
 import numpy as np
 
 from .derivative_result import DerivativeExecutionResult
-from .derivative_status import classify_derivative_error
+from .derivative_status import classify_derivative_error, detach_status_error
 from .resource_context import ResourceScope, current_resources
 from .resource_ledger import UnifiedResourceLedger
 
 
 def _input_tree(array, prepared):
     from quantumbridge.diff.trace import unflatten_tree
-    items = [unflatten_tree(array[:, indices], prepared.output_spec, shape)
+    from .array_ownership import select_columns
+    items = [unflatten_tree(select_columns(array, indices), prepared.output_spec, shape)
              for shape, indices in prepared.layout]
     return items[0] if prepared.single else tuple(items)
 
@@ -35,7 +36,7 @@ def execute_device_derivatives(device, request, *, ledger=None, return_status=Fa
         ledger = UnifiedResourceLedger(requested_limits, parent=ledger)
     stage = "validation"
     try:
-        with ResourceScope(ledger) as scope:
+        with ResourceScope(ledger, new_request=True) as scope:
             prepared = (prepare_derivative if _prepare is None else _prepare)(device, request)
             plan, work = prepared.plan, prepared.work
             stage = "preflight"
@@ -44,7 +45,9 @@ def execute_device_derivatives(device, request, *, ledger=None, return_status=Fa
                 derivative_work=work["derivative_work"])
             # This conservatively holds child outputs/accumulators together;
             # transient device storage is separately reserved by each execution.
-            with ledger.reserve("retained_derivative_buffers", memory_bytes=prepared.buffer_bytes) as buffers:
+            buffers = ledger.reserve("retained_derivative_buffers", memory_bytes=prepared.buffer_bytes)
+            transferred = False
+            try:
                 stage = "execution"
                 ledger.consume(derivative_work=work["derivative_work"], category="planned_derivative_work")
                 matrix = second = None
@@ -79,11 +82,17 @@ def execute_device_derivatives(device, request, *, ledger=None, return_status=Fa
                     if value is not None and not np.all(np.isfinite(flatten_tree(value)[0])):
                         raise FloatingPointError("Native derivative output is nonfinite.")
                 actual_bytes = sum(flatten_tree(x)[0].nbytes for x in (base, derivative) if x is not None)
-                buffers.observe(actual_bytes)
+                from .array_ownership import native_storage_bytes, retain_reservation
+                returned_arrays = (base, derivative, matrix, second)
+                buffers.observe(max(actual_bytes, native_storage_bytes(returned_arrays)))
                 metadata = {**plan.metadata, "device_derivative_protocol": True,
                     "requested_method": request.method, "derivative_kind": request.derivative_kind,
                     "derivative_work_semantics": "charged planned native work for the attempted request, not measured CPU operations",
-                    "result_memory_semantics": "reservations end on return; caller-owned returned payload is not retained in this account"}
+                    "result_memory_semantics": "native result storage retains its conservative lease until its last array/view dies; receipts are snapshots"}
+                retain_reservation(buffers, returned_arrays)
+                transferred = True
+            finally:
+                if not transferred: buffers.release()
             result = DerivativeExecutionResult(base, derivative, metadata=metadata, jacobian=matrix, second=second)
         result.receipt = ledger.receipt()
         return result
@@ -92,7 +101,13 @@ def execute_device_derivatives(device, request, *, ledger=None, return_status=Fa
             stage=getattr(error, "stage", stage),
             device_method=getattr(request, "method", None), receipt=ledger.receipt())
         if return_status:
-            return DerivativeExecutionResult(status=failure.status, receipt=ledger.receipt(), error=failure)
+            detach_status_error(error)
+            detach_status_error(failure)
+            # Do not keep partial successful arrays in this active frame while
+            # taking the returned failure's post-cleanup snapshot.
+            prepared = plan = base = matrix = second = derivative = metadata = result = returned_arrays = None
+            failure.receipt = ledger.receipt()
+            return DerivativeExecutionResult(status=failure.status, receipt=failure.receipt, error=failure)
         raise failure from error
 
 

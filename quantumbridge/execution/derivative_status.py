@@ -48,6 +48,7 @@ class ResourceLimitError(DerivativeExecutionError, MemoryError):
 def classify_derivative_error(error, **context):
     """Do not include arbitrary exception messages or input data in graph receipts."""
     from quantumbridge.core.classical import UnsupportedFeature
+    from quantumbridge.serialization.errors import ResourceLimitError as SerializationResourceLimit
     while (type(error).__module__ == "quantumbridge.transforms.program"
            and type(error).__name__ == "TransformError" and error.__cause__ is not None):
         error = error.__cause__
@@ -59,7 +60,7 @@ def classify_derivative_error(error, **context):
     if isinstance(error, UnsupportedFeature):
         status, message = DerivativeExecutionStatus.UNSUPPORTED, "Unsupported native derivative path."
         context.setdefault("failed_operation", error.feature)
-    elif isinstance(error, MemoryError):
+    elif isinstance(error, (MemoryError, SerializationResourceLimit)):
         status, message = DerivativeExecutionStatus.RESOURCE_LIMIT, "Native derivative resource limit exceeded."
     elif isinstance(error, FloatingPointError):
         status, message = DerivativeExecutionStatus.NUMERICAL_FAILURE, "Native derivative produced a nonfinite numerical result."
@@ -68,3 +69,18 @@ def classify_derivative_error(error, **context):
     else:
         status, message = DerivativeExecutionStatus.NATIVE_RUNTIME_FAILURE, "Native derivative execution failed."
     return DerivativeExecutionError(status, message, **context)
+
+
+def detach_status_error(error):
+    """Status payloads carry safe fields, not traceback-owned native buffers.
+
+    The exception-raising API keeps ordinary tracebacks. A returned status is
+    deliberately not a deferred traceback/debugger retaining failed execution.
+    """
+    pending, seen = [error], set()
+    while pending:
+        current = pending.pop()
+        if id(current) in seen: continue
+        seen.add(id(current))
+        pending.extend(item for item in (current.__cause__, current.__context__) if item is not None)
+        current.__traceback__ = current.__cause__ = current.__context__ = None

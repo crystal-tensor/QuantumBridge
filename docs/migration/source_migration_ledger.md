@@ -1,6 +1,6 @@
 # Source Migration Ledger
 
-Status: Stage 11P-C3 derivative execution work in progress; C2A committed
+Status: Stage 11P-C3-R1 in progress; C3 checkpoint 71f211d committed
 Date: 2026-10-21
 
 This ledger retains historical release and checkpoint sections. Current work
@@ -8,6 +8,93 @@ uses Native Implementation, Adapter Integration and Upstream Dependency, with
 their boundaries stated separately. Historical checkpoint limitations are not
 the current status view; use core_parity_ledger.md for that view.
 No Source Port with Attribution was performed.
+
+## Stage 11P-C3-R1 In-Progress Source Inventory
+
+Independent Native Implementation; optional public classical framework/NumPy
+interfaces are behavioral references, not copied source. Zero implementation
+or test source ports; no SDK quantum engine, vendoring or credential work.
+Existing C3 files modified in this slice remain inventoried below.
+
+- `quantumbridge/execution/array_reservations.py`
+- `quantumbridge/execution/array_ownership.py`
+- `quantumbridge/execution/persistent_storage.py`
+- `quantumbridge/execution/mps_arrays.py`
+- `quantumbridge/utils/math.py`
+- `quantumbridge/ir/qb_ir.py`
+- `quantumbridge/operators/pauli.py`
+- `quantumbridge/operators/sparse_operator.py`
+- `quantumbridge/chemistry/qubit_hamiltonian.py`
+- `quantumbridge/compiler/pass_manager.py`
+- `quantumbridge/devices/density_matrix_device.py`
+- `quantumbridge/devices/execution.py`
+- `quantumbridge/information/channels.py`
+- `quantumbridge/information/operator.py`
+- `quantumbridge/information/statevector.py`
+- `quantumbridge/information/density_matrix.py`
+- `quantumbridge/information/stabilizer_state.py`
+- `quantumbridge/devices/statevector_device.py`
+- `quantumbridge/noise/channels.py`
+- `quantumbridge/noise/quantum_error.py`
+- `quantumbridge/diff/adjoint.py`
+- `quantumbridge/diff/second_adjoint.py`
+- `quantumbridge/schema/serialization.py`
+- `quantumbridge/serialization/limits.py`
+- `quantumbridge/information/matrix_product_state.py`
+- `quantumbridge/devices/matrix_product_state_device.py`
+- `quantumbridge/diff/qnode_engine.py`
+- `quantumbridge/execution/control_flow_engine.py`
+- `quantumbridge/simulator/snapshots.py`
+- `quantumbridge/simulator/aer.py`
+- `quantumbridge/results/result.py`
+- `quantumbridge/execution/resource_context.py`
+- `quantumbridge/execution/resource_ledger.py`
+- `quantumbridge/core/circuit.py`
+- `quantumbridge/interfaces/native_host.py`
+- `quantumbridge/interfaces/jax_derivative_status.py`
+- `quantumbridge/interfaces/tensorflow_derivative_status.py`
+- `quantumbridge/interfaces/tensorflow_autodiff.py`
+- `quantumbridge/interfaces/tensorflow_callbacks.py`
+- `quantumbridge/interfaces/tensorflow_graph.py`
+- `quantumbridge/diff/trace.py`
+- `tests/derivative_execution/test_array_reservations.py`
+- `tests/derivative_execution/test_einsum_workspace.py`
+- `tests/derivative_execution/test_native_mapping_preallocation.py`
+- `tests/derivative_execution/test_array_ownership.py`
+- `tests/derivative_execution/test_framework_array_preallocation.py`
+- `tests/derivative_execution/test_graph_resource_lifetime.py`
+- `tests/derivative_execution/conftest.py`
+- `tests/derivative_execution/test_device_result_ownership.py`
+- `tests/derivative_execution/test_native_configuration_ownership.py`
+- `tests/derivative_execution/test_persistent_storage.py`
+- `tests/derivative_execution/test_persistent_kernel_frameworks.py`
+- `tests/derivative_execution/test_persistent_copy_protocols.py`
+- `tests/derivative_execution/test_tensorflow_graph_ownership.py`
+- `tests/derivative_execution/test_tree_array_ownership.py`
+- `tests/derivative_execution/test_mps_array_resources.py`
+- `tests/derivative_execution/test_mps_snapshot_ownership.py`
+- `tests/derivative_execution/test_mps_partial_shots.py`
+- `tests/derivative_execution/test_observable_ir_allocations.py`
+- `tests/derivative_execution/test_result_decode_allocations.py`
+- `tests/derivative_execution/test_native_validation_allocations.py`
+- `tests/derivative_execution/test_native_gate_noise_allocations.py`
+- `tests/derivative_execution/test_native_channel_evolution_allocations.py`
+- `tests/derivative_execution/test_failure_recovery.py`
+- `tests/derivative_execution/test_initial_contracts.py`
+- `quantumbridge/qml/tape.py`
+- `docs/implementation/stage11p_c3_r1_allocation_audit.md`
+- `docs/implementation/stage11p_c3_r1_resource_ownership_report.md`
+
+Initial two corrected allocation and three graph-lifetime red tests were run
+before their production fixes. Focused green results are not final clean-tree
+R1 acceptance, full allocator control or complete Qiskit/PennyLane parity.
+
+Task 3E independently wraps existing native gate/noise/channel and dense
+evolution formulas with prior numeric-buffer ownership. Analytic gate and
+channel tests are authored from public mathematical identities, not copied
+SDK test source. No upstream implementation port, third-party quantum engine,
+vendoring or credential work. Explicit remaining allocation sites and fresh
+full-gate requirements are recorded in the R1 ownership report.
 
 ## Stage 11P-C3 In-Progress Source Inventory
 
