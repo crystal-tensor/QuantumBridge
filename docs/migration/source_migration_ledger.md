@@ -1,7 +1,7 @@
 # Source Migration Ledger
 
-Status: P0.5 native state arithmetic frozen tree e6f261f5 validated;
-tested production subtree c69bbb07; local code commit receipt follows actual commit;
+Status: P0.5 native state arithmetic local code 87076d5, frozen tree e6f261f5 validated;
+tested production subtree c69bbb07, committed full tree 81f453ac;
 P0.4 local code checkpoint 84623f0, frozen runtime 6b5b3927 validated;
 P0.3 local code checkpoint be9d5e3, frozen runtime 7a9ebe78 validated;
 P0.2-A local checkpoint 12098c9, frozen runtime 2973040c validated;

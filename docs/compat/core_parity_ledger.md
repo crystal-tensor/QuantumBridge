@@ -74,8 +74,9 @@ classes and the highest full independent replacement objective remain PARTIAL
 and ACTIVE / INCOMPLETE, respectively. No cloud or remote CI proof is implied.
 See [P0.1 progress](../implementation/stage12_a_p01_mixed_radix_progress.md).
 
-Updated: 2026-10-22, P0.5 frozen tree `e6f261f5`, tested production subtree
-`c69bbb07`; scoped local commit receipt follows actual commit. P0.4 local code
+Updated: 2026-10-22, P0.5 local code `87076d5`, frozen tree `e6f261f5`, tested
+production subtree `c69bbb07`, code full tree `81f453ac`; production/tests/examples
+are unchanged across frozen/export/workspace/staged/committed checks. P0.4 local code
 `84623f0`, tested runtime tree `6b5b3927`; P0.3 local code
 `be9d5e3`, tested runtime tree `7a9ebe78`, P0.2-A local code
 `12098c9`, tested runtime tree `2973040c`, local P0.1 code

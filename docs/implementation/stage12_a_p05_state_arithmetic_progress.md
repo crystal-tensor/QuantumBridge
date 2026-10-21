@@ -44,7 +44,13 @@ each with full .log and independent process .exit 0.
 Each version has 443 records excluding the version header: 417 calls and 24
 method signatures plus 2 tolerance-default records; 51 calls record exceptions.
 The complete canonical record SHA256 is identical in both sampled versions:
-004cc770a87e6d743e6bc4353df10331f7bc6f438b34c761760db26006ffa63f.
+9bca2e43f977adc99a847ea04199287758da8eee68dd8123c311f1d2ac4dae65.
+Canonicalization parses the JSONL records after the version header and uses
+Python json.dumps(records, sort_keys=True, ensure_ascii=True,
+separators=(',', ':')), UTF-8, without a trailing newline. The earlier recorded
+004cc770... digest did not retain reproducible serializer settings; this
+post-commit documentation correction replaces that ambiguous receipt only.
+The raw v4/final-v2 logs and all selected literal outcomes are unchanged.
 That is sampled version agreement, NOT 443 passing native tests, an exhaustive
 API inventory or proof of equality for all versions/inputs. Selected literal
 results are in the [public contract artifact](../compat/stage12_a_p05_public_state_arithmetic_contracts.json).
@@ -308,11 +314,38 @@ export legal is a separate, narrower receipt, not whole-workspace acceptance.
 After all required processes terminated, source/export runtime equality again
 exits 0 against the final v2 tree. Final receipt documentation is the only later
 change; FULL results apply to identical production/tests/examples, not a claim
-that later report text existed in the tested export. Only the eleven P0.5-owned
-paths are eligible for the scoped normal local commit. Final full-tree/SHA and
-staged/committed equality receipts will be added after the actual commit.
+that later report text existed in the tested export.
+
+Normal local code commit: 87076d532084f993842859318802ef8155455776,
+`feat: implement native state arithmetic and purity`, exactly eleven owned
+paths, 3862 insertions / 51 deletions. The normal staged full tree and committed
+full tree both equal the finalized candidate tree
+81f453ac88b7a9e71723edc243aa7b55ad87025b. Finalized candidate export:
+/tmp/qb-stage12a-p05-final-code.atFdcc/source. Its full export equality exits 0;
+frozen/candidate/committed production, tests and examples subtrees are identical.
+The final documentation export also passes fresh legal 4 tests / 0.23s and
+privacy/security 49 tests / 1 existing warning / 1.75s, both exits 0, with
+/tmp/qb-stage12a-p05-final-doc-{legal,privacy}.log and independent .exit files.
+Fresh final v2 public logs compare byte-identical to the earlier complete v4
+logs in each version. No gate process needed for this slice remains live.
+
+This post-commit SHA receipt and the next designated-conversation task are
+documentation only, not another runtime change or a second FULL acceptance.
 Existing user Studio/Router changes remain unstaged. No push/auth workaround,
 new-SHA remote CI, tag/release, vendoring or real hardware execution is claimed.
+
+### Designated Conversation Follow-Up
+
+The actual commit, complete terminal receipts, real Fraction refreeze and all
+known limits were sent to the authorized conversation. Its completed response
+accepts the reported bounded slice only, explicitly not an independent source/
+log/CI audit. The full next P0.6 Tasks 0-10, including the final commit and
+NOT_VERIFIED remote-CI paragraph, are saved in the
+[execution prompt](stage12_a_native_state_api_execution_prompt.md#stage-12-a-p06-received-execution-prompt).
+It requires first proving an actual subsystem permutation/reduction gap;
+already-correct functions must not be rewritten. If none is found, report
+NO_NEW_FUNCTIONAL_GAP rather than inventing an API or a false feature commit.
+No P0.6 functionality or acceptance is claimed by this P0.5 receipt.
 
 ## Remaining Goal
 

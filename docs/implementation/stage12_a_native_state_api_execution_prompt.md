@@ -1314,3 +1314,166 @@ Studio 最后，不在本批启动。
 最终执行要求：原样保留 Task 0-9，追加上述 Task 10-12，然后按完整 P0.5 Prompt 开始
 执行。本批完成后先报告真实运行和本地提交结果，再决定下一批核心函数开发；
 不提前扩大当前范围。
+
+## Stage 12-A P0.6 Received Execution Prompt
+
+Received 2026-10-22 from the designated conversation after reporting the actual
+P0.5 code SHA and terminal receipts. The complete reply ends at Task 10; its
+completion marker and full final text were read before saving. Formatting is
+normalized below, including the tensor-index equation transcribed as ASCII.
+This is a report-based task recommendation, not an independent source/log audit.
+
+### P0.5 有界判断及下一批选择
+
+根据你提供的完整执行记录，P0.5 可以认定为已完成本地受控验收的原生核心函数切片，
+并进入下一批开发。本次判断仅依据你的报告，不代表独立检查了本地源码、原始日志或
+远端 CI。本地提交 87076d532084f993...，完整 28 段 Matrix exit 0，Main FULL
+4032 passed，行覆盖率 90.6213%。
+
+Statevector/DensityMatrix 算术、复数 purity、混合维度传播、公开有效性校验及三条
+组合执行链已有原生计算和数学验证依据。发现 Fraction 回归之前的 v1 门禁已废弃，
+重新冻结 v2 并全量验证。验收范围限定在已验证函数。Density-Statevector coercion、
+tolerance 配置、公开异常契约、P0.2/P0.3 差分仍 Partial。既有 pip 冲突、七个
+NOT_EXECUTED 子集、Router 工作区 legal 失败、新 SHA 远端 CI 未验证均保留原状态。
+
+建议下一批是 Stage 12-A P0.6 - Native Mixed-Radix Subsystem Operations:
+Permutation, Reduction & Local State Algebra，不选择 channels，不重复 P0.5 算术。
+当前已有构造、演化、组合、期望和算术；应先确认子系统重排、维度跟踪和约化态操作
+的真实缺口，为 Circuit、channels、PennyLane wires 和 observable transforms 复用。
+不能凭应该有某方法就新增公开 API；先调查现有实现及 Qiskit 2.4.1/2.6 黑盒行为。
+已有正确 partial_trace、reverse、tensor 等只做回归，没有真实缺口不重写。
+
+### QuantumBridge Stage 12-A P0.6 - Native Mixed-Radix Subsystem Permutation & Reduction
+
+#### Task 0 - 基线、目标和硬边界
+
+当前已提交 HEAD: 87076d532084f993842859318802ef8155455776。
+P0.5 已完成本地受控验收。C3 仍为 PARTIAL。
+
+最终目标继续保持：独立原生实现 Qiskit/PennyLane 全部核心功能，真正的 full
+functional parity / full replacement，ACTIVE / INCOMPLETE。
+本批优先解决 Statevector/DensityMatrix 子系统排列和约化操作中的真实功能缺口，
+不是建立 facade、重写已有 state engine 或增加一轮资源管理工程。
+
+#### Task 1 - 先确认真实缺口
+
+先阅读 QuantumBridge 当前公开方法、原生实现及已有测试，确定以下能力是否正确实现：
+
+- Statevector/DensityMatrix 的 reverse_qargs() 或实际对应方法。
+- Statevector/DensityMatrix 子系统维度排列与传播。
+- DensityMatrix 的 reduced-state / partial-trace 真实入口。
+- partial_trace 对非连续、反向 qargs 的执行。
+- dims=(2,3,2)、(3,2,4) 等 mixed-radix 系统的子系统保留或丢弃。
+- 重排后的 evolve()、expectation_value()、probabilities()、measure() 调用。
+
+在 Qiskit 2.4.1/2.6 使用真实公开 API 黑盒核实方法、参数、返回类型、维度、qargs、
+异常行为。特别区分子系统置换（张量因子及对应振幅/矩阵索引排列）、Statevector
+数组反转（不一定等价于任意子系统置换）和 partial trace（对子系统求迹，不是矩阵块截取）。
+不得臆造 Qiskit 公共方法。如果公开 API 不支持任意 permutation，优先补现有原生操作
+实际能力，额外数学能力明确标记 QuantumBridge native extension。先形成函数级证据
+清单，已正确实现的只做回归，不重复开发。
+
+#### Task 2 - 建立真实 Red
+
+仅针对 Task 1 已证实缺口建立失败测试，优先考虑：
+
+1. (2,3,2) 的真实子系统反向排列，振幅索引正确变化。
+2. (2,3,4) 中不同维度子系统交换后的 output dims。
+3. (2,3,2) 保留第 0、2 子系统的约化 DensityMatrix。
+4. 保留子系统顺序不同造成的 output basis ordering 差异。
+5. 复相位纠缠态的 partial trace，非对角相干项。
+6. 非连续和 strided state/density 输入。
+7. 重排后局部 mapped evolve 数值及 dims。
+8. 重排后 local expectation 的 qargs 语义。
+9. 重复、越界、非法 subsystem targets。
+10. 输出数值正确但 dims 错误的反例。
+
+保存原始 red 日志及独立 exit，区分真实缺失、数学错误、公开兼容差异和测试设计错误。
+已经正确的项不得人为制造失败。
+
+#### Task 3 - 最小原生数学实现
+
+复用 Statevector/DensityMatrix、mixed-radix dimensions 和 stride/index、utils.math、
+native partial trace、现有 ResourceScope/ArrayOwnership。确实缺失的子系统重排使用
+受控张量轴排列或 mixed-radix basis-index 映射。对合法 permutation p，Statevector 满足：
+
+```text
+psi'[i_p(0), ..., i_p(n-1)] = psi[i_0, ..., i_n-1]
+```
+
+DensityMatrix 对行和列两组子系统索引施加同一个 permutation。真实 partial trace
+使用正确维度张量收缩，保证保留维度、复数非对角项、trace 正确；合法物理输入约化结果
+保持 Hermitian、PSD 和 trace；不把 qutrit/qudit 自动拆成 qubits。尽可能复用已有
+reshape/transpose/trace 数值路径，不另造 tensor simulator。
+
+#### Task 4 - 两套独立数学 Oracle
+
+Oracle A: mixed-radix 基态枚举，显式计算 input/output basis index，逐元素验证
+permutation/reduction。Oracle B: 独立 NumPy 张量轴排列和约化收缩，不调用 production
+helper。至少验证 product states、Bell-like/qudit-entangled states、非均匀复振幅、
+混合密度矩阵、不同子系统维度、非连续/反向 targets 和 reduced density 非对角元素。
+定义适用时置换与逆置换组合返回原态，不以仅比较概率/trace/purity 代替完整复矩阵比较。
+
+#### Task 5 - 真实组合执行
+
+至少两个独立 native 调用链：
+
+```text
+A: Mixed Statevector -> subsystem permutation/reverse -> mapped Operator evolve
+   -> local expectation
+B: Mixed Statevector -> DensityMatrix -> partial trace -> reduced DensityMatrix
+   -> expectation/purity
+```
+
+两条链都检验实际复数数值、子系统维度和 qargs；已有正确函数直接调用，不重新实现。
+
+#### Task 6 - 公开差分与兼容边界
+
+Qiskit 2.4.1/2.6 公开 API 黑盒验证实际可比操作，分别报告 native mathematics、public
+numerical equivalence、public metadata equivalence、public exception/return
+contract、native-only extension、Unsupported/Unverified。
+保留 native q0-first、dict probabilities、DensityMatrix shape-tuple dim 历史契约。
+不得修改 P0.2/P0.3 PUBLIC_DIFFERENTIAL_MISMATCH，不为逐字一致破坏独立数学正确性。
+
+#### Task 7 - 有界资源与回归
+
+只管理本批新增实际 ndarray 输出及已知临时 buffer，测试分配前预算、真实 root/view
+生命周期、非连续数组、维度积溢出、valid -> overbudget -> valid、拒绝后原态不变。
+不启动全局 allocator 审计，保护 P0.1-P0.5、C2A/C3、MPS 100-qubit、四框架、H2、
+QASM/QPY、Aer 和既有 Result/Snapshot。
+
+#### Task 8 - 功能范围停止条件
+
+只修复 Task 1 已证实的 subsystem permutation/reduction 缺口。若现有实现完整覆盖
+本批全部数学操作，不得为完成任务发明 API 或包装层；报告 NO_NEW_FUNCTIONAL_GAP，
+附现有原生调用证据，结束本批，不作虚假功能提交，下一阶段再选真实缺失核心函数。
+不扩展 general channels、circuit execution、RNG、fractional Operator.power、
+PennyLane Capture、Studio 或其他新方向。
+
+#### Task 9 - 最终冻结和完整门禁
+
+真实新增功能及专项回归完成后，冻结 production/tests/examples，记录唯一受测 tree SHA。
+同树执行：
+
+1. SDK-free FULL pytest。
+2. Main FULL pytest + explicit coverage。
+3. Alternate FULL pytest。
+4. 独立 JAX/TF、Torch/Autograd focused。
+5. 原始完整 28 段 scripts/run_local_matrix.sh，保存最终 shell exit。
+6. Compileall、controlled legal、privacy/security/no-token/no-vendor。
+7. 五环境真实版本、import origins、pipcheck。
+8. Frozen/export/workspace/staged/committed production/tests/examples 一致性。
+
+覆盖率基线 90.62125675806922%，excluded 68 不增加；不删测、不放宽容差、不新增
+exclusion 求通过。Finance/Optimization/ML/Dynamics/Metal/Experiments/Addons 缺依赖
+标 NOT_EXECUTED。QOS/Quafu/Runtime 离线结果不冒充真机。Whole dirty workspace Router
+ledger 失败与 controlled-export legal 通过分开报告，不改用户 Router；如实披露历史
+pip 冲突。真实回归保存失败证据、最小修复、重新冻结并重跑必要完整门禁。
+
+#### Task 10 - Scoped 本地提交
+
+所有必要门禁通过后，仅 stage 明确归属文件，核对 staged tree 与最终受测 tree，正常
+本地 commit，再核对 committed production/tests/examples 一致性，报告实际 SHA。
+不触碰用户 Studio/Router；不 push、不改认证/TLS、不读 token、不调用云/硬件、不
+vendor/tag/release、不 force/reset/rebase/amend。仅 Owner 后续明确恢复授权且完成
+fresh fast-forward 核验才重新考虑正常 push。新提交远端 CI 为 NOT_VERIFIED。
