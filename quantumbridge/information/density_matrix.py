@@ -9,7 +9,7 @@ import numpy as np
 
 from typing import Union
 
-from .statevector import Statevector, _sample_measurements, _tensor_arrays
+from .statevector import Statevector, _sample_measurements, _tensor_arrays, _mapped_evolution_data
 from quantumbridge.execution.resource_context import current_resources, meter_native_samples
 from .state_dimensions import (
     state_dimensions, qubit_count, basis_digits, basis_index, basis_label,
@@ -141,7 +141,6 @@ class DensityMatrix:
         from quantumbridge.information.channels import _QuantumChannel
         from quantumbridge.information.operator import Operator
 
-        if qargs is not None:require_qubits(self._dims,"mixed_radix_subsystem_evolution")
         if isinstance(operator, _QuantumChannel):
             require_qubits(self._dims,"mixed_radix_channel_evolution")
             return operator.evolve(self, qargs=qargs)
@@ -163,19 +162,15 @@ class DensityMatrix:
         op = Operator.from_circuit(operator) if hasattr(operator, "operations") else operator
         from quantumbridge.execution.resource_context import current_resources
         scope=current_resources()
+        native=type(op) is Operator if scope is not None else isinstance(op,Operator)
+        if qargs is not None or native and op.input_dims()!=op.output_dims():
+            from quantumbridge.utils.math import apply_density_operator
+            matrix,selected,outgoing,result_dims=_mapped_evolution_data(op,qargs,self._dims,density=True)
+            return DensityMatrix(apply_density_operator(self.data,matrix,selected,self.num_qubits,dims=self._dims,output_dims=outgoing),dims=result_dims)
         if scope is not None:
             from quantumbridge.information.channels import _operator_data
             matrix=_operator_data(op)
         else:matrix = np.asarray(op.to_matrix(), dtype=complex) if hasattr(op, "to_matrix") else np.asarray(op, dtype=complex)
-        if qargs is not None:
-            qargs_tuple = _validate_qargs(qargs, self.num_qubits)
-            dim = 1 << len(qargs_tuple)
-            if matrix.shape != (dim, dim):
-                raise ValueError("QuantumBridge subsystem evolution operator dimension must match qargs.")
-            if scope is not None:
-                from quantumbridge.utils.math import apply_density_operator
-                return DensityMatrix(apply_density_operator(self.data,matrix,qargs_tuple,self.num_qubits),dims=self._dims)
-            matrix = Operator(np.eye(self.data.shape[0], dtype=complex)).compose(Operator(matrix), qargs=qargs_tuple).data
         if matrix.shape != self.data.shape:
             raise ValueError("QuantumBridge evolution operator dimension must match DensityMatrix dimension.")
         if scope is not None:

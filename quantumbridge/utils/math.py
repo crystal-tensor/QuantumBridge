@@ -8,7 +8,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from math import cos, sin, sqrt
+from math import cos, sin, sqrt, prod
 from numbers import Integral, Real
 from typing import Iterable, Optional, Union
 
@@ -114,8 +114,83 @@ def validate_unitary_matrix(matrix, dimension=None, *, atol=1e-10, rtol=0):
     return bool(np.all(np.isfinite(matrix)) and np.allclose(matrix.conj().T @ matrix, np.eye(dimension), atol=atol, rtol=rtol))
 
 
-def apply_density_operator(density, operator, wires, num_qubits):
+def _local_operator_shapes(dimensions, targets, output_dims, *, density=False):
+    if len(output_dims)==len(targets):
+        outgoing=list(dimensions)
+        for position,dimension in zip(targets,output_dims):outgoing[position]=dimension
+        outgoing=tuple(outgoing)
+    elif targets==tuple(range(len(dimensions))):outgoing=tuple(output_dims)
+    else:raise ValueError("Local operator output dimensions must match the selected subsystem count.")
+    before,after=prod(dimensions),prod(outgoing)
+    shapes=((after,before),(after,after),(max(before,after),)) if density else ((after,),)
+    return outgoing,shapes
+
+
+def _local_operator_indices(dimensions, targets, output_dims):
+    from quantumbridge.information.state_dimensions import basis_digits, basis_index
+    outgoing,_=_local_operator_shapes(dimensions,targets,output_dims)
+    incoming=tuple(dimensions[position] for position in targets)
+    strides=tuple(prod(outgoing[position+1:]) for position in range(len(outgoing)))
+    replace_all=len(output_dims)!=len(targets)
+    for source in range(prod(dimensions)):
+        digits=basis_digits(source,dimensions)
+        column=basis_index(tuple(digits[position] for position in targets),incoming)
+        base=0 if replace_all else sum(digit*strides[position] for position,digit in enumerate(digits) if position not in targets)
+        for row in range(prod(output_dims)):
+            destination=row if replace_all else base+sum(digit*strides[position] for position,digit in zip(targets,basis_digits(row,output_dims)))
+            yield source,destination,row,column
+
+
+def _apply_mixed_operator(data, matrix, targets, dimensions, output_dims, *, density=False):
+    from quantumbridge.execution import mps_arrays as arrays
+    from quantumbridge.execution.array_reservations import numeric_shape, numeric_array, owned_arrays, array_layout
+    from quantumbridge.execution.resource_context import current_resources
+    from quantumbridge.information.state_dimensions import state_dimensions, subsystem_positions
+    scope=current_resources()
+    dimensions=state_dimensions(dimensions)
+    targets=subsystem_positions(targets,len(dimensions))
+    incoming=tuple(dimensions[position] for position in targets)
+    output_dims=incoming if output_dims is None else state_dimensions(output_dims)
+    outgoing,shapes=_local_operator_shapes(dimensions,targets,output_dims,density=density)
+    data_shape=numeric_shape(data) if scope is not None else np.shape(data)
+    matrix_shape=numeric_shape(matrix) if scope is not None else np.shape(matrix)
+    size=prod(dimensions)
+    if data_shape!=((size,size) if density else (size,)) or matrix_shape!=(prod(output_dims),prod(incoming)):
+        raise ValueError("Mixed-radix evolution dimensions do not match the numeric buffers.")
+    if scope is not None:
+        conversions=sum(array_layout(shape,complex)[2] for value,shape in ((data,data_shape),(matrix,matrix_shape))
+                        if not issubclass(type(value),np.ndarray) or np.ndarray.view(value,np.ndarray).dtype!=np.dtype(complex))
+        scope.ledger.preflight(memory_bytes=conversions+sum(array_layout(shape,complex)[2] for shape in shapes))
+        scope.ledger.unavailable("mixed_radix_scalar_iterator_workspace",
+            "Known input conversions, outputs and row scratch are admitted; Python index/scalar containers and hidden ufunc iterator workspace are not measured RSS.")
+        data=numeric_array(data,category="mixed_evolution_input")
+        matrix=numeric_array(matrix,category="mixed_evolution_operator")
+    else:
+        data=np.asarray(data,dtype=complex)
+        matrix=np.asarray(matrix,dtype=complex)
+    if not density:
+        output=arrays.filled("mixed_state_evolution_output",shapes[0],complex,0)
+        for source,destination,row,column in _local_operator_indices(dimensions,targets,output_dims):
+            output[destination]+=matrix[row,column]*data[source]
+        return output
+    # Admit both matrix products and their one reusable row/column scratch together.
+    first,output,scratch=owned_arrays([(shape,complex) for shape in shapes],category="mixed_density_evolution")
+    first.fill(0)
+    output.fill(0)
+    old_size,new_size=prod(dimensions),prod(outgoing)
+    for source,destination,row,column in _local_operator_indices(dimensions,targets,output_dims):
+        np.multiply(data[source,:],matrix[row,column],out=scratch[:old_size])
+        np.add(first[destination,:],scratch[:old_size],out=first[destination,:])
+    for source,destination,row,column in _local_operator_indices(dimensions,targets,output_dims):
+        np.multiply(first[:,source],complex(matrix[row,column]).conjugate(),out=scratch[:new_size])
+        np.add(output[:,destination],scratch[:new_size],out=output[:,destination])
+    return output
+
+
+def apply_density_operator(density, operator, wires, num_qubits, *, dims=None, output_dims=None):
     """Apply a local A rho A-dagger without constructing a full-system A."""
+    if dims is not None:
+        return _apply_mixed_operator(density,operator,wires,dims,output_dims,density=True)
     selected = tuple(wires)
     from quantumbridge.execution.resource_context import current_resources
     if current_resources() is not None:
@@ -339,7 +414,8 @@ def set_bit(index: int, wire: int, value: int, num_qubits: int) -> int:
     return (index | mask) if value else (index & ~mask)
 
 
-def apply_unitary(state: np.ndarray, matrix: np.ndarray, targets: tuple[int, ...], num_qubits: int) -> np.ndarray:
+def apply_unitary(state: np.ndarray, matrix: np.ndarray, targets: tuple[int, ...], num_qubits: int | None, *, dims=None, output_dims=None) -> np.ndarray:
+    if dims is not None:return _apply_mixed_operator(state,matrix,targets,dims,output_dims)
     targets = tuple(targets)
     size = 1 << num_qubits
     dim = 1 << len(targets)

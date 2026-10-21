@@ -1,6 +1,7 @@
 # Source Migration Ledger
 
-Status: bounded P0.1 local checkpoint 89f4dc9; R2 baseline b1d345b; C3 remains partial
+Status: P0.2-A frozen runtime 2973040c validated; P0.1 checkpoint 89f4dc9;
+R2 baseline b1d345b; C3 remains partial and full replacement incomplete
 Date: 2026-10-21
 
 This ledger retains historical release and checkpoint sections. Current work
@@ -8,6 +9,34 @@ uses Native Implementation, Adapter Integration and Upstream Dependency, with
 their boundaries stated separately. Historical checkpoint limitations are not
 the current status view; use core_parity_ledger.md for that view.
 No Source Port with Attribution was performed.
+
+## Stage 12-A P0.2-A Native Local Operator Inventory
+
+Independent Native Implementation; bounded frozen-runtime FULL/framework/matrix
+gates complete, scoped checkpoint pending. Public Qiskit APIs are black-box
+references in tests only, not a runtime engine. Observed public numerical
+differences remain unresolved compatibility rather than upstream defect claims.
+
+- `quantumbridge/information/operator.py`: actual input/output dimensions,
+  rectangular/nonbinary construction and correct existing numeric propagation.
+- `quantumbridge/information/statevector.py` and
+  `quantumbridge/information/density_matrix.py`: validated local/full typed
+  numeric maps and actual output subsystem propagation.
+- `quantumbridge/utils/math.py`: extend the existing native operator entry
+  points with shared mixed-radix index/stride mathematics and admitted outputs.
+- `quantumbridge/information/channels.py`: only a bounded typed-input guard for
+  unextended mixed-radix channel conversion, not general channel completion.
+- `tests/information/test_mapped_mixed_radix_operators.py`: independently authored
+  mathematical, public-reference, order, error, layout and lifetime cases.
+- `tests/information/test_mixed_radix_states.py`: retire only the obsolete numeric
+  mapped-evolve refusal assertion; preserve circuit/operator-conversion guards.
+- `docs/implementation/stage12_a_p02_mapped_operator_progress.md`: actual source,
+  red/recovery, public differences, supported/unsupported and actual gates.
+- `docs/compat/stage12_a_p02_public_differential_case.json`: generated literal
+  black-box numerical reproduction data, not upstream implementation/test code.
+
+No upstream source/test port, SDK engine, vendor, cloud, hardware, token/auth/TLS,
+tag/release, history rewrite or user Router/Studio change is part of this work.
 
 ## Stage 12-A P0.1 Native Mixed-Radix Inventory
 

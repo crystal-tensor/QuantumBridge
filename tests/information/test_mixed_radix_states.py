@@ -300,14 +300,13 @@ def test_mixed_radix_reverse_has_actual_permutation_and_reversed_dimensions(cls)
 
 
 @pytest.mark.parametrize("cls", [Statevector,DensityMatrix])
-def test_unsupported_mixed_radix_mapping_does_not_dispatch_binary_kernels(cls,monkeypatch):
+def test_unsupported_mixed_radix_circuit_and_operator_conversion_do_not_dispatch_binary_kernels(cls,monkeypatch):
     from quantumbridge import Circuit
     from quantumbridge.core.classical import UnsupportedFeature
     state=make_state(cls,(2,4))
     def forbidden(*a,**k):pytest.fail("Unsupported mixed-radix operation reached binary machinery")
     monkeypatch.setattr(np,"empty",forbidden)
     with ResourceScope(Ledger()):
-        with pytest.raises(UnsupportedFeature):state.evolve([[0,1],[1,0]],qargs=[0])
         with pytest.raises(UnsupportedFeature):state.evolve(Circuit(3).h(0))
         with pytest.raises(UnsupportedFeature):state.to_operator()
 

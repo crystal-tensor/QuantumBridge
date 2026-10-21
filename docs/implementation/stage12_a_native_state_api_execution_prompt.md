@@ -316,3 +316,71 @@ rectangular input/output operators where public contracts are verified; update
 target subsystem output dimensions rather than only changing total array size.
 Decide whether to start P0.2-B mapped channels AFTER this batch. The highest
 goal stays ACTIVE / INCOMPLETE, C3 PARTIAL, Studio last.
+
+## Completed P0.2-A Clarification: Freeze And Bounded Acceptance
+
+The designated conversation received actual 240-case/version public outcomes,
+native reds/repairs and the then-current 207-case focus. Its completed reply was
+fully read. It is report-based feedback, not an independent source audit. It
+approves freezing the bounded implementation, not adding general channels or
+other Stage 12 functions. Its stated HEAD 89f4dc9 names the runtime checkpoint;
+the actual starting HEAD is documentation commit 2bd746c over that same runtime.
+Do not reset history to change the documentation baseline.
+
+- Keep local Statevector rectangular maps Unsupported only within the sampled
+  public failure boundary. It is mathematically defined and can be extended in
+  a future native batch. Support verified local Density A rho A-dagger without
+  normalization, and full-system typed rectangles for both classes with actual
+  ordered output dims. Preserve raw-rectangle/public-acceptance differences.
+- Finish the live broad regression naturally; preserve actual failures and
+  distinguish real regressions, obsolete Unsupported assertions and test/command
+  errors. Update only genuinely obsolete assertions, never numerical tolerances.
+- Strengthen unequal total dimensions (e.g. 4 -> 6), ordered/noncontiguous and
+  reversed targets with a non-symmetric complex matrix, non-Hermitian/nonunitary
+  density action using conjugate transpose, and adjoint input/output side swaps.
+  Prove native independent numerical results, not merely metadata.
+- Validate rectangular Dout != Din known work arrays, strided inputs, failure
+  recovery and real user-held view/root leases. Check unselected reduced density
+  against the correct mathematical map: non-trace-preserving maps need NOT leave
+  it unchanged. Limit resources work to directly introduced known buffers.
+- Freeze and run fresh three-environment FULL, independent JAX/TF/Torch/Autograd,
+  true full coverage, actual 28-section matrix, compile/legal/privacy/security,
+  versions/import origins/pip and tested-tree equality. Preserve separate logs
+  and exits, exclusions 68 unchanged. Only then stage owned paths and commit
+  normally; no push, Router/Studio, token/auth/TLS, cloud/hardware, vendor/tag/
+  release or history rewrite.
+- Report square local maps, rectangular density and typed full-system maps,
+  local Statevector rectangles still Unsupported, actual target order, math/
+  public differences, ownership, gates and remaining compatibility separately.
+  After P0.2-A acceptance, update the actual state-function ledger before
+  deciding whether mapped channels should be the next highest-value gap.
+  Full replacement stays ACTIVE / INCOMPLETE; C3 PARTIAL; Studio last.
+
+## Completed Frozen Clarification: Unresolved Public Numerical Difference
+
+After the 232-case focuses, frozen tree and actual SDK-free FULL were reported,
+the completed designated-conversation response was read. It classifies the
+reported example as Verified Native Math / Partial Public Compatibility, with
+an important limit: two independent oracles plus public DensityMatrix agreement
+do not prove an upstream Statevector defect. An unresolved public dimension or
+target-semantics issue remains possible. The nonzero public state-outer/density
+delta rules out merely a global phase difference in the measured example.
+
+- Keep frozen tree 2973040c unchanged and wait for main FULL coverage, then
+  alternate FULL/frameworks/actual matrix/final equality. Do not expand this
+  batch, add a facade, guess upstream internals, weaken tolerances or add an
+  unconditional xfail to manufacture public equality.
+- Preserve complete reproducible input: native dims (2,3,2), selected (2,1),
+  matrix input/output dimensions and elements, complex amplitudes, explicit
+  public-order conversion and actual native/public state/density outputs.
+  Label PUBLIC_DIFFERENTIAL_MISMATCH; a reporter's exit 0 is not a public pass.
+- Record how basis enumeration, independent tensor contraction and density
+  action differ as implementations; do not let a shared untested target-order
+  conversion masquerade as two independent public-contract oracles.
+- Finish all required gates/equality before bounded acceptance and scoped local
+  commit. Preserve real regressions and minimally fix/refreeze if needed. The
+  observed case remains unresolved public compatibility even if local gates pass.
+- Later, but not blocking these frozen gates, investigate a minimal pure-state/
+  nonunitary/single-basis/swapped-target example to distinguish public semantics,
+  common version behavior or a potential defect. Do not assert its cause now.
+  This feedback is based on the execution report, not an external source audit.

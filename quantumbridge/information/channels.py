@@ -34,6 +34,10 @@ def _matrix_group(values, *, copy=False):
 
 
 def _channel_input(value):
+    native=type(value) is Operator if current_resources() is not None else isinstance(value,Operator)
+    if native and value.num_qubits is None:
+        from quantumbridge.core.classical import UnsupportedFeature
+        raise UnsupportedFeature("mixed_radix_operator_channel","Channel conversion does not yet preserve mixed-radix Operator input/output partitions.")
     if current_resources() is None:return value
     from quantumbridge.core import Circuit
     from quantumbridge.core.classical import UnsupportedFeature

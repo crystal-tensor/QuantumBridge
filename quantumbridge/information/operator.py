@@ -13,12 +13,7 @@ import numpy as np
 
 from quantumbridge.core.operations import Instruction
 from quantumbridge.utils.math import apply_unitary, gate_matrix
-
-
-def _num_qubits_from_dim(dim: int) -> int:
-    if dim <= 0 or dim & (dim - 1):
-        raise ValueError("QuantumBridge quantum_info dimensions must be powers of two.")
-    return int(np.log2(dim))
+from .state_dimensions import state_dimensions, qubit_count, subsystem_positions, basis_digits, basis_index
 
 
 def _validate_qargs(qargs, num_qubits: int, width: int) -> tuple[int, ...]:
@@ -82,31 +77,31 @@ class Operator:
 
     __array_priority__ = 1000
 
-    def __init__(self, data):
+    def __init__(self, data, input_dims=None, output_dims=None):
         from quantumbridge.execution.resource_context import current_resources
-        if current_resources() is None:self.data = np.asarray(data, dtype=complex)
+        scope=current_resources()
+        if scope is None:
+            self.data = np.asarray(data, dtype=complex)
+            shape=self.data.shape
         else:
-            from quantumbridge.execution.array_reservations import numeric_array
-            self.data=numeric_array(data,category="operator_input_conversion")
-        if self.data.ndim != 2 or self.data.shape[0] != self.data.shape[1]:
-            raise ValueError("QuantumBridge Operator data must be a square matrix.")
-        self.num_qubits = _num_qubits_from_dim(self.data.shape[0])
+            from quantumbridge.execution.array_reservations import numeric_array, numeric_shape
+            shape=numeric_shape(data)
+        if len(shape)!=2 or not all(shape):
+            raise ValueError("QuantumBridge Operator data must be a nonempty matrix.")
+        self._input_dims=state_dimensions(shape[1] if input_dims is None else input_dims,size=shape[1])
+        self._output_dims=state_dimensions(shape[0] if output_dims is None else output_dims,size=shape[0])
+        self.num_qubits=qubit_count(self._input_dims) if self._input_dims==self._output_dims else None
+        if scope is not None:self.data=numeric_array(data,category="operator_input_conversion")
 
     @property
     def dim(self) -> tuple[int, int]:
-        return (self.data.shape[0], self.data.shape[1])
+        return (self.data.shape[1], self.data.shape[0])
 
     def input_dims(self, qargs=None) -> tuple[int, ...]:
-        if qargs is None:
-            return (2,) * self.num_qubits
-        qargs_tuple = tuple(qargs)
-        return (2,) * len(_validate_qargs(qargs_tuple, self.num_qubits, len(qargs_tuple)))
+        return tuple(self._input_dims[position] for position in subsystem_positions(qargs,len(self._input_dims)))
 
     def output_dims(self, qargs=None) -> tuple[int, ...]:
-        if qargs is None:
-            return (2,) * self.num_qubits
-        qargs_tuple = tuple(qargs)
-        return (2,) * len(_validate_qargs(qargs_tuple, self.num_qubits, len(qargs_tuple)))
+        return tuple(self._output_dims[position] for position in subsystem_positions(qargs,len(self._output_dims)))
 
     @classmethod
     def from_label(cls, label: str) -> "Operator":
@@ -149,6 +144,7 @@ class Operator:
         return cls(matrix)
 
     def is_unitary(self, atol: float = 1e-10) -> bool:
+        if self.data.shape[0]!=self.data.shape[1]:return False
         from quantumbridge.execution.resource_context import current_resources
         if current_resources() is not None:
             from quantumbridge.utils.math import validate_unitary_matrix
@@ -157,10 +153,10 @@ class Operator:
         return bool(np.allclose(self.data.conj().T @ self.data, eye, atol=atol))
 
     def adjoint(self) -> "Operator":
-        return Operator(self.conjugate().data.T)
+        return self._new(self.conjugate().data.T,input_dims=self._output_dims,output_dims=self._input_dims)
 
     def transpose(self) -> "Operator":
-        return Operator(self.data.T)
+        return self._new(self.data.T,input_dims=self._output_dims,output_dims=self._input_dims)
 
     def conjugate(self) -> "Operator":
         copied=self.copy()
@@ -169,47 +165,63 @@ class Operator:
 
     def copy(self) -> "Operator":
         from quantumbridge.execution.array_ownership import copied_array
-        return Operator(copied_array(self.data,category="operator_copy"))
+        return self._new(copied_array(self.data,category="operator_copy"))
+
+    def _new(self, data, *, input_dims=None, output_dims=None):
+        return Operator(data,input_dims=self._input_dims if input_dims is None else input_dims,
+                        output_dims=self._output_dims if output_dims is None else output_dims)
 
     def compose(self, other: "Operator", qargs=None, front: bool = False) -> "Operator":
-        other = other if isinstance(other, Operator) else Operator(other)
+        if qargs is not None and self.num_qubits is None:
+            from quantumbridge.core.classical import UnsupportedFeature
+            raise UnsupportedFeature("mixed_radix_operator_compose","Mapped operator-on-operator composition is not mixed-radix state evolution.")
+        if not isinstance(other,Operator):
+            dims=self._output_dims if front else self._input_dims
+            other=Operator(other) if qargs is not None else Operator(other,input_dims=dims,output_dims=dims)
         other_data = other.data
         if qargs is not None:
+            if other.num_qubits is None:
+                from quantumbridge.core.classical import UnsupportedFeature
+                raise UnsupportedFeature("mixed_radix_operator_compose")
             qargs_tuple = _validate_qargs(qargs, self.num_qubits, other.num_qubits)
             other_data = _expand_subsystem_operator(other.data, qargs_tuple, self.num_qubits)
-        elif self.data.shape != other.data.shape:
-            raise ValueError("QuantumBridge Operator compose requires equal dimensions unless qargs are provided.")
+            incoming,outgoing=self._input_dims,self._output_dims
+        else:
+            if (other._input_dims!=self._output_dims if front else self._input_dims!=other._output_dims):
+                raise ValueError("QuantumBridge Operator composition subsystem dimensions do not match.")
+            incoming,outgoing=(self._input_dims,other._output_dims) if front else (other._input_dims,self._output_dims)
         from quantumbridge.execution.resource_context import current_resources
         if current_resources() is not None:
             from quantumbridge.execution import mps_arrays as arrays
-            return Operator(arrays.contracted(other_data,self.data) if front else arrays.contracted(self.data,other_data))
-        return Operator(other_data @ self.data if front else self.data @ other_data)
+            return self._new(arrays.contracted(other_data,self.data) if front else arrays.contracted(self.data,other_data),input_dims=incoming,output_dims=outgoing)
+        return self._new(other_data @ self.data if front else self.data @ other_data,input_dims=incoming,output_dims=outgoing)
 
     def dot(self, other: "Operator", qargs=None) -> "Operator":
         return self.compose(other, qargs=qargs)
 
     def tensor(self, other: "Operator") -> "Operator":
         other = other if isinstance(other, Operator) else Operator(other)
+        incoming,outgoing=self._input_dims+other._input_dims,self._output_dims+other._output_dims
         from quantumbridge.execution.resource_context import current_resources
         if current_resources() is not None:
             from quantumbridge.execution import mps_arrays as arrays
             from quantumbridge.execution.array_reservations import kron_into
-            out=arrays.owned("operator_tensor",(self.data.shape[0]*other.data.shape[0],)*2,complex)
+            out=arrays.owned("operator_tensor",(self.data.shape[0]*other.data.shape[0],self.data.shape[1]*other.data.shape[1]),complex)
             kron_into(self.data,other.data,out,scope=current_resources())
-            return Operator(out)
-        return Operator(np.kron(self.data, other.data))
+            return self._new(out,input_dims=incoming,output_dims=outgoing)
+        return self._new(np.kron(self.data, other.data),input_dims=incoming,output_dims=outgoing)
 
     def expand(self, other: "Operator") -> "Operator":
         other = other if isinstance(other, Operator) else Operator(other)
-        from quantumbridge.execution.resource_context import current_resources
-        if current_resources() is not None:return other.tensor(self)
-        return Operator(np.kron(other.data, self.data))
+        return other.tensor(self)
 
     def power(self, n: int) -> "Operator":
         if not isinstance(n, int):
             raise ValueError("QuantumBridge Operator power requires an integer exponent.")
+        if self._input_dims!=self._output_dims:
+            raise ValueError("Operator powers require matching input and output subsystems.")
         from quantumbridge.execution import mps_arrays as arrays
-        return Operator(arrays.matrix_power(self.data, n))
+        return self._new(arrays.matrix_power(self.data, n))
 
     def tensorpower(self, n: int) -> "Operator":
         if not isinstance(n, int) or n < 0:
@@ -220,19 +232,27 @@ class Operator:
         return out
 
     def reverse_qargs(self) -> "Operator":
-        return Operator(_reverse_qubit_order(self.data, self.num_qubits))
+        if self.num_qubits is not None:return self._new(_reverse_qubit_order(self.data,self.num_qubits))
+        from quantumbridge.execution.array_ownership import copied_array
+        data=copied_array(self.data,category="operator_reverse")
+        rows=tuple(basis_index(basis_digits(index,self._output_dims)[::-1],self._output_dims[::-1]) for index in range(self.data.shape[0]))
+        columns=tuple(basis_index(basis_digits(index,self._input_dims)[::-1],self._input_dims[::-1]) for index in range(self.data.shape[1]))
+        for row,target_row in enumerate(rows):
+            for column,target_column in enumerate(columns):data[target_row,target_column]=self.data[row,column]
+        return self._new(data,input_dims=self._input_dims[::-1],output_dims=self._output_dims[::-1])
 
     def is_identity(self, atol: float = 1e-10) -> bool:
+        if self.data.shape[0]!=self.data.shape[1]:return False
         return bool(np.allclose(self.data, np.eye(self.data.shape[0], dtype=complex), atol=atol))
 
     def reshape(self, input_dims=None, output_dims=None, num_qubits: int | None = None) -> "Operator":
-        if input_dims is not None and tuple(input_dims) != self.input_dims():
-            raise ValueError("QuantumBridge Operator currently supports qubit input dimensions only.")
-        if output_dims is not None and tuple(output_dims) != self.output_dims():
-            raise ValueError("QuantumBridge Operator currently supports qubit output dimensions only.")
-        if num_qubits is not None and int(num_qubits) != self.num_qubits:
+        incoming=self._input_dims if input_dims is None else state_dimensions(input_dims,size=self.data.shape[1])
+        outgoing=self._output_dims if output_dims is None else state_dimensions(output_dims,size=self.data.shape[0])
+        count=qubit_count(incoming) if incoming==outgoing else None
+        if num_qubits is not None and int(num_qubits)!=count:
             raise ValueError("QuantumBridge Operator reshape cannot change dense matrix size.")
-        return self.copy()
+        from quantumbridge.execution.array_ownership import copied_array
+        return self._new(copied_array(self.data,category="operator_copy"),input_dims=incoming,output_dims=outgoing)
 
     def equiv(self, other, atol: float = 1e-10) -> bool:
         from quantumbridge.execution.resource_context import current_resources
@@ -266,6 +286,9 @@ class Operator:
         return matches(phase)
 
     def to_instruction(self, name: str = "unitary", label: str | None = None) -> Instruction:
+        if self.num_qubits is None:
+            from quantumbridge.core.classical import UnsupportedFeature
+            raise UnsupportedFeature("mixed_radix_operator_instruction","Qubit instructions cannot reinterpret qudits or rectangular maps.")
         return Instruction(
             name=label or name,
             num_qubits=self.num_qubits,
@@ -280,7 +303,7 @@ class Operator:
         return self.compose(other)
 
     def __rmatmul__(self, other) -> "Operator":
-        return Operator(other).compose(self)
+        return Operator(other,input_dims=self._output_dims,output_dims=self._output_dims).compose(self)
 
     def _arithmetic(self, other, operation, *, scalar=False, reverse=False):
         from quantumbridge.execution.resource_context import current_resources
@@ -296,14 +319,16 @@ class Operator:
         elif not scalar:second=np.asarray(second,dtype=complex)
         if not scalar and first.shape!=second.shape:
             raise ValueError("QuantumBridge Operator arithmetic requires equal dimensions.")
+        if not scalar and isinstance(other,Operator) and (self._input_dims!=other._input_dims or self._output_dims!=other._output_dims):
+            raise ValueError("Operator arithmetic requires matching subsystem dimensions.")
         left,right=(second,first) if reverse else (first,second)
-        if scope is None:return Operator(operation(left,right))
+        if scope is None:return self._new(operation(left,right))
         from quantumbridge.execution import mps_arrays as arrays
         output=arrays.owned("operator_arithmetic_output",first.shape,complex)
         scope.ledger.unavailable("operator_ufunc_iterator_workspace",
             "The independent matrix output is reserved; NumPy scalar/iterator workspace is not measured RSS.")
         operation(left,right,out=output)
-        return Operator(output)
+        return self._new(output)
 
     def __mul__(self, scalar) -> "Operator":
         if not isinstance(scalar, Number):

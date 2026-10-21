@@ -1,12 +1,12 @@
 # Stage 12-A State API Contract Matrix
 
-Date: 2026-10-21. Status: baseline audit recorded; bounded P0.1 native slices
-implemented and validated, full public compatibility PARTIAL.
+Date: 2026-10-21. Status: baseline audit recorded; bounded P0.1 and P0.2-A native
+slices implemented and validated, complete classes/public compatibility PARTIAL.
 Native baseline: b1d345b3731276f5f2721cb42c2397d98981ac5c.
 This is a bounded initial matrix, not the complete SDK/API inventory.
 The table below records that baseline, not the later candidate implementation.
-Native P0.1 now has fresh FULL/framework/matrix construction/propagation evidence;
-see [the current progress report](../implementation/stage12_a_p01_mixed_radix_progress.md).
+See [the current P0.2-A progress report](../implementation/stage12_a_p02_mapped_operator_progress.md)
+and the historical P0.1 construction/propagation report for actual receipts.
 
 ## Evidence And Limits
 
@@ -79,3 +79,34 @@ native state class with dims (2,4) or (2,3,2) yields identical reduced data/dims
 This is Partial Public Compatibility, not a claim about upstream internals.
 See the progress report for initial incomplete harness failures, actual native
 reds, corrected numerical evidence, all gates and remaining boundaries.
+
+## P0.2-A Current Native Function Slices
+
+Actual native square mapped state/density evolution, typed Operator partitions,
+rectangular density maps and full typed rectangular evolution now have fresh
+frozen-runtime SDK-free/main/alternate FULL, framework and actual matrix evidence.
+The P0.1 Unsupported statements above describe that older checkpoint, not the
+following current function slices. Local Statevector rectangular
+maps and local subsystem insertion/removal are still Unsupported within the
+verified public boundary, not mathematically impossible. Native strict targets,
+wire/container conventions and a measured public Statevector output-repartition
+numerical difference remain Partial Public Compatibility. See the P0.2-A report
+for actual observations rather than inferring whole-API support.
+
+| Actual native entry/contract | Current bounded status | Remaining boundary |
+| --- | --- | --- |
+| Operator(data,input_dims,output_dims), input_dims/output_dims, dim/num_qubits | Verified Native for positive nonbinary/rectangular numeric shapes, inferred/explicit ordered partitions and public positional dimensions | Complete constructor protocols, all valid foreign objects and full public validation parity are not established |
+| Operator copy/conjugate/transpose/adjoint/tensor/expand/reverse/reshape/arithmetic | Verified Native complex values and dimension propagation, including rectangular side swaps | Whole Operator algebra is Partial; mapped mixed-radix Operator-on-Operator compose and qudit/rectangular instruction export remain Unsupported |
+| Statevector.evolve numeric square local map | Verified Native actual complex local action, reversed/noncontiguous targets and same-size output repartition | Partial Public Compatibility: strict target validation and recorded public Statevector numerical mismatch are not exact parity |
+| DensityMatrix.evolve numeric local map | Verified Native square and typed rectangular A rho A-dagger, actual output dimensions, no renormalization | Local insertion/removal of subsystem positions and general mapped channels are Unsupported |
+| Full-system typed rectangular evolve on either state | Verified Native unequal total size and output subsystem-count changes | Raw same-size full maps preserve native dimensions; raw rectangles require typed output metadata |
+| Local rectangular Statevector.evolve | Unsupported in this batch within the sampled public failure boundary | A possible later mathematical native extension, not a claim of impossibility |
+| Existing utils.math operator entry points with dims/output_dims | Verified Native shared mixed-radix stride/index branch and directly introduced known-buffer admission/lifetimes | No full embedded operator; no universal Python/framework/hidden-workspace RSS claim |
+| Mixed Operator conversion into six unextended channels | Verified Native bounded rejection before dimension loss | Rejection is not channel implementation or full channel parity |
+
+The 232-case file proves these finite mathematical/ordering/layout/ownership
+contracts. Optional reference cases do not substitute for the 203 native cases
+that run without Qiskit; the SDK-free FULL has 2743 passed. Full classes and the
+highest replacement objective remain incomplete. The separate generated
+PUBLIC_DIFFERENTIAL_MISMATCH artifact preserves literal two-version outputs;
+process success of its reporter must not be relabeled public numerical equality.

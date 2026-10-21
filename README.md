@@ -1186,6 +1186,17 @@ public compatibility, mixed mapped operators and general mixed-radix channel/
 analysis APIs remain partial or unsupported. No push, remote CI or real cloud
 execution is claimed. See the [P0.1 report](docs/implementation/stage12_a_p01_mixed_radix_progress.md).
 
+Stage 12-A P0.2-A adds bounded native mixed-radix local numeric operators,
+including reversed/noncontiguous qargs, Operator input/output dimensions,
+rectangular density maps and full typed rectangular evolution. Fresh SDK-free,
+main/alternate FULL, four-framework focuses and the real local matrix finish
+with exits 0; seven missing optional subsets remain unexecuted and known pip
+conflicts remain. Independent main/matrix line coverage is 90.4597%, not API
+completion. Public calling conventions
+and measured numerical differences remain explicit, and this is not complete
+state/Operator/channel or SDK parity. See the
+[P0.2-A report](docs/implementation/stage12_a_p02_mapped_operator_progress.md).
+
 ## Native Molecular Chemistry Checkpoint
 
 `quantumbridge.qchem` now computes a bounded hydrogen/STO-3G s-shell workflow

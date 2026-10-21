@@ -1,5 +1,9 @@
 # Stage 12-A P0.1 Native Mixed-Radix Progress
 
+Historical P0.1 checkpoint report. Later native local-operator development is
+recorded in [the P0.2-A report](stage12_a_p02_mapped_operator_progress.md);
+Unsupported statements here refer to the P0.1 code, not the later candidate.
+
 Date: 2026-10-21. Status: bounded P0.1 native function slices accepted after
 fresh same-runtime gates; complete state classes/public compatibility remain
 PARTIAL. Full independent native Qiskit/PennyLane replacement remains

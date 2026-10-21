@@ -1,13 +1,26 @@
 # Core Functional Parity Ledger
 
-Stage 12-A P0.1 now has bounded Verified Native construction, dimensions
+Stage 12-A P0.2-A now has actual native mixed-radix local numeric evolution,
+including noncontiguous/reversed qargs, rectangular density and full typed maps,
+and Operator dimension propagation. Fresh SDK-free/main/alternate FULL finish
+with 2743/3421/3419 passed, respectively, with skips and existing xfails stated
+in the report. Independent frameworks and the actual 28-section matrix finish
+with exits 0. Main/matrix line coverage is 27687/30607 = 90.45969876172117%,
+excluded 68; seven optional subsets were NOT_EXECUTED and known pip conflicts
+remain. General mapped channels,
+circuits and complete class/public parity remain unfinished. A measured public
+Statevector repartition difference is explicitly Partial Public Compatibility.
+See [P0.2-A progress](../implementation/stage12_a_p02_mapped_operator_progress.md).
+
+The preceding Stage 12-A P0.1 checkpoint has bounded Verified Native construction, dimensions
 propagation, full numeric evolution, sample/measure/reset and partial trace.
 Fresh controlled SDK-free/main/alternate FULL, framework gates and the actual
 28-section matrix finish with exits 0. Main and independent matrix coverage both
 record 27570/30483 = 90.44385395138274%, with 68 exclusions unchanged. Seven
 absent-dependency subsets remain NOT_EXECUTED; known pip conflicts remain.
-Native/public wire/container conventions remain explicitly distinct; mapped
-mixed-radix operators and general channel/analysis paths are not completed.
+Native/public wire/container conventions remain explicitly distinct. The newer
+bounded mapped-operator work above supersedes that P0.1 limitation; general
+channel/analysis paths are not completed.
 Four observed public num_qubits differences per Qiskit version remain Partial
 Public Compatibility. Whole dirty-workspace legal still fails on the separate
 untracked Router ledger gap; controlled-export legal passes. Complete state
@@ -15,8 +28,9 @@ classes and the highest full independent replacement objective remain PARTIAL
 and ACTIVE / INCOMPLETE, respectively. No cloud or remote CI proof is implied.
 See [P0.1 progress](../implementation/stage12_a_p01_mixed_radix_progress.md).
 
-Updated: 2026-10-21, local P0.1 code checkpoint `89f4dc9`, historical R2
-checkpoint `b1d345b`; C3 remains PARTIAL. No push or new-SHA CI is claimed.
+Updated: 2026-10-21, P0.2-A tested runtime tree `2973040c`, local P0.1 code
+checkpoint `89f4dc9`, historical R2 checkpoint `b1d345b`; C3 remains PARTIAL.
+No push or new-SHA CI is claimed.
 
 Historical R2 same-tree SDK-free/main/alternate FULL, four-framework focuses and the
 actual complete 28-section matrix now finish with exits 0. Independent main and
@@ -75,7 +89,7 @@ publication/exact-SHA CI is a separate receipt, not inferred from prior CI.
 | --- | --- | --- |
 | QuantumCircuit | NATIVE_TESTED; PARTIAL: typed storage, parameters, arithmetic, compose/control/inverse/power and runtime blocks | Complete builders/signatures, all types/scopes, calibrations and instruction schedules |
 | Circuit library | NATIVE_TESTED; PARTIAL: standard gates, bounded ansatz/arithmetic/encoding | All library families and edge cases |
-| Quantum information | NATIVE_TESTED; PARTIAL: vector/density/operators/Pauli/channels/metrics/random/Clifford/MPS | Full dimensional, subsystem, synthesis and general-map contracts |
+| Quantum information | NATIVE_TESTED; PARTIAL: vector/density/operators/Pauli/channels/metrics/random/Clifford/MPS, now bounded mixed-radix mapped numeric state/density evolution and Operator partitions | Remaining state/Operator methods, mapped channels, synthesis and general-map/public contracts; recorded public numerical mismatch remains open |
 | DAG/mutation/roundtrip | NATIVE_TESTED; PARTIAL: actual wire/classical dependencies and validation | Full graph API and noncontiguous contraction |
 | PassManager/PropertySet | NATIVE_TESTED; PARTIAL: analysis lifetime, invalidation, prerequisites, callbacks, stages and limits | Full DAG-pass/flow-controller/plugin protocol |
 | Target/CouplingMap/Layout | NATIVE_TESTED; PARTIAL: properties, directed paths, initial/final mapping | Full backend/calibration schema and optimal search |

@@ -95,6 +95,48 @@ def _tensor_arrays(first,second):
     return result
 
 
+def _mapped_evolution_data(operator, qargs, dimensions, *, density=False):
+    from quantumbridge.information.operator import Operator
+    from quantumbridge.information.channels import _operator_data
+    from quantumbridge.utils.math import _local_operator_shapes
+    from quantumbridge.execution.array_reservations import numeric_shape, array_layout
+    from quantumbridge.core.classical import UnsupportedFeature
+    scope=current_resources()
+    selected=subsystem_positions(qargs,len(dimensions))
+    incoming=tuple(dimensions[position] for position in selected)
+    native=type(operator) is Operator if scope is not None else isinstance(operator,Operator)
+    raw=operator.data if native else operator
+    if scope is not None:
+        if not native and not (issubclass(type(raw),np.ndarray) or type(raw) in (tuple,list)):
+            raise UnsupportedFeature("managed_channel_operator","Mapped evolution requires a native operator or explicit numeric buffer.")
+        shape=numeric_shape(raw)
+    else:
+        if not native and hasattr(operator,"to_matrix"):raw=operator.to_matrix()
+        raw=np.asarray(raw,dtype=complex)
+        shape=raw.shape
+    if len(shape)!=2 or shape[1]!=prod(incoming):
+        raise ValueError("Local operator input dimension does not match the selected subsystems.")
+    if native:
+        if qargs is not None and operator.input_dims()!=incoming:
+            raise ValueError("Local operator input subsystem dimensions do not match qargs order.")
+        outgoing=operator.output_dims()
+    else:
+        if shape[0]!=shape[1]:
+            raise ValueError("Rectangular evolution requires explicit native Operator output_dims.")
+        outgoing=incoming
+    if qargs is not None and len(outgoing)!=len(selected):
+        raise UnsupportedFeature("mixed_radix_output_subsystem_count","Mapped evolution cannot insert or remove subsystem positions.")
+    if qargs is not None and shape[0]!=shape[1] and not density:
+        raise UnsupportedFeature("mixed_radix_rectangular_statevector","Public mapped Statevector rectangular evolution fails in both verified versions; use a full typed map or DensityMatrix.")
+    result_dims,shapes=_local_operator_shapes(dimensions,selected,outgoing,density=density)
+    if scope is not None:
+        conversion=array_layout(shape,complex)[2] if native or not issubclass(type(raw),np.ndarray) or np.ndarray.view(raw,np.ndarray).dtype!=np.dtype(complex) else 0
+        scope.ledger.preflight(memory_bytes=conversion+sum(array_layout(shape,complex)[2] for shape in shapes))
+        matrix=_operator_data(operator)
+    else:matrix=raw
+    return matrix,selected,outgoing,result_dims
+
+
 class Statevector:
     def __init__(self, data, normalize: bool = False, *, dims=None):
         from quantumbridge.execution.resource_context import current_resources
@@ -202,19 +244,16 @@ class Statevector:
         from quantumbridge.execution.resource_context import current_resources
         scope=current_resources()
 
-        if qargs is not None:require_qubits(self._dims,"mixed_radix_subsystem_evolution")
         if hasattr(operator,"operations"):require_qubits(self._dims,"mixed_radix_circuit_evolution")
         op = Operator.from_circuit(operator) if hasattr(operator, "operations") else operator
+        native=type(op) is Operator if scope is not None else isinstance(op,Operator)
+        if qargs is not None or native and op.input_dims()!=op.output_dims():
+            matrix,selected,outgoing,result_dims=_mapped_evolution_data(op,qargs,self._dims)
+            return Statevector(apply_unitary(self.data,matrix,selected,self.num_qubits,dims=self._dims,output_dims=outgoing),dims=result_dims)
         if scope is not None:
             from quantumbridge.information.channels import _operator_data
             matrix=_operator_data(op)
         else:matrix = np.asarray(op.to_matrix(), dtype=complex) if hasattr(op, "to_matrix") else np.asarray(op, dtype=complex)
-        if qargs is not None:
-            qargs_tuple = _validate_qargs(qargs, self.num_qubits)
-            dim = 1 << len(qargs_tuple)
-            if matrix.shape != (dim, dim):
-                raise ValueError("QuantumBridge subsystem evolution operator dimension must match qargs.")
-            return Statevector(apply_unitary(self.data, matrix, qargs_tuple, self.num_qubits),dims=self._dims)
         if matrix.shape != (len(self.data), len(self.data)):
             raise ValueError("QuantumBridge evolution operator dimension must match Statevector dimension.")
         if scope is not None:
