@@ -1,9 +1,9 @@
 # Stage 12-A P0.3 Native Mixed-Radix Operator Composition
 
 Date: 2026-10-21. Status: bounded native function slices validated by fresh
-frozen-runtime FULL/framework/coverage/matrix gates; scoped checkpoint pending.
-Baseline HEAD: 9e3224b, documentation over P0.2-A code 12098c9. No P0.3 commit or
-push yet. Full independent Qiskit/PennyLane replacement stays ACTIVE / INCOMPLETE;
+frozen-runtime FULL/framework/coverage/matrix gates; local code checkpoint be9d5e3.
+Baseline HEAD: 9e3224b, documentation over P0.2-A code 12098c9. No push or remote
+CI is claimed. Full independent Qiskit/PennyLane replacement stays ACTIVE / INCOMPLETE;
 complete Operator/state classes, public compatibility and C3 remain PARTIAL.
 
 ## Actual Native Functions
@@ -240,9 +240,36 @@ P0.3 expected failures.
 | Known-buffer admission and root/view lifetime | Verified Native for introduced output/scratch/conversion/packing | Not universal Python/framework/BLAS/RSS accounting; C3 Partial |
 | Complete Operator/State/public SDK functionality | Partial / Incomplete | Power extensions, state analysis/arithmetic/RNG and general mapped channels remain open |
 
-Only owned paths may enter a normal local checkpoint after gates. User Studio/
-Router dirt stays untouched. Whole-workspace legal's existing untracked Router
-ledger gap is separate from controlled-export legal. Known main/alternate pip
-conflicts and optional NOT_EXECUTED subsets must not be recast as successes.
-No push or remote CI claim, cloud/hardware/token/auth/TLS, vendor, tag/release or
-history rewrite is part of this batch.
+## Local Checkpoint And Equality
+
+Normal code commit: be9d5e3fbdd50aaa80cf975bf88f00246e260dfd, title
+`feat: compose native mixed-radix operators`. Exactly the ten owned paths above
+were staged, with no user Studio/Router file. The normal index remained empty
+through all full gates and is empty after this commit. No history was rewritten.
+
+The final docs/export snapshot caea0bbaf71740e316d5046a4e6e3c64d757cd72 is at
+/tmp/qb-stage12a-p03-final-docs.S9UFGh/source. Compared with tested 7a9ebe78,
+its differences are documentation only. Export/workspace runtime/tests/examples,
+staged tree and committed equality all exit 0; independent checkpoint-runtime-
+equality and checkpoint-staged-tree-equality logs/exits are under /tmp with the
+qb-stage12a-p03- prefix. The final docs snapshot reran compileall (exit 0), legal
+(4 passed, 0.12s, exit 0) and 17-file privacy/security (49 passed / 1 existing
+warning, 1.60s, exit 0), with time -p output also retained. Checkpoint-secret-
+patterns scans the ten actual committed paths: grep exit 1 and a 0-byte log mean
+no scanned private-key/common GitHub/OpenAI patterns, not a universal secret audit.
+
+User Studio/Router dirt stays untouched. Whole-workspace legal's existing Router
+ledger gap is separate from controlled-export legal. Known pip conflicts and
+optional NOT_EXECUTED subsets are not recast as successes. Cached origin/main
+was 23 commits behind after this commit, NOT a fresh remote comparison. Prior
+push authorization failure is not confirmed restored, so no push/auth workaround
+or remote CI attempt occurred. Exact-SHA remote CI is NOT_VERIFIED.
+No cloud/hardware/token/auth/TLS, vendor, tag/release or history rewrite is part
+of this batch. No next-batch production implementation is included in this report.
+
+The actual local SHA and completed gate receipts were sent to the owner's
+designated ChatGPT conversation on 2026-10-21. Its completed reply selects the
+next expectation-value task and is retained separately in the execution contract.
+This is collaboration based on the reported evidence, not an independent audit
+of unpublished source or proof of new-SHA remote CI. Receiving that prompt does
+not implement/accept the next batch or complete the highest replacement goal.

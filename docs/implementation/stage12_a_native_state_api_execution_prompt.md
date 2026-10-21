@@ -722,3 +722,229 @@ NOT_EXECUTED。Quafu/QOS/Runtime 离线测试不能当作云或真机验证。
 Verified Native，哪些仍属于 Partial Public Compatibility。
 最高目标继续保持 Qiskit + PennyLane 完整独立原生 full functional parity/full replacement：
 ACTIVE / INCOMPLETE。C3 仍为 PARTIAL，Studio 最后。
+
+## Received Next Batch Prompt: P0.4
+
+The designated response completed on 2026-10-21 after the actual P0.3 code SHA
+and final receipts were reported. The full implementation prompt is transcribed
+below in Markdown. This is the NEXT execution segment, not a P0.3 implementation
+or acceptance claim. Later checkpoint-receipt commits are documentation only;
+the stated baseline is the actual P0.3 code commit.
+
+### QuantumBridge Stage 12-A P0.4 — Native Mixed-Radix Observable Expectation
+
+#### 0. 基线和目标
+
+当前已提交 HEAD：`be9d5e3fbdd50aaa80cf975bf88f00246e260dfd`
+
+本批只实现现有 Statevector/DensityMatrix 的 mixed-radix observable expectation 能力，
+以及必要的现有 Operator 数学复用。必须真正计算：
+
+`<O>_psi = <psi|O|psi>`
+
+`<O>_rho = Tr(rho O)`
+
+这里 O 可以作用于指定的 qubit、qutrit、qudit 或混合维度子系统。不得通过新建 facade、
+调用 Qiskit/PennyLane 执行器、把 qudit 当多个 qubit、或默认展开完整系统 observable
+来代替原生实现。
+
+#### Task 1 — 公开 API 黑盒契约调查
+
+先审计仓库真实签名，然后在已安装 Qiskit 2.4.1 和 2.6 中调用公开 API：
+
+- `Statevector.expectation_value(oper, qargs=...)`
+- `DensityMatrix.expectation_value(oper, qargs=...)`
+- Operator 与对应 observable 的受支持构造
+- Typed mixed-radix operator 输入/输出维度
+- 非连续、反序 qargs
+- 非 Hermitian observable 的复数返回
+- 重复、非法、越界 qargs
+- 总维度不匹配及局部维度不匹配
+- 空 qargs、标量 observable（仅按真实公开契约）
+- qubit-only Pauli 输入在 mixed-radix state 下的实际边界
+
+注意：公开 Statevector/DensityMatrix 是否具有某个 variance 方法必须先核实；本批不新增
+凭空推测的 variance() API。记录两个版本的返回类型、数值、异常及真实差异。
+黑盒结果是兼容性依据，不是 native 测试通过次数。
+
+#### Task 2 — 先建立真实数学红灯
+
+至少覆盖：
+
+1. (3,) qutrit 上的对角 observable，计算非均匀概率分布的期望。
+2. (3,) qutrit 上含复数非对角元素的 Hermitian observable。
+3. (2,3) 中仅对 qutrit 作用的 observable。
+4. (2,3,2) 中对 (0,2) 的两体 observable。
+5. 同一系统中反序 qargs (2,0)。
+6. 含复相位的 qubit-qudit 纠缠态。
+7. DensityMatrix 混态与纯态外积一致性。
+8. 非 Hermitian observable 返回真正的复数期望。
+9. 非连续 State/Operator ndarray。
+10. 合法 zero-qubit/标量边界。
+11. 错误维度、重复 qargs、foreign ndarray 拒绝。
+12. 数值正确但 observable 输入/输出 dims 不符合要求的反例。
+
+保存每条 red 的独立日志、退出码以及独立数学期望。不要修改正确旧测试来制造新红灯。
+
+#### Task 3 — 最小原生实现
+
+复用 P0.1–P0.3 的现有 mixed-radix subsystem mapping、Statevector/DensityMatrix、
+Operator 与 utils.math。核心要求：
+
+Statevector：根据真实 dims 和 qargs，在已有原生映射规则下计算 O|psi>，再与原态计算
+复数内积。不得无条件归一化中间态。
+
+DensityMatrix：根据真实 dims 和 qargs，计算 Tr(rho O)。允许通过已受控的小规模局部
+contraction 或直接索引完成。不得先构造完整 D x D embedded observable，除非本来
+就是 full-system operator。
+
+Observable 验证：
+
+- 局部 expectation 所用 observable 必须是维度保持型方阵。
+- 区分 Hermitian 与非 Hermitian。
+- 对非 Hermitian 结果保留虚部。
+- 不将 complex dtype 静默转换为 float。
+- 保留 native q0-first 与实际 subsystem dims。
+- 不改变已有 qubit Pauli expectation 的正确路径。
+
+实现应共享局部索引/stride 规则，而不是创建第二套 observable engine。
+
+#### Task 4 — 两套独立数学 Oracle
+
+必须使用：
+
+Oracle A：显式基态枚举。独立生成小规模局部 embedded matrix，计算复数期望。
+
+Oracle B：Tensor contraction / partial trace。独立求出目标子系统 reduced density，
+再计算局部 trace。
+
+两个 oracle 不得共用 production 的 qargs-to-stride helper。测试包括：
+
+- 非均匀 qutrit 态；
+- 纠缠态；
+- 混态；
+- 非对角复数矩阵；
+- 非 Hermitian observable；
+- qargs 非连续与反序；
+- 复相位；
+- mixed dimensions。
+
+对于合法 Hermitian observable，检查结果虚部在数值容差内接近零；对于非 Hermitian
+observable，不强制结果为实数。
+
+#### Task 5 — 与现有量子算法组合验证
+
+本批不开发新 VQE 算法，但必须通过一个真实原生端到端案例：
+
+`mixed-radix Statevector → mapped Operator evolve → DensityMatrix → partial_trace → local expectation`
+
+再加入一个真实参数化 observable 或参数化态的有限差分数学检查，证明 expectation 能
+作为后续优化算法的数值目标。这里只验证数值函数，不新增参数移位框架、autodiff 系统
+或 PennyLane QNode 接口。
+
+#### Task 6 — 公开兼容差异
+
+分别报告：
+
+- Native 数学 oracle 是否通过；
+- Qiskit 2.4.1 differential；
+- Qiskit 2.6 differential；
+- 维度、qargs 与返回类型差异；
+- Unsupported 的 observable 类型。
+
+特别保留 P0.2/P0.3 的 PUBLIC_DIFFERENTIAL_MISMATCH。不要利用新的 expectation 实现
+修改已有正确 mapped evolution，以模仿尚未解释的公开 Statevector 行为。
+对公开 API 行为没有证据的子集，应标记 UNVERIFIED，不能直接写 Supported。
+
+#### Task 7 — 有界资源验证
+
+只处理本批新增的局部 contraction、临时 state/reduced-density 和输出存储。必须验证：
+
+- 已知 ndarray 在分配前预约；
+- 不隐式构造整个系统 observable；
+- 不连续数组的真实 copy 受控；
+- 结果与临时 buffer 生命周期正确；
+- valid → overbudget → valid；
+- 非法输入在核心矩阵分配前拒绝。
+
+不启动全局 allocator 审计，不重构 C3 资源系统。
+
+#### Task 8 — 必须保护的现有回归
+
+保留：
+
+- P0.1 mixed-radix construction/propagation；
+- P0.2 mapped State/Density evolve；
+- P0.3 Operator composition；
+- 100-qubit MPS non-dense；
+- C2A second-adjoint/HVP；
+- 64 shared parameters；
+- QWC sample covariance；
+- H2 native chemistry；
+- Torch/Autograd/JAX/TF；
+- QASM/QPY；
+- Aer Noise/Save/Set；
+- Result/Snapshot ownership；
+- 已保存公开 Statevector 最小差异证据。
+
+不得通过放宽容差、删除断言或扩大 exclusions 获取通过。
+
+#### Task 9 — 最终门禁与提交
+
+新增专项测试至少覆盖：
+
+- 12 个 mixed-radix 数学场景；
+- 8 个 qargs/ordering 场景；
+- 6 个 Statevector/DensityMatrix 一致性场景；
+- 6 个失败/资源/异常场景；
+- 两版本公开 API 黑盒差分；
+- 至少一个端到端 expectation 组合。
+
+完成后冻结最终树，执行：
+
+1. SDK-free FULL。
+2. Main FULL + explicit coverage。
+3. Alternate FULL。
+4. 独立 JAX/TF、Torch/Autograd focused。
+5. 完整 28 段 local matrix。
+6. compileall、legal/privacy/security/no-token/no-vendor。
+7. 五环境版本、import origins 和 pipcheck。
+8. Workspace/export/tested/staged/committed tree equality。
+
+Coverage 历史基线 90.47525850539844%，68 exclusions 不得增加。不能将覆盖率当作 API
+完成率。全部必要门禁通过后，仅 stage P0.4 归属文件并正常本地 commit。
+不得触碰用户 Studio/Router，不 push、不改 auth/TLS、不读取 token、不访问云/硬件、
+不 vendor、不 tag/release、不改写历史。
+
+#### Task 10 — 最终报告
+
+报告：
+
+1. 原生 Statevector/DensityMatrix expectation 的新增功能。
+2. Mixed-radix qargs 与复杂 observable 数学。
+3. 真实 red-green。
+4. 两种独立数学 oracle。
+5. 两版本公开 API 差分。
+6. 非 Hermitian 复数行为。
+7. 与 mapped evolve、partial trace 的组合。
+8. 资源及错误边界。
+9. 三环境 FULL、coverage、28 段 matrix。
+10. 本地提交和远端 CI 真实状态。
+11. 仍未实现的真实核心功能。
+
+不得称 State/Operator 模块或完整 SDK 已实现 full parity。
+
+#### 为什么优先做 Expectation，而不是 Channel？
+
+目前已有的 Operator 局部作用和 composition 解决了“如何变换量子态”，但还缺少足够
+通用的“如何从量子态计算物理可观测结果”。补齐 mixed-radix expectation 后，同一原生
+数学基础便能支持更多 Hamiltonian evaluation、优化目标、量子线路验证及后续量子化学
+与 PennyLane QNode 使用场景。这不意味着本批直接实现这些高级模块；本批只交付真实的
+原生可观测量期望计算。
+
+明确执行要求：现在启动 Stage 12-A P0.4，先完成 Qiskit 2.4.1/2.6 公开 expectation_value
+行为调查，然后保存真实 mixed-radix 数学红灯，复用既有 native subsystem kernel 实现
+最小修复，完成双 oracle、差分和最终全量门禁后再提交。
+
+完整 Qiskit/PennyLane full native functional replacement 继续保持 ACTIVE / INCOMPLETE，
+C3 仍 PARTIAL，Capture/Studio 不进入，Studio 最后。
