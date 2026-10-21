@@ -8,57 +8,47 @@ from __future__ import annotations
 import numpy as np
 
 from typing import Union
-from numbers import Integral
 
 from .statevector import Statevector, _sample_measurements, _tensor_arrays
 from quantumbridge.execution.resource_context import current_resources, meter_native_samples
-from quantumbridge.utils.math import bit_at
+from .state_dimensions import (
+    state_dimensions, qubit_count, basis_digits, basis_index, basis_label,
+    require_qubits, subsystem_positions,
+)
 
 
 def _validate_qargs(qargs, num_qubits: int) -> tuple[int, ...]:
-    normalized = tuple(range(num_qubits) if qargs is None else qargs)
-    if any(not isinstance(qarg, Integral) or isinstance(qarg, bool) for qarg in normalized):
-        raise ValueError("QuantumBridge DensityMatrix qargs must be integer subsystem positions.")
-    if len(set(normalized)) != len(normalized):
-        raise ValueError("QuantumBridge DensityMatrix qargs must be distinct.")
-    if any(qarg < 0 or qarg >= num_qubits for qarg in normalized):
-        raise ValueError("QuantumBridge DensityMatrix qargs are outside this state.")
-    return normalized
-
-
-def _reverse_permutation(num_qubits: int) -> np.ndarray:
-    size = 1 << num_qubits
-    permutation = np.zeros((size, size), dtype=complex)
-    for source in range(size):
-        bits = format(source, f"0{num_qubits}b")
-        dest = int(bits[::-1], 2)
-        permutation[dest, source] = 1.0
-    return permutation
+    return subsystem_positions(qargs,num_qubits)
 
 
 class DensityMatrix:
-    def __init__(self, data):
+    def __init__(self, data, *, dims=None):
         from quantumbridge.execution.resource_context import current_resources
-        if current_resources() is None:self.data = np.asarray(data, dtype=complex)
+        scope=current_resources()
+        if scope is None:
+            self.data = np.asarray(data, dtype=complex)
+            shape=self.data.shape
         else:
-            from quantumbridge.execution.array_reservations import numeric_array
-            self.data=numeric_array(data,category="density_input_conversion")
-        if self.data.ndim != 2 or self.data.shape[0] != self.data.shape[1]:
+            from quantumbridge.execution.array_reservations import numeric_array, numeric_shape
+            shape=numeric_shape(data)
+        if len(shape)!=2 or shape[0]!=shape[1]:
             raise ValueError("QuantumBridge DensityMatrix data must be a square matrix.")
-        dim = self.data.shape[0]
-        if dim == 0 or dim & (dim - 1):
-            raise ValueError("QuantumBridge DensityMatrix dimension must be a power of two.")
+        self._dims=state_dimensions(dims,size=shape[0])
+        if scope is not None:
+            self.data=numeric_array(data,category="density_input_conversion")
 
     @property
     def dim(self) -> tuple[int, int]:
         return self.data.shape
 
     def dims(self, qargs=None) -> tuple[int, ...]:
-        return (2,) * len(_validate_qargs(qargs, self.num_qubits))
+        return tuple(self._dims[position] for position in _validate_qargs(qargs,len(self._dims)))
 
     @classmethod
     def from_statevector(cls, statevector: Union[Statevector, np.ndarray]) -> "DensityMatrix":
         scope=current_resources()
+        native=type(statevector) is Statevector if scope is not None else isinstance(statevector,Statevector)
+        dimensions=statevector.dims() if native else None
         if scope is not None:
             from quantumbridge.execution import mps_arrays as arrays
             from quantumbridge.execution.array_reservations import numeric_shape, numeric_array, array_layout
@@ -69,9 +59,9 @@ class DensityMatrix:
             conversion=0 if issubclass(type(raw),np.ndarray) and np.ndarray.view(raw,np.ndarray).dtype==np.dtype(complex) else 16*dimension
             scope.ledger.preflight(memory_bytes=array_layout((dimension,dimension),complex)[2]+16*dimension+conversion)
             vector=numeric_array(raw,category="density_vector_input")
-            return cls(arrays.einsum("i,j->ij",(dimension,dimension),vector,arrays.conjugated(vector)))
+            return cls(arrays.einsum("i,j->ij",(dimension,dimension),vector,arrays.conjugated(vector)),dims=dimensions)
         vector = statevector.data if isinstance(statevector, Statevector) else np.asarray(statevector, dtype=complex)
-        return cls(np.outer(vector, np.conjugate(vector)))
+        return cls(np.outer(vector, np.conjugate(vector)),dims=dimensions)
 
     @classmethod
     def from_int(cls, index: int, dims) -> "DensityMatrix":
@@ -91,8 +81,8 @@ class DensityMatrix:
         return np.trace(self.data)
 
     @property
-    def num_qubits(self) -> int:
-        return int(np.log2(self.data.shape[0]))
+    def num_qubits(self) -> int | None:
+        return qubit_count(self._dims)
 
     def is_valid(self, atol: float = 1e-10) -> bool:
         from quantumbridge.execution.resource_context import current_resources
@@ -117,13 +107,15 @@ class DensityMatrix:
     def partial_trace(self, keep: tuple[int, ...] | list[int]) -> "DensityMatrix":
         from quantumbridge.information.partial_trace import partial_trace
 
-        return DensityMatrix(partial_trace(self.data, tuple(keep), self.num_qubits))
+        selected=_validate_qargs(keep,len(self._dims))
+        dimensions=tuple(dim for position,dim in enumerate(self._dims) if position in selected)
+        return DensityMatrix(partial_trace(self.data,selected,dims=self._dims),dims=dimensions)
 
     def probabilities(self, wires=None) -> dict[str, float]:
-        selected = _validate_qargs(wires,self.num_qubits)
+        selected = _validate_qargs(wires,len(self._dims))
         probs: dict[str, float] = {}
         for index in range(len(self.data)):
-            key = "".join(str(bit_at(index, wire, self.num_qubits)) for wire in selected)
+            key = basis_label(index,self._dims,selected)
             probs[key] = probs.get(key, 0.0) + complex(self.data[index,index]).real
         return probs
 
@@ -133,6 +125,7 @@ class DensityMatrix:
     def expectation_value(self, observable, qargs=None) -> complex:
         from quantumbridge.information.operator import Operator
 
+        if qargs is not None:require_qubits(self._dims,"mixed_radix_subsystem_expectation")
         if hasattr(observable, "to_matrix"):
             matrix = np.asarray(observable.to_matrix(), dtype=complex)
         else:
@@ -148,13 +141,17 @@ class DensityMatrix:
         from quantumbridge.information.channels import _QuantumChannel
         from quantumbridge.information.operator import Operator
 
+        if qargs is not None:require_qubits(self._dims,"mixed_radix_subsystem_evolution")
         if isinstance(operator, _QuantumChannel):
+            require_qubits(self._dims,"mixed_radix_channel_evolution")
             return operator.evolve(self, qargs=qargs)
         if hasattr(operator, "kraus") and not hasattr(operator, "operations"):
+            require_qubits(self._dims,"mixed_radix_channel_evolution")
             from quantumbridge.information.channels import Kraus
 
             return Kraus(operator.kraus()).evolve(self, qargs=qargs)
         if hasattr(operator, "operations"):
+            require_qubits(self._dims,"mixed_radix_circuit_evolution")
             from quantumbridge.devices import DensityMatrixDevice
             from quantumbridge.core import Circuit
 
@@ -162,7 +159,7 @@ class DensityMatrix:
             if qargs is not None:
                 selected = _validate_qargs(qargs, self.num_qubits)
                 circuit = Circuit(self.num_qubits, operator.num_bits).compose(operator, qubits=selected)
-            return DensityMatrix(DensityMatrixDevice(initial_state=self.data).density_matrix(circuit))
+            return DensityMatrix(DensityMatrixDevice(initial_state=self.data).density_matrix(circuit),dims=self._dims)
         op = Operator.from_circuit(operator) if hasattr(operator, "operations") else operator
         from quantumbridge.execution.resource_context import current_resources
         scope=current_resources()
@@ -177,19 +174,32 @@ class DensityMatrix:
                 raise ValueError("QuantumBridge subsystem evolution operator dimension must match qargs.")
             if scope is not None:
                 from quantumbridge.utils.math import apply_density_operator
-                return DensityMatrix(apply_density_operator(self.data,matrix,qargs_tuple,self.num_qubits))
+                return DensityMatrix(apply_density_operator(self.data,matrix,qargs_tuple,self.num_qubits),dims=self._dims)
             matrix = Operator(np.eye(self.data.shape[0], dtype=complex)).compose(Operator(matrix), qargs=qargs_tuple).data
         if matrix.shape != self.data.shape:
             raise ValueError("QuantumBridge evolution operator dimension must match DensityMatrix dimension.")
         if scope is not None:
-            from quantumbridge.utils.math import apply_density_operator
-            return DensityMatrix(apply_density_operator(self.data,matrix,tuple(range(self.num_qubits)),self.num_qubits))
-        return DensityMatrix(matrix @ self.data @ matrix.conj().T)
+            from quantumbridge.execution import mps_arrays as arrays
+            return DensityMatrix(arrays.contracted(arrays.contracted(matrix,self.data),arrays.conjugated(matrix).T),dims=self._dims)
+        return DensityMatrix(matrix @ self.data @ matrix.conj().T,dims=self._dims)
 
     def reset(self, qargs=None) -> "DensityMatrix":
         from quantumbridge.utils.math import apply_density_channel
 
-        selected = _validate_qargs(qargs, self.num_qubits)
+        selected = _validate_qargs(qargs,len(self._dims))
+        if not selected:return self.copy()
+        if self.num_qubits is None:
+            from quantumbridge.execution import mps_arrays as arrays
+            result=arrays.filled("density_mixed_radix_reset",self.data.shape,complex,0)
+            for row in range(len(self.data)):
+                r=list(basis_digits(row,self._dims))
+                target_r=[0 if position in selected else digit for position,digit in enumerate(r)]
+                for column in range(len(self.data)):
+                    c=list(basis_digits(column,self._dims))
+                    if any(r[position]!=c[position] for position in selected):continue
+                    target_c=[0 if position in selected else digit for position,digit in enumerate(c)]
+                    result[basis_index(target_r,self._dims),basis_index(target_c,self._dims)]+=self.data[row,column]
+            return DensityMatrix(result,dims=self._dims)
         from quantumbridge.execution.resource_context import current_resources
         if current_resources() is not None:
             from quantumbridge.utils.math import validate_kraus_operators
@@ -201,63 +211,60 @@ class DensityMatrix:
             data = self.data.copy()
         for wire in selected:
             data = apply_density_channel(data, reset, (wire,), self.num_qubits)
-        return DensityMatrix(data)
+        return DensityMatrix(data,dims=self._dims)
 
     def measure(self, qargs=None, seed=None):
-        selected = _validate_qargs(qargs, self.num_qubits)
+        selected = _validate_qargs(qargs,len(self._dims))
         if current_resources() is not None:
             current_resources().ledger.preflight(memory_bytes=self.data.nbytes)
             outcome=self.sample_memory(1,qargs=selected,seed=seed)[0]
-            indices=tuple(index for index in range(1<<self.num_qubits)
-                if all(bit_at(index,wire,self.num_qubits)==int(bit) for wire,bit in zip(selected,outcome)))
+            indices=tuple(index for index in range(len(self.data))
+                if basis_label(index,self._dims,selected)==outcome)
             probability=sum(complex(self.data[index,index]).real for index in indices)
             if probability<=0:raise ValueError("Measurement produced a zero-probability density collapse.")
             from quantumbridge.execution import mps_arrays as arrays
             result=arrays.filled("density_projection",self.data.shape,complex,0)
             for row in indices:
                 for column in indices:result[row,column]=self.data[row,column]/probability
-            return outcome,DensityMatrix(result)
+            return outcome,DensityMatrix(result,dims=self._dims)
         outcome = self.sample_memory(1, qargs=selected, seed=seed)[0]
         mask = np.array([
-            all(bit_at(index, wire, self.num_qubits) == int(bit) for wire, bit in zip(selected, outcome))
-            for index in range(1 << self.num_qubits)
+            basis_label(index,self._dims,selected)==outcome
+            for index in range(len(self.data))
         ])
         projected = self.data * mask[:, None] * mask[None, :]
         probability = np.trace(projected).real
-        return outcome, DensityMatrix(projected / probability)
+        return outcome, DensityMatrix(projected / probability,dims=self._dims)
 
     def tensor(self, other) -> "DensityMatrix":
         other_state = other if isinstance(other, DensityMatrix) else DensityMatrix(other)
-        return DensityMatrix(_tensor_arrays(self.data,other_state.data))
+        return DensityMatrix(_tensor_arrays(self.data,other_state.data),dims=self._dims+other_state._dims)
 
     def expand(self, other) -> "DensityMatrix":
         other_state = other if isinstance(other, DensityMatrix) else DensityMatrix(other)
-        return DensityMatrix(_tensor_arrays(other_state.data,self.data))
+        return DensityMatrix(_tensor_arrays(other_state.data,self.data),dims=other_state._dims+self._dims)
 
     def reverse_qargs(self) -> "DensityMatrix":
-        if current_resources() is not None:
-            from quantumbridge.execution.array_ownership import copied_array
-            result=copied_array(self.data,category="density_reverse")
-            order=tuple(int(format(index,f"0{self.num_qubits}b")[::-1],2) for index in range(len(self.data)))
-            for row,destination in enumerate(order):
-                for column,target in enumerate(order):result[destination,target]=self.data[row,column]
-            return DensityMatrix(result)
-        permutation = _reverse_permutation(self.num_qubits)
-        return DensityMatrix(permutation @ self.data @ permutation.T)
+        from quantumbridge.execution.array_ownership import copied_array
+        result=copied_array(self.data,category="density_reverse")
+        order=tuple(basis_index(basis_digits(index,self._dims)[::-1],self._dims[::-1]) for index in range(len(self.data)))
+        for row,destination in enumerate(order):
+            for column,target in enumerate(order):result[destination,target]=self.data[row,column]
+        return DensityMatrix(result,dims=self._dims[::-1])
 
     @meter_native_samples(result_count=lambda counts:sum(counts.values()))
     def sample_counts(self, shots: int, qargs=None, seed: int | None = None) -> dict[str, int]:
         from . import statevector as sampling
-        return sampling._counts_from_indices(*_sample_measurements(self,_validate_qargs(qargs,self.num_qubits),shots,seed))
+        return sampling._counts_from_indices(*_sample_measurements(self,_validate_qargs(qargs,len(self._dims)),shots,seed))
 
     @meter_native_samples
     def sample_memory(self, shots: int, qargs=None, seed: int | None = None) -> list[str]:
         from . import statevector as sampling
-        return sampling._memory_from_indices(*_sample_measurements(self,_validate_qargs(qargs,self.num_qubits),shots,seed))
+        return sampling._memory_from_indices(*_sample_measurements(self,_validate_qargs(qargs,len(self._dims)),shots,seed))
 
     def copy(self) -> "DensityMatrix":
         from quantumbridge.execution.array_ownership import copied_array
-        return DensityMatrix(copied_array(self.data,category="density_copy"))
+        return DensityMatrix(copied_array(self.data,category="density_copy"),dims=self._dims)
 
     def conjugate(self) -> "DensityMatrix":
         copied=self.copy()
@@ -265,14 +272,15 @@ class DensityMatrix:
         return copied
 
     def transpose(self) -> "DensityMatrix":
-        return DensityMatrix(self.data.T)
+        return DensityMatrix(self.data.T,dims=self._dims)
 
     def adjoint(self) -> "DensityMatrix":
-        return DensityMatrix(self.conjugate().data.T)
+        return DensityMatrix(self.conjugate().data.T,dims=self._dims)
 
     def to_operator(self):
         from quantumbridge.information.operator import Operator
 
+        require_qubits(self._dims,"mixed_radix_operator_conversion")
         return Operator(self.data)
 
     def to_statevector(self, atol: float = 1e-10) -> Statevector:
@@ -287,4 +295,4 @@ class DensityMatrix:
             raise ValueError("QuantumBridge DensityMatrix is not a pure state.")
         if (np.count_nonzero(values > atol) if scope is None else sum(value>atol for value in values)) != 1:
             raise ValueError("QuantumBridge DensityMatrix is not a pure state.")
-        return Statevector(vectors[:, index])
+        return Statevector(vectors[:, index],dims=self._dims)

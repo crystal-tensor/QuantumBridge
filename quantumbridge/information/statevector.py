@@ -11,25 +11,18 @@ from numbers import Integral, Number
 import numpy as np
 
 from quantumbridge.devices import StatevectorDevice
-from quantumbridge.utils.math import apply_unitary, expectation_hamiltonian, probabilities_from_state
+from quantumbridge.utils.math import apply_unitary, expectation_hamiltonian
 from quantumbridge.execution.resource_context import (
     current_resources, meter_native_samples, record_completed_native_shots,
+)
+from .state_dimensions import (
+    state_dimensions, qubit_count, basis_digits, basis_index, basis_label,
+    require_qubits, subsystem_positions,
 )
 
 
 def _validate_qargs(qargs, num_qubits: int) -> tuple[int, ...]:
-    normalized = tuple(range(num_qubits) if qargs is None else qargs)
-    if any(isinstance(qarg,bool) or not isinstance(qarg,Integral) for qarg in normalized):
-        raise ValueError("QuantumBridge Statevector qargs must be integer subsystem positions.")
-    if len(set(normalized)) != len(normalized):
-        raise ValueError("QuantumBridge Statevector qargs must be distinct.")
-    if any(qarg < 0 or qarg >= num_qubits for qarg in normalized):
-        raise ValueError("QuantumBridge Statevector qargs are outside this state.")
-    return normalized
-
-
-def _index_bits(index: int, qargs: tuple[int, ...], num_qubits: int) -> str:
-    return "".join(str((index >> (num_qubits - 1 - qarg)) & 1) for qarg in qargs)
+    return subsystem_positions(qargs,num_qubits)
 
 
 def _sampling_preflight(outcomes, shots):
@@ -45,7 +38,7 @@ def _sampling_preflight(outcomes, shots):
 
 
 def _sample_measurements(state, selected, shots, seed):
-    _sampling_preflight(1<<len(selected),shots)
+    _sampling_preflight(prod(state.dims(selected)),shots)
     distribution=state.probabilities(selected)
     labels=sorted(distribution)
     values=tuple(distribution[label] for label in labels)
@@ -103,17 +96,20 @@ def _tensor_arrays(first,second):
 
 
 class Statevector:
-    def __init__(self, data, normalize: bool = False):
+    def __init__(self, data, normalize: bool = False, *, dims=None):
         from quantumbridge.execution.resource_context import current_resources
         scope = current_resources()
-        if scope is None:self.data = np.asarray(data, dtype=complex)
+        if scope is None:
+            self.data = np.asarray(data, dtype=complex)
+            shape=self.data.shape
         else:
-            from quantumbridge.execution.array_reservations import numeric_array
-            self.data = numeric_array(data, category="statevector_input_conversion")
-        if self.data.ndim != 1:
+            from quantumbridge.execution.array_reservations import numeric_array, numeric_shape
+            shape=numeric_shape(data)
+        if len(shape)!=1:
             raise ValueError("QuantumBridge Statevector data must be one-dimensional.")
-        if len(self.data) == 0 or len(self.data) & (len(self.data) - 1):
-            raise ValueError("QuantumBridge Statevector dimension must be a power of two.")
+        self._dims=state_dimensions(dims,size=shape[0])
+        if scope is not None:
+            self.data = numeric_array(data, category="statevector_input_conversion")
         if normalize:
             if scope is None:norm = np.linalg.norm(self.data)
             else:
@@ -126,14 +122,14 @@ class Statevector:
                 output = arrays.owned("statevector_normalized", self.data.shape, complex)
                 np.divide(self.data, norm, out=output)
                 self.data = output
-        self.num_qubits = int(np.log2(len(self.data)))
+        self.num_qubits = qubit_count(self._dims)
 
     @property
     def dim(self) -> int:
         return len(self.data)
 
     def dims(self, qargs=None) -> tuple[int, ...]:
-        return (2,) * len(_validate_qargs(qargs, self.num_qubits))
+        return tuple(self._dims[position] for position in _validate_qargs(qargs,len(self._dims)))
 
     @classmethod
     def from_circuit(cls, circuit) -> "Statevector":
@@ -143,23 +139,14 @@ class Statevector:
     def from_int(cls, index: int, dims) -> "Statevector":
         if isinstance(index,bool) or not isinstance(index,Integral):
             raise ValueError("Statevector.from_int index must be an integer.")
-        if isinstance(dims, Integral) and not isinstance(dims,bool):
-            dim = int(dims)
-        else:
-            if current_resources() is not None and type(dims) not in (tuple,list):
-                raise ValueError("Managed state dimensions require a builtin integer sequence.")
-            dimensions=tuple(dims)
-            if any(isinstance(value,bool) or not isinstance(value,Integral) or value<=0 for value in dimensions):
-                raise ValueError("State dimensions must be positive integers.")
-            dim = prod(int(value) for value in dimensions)
-        if dim <= 0 or dim & (dim - 1):
-            raise ValueError("QuantumBridge Statevector.from_int dims must describe a power-of-two dimension.")
+        dimensions=state_dimensions(dims)
+        dim=prod(dimensions)
         if index < 0 or index >= dim:
             raise ValueError("QuantumBridge Statevector.from_int index is outside dims.")
         from quantumbridge.execution import mps_arrays as arrays
         data=arrays.filled("statevector_basis",(dim,),complex,0)
         data[int(index)] = 1.0
-        return cls(data)
+        return cls(data,dims=dimensions)
 
     @classmethod
     def from_label(cls, label: str) -> "Statevector":
@@ -182,7 +169,12 @@ class Statevector:
         return bool(np.isclose(np.vdot(self.data, self.data), 1.0, atol=atol))
 
     def probabilities(self, wires=None) -> dict[str, float]:
-        return probabilities_from_state(self.data, self.num_qubits, wires)
+        selected=_validate_qargs(wires,len(self._dims))
+        probabilities={}
+        for index,amplitude in enumerate(self.data):
+            label=basis_label(index,self._dims,selected)
+            probabilities[label]=probabilities.get(label,0.)+float(abs(amplitude)**2)
+        return probabilities
 
     def probabilities_dict(self, qargs=None) -> dict[str, float]:
         return self.probabilities(qargs)
@@ -190,7 +182,9 @@ class Statevector:
     def expectation_value(self, observable, qargs=None) -> complex:
         from quantumbridge.information.operator import Operator
 
+        if qargs is not None:require_qubits(self._dims,"mixed_radix_subsystem_expectation")
         if hasattr(observable, "to_hamiltonian"):
+            require_qubits(self._dims,"mixed_radix_hamiltonian")
             return expectation_hamiltonian(self.data, self.num_qubits, observable.to_hamiltonian())
         if hasattr(observable, "to_matrix"):
             matrix = np.asarray(observable.to_matrix(), dtype=complex)
@@ -208,6 +202,8 @@ class Statevector:
         from quantumbridge.execution.resource_context import current_resources
         scope=current_resources()
 
+        if qargs is not None:require_qubits(self._dims,"mixed_radix_subsystem_evolution")
+        if hasattr(operator,"operations"):require_qubits(self._dims,"mixed_radix_circuit_evolution")
         op = Operator.from_circuit(operator) if hasattr(operator, "operations") else operator
         if scope is not None:
             from quantumbridge.information.channels import _operator_data
@@ -218,29 +214,29 @@ class Statevector:
             dim = 1 << len(qargs_tuple)
             if matrix.shape != (dim, dim):
                 raise ValueError("QuantumBridge subsystem evolution operator dimension must match qargs.")
-            return Statevector(apply_unitary(self.data, matrix, qargs_tuple, self.num_qubits))
+            return Statevector(apply_unitary(self.data, matrix, qargs_tuple, self.num_qubits),dims=self._dims)
         if matrix.shape != (len(self.data), len(self.data)):
             raise ValueError("QuantumBridge evolution operator dimension must match Statevector dimension.")
         if scope is not None:
             from quantumbridge.execution import mps_arrays as arrays
-            return Statevector(arrays.contracted(matrix,self.data))
-        return Statevector(matrix @ self.data)
+            return Statevector(arrays.contracted(matrix,self.data),dims=self._dims)
+        return Statevector(matrix @ self.data,dims=self._dims)
 
     def tensor(self, other) -> "Statevector":
         other_state = other if isinstance(other, Statevector) else Statevector(other)
-        return Statevector(_tensor_arrays(self.data, other_state.data))
+        return Statevector(_tensor_arrays(self.data, other_state.data),dims=self._dims+other_state._dims)
 
     def expand(self, other) -> "Statevector":
         other_state = other if isinstance(other, Statevector) else Statevector(other)
-        return Statevector(_tensor_arrays(other_state.data, self.data))
+        return Statevector(_tensor_arrays(other_state.data, self.data),dims=other_state._dims+self._dims)
 
     def reverse_qargs(self) -> "Statevector":
         from quantumbridge.execution.array_ownership import copied_array
         data=copied_array(self.data,category="statevector_reverse")
         for source, amplitude in enumerate(self.data):
-            bits = format(source, f"0{self.num_qubits}b")
-            data[int(bits[::-1], 2)] = amplitude
-        return Statevector(data)
+            target=basis_index(basis_digits(source,self._dims)[::-1],self._dims[::-1])
+            data[target] = amplitude
+        return Statevector(data,dims=self._dims[::-1])
 
     def inner(self, other) -> complex:
         other_state = other if isinstance(other, Statevector) else Statevector(other)
@@ -267,16 +263,16 @@ class Statevector:
     def sample_counts(self, shots: int, qargs=None, seed: int | None = None) -> dict[str, int]:
         # Keep the old positional integer seed while accepting subsystem lists.
         if isinstance(qargs,Integral) and seed is None:seed,qargs=int(qargs),None
-        selected=_validate_qargs(qargs,self.num_qubits)
+        selected=_validate_qargs(qargs,len(self._dims))
         return _counts_from_indices(*_sample_measurements(self,selected,shots,seed))
 
     @meter_native_samples
     def sample_memory(self, shots: int, qargs=None, seed: int | None = None) -> list[str]:
-        qargs_tuple = _validate_qargs(qargs, self.num_qubits)
+        qargs_tuple = _validate_qargs(qargs,len(self._dims))
         return _memory_from_indices(*_sample_measurements(self,qargs_tuple,shots,seed))
 
     def measure(self, qargs=None, seed: int | None = None) -> tuple[str, "Statevector"]:
-        qargs_tuple = _validate_qargs(qargs, self.num_qubits)
+        qargs_tuple = _validate_qargs(qargs,len(self._dims))
         if current_resources() is not None:
             current_resources().ledger.preflight(memory_bytes=self.data.nbytes)
         memory = self.sample_memory(1, qargs=qargs_tuple, seed=seed)
@@ -284,7 +280,7 @@ class Statevector:
         from quantumbridge.execution.array_ownership import copied_array
         collapsed=copied_array(self.data,category="statevector_projection")
         for index in range(len(collapsed)):
-            if _index_bits(index, qargs_tuple, self.num_qubits) != outcome:
+            if basis_label(index,self._dims,qargs_tuple) != outcome:
                 collapsed[index] = 0.0
         if current_resources() is None:norm=np.linalg.norm(collapsed)
         else:
@@ -293,25 +289,28 @@ class Statevector:
         if norm == 0:
             raise ValueError("QuantumBridge measurement produced a zero-probability collapse.")
         np.divide(collapsed,norm,out=collapsed)
-        return outcome, Statevector(collapsed)
+        return outcome, Statevector(collapsed,dims=self._dims)
 
     def reset(self, qargs=None, seed: int | None = None) -> "Statevector":
-        selected=_validate_qargs(qargs,self.num_qubits)
+        selected=_validate_qargs(qargs,len(self._dims))
         if qargs is None:
-            return Statevector.from_int(0,self.dim)
+            return Statevector.from_int(0,self._dims)
         if not selected:return self.copy()
-        outcome,collapsed=self.measure(selected,seed=seed)
-        mask=sum(1<<(self.num_qubits-1-wire) for wire,bit in zip(selected,outcome) if bit=="1")
-        if mask:
-            for index in range(len(collapsed.data)):
-                if index&mask==mask:
-                    collapsed.data[index&~mask]=collapsed.data[index]
-                    collapsed.data[index]=0
+        _,collapsed=self.measure(selected,seed=seed)
+        # Zeroing measured digits maps uniquely to earlier basis indices.
+        for index in range(len(collapsed.data)):
+            digits=list(basis_digits(index,self._dims))
+            for position in selected:digits[position]=0
+            target=basis_index(digits,self._dims)
+            if target!=index and collapsed.data[index]!=0:
+                collapsed.data[target]=collapsed.data[index]
+                collapsed.data[index]=0
         return collapsed
 
     def to_operator(self):
         from quantumbridge.information.operator import Operator
 
+        require_qubits(self._dims,"mixed_radix_operator_conversion")
         return Operator(np.outer(self.data, np.conjugate(self.data)))
 
     def to_density_matrix(self):
@@ -337,7 +336,7 @@ class Statevector:
 
     def copy(self) -> "Statevector":
         from quantumbridge.execution.array_ownership import copied_array
-        return Statevector(copied_array(self.data,category="statevector_copy"))
+        return Statevector(copied_array(self.data,category="statevector_copy"),dims=self._dims)
 
     def to_dict(self, decimals: int | None = None) -> dict[str, complex]:
         out = {}
@@ -346,7 +345,8 @@ class Statevector:
                 continue
             if decimals is not None:
                 amplitude = np.round(amplitude, decimals=decimals)
-            out[format(index, f"0{self.num_qubits}b")] = complex(amplitude)
+            label=basis_label(index,self._dims,tuple(range(len(self._dims)))) if self._dims else "0"
+            out[label] = complex(amplitude)
         return out
 
     def __len__(self) -> int:
@@ -355,7 +355,7 @@ class Statevector:
     def __mul__(self, scalar):
         if not isinstance(scalar, Number):
             return NotImplemented
-        return Statevector(self.data * scalar)
+        return Statevector(self.data * scalar,dims=self._dims)
 
     def __rmul__(self, scalar):
         return self.__mul__(scalar)
@@ -363,7 +363,7 @@ class Statevector:
     def __truediv__(self, scalar):
         if not isinstance(scalar, Number):
             return NotImplemented
-        return Statevector(self.data / scalar)
+        return Statevector(self.data / scalar,dims=self._dims)
 
     def __eq__(self, other) -> bool:
         try:

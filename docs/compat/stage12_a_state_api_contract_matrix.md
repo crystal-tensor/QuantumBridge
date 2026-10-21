@@ -1,8 +1,12 @@
 # Stage 12-A State API Contract Matrix
 
-Date: 2026-10-21. Status: AUDIT STARTED; P0 native implementation NOT DONE.
+Date: 2026-10-21. Status: baseline audit recorded; bounded P0.1 native slices
+implemented and validated, full public compatibility PARTIAL.
 Native baseline: b1d345b3731276f5f2721cb42c2397d98981ac5c.
 This is a bounded initial matrix, not the complete SDK/API inventory.
+The table below records that baseline, not the later candidate implementation.
+Native P0.1 now has fresh FULL/framework/matrix construction/propagation evidence;
+see [the current progress report](../implementation/stage12_a_p01_mixed_radix_progress.md).
 
 ## Evidence And Limits
 
@@ -21,7 +25,7 @@ This is a bounded initial matrix, not the complete SDK/API inventory.
 
 ## Initial Function Matrix
 
-| Contract | Public 2.4.1 / 2.6 Observed Behavior | Native Baseline | Status |
+| Contract | Public 2.4.1 / 2.6 Observed Behavior | Native Baseline | Baseline Status |
 | --- | --- | --- | --- |
 | Statevector.from_int(5,(2,4)) | Dimension 8, dims (2,4), num_qubits None, nonzero amplitude index 5 | Dimensions flattened to (2,2,2), num_qubits 3 | Partial; real representation gap |
 | DensityMatrix.from_int(5,(3,2)) | Dimension 6, dims (3,2), num_qubits None, populated element (5,5) | Rejects non-power-of-two size | Missing nonbinary construction |
@@ -54,5 +58,24 @@ declared mixed-radix state. Existing compatibility entry points should expose
 verified public order/containers/properties explicitly. Neither a facade nor
 upstream passthrough is the mathematical implementation. Maintain separate
 native and compatibility test sets and prove composed execution without an
-upstream SDK installed. The P0 implementation and its red/fix/full gates remain
-open under the [execution contract](../implementation/stage12_a_native_state_api_execution_prompt.md).
+upstream SDK installed. P0.1's actual implementation and fresh red/fix/full gates
+are recorded under the [execution contract](../implementation/stage12_a_native_state_api_execution_prompt.md).
+
+## P0.1 Delta From The Baseline
+
+The bounded native construction/propagation/measurement/reset/partial-trace
+slices now pass actual same-runtime SDK-free/main/alternate FULL, frameworks
+and complete local matrix gates. This does not turn the historical baseline
+table above into current missing-function claims. Native full classes and public
+compatibility remain Partial; mapped mixed-radix operators/general channels and
+binary-only analysis extensions are still unsupported.
+
+The supplemental complex propagation comparison (different from the initial
+158-record survey) has 158 successful numerical checks per installed Qiskit
+version, plus explicit NATIVE_MATH_ONLY checks for absent public methods. Four
+public metadata differences per version remain: keep=[0] reduction of either
+native state class with dims (2,4) or (2,3,2) yields identical reduced data/dims
+(2,), but native num_qubits=1 versus public partial_trace num_qubits=None.
+This is Partial Public Compatibility, not a claim about upstream internals.
+See the progress report for initial incomplete harness failures, actual native
+reds, corrected numerical evidence, all gates and remaining boundaries.

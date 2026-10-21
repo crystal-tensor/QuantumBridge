@@ -1,8 +1,23 @@
 # Core Functional Parity Ledger
 
+Stage 12-A P0.1 now has bounded Verified Native construction, dimensions
+propagation, full numeric evolution, sample/measure/reset and partial trace.
+Fresh controlled SDK-free/main/alternate FULL, framework gates and the actual
+28-section matrix finish with exits 0. Main and independent matrix coverage both
+record 27570/30483 = 90.44385395138274%, with 68 exclusions unchanged. Seven
+absent-dependency subsets remain NOT_EXECUTED; known pip conflicts remain.
+Native/public wire/container conventions remain explicitly distinct; mapped
+mixed-radix operators and general channel/analysis paths are not completed.
+Four observed public num_qubits differences per Qiskit version remain Partial
+Public Compatibility. Whole dirty-workspace legal still fails on the separate
+untracked Router ledger gap; controlled-export legal passes. Complete state
+classes and the highest full independent replacement objective remain PARTIAL
+and ACTIVE / INCOMPLETE, respectively. No cloud or remote CI proof is implied.
+See [P0.1 progress](../implementation/stage12_a_p01_mixed_radix_progress.md).
+
 Updated: 2026-10-21, local R2 code checkpoint `b1d345b`; C3 remains PARTIAL.
 
-Fresh R2 same-tree SDK-free/main/alternate FULL, four-framework focuses and the
+Historical R2 same-tree SDK-free/main/alternate FULL, four-framework focuses and the
 actual complete 28-section matrix now finish with exits 0. Independent main and
 matrix coverage both record 27456/30388 = 90.35145452152166%, excluded 68.
 Seven optional matrix subsets were NOT_EXECUTED; main/alternate retain their

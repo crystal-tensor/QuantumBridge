@@ -9,6 +9,12 @@ import numpy as np
 
 from quantumbridge.information.density_matrix import DensityMatrix
 from quantumbridge.information.statevector import Statevector
+from quantumbridge.information.state_dimensions import require_qubits
+
+
+def _require_qubit_partition(state):
+    if isinstance(state,(Statevector,DensityMatrix)):
+        require_qubits(state.dims(),"mixed_radix_state_analysis")
 
 
 def _as_state_data(state) -> np.ndarray:
@@ -89,6 +95,7 @@ def entropy(state, base: float = 2) -> float:
 
 
 def mutual_information(state, base: float = 2) -> float:
+    _require_qubit_partition(state)
     rho = _as_density_data(state)
     if rho.shape != (4, 4):
         raise ValueError("QuantumBridge mutual_information requires a two-qubit bipartite state.")
@@ -98,6 +105,7 @@ def mutual_information(state, base: float = 2) -> float:
 
 
 def concurrence(state) -> float:
+    _require_qubit_partition(state)
     data = _as_state_data(state)
     if data.ndim == 1:
         if data.size != 4:
@@ -122,6 +130,7 @@ def entanglement_of_formation(state) -> float:
 
 
 def negativity(state, qargs) -> float:
+    _require_qubit_partition(state)
     rho = _as_density_data(state)
     num_qubits = _num_qubits(rho.shape[0])
     selected = _validate_qargs(qargs, num_qubits)
@@ -135,6 +144,7 @@ def negativity(state, qargs) -> float:
 
 
 def schmidt_decomposition(state, qargs):
+    _require_qubit_partition(state)
     vector = _as_state_data(state)
     if vector.ndim != 1:
         raise ValueError("QuantumBridge schmidt_decomposition requires a pure statevector.")

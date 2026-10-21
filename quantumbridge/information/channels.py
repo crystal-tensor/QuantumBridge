@@ -540,6 +540,9 @@ class _QuantumChannel:
         return self.is_cp(atol=atol, rtol=rtol) and self.is_tp(atol=atol, rtol=rtol)
 
     def evolve(self, state, qargs=None) -> DensityMatrix:
+        if isinstance(state,DensityMatrix):
+            from quantumbridge.information.state_dimensions import require_qubits
+            require_qubits(state.dims(),"mixed_radix_channel_evolution")
         scope=current_resources()
         rho = state.data if isinstance(state, DensityMatrix) else _matrix_array(state)
         if rho.ndim == 1:

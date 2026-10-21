@@ -1,6 +1,6 @@
 # Source Migration Ledger
 
-Status: local R2 code checkpoint b1d345b committed; C3 remains partial
+Status: bounded P0.1 native slices validated; R2 baseline b1d345b; C3 remains partial
 Date: 2026-10-21
 
 This ledger retains historical release and checkpoint sections. Current work
@@ -8,6 +8,32 @@ uses Native Implementation, Adapter Integration and Upstream Dependency, with
 their boundaries stated separately. Historical checkpoint limitations are not
 the current status view; use core_parity_ledger.md for that view.
 No Source Port with Attribution was performed.
+
+## Stage 12-A P0.1 Native Mixed-Radix Inventory
+
+Independent Native Implementation, with completed frozen-runtime gates for the
+bounded slices in the progress report, not complete class/API parity. Installed public
+Qiskit calls are optional black-box test oracles only; no upstream source/test
+port or SDK execution engine is added. Existing state/density and trace kernels
+are generalized rather than replaced with a second simulator.
+
+- `quantumbridge/information/state_dimensions.py`: native dimension invariants,
+  high-radix q0-first basis digits, labels and explicit binary-only guards.
+- `quantumbridge/information/statevector.py` and
+  `quantumbridge/information/density_matrix.py`: actual mixed-radix construction,
+  native mathematics, dimensions propagation, samples/collapse/reset.
+- `quantumbridge/information/partial_trace.py`: existing trace kernel with real
+  subsystem dimensions and admitted reduction outputs.
+- `quantumbridge/information/analysis.py` and
+  `quantumbridge/information/channels.py`: bounded guards against silent binary
+  reinterpretation in not-yet-extended consumers, not general API completion.
+- `tests/information/test_mixed_radix_states.py`: independently authored numeric,
+  dimension, composition, quota/lifetime and optional public-reference tests.
+- `docs/implementation/stage12_a_p01_mixed_radix_progress.md`: actual red/fix,
+  supported/unsupported contracts and completed same-runtime validation receipts.
+
+No cloud/hardware/token/auth/TLS, vendoring, tag/release or user Router/Studio
+source changes are part of this batch. Full functional replacement is incomplete.
 
 ## Stage 11P-C3-R2 State/Result Source Inventory
 

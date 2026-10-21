@@ -1173,6 +1173,19 @@ finite [joint review](docs/review/stage11p_c3_joint_review.md), with Stage 12-A
 actual state API behavior next. See the
 [Tableau progress report](docs/implementation/stage11p_c3_r2_tableau_progress.md).
 
+Stage 12-A P0.1 now verifies bounded native mixed-radix state/density APIs:
+explicit subsystem dimensions, full matrix evolution, tensor/copy/conversion,
+probabilities, sampling, collapse/reset and partial trace. Fresh controlled
+SDK-free/main/alternate FULL and the actual 28-section matrix pass; main and
+independent matrix coverage are 90.44385395138274%, exclusions 68 unchanged.
+Seven absent-dependency subsets were not executed; known environment conflicts
+and the separate dirty-workspace Router attribution issue remain disclosed.
+These are bounded native slices, not full state/public-API or SDK acceptance. Native
+q0-first/dict probabilities/density shape-tuple conventions are preserved;
+public compatibility, mixed mapped operators and general mixed-radix channel/
+analysis APIs remain partial or unsupported. No push, remote CI or real cloud
+execution is claimed. See the [P0.1 report](docs/implementation/stage12_a_p01_mixed_radix_progress.md).
+
 ## Native Molecular Chemistry Checkpoint
 
 `quantumbridge.qchem` now computes a bounded hydrogen/STO-3G s-shell workflow
