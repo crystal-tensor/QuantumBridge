@@ -239,6 +239,20 @@ FULL or a substitute for the actual frozen FULL/framework/matrix receipts.
 No push, auth/TLS workaround, token access, cloud/hardware call, vendor, tag,
 release, user-source cleanup or history rewrite is part of this checkpoint.
 
+Actual code checkpoint: 84623f0d3a7915aaccc57c1b45293490efaac334, normal local
+commit on main, message `feat: compute native mixed-radix observable expectations`.
+Full committed tree d14903ca9e07f362359af76fe3bae8ebc84379d5 exactly equals the
+final candidate index, final-source export and normal staged tree. Its only
+differences from frozen FULL tree 6b5b3927 are five report/ledger text files.
+The production/tests/examples diff is empty; their subtrees remain the hashes
+above. Final documentation legal has 4 passed / exit 0 and privacy/security
+has 49 passed / 1 warning, 1.75s, exit 0, with separate final-doc-legal and
+final-doc-privacy receipts. They do not replace or rerun the frozen FULL gates.
+The normal index is empty after the commit; remaining dirt is the preserved
+user Studio/Router and unrelated work. Nothing was pushed and exact-new-SHA
+remote CI remains NOT_VERIFIED. Subsequent checkpoint/next-prompt receipt edits
+are documentation only, not a new runtime implementation or full SDK acceptance.
+
 ## Designated Conversation Clarification
 
 The designated response completed on 2026-10-21 after the actual development
@@ -285,6 +299,15 @@ change is needed. Complete boundary/acceptance reminder is recorded below.
 > 继续保持 ACTIVE / INCOMPLETE，C3 保持 PARTIAL，Studio 最后。
 
 ## Remaining Objective
+
+The designated conversation accepted only the reported P0.4 bounded local
+native slice after SHA 84623f0 and terminal receipts were supplied; it expressly
+does not independently audit source/logs or remote CI. It selected P0.5 native
+state arithmetic, purity and core state semantics, beginning with actual
+two-version public API investigation. Its complete prompt and completed closing
+clarification are saved in stage12_a_native_state_api_execution_prompt.md.
+That is a next-batch instruction, not a completed P0.5 implementation. No new
+functional acceptance is claimed for this checkpoint/prompt documentation.
 
 Still incomplete: all remaining State/Operator/channel/random/synthesis public
 contracts; complete QuantumCircuit/library/transpilation and Primitives V2;

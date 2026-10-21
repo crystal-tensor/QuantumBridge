@@ -56,7 +56,7 @@ classes and the highest full independent replacement objective remain PARTIAL
 and ACTIVE / INCOMPLETE, respectively. No cloud or remote CI proof is implied.
 See [P0.1 progress](../implementation/stage12_a_p01_mixed_radix_progress.md).
 
-Updated: 2026-10-22, P0.4 tested runtime tree `6b5b3927`; P0.3 local code
+Updated: 2026-10-22, P0.4 local code `84623f0`, tested runtime tree `6b5b3927`; P0.3 local code
 `be9d5e3`, tested runtime tree `7a9ebe78`, P0.2-A local code
 `12098c9`, tested runtime tree `2973040c`, local P0.1 code
 checkpoint `89f4dc9`, historical R2 checkpoint `b1d345b`; C3 remains PARTIAL.

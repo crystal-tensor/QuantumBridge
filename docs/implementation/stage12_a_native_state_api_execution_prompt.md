@@ -948,3 +948,369 @@ Coverage 历史基线 90.47525850539844%，68 exclusions 不得增加。不能�
 
 完整 Qiskit/PennyLane full native functional replacement 继续保持 ACTIVE / INCOMPLETE，
 C3 仍 PARTIAL，Capture/Studio 不进入，Studio 最后。
+
+## Received Next Batch Prompt: P0.5
+
+The designated response completed on 2026-10-22 (Asia/Shanghai) after the actual
+P0.4 code SHA and terminal gates were reported. It accepts only the reported
+bounded native slice, not an independent source/log audit or remote CI. The
+complete next execution prompt is transcribed below; this is NOT P0.5
+implementation or acceptance. The stated baseline is actual P0.4 code; later
+checkpoint/prompt receipt commits are documentation only.
+
+### QuantumBridge Stage 12-A P0.5 - Native State Arithmetic, Purity & Core State Semantics
+
+#### 0. 基线、最高目标和边界
+
+当前 committed HEAD：`84623f0d3a7915aaccc57c1b45293490efaac334`。
+P0.4 已完成本地受控功能切片验收。最终目标保持：Qiskit + PennyLane 完整核心函数库的
+独立原生实现、真实可调用功能及 full functional parity / full replacement：
+ACTIVE / INCOMPLETE。C3 保持 PARTIAL。
+
+本批只扩展现有 Statevector、DensityMatrix 的真实数学能力，不新建状态模拟器、SDK
+facade、上游 passthrough 或新的资源管理体系。不进入 Stage 11P-D/Capture/Studio。
+
+#### Task 1 - 两版本公开 API 黑盒调查
+
+先检查 QuantumBridge 的真实类、已有签名和现有测试，再在 Qiskit 2.4.1、2.6 环境调用
+公开 API。至少调查：
+
+Statevector：
+
+- `__add__`、`__sub__`；
+- `__mul__`、`__rmul__`；
+- `__truediv__`（仅当公开对象确实支持）；
+- `__neg__`；
+- `inner()`；
+- `is_valid()`；
+- `purity()`；
+- `to_dict()` 及实际支持的相关参数。
+
+DensityMatrix：
+
+- 加减与标量乘法；
+- 反向标量乘法；
+- 除法及负号的实际支持情况；
+- `trace()`；
+- `purity()`；
+- `is_valid()`；
+- `to_dict()`。
+
+记录：
+
+1. 方法是否真实存在；
+2. 输入类型；
+3. 返回对象类型；
+4. `dims()` 传播；
+5. 对复数、非有限数值及未归一化输入的行为；
+6. 公开异常；
+7. 两个版本的真实差异。
+
+不得为追求表面 API 数量而创造上游不存在的方法。如果公开 Statevector.purity() 不存在
+或行为不同，必须以实际实验为准；不能继续沿用先前的缺口猜测。
+
+#### Task 2 - 建立真实红灯
+
+在当前 native 代码上，至少保存以下修复前失败案例：
+
+1. Statevector 同维度线性相加。
+2. Statevector 相减及复数标量乘法。
+3. 不同 subsystem partition 但总维度相同的状态相加。
+4. DensityMatrix 加权组合。
+5. DensityMatrix 复数/实数标量运算的真实支持边界。
+6. 未归一化 Statevector 的 inner/norm。
+7. DensityMatrix trace 与 purity。
+8. 混合态 purity 小于纯态 purity 的明确数值例子。
+9. 非连续 state buffer 的运算。
+10. 非法维度、foreign ndarray 和非有限值处理。
+11. Arithmetic 结果数值正确但 mixed-radix dims 丢失。
+12. 资源不足时 NumPy 输出在预约前已经分配。
+
+对于已经正确实现的函数，只做回归，不把它伪造为新增红灯。红灯日志必须分别记录数学
+错误、功能缺失、API 契约不一致和测试作者错误。
+
+#### Task 3 - Statevector 原生线性代数
+
+复用既有数值数组、mixed-radix dimensions 和 ResourceScope。对公开契约确认支持的
+操作，实现：
+
+- 状态加法、减法；
+- 标量乘法；
+- 受支持的相反数；
+- `inner()`；
+- 有依据的 norm/validity 行为；
+- 必要的 `to_dict()` 数值导出。
+
+数学不变量：`(alpha |psi> + beta |phi>)_i = alpha psi_i + beta phi_i`。
+保留复振幅，不偷偷归一化。对于 mixed-radix dimensions：
+
+- subsystem partition 匹配时正常运算；
+- partition 不同时按核实的公开语义决定接受、拒绝或标记 Partial；
+- 不把 `(2,4)` 与 `(2,2,2)` 当成无条件相同的子系统结构。
+
+必须验证状态线性组合与 density matrix 物理混合的区别。
+
+#### Task 4 - DensityMatrix 算术与 Purity
+
+按已确认的公开契约实现原生：
+
+- density matrix 加减；
+- 标量乘法；
+- trace；
+- purity；
+- validity；
+- 受支持的导出。
+
+使用真实 NumPy 线性代数或已有原生 kernel，不引入上游 SDK。
+重点数学：`Tr(rho^2) = sum_(i,j) rho_ij rho_ji`。
+对于 Hermitian density matrix，等价于元素模平方求和，但通用数值定义不能假设所有
+输入已严格 Hermitian。独立验证：
+
+- 纯态：purity = 1；
+- 最大混合 qubit：purity = 1/2；
+- 最大混合 qutrit：purity = 1/3；
+- 非归一化矩阵的 trace/purity 缩放；
+- 合法凸混合保持 Hermiticity、PSD 和 trace 1；
+- 非物理输入按公开契约处理，不偷偷修复成物理态。
+
+不要把 Statevector 振幅相加误当作 DensityMatrix 概率混合。
+
+#### Task 5 - 两套独立数学 Oracle
+
+Oracle A：显式 NumPy 向量/矩阵计算。独立构造复杂复数输入，并计算运算结果、inner、
+trace 和 purity。
+
+Oracle B：解析或谱分解。例如使用对角混态本征值的平方和验证 purity，再构造带相干项
+的 Hermitian density matrix。必须覆盖：
+
+- `(2,4)`、`(3,2)`、`(2,3,2)`；
+- 单 qutrit/qudit；
+- noncontiguous/strided arrays；
+- complex amplitudes；
+- zero states；
+- non-normalized states；
+- dimensions mismatch。
+
+不共享 production 数值 helper 作为 oracle。
+
+#### Task 6 - 真实跨函数组合
+
+必须实现并测试：
+
+组合 A：状态线性叠加
+
+`Statevector basis -> scalar multiplication -> addition -> norm/inner -> expectation`
+
+组合 B：物理混合态
+
+`Statevector psi1/psi2 -> DensityMatrix -> weighted mixture -> purity -> partial_trace -> expectation`
+
+组合 C：mixed-radix
+
+`from_int -> tensor -> State arithmetic -> DensityMatrix -> mapped evolve -> expectation`
+
+这里可直接复用 P0.1-P0.4 的原生功能，不重复实现 evolve、partial_trace 或 expectation。
+
+#### Task 7 - 公开 API Differential
+
+在 Qiskit 2.4.1、2.6 的公开入口运行相同输入。分别对照：
+
+- 数值；
+- dimensions；
+- 返回类型；
+- 异常；
+- `to_dict()` 的真实键格式；
+- purity / validity；
+- 边界值。
+
+对 QuantumBridge 原生语义和公开行为不同的情况，必须记录 Partial Public Compatibility。
+既有 P0.2/P0.3 PUBLIC_DIFFERENTIAL_MISMATCH 继续保留原始字面案例，不通过本批状态
+算术改写已有 mixed-radix 核心数学。
+
+#### Task 8 - 有界资源与错误行为
+
+只审计本批新增的输出数组和已知临时数值缓冲：
+
+- 在分配前计算 shape/dtype/bytes；
+- 复数类型不发生静默截断；
+- 不连续数组的真实 copy 预约；
+- 按 ndarray root 保留 lease；
+- valid -> overbudget -> valid；
+- 数值错误不导致旧对象部分修改；
+- foreign protocol 未经许可不得执行。
+
+不开展新一轮全局 allocator 审计。
+
+#### Task 9 - 回归保护
+
+必须保护：
+
+- P0.1 mixed-radix dimensions；
+- P0.2-A mapped evolve；
+- P0.3 Operator composition；
+- P0.4 local expectation；
+- C3 State/Result ownership；
+- 100-qubit MPS；
+- C2A second-adjoint/HVP；
+- 四框架；
+- H2；
+- QASM/QPY；
+- Aer Noise/Save/Set；
+- 既有公共差异字面证据。
+
+不放宽数值容差，不修改正确旧断言，不新增 coverage exclusions。
+
+#### Task 10 - 冻结与完整门禁
+
+在功能及 focused 回归结束后冻结完整 production/tests/examples。必须执行：
+
+1. SDK-free FULL。
+2. Main FULL + explicit coverage。
+3. Alternate FULL。
+4. 独立 JAX/TF。
+5. Torch/Autograd focused。
+6. 完整 28 段 local matrix，保存实际 shell exit。
+7. Compileall、legal/privacy/security/no-token/no-vendor。
+8. 五环境真实版本、import origins 和 pipcheck。
+9. Frozen/export/workspace/staged/committed tree equality。
+
+Coverage 历史基线：90.49588122293491%，68 exclusions 不增加。不得通过删除已有测试、
+增加排除或放宽容差取得全绿。七个可选生态依赖子集缺失时继续标记 NOT_EXECUTED。
+Offline Quafu/QOS/Runtime 不冒充真机验证。Whole dirty workspace Router legal 失败与
+controlled legal 通过必须分开记录，不碰用户文件。
+
+#### Task 11 - 限定本地提交
+
+全部必要门禁达到验收条件后，只 stage Stage 12-A P0.5 的归属文件，并正常本地 commit。
+不 push；不修改用户 Studio/Router；不改 auth/TLS；不读取 token；不调用云/硬件；不
+vendor、tag/release、force、reset、rebase 或 amend。远端 CI 标记 NOT_VERIFIED，
+不得借用旧 SHA 结果。
+
+#### Task 12 - 最终交付报告
+
+提交：
+
+1. 真正新增的 Statevector/DensityMatrix API。
+2. 公开契约调查结果。
+3. 红灯和原生修复。
+4. 复数数学、mixed dimensions、trace/purity。
+5. 三条组合执行链。
+6. 两套独立 oracle。
+7. Qiskit 2.4.1/2.6 差分。
+8. 实际资源/异常边界。
+9. 三环境 FULL、coverage、28 段 matrix。
+10. 本地 SHA、远端 CI 状态。
+11. 保留的 Partial/Unsupported API。
+12. 后续真正缺失的核心函数优先级。
+
+#### 最终执行要求
+
+正式启动 Stage 12-A P0.5，先完成 Statevector/DensityMatrix 公开算术、inner、trace、
+purity、validity 和导出接口的黑盒合同调查。然后根据真实结果进行 red -> native
+implementation -> 两种独立数学 oracle -> 公共差分 -> 组合调用 -> 最终同树质量门禁。
+
+此批只交付可实际执行的核心数学函数，不增加大型兼容 facade、不启动 general
+channels/Capture/Studio，也不把项目转成纯资源治理。
+
+完整 Qiskit/PennyLane 独立原生 full functional parity / full replacement 仍为
+ACTIVE / INCOMPLETE；C3 PARTIAL，Studio 最后。
+
+### Received Closing Clarification: P0.5 Tasks 10-12
+
+The initial AX delivery ended at Task 9 while showing a completed marker; the
+original Tasks 10-12 arrived with a later observation during the clarification
+send. The complete original prompt above is retained. The subsequent completed
+reply below expands the SAME closing requirements; it adds no functional scope
+and governs final gate/receipt details. Tasks 0-9 stay unchanged.
+
+确认，完全沿用原有门禁、提交和安全边界。以下内容直接接在已保存的 P0.5 Prompt
+Task 9 之后，作为 Task 10-12。无需修改或重复 Task 0-9。
+
+#### Task 10 - 最终冻结与完整质量门禁
+
+完成 P0.5 原生功能开发、真实 red->green、独立数学 oracle 和公开 API 差分后，冻结
+production/tests/examples，使用独立 Git index/export 记录唯一受测 tree SHA。
+在同一冻结树上执行：
+
+1. SDK-free FULL pytest：不得依赖 Qiskit、PennyLane 或四个 AD 框架作为原生执行后端。
+2. Main FULL pytest + explicit coverage：保存完整结果、coverage JSON 和真实退出码。
+3. Alternate FULL pytest：验证备用 Qiskit/PennyLane 版本组合。
+4. 四框架回归：独立 JAX、独立 TensorFlow，以及 Torch/Autograd 专项测试。
+5. 完整 28 段 local matrix：执行原始 scripts/run_local_matrix.sh，不得缩减、替换为
+   focused tests 或借用历史结果。保存 28 个 section 状态、完整日志及独立 shell exit。
+6. 合规与环境检查：compileall、controlled legal、privacy/security、no-token/no-vendor、
+   五环境版本和实际 import origins、pipcheck、git diff --check。
+7. 最终源码一致性：确认 workspace/export/tested tree 的 production/tests/examples 完全一致。
+
+Coverage 历史基线：90.49588122293491%；excluded 68，不得增加。不得通过删除测试、
+放宽容差或新增 exclusion 维持覆盖率。代码行覆盖率不代表 API 功能完成率。
+
+Finance/Optimization/ML/Dynamics/Metal/Experiments/Addons 等依赖缺失的子集继续明确
+标记 NOT_EXECUTED；离线 QOS/Quafu/Runtime 不冒充云或真机验证。既有 main/alternate
+pip 依赖冲突如实披露。Whole dirty workspace 的 Router ledger 失败与 controlled
+export legal 通过必须分别记录，不能相互替代。如果出现真实回归：
+
+- 保存原始失败日志及 .exit。
+- 区分 production 缺陷、测试作者错误和已证实过时的断言。
+- 最小范围修复，不放宽正确数学标准。
+- 重新冻结源码，并在最终新树上重跑必要的完整门禁。
+- 不得复用旧冻结树的绿色结果。
+
+所有必需测试和 matrix 进程必须真实终止后，才能进行最终验收和提交。
+
+#### Task 11 - Scoped 本地提交
+
+仅当 Task 10 所有必要门禁满足既定验收条件后：
+
+1. 核实当前 HEAD 和工作区状态。
+2. 明确列出 Stage 12-A P0.5 归属文件。
+3. 仅 stage 这些文件，不使用 git add .。
+4. 核对 staged production/tests/examples 与最终受测树一致。
+5. 正常本地 commit，不 amend。
+6. 提交后再次核对 committed tree 与最终受测版本一致。
+7. 报告真实 commit SHA、文件数量和改动摘要。
+
+必须完整保留用户 Studio/Router 的未提交及未跟踪文件。禁止事项：
+
+- 不 push，除非 Owner 后续明确恢复授权且完成 fresh fast-forward 核验。
+- 不修改 OAuth、认证、TLS 或 Git 凭证。
+- 不读取、输出或传送 token/private keys。
+- 不调用真实云服务或量子硬件。
+- 不 vendor 上游源码、wheel、site-packages。
+- 不 force、reset、rebase、amend 或改写历史。
+- 不创建 tag/release。
+- 不进入 Capture/Studio。
+- 不启动新的全局 allocator 审计。
+- 不新增第二套 State 数学引擎或上游 SDK passthrough。
+
+新提交的远端 CI 必须标记 NOT_VERIFIED，不得借用历史 SHA 的 CI 状态。
+
+#### Task 12 - P0.5 有界验收及最终报告
+
+输出一份完整 Stage 12-A P0.5 实施报告，至少包括：
+
+1. 公开契约调查：Qiskit 2.4.1/2.6 实际存在的 Statevector/DensityMatrix 方法、签名、
+   异常和返回行为；明确不存在或不支持的接口。
+2. 真实新增原生功能：逐函数列出新增、修复、原已正确以及仍 Unsupported 的部分。
+3. Red->Green 证据：原始失败数量、根因、修复和最终专项测试结果，区分测试错误与生产缺陷。
+4. 独立数学验证：复数状态算术、inner、trace、purity、dimensions 和未归一化行为，
+   仅报告实际验证的函数。
+5. 公开 API 差分：分别统计数值通过、异常差异、metadata 差异和未解决 mismatch，
+   不把 probe records 当成 native passed tests。
+6. 真实组合执行：Task 6 的三条 State/Density 数学调用链及其数值结果。
+7. 资源及所有权：本批新增数组的分配前预算、root/view 生命周期和失败恢复；
+   外部内存限制照实披露。
+8. 完整门禁收据：SDK-free/main/alternate FULL、四框架专项、coverage JSON、28 段
+   matrix shell exit、compile/legal/privacy/security、五环境 origin/pip。
+9. 冻结与提交一致性：tested tree、export、workspace、staged、committed 的核对结果及本地 SHA。
+10. 明确剩余缺口：完整 State/Operator/Channel/QNode/Circuit 等尚未实现或未验证的核心
+    函数、公开兼容问题及下一批候选方向。
+
+只将证据充分的具体函数切片认定为 Verified Native，其余保留 Partial / Unsupported /
+Unverified。报告必须明确：QuantumBridge 完整独立原生 Qiskit/PennyLane full functional
+parity / full replacement：ACTIVE / INCOMPLETE。Stage 11P-C3：PARTIAL。
+Studio 最后，不在本批启动。
+
+最终执行要求：原样保留 Task 0-9，追加上述 Task 10-12，然后按完整 P0.5 Prompt 开始
+执行。本批完成后先报告真实运行和本地提交结果，再决定下一批核心函数开发；
+不提前扩大当前范围。

@@ -1,6 +1,6 @@
 # Source Migration Ledger
 
-Status: P0.4 native expectation, frozen runtime 6b5b3927 validated;
+Status: P0.4 local code checkpoint 84623f0, frozen runtime 6b5b3927 validated;
 P0.3 local code checkpoint be9d5e3, frozen runtime 7a9ebe78 validated;
 P0.2-A local checkpoint 12098c9, frozen runtime 2973040c validated;
 P0.1 checkpoint 89f4dc9;
