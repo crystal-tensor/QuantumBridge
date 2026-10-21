@@ -1,5 +1,25 @@
 # Core Functional Parity Ledger
 
+Stage 12-B P1 connects native Circuit/Instruction inputs to Operator, Statevector
+and DensityMatrix construction, adds real from_instruction state entries and
+Instruction evolution, and fixes typed mixed-radix state-to-Operator conversion.
+Existing correct static circuit kernels are reused. Terminal measured circuits
+cannot silently become unitary Operators; the bilateral serialization helper now
+explicitly strips terminal measurements on both sides ONLY for static matrix
+comparison while also asserting original measurement mappings and rejection.
+The raw numeric instruction copy uses existing storage admission. Focuses have
+65 passed per installed reference environment (61 native / 4 optional reference
+skips without SDKs). Fresh final frozen SDK-free/main/alternate FULL finish with
+3512/4294/4292 passed, skips/xfails disclosed; frameworks and original complete
+28-section matrix exit 0. Main/matrix per-file coverage agrees at
+28079/30976 = 90.64759814049587%, excluded 68 unchanged. The first frozen main
+FULL's three old-helper failures are preserved, not xfailed; a new unique final
+tree repeats all required gates. Seven optional subsets remain NOT_EXECUTED,
+known two pip conflicts and separate dirty Router legal failure remain. No qudit
+Circuit IR, full public classes/signatures, cloud/hardware, new-SHA remote CI or
+push is claimed. Whole core replacement stays ACTIVE / INCOMPLETE; C3 PARTIAL.
+See the [P1 report](../implementation/stage12_b_p1_execution_bridge_progress.md).
+
 P0.7 adds actual native DensityMatrix.partial_transpose(qargs), exchanging the
 selected mixed-radix row/column digits without conjugation, normalization or PSD
 projection. Focuses recover a genuine missing-method red to 197 passed in each
@@ -97,7 +117,9 @@ classes and the highest full independent replacement objective remain PARTIAL
 and ACTIVE / INCOMPLETE, respectively. No cloud or remote CI proof is implied.
 See [P0.1 progress](../implementation/stage12_a_p01_mixed_radix_progress.md).
 
-Updated: 2026-10-22, P0.7 local code `cd0370b`, frozen tree `03424712`, tested
+Updated: 2026-10-22, P1 final frozen tree `58a823d8`, tested production `e8220fbf`,
+tests `fd159923`, examples `897454bf`; explicit scoped local commit and runtime
+equality receipts are recorded in the P1 report. P0.7 local code `cd0370b`, frozen tree `03424712`, tested
 production `7d983011`, code full tree `df9720cd`; production/tests/examples
 equality exits 0 across frozen/export/workspace/staged/committed checks.
 P0.5 local code `87076d5`, frozen tree `e6f261f5`, tested

@@ -36,6 +36,12 @@ def pair(scenario):
 
 
 def equivalent(native,reference):
+    measurements=[(reference.find_bit(item.qubits[0]).index,reference.find_bit(item.clbits[0]).index)
+        for item in reference.data if item.operation.name=='measure']
+    assert [(item.wire,item.bit) for item in native.measurements]==measurements
+    if measurements:
+        with pytest.raises(ValueError):Operator.from_circuit(native)
+    native=native.remove_final_measurements(inplace=False)
     reference=reference.remove_final_measurements(inplace=False)
     np.testing.assert_allclose(Operator.from_circuit(native).data,SDKOperator(reference.reverse_bits()).data,atol=2e-12)
 

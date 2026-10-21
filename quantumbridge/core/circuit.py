@@ -741,8 +741,11 @@ class Circuit:
             raise TypeError("QuantumBridge Circuit.from_instruction expects an Instruction.")
         if instruction.definition is not None:
             return instruction.definition.copy()
+        from quantumbridge.execution.array_ownership import native_configuration_copy
+        metadata = native_configuration_copy(instruction.metadata,category="native_instruction_metadata_copy")
+        if isinstance(metadata.get("control_flow"),list):metadata.pop("control_flow")
         circuit = cls(instruction.num_qubits, instruction.num_bits, instruction.name, instruction.metadata)
-        circuit.append(instruction, range(instruction.num_qubits), clbits=range(instruction.num_bits))
+        circuit.append(instruction.name, range(instruction.num_qubits),params=instruction.params,metadata=metadata)
         return circuit
 
     @property

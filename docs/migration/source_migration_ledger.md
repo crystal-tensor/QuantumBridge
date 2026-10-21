@@ -1,6 +1,8 @@
 # Source Migration Ledger
 
-Status: P0.7 native partial transpose local code cd0370b, frozen tree 03424712 validated;
+Status: Stage 12-B P1 native execution bridge final frozen tree 58a823d8 validated;
+tested production subtree e8220fbf, full same-tree local acceptance below;
+P0.7 native partial transpose local code cd0370b, frozen tree 03424712 validated;
 tested production subtree 7d983011, committed full tree df9720cd;
 P0.6 existing subsystem audit makes no runtime change;
 P0.5 native state arithmetic local code 87076d5, frozen tree e6f261f5 validated;
@@ -17,6 +19,35 @@ uses Native Implementation, Adapter Integration and Upstream Dependency, with
 their boundaries stated separately. Historical checkpoint limitations are not
 the current status view; use core_parity_ledger.md for that view.
 No Source Port with Attribution was performed.
+
+## Stage 12-B P1 Circuit And Instruction Execution Inventory
+
+Independent Native Implementation: `quantumbridge/information/operator.py`,
+`quantumbridge/information/statevector.py`,
+`quantumbridge/information/density_matrix.py` and
+`quantumbridge/core/circuit.py` connect existing native Circuit/Instruction
+objects to the existing operator and device kernels. Typed state-to-operator
+conversion retains mixed-radix partitions; no qudit circuit IR is invented.
+Known new outputs and numeric instruction metadata copies use existing
+admission/retained-storage helpers. Terminal measurements cannot become an
+Operator by silently disappearing.
+`tests/information/test_circuit_instruction_state_bridge.py` contains independently
+authored dense-product/tensor-action oracles, actual composition and resource
+contracts. `tests/information/test_mixed_radix_states.py` retains the unsupported
+qudit-circuit guard while removing only its now-obsolete numeric conversion
+prohibition. `examples/native_circuit_instruction_state_bridge.py` makes actual
+native calls. Public contract JSON is generated from installed public calls,
+not source/test porting.
+`tests/compat/test_native_serialization_differential.py` now explicitly removes
+terminal measurements on both sides only for the unitary comparison; it also
+asserts the full original measurement wire/bit sequence and Operator rejection.
+Full class/SDK parity and C3 remain Partial. Fresh final SDK-free/main/alternate
+FULL record 3512/4294/4292 passed with skips/xfails disclosed. Frameworks and the
+original 28-section matrix terminate exit 0. Main/matrix per-file coverage agrees
+at 90.64759814049587%, excluded 68 unchanged. The first frozen candidate's three
+bilateral helper failures, corrected fixture semantics, seven unexecuted optional
+subsets and known pip conflicts are retained in the full P1 report, not hidden.
+No Router/Studio/credential/cloud/vendor/push/tag/release change.
 
 ## Stage 12-A P0.7 Native Partial Transpose Inventory
 

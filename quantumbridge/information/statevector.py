@@ -391,8 +391,11 @@ def _state_valid(state, atol, rtol):
 
 class Statevector:
     def __init__(self, data, normalize: bool = False, *, dims=None):
+        from quantumbridge.core import Circuit, Instruction
         from quantumbridge.execution.resource_context import current_resources
         scope = current_resources()
+        if (type(data) in (Circuit,Instruction) if scope is not None else isinstance(data,(Circuit,Instruction))):
+            data = self.from_instruction(data).data
         if scope is None:
             self.data = np.asarray(data, dtype=complex)
             shape=self.data.shape
@@ -428,6 +431,18 @@ class Statevector:
     @classmethod
     def from_circuit(cls, circuit) -> "Statevector":
         return cls(StatevectorDevice().statevector(circuit))
+
+    @classmethod
+    def from_instruction(cls, instruction) -> "Statevector":
+        from quantumbridge.core import Circuit, Instruction
+        if current_resources() is not None and type(instruction) not in (Circuit,Instruction):
+            from quantumbridge.core.classical import UnsupportedFeature
+            raise UnsupportedFeature("managed_state_instruction","Managed state construction requires a native Circuit or Instruction.")
+        if isinstance(instruction,Instruction):
+            instruction = Circuit.from_instruction(instruction)
+        if not isinstance(instruction,Circuit):
+            raise TypeError("Statevector.from_instruction requires a native Circuit or Instruction.")
+        return cls.from_circuit(instruction)
 
     @classmethod
     def from_int(cls, index: int, dims) -> "Statevector":
@@ -503,10 +518,18 @@ class Statevector:
         return _expectation_value(self.data,self._dims,observable,qargs)
 
     def evolve(self, operator, qargs=None) -> "Statevector":
+        from quantumbridge.core import Circuit, Instruction
         from quantumbridge.information.operator import Operator
         from quantumbridge.execution.resource_context import current_resources
         scope=current_resources()
 
+        if isinstance(operator,Instruction):
+            require_qubits(self._dims,"mixed_radix_circuit_evolution")
+            if qargs is not None:
+                qargs = _validate_qargs(qargs,self.num_qubits)
+                if len(qargs)!=operator.num_qubits:
+                    raise ValueError("Instruction target count must match instruction width.")
+            operator = Circuit.from_instruction(operator)
         if hasattr(operator,"operations"):require_qubits(self._dims,"mixed_radix_circuit_evolution")
         op = Operator.from_circuit(operator) if hasattr(operator, "operations") else operator
         native=type(op) is Operator if scope is not None else isinstance(op,Operator)
@@ -608,9 +631,17 @@ class Statevector:
 
     def to_operator(self):
         from quantumbridge.information.operator import Operator
-
-        require_qubits(self._dims,"mixed_radix_operator_conversion")
-        return Operator(np.outer(self.data, np.conjugate(self.data)))
+        from quantumbridge.execution.array_ownership import retained_array, storage_ledger
+        from quantumbridge.execution.array_reservations import array_layout
+        data,dimensions,_=_state_data(self)
+        scope=current_resources()
+        ledger=storage_ledger(data) if scope is None else scope.ledger
+        shape=(len(data),len(data))
+        data,=_state_arrays((data,),output_bytes=array_layout(shape,complex)[2],ledger=ledger)
+        result=retained_array(ledger,"statevector_operator_projector",shape,complex)
+        for column in range(len(data)):
+            np.multiply(data,complex(data[column]).conjugate(),out=result[:,column])
+        return Operator(result,input_dims=dimensions,output_dims=dimensions)
 
     def to_density_matrix(self):
         from quantumbridge.information.density_matrix import DensityMatrix

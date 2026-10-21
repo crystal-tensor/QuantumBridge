@@ -24,8 +24,11 @@ def _validate_qargs(qargs, num_qubits: int) -> tuple[int, ...]:
 
 class DensityMatrix:
     def __init__(self, data, *, dims=None):
+        from quantumbridge.core import Circuit, Instruction
         from quantumbridge.execution.resource_context import current_resources
         scope=current_resources()
+        if (type(data) in (Circuit,Instruction) if scope is not None else isinstance(data,(Circuit,Instruction))):
+            data = self.from_instruction(data).data
         if scope is None:
             self.data = np.asarray(data, dtype=complex)
             shape=self.data.shape
@@ -77,6 +80,22 @@ class DensityMatrix:
         from quantumbridge.devices import DensityMatrixDevice
 
         return cls(DensityMatrixDevice().density_matrix(circuit))
+
+    @classmethod
+    def from_instruction(cls, instruction) -> "DensityMatrix":
+        from quantumbridge.core import Circuit, Instruction
+        scope=current_resources()
+        if scope is not None:
+            if type(instruction) not in (Circuit,Instruction):
+                from quantumbridge.core.classical import UnsupportedFeature
+                raise UnsupportedFeature("managed_state_instruction","Managed state construction requires a native Circuit or Instruction.")
+            from quantumbridge.execution.array_reservations import array_layout
+            scope.ledger.preflight(memory_bytes=array_layout((1<<instruction.num_qubits,)*2,complex)[2])
+        if isinstance(instruction,Instruction):
+            instruction = Circuit.from_instruction(instruction)
+        if not isinstance(instruction,Circuit):
+            raise TypeError("DensityMatrix.from_instruction requires a native Circuit or Instruction.")
+        return cls.from_circuit(instruction)
 
     def trace(self) -> complex:
         return _state_trace(self)
@@ -169,9 +188,17 @@ class DensityMatrix:
         return _expectation_value(self.data,self._dims,observable,qargs,density=True)
 
     def evolve(self, operator, qargs=None) -> "DensityMatrix":
+        from quantumbridge.core import Circuit, Instruction
         from quantumbridge.information.channels import _QuantumChannel
         from quantumbridge.information.operator import Operator
 
+        if isinstance(operator,Instruction):
+            require_qubits(self._dims,"mixed_radix_circuit_evolution")
+            if qargs is not None:
+                qargs = _validate_qargs(qargs,self.num_qubits)
+                if len(qargs)!=operator.num_qubits:
+                    raise ValueError("Instruction target count must match instruction width.")
+            operator = Circuit.from_instruction(operator)
         if isinstance(operator, _QuantumChannel):
             require_qubits(self._dims,"mixed_radix_channel_evolution")
             return operator.evolve(self, qargs=qargs)
@@ -190,7 +217,7 @@ class DensityMatrix:
                 selected = _validate_qargs(qargs, self.num_qubits)
                 circuit = Circuit(self.num_qubits, operator.num_bits).compose(operator, qubits=selected)
             return DensityMatrix(DensityMatrixDevice(initial_state=self.data).density_matrix(circuit),dims=self._dims)
-        op = Operator.from_circuit(operator) if hasattr(operator, "operations") else operator
+        op = operator
         from quantumbridge.execution.resource_context import current_resources
         scope=current_resources()
         native=type(op) is Operator if scope is not None else isinstance(op,Operator)
@@ -306,8 +333,7 @@ class DensityMatrix:
     def to_operator(self):
         from quantumbridge.information.operator import Operator
 
-        require_qubits(self._dims,"mixed_radix_operator_conversion")
-        return Operator(self.data)
+        return Operator(self.data,input_dims=self._dims,output_dims=self._dims)
 
     def to_statevector(self, atol: float = 1e-10) -> Statevector:
         from quantumbridge.execution.resource_context import current_resources
