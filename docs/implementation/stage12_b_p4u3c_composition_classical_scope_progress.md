@@ -169,8 +169,17 @@ The controlled result is not a claim that all unrelated workspace files pass.
 - Tests subtree:bc256a454a9c2da517720aa69eb24a9ddcc52bcd.
 - Examples subtree:02bf723bec63283ec9242404390952a6fffa60db.
 - Private source:/var/folders/c1/gs7_18954qx7td5_t_lnmf4c0000gn/T/qb-stage12b-p4t-foundation-_ljcck3c/source.
-- Exactly29 owned paths are intended for the normal local checkpoint commit.
-  Stage/commit equality will be recorded only after actual audit and commit.
+- Snapshot audit:1165 actual frozen/worktree/staged runtime files identical,
+  exact29 scoped paths, protected paths excluded, exit0.
+- Runtime manifest SHA256:a158579b1f429358091fa4a75316c17c499e46f9083757cae385890db8e8b026.
+- Audited stage tree:0613705c5e54aeed6ba849b6b03434e2fb8f9d81.
+- Normal local implementation commit:2bb61619d15831992364ff81d3ba87b333234a54.
+  Actual committed tree equals that audited stage tree; committed scope equals
+  the same29 paths. All five runtime subtrees match the actual frozen source.
+- Scripts:4f29fa856fa38764a4d4c275e6b11ba881089eaf;
+  requirements:6986a51bd059a54890a20c7808cd644eff3eb271.
+- This report's subsequent documentation-only proof update does not rerun or
+  replace the frozen runtime gates. Its runtime equality must also be checked.
 
 No push/live remote CI/auth/token/cloud/hardware/vendor/Studio/Router edits,
 tag/release or history rewrite in this batch. Remote CI for the eventual new
@@ -205,3 +214,25 @@ a scoped supported-checkpoint commit; no U4/full-parity claim is permitted.
 - Original28-section matrix, even if completed, is not full P4 or full SDK
   acceptance. Continue remaining U3 before U4. The ultimate independent native
   Qiskit/PennyLane full functional parity/full replacement goal stays active.
+
+## Actually Received Final Review And Continuation
+
+The actual2bb61619d15831992364ff81d3ba87b333234a54 commit, all final gates,
+actual matrix limits, GLOBAL, snapshot/commit proofs, protected Router failure
+and remaining gaps were sent to the same owner-authorized conversation.
+read_thread confirms completed source message
+bfa40935-90e3-4e62-8c70-74bccaefd765, but returns a content reference rather
+than the body. Its body was actually read through Chrome: AX610-1273 covers
+the later sections3-16 and closing completion controls; after scrolling,
+AX612-1267 covers the review and sections0-10. Together these cover all17
+task sections. The earlier interrupted stream was not treated as complete.
+
+The collaborator accepts only the supported local U3C checkpoint on the
+supplied evidence, identifies no new confirmed blocker requiring withdrawal,
+and explicitly has not independently inspected unpushed source or remote CI.
+It flags real Bit identity versus integer indices, actual InstructionSet
+references versus placeholder results, and distinct zero-width/empty/scalar
+phase semantics as the next architecture risks. U3C/U3/P4/full SDK remain
+INCOMPLETE. The complete normalized next task is saved as
+`stage12_b_p4u3d_bits_registers_execution_prompt.md`. No U4 or Studio work is
+authorized by this continuation; no new U3D implementation is claimed here.
