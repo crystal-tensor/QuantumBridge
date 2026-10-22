@@ -75,6 +75,20 @@ work. This is IN_PROGRESS, not U3/P4/full SDK acceptance. Run the SDK-free examp
 [U3 checkpoint report](docs/implementation/stage12_b_p4u3_standard_gate_progress.md)
 for true red/green evidence and final-gate status.
 
+P4-U3B work now implements native Instruction label/inverse/repeat contracts,
+owned repeated Instruction objects, explicit IR and real QPY custom Instruction
+records. Circuit inplace compose/binding returns None after mutation; inverse
+and repeat naming follow separately measured public rules. Native lowering,
+four-device measurement/control execution, framework gradients and MPS reuse
+the existing engines. Initial10 red cases recover. All29 frozen checkpoint
+gates pass: SDK-free/main/alternate FULL4544/5900/5898 passed; GLOBAL coverage
+31253/34235=91.28961589017088%, exclusions68. This validates a supported subset,
+not complete U3 or full SDK parity. Zero-width repetition, classical QPY custom
+Instruction headers, source reference declarations and other full public ABI
+contracts remain incomplete. See the
+[Instruction/Circuit progress report](docs/implementation/stage12_b_p4u3b_instruction_circuit_abi_progress.md)
+and run `PYTHONPATH=. python examples/native_instruction_circuit_contracts.py`.
+
 Native symbolic mathematics passed bounded local acceptance in Stage 12-B P3. Scalar
 functions, symbolic/repeated differentiation and simultaneous substitution now
 feed the native Circuit/Instruction and quantum derivative paths; this is not

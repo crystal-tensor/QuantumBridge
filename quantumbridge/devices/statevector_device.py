@@ -186,6 +186,7 @@ class StatevectorDevice(NativeDeviceDerivatives):
         )
 
     def run_shots(self, circuit, shots=1024, seed=None, parameters=None, memory=False):
+        circuit = circuit.lowered()
         if circuit.has_dynamic_operations:
             from quantumbridge.execution.control_flow_engine import dynamic_shots
             return dynamic_shots(self, circuit, shots, seed, parameters, memory)

@@ -105,6 +105,15 @@ def _validate_definition(circuit, *, owner, budget):
             if not op.wires or len(set(op.wires)) != len(op.wires) or any(type(w) is not int or not 0 <= w < body.num_qubits for w in op.wires):
                 raise ValueError("Invalid gate definition wire mapping.")
             child = op.metadata.get("gate")
+            instruction = op.metadata.get("instruction_object")
+            if instruction is not None:
+                if (type(instruction) is not Instruction or child is not None or op.controls
+                        or instruction.num_bits or instruction.num_qubits != len(op.wires)
+                        or tuple(op.params) != tuple(instruction.params) or instruction.definition is None):
+                    raise ValueError("A Gate requires an executable unitary Instruction definition.")
+                if id(instruction) in ancestors: raise ValueError("Cyclic instruction definition.")
+                stack.append((instruction.definition, depth+1, ancestors | {id(instruction)}))
+                continue
             annotation = op.metadata.get("annotated_operation")
             if annotation is not None:
                 from .annotated_operation import validate_annotated_operation
@@ -150,7 +159,9 @@ class Gate(Instruction):
         if isinstance(num_qubits, bool): raise ValueError("A gate width cannot be a boolean.")
         if label is not None and (not isinstance(label, str) or not label): raise ValueError("Invalid gate label.")
         object.__setattr__(self, "label", label)
-        Instruction.__init__(self, name, num_qubits, 0, params, definition, _copy(dict(metadata or {})), label=label)
+        if not isinstance(num_qubits, int) or num_qubits < 1: raise ValueError("A Gate needs a positive qubit count.")
+        Instruction.__init__(self, name, num_qubits, 0, params, label,
+            definition=definition, metadata=_copy(dict(metadata or {})))
 
     def __setattr__(self, name, value):
         if name in {"definition", "params"}:
@@ -403,6 +414,17 @@ def decompose(circuit, selected=None, reps=1, *, _work=None, _standard=True):
             any(fnmatch.fnmatchcase(text, value) for text in (gate.name, gate.label) if text is not None) for value in names)
     def definition_for(item):
         gate = item.metadata.get("gate")
+        if "instruction_object" in item.metadata:
+            from .operations import instruction_definition_work
+            instruction = item.metadata["instruction_object"]
+            if type(instruction) is not Instruction or gate is not None or "annotated_operation" in item.metadata:
+                raise ValueError("Invalid native instruction reference type.")
+            if (item.name != instruction.name or item.controls or len(item.targets) != instruction.num_qubits
+                    or tuple(item.params) != tuple(instruction.params)
+                    or len(item.metadata.get("instruction_clbits", ())) != instruction.num_bits):
+                raise ValueError("Instruction reference disagrees with its owner.")
+            if instruction.definition is not None: instruction_definition_work(instruction.definition, owner=instruction)
+            return instruction
         if "annotated_operation" in item.metadata:
             from .annotated_operation import AnnotatedOperation, resolve_annotated_operation
             from .standard_gates import invocation_params
@@ -439,6 +461,16 @@ def decompose(circuit, selected=None, reps=1, *, _work=None, _standard=True):
             work[0] += 1
             limits.check("max_decomposition_work", work[0])
             gate = None if isinstance(item, Measurement) else definitions[id(item)]
+            if (type(gate) is Instruction and matches(gate)
+                    and (gate.definition is not None or gate.name in {"measure", "reset"})):
+                extra = {key: value for key, value in item.metadata.items() if key not in {"instruction_object", "instruction_clbits", "label"}}
+                if gate.definition is not None and any(key in extra for key in ("condition", "gate_condition", "control_flow_stack")) and (
+                        parameter_set((gate.definition.global_phase,)) or gate.definition.global_phase != 0):
+                    from .classical import UnsupportedFeature
+                    raise UnsupportedFeature("conditional_instruction_phase")
+                out._append_instruction(gate, item.targets, clbits=item.metadata["instruction_clbits"], metadata=extra)
+                changed = True
+                continue
             if gate is None or gate.definition is None or "annotated_operation" not in item.metadata and not matches(gate):
                 append_item(out, item)
                 continue
@@ -490,15 +522,20 @@ def lower(circuit, *, _ancestors=(), _work=None):
         if changed:
             circuit = circuit.copy()
             circuit.operations = transformed
-    if not any("gate" in op.metadata or "annotated_operation" in op.metadata for op in circuit.operations): return circuit
+    if not any(set(op.metadata) & {"gate", "annotated_operation", "instruction_object"} for op in circuit.operations): return circuit
     result = circuit
     limits = current_gate_limits()
     # Definitions are acyclic and depth bounded before entering expansion.
     for op in circuit.operations:
+        if "instruction_object" in op.metadata and op.metadata["instruction_object"].definition is not None:
+            from .operations import instruction_definition_work
+            instruction_definition_work(op.metadata["instruction_object"].definition, owner=op.metadata["instruction_object"])
         if "gate" in op.metadata and op.metadata["gate"].definition is not None:
             validate_definition(op.metadata["gate"].definition, owner=op.metadata["gate"])
     result = decompose(result, reps=limits.max_definition_depth+1, _work=work, _standard=False)
-    if any("gate" in op.metadata or "annotated_operation" in op.metadata for op in result.operations):
+    if any(set(op.metadata) & {"gate", "annotated_operation", "instruction_object"} for op in result.operations):
         from .classical import UnsupportedFeature
         raise UnsupportedFeature("opaque_gate_definition", "An opaque Gate needs an executable definition.")
+    if any("control_node" in op.metadata for op in result.operations):
+        return lower(result, _ancestors=(*_ancestors, id(circuit)), _work=work)
     return result

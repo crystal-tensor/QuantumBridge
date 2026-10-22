@@ -223,8 +223,14 @@ def test_invalid_live_base_modifiers_headers_cycles_and_atomic_append():
     operation.base_op = base
     base.definition.operations.append(qb.Operation("annotated", (0,), metadata={"annotated_operation": operation}))
     with pytest.raises(ValueError, match="Cyclic"): qb.resolve_annotated_operation(operation)
-    with pytest.raises(ValueError): qb.AnnotatedOperation(qb.Instruction("bad", 1, num_bits=1), [])
-    with pytest.raises(ValueError): qb.AnnotatedOperation(qb.Instruction("bad", 1, definition=qb.Circuit(1).reset(0)), [])
+    for source in (qb.Instruction("bad", 1, num_bits=1), qb.Instruction("bad", 1, definition=qb.Circuit(1).reset(0))):
+        staged = qb.AnnotatedOperation(source, [])
+        with pytest.raises(ValueError): qb.resolve_annotated_operation(staged)
+        if source.num_clbits:
+            with pytest.raises(ValueError): qb.Circuit(1).append(staged, [0])
+        else:
+            stored = qb.Circuit(1).append(staged, [0])
+            with pytest.raises(ValueError): stored.lowered()
 
 
 def test_resource_admission_covers_nested_definition_aggregate_and_resolution():

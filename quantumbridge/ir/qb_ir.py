@@ -179,13 +179,81 @@ def _gate_from_ir(data, vectors, limits, context):
         context.depth -= 1
 
 
+def _instruction_to_ir(instruction, context):
+    from quantumbridge.core.operations import Instruction, instruction_definition_work
+    if type(instruction) is not Instruction: raise ValueError("Unknown native Instruction type.")
+    if id(instruction) in context.active: raise ValueError("Cyclic Instruction record.")
+    context.definition()
+    context.active.add(id(instruction))
+    context.depth += 1
+    try:
+        if instruction.definition is not None: instruction_definition_work(instruction.definition, owner=instruction)
+        result = {"type": "instruction", "name": instruction.name, "label": instruction.label,
+            "num_qubits": instruction.num_qubits, "num_clbits": instruction.num_clbits,
+            "params": [_param_to_ir(value, _context=context) for value in instruction.params],
+            "metadata": IRInstruction(instruction.name, (), metadata=instruction.metadata).to_dict(_context=context)["metadata"],
+            "definition": None if instruction.definition is None else instruction.definition.to_ir().to_dict(_context=context)}
+        if context.include_parameter_bindings:
+            from quantumbridge.core.instruction_parameters import binding_plan_for_serialization
+            plan = binding_plan_for_serialization(instruction)
+            if plan is not None:
+                context.definition()
+                context.depth += 1
+                try:
+                    result["parameter_binding"] = {"formals": [_param_to_ir(value, _context=context) for value in plan.formals],
+                        "definition": plan.definition.to_ir().to_dict(_context=context)}
+                finally: context.depth -= 1
+        return result
+    finally:
+        context.depth -= 1
+        context.active.remove(id(instruction))
+
+
+def _instruction_from_ir(data, vectors, limits, context):
+    from quantumbridge.core.operations import Instruction
+    from quantumbridge.compat.qiskit_adapter import circuit_from_ir
+    required = {"type", "name", "label", "num_qubits", "num_clbits", "params", "metadata", "definition"}
+    if (type(data) is not dict or not required <= set(data) <= required | {"parameter_binding"}
+            or data["type"] != "instruction" or type(data["num_qubits"]) is not int or data["num_qubits"] < 0
+            or type(data["num_clbits"]) is not int or data["num_clbits"] < 0
+            or type(data["params"]) is not list or type(data["metadata"]) is not dict):
+        raise ValueError("Malformed native Instruction record.")
+    context.definition()
+    context.count("max_qubits", data["num_qubits"])
+    context.count("max_clbits", data["num_clbits"])
+    context.count("max_parameter_nodes", len(data["params"]))
+    context.depth += 1
+    try:
+        params = tuple(param_from_ir(value, _vectors=vectors, _limits=limits) for value in data["params"])
+        metadata = decode_instruction_metadata(data["metadata"], _vectors=vectors, _limits=limits, _context=context)
+        definition = None if data["definition"] is None else circuit_from_ir(IRProgram.from_dict(
+            data["definition"], serialization_limits=limits, _parameter_vectors=vectors, _context=context))
+        result = Instruction(data["name"], data["num_qubits"], data["num_clbits"], params, data["label"],
+            definition=definition, metadata=metadata)
+        if "parameter_binding" in data:
+            binding = data["parameter_binding"]
+            if type(binding) is not dict or set(binding) != {"formals", "definition"} or type(binding["formals"]) is not list:
+                raise ValueError("Malformed Instruction binding record.")
+            context.definition()
+            context.depth += 1
+            try:
+                formals = tuple(param_from_ir(value, _vectors=vectors, _limits=limits) for value in binding["formals"])
+                template = circuit_from_ir(IRProgram.from_dict(binding["definition"], serialization_limits=limits,
+                    _parameter_vectors=vectors, _context=context))
+            finally: context.depth -= 1
+            from quantumbridge.core.instruction_parameters import restore_binding_plan
+            restore_binding_plan(result, template, formals)
+        return result
+    finally: context.depth -= 1
+
+
 def _annotation_to_ir(operation, context):
     from quantumbridge.core.annotated_operation import (
-        AnnotatedOperation, ControlModifier, PowerModifier, validate_annotated_operation,
+        AnnotatedOperation, ControlModifier, PowerModifier, validate_annotated_structure,
     )
     from quantumbridge.core.gates import Gate
     from quantumbridge.core.operations import Instruction
-    validate_annotated_operation(operation)
+    validate_annotated_structure(operation)
     if id(operation) in context.active: raise ValueError("Cyclic annotated operation record.")
     context.definition()
     context.active.add(id(operation))
@@ -197,11 +265,8 @@ def _annotation_to_ir(operation, context):
         else:
             kind = "instruction" if type(base) is Instruction else "gate"
             if kind == "instruction":
-                from quantumbridge.core.instruction_parameters import inherit_binding_plan
-                original = base
-                base = Gate(base.name, base.num_qubits, base.params, definition=base.definition, metadata=base.metadata)
-                inherit_binding_plan(original, base)
-            record = _gate_to_ir(base, context)
+                record = _instruction_to_ir(base, context)
+            else: record = _gate_to_ir(base, context)
         context.modifiers += len(operation.modifiers)
         context.count("max_gate_expansion", context.modifiers)
         modifiers = []
@@ -231,8 +296,10 @@ def _annotation_from_ir(data, vectors, limits, context):
         if data["base_kind"] == "annotated_operation":
             base = _annotation_from_ir(data["base_op"], vectors, limits, context)
         elif data["base_kind"] in {"gate", "instruction"}:
-            base = _gate_from_ir(data["base_op"], vectors, limits, context)
-            if data["base_kind"] == "instruction":
+            if type(data["base_op"]) is not dict: raise ValueError("An annotated base requires an operation record.")
+            typed_instruction = data["base_kind"] == "instruction" and data["base_op"].get("type") == "instruction"
+            base = _instruction_from_ir(data["base_op"], vectors, limits, context) if typed_instruction else _gate_from_ir(data["base_op"], vectors, limits, context)
+            if data["base_kind"] == "instruction" and not typed_instruction:
                 if data["base_op"]["type"] != "gate": raise ValueError("An Instruction base cannot hide a ControlledGate record.")
                 from quantumbridge.core.instruction_parameters import inherit_binding_plan
                 original = base
@@ -264,6 +331,10 @@ def decode_instruction_metadata(metadata, *, _vectors=None, _limits=None, _conte
     if isinstance(result.get("annotated_operation"), dict):
         context = _context or _DefinitionCodec(_limits)
         result["annotated_operation"] = _annotation_from_ir(result["annotated_operation"],
+            {} if _vectors is None else _vectors, context.limits, context)
+    if isinstance(result.get("instruction_object"), dict):
+        context = _context or _DefinitionCodec(_limits)
+        result["instruction_object"] = _instruction_from_ir(result["instruction_object"],
             {} if _vectors is None else _vectors, context.limits, context)
     if "controlled_base" in result:
         description = result["controlled_base"]
@@ -401,6 +472,7 @@ class IRInstruction:
         if "global_phase" in metadata: metadata["global_phase"] = _param_to_ir(metadata["global_phase"], _context=context)
         if "gate" in metadata: metadata["gate"] = _gate_to_ir(metadata["gate"], context)
         if "annotated_operation" in metadata: metadata["annotated_operation"] = _annotation_to_ir(metadata["annotated_operation"], context)
+        if "instruction_object" in metadata: metadata["instruction_object"] = _instruction_to_ir(metadata["instruction_object"], context)
         if "controlled_base" in metadata:
             description = metadata["controlled_base"]
             context.definition()

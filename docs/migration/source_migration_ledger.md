@@ -1,5 +1,34 @@
 # Source Migration Ledger
 
+## Stage 12-B P4-U3B Instruction And Circuit Contracts In Progress
+
+Independent Native Implementation:
+`quantumbridge/core/operations.py`, `quantumbridge/core/circuit.py`,
+`quantumbridge/core/gates.py`, `quantumbridge/core/annotated_operation.py`,
+`quantumbridge/ir/qb_ir.py`, `quantumbridge/compat/qiskit_adapter.py`,
+`quantumbridge/serialization/qpy.py`,
+`quantumbridge/serialization/text_exporter.py`,
+`quantumbridge/devices/statevector_device.py`,
+`quantumbridge/devices/sampler_device.py`.
+Independent tests: `tests/circuit/test_native_instruction_public_abi.py`,
+`tests/circuit/test_native_instruction_inverse_repeat.py`,
+`tests/circuit/test_native_instruction_resource_execution.py`,
+`tests/circuit/test_native_circuit_inplace_contracts.py`,
+`tests/compat/test_qiskit_instruction_circuit_abi_differential.py`.
+Existing native extension/staged-validation tests are explicitly migrated in
+`tests/core/test_instruction_api.py` and
+`tests/core/test_native_annotated_operation.py`, retaining mathematical and
+execution rejection assertions. Native SDK-free executable example:
+`examples/native_instruction_circuit_contracts.py`.
+References: actual installed public2.4.1/2.6.0 API calls and the published
+IBM QPY v13 protocol, https://quantum.cloud.ibm.com/docs/en/api/qiskit/qpy.
+No upstream implementation/test source is inspected or copied; no ports.
+The Instruction record is explicit native IR, not a fake standard sidecar.
+The existing native lowerer/devices/parameters/copy/budget/AD mechanisms are
+reused. Native/classical/opaque construction and executable validity are
+distinct. Full ABI, format, zero-width and P4/full SDK contracts stay incomplete.
+Unowned Router/Studio changes are not included or given invented attribution.
+
 ## Stage 12-B P4-U3 Native Standard Objects In Progress
 
 Independent Native Implementation:

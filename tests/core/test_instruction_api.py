@@ -34,7 +34,7 @@ def test_opaque_instruction_uses_matrix_metadata_and_roundtrips_to_circuit():
     matrix = np.array([[0, 1], [1, 0]], dtype=complex)
     instruction = Instruction("custom_x", 1, metadata={"matrix": matrix, "source": "unit-test"})
     circuit = Circuit(1).append(instruction, [0])
-    restored = Circuit.from_instruction(instruction.inverse("custom_x_dg"))
+    restored = Circuit.from_instruction(instruction.inverse(name="custom_x_dg"))
 
     assert StatevectorDevice().probabilities(circuit)["1"] == 1.0
     assert restored.operations[0].name == "custom_x_dg"

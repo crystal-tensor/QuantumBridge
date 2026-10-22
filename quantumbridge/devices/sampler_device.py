@@ -29,6 +29,7 @@ class ShotSampler:
         self.memory = bool(memory)
 
     def run(self, circuit, parameters: Optional[Mapping[Union[Parameter, str], Real]] = None) -> Result:
+        circuit = circuit.lowered()
         device = self.base_device
         if self.noise_model is not None:
             from quantumbridge.noise.execution import _device_with_noise

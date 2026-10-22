@@ -35,6 +35,8 @@ def _definition_preflight(circuit,limits):
         limits.check("max_instructions",operations,format="qasm")
         ancestors = ancestors | {id(body)}
         for op in body.operations:
+            if "instruction_object" in op.metadata:
+                raise UnsupportedFeature("OpenQASM does not yet preserve native Instruction reference objects; explicitly lower a supported executable definition first.", format="qasm")
             if "annotated_operation" in op.metadata:
                 raise UnsupportedFeature("Native OpenQASM export does not preserve AnnotatedOperation objects; explicitly resolve to a Gate first.", format="qasm")
             gate = op.metadata.get("gate")

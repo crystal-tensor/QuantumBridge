@@ -2,6 +2,17 @@
 
 ## Native Gate Definitions Work In Progress
 
+P4-U3B independently implements native Instruction construction/inverse/repeat,
+owned invocation references, Circuit return/name contracts, native IR and
+published QPY v13 custom Instruction records in the existing engine. Actual
+installed public Qiskit2.4.1/2.6.0 calls are behavioral/binary interoperability
+references only. No upstream implementation or test source is read or ported.
+Definition/resource/storage, lowering, control-flow, simulators and AD remain
+native QuantumBridge mechanisms. Explicitly unsupported transport/execution
+contracts are not replaced with upstream calls or mislabeled as full parity.
+No third-party source, package/environment installation, vendor artifact,
+cloud/token/hardware call or new quantum engine is introduced.
+
 Stage 12-B P4 independently implements native unitary definition graphs,
 structural transformations and controlled phase in the existing architecture.
 Behavioral references are IBM's public Gate API and installed Qiskit public

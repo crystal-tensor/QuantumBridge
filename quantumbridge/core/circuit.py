@@ -110,6 +110,13 @@ class Circuit:
         from .gates import Gate
         if isinstance(instruction, Gate):
             return self._append_gate(instruction, targets, controls, params, metadata, clbits)
+        from .instruction_parameters import admit_owner
+        from quantumbridge.execution.array_ownership import native_configuration_copy
+        from quantumbridge.execution.resource_context import current_resources
+        admit_owner(instruction)
+        def owned(value):
+            return native_configuration_copy(value, category="native_instruction_append",
+                strict=current_resources() is not None)
         targets_tuple = tuple(int(wire) for wire in targets)
         controls_tuple = tuple(int(wire) for wire in controls)
         clbits_tuple = tuple(range(instruction.num_bits)) if clbits is None else tuple(int(bit) for bit in clbits)
@@ -124,11 +131,11 @@ class Circuit:
         if len(set(controls_tuple + targets_tuple)) != len(controls_tuple + targets_tuple):
             raise ValueError("QuantumBridge instruction append requires distinct qubits.")
 
-        merged_metadata = deepcopy(instruction.metadata)
+        merged_metadata = owned(instruction.metadata)
         if isinstance(merged_metadata.get("control_flow"), list):
             merged_metadata.pop("control_flow")
         merged_metadata.update(dict(metadata or {}))
-        effective_params = tuple(params) if params else instruction.params
+        effective_params = owned(tuple(params) if params else tuple(instruction.params))
         incoming=instruction.definition.parameters if instruction.definition is not None else parameter_set(effective_params)
         if incoming:validate_parameter_names((*self.parameters,*incoming))
         effective_instruction = (
@@ -144,7 +151,7 @@ class Circuit:
             offset = len(self.operations)
             for op in effective_instruction.definition.operations:
                 mapped = _remap_operation(op, qubit_map, clbit_map, self.num_qubits, self.num_bits)
-                mapped_metadata = deepcopy(mapped.metadata)
+                mapped_metadata = owned(mapped.metadata)
                 mapped_metadata.setdefault(
                     "instruction",
                     {
@@ -157,12 +164,16 @@ class Circuit:
                 self.operations.append(Operation(mapped.name, mapped.targets, mapped.controls, mapped.params, mapped_metadata))
             for measurement in effective_instruction.definition.measurements:
                 mapped = _remap_measurement(measurement, qubit_map, clbit_map, offset, len(effective_instruction.definition.operations))
-                mapped_metadata = {**mapped.metadata, **deepcopy(merged_metadata)}
+                mapped_metadata = {**mapped.metadata, **owned(merged_metadata)}
                 self.measurements.append(
                     Measurement(mapped.wire, mapped.bit, mapped.kind, mapped_metadata)
                 )
             return self
 
+        if effective_instruction.name == "measure" and instruction.num_qubits == instruction.num_bits == 1 and not effective_params and not controls_tuple:
+            self.measure(targets_tuple[0], clbits_tuple[0])
+            self.measurements[-1].metadata.update(merged_metadata)
+            return self
         self.operations.append(
             Operation(
                 name=effective_instruction.name,
@@ -172,6 +183,31 @@ class Circuit:
                 metadata=merged_metadata,
             )
         )
+        return self
+
+    def _append_instruction_reference(self, instruction, targets, clbits=(), metadata=None):
+        from .instruction_parameters import admit_owner, owned_copy
+        from .operations import instruction_definition_work
+        from .gate_limits import current_gate_limits
+        admit_owner(instruction)
+        if type(instruction) is not Instruction: raise TypeError("An instruction reference needs a native Instruction.")
+        targets, clbits = tuple(targets), tuple(clbits)
+        if len(targets) != instruction.num_qubits or len(clbits) != instruction.num_bits:
+            raise ValueError("Instruction reference width differs from its owner.")
+        if len(set(targets)) != len(targets) or len(set(clbits)) != len(clbits):
+            raise ValueError("Instruction reference arguments must be distinct.")
+        for wire in targets: self._check_wire(wire)
+        for bit in clbits: self._check_bit(bit)
+        current_gate_limits().check("max_total_operations", len(self.operations)+len(self.measurements)+1)
+        if instruction.definition is not None: instruction_definition_work(instruction.definition, owner=instruction)
+        validate_parameter_names((*self.parameters, *parameter_set(instruction.params)))
+        extra = owned_copy(dict(metadata or {}))
+        if set(extra) & {"gate", "annotated_operation", "instruction_object", "instruction_clbits"}:
+            raise ValueError("Instruction reference metadata keys are reserved.")
+        owner = instruction.copy()
+        extra.update(instruction_object=owner, instruction_clbits=clbits)
+        if owner.label is not None: extra.setdefault("label", owner.label)
+        self.operations.append(Operation(owner.name, targets, params=tuple(owner.params), metadata=extra))
         return self
 
     def _append_gate(self, gate, targets, controls, params, metadata, clbits):
@@ -210,10 +246,14 @@ class Circuit:
         return self
 
     def _append_annotated(self, operation, targets, controls, params, metadata, clbits):
-        from .annotated_operation import AnnotatedOperation, validate_annotated_operation
+        from .annotated_operation import AnnotatedOperation, validate_annotated_structure, _inspect
         from .gate_limits import current_gate_limits
         if type(operation) is not AnnotatedOperation: raise TypeError("Only the native annotation type can be appended.")
-        validate_annotated_operation(operation)
+        validate_annotated_structure(operation)
+        from .operations import instruction_definition_work
+        base = _inspect(operation)[0]
+        if operation.num_clbits: raise ValueError("Classical annotated invocations are not executable Circuit entries yet.")
+        if base.definition is not None: instruction_definition_work(base.definition, owner=base)
         wires, controls = tuple(targets), tuple(controls)
         if params or clbits is not None and tuple(clbits):
             raise ValueError("Bind annotated parameters explicitly and do not attach classical bits.")
@@ -251,13 +291,18 @@ class Circuit:
         return lower(self)
 
     def repeat(self, reps):
-        from .gates import _integer
+        import operator
+        from .instruction_parameters import admit_payloads
+        from .operations import instruction_definition_work
         from .gate_limits import current_gate_limits
-        reps = _integer(reps, "Circuit repetition count")
+        admit_payloads((reps,))
+        original_reps = reps
+        reps = operator.index(reps)
         limits = current_gate_limits()
         limits.check("max_repeat_count", max(0, reps))
-        limits.check("max_total_operations", max(0, reps)*max(1, len(self.operations)))
-        out = self.copy_empty_like(name=(self.name or "circuit")+"*"+str(reps))
+        work = 0 if reps <= 0 else instruction_definition_work(self)
+        limits.check("max_total_operations", max(0, reps)*max(1, work))
+        out = self.copy_empty_like(name=(self.name or "circuit")+"**"+str(original_reps))
         if reps <= 0: return out
         if not self.num_bits and not self.measurements and not self.has_dynamic_operations:
             if any("gate" in op.metadata for op in self.operations):
@@ -473,14 +518,19 @@ class Circuit:
         other: "Circuit",
         qubits: Optional[Sequence[int]] = None,
         clbits: Optional[Sequence[int]] = None,
-        inplace: bool = False,
         front: bool = False,
-    ) -> "Circuit":
+        inplace: bool = False,
+    ) -> "Circuit | None":
         if not isinstance(other, Circuit):
             raise TypeError("QuantumBridge Circuit.compose expects another Circuit.")
         incoming=other.parameters
         if incoming:validate_parameter_names((*self.parameters,*incoming))
-        target = self if inplace else self.copy()
+        if inplace:
+            target = Circuit(self.num_qubits, self.num_bits, self.name, self.metadata)
+            target.operations, target.measurements = list(self.operations), list(self.measurements)
+        else: target = self.copy()
+        from .gate_limits import current_gate_limits
+        current_gate_limits().check("max_total_operations", len(target.operations)+len(other.operations)+len(target.measurements)+len(other.measurements))
         qubit_map = _index_map(other.num_qubits, target.num_qubits, qubits, "qubits")
         clbit_map = _index_map(other.num_bits, target.num_bits, clbits, "clbits")
         offset = 0 if front else len(target.operations)
@@ -502,6 +552,9 @@ class Circuit:
             target.operations.extend(mapped_ops)
             target.measurements.extend(mapped_measurements)
         target.global_phase = target.global_phase + other.global_phase
+        if inplace:
+            _replace_self(self, target)
+            return None
         return target
 
     @property
@@ -635,11 +688,13 @@ class Circuit:
     ) -> "Circuit":
         return self.if_else(condition, body, qubits=qubits, clbits=clbits, inplace=inplace)
 
-    def inverse(self, inplace: bool = False) -> "Circuit":
+    def inverse(self, annotated=False, *, inplace: bool = False) -> "Circuit":
+        from .errors import CircuitError
         if self.measurements:
-            raise ValueError("QuantumBridge Circuit.inverse does not invert measured circuits.")
-        target = Circuit(self.num_qubits, self.num_bits, self.name, self.metadata)
-        target.operations = [_inverse_operation(op) for op in reversed(self.operations)]
+            raise CircuitError("QuantumBridge Circuit.inverse does not invert measured circuits.")
+        target = Circuit(self.num_qubits, self.num_bits, (self.name or "circuit")+"_dg", self.metadata)
+        try: target.operations = [_inverse_operation(op, annotated=annotated) for op in reversed(self.operations)]
+        except (TypeError, ValueError) as exc: raise CircuitError("Circuit inverse is not implemented for this operation.") from exc
         target.global_phase = -self.global_phase
         return _replace_self(self, target) if inplace else target
 
@@ -665,6 +720,16 @@ class Circuit:
             raise ValueError("QuantumBridge Circuit.control requires a positive control-qubit count.")
         if self.measurements:
             raise ValueError("QuantumBridge Circuit.control does not control measured circuits.")
+        if any("instruction_object" in op.metadata for op in self.operations):
+            from .instruction_parameters import owned_copy
+            controlled = self.to_gate().control(num_ctrl_qubits, label=label, ctrl_state=ctrl_state)
+            out = controlled.definition.copy()
+            out.name = label or self.name
+            metadata = owned_copy(self.metadata)
+            metadata.pop("global_phase", None)
+            metadata.pop("registers", None)
+            out.metadata.update(metadata)
+            return out
         ctrl_state = (1 << num_ctrl_qubits) - 1 if ctrl_state is None else int(ctrl_state)
         if not 0 <= ctrl_state < (1 << num_ctrl_qubits):
             raise ValueError("QuantumBridge Circuit.control ctrl_state is outside the control register.")
@@ -947,10 +1012,15 @@ class Circuit:
                 metadata["gate"] = metadata["gate"].assign_parameters(mapping, strict=False)
             if "annotated_operation" in metadata:
                 metadata["annotated_operation"] = metadata["annotated_operation"].assign_parameters(mapping, strict=False)
+            if "instruction_object" in metadata:
+                metadata["instruction_object"] = metadata["instruction_object"].assign_parameters(mapping, strict=False)
             bound.operations.append(Operation(op.name, op.targets, op.controls, params, metadata))
         bound.measurements = list(self.measurements)
         bound.parameters
-        return _replace_self(self, bound) if inplace else bound
+        if inplace:
+            _replace_self(self, bound)
+            return None
+        return bound
 
     def bind_parameters(
         self,
@@ -996,8 +1066,12 @@ def _index_map(source_size: int, target_size: int, selected: Optional[Sequence[i
 
 
 def _remap_metadata(metadata, clbit_map):
-    result = deepcopy(metadata)
+    from quantumbridge.execution.array_ownership import native_configuration_copy
+    from quantumbridge.execution.resource_context import current_resources
+    result = native_configuration_copy(metadata, category="native_remap_metadata", strict=current_resources() is not None)
     if clbit_map is not None:
+        if "instruction_clbits" in result:
+            result["instruction_clbits"] = tuple(clbit_map[bit] for bit in result["instruction_clbits"])
         for key in ("condition", "gate_condition"):
             if result.get(key):
                 result[key]["bits"] = [clbit_map[bit] for bit in result[key]["bits"]]
@@ -1066,7 +1140,18 @@ def _normalize_condition(condition: Union[dict[str, Any], tuple[Union[int, Seque
     return {"bits": [int(bit) for bit in bits_tuple], "value": int(value)}
 
 
-def _inverse_operation(op: Operation) -> Operation:
+def _inverse_operation(op: Operation, annotated=False) -> Operation:
+    if "instruction_object" in op.metadata:
+        from .annotated_operation import AnnotatedOperation
+        from .instruction_parameters import owned_copy
+        inverse = op.metadata["instruction_object"].inverse(annotated=annotated)
+        metadata = owned_copy(op.metadata)
+        metadata.pop("instruction_object")
+        if type(inverse) is Instruction: metadata["instruction_object"] = inverse
+        else:
+            metadata.pop("instruction_clbits")
+            metadata["annotated_operation" if type(inverse) is AnnotatedOperation else "gate"] = inverse
+        return Operation(inverse.name, op.targets, params=tuple(inverse.params), metadata=metadata)
     if "annotated_operation" in op.metadata:
         annotation = op.metadata["annotated_operation"].inverse()
         from .gates import _copy
@@ -1075,9 +1160,13 @@ def _inverse_operation(op: Operation) -> Operation:
         from .standard_gates import invocation_params
         return Operation(annotation.name, op.targets, op.controls, invocation_params(annotation), metadata)
     if "gate" in op.metadata:
-        gate = op.metadata["gate"].inverse()
+        gate = op.metadata["gate"].inverse(annotated=annotated)
         metadata = deepcopy(op.metadata)
-        metadata["gate"] = gate
+        from .annotated_operation import AnnotatedOperation
+        if type(gate) is AnnotatedOperation:
+            metadata.pop("gate")
+            metadata["annotated_operation"] = gate
+        else: metadata["gate"] = gate
         from .standard_gates import invocation_params
         return Operation(gate.name, op.targets, op.controls, invocation_params(gate), metadata)
     if "controlled_base" in op.metadata:

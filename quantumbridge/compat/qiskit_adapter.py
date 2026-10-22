@@ -112,7 +112,16 @@ def circuit_from_ir(program) -> Circuit:
         metadata = decode_instruction_metadata(instruction.metadata)
         gate = metadata.pop("gate", None)
         annotation = metadata.pop("annotated_operation", None)
+        owner = metadata.pop("instruction_object", None)
         from quantumbridge.core.standard_gates import invocation_params
+        if owner is not None:
+            from quantumbridge.core.operations import Instruction
+            bits = metadata.pop("instruction_clbits", ())
+            if (type(owner) is not Instruction or gate is not None or annotation is not None or instruction.controls
+                    or instruction.op != owner.name or instruction.params != tuple(owner.params)):
+                raise ValueError("IR Instruction reference disagrees with its owner.")
+            circuit._append_instruction_reference(owner, instruction.targets, bits, metadata)
+            continue
         if annotation is not None:
             from quantumbridge.core.annotated_operation import AnnotatedOperation
             if (type(annotation) is not AnnotatedOperation or gate is not None or instruction.op != annotation.name

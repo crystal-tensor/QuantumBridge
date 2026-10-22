@@ -98,6 +98,11 @@ def _base_gate(base):
     return Gate(base.name, base.num_qubits, base.params, getattr(base, "label", None), definition=body)
 
 
+def validate_annotated_structure(operation):
+    _inspect(operation)
+    current_gate_limits().check("max_gate_parameters", len(operation.parameters))
+
+
 def validate_annotated_operation(operation):
     base, chain, _ = _inspect(operation)
     ids = {id(base), *(id(node) for node in chain)}
@@ -129,7 +134,7 @@ class AnnotatedOperation:
             if current_resources() is not None: raise TypeError("Managed modifier intake needs a native list or tuple.")
             modifiers = list(islice(iter(modifiers), current_gate_limits().max_decomposition_work+1))
         self.modifiers = modifiers
-        validate_annotated_operation(self)
+        validate_annotated_structure(self)
 
     @property
     def name(self): return "annotated"
@@ -169,12 +174,12 @@ class AnnotatedOperation:
         return self.base_op.validate_parameter(parameter)
 
     def copy(self):
-        validate_annotated_operation(self)
+        validate_annotated_structure(self)
         return _copy(self)
 
     def assign_parameters(self, mapping, *, strict=True):
         from .circuit import _parameter_mapping_from_values
-        validate_annotated_operation(self)
+        validate_annotated_structure(self)
         values = _parameter_mapping_from_values(self.parameters, mapping, strict)
         if type(self.base_op) is AnnotatedOperation or isinstance(self.base_op, Gate):
             base = self.base_op.assign_parameters(values, strict=False)
@@ -185,21 +190,21 @@ class AnnotatedOperation:
                 metadata["global_phase"] = resolve_parameter(metadata["global_phase"], values, allow_partial=True)
             base = Instruction(source.name, source.num_qubits, source.num_bits,
                 tuple(resolve_parameter(value, values, allow_partial=True) for value in source.params),
-                None if source.definition is None else source.definition.assign_parameters(values, strict=False), metadata)
+                source.label, definition=None if source.definition is None else source.definition.assign_parameters(values, strict=False), metadata=metadata)
         modifiers = [PowerModifier(resolve_parameter(item.power, values, allow_partial=True)) if type(item) is PowerModifier else item
                      for item in self.modifiers]
         return AnnotatedOperation(base, modifiers)
 
     def inverse(self, annotated=True):
-        validate_annotated_operation(self)
+        validate_annotated_structure(self)
         return AnnotatedOperation(self.base_op, [*self.modifiers, InverseModifier()])
 
     def control(self, num_ctrl_qubits=1, label=None, ctrl_state=None, annotated=None):
-        validate_annotated_operation(self)
+        validate_annotated_structure(self)
         return AnnotatedOperation(self.base_op, [*self.modifiers, ControlModifier(num_ctrl_qubits, ctrl_state)])
 
     def power(self, exponent, annotated=False):
-        validate_annotated_operation(self)
+        validate_annotated_structure(self)
         return AnnotatedOperation(self.base_op, [*self.modifiers, PowerModifier(exponent)])
 
     def to_matrix(self):

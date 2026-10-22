@@ -13,6 +13,65 @@ from typing import Any
 
 from .parameters import ParameterValue
 
+_UNSET = object()
+
+
+def instruction_definition_work(circuit, *, owner=None, params=None):
+    """Bound a definition graph without requiring its operations to be unitary."""
+    from .circuit import Circuit
+    from .control_flow import ControlBlock
+    from .gate_limits import current_gate_limits
+    from .instruction_parameters import admit_owner, admit_payloads
+    from .gates import is_native_instruction
+    from .annotated_operation import _inspect
+    limits = current_gate_limits()
+    from quantumbridge.execution.resource_context import current_resources
+    managed = current_resources() is not None
+    stack = [(circuit, 0, frozenset(() if owner is None else (id(owner),)))]
+    total = definitions = 0
+    while stack:
+        body, depth, ancestors = stack.pop()
+        if type(body) is not Circuit: raise TypeError("An instruction definition needs a native Circuit.")
+        if managed and (type(body.operations) is not list or type(body.measurements) is not list or type(body.metadata) is not dict):
+            from .classical import UnsupportedFeature
+            raise UnsupportedFeature("managed_instruction_definition_container")
+        if id(body) in ancestors: raise ValueError("Cyclic instruction definition.")
+        limits.check("max_definition_depth", depth)
+        definitions += 1
+        limits.check("max_custom_definitions", definitions)
+        total += len(body.operations)+len(body.measurements)
+        limits.check("max_total_operations", total)
+        limits.check("max_decomposition_work", total+definitions)
+        ancestors = ancestors | {id(body)}
+        for operation in body.operations:
+            if managed and (type(operation) is not Operation or type(operation.metadata) is not dict):
+                from .classical import UnsupportedFeature
+                raise UnsupportedFeature("managed_instruction_definition_operation")
+            node = operation.metadata.get("control_node")
+            if node is not None:
+                if type(node) is not ControlBlock: raise TypeError("Unknown native control definition.")
+                if managed and type(node.data) is not dict:
+                    from .classical import UnsupportedFeature
+                    raise UnsupportedFeature("managed_instruction_control_data")
+                stack.extend((child, depth+1, ancestors) for child in node.bodies)
+            child = operation.metadata.get("gate", operation.metadata.get("instruction_object"))
+            annotation = operation.metadata.get("annotated_operation")
+            if sum(operation.metadata.get(key) is not None for key in ("gate", "instruction_object", "annotated_operation")) > 1:
+                raise ValueError("An invocation cannot have multiple operation owners.")
+            if annotation is not None: child = _inspect(annotation)[0]
+            if child is not None:
+                if not is_native_instruction(child): raise TypeError("Unknown native instruction definition.")
+                admit_owner(child)
+                if id(child) in ancestors: raise ValueError("Cyclic instruction definition.")
+                if child.definition is not None:
+                    stack.append((child.definition, depth+1, ancestors | {id(child)}))
+    if owner is not None:
+        from .parameters import parameter_set
+        admit_payloads(tuple(owner.params if params is None else params))
+        if not set(circuit.parameters) <= set(parameter_set(owner.params if params is None else params)):
+            raise ValueError("Instruction definition parameter namespace differs from its owner.")
+    return total
+
 
 @dataclass(init=False)
 class Instruction:
@@ -26,12 +85,13 @@ class Instruction:
     metadata: dict[str, Any] = field(default_factory=dict)
     label: str | None = None
 
-    def __init__(self, name, num_qubits, num_bits=0, params=(), definition=None, metadata=None, *, label=None, num_clbits=None):
-        from .instruction_parameters import admit_owner
+    def __init__(self, name, num_qubits, num_clbits=_UNSET, params=(), label=None, *, definition=None, metadata=None, num_bits=_UNSET):
+        from .instruction_parameters import admit_owner, admit_payloads
         admit_owner(self)
-        if num_clbits is not None:
-            if num_bits != 0 and num_bits != num_clbits: raise ValueError("Conflicting classical bit counts.")
-            num_bits = num_clbits
+        if num_clbits is not _UNSET and num_bits is not _UNSET:
+            raise TypeError("Classical width was provided by both num_clbits and num_bits.")
+        num_bits = num_clbits if num_clbits is not _UNSET else 0 if num_bits is _UNSET else num_bits
+        admit_payloads((name, num_qubits, num_bits, label))
         if label is not None and not isinstance(label, str): raise TypeError("Instruction label must be a string or None.")
         object.__setattr__(self, "name", name)
         object.__setattr__(self, "num_qubits", num_qubits)
@@ -49,10 +109,11 @@ class Instruction:
     def __post_init__(self) -> None:
         if not isinstance(self.name, str) or not self.name:
             raise ValueError("QuantumBridge instructions require a non-empty name.")
-        if not isinstance(self.num_qubits, int) or self.num_qubits <= 0:
-            raise ValueError("QuantumBridge instructions require a positive qubit count.")
-        if not isinstance(self.num_bits, int) or self.num_bits < 0:
-            raise ValueError("QuantumBridge instruction classical bit count cannot be negative.")
+        from .errors import CircuitError
+        if not isinstance(self.num_qubits, int) or not isinstance(self.num_bits, int):
+            raise CircuitError("Instruction quantum and classical widths must be integers.")
+        if self.num_qubits < 0 or self.num_bits < 0:
+            raise CircuitError("Instruction quantum and classical widths cannot be negative.")
         object.__setattr__(self, "metadata", dict(self.metadata))
 
     def __setattr__(self, name, value):
@@ -114,9 +175,7 @@ class Instruction:
         if not isinstance(value, Circuit): raise TypeError("An Instruction definition requires a native Circuit.")
         if (value.num_qubits, value.num_bits) != (self.num_qubits, self.num_bits):
             raise ValueError("Instruction definition width differs from its owner.")
-        from .parameters import parameter_set
-        if not set(value.parameters) <= set(parameter_set(params)):
-            raise ValueError("Instruction definition parameter namespace differs from its owner.")
+        instruction_definition_work(value, owner=self, params=params)
 
     @property
     def definition(self): return self._definition
@@ -139,21 +198,65 @@ class Instruction:
             object.__setattr__(copied, "name", name)
         return copied
 
-    def inverse(self, name: str | None = None) -> "Instruction":
+    def assign_parameters(self, mapping, *, strict=True):
+        from .circuit import _parameter_mapping_from_values
+        from .parameters import parameter_set, parameter_sort_key, resolve_parameter
+        from .instruction_parameters import admit_owner, inherit_binding_plan, owned_copy
+        admit_owner(self)
+        values = _parameter_mapping_from_values(tuple(sorted(parameter_set(self.params), key=parameter_sort_key)), mapping, strict)
+        if self.definition is not None: instruction_definition_work(self.definition, owner=self)
+        metadata = owned_copy(self.metadata)
+        if "global_phase" in metadata:
+            metadata["global_phase"] = resolve_parameter(metadata["global_phase"], values, allow_partial=True)
+        result = Instruction(self.name, self.num_qubits, self.num_bits,
+            tuple(resolve_parameter(value, values, allow_partial=True) for value in self.params), self.label,
+            definition=None if self.definition is None else self.definition.assign_parameters(values, strict=False), metadata=metadata)
+        inherit_binding_plan(self, result)
+        return result
+
+    def inverse(self, annotated=False, *, name=None):
+        from .instruction_parameters import admit_owner, admit_payloads
+        from .errors import CircuitError
+        admit_owner(self)
+        admit_payloads((annotated, name))
+        if annotated:
+            from .annotated_operation import AnnotatedOperation, InverseModifier
+            return AnnotatedOperation(self, InverseModifier())
+        output_name = name or f"{self.name}_dg"
         if self.definition is not None:
-            return self.definition.inverse().to_instruction(name=name or f"{self.name}_dg")
-        metadata = deepcopy(self.metadata)
-        matrix = metadata.get("matrix")
-        if matrix is not None:
-            import numpy as np
+            instruction_definition_work(self.definition, owner=self)
+            try:
+                body = self.definition.inverse()
+                return body.to_instruction(name=output_name) if self.num_bits else body.to_gate(_name=output_name)
+            except (TypeError, ValueError) as exc:
+                raise CircuitError("Instruction inverse is not implemented for this definition.") from exc
+        if "matrix" in self.metadata and not self.num_bits:
+            from .annotated_operation import _base_gate
+            return _base_gate(self).inverse().copy(name=output_name)
+        raise CircuitError(f"inverse() is not implemented for {self.name}.")
 
-            metadata["matrix"] = np.asarray(matrix, dtype=complex).conj().T
-            metadata["inverse_of"] = self.name
-            return Instruction(name=name or f"{self.name}_dg", num_qubits=self.num_qubits, params=self.params, metadata=metadata)
-        from quantumbridge.core.circuit import Circuit
-
-        circuit = Circuit(self.num_qubits, self.num_bits).append(self.name, range(self.num_qubits), params=self.params, metadata=metadata)
-        return circuit.inverse().to_instruction(name=name or f"{self.name}_dg")
+    def repeat(self, n):
+        from .instruction_parameters import admit_owner, admit_payloads
+        from .gate_limits import current_gate_limits
+        from .errors import CircuitError
+        from .circuit import Circuit
+        admit_owner(self)
+        admit_payloads((n,))
+        count = int(n)
+        if count < 1 or count != n: raise CircuitError("Repeat requires a strictly positive integral count.")
+        limits = current_gate_limits()
+        limits.check("max_repeat_count", count)
+        work = 1 if self.definition is None else instruction_definition_work(self.definition, owner=self)
+        predicted = count*(1+work if self.definition is not None else 1)
+        limits.check("max_total_operations", predicted)
+        limits.check("max_decomposition_work", predicted)
+        if not self.num_qubits:
+            from .classical import UnsupportedFeature
+            raise UnsupportedFeature("zero_width_instruction_repeat", "A zero-qubit Instruction can be staged, but zero-width Circuit definitions are not implemented yet.")
+        body = Circuit(self.num_qubits, self.num_bits)
+        for _ in range(count): body._append_instruction_reference(self, range(self.num_qubits), range(self.num_bits))
+        return Instruction(f"{self.name}*{count}", self.num_qubits, self.num_bits,
+            tuple(self.params), definition=body)
 
     def power(self, exponent: int, name: str | None = None) -> "Instruction":
         if not isinstance(exponent, int):
