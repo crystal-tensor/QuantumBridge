@@ -2460,3 +2460,319 @@ Transpiler/Target/Scheduling、Aer remaining、QASM/QPY多版本、PennyLane QNo
 全Templates/Transforms、QChem、可微框架、生态行业算法。这是待办，不是完成声明。
 Studio最后；真实夸父硬件需单独授权。现在从a565aa7 CODE基线启动P3，先实际审计与
 sin/exp、simultaneous substitution真红，再完成数学/量子执行/序列化/全量验证。
+
+## Stage 12-B P4 Received Execution Prompt
+
+Received 2026-10-22 from the owner-authorized conversation "Claude 代码泄漏与应对"
+(6a20d458-a76c-83ea-9b49-f8f0caedb3cf), after one actual P3 result message
+4bc0678b-a63d-4842-8db3-8a437b362b6c. Assistant reply
+1d682b47-8b6d-4055-b588-ad7e83e0b65a accepts the reported bounded native
+symbolic subset, not an independent audit of unpushed code or whole SDK parity.
+Native delivery and final idle status were verified. Its text is a content
+reference, so the completed response was read in Chrome. A transient
+connection-interrupted view stopped in Section 4; completed overlapping AX
+ranges 0-100, 56-156, 82-182, 131-231 and 229-329 cover all 329 direct items,
+Sections 0-30 and the final execution decision. No duplicate report, tail
+request, regeneration or acknowledgement loop was sent.
+
+Formatting below is normalized; all functional, validation, publication and
+stopping requirements are retained. This is a received P4 plan, NOT P4
+implementation or acceptance. CODE baseline c5a9f90164087fabb2a2df0b53e9fd75f7d3e8f5
+remains authoritative; a later docs-only receipt does not change its tested
+runtime. Evidence-first interpretation is mandatory: do not manufacture phase
+or nonunitary failures in already correct existing APIs. Missing to_gate/Gate
+can be a true initial red; reuse correct Instruction/Circuit implementation.
+Actual repository paths/signatures and observed public semantics override
+illustrative names. Higher-priority owner instructions/security boundaries apply.
+
+### P3 Acceptance And Next Decision
+
+根据 R4 本地执行报告，P3 原生符号数学与微分支持子集通过本地验收，可以进入 P4；
+没有从报告中发现必须阻断 P4 的已证实缺陷。c5a9f90 未推送，新 SHA Actions 未验证。
+11 类函数、符号微分、同时代换及量子梯度/HVP 有本地证据，完整公开 API 仍 PARTIAL。
+4752/3875/4750 passed 与 90.7832% 是测试/行覆盖率，不是 SDK 功能完成百分比。
+公开版本差异、非光滑导数、未绑定符号受控相位、完整 QASM/QPY 缺口继续留在台账。
+下一批选择 Native Gate & QuantumCircuit Core API Completion。to_gate 仅接受酉门
+线路，decompose(reps) 按层展开，repeat 重复结构，非整数 power 不能用重复冒充。
+
+### 0. 最高目标
+
+独立原生实现 Qiskit/PennyLane 全部核心函数，full functional parity/full replacement，
+ACTIVE / INCOMPLETE。不降为 inventory、passthrough、educational subset、wrapper、
+几个示例或以高覆盖率代功能对等。P4 必须完成或实质补强：独立 Native Gate、
+Gate/Instruction 区分、Circuit.to_gate/decompose/repeat/tensor、Gate.control/inverse/
+power/repeat/definition/copy/is_parameterized、composite 参数映射、global phase、
+可执行 annotated 子集、原生执行/微分、Compiler/QASM/QPY、非酉/动态拒绝、双版本差分。
+不重做 P2/P3 正确的身份/向量/符号微分/算术。不做 Studio、Capture 扩张、云任务、
+真实硬件、token、认证调整、release/tag。
+
+### 1. Git 基线
+
+起始 main CODE c5a9f90164087fabb2a2df0b53e9fd75f7d3e8f5，保留现有历史。分别记录：
+
+```bash
+git status --short
+git branch --show-current
+git log --oneline -12
+git rev-parse HEAD
+git rev-parse origin/main
+git rev-list --left-right --count origin/main...HEAD
+```
+
+不 reset/rebase/amend/force、不删旧提交、不 git add .、不动用户 Studio/Router、
+不改 workflow/认证/TLS、不读取发送 token、不 vendor 源码/测试/wheel/环境、不 tag/
+release、不把缓存 origin/main 当实时远端。正常授权恢复前只做安全本地研发、验证、
+限定提交，不反复网络重试/认证排障。
+
+### 2. 真实对象审计
+
+检查 Circuit/Operation/Instruction、native gate definitions、controlled operations、
+ParameterExpression/Vector、global_phase、to_instruction/append/compose/inverse/power/
+control/assign_parameters、Compiler/DAG、QASM2/3、QPY v13、state/density/MPS、QNode/
+GradientEngine、P2/P3 身份与符号数学。新增
+docs/implementation/stage12_b_p4_gate_circuit_gap_audit.md，回答：Instruction 为什么不
+等于 Gate，哪些 Operation 酉/有 clbits/runtime vars/control blocks/custom definition/
+非零 phase，哪些已有 composite 可复用，现有 inverse/power/control 真行为，哪些
+API 缺失或仅 metadata，哪些可能损 UUID/vector，public 与 native 扩展何处不同。
+不建立第二套不兼容量子对象系统。
+
+### 3. 第一条红灯：to_gate 拒绝非酉
+
+先持久化真实失败测试。合法参数线路 H(0),CX(0,1),RZ(p,1) 的 to_gate 返回真正
+Gate，width2/clbits0，definition 实含线路，身份保持，可 append，绑定矩阵相等，
+能 inverse/control/decompose。包含 H+measurement 的线路必须拒绝。另拒绝 reset、
+Kraus、save/set、typed runtime vars、Store、runtime if/while/for/switch、unknown
+nonunitary、带 classical bits 的线路（按目标 public 契约），不忽略 measurement。
+
+### 4. 第二条红灯：受控 Gate 保 phase
+
+qc 单比特 RZ(p)，global_phase=p/3，g=qc.to_gate()，cg=g.control(1)，绑定 p=.4。
+独立 U=exp(i*p/3)*RZ(p)，受控矩阵 I/U 正确块结构，按实际 wire/basis 排列验证完整
+复矩阵，误差1e-10或更严，不只概率。测未绑定符号 phase、bound、phase-only、
+nested controls、open controls、ctrl_state、repeated controls。不支持未绑定受控相位
+则本批原生实现受支持范围或明确拒绝，不丢 phase/用单位矩阵替代。
+
+### 5. Native Gate 类型
+
+按仓库模型新增/强化独立 Gate，可适配 Gate(Instruction)，不是改名。Gate 只作用
+量子线、不操作经典位、表示受支持酉变换，有control/inverse/power/definition/binding/
+independent copy；不能把任意 Instruction 当 Gate（后者可含 measurement/reset/
+classical）。实现/验证 name,label,num_qubits,num_clbits,params,definition,copy,
+inverse,control,power,repeat,is_parameterized。可变定义明确copy/deepcopy，不可变
+标准门避免无谓拷贝，不能共享而破坏参数独立性。
+
+### 6. Circuit.to_gate
+
+```python
+circuit.to_gate(parameter_map=None, label=None)
+```
+
+支持零/一/多参数、parameter_map、label/name、UUID/vector element、symbolic expr、
+global phase、custom/nested Gate、unitary Circuit。校验map完整keys/未知参数、重复
+target identity、同名不同UUID、数值/符号映射、collision、循环/过深definition、width。
+map 语义先做两版public实测，不按旧 to_instruction 经验猜测；两者差别保留。
+
+### 7. Circuit.decompose
+
+```python
+circuit.decompose(gates_to_decompose=None, reps=1)
+```
+
+真正按层展开，支持one level/reps2/有界reps、按name/label/受支持type选择、nested/
+controlled composite、noncontiguous wires、phase/expr、输出不改原对象。A定义含B，
+B定义含RX：reps1只A到B，reps2才到RX，不一次全展开。不支持动态ControlBlock不
+删除/静态误展开。循环提前拒绝，预算整个分解累计，不每层重置。
+
+### 8. Circuit.repeat
+
+实现 repeat(reps)，测1/2/3、参数、phase、custom Gate、顺序、新线路身份、metadata。
+repeat(3)与power(3)数学可相同但结构/定义返回协议可能不同，不能混淆。非法次数、
+测量/动态线路依public真行为单独验证；能保真重复非酉则实现，不能就一律拒绝。
+
+### 9. Circuit.tensor
+
+实现 tensor(other,inplace=False)，支持量子/经典width、wire order/little endian、操作
+顺序、phase相加、参数集合、metadata、empty、inplace返回。两版public实测究竟
+self/other对应哪种Kronecker顺序，不能凭直觉。测1x1/1x2/2x1/2x2、phase、参数、
+多寄存器、空线路、原对象不变、inplace。clbits/vars/control-flow子集单独验证，
+不丢经典状态。
+
+### 10. Gate.inverse/power/repeat
+
+Inverse：standard/parameterized/composite/nested Gate、phase取逆、expr、qarg mapping，
+完整复矩阵验证 U^-1 U=I。Power：integer/zero/negative、受支持fractional、参数旋转、
+composite unitary。非整数必须真数学，例如明确主支/容差的unitary spectral power，
+不是重复；谱退化/branch/未绑定参数特别处理，未支持symbolic fractional明确拒绝。
+Repeat(n)有真definition可执行，不只改label；测negative/zero/positive、nested、
+参数、原对象不变、实际矩阵。
+
+### 11. ControlledGate/ctrl_state
+
+优先复用既有controlled operations。single/multiple、all-ones/open/arbitrary支持
+ctrl_state、nested/composite/phase/参数/完整Operator等价。open触发|0>、closed触发
+|1>不能混淆；controls/targets不重叠，非法width/ctrl_state/repeated wires拒绝。
+若保留AnnotatedOperation lazy control/inverse/power，annotation必须真展开可执行，
+不是字符串metadata；未支持组合拒绝。
+
+### 12. Definition 生命周期
+
+getter/setter、validation、compatible width/parameters、copy、recursion detection、
+invalid mutation、shared ownership、immutable standard/mutable user gate。g2=g1.copy
+后改g2.definition不影响g1，copy保UUID不是新同名身份；definition修改不能用旧matrix
+cache。
+
+### 13. 既有组合回归
+
+Custom Gate -> append -> compose -> partial bind -> control/inverse -> native Operator/
+Statevector。真证明operand/noncontiguous/classical wire映射、身份、phase、继承limits、
+definition lifetime、copy独立，保护P2/P3身份/同时代换/gradient。
+
+### 14. 非酉/动态边界
+
+Gate不得接受measurement/reset/arbitrary Kraus/save/set/Store/runtime var mutation/
+dynamic if/while/unsupported loop/nonunitary custom Instruction。Circuit repeat/compose/
+decompose按各自public语义，不机械复制Gate禁令。能力表分别列unitary/measurement/
+dynamic：to_gate支持/拒绝/拒绝，to_instruction支持/受支持子集/子集或拒绝，decompose
+支持/安全展开/安全展开或拒绝，repeat与tensor支持/子集/子集或拒绝，inverse支持/
+真语义/拒非法反演，control支持/拒绝/拒绝。此为研发目标，最终状态靠真执行与黑盒，
+不能全部dynamic标支持。
+
+### 15. 三条原生数值链
+
+A: p/q -> composite Circuit -> to_gate(parameter_map) -> control(ctrl_state) -> append
+larger Circuit -> partial/full bind -> native Operator，独立完整controlled matrix。
+B: Circuit A/B -> tensor -> repeat -> decompose(reps1/2) -> native Statevector，独立
+Kronecker/matrix乘法比完整复振幅。
+C: nonlinear ParameterExpression -> composite Gate -> decompose/control/inverse ->
+native QNode -> value/Jacobian/Hessian/streamed HVP。不只保AST，实际数值；不支持
+controlled gradient recipe明确拒绝，不finite-difference冒充原生导数。
+
+### 16. State/Density/MPS
+
+覆盖statevector/density/MPS、controlled/repeated gate、noncontiguous wires、inverse/
+phase。100-qubit低纠缠限定场景：GHZ -> parameterized1q composite -> definition/
+decompose -> q99 -> native MPS expectation -> native parameter-shift。禁dense state/
+full density/MPS全态展开，保bond/cutoff/truncation，实际gradient正确；不宣称任意
+100比特高效。
+
+### 17. Compiler/QASM/QPY
+
+Gate入Stage11L DAG/basis translation/routing/optimization/phase/symbolic reconstruction。
+QASM2/3支持custom Gate definitions真导入导出；不能无损表示opaque arbitrary matrix/
+annotated lazy/noninteger power/dynamic custom semantics则拒绝不丢失。
+QPY v13真实标准二进制双向：native dump -> publicload，publicdump(version13) -> native
+load；验证custom Gate/params/vector element/phase/label/nested definition/bound Operator。
+缺某标准记录则实现公开子集或准确Unsupported，不sidecar冒充标准字段，完整QPY仍Partial。
+
+### 18. Public 双版本
+
+Qiskit2.4.1/2.6.0只公开调用，不查阅/复制/移植upstream实现/测试。至少30独立场景，
+各版分开：Gate/Instruction关系、to_gate/to_instruction、decompose reps/selective、
+repeat/tensor/control/ctrl_state/inverse/integer/fractional power/Gate.repeat/copy/
+definition/map/phase/nested/open/error。差异保literal，不为某版异常破坏独立数学。
+
+### 19. 独立测试门槛
+
+至少20 Gate/Instruction区分、20 to_gate/definition/map、20 decompose/repeat/tensor、
+15 control/inverse/power、12 gradient/HVP、12 serialization/compiler、15负例/资源。
+是有意义独立行为，不重复简单参数点虚增。至少两独立oracle：dense完整复矩阵/
+振幅构造，以及逐门tensor contraction或代数恒等；不只互比共享同一实现的native API。
+
+### 20. 额外真实红灯
+
+除前两条，还测：copy污染原Gate；reps1误展开两层；tensor位序颠倒；repeat/power
+混淆；fractional误integer；open control触发错basis；UUID误合并；inverse/control/
+decompose丢phase；nonunitary默接受；nested循环；unbound误float；noncontiguous映射；
+inplace错误契约；QPY丢参数；MPS composite变dense；nested预算重置；stale cache；
+params修改污染另一Circuit。至少两条真实持久失败回执，不制造已有正确能力的失败。
+
+### 21. 资源控制
+
+新增/复用GateCircuitLimits：max_definition_depth/max_total_operations/max_gate_parameters/
+max_control_qubits/max_decomposition_work/max_repeat_count/max_matrix_dimension/
+max_custom_definitions/max_serialized_bytes。nested共享父预算，repeat/decompose前估算，
+不无限递归/指数无限展开，controlled matrix仅有限规模，大MPS不生成dense，dynamic
+遵Stage11J，失败构建原对象不变，copy无无限引用。不提高旧上限/关闭检查凑过测试。
+
+### 22. 建议路径
+
+适配真实仓库，优先已有目录，不机械建重复系统。可新增增强gate/controlled_gate/
+annotated_operation/gate_definition/circuit_conversions/decomposition/circuit_tensor。
+测试主题：native Gate契约/to_gate/definition生命周期/decompose reps/repeat tensor/
+controlled/inverse power/parameter map/phase/resources/gradient HVP/MPS non-dense/
+双版public differential；真实路径按现有core/compiler等结构。
+
+### 23. SDK-free 实例
+
+examples/native_custom_gate.py、native_circuit_decomposition.py、
+native_circuit_tensor_repeat.py、native_controlled_phase_gate.py、
+native_gate_gradient_hvp.py。每份真计算+数值断言，不只repr。至少一份ParameterVector
+-> sin/exp -> custom Gate -> to_gate/control/decompose -> native state/Operator ->
+native gradient/HVP。
+
+### 24. 五环境完整验证
+
+SDK-free FULL、main Qiskit2.4.1/PL.44.1 FULL、alternateQiskit2.6/PL.42.3 FULL、
+独立JAX/TF focuses、Torch/Autograd focuses、Compiler/Serialization/Aer、Stage11H至
+P3全回归。缺Finance/Optimization/ML/Dynamics/Metal/Experiments/Addons保持NOT_EXECUTED，
+既有pyquafu/NumPy、WeasyPrint/tinycss2冲突如实，不动全局环境。
+
+### 25. 强制最终门禁
+
+compileall quantumbridge，实际目录Circuit/compiler/serialization/qml/interfaces/devices
+focused，FULL pytest -q -rs，显式pytest --cov=quantumbridge，原始完整local matrix，
+git diff --check。不存在目录按真实结构调整，不||true。运行时代码改动后重做最后
+冻结版本FULL，不拿前阶段结果。全局coverage基线90.7832066365959%，excluded68不增；
+新增Gate/Conversion/Decomposition核心模块至少90%。保存单一frozen runtime、完整
+logs/独立exit、同interpreter/origin、source/staged/commit blobs/subtrees、passed/skip/
+xfail/warnings/perfilecoverage、28sections、missing extras、legal/privacy/no-vendor、
+限定stage paths、独立数学/双版差分。覆盖率不是功能完成率。
+
+### 26. 文档
+
+新增gap audit、docs/implementation/stage12_b_p4_native_gate_circuit_report.md、
+docs/compat/stage12_b_p4_gate_circuit_contracts.json；更新core_parity_ledger/README/
+THIRD_PARTY_NOTICES/source_migration_ledger。先实质代码测试，不装饰文档；公开观察JSON
+不算新增SDK实现。逐项NATIVE_IMPLEMENTED/NATIVE_TESTED/PUBLIC_DIFFERENTIAL_TESTED/
+PARTIAL/UNSUPPORTED/NOT_STARTED。
+
+### 27. 正常提交与禁止
+
+建议feat: implement native gate and circuit composition contracts；若只部分完成准确
+限定subject。status/diff --check，仅add自有P4路径，cached check/name-only。禁Studio/
+Router/venv/site-packages/wheel/dist-info/egg-info/token/非本批第三方源码测试。允许普通
+本地提交，未恢复正常GitHub授权/网络前：local_commits_ready=true，remote_pushed=false，
+remote_ci_verified=false。owner恢复后先成功fetch并核FF才普通push main；分叉停止报告，
+不reset/rebase/force。推送后核exact-SHA Actions head_sha/conclusion/all jobs。
+
+### 28. P4 最低验收
+
+逐项证据：独立Gate/Instruction区分、to_gate/decompose(reps)/repeat/tensor、definition/
+copy lifecycle/inverse/control ctrl_state/power/repeat、map/UUID/vector/phase、非酉动态
+拒绝、nativeOperator/state/density、gradient/Hessian/HVP、MPS non-dense、Compiler/
+QASM2/3/QPYv13binary、独立math、两版public、三FULL、四AD回归、fullmatrix真exit0、
+explicitcoverage、legal/privacy/no-vendor、用户脏文件保留、Git/CI真实。没完成保持
+Partial/Unsupported，不标整个QuantumCircuit/Gate Full。
+
+### 29. 最终报告
+
+报告starting/endingHEAD、SHA/subject、tested/committedtree、paths、真实remote/push/CI、
+Gate/Instruction差别、to_gate/decompose/repeat/tensor/control/ctrlstate/inverse/power/
+definition/copy、map/UUID/vector/phase、nonunitary/dynamic、独立复矩阵误差、梯度二阶HVP、
+MPS、compiler、QASM/QPY、两版public、三FULL/四AD、coverage/matrix真exit、red/fix、
+行为差异、Gate/Circuit余缺、全部core余缺、下一目标。明确回答：是否真独立Gate而非
+旧Instruction改名？四Circuit API是否真数学/public证明？controlled composite是否保
+phase/identity/mapping？是否保微分/compiler/serialization/MPS？Circuit/Gate完整parity？
+全部Qiskit/PL完整replacement？全部公开核心逐项实现/调用/验证之前后两问必须NO /
+ACTIVE / INCOMPLETE。
+
+### 30. 后续实际开发与执行决定
+
+P4本地验收后不只报告，下一优先P5 Native QuantumCircuit Classical Builders & Remaining
+Circuit API：structured contexts、classical vars、register control、switch/for/while、
+measurement/reset helpers、barrier/delay、bit/register order、metadata/calibration、
+parameterizedcustomdefinitions、剩余signatures、QASM3/dynamic/compiler真联动。然后
+QuantumInfo、Primitives/Backend/Job、Aer、Transpiler、PLQNode/Device/Measurements、
+Templates/Transforms/QChem、算法/行业生态。现在从c5a9f90 CODE开始P4，先to_gate
+非酉拒绝和受控phase两真红，再独立Gate/原生数学/完整门禁。此为下一执行任务，
+不是已经完成的成果；最高完整replacement目标继续ACTIVE / INCOMPLETE。

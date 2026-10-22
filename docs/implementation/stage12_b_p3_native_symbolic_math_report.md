@@ -8,9 +8,12 @@ goal remains ACTIVE / INCOMPLETE. This report is not full class/SDK parity.
 - Starting local main HEAD: 0ef945242b0950b30e4fdf5e4e32f028e2033f75.
 - Cached origin/main: 45fe338fc0f02de9c19e0af89723755952e5fc98, 0 behind/35 ahead.
   This is not a fresh remote observation. No fetch, push or new-SHA CI claim.
-- Local code commit and ending SHA are recorded by the subsequent publication
-  receipt after the scoped commit. No prior commit is rewritten, and no
-  branch/PR, tag or release is created.
+- Local code commit: c5a9f90164087fabb2a2df0b53e9fd75f7d3e8f5,
+  `feat: implement native symbolic parameter functions and calculus`.
+  Full code tree: f958b25eb3a6c1a8c93459c35c2ff1beb01a4345. Exactly 32 owned
+  paths were staged, 4070 insertions / 85 deletions including public observation
+  JSON and docs, not 4070 lines of newly implemented SDK capability. No prior
+  commit is rewritten, and no branch/PR, tag or release is created.
 - Existing five tracked Studio modifications and all untracked Router/Studio
   artifacts remain protected and excluded from controlled source snapshots.
 - Previous goal turn was progress: actual P2 implementation plus terminal
@@ -239,9 +242,17 @@ SHA256 of temporary reproducibility tools (not production SDK dependencies):
 | Receipt/coverage/public audit | 1ed1f2b2e53810d25afe56b276ea6108a0df45cc3078cc920a4975be65a7a46b |
 | Independent-exit command runner | e04371807ab7d2745e65a5cef1626ea7dd5dca1c01adf44389850b94f9f3fb3c |
 
-Publication remains `local_commits_ready=true` only after scoped commit;
-`remote_pushed=false`, `remote_ci_verified=false`. Cached origin/main is not
-live remote state; no denied authorization is retried or TLS/auth bypassed.
+Normal staged/code-commit production/tests/examples subtrees exactly equal
+the tested hashes above. A fresh export of c5a9f90 again matches all 1083
+controlled runtime blobs and passes legal 4/4 (`/tmp/qb-stage12b-p3-committed-legal`,
+exit 0). Scoped secret-pattern scan lists no files (rg exit 1, NO MATCHES);
+cached diff check passes. Only the five prior Studio tracked modifications
+and protected untracked user files remain after the code commit.
+
+Publication: `local_commits_ready=true`, `remote_pushed=false`,
+`remote_ci_verified=false`. Cached origin/main is not live remote state; no
+denied authorization is retried or TLS/auth bypassed. This later documentation
+receipt does not change the tested implementation or amend its code commit.
 
 ## Remaining Scope
 
@@ -263,3 +274,19 @@ credential use, production certification or remote CI completion is claimed.
 Next action after scoped commit is one result report to the authorized ChatGPT
 conversation and a request for the next actual native-core implementation
 prompt. P4 Circuit/Gate remaining API is a candidate, not an implemented result.
+
+## Coordination Receipt
+
+Exactly one result message 4bc0678b-a63d-4842-8db3-8a437b362b6c was delivered to
+the owner-authorized "Claude 代码泄漏与应对" conversation
+6a20d458-a76c-83ea-9b49-f8f0caedb3cf. Complete assistant reply
+1d682b47-8b6d-4055-b588-ad7e83e0b65a accepts only the reported P3 subset and
+selects Stage 12-B P4 Native Gate & QuantumCircuit Core API Completion. It
+does not independently audit unpushed code or assert whole SDK completion.
+The final idle native status and completed Chrome response were verified;
+overlapping ranges cover all 329 direct content items, Sections 0-30. A
+transient interrupted view was not treated as a complete response. No duplicate
+report, regeneration or tail request was sent. The complete normalized P4
+requirements and provenance are saved in the existing execution-prompt document.
+P4 is a received plan, not delivered implementation. This receipt is metadata
+only; c5a9f90 remains the tested code commit.
