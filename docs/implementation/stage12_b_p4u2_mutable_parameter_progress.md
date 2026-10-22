@@ -157,8 +157,20 @@ it. The controlled-source legal4passed result does not describe that dirt.
 
 The original28-section matrix and original P4 joint acceptance remain
 NOT_RUN at this development checkpoint. No in-progress process is passed.
-Staged/actual-frozen equality and local commit receipt are recorded separately
-after this documentary update; no runtime changes followed the frozen runs.
+Staged/actual-frozen audit /tmp/qb-stage12b-p4u2-staged-audit.log/.exit
+terminates0:1140 controlled runtime files have identical actual frozen,
+worktree and staged blobs. All production/tests/examples/scripts/requirements
+subtrees match. Runtime manifest SHA256:
+ba85b126973e135542fbd1719f3f36a53edffadbef1ce6db7197b4714ebec1d7.
+Protected paths staged:false. Normal scoped local implementation commit:
+e2e60554abff49a54600ed1c8fda385bec293e83,
+feat: support native mutable gate parameter binding. Exactly17 owned paths,
+1410 insertions/66 deletions including tests/docs, not SDK function counts.
+Commit tree b33dd2f7383d4498fc683dfae8e550741dd7a502 exactly matches the
+audited staged tree. Cached origin/main comparison is behind0/ahead44 at
+that commit, not live remote information. No push/remote CI verification.
+No runtime changes followed the frozen runs; this follow-up changes only
+the checkpoint receipt and the actually received next-task document.
 
 ## Actually Read Collaboration Review
 
@@ -177,6 +189,30 @@ dependency consistency, stable hash identities and original symbolic formal
 templates instead of numeric guessing. The collaborator has not independently
 reviewed unpushed code or remote CI. The directed next stage is U3 dedicated
 return/error ABI, then U4 dynamic/empty contracts and U5 joint acceptance.
+
+Final result report was sent to the same authorized conversation. The full
+actual final reply, review table and10-section U3 prompt were read at Chrome
+AX elements2022-2622, including its visible completed-answer state. Backend
+read_thread timed out; no unavailable source-message ID is invented here.
+The reply confirms report-based supported U2 checkpoint acceptance, not
+independent code/remote CI inspection, and directs starting real U3 red tests.
+The full normalized task is preserved in
+stage12_b_p4u3_standard_gate_return_error_execution_prompt.md.
+
+Next-task public-only probes /tmp/qb-stage12b-p4u3-public-probe.py,
+receipts /tmp/qb-stage12b-p4u3-public241 and public260, each terminate0 and
+contain60 actual public object/method observations, including48 omitted/
+None/False/True method cases and12 standard constructors. Both versions have
+the same recorded outcomes after excluding version/warnings. These are public
+observations, not60 successful native/public parity cases.
+
+Outside-suite positive U3 requirements /tmp/test_qb_stage12b_p4u3_initial_reds.py
+run on the unchanged frozen U2 runtime; /tmp/qb-stage12b-p4u3-initial-reds
+terminates1 with6failed/5passed. Dedicated RX/RY/RZ constructors are missing;
+numeric generic Gate.power omitted/None/False returns generic Gate instead
+of public UnitaryGate. Generic power(True) annotation and all4 generic
+control annotation-choice cases already pass. These intended U3 reds are
+not included as U2 green/support evidence. No U3 production fix is claimed.
 
 ## Remaining Boundaries
 
