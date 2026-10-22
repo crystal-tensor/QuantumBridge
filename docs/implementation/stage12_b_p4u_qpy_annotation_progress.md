@@ -137,3 +137,36 @@ dynamic/empty contracts still need completion before P4 closure.
   not supplied by this binary-codec checkpoint.
 - No newly verified remote GitHub state/CI. Cached origin/main is not live
   remote evidence. Protected Router/Studio dirt must not be staged/reverted.
+
+## Local Checkpoint Identity
+
+Normal local implementation commit:
+ed79a81c1c675947f98c285ba578191422c57247,
+`feat: support native QPY annotated operation interchange`.
+Its complete tree is b7fbff0deb454d5c395970a856a2b12addea726f. Nine exact
+owned paths;910 insertions/92 deletions including tests and reports, not
+a function count. No amend/rebase/reset/force or global identity change.
+
+`/tmp/qb-stage12b-p4u1-staged-audit` terminated0. It compared1136 controlled
+runtime blobs in the ACTUAL frozen source folder, current working files,
+staged tree and tested Git input. Commit tree equals that exact staged tree;
+production/tests/examples subtrees equal the frozen hashes above, with
+scripts/requirements unchanged. Runtime manifest SHA256:
+1f59c4b597858a3939f90cd58cb4e53eb7d8742a0fb474ffa1181729538952d7.
+Staged patch SHA256:
+583588829e3f3d9af13a05a242155cac18c53a5d07050a7af5cae932cd40efd0.
+Protected paths staged=false; no new cloud/auth/vendor artifacts.
+
+After commit, only pre-existing protected Studio/Router/other unowned dirt
+remained. Main is42 commits ahead of cached origin/main, behind0; this is
+not live remote verification. No push or new-SHA remote CI claim. Any later
+checkpoint identity/received-task report update changes documentation only,
+not the already tested runtime. All required execution sessions terminated.
+
+Final result message5e10b249-5add-4bb0-8ebd-d09045cecdc9 received completed
+ChatGPT reply d9ad068a-7fa5-432b-afd0-83d39bb26b1f. Its full actual rendered
+body/table/continuation was read. Report-based supported U1 checkpoint
+confirmation, no newly reported blocker, immediate U2 mutation/validation
+implementation next. This does not independently certify unpushed source,
+remote CI, complete P4-U/P4 or full SDK parity. The faithful normalized
+received continuation is in stage12_b_p4u1_review_and_p4u2_continuation.md.

@@ -95,3 +95,45 @@ incorrect qb.Operator import; the corrected public native import is
 quantumbridge.information.Operator. No production defect or runtime change
 was used to repair that harness error. The U2 probe's later matrix import
 was also corrected and its4 genuine missing-feature reds remain unchanged.
+
+## Final Checkpoint Review And Immediate U2 Task
+
+Final report user message5e10b249-5add-4bb0-8ebd-d09045cecdc9 received
+completed reply d9ad068a-7fa5-432b-afd0-83d39bb26b1f, content reference0.
+The complete rendered Chrome reply/table/five-step instruction and final
+acceptance criteria were actually read at elements1127-1234. Backend metadata
+was confirmed separately; this is not a claim based on an unread reference.
+
+Report-based conclusion: local U1 checkpoint ed79a81c1c675947f98c285ba578191422c57247
+passes its supported-subset acceptance; no newly reported confirmed blocker.
+The collaborator has not independently inspected unpushed code or remote CI.
+Native direct parameter indexing and exact large-power preflight guard probes
+address the previously raised direct risks. Three FULL test results and
+91.0463% global line coverage are acknowledged; original28-section matrix
+is still NOT_RUN, remote push/CI unverified, P4-U/P4/full SDK PARTIAL.
+
+Continue P4-U2 immediately under the already received full P4-U prompt:
+
+1. Move/extend the existing4 failed/1 passed positive requirements into owned
+   controlled tests during U2 implementation. Missing indexed mutation and
+   validate_parameter are U2 reds, not failures concealed inside U1 acceptance.
+2. Implement real mutable parameters affecting later native Gate/Circuit
+   calculation, not a temporary returned list.
+3. Implement parameter validation and atomic updates. Invalid assignment must
+   not partially modify params, definition, caches or existing objects.
+4. Test copied/shared lifetimes: modifying a copy must not contaminate the
+   original; existing Circuit references/snapshots must have explicit tests.
+5. Complete U3 real return/error ABI comparisons for both public versions,
+   without copying the observed upstream partial-assignment corruption.
+
+First passing standard: mutate g2.params[0]; its actual Operator changes to
+the independent expected matrix while g1 stays unchanged. Failed invalid
+assignment preserves all relevant states. Then U4 dynamic/empty/resource
+contracts, finally U5 original five examples, complete28-section matrix and
+joint acceptance. Only normal scoped local commits; protect Studio/Router,
+do not bypass permissions/authentication or cite old CI as new-SHA evidence.
+Highest full Qiskit/PennyLane parity goal remains ACTIVE / INCOMPLETE.
+
+No U2 production implementation is claimed by this U1 documentation follow-up.
+The existing outside-suite positive reds, valid frozen U1 runtime and exact
+next task are preserved so the next continuation starts from real evidence.
