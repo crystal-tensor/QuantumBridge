@@ -204,13 +204,28 @@ checkpoint, distinct from these actual three FULL/two FOCUS environments.
 ## Scoped Git Proof
 
 Final staging/commit equality is checked separately after terminal tests.
-Only27 explicitly owned paths are intended:24 original frozen paths plus
+Only27 explicitly owned paths were staged:24 original frozen paths plus
 the P4-T report, P4 gap audit update and received P4-U prompt. Protected
 Studio/Router and unrelated files are not staged. The staged/runtime audit
 helper /tmp/qb-stage12b-p4t-staged-audit.py SHA256 is
 a03d84713d92f7cb447de71776af44be3a51ef0877dfa4908a1cedc09a21ba43.
-Final local SHA and exact equality results are recorded after the scoped
-checkpoint; no remote SHA/CI verification is implied.
+The staging audit actually terminated exit0, receipt/log
+/tmp/qb-stage12b-p4t-staged-final.exit/.log. All1136 controlled runtime files
+matched their frozen blob and working-tree hash; quantumbridge/tests/examples/
+scripts/requirements subtrees also matched. No protected paths were staged.
+The exact staged tree6fab89f36da1b761003ad151f36c02eb779064a7 equals the
+committed code tree. The audited staged patch SHA256 is
+3ca0ddf936b3dce3754e12af8bdeb418e9e2b8a41e0cbafb24ea76dac625dcae.
+
+Normal local code checkpoint8e6ef77328c7924b4f996ab0d93da5b709ae7346,
+subject "feat: add native annotated gate modifiers and definitions", records
+27 files/1726 insertions/25 deletions. Documentation and parameterized tests
+are not SDK function counts. The automatic committer-identity notice did not
+cause a global configuration change or amend. This checkpoint is local only.
+A subsequent documentation-only checkpoint records these outcomes and the
+received next task; runtime subtrees must remain identical to this tested code.
+No remote SHA/CI verification is implied; cached origin/main is not live
+evidence. All original protected dirt remains present.
 
 ## Completion And Next Work
 
@@ -249,3 +264,21 @@ The normalized complete next task is
 stage12_b_p4u_annotation_qpy_abi_execution_prompt.md. Its explicit prerequisite
 is all R3 terminal success, tested/staged runtime equality and scoped local
 P4-T commit. P4-U implementation has NOT STARTED before those conditions.
+
+After all prerequisites actually passed, the final report and local code SHA
+were sent as user message1e39ef85-5e3d-4e3f-b545-7833628528b4. Completed
+assistant reply2c148481-71ea-4a9a-9dc5-e039e4e4c856 (reference0) was actually
+read in Chrome, including its complete table and four-step continuation.
+It confirms the report-based local R3 checkpoint, no new reported blocker,
+91.0052% line baseline and original matrix NOT_RUN. It explicitly retains
+P4-T/P4/full SDK PARTIAL, no independent unpushed source/remote CI review, and
+directs starting P4-U1 without rerunning unchanged R3 as a startup prerequisite.
+
+P4-U1 has now started with baseline probes ONLY, no native implementation:
+/tmp/test_qb_stage12b_p4u_initial_reds.py requires real unresolved annotation
+object preservation in both QPY directions. Both2.4.1 and2.6.0 actually produce
+2 failures, exit1; logs /tmp/qb-stage12b-p4u-initial-reds-241.log/.exit and
+/tmp/qb-stage12b-p4u-initial-reds-260.log/.exit. Native writer rejects annotated;
+native reader rejects the standard custom annotation type at byte193. These
+are intentional next-task missing-feature reds, not R3 failures or implemented
+QPY support. Production/test runtime in the checkpoint is unchanged.

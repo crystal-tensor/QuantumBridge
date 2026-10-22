@@ -1,10 +1,42 @@
 # Stage 12-B P4-U Received Execution Prompt
 
-Status: RECEIVED / NOT STARTED. P4-T R3 regressions are still running when
+Status: STARTED / BASELINE REDS ONLY, NATIVE IMPLEMENTATION PENDING.
+P4-T R3 regressions were still running when
 this task is received. Start P4-U only after all R3 gates actually terminate
 successfully, exact tested runtime equality is verified and the owned P4-T
 checkpoint is normally committed locally. If R3 fails, repair and fully rerun
 R3 first. P4-T/P4/full SDK replacement are not declared complete here.
+
+Prerequisite update: R3 driver63896 and all18 child receipts terminated0;
+the independent final audit0 and staged/runtime equality audit0 establish the
+tested snapshot. Normal P4-T local checkpoint
+8e6ef77328c7924b4f996ab0d93da5b709ae7346 now exists, with1136 controlled
+runtime blobs verified. Its metadata-only follow-up does not change runtime.
+P4-U has no native implementation in the P4-T checkpoint.
+The new valid explicit FULL line-coverage baseline is
+30029/32997=91.00524290086977%, exclusions68 unchanged. This is not full SDK
+acceptance; the original28-section matrix was NOT_RUN in the P4-T checkpoint.
+
+Final report1e39ef85-5e3d-4e3f-b545-7833628528b4 received completed reply
+2c148481-71ea-4a9a-9dc5-e039e4e4c856 (reference0). Its complete actual Chrome
+body/table/four-step instructions were read. Report-based R3 confirmation,
+no new reported blocker, immediate P4-U1, no rerun of unchanged R3 just to
+start; P4-U final acceptance still requires its own final frozen full gates.
+This is not independent source/remote review or completion of P4-T/P4/full SDK.
+
+First real positive-requirement probes now exist in
+/tmp/test_qb_stage12b_p4u_initial_reds.py, intentionally outside the green P4-T
+tracked test suite until P4-U implementation starts. Main2.4.1:2 failed/.40s/
+exit1; alternate2.6.0:2 failed/.38s/exit1. Prefixes
+/tmp/qb-stage12b-p4u-initial-reds-241 and
+/tmp/qb-stage12b-p4u-initial-reds-260 contain actual logs/exits. Writer raises
+UnsupportedFeature for annotated; reader raises UnsupportedFeature for the
+standard annotation custom record at byte193. Both use the verified R3
+native runtime. The expected complete complex block after inverse/open-control/
+power2 is diag(exp(i*p/3),exp(-5i*p/3)) in the open-controlled2x2 block,
+identity elsewhere. Do not count these missing-feature reds as P4-U support;
+move/extend them into the existing owned serialization tests and implement
+real standard a/m records next. No production change after P4-T code checkpoint.
 
 ## Provenance And Actual Reading
 
