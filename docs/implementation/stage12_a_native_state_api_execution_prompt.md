@@ -2095,3 +2095,368 @@ native fix、双 oracle、既有导数一致性之后，同树完整门禁和 sc
 新增大型 Parameter 框架，已有正确核心直接复用。不启动新 Primitives、Capture 或
 Studio。最高目标完整 Qiskit/PennyLane 独立原生 full functional parity/full replacement
 仍 ACTIVE / INCOMPLETE，C3 PARTIAL，Studio 最后。
+
+## Stage 12-B P3 Received Execution Prompt
+
+Received 2026-10-22 from the authorized conversation "Claude 代码泄漏与应对"
+(6a20d458-a76c-83ea-9b49-f8f0caedb3cf), after one actual P2 result message
+98830664-00b2-4298-90c4-7bcba8ed627a. Assistant reply
+4f0c3615-6e5a-4323-8af3-d6fe03aba199 accepts only the reported bounded slice,
+not an independent audit of unpushed code or whole SDK parity. Native thread
+delivery was verified; its assistant text is a content reference, so the full
+reply was read in Chrome. A temporary connection-interrupted view stopped at
+Section 5; the completed reply was then read in overlapping AX ranges 0-100,
+57-157, 138-238 and 191-291, covering all 291 direct content items, Sections
+0-24 and the final execution decision. No duplicate report, tail request,
+regeneration or acknowledgement loop was sent.
+
+Formatting below is normalized, with all functional, validation, publication
+and stopping requirements retained. This is a received P3 plan, NOT a claimed
+implementation. CODE baseline is a565aa738e85a5cb1eb00b2475cd988897429daf;
+a later documentation receipt changes HEAD, not its tested runtime. The reply
+quotes a different example commit subject but explicitly makes actual Git
+history authoritative: actual subject remains "feat: add native parameter
+identity and composite binding"; do not amend history to match prose.
+Evidence-first interpretation remains mandatory: simultaneous Circuit binding
+already has correct P2 cases; do not fabricate a broken arithmetic path. A
+missing public subs method can be a real red while correct existing semantics
+are reused. Higher-priority owner instructions and security boundaries apply.
+
+### P2 Acceptance And Next Decision
+
+基于本地执行报告，P2 已完成受支持范围内的原生参数身份、向量参数、部分绑定和
+指令参数映射，可继续下一批；这不是对未推送源码的独立审计，也不代表远端 CI
+通过。a565aa7 发布状态保持 NOT_PUSHED / CI_NOT_VERIFIED。保留参数身份真实测试、
+Circuit/Operator/Statevector/DensityMatrix/QNode/gradient/HVP 数学贯通和 R3 真退出记录。
+90.6607% 只是代码行覆盖率。未发现报告中已证实、必须暂停研发优先处理的阻断；
+QPY v13 不等于完整 QPY parity，符号绑定版本差异、UUID 类型和 inplace 返回契约
+继续 Partial。下一批选 Native ParameterExpression Symbolic Mathematics,
+Differentiation & Substitution，优先于继续扩大包装接口。
+
+### 0. 最高目标
+
+独立原生实现 Qiskit 和 PennyLane 全部核心函数，full functional parity/full
+replacement，ACTIVE / INCOMPLETE。不改成部分 SDK、生产子集或兼容包装。P3 补齐
+ParameterExpression 符号数学并贯通原生执行，必须实现或补强：
+
+1. Symbolic elementary functions。
+2. 原生符号微分。
+3. 重复微分与混合偏导。
+4. Symbolic substitution。
+5. Partial/full numeric binding。
+6. Parameter UUID identity。
+7. Vector element identity。
+8. Simplification 与准确依赖集合。
+9. Real/complex numeric semantics。
+10. Circuit/Instruction/global_phase integration。
+11. Native gradient/Hessian/HVP integration。
+12. Compiler parameter preservation。
+13. QASM3/QPY v13 roundtrip。
+14. Statevector/DensityMatrix/MPS execution。
+15. Optional SymPy interoperability。
+16. Qiskit public API 双版本差分。
+17. 完整多环境验证。
+
+不重做已有正确普通算术、ParameterVector、部分绑定、CAR、QuantumDevice 或
+GradientEngine；使用仓库实际已有实现，不凭这些称呼另造框架。不做 Studio、
+Capture 扩张、云/硬件、token 或认证变更。
+
+### 1. 当前 Git 基线
+
+本地 main CODE 为 a565aa738e85a5cb1eb00b2475cd988897429daf；真实提交信息以 Git 为准，
+不得为了与说明中的示例 subject 一致而改写历史。开始前分别执行：
+
+```bash
+git status --short
+git branch --show-current
+git log --oneline -12
+git rev-parse HEAD
+git rev-parse origin/main
+git rev-list --left-right --count origin/main...HEAD
+```
+
+保留 Stage 11H-12-B P2 历史；不 reset/rebase/amend/force，不修改用户 Studio/Router，
+不 git add .，不读/打印/发送 token，不改认证/TLS，不删 workflow，不 tag/release/vendor。
+缓存 origin/main 不当实时远端，旧 Actions 不当新提交 CI。网络/授权未恢复时继续
+安全本地研发、测试与提交，但不 push。
+
+### 2. 开发前真实功能审计
+
+检查 Parameter/ParameterExpression/ParameterVector/ParameterVectorElement、UUID、
+表达式 AST、arithmetic、assign_parameters/bind_parameters/to_instruction、global
+phase 参数图、classical parameter graph、record_compiled_parameters、native gradient/
+Hessian/HVP、compiler basis/decomposition、QASM2/3/QPY v13 和 P2 public observations。
+新增 docs/implementation/stage12_b_p3_symbolic_math_gap_audit.md，逐项回答：
+
+1. 哪些 symbolic functions 已原生执行？
+2. 哪些有独立数学与 public differential？
+3. 哪些仅支持浮点提前求值？
+4. 表达式变换哪里可能丢身份？
+5. 当前 gradient 返回符号还是数值？
+6. 二阶 classical graph 与 ParameterExpression AST 是否一致？
+7. 哪些分支处理复数？
+8. 哪些绑定改变依赖集合？
+9. 哪些 QASM/QPY 编码不能保留新节点？
+10. Qiskit 2.4.1/2.6.0 公开 API 的实际差别？
+
+已有正确能力复用，不重复开发。具体公开接口先实测，不按名称猜测。
+
+### 3. 第一条红灯 - 符号函数不得提前 float
+
+先持久化并执行实际失败测试：
+
+```python
+p = Parameter("p")
+q = Parameter("q")
+expr = (p*q + p**2).sin() + (2*p - q).exp()
+```
+
+expr 必须可继续绑定，parameters 保留 p/q UUID，不在构建时 float(p)，可先部分绑定 p
+再绑定 q，完整数值正确，gradient(p)/gradient(q) 可执行且可继续二次微分，可作
+RX/RY/RZ 角，不改变 p/q 身份。独立参考：
+
+```text
+f(p,q) = sin(p*q + p^2) + exp(2*p-q)
+df/dp = (q+2*p)*cos(p*q+p^2) + 2*exp(2*p-q)
+df/dq = p*cos(p*q+p^2) - exp(2*p-q)
+(p,q) = (.4,-.2), (-.7,.5), (.8,1.1)
+```
+
+先记录旧实现缺接口或错误求值的真失败，再实现。
+
+### 4. 第二条红灯 - 同时代换不能顺序污染
+
+对 expr=p-2*q，mapping={p:q,q:p} 的同时代换应为 q-2*p，而不是把新生成 q 继续
+替成 p。另测 mapping={p:p+q,q:p-q}，只替原 AST 引用，不递归污染 replacement AST。
+必须覆盖 simultaneous/sequential、identity、target collision、同名不同 UUID 拒绝、
+vector element replacement、无陈旧 registry、global phase、nested ControlBlock、
+invalid/unknown keys。单参数 assign 可用明确单次替换语义；批量 subs 按实测公开行为。
+已有正确数学不制造失败，实际缺 public entry 本身可作为真红。
+
+### 5. Native Symbolic Elementary Functions
+
+优先实现实际存在的 sin/cos/tan/exp/log/arcsin/arccos/arctan/abs/sign/conjugate。
+sqrt、其他公开运算或别名必须先核对目标版本，再逐项补齐。每个函数覆盖 symbolic
+construction、numeric evaluation、partial binding、UUID、vector-element input、
+domain、nonfinite、可微域 differentiation、JSON/IR、物理允许时作 gate angle、
+unsupported complex domain。不能写成 math.sin(float(expr)) 丢符号依赖。
+
+反三角检查 arcsin/arccos domain、arctan 实数行为、分支选择、导数域和边界奇异导数；
+超出明确支持的复分支必须拒绝或独立验证。Log/Exp 测正实、零、负数 log，exp 溢出/
+下溢，非有限输入和符号导数。Abs/Sign 明确 abs 零点不可微、sign 零点不连续、分段
+导数、非零可微域和 complex abs/real sign 差异。不可微点不能偷回 0 宣称普通导数；
+公开版本约定差别与数学可微性分开记录。
+
+### 6. 原生 Symbolic Differentiation
+
+建议 expr.gradient(parameter)，可选 differentiate(expr,parameter,order=1)。返回可绑定
+native ParameterExpression，或完全常量时经过验证的数值，不能总回预计算 float。
+核心不能依赖 SymPy diff 或 Qiskit gradient。真实 AST 规则覆盖 constant、parameter、
+plus/minus、multiply/divide、integer/受支持 real powers、sin/cos/tan、exp/log、
+arcsin/arccos/arctan、chain/product/quotient rule 和 repeated/shared parameter。
+支持 expr.gradient(p).gradient(q)；常量中间项需一致的数值/表达式协议，避免二次
+求导失效。独立验证二阶混合偏导，实可微域使用符号公式，不用有限差分冒充符号微分。
+
+### 7. Expression Simplification
+
+安全确定性子集：constant folding、x+0、x*1、x*0、double negation、numeric powers、
+repeated constant terms、safe associative simplification、known zero derivative。
+不得破坏 UUID、公开要求的依赖集合、非有限浮点语义、复数 global phase、可微图、
+序列化或 vector identity。特别实测 0*p 在 Qiskit 2.4/2.6 是否保留 membership，区分
+mathematical dependency、tracked syntactic parameter 和 symbolic graph parameter
+set；不能随意删引用后宣称完全对等。
+
+### 8. Bind / Assign / Subs / Numeric 契约
+
+补齐实际 expr.bind/assign/subs/numeric/is_real/is_symbol；若公开版本有 bind_all，
+独立可选验证，不与严格 bind 混淆。
+
+- Bind：parameter->numeric、partial/full、unknown key、nonnumeric、零分母、nonfinite、
+  strict/error、UUID matching、vector key。
+- Assign：单参数->numeric/Parameter/expression，重复引用，global phase 和 name collision。
+- Subs：批量同时替换、replacement expr、identity、unknown key/name conflict、不改原对象、
+  nested AST。
+- Numeric：全绑定、int/float/complex、未绑定拒绝、目标版本 strict、nonfinite、返回类型。
+- Is_real：明确 real、明确 non-real、unknown 分开，不能用不可靠 bool 把 unknown 变 False。
+
+### 9. SymPy Public Interoperability
+
+公开 sympify 可返回 SymPy 表达式；建议作为 optional interoperability boundary 实现。
+SymPy 未安装时 native expr 照常，不加 core 强依赖，不用其 diff 作 native gradient，
+保留名称和可解释表达式，明确 UUID 无法保真的边界。不任意字符串 eval，不让不可信
+SymPy 对象无验证反向注入执行图。与真正原生运行分开报告。
+
+### 10. Circuit / Instruction / Global Phase 集成
+
+将新函数实际用于 RX/RY/RZ、PhaseShift、controlled rotations、RXX/RYY/RZZ、custom
+Instruction params、to_instruction parameter_map、global_phase、compose、inverse/
+power 和 loop locals。必须证明两条链：
+
+```text
+ParameterExpression -> Native Gate Angle -> Native Circuit -> Partial Binding
+-> Native Operator/Statevector -> Native Gradient/Hessian/HVP
+ParameterExpression -> Global Phase -> Native Circuit -> Operator
+-> Coherently Controlled Definition
+```
+
+完整复矩阵不能因概率对 global phase 不敏感而省略。复值表达式需验证门角可接受域、
+纯酉物理合法、不默丢虚部、global_phase 数值/物理约束。
+
+### 11. Quantum Gradient / Hessian / HVP 集成
+
+复用 Stage 11K/11P-C2/C3 引擎，支持已验证的 nonlinear angles、shared params、符号
+gradient/second derivative、parameter-shift、适用的 adjoint、streamed HVP、Hamiltonian
+coefficients 和 compiled parameter reconstruction。至少线路：
+
+```text
+f(p,q)=sin(p*q+p^2)+exp(2*p-q)
+RY(f(p,q),q0); RX(p*q,q1); CZ(q0,q1)
+```
+
+用合适 Pauli observable 比 forward/Jacobian/mixed Hessian/directional HVP、partial
+binding、QNode repeated calls。必须独立数学 oracle，不能只互比两种 native 方法。
+边界不可微则拒绝 gradient，合法 forward 仍可执行；不拿 finite difference 代 AST gradient。
+
+### 12. Compiler / QASM / QPY 集成
+
+Compiler 保护 Stage 11L basis translation、routing、optimization、parameter graph
+reconstruction、global phase；新节点正确保留或显式拒绝，重点 sin(p)、exp(p)、shared
+parameters、vector elements。
+
+QASM3 在当前支持标准范围真实往返 symbolic expressions、typed declarations、math
+functions、partial binding、dynamic control locals。若 grammar 缺函数调用，优先补
+标准受支持子集，不拼字符串后跳过解析。
+
+QPY v13 必须实际标准二进制子集。未验证 replay encoding 的函数明确 Unsupported，
+不能私有 JSON 冒充 QPY。两版 public qpy dump/load 双向实测，无法互操作的函数逐项
+ledger，不降低已有 P2 QPY 验收。
+
+### 13. 参数身份和向量回归
+
+完整保留 P2：UUID equality、同名不同 UUID collision、ParameterVectorElement、resize、
+natural index ordering、scalar/vector 区分、sequence/vector-key binding、partial
+replacement、formal parameter map、global phase、QPY v13 identity、loop locals、
+resource budget。simplify/gradient/subs/sympify 不能错误合并不同 UUID。特别两个
+Parameter("p") 不同身份；Circuit 若不允许同名并存，在组合/插入阶段原子拒绝，不
+静默重命名或合并。
+
+### 14. 独立数学和公开 API 差分
+
+至少 30 个 symbolic elementary 场景，20 个 derivative/substitution，12 个 UUID/
+vector/identity，12 个 Circuit/Instruction/phase，10 个 QASM3/QPY/IR，8 个 Gradient/
+HVP，12 个 domain/error/resource。包含独立解析公式、高精度数值、native 复矩阵/
+Operator、两版 Qiskit public black box。至少 25 个有意义 public differential 场景，
+两版分开统计。只作 oracle，不读/复制/移植上游源码或测试。公开矛盾保留原文、用
+独立数学判断，不为潜在上游错误破坏 native 正确性，明确 ABI/behavior differences。
+gradient 的公开复数语义有限制，区分数学复导数与实表达式 API 契约。
+
+### 15. 必须新增的负例
+
+至少覆盖构图时 float(sin(p)) 类错误、同时代换误顺序、UUID 身份错误、vector 降级、
+log(0)/negative、arcsin/arccos 越界、abs/sign 零点伪平滑梯度、exp overflow、零分母、
+nonfinite、unknown key 偷忽略、complex gate angle 丢虚部、compile 丢 phase、QPY/
+QASM 损 AST、gradient 借上游 SymPy/Qiskit、长度/深度超预算、重复代换指数扩张、
+微分表达式爆炸、控制循环局部作用域、为逐字兼容破坏独立数学。至少先留两条真实
+red 的失败回执再修复，不制造已有正确函数的错误。
+
+### 16. 资源限制
+
+新增或复用 SymbolicExpressionLimits，涵盖 max_nodes/max_depth/max_parameters/
+max_substitutions/max_expansion_work/max_derivative_order/max_numeric_magnitude/
+max_serialized_bytes。构图前预检、替换前估展开、微分有界增长、cache 不串身份、
+防循环 substitution/恶意巨大整数幂、serialization 解码遵守上限、nested circuit/
+control block 累计预算。不得造百万 AST 后才检查，不为测试降低 P2 预算。
+
+### 17. 五环境完整验证
+
+沿用 SDK-free FULL、main Qiskit 2.4.1/PennyLane .44.1 FULL、alternate Qiskit 2.6.0/
+PennyLane .42.3 FULL、独立 JAX、独立 TF、Torch/Autograd focused、Compiler/
+serialization/Aer、Stage 11H-12-B P2 全回归。未实际装并测 Finance/Optimization/ML/
+Dynamics/Metal/Experiments/Addons 继续 NOT_EXECUTED，SDK-free skip 不是生态实测。
+不改全局 Python 环境，既有 pyquafu/NumPy 和 WeasyPrint/tinycss2 冲突如实记录。
+
+### 18. 强制质量门禁
+
+至少 compileall quantumbridge、Circuit（按实际仓库目录）、compiler、serialization、
+qml、interfaces、devices focused，FULL pytest、显式 --cov=quantumbridge、原始完整
+scripts/run_local_matrix.sh、git diff --check；若加 tests/symbolic，另单独执行。
+不存在目录按实际结构调整，不用 || true 掩盖失败。保存同一 frozen tracked snapshot、
+完整log、逐命令独立exit、interpreter、SDK版本、SHA256/Tree、passed/skip/xfail、
+未执行extras、per-file coverage、staged paths、legal/privacy/no-vendor。测试期间
+修源码则旧 FULL 不作最终成绩，最后树重跑。全局行覆盖率基线90.66067992302759%，
+不加 exclusions 美化；新增 symbolic math/AST/differentiation 核心模块至少90%行覆盖率。
+
+### 19. 原生可运行示例
+
+新增 examples/native_symbolic_functions.py、native_symbolic_substitution.py、
+native_symbolic_circuit_gradient.py、native_symbolic_hessian_hvp.py、
+native_symbolic_qasm_qpy_roundtrip.py。每份 SDK-free 实际数值断言；至少一份完整：
+ParameterVector -> sin/exp/log -> partial substitution -> custom Instruction/
+global phase -> Circuit -> Statevector/DensityMatrix -> native gradient/HVP。
+不能只打印预计算数。
+
+### 20. 文档和 Core Parity Ledger
+
+新增 docs/implementation/stage12_b_p3_symbolic_math_gap_audit.md、
+docs/implementation/stage12_b_p3_native_symbolic_math_report.md、
+docs/compat/stage12_b_p3_parameter_expression_contracts.json。更新 core_parity_ledger、
+README、THIRD_PARTY_NOTICES、source_migration_ledger。逐函数 Native implemented/
+Native tested/Public differential tested/Partial/Unsupported/Not started。
+列出所有 elementary families、gradient/nested gradient、subs/assign/bind/numeric、
+is_real/is_symbol、optional sympify、UUID/vector、Circuit/Compiler/QASM3/QPY/
+Gradient/Hessian/HVP 和 unsupported complex/domain。保留全 Circuit/Gate/Transpiler/
+Aer/QuantumInfo/Primitives/QNode/Templates/QChem/Capture/Device/plugin/行业未完成项。
+
+### 21. Git 和本地提交
+
+建议 feat: implement native symbolic parameter functions and calculus；若关键项未达验收，
+准确描述已实现子集。全测后 status/diff --check，仅 git add 本批归属路径，cached
+check/name-only核范围，然后正常commit。不 add .、不动用户 Studio/Router、不 reset/
+rebase/amend/force。Owner 正常授权未恢复不 push；只有成功 fetch 并核远端图、确认
+FF 才可普通 git push origin main。若远端有新增提交，暂停推送而非自动改历史。
+push 后查新SHA Actions head_sha/conclusion/jobs，否则明确：
+
+```text
+local_commits_ready=true
+remote_pushed=false
+remote_ci_verified=false
+```
+
+### 22. 最低验收标准
+
+逐项答主要 symbolic math 原生执行、原生符号微分、重复/混合微分、simultaneous
+substitution、assign/bind/numeric、UUID/vector、complex/domain、simplification 不损
+依赖、Circuit/Instruction/phase、Compiler、QASM3/QPY子集互操作、native gradient/
+Hessian/HVP、多参数oracle、双版public差分、SDK-free/main/alternate FULL、独立JAX/
+TF、full matrix exit0、explicit coverage、legal/privacy/no-vendor、用户脏文件保护、
+Git/CI真实性。未完成项明确 PARTIAL/UNSUPPORTED，不因局部支持宣称完整
+ParameterExpression parity。
+
+### 23. 最终报告
+
+至少报告29项：starting/ending localSHA；commitSHA/message；受测树和实际commit树；
+真实远端状态；pushed/CI verified；新增native symbolic API；symbolic construction
+proof；bind/subs/assign；gradient/second gradient；UUID/vector；complex/domain；
+Circuit/Instruction/phase；Operator/Statevector/Density；gradient/HVP；compiler；
+QASM3/QPY binary interop；独立math oracle；Qiskit2.4.1；Qiskit2.6.0；三环境FULL；
+四AD frameworks；coverage；full matrix真实exit；red/fail与fix；skip/xfail/missing；
+legal/privacy/no-vendor；余下ParameterExpression缺口；余下全core缺口；下一个实际
+native implementation target。必须回答：
+
+1. 是否真正原生数学/符号微分，而非Qiskit/SymPy生产引擎？
+2. 部分绑定/同时代换后能否继续执行Circuit/Instruction/Operator/quantum derivatives？
+3. UUID/vector/phase/QASM3/QPY 是否在受支持范围真实验证？
+4. 目标版本ParameterExpression完整public API parity是否实现；若否，具体函数/错误契约缺口？
+5. 全Qiskit/PennyLane replacement是否实现？必须仍 NO / ACTIVE / INCOMPLETE，除非最高
+   全部目标真的已完成，不能用本批最低数量代替全SDK。
+
+### 24. 后续路线和最终执行决定
+
+P3后继续实际native缺口，不停留报告。建议P4 Circuit/Gate remaining core：to_gate、
+decompose、repeat、control、inverse、power、append/compose/tensor、classical/control
+builders、parameterized custom definitions、完整phase/ParameterExpression保真。
+随后12-C QuantumInfo全算子/通道/分析，12-D PrimitivesV2/Backend/Job/Result契约，再
+Transpiler/Target/Scheduling、Aer remaining、QASM/QPY多版本、PennyLane QNode/Device、
+全Templates/Transforms、QChem、可微框架、生态行业算法。这是待办，不是完成声明。
+Studio最后；真实夸父硬件需单独授权。现在从a565aa7 CODE基线启动P3，先实际审计与
+sin/exp、simultaneous substitution真红，再完成数学/量子执行/序列化/全量验证。

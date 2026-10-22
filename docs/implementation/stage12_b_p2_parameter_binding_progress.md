@@ -295,7 +295,47 @@ functional replacement stays ACTIVE / INCOMPLETE, C3 PARTIAL.
 
 ## Local Commit And Publication
 
-Current branch main. The normal scoped code commit and committed/staged runtime
-proofs will be recorded after the index check; no code commit is claimed before
-it exists. No push, PR, tag, release, source vendor, history rewrite or change
-to credentials/TLS. New-SHA remote CI remains NOT_VERIFIED.
+Current branch main. Normal scoped code commit:
+a565aa738e85a5cb1eb00b2475cd988897429daf, full code tree
+ef4c67cc36f788457a43017a7af25fb54d9c5d22. Exactly 23 owned files,
+5998 insertions/77 deletions; 4380 added JSON lines are literal observations,
+not upstream implementation or thousands of new functions. Explicit index
+path-set verification excludes all protected Studio/Router paths. Native,
+tests and examples subtrees in the real staged tree and actual commit equal
+the three frozen hashes above. The controlled-runtime equality helper checks
+all 1072 paths across frozen, export, staged export and workspace with no
+mismatch; committed-export proof is additionally retained.
+
+The two new-file EOF blanks caught by staged diff --check are removed before
+the commit. Public probe AST is identical to the frozen probe; its sole
+post-freeze source-format difference is that trailing blank line. Production,
+tests and examples have no post-freeze changes. Final raw public observations
+and acceptance metadata are documentation additions after the runtime freeze.
+Staged controlled legal has 4 passed; scoped secret-pattern rg has no matches
+(actual exit 1, empty log), not a hidden scan error. No package/environment
+artifacts are in the staged paths. Whole-workspace Router legal remains the
+separate known failure. Normal metadata receipts may follow this code commit
+without changing its tested runtime. No push, PR, tag, release, source vendor,
+history rewrite or change to credentials/TLS. New-SHA remote CI NOT_VERIFIED.
+
+## Coordination Receipt And Next Work
+
+The final P2 report was sent once through the authorized native conversation
+tool to "Claude 代码泄漏与应对", conversation
+6a20d458-a76c-83ea-9b49-f8f0caedb3cf. Actual user turn
+98830664-00b2-4298-90c4-7bcba8ed627a contains this code SHA; assistant
+4f0c3615-6e5a-4323-8af3-d6fe03aba199 qualifies acceptance as report-based,
+not independent code review or remote CI. The native read is a content
+reference; Chrome confirms actual delivery and the complete answer.
+
+The reply initially showed a connection-interrupted partial at Section 5.
+After completion, overlapping AX ranges 0-100, 57-157, 138-238, 191-291 expose
+all Sections 0-24 and the final execution decision. No duplicate report, tail
+request or regeneration was sent. The full function/gate-preserving normalized
+P3 prompt is appended to stage12_a_native_state_api_execution_prompt.md.
+It selects Native ParameterExpression Symbolic Mathematics, Differentiation
+and Substitution: actual elementary functions, native symbolic derivatives,
+simultaneous replacement and real Circuit/phase/gradient/serialization calls.
+That next plan is received, not implemented. The highest goal stays active;
+this bounded P2 acceptance is not all-core completion. A documentation-only
+receipt commit may change HEAD without altering tested runtime.

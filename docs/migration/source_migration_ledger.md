@@ -3,7 +3,9 @@
 Status: Stage 12-B P2 final frozen runtime 742c5102b1cf4ffb5a6f74def7398dd362cde010;
 production 29f8809f, tests 4a528297, examples cecb0397; final same-runtime local
 acceptance completed with public differences and known environment limits
-explicitly retained. Scoped local code SHA follows the normal index check.
+explicitly retained. Scoped local code a565aa738e85a5cb1eb00b2475cd988897429daf,
+full code tree ef4c67cc36f788457a43017a7af25fb54d9c5d22; normal index/commit
+runtime hashes equal the tested production/tests/examples. No push.
 Prior Stage 12-B P1 local code 2ec69c4, full tree e04c0fda;
 final frozen tree 58a823d8 validated, tested production subtree e8220fbf;
 staged/full committed runtime identity and same-tree local acceptance below;

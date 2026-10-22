@@ -18,6 +18,8 @@ repeat, wider Circuit/Primitives/QNode/SDK and real hardware are unfinished.
 No Studio/Capture, push, vendor, tag/release or new-SHA remote CI is claimed.
 Highest core replacement stays ACTIVE / INCOMPLETE; C3 PARTIAL. See the
 [P2 report](../implementation/stage12_b_p2_parameter_binding_progress.md).
+Normal scoped local code a565aa7, full code tree ef4c67cc; native/tests/examples
+subtrees equal final frozen runtime. Publication and new-SHA CI NOT_VERIFIED.
 
 Stage 12-B P1 connects native Circuit/Instruction inputs to Operator, Statevector
 and DensityMatrix construction, adds real from_instruction state entries and
