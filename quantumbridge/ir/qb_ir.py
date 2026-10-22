@@ -10,7 +10,7 @@ from dataclasses import dataclass, field
 from numbers import Real
 from typing import Any, Optional
 
-from quantumbridge.core.parameters import Parameter, ParameterExpression, ParameterVector, ParameterVectorElement, legacy_parameter
+from quantumbridge.core.parameters import Parameter, ParameterExpression, ParameterVector, ParameterVectorElement, legacy_parameter, EXPRESSION_OPS
 
 
 def matrix_from_ir(value):
@@ -78,12 +78,26 @@ def _param_to_ir(value: Any) -> Any:
         }
     if isinstance(value, Real):
         return float(value)
+    if isinstance(value, complex):
+        return {"parameter_complex": [value.real, value.imag]}
     return value
 
 
-def param_from_ir(value, *, _vectors=None, _limits=None):
+def param_from_ir(value, *, _vectors=None, _limits=None, _depth=0):
     if not isinstance(value, dict): return value
     vectors={} if _vectors is None else _vectors
+    from quantumbridge.serialization.limits import SerializationLimits
+    limits = _limits or SerializationLimits()
+    limits.check("max_symbolic_expression_depth", _depth, format="ir-json")
+    count = vectors.get("expression_nodes", 0) + 1
+    limits.check("max_parameter_nodes", count, format="ir-json")
+    vectors["expression_nodes"] = count
+    if "parameter_complex" in value:
+        parts = value["parameter_complex"]
+        if set(value) != {"parameter_complex"} or type(parts) not in (tuple, list) or len(parts) != 2 or not all(isinstance(part, Real) for part in parts):
+            raise ValueError("Malformed complex scalar parameter literal.")
+        from quantumbridge.core.parameters import _checked_numeric
+        return _checked_numeric(complex(*parts))
     if "parameter" in value:
         if not set(value)<={"parameter","parameter_uuid","parameter_uuid_explicit","parameter_vector"}:
             raise ValueError("Unknown QuantumBridge parameter identity fields.")
@@ -124,9 +138,9 @@ def param_from_ir(value, *, _vectors=None, _limits=None):
         return parameter
     if "parameter_ast" in value:
         tree = value["parameter_ast"]
-        if tree["op"] not in {"const", "parameter", "neg", "+", "-", "*", "/", "**"}:
+        if type(tree) is not dict or set(tree) != {"op", "args"} or tree["op"] not in EXPRESSION_OPS or type(tree["args"]) not in (tuple, list):
             raise ValueError("Unknown executable QuantumBridge parameter AST.")
-        args = tuple(param_from_ir(arg,_vectors=vectors,_limits=_limits) for arg in tree["args"])
+        args = tuple(param_from_ir(arg,_vectors=vectors,_limits=limits,_depth=_depth+1) for arg in tree["args"])
         return ParameterExpression(tree["op"], args)
     raise ValueError("QuantumBridge parameter expressions require an executable AST, not text.")
 
@@ -201,10 +215,14 @@ class IRProgram:
     @classmethod
     def from_json(cls, text, *, serialization_limits=None):
         from quantumbridge.schema.serialization import from_json
+        from quantumbridge.core.symbolic_limits import symbolic_serialization_limits
+        serialization_limits = symbolic_serialization_limits(serialization_limits)
         return cls.from_dict(from_json(text, limits=serialization_limits),serialization_limits=serialization_limits)
 
     def to_json(self, *, serialization_limits=None):
         from quantumbridge.schema.serialization import to_json
+        from quantumbridge.core.symbolic_limits import symbolic_serialization_limits
+        serialization_limits = symbolic_serialization_limits(serialization_limits)
         return to_json(self.to_dict(), limits=serialization_limits)
 
     def validate(self):

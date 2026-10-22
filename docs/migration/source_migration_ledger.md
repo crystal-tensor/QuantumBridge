@@ -1,5 +1,39 @@
 # Source Migration Ledger
 
+## Stage 12-B P3 Bounded Local Acceptance
+
+Independent Native Implementation: `quantumbridge/core/parameters.py`,
+`quantumbridge/core/symbolic_limits.py`, `quantumbridge/core/__init__.py`,
+`quantumbridge/diff/compiled_parameters.py`, `quantumbridge/diff/trace.py`,
+`quantumbridge/diff/second_trace.py`, `quantumbridge/ir/qb_ir.py`,
+`quantumbridge/interfaces/symbolic_math.py`,
+`quantumbridge/serialization/qpy.py`,
+`quantumbridge/serialization/qpy_expressions.py`,
+`quantumbridge/serialization/text_api.py`,
+`quantumbridge/serialization/text_lowering.py`,
+`quantumbridge/serialization/text_exporter.py`.
+Native scalar AST mathematics/calculus, simultaneous substitution and scoped
+logical work limits reuse existing native execution and derivative engines.
+Published IBM method signatures/QPY protocol and installed public calls are
+behavioral references only. Optional SymPy exports a new outward expression;
+it does not evaluate or differentiate the native core. Optional framework
+operations retain classical graphs. No upstream implementation/tests are
+ported, vendored or newly installed. Final frozen runtime d2204131 has
+SDK-free/main/alternate FULL 3875/4752/4750 passed and original complete matrix
+exit 0; main/matrix per-file coverage agrees at 90.7832%, exclusions 68.
+Controlled legal tests pass 4/4. The separate user-owned Router ledger failure
+is not concealed by adding an unreviewed migration claim here.
+No push, cloud/hardware, Studio/Capture, tag, release or complete SDK claim.
+
+The symbolic interface boundary independently uses public Torch autograd,
+JAX custom-JVP/debug callbacks and TensorFlow public graph gradient APIs to
+preserve valid forwards and reject undefined derivatives at zero/endpoints.
+TF process-wide rules retain literal operation names and module/code references,
+not per-request Tensors or FuncGraphs; tests exercise repeated traced graphs.
+This is not complete framework or Python/global allocator certification.
+
+## Previous Completed P2 Checkpoint
+
 Status: Stage 12-B P2 final frozen runtime 742c5102b1cf4ffb5a6f74def7398dd362cde010;
 production 29f8809f, tests 4a528297, examples cecb0397; final same-runtime local
 acceptance completed with public differences and known environment limits

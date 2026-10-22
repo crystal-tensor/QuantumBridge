@@ -5,6 +5,18 @@ Date: 2026-10-21
 
 QuantumBridge is an independent project. References to Qiskit and PennyLane are for attribution, compatibility, and optional adapter documentation only and do not imply endorsement.
 
+## Native Symbolic Mathematics
+
+Stage 12-B P3 independently implements scalar expression AST functions,
+symbolic differentiation, substitution and limits. Public IBM API/protocol
+documentation and installed Qiskit public calls are behavioral oracles only;
+no upstream implementation or tests are copied. The native calculus does not
+import Qiskit, SymPy or SymEngine. Optional SymPy interoperability exports
+native expressions outward and cannot preserve parameter UUID identities.
+Optional framework math operations retain their own classical graph plumbing.
+No additional vendored source or production symbolic engine is introduced.
+The full SDK replacement goal remains incomplete; focuses do not prove parity.
+
 ## Native Template Verification
 
 Stage 11P-C3-R1 Task 3E additionally applies independently authored allocation

@@ -1,5 +1,17 @@
 # QuantumBridge SDK
 
+Native symbolic mathematics passed bounded local acceptance in Stage 12-B P3. Scalar
+functions, symbolic/repeated differentiation and simultaneous substitution now
+feed the native Circuit/Instruction and quantum derivative paths; this is not
+yet full ParameterExpression or full Qiskit/PennyLane replacement. Final
+SDK-free/main/alternate FULL runs have 3875/4752/4750 passed; the complete
+28-section local matrix exits 0. Line coverage is 90.7832%, not functional
+completion. No push or new-SHA remote CI is claimed. See the
+[gap audit](docs/implementation/stage12_b_p3_symbolic_math_gap_audit.md) for
+return-contract, domain, serialization and validation boundaries. The new
+`examples/native_symbolic_*.py` examples run against the checkout with
+`PYTHONPATH=. python examples/native_symbolic_functions.py`.
+
 Clean-room ecosystem parity for experimental quantum workflows.
 
 QuantumBridge is an experimental quantum SDK. The current repository keeps the P1 release-candidate baseline intact while Stage 9 promotes selected ecosystem lanes from inventory/schema coverage to bounded executable slices.

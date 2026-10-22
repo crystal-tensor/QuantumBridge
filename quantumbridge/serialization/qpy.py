@@ -237,9 +237,10 @@ def _circuit_bytes(circuit,limits):
         limits.check("max_symbolic_expression_depth",depth,format="qpy",version=13)
         if isinstance(value,Parameter):
             uid = _uid(value)
-            if value.name in names and names[value.name] != uid or uid in identities and identities[uid] != value.name:
+            kind = "vector" if isinstance(value,ParameterVectorElement) else "scalar"
+            if value.name in names and names[value.name] != (uid,kind) or uid in identities and identities[uid] != (value.name,kind):
                 raise UnsupportedFeature("Parameter names and UUIDs must identify one another uniquely.",format="qpy",version=13)
-            names[value.name],identities[uid] = uid,value.name
+            names[value.name],identities[uid] = (uid,kind),(value.name,kind)
         elif isinstance(value,ParameterExpression):
             for child in value.args: parameter_identity(child,depth+1)
     parameter_identity(circuit.global_phase)
@@ -303,7 +304,8 @@ def _circuit_bytes(circuit,limits):
 
 def qpy_dumps(circuits, *, version=13, limits=None):
     if version != 13: raise UnsupportedVersion("Only the tested QPY version 13 is supported.",format="qpy",version=version)
-    limits = limits or SerializationLimits()
+    from quantumbridge.core.symbolic_limits import symbolic_serialization_limits
+    limits = symbolic_serialization_limits(limits)
     from itertools import islice
     circuits = [circuits] if isinstance(circuits,Circuit) else list(islice(iter(circuits),limits.max_circuits+1))
     limits.check("max_circuits",len(circuits),format="qpy",version=13)
@@ -323,7 +325,8 @@ def qpy_dumps(circuits, *, version=13, limits=None):
 
 
 def qpy_loads(data, *, limits=None):
-    limits = limits or SerializationLimits()
+    from quantumbridge.core.symbolic_limits import symbolic_serialization_limits
+    limits = symbolic_serialization_limits(limits)
     if not isinstance(data,(bytes,bytearray,memoryview)): raise TypeError("QPY input must be binary data.")
     limits.check("max_input_bytes",len(data),format="qpy")
     reader = Reader(data,limits)

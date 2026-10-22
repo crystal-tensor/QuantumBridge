@@ -12,7 +12,8 @@ def source_loads(text,major,*,strict=True,limits=None,dialect="standard"):
     if not isinstance(strict,bool): raise TypeError("strict must be a boolean; safety limits are always applied.")
     if dialect not in {"standard","qiskit"} or major == 2 and dialect != "standard":
         raise ValueError("Only standard and explicit QASM3 qiskit dialects are supported.")
-    limits = limits or SerializationLimits()
+    from quantumbridge.core.symbolic_limits import symbolic_serialization_limits
+    limits = symbolic_serialization_limits(limits)
     parser = SourceParser(text,major,limits)
     try: return Lowerer(parser.parse(),limits,strict,dialect).lower()
     except SerializationError: raise
@@ -24,6 +25,8 @@ def source_loads(text,major,*,strict=True,limits=None,dialect="standard"):
 def qasm2_loads(text,**options): return source_loads(text,2,**options)
 def qasm3_loads(text,**options): return source_loads(text,3,**options)
 def source_dumps(circuit,version,**options):
+    from quantumbridge.core.symbolic_limits import symbolic_serialization_limits
+    options["limits"] = symbolic_serialization_limits(options.get("limits"))
     try: return SourceExporter(circuit,version,**options).dumps()
     except SerializationError: raise
     except (ValueError,TypeError,KeyError,RecursionError,OverflowError) as exc:

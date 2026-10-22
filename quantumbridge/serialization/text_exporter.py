@@ -85,6 +85,9 @@ class SourceExporter:
         if isinstance(value,ParameterExpression):
             if value.op in {"const","parameter"}: return self.angle(value.args[0],loop_parameters,depth+1)
             if value.op == "neg": return "(-"+self.angle(value.args[0],loop_parameters,depth+1)+")"
+            if value.op in {"sin","cos","tan","exp","log","arcsin","arccos","arctan","abs"}:
+                name = "ln" if value.op == "log" else value.op
+                return name+"("+self.angle(value.args[0],loop_parameters,depth+1)+")"
             if value.op not in {"+","-","*","/","**"}: self.fail("Unsupported parameter expression.")
             result = "("+self.angle(value.args[0],loop_parameters,depth+1)+value.op+self.angle(value.args[1],loop_parameters,depth+1)+")"
             self.limits.check("max_input_bytes",len(result.encode()),format=self.format)

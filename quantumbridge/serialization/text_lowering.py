@@ -6,7 +6,7 @@ import math
 import operator
 from numbers import Real, Integral
 
-from quantumbridge.core import Circuit, Operation, Parameter
+from quantumbridge.core import Circuit, Operation, Parameter, ParameterExpression
 from quantumbridge.core.classical import (ClassicalExpression, Bool, Bit, UInt, Int, bit, register,
     lift, cast, binary, logical_not, logical_and, logical_or, variable)
 from quantumbridge.core.control_flow import ControlBlock, condition_expression, validate_control_flow
@@ -21,7 +21,7 @@ CLASSICAL = {"+":"add","-":"sub","*":"mul","<<":"shl",">>":"shr","&":"and","|":"
 ALIASES = {"U":"u","CX":"cx","p":"phase","cphase":"cp","cu1":"cp","cnot":"cx"}
 QELIB_NAMES = {"u3","u2","u1","cx","id","u0","x","y","z","h","s","sdg","t","tdg","rx","ry","rz","cz","cy","ch","ccx","crz","cu1","cu3"}
 STANDARD_NAMES3 = frozenset("p x y z h s sdg t tdg sx rx ry rz cx cy cz cp crx cry crz ch cu swap ccx cswap CX phase cphase id u1 u2 u3".split())
-RESERVED = frozenset("OPENQASM include gate opaque qreg creg qubit bit bool uint int float angle const input output if else while for in switch case default break continue measure reset barrier delay true false pi tau euler sin cos tan exp ln log sqrt defcal cal extern def box stretch array let pragma".split())
+RESERVED = frozenset("OPENQASM include gate opaque qreg creg qubit bit bool uint int float angle const input output if else while for in switch case default break continue measure reset barrier delay true false pi tau euler sin cos tan exp ln log sqrt arcsin arccos arctan abs defcal cal extern def box stretch array let pragma".split())
 
 
 @dataclass(frozen=True)
@@ -93,8 +93,12 @@ class Lowerer:
                 dtype = Bool() if name == "bool" else Bit() if name == "bit" and width_node is None else UInt(width) if name in {"bit","uint"} else Int(width)
                 if isinstance(value,ClassicalExpression): return cast(value,dtype)
                 return dtype.normalize(bool(value) if name == "bool" else int(value),wrap=True)
-            functions = {"sin":math.sin,"cos":math.cos,"tan":math.tan,"exp":math.exp,"ln":math.log,"log":math.log,"sqrt":math.sqrt}
-            if name not in functions or not isinstance(value,Real): self.error("Unsupported symbolic function or cast.",node,UnsupportedFeature)
+            functions = {"sin":math.sin,"cos":math.cos,"tan":math.tan,"exp":math.exp,"ln":math.log,"log":math.log,"sqrt":math.sqrt,
+                         "arcsin":math.asin,"arccos":math.acos,"arctan":math.atan,"abs":abs}
+            if name not in functions: self.error("Unsupported symbolic function or cast.",node,UnsupportedFeature)
+            if isinstance(value,(Parameter,ParameterExpression)):
+                return value**.5 if name == "sqrt" else getattr(value,"log" if name == "ln" else name)()
+            if not isinstance(value,Real): self.error("Unsupported symbolic function or cast.",node,UnsupportedFeature)
             return functions[name](value)
         if node.op == "unary":
             value = self.runtime_value(child(node.args[0]),node)

@@ -160,6 +160,27 @@ class SecondDual(Dual):
         return self._unary(np.log(self.value), 1/self.value, -1/self.value**2)
     def sqrt(self): return self ** .5
 
+    def arcsin(self):
+        if not -1 < self.value < 1:
+            raise ValueError("Inverse sine derivatives require an input strictly inside (-1, 1).")
+        base = 1-self.value**2
+        return self._unary(np.arcsin(self.value), 1/np.sqrt(base), self.value/base**1.5)
+
+    def arccos(self):
+        if not -1 < self.value < 1:
+            raise ValueError("Inverse cosine derivatives require an input strictly inside (-1, 1).")
+        base = 1-self.value**2
+        return self._unary(np.arccos(self.value), -1/np.sqrt(base), -self.value/base**1.5)
+
+    def arctan(self):
+        base = 1+self.value**2
+        return self._unary(np.arctan(self.value), 1/base, -2*self.value/base**2)
+
+    def sign(self):
+        if self.value == 0:
+            raise UnsupportedFeature("nonsmooth_preprocessing", "Sign is not differentiable at zero.")
+        return self._unary(np.sign(self.value), 0., 0.)
+
     def __abs__(self):
         if self.value == 0:
             raise UnsupportedFeature("nonsmooth_preprocessing", "Absolute value is not twice differentiable at zero.")

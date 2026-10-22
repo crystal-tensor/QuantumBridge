@@ -1,5 +1,24 @@
 # Core Functional Parity Ledger
 
+Stage 12-B P3 passed bounded local acceptance, not full-class parity. It implements native
+symbolic sin/cos/tan/exp/log/arcsin/arccos/arctan/abs/sign/conjugate, symbolic
+and repeated/mixed gradients, simultaneous subs, assign, numeric/real/symbol
+queries, bounded construction/work and optional outward sympify. Actual native
+Circuit/Instruction/phase/Operator/state/density/compiler and four-framework
+derivative focuses run; QPY unary binary interop and QASM3 function parsing
+are tested subsets. Constant bind/gradient return ABI, error ABI, real sign
+domain, nonsmooth export and full language/protocol/API differences remain
+Partial. Final runtime tree d2204131 has SDK-free/main/alternate FULL results
+3875/4752/4750 passed, with skips and existing xfails retained. Independent
+JAX/TF and Torch/Autograd focuses pass; the original 28-section matrix exits 0.
+Main/matrix per-file coverage agrees at 28781/31703 = 90.7832066365959%, with
+68 unchanged exclusions. The 38 child receipts and five actual import origins
+were audited. Seven uninstalled ecosystem subsets remain NOT_EXECUTED, two
+pre-existing pip conflicts remain, and the separate dirty Router ledger test
+still fails. P2 counts below are historical, not P3 results. No push or new-SHA
+remote CI is claimed; whole core replacement remains ACTIVE / INCOMPLETE.
+See the [P3 gap audit](../implementation/stage12_b_p3_symbolic_math_gap_audit.md).
+
 Stage 12-B P2 adds real scalar UUID identity, native ParameterVectorElement and
 stable resize/order, partial assignment and vector-key binding, composite formal
 parameters/full parameter_map with phase, and typed IR/QPY vector interchange.

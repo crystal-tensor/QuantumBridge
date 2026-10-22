@@ -5,7 +5,7 @@
 import math
 import operator
 import struct
-from numbers import Integral, Real
+from numbers import Complex, Integral, Real
 from uuid import UUID
 from quantumbridge.core import Parameter, ParameterExpression
 from .limits import SerializationLimits
@@ -15,6 +15,9 @@ RECORD = struct.Struct("!Bc16sc16s")
 BINARY = {0:operator.add,1:operator.sub,2:operator.mul,3:operator.truediv,4:operator.pow,
           18:lambda left,right:right-left,19:lambda left,right:right/left,20:lambda left,right:right**left}
 OPCODES = {"+":0,"-":1,"*":2,"/":3,"**":4}
+UNARY = {5:"sin",6:"cos",7:"tan",8:"arcsin",9:"arccos",10:"exp",11:"log",
+         12:"sign",14:"conjugate",16:"abs",17:"arctan"}
+UNARY_CODES = {name:code for code,name in UNARY.items()}
 
 
 def read_expression(reader):
@@ -57,9 +60,22 @@ def read_expression(reader):
             value, = struct.unpack("!q" if kind == b"i" else "!d",data[8:])
             if not math.isfinite(value): reader.error("Nonfinite symbolic literal.")
             return value,1
+        if kind == b"c":
+            real,imag = struct.unpack("!dd",data)
+            if not math.isfinite(real) or not math.isfinite(imag): reader.error("Nonfinite symbolic literal.")
+            return complex(real,imag),1
         reader.error(f"Unsupported symbolic operand {kind!r}.",UnsupportedFeature)
     for offset in range(0,len(replay),RECORD.size):
         op,left_kind,left_data,right_kind,right_data = RECORD.unpack_from(replay,offset)
+        if op in UNARY:
+            if right_kind != b"n" or right_data != bytes(16): reader.error("Unary symbolic replay has an unexpected right operand.")
+            left,ld = operand(left_kind,left_data)
+            reader.bounded("max_symbolic_expression_depth",ld+1)
+            from quantumbridge.core.parameters import _coerce_expression
+            try: value = getattr(_coerce_expression(left),UNARY[op])()
+            except (ArithmeticError,TypeError,ValueError) as exc: reader.error(f"Invalid symbolic function: {type(exc).__name__}.")
+            stack.append((value,ld+1))
+            continue
         if op not in BINARY: reader.error(f"Unsupported symbolic replay opcode {op}.",UnsupportedFeature)
         right,rd = operand(right_kind,right_data)
         left,ld = operand(left_kind,left_data)
@@ -89,6 +105,11 @@ def write_expression(expression,limits=None):
         if isinstance(value,ParameterExpression):
             if value.op in {"const","parameter"}: return emit(value.args[0],depth+1)
             if value.op == "neg": return emit(value.args[0] * -1,depth+1)
+            if value.op in UNARY_CODES:
+                left = emit(value.args[0],depth+1)
+                limits.check("max_parameter_nodes",len(records)+1,format="qpy",version=13)
+                records.append(RECORD.pack(UNARY_CODES[value.op],*left,b"n",bytes(16)))
+                return b"n",bytes(16)
             if value.op not in OPCODES: raise UnsupportedFeature("Unsupported arithmetic expression opcode.",format="qpy",version=13)
             left = emit(value.args[0],depth+1)
             right = emit(value.args[1],depth+1)
@@ -97,6 +118,8 @@ def write_expression(expression,limits=None):
             return b"n",bytes(16)
         if isinstance(value,Integral) and not isinstance(value,bool): return b"i",bytes(8)+struct.pack("!q",int(value))
         if isinstance(value,Real) and math.isfinite(value): return b"f",bytes(8)+struct.pack("!d",float(value))
+        if isinstance(value,Complex) and math.isfinite(value.real) and math.isfinite(value.imag):
+            return b"c",struct.pack("!dd",value.real,value.imag)
         raise UnsupportedFeature("Unsupported symbolic arithmetic value.",format="qpy",version=13)
     emit(expression)
     if not records: raise FormatValidationError("Symbolic replay requires an arithmetic operation.",format="qpy",version=13)

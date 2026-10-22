@@ -1,0 +1,1749 @@
+{
+  "classification": "literal_public_observations_not_upstream_source_or_complete_parity",
+  "complete_core_replacement": false,
+  "complete_parameter_expression_parity": false,
+  "native_boundaries": [
+    "Native full bind returns a number, unlike the public constant expression result.",
+    "Native constant gradients remain expressions so repeated gradient calls are defined.",
+    "Native expression string-key binding and explicit allow_partial are extensions.",
+    "Native sign has a guarded zero derivative away from zero; public sign gradient rejects.",
+    "No public sqrt method exists in either observed version; use exponentiation.",
+    "Native limits and error classes are not identical to the public exception ABI.",
+    "SymPy export is optional/outward only and loses UUID identity.",
+    "Guarded nonsmooth derivative nodes reject QPY/QASM export instead of dropping guards."
+  ],
+  "sources": [
+    "https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.circuit.ParameterExpression",
+    "https://quantum.cloud.ibm.com/docs/en/api/qiskit/qpy"
+  ],
+  "versions": {
+    "2.4.1": {
+      "records": [
+        {
+          "name": "sin.signature",
+          "result": "(self, /)"
+        },
+        {
+          "name": "cos.signature",
+          "result": "(self, /)"
+        },
+        {
+          "name": "tan.signature",
+          "result": "(self, /)"
+        },
+        {
+          "name": "exp.signature",
+          "result": "(self, /)"
+        },
+        {
+          "name": "log.signature",
+          "result": "(self, /)"
+        },
+        {
+          "name": "arcsin.signature",
+          "result": "(self, /)"
+        },
+        {
+          "name": "arccos.signature",
+          "result": "(self, /)"
+        },
+        {
+          "name": "arctan.signature",
+          "result": "(self, /)"
+        },
+        {
+          "name": "abs.signature",
+          "result": "(self, /)"
+        },
+        {
+          "name": "sign.signature",
+          "result": "(self, /)"
+        },
+        {
+          "name": "conjugate.signature",
+          "result": "(self, /)"
+        },
+        {
+          "exception": "AttributeError",
+          "message": "type object 'qiskit._accelerate.circuit.ParameterExpression' has no attribute 'sqrt'",
+          "name": "sqrt.signature"
+        },
+        {
+          "name": "gradient.signature",
+          "result": "(self, /, param)"
+        },
+        {
+          "name": "subs.signature",
+          "result": "(self, /, parameter_map, allow_unknown_parameters=False)"
+        },
+        {
+          "name": "assign.signature",
+          "result": "(self, /, parameter, value)"
+        },
+        {
+          "name": "bind.signature",
+          "result": "(self, /, parameter_values, allow_unknown_parameters=False)"
+        },
+        {
+          "name": "bind_all.signature",
+          "result": "(self, /, values)"
+        },
+        {
+          "name": "numeric.signature",
+          "result": "(self, /, strict=True)"
+        },
+        {
+          "name": "is_real.signature",
+          "result": "(self, /)"
+        },
+        {
+          "name": "is_symbol.signature",
+          "result": "(self, /)"
+        },
+        {
+          "name": "sympify.signature",
+          "result": "(self, /)"
+        },
+        {
+          "name": "sin.construction",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "sin(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "sin.bound",
+          "result": {
+            "parameters": [],
+            "text": "0.3894183423086505",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "sin.gradient",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "cos(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "sin.vector",
+          "result": {
+            "parameters": [],
+            "text": "0.3894183423086505",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "cos.construction",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "cos(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "cos.bound",
+          "result": {
+            "parameters": [],
+            "text": "0.9210609940028851",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "cos.gradient",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "-sin(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "cos.vector",
+          "result": {
+            "parameters": [],
+            "text": "0.9210609940028851",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "tan.construction",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "tan(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "tan.bound",
+          "result": {
+            "parameters": [],
+            "text": "0.4227932187381618",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "tan.gradient",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "1/cos(p)/cos(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "tan.vector",
+          "result": {
+            "parameters": [],
+            "text": "0.4227932187381618",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "exp.construction",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "exp(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "exp.bound",
+          "result": {
+            "parameters": [],
+            "text": "1.4918246976412703",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "exp.gradient",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "exp(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "exp.vector",
+          "result": {
+            "parameters": [],
+            "text": "1.4918246976412703",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "log.construction",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "log(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "log.bound",
+          "result": {
+            "parameters": [],
+            "text": "-0.916290731874155",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "log.gradient",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "1/p",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "log.vector",
+          "result": {
+            "parameters": [],
+            "text": "-0.916290731874155",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "arcsin.construction",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "asin(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "arcsin.bound",
+          "result": {
+            "parameters": [],
+            "text": "0.41151684606748806",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "arcsin.gradient",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "1/((1 - p*p)**0.5)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "arcsin.vector",
+          "result": {
+            "parameters": [],
+            "text": "0.41151684606748806",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "arccos.construction",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "acos(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "arccos.bound",
+          "result": {
+            "parameters": [],
+            "text": "1.1592794807274085",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "arccos.gradient",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "(-1)/((1 - p*p)**0.5)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "arccos.vector",
+          "result": {
+            "parameters": [],
+            "text": "1.1592794807274085",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "arctan.construction",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "atan(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "arctan.bound",
+          "result": {
+            "parameters": [],
+            "text": "0.3805063771123649",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "arctan.gradient",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "1/(1 + p*p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "arctan.vector",
+          "result": {
+            "parameters": [],
+            "text": "0.3805063771123649",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "abs.construction",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "abs(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "abs.bound",
+          "result": {
+            "parameters": [],
+            "text": "0.4",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "abs.gradient",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "p/abs(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "abs.vector",
+          "result": {
+            "parameters": [],
+            "text": "0.4",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "sign.construction",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "sign(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "sign.bound",
+          "result": {
+            "parameters": [],
+            "text": "1",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "exception": "RuntimeError",
+          "message": "Derivative not supported on expression: SymbolExpr::derivative does not support sign function.",
+          "name": "sign.gradient"
+        },
+        {
+          "name": "sign.vector",
+          "result": {
+            "parameters": [],
+            "text": "1",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "conjugate.construction",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "conj(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "conjugate.bound",
+          "result": {
+            "parameters": [],
+            "text": "0.4",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "conjugate.gradient",
+          "result": 1.0
+        },
+        {
+          "name": "conjugate.vector",
+          "result": {
+            "parameters": [],
+            "text": "0.4",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "exception": "AttributeError",
+          "message": "'qiskit._accelerate.circuit.Parameter' object has no attribute 'sqrt'",
+          "name": "sqrt.construction"
+        },
+        {
+          "exception": "AttributeError",
+          "message": "'qiskit._accelerate.circuit.Parameter' object has no attribute 'sqrt'",
+          "name": "sqrt.bound"
+        },
+        {
+          "exception": "AttributeError",
+          "message": "'qiskit._accelerate.circuit.Parameter' object has no attribute 'sqrt'",
+          "name": "sqrt.gradient"
+        },
+        {
+          "exception": "AttributeError",
+          "message": "'qiskit._accelerate.circuit.ParameterVectorElement' object has no attribute 'sqrt'",
+          "name": "sqrt.vector"
+        },
+        {
+          "name": "chain.partial",
+          "result": {
+            "parameters": [
+              [
+                "q",
+                "00000000-0000-0000-0000-000000000002"
+              ]
+            ],
+            "text": "exp(0.8 - q) + sin(0.4**2 + 0.4*q)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "chain.full",
+          "result": {
+            "parameters": [],
+            "text": "2.798196522428218",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "chain.gradient",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ],
+              [
+                "q",
+                "00000000-0000-0000-0000-000000000002"
+              ]
+            ],
+            "text": "2*exp(-q + 2*p) + cos(p**2 + p*q)*(q + 2*p**1)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "chain.mixed",
+          "result": {
+            "parameters": [],
+            "text": "-4.458941477168072",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "subs.swap",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ],
+              [
+                "q",
+                "00000000-0000-0000-0000-000000000002"
+              ]
+            ],
+            "text": "q - 2*p",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "subs.cross",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ],
+              [
+                "q",
+                "00000000-0000-0000-0000-000000000002"
+              ]
+            ],
+            "text": "p + q - 2*(p - q)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "exception": "TypeError",
+          "message": "argument 'parameter_map': 'float' object is not an instance of 'ParameterExpression'",
+          "name": "subs.numeric"
+        },
+        {
+          "exception": "CircuitError",
+          "message": "'Cannot bind following parameters not present in expression: {Symbol { name: \"missing\", uuid: 202c7b36-4b99-45ef-a68d-e2e299dc43b1, index: None, vector: None }}'",
+          "name": "subs.unknown"
+        },
+        {
+          "name": "subs.unknown_allowed",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ],
+              [
+                "q",
+                "00000000-0000-0000-0000-000000000002"
+              ]
+            ],
+            "text": "exp(-q + 2*p) + sin(p**2 + p*q)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "subs.identity",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ],
+              [
+                "q",
+                "00000000-0000-0000-0000-000000000002"
+              ]
+            ],
+            "text": "exp(-q + 2*p) + sin(p**2 + p*q)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "exception": "CircuitError",
+          "message": "'Name conflict adding parameters.'",
+          "name": "subs.collision"
+        },
+        {
+          "exception": "CircuitError",
+          "message": "'Cannot bind following parameters not present in expression: {Symbol { name: \"p\", uuid: 00000000-0000-0000-0000-000000000003, index: None, vector: None }}'",
+          "name": "subs.wrong_uuid"
+        },
+        {
+          "name": "assign.numeric",
+          "result": {
+            "parameters": [
+              [
+                "q",
+                "00000000-0000-0000-0000-000000000002"
+              ]
+            ],
+            "text": "0.4 + q",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "assign.symbolic",
+          "result": {
+            "parameters": [
+              [
+                "q",
+                "00000000-0000-0000-0000-000000000002"
+              ]
+            ],
+            "text": "3*q",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "exception": "TypeError",
+          "message": "Parameter expression with unbound parameters {Symbol { name: \"q\", uuid: 00000000-0000-0000-0000-000000000002, index: None, vector: None }} is not numeric.",
+          "name": "bind.symbolic"
+        },
+        {
+          "exception": "CircuitError",
+          "message": "'Cannot bind following parameters not present in expression: {Symbol { name: \"missing\", uuid: 126d05b7-947c-407f-a674-edd253256cf8, index: None, vector: None }}'",
+          "name": "bind.unknown"
+        },
+        {
+          "name": "bind.unknown_allowed",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ],
+              [
+                "q",
+                "00000000-0000-0000-0000-000000000002"
+              ]
+            ],
+            "text": "exp(-q + 2*p) + sin(p**2 + p*q)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "exception": "TypeError",
+          "message": "argument 'parameter_values': 'str' object is not an instance of 'Parameter'",
+          "name": "bind.string"
+        },
+        {
+          "exception": "CircuitError",
+          "message": "'Cannot bind following parameters not present in expression: {Symbol { name: \"p\", uuid: 00000000-0000-0000-0000-000000000003, index: None, vector: None }}'",
+          "name": "bind.wrong_uuid"
+        },
+        {
+          "exception": "RuntimeError",
+          "message": "Binding to NaN.",
+          "name": "bind.nan"
+        },
+        {
+          "exception": "RuntimeError",
+          "message": "Binding to NaN.",
+          "name": "bind.infinity"
+        },
+        {
+          "name": "bind.complex",
+          "result": {
+            "parameters": [],
+            "text": "0.39723270501734387+0.18544273862906743i",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "zero.membership",
+          "result": [
+            "p"
+          ]
+        },
+        {
+          "exception": "TypeError",
+          "message": "Parameter expression with unbound parameters {} is not numeric.",
+          "name": "zero.numeric_strict"
+        },
+        {
+          "name": "zero.numeric_nonstrict",
+          "result": 0
+        },
+        {
+          "name": "zero.gradient",
+          "result": 0.0
+        },
+        {
+          "name": "cancel.membership",
+          "result": [
+            "p"
+          ]
+        },
+        {
+          "name": "cancel.numeric",
+          "result": 0
+        },
+        {
+          "name": "constant.gradient",
+          "result": 1.0
+        },
+        {
+          "exception": "ZeroDivisionError",
+          "message": "attempted to bind infinite value to parameter",
+          "name": "abs.zero.gradient"
+        },
+        {
+          "exception": "RuntimeError",
+          "message": "Derivative not supported on expression: SymbolExpr::derivative does not support sign function.",
+          "name": "sign.zero.gradient"
+        },
+        {
+          "name": "log.negative",
+          "result": {
+            "parameters": [],
+            "text": "3.141592653589793i",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "exception": "ZeroDivisionError",
+          "message": "attempted to bind infinite value to parameter",
+          "name": "log.zero"
+        },
+        {
+          "exception": "RuntimeError",
+          "message": "Binding to NaN.",
+          "name": "arcsin.outside"
+        },
+        {
+          "exception": "RuntimeError",
+          "message": "Binding to NaN.",
+          "name": "arccos.outside"
+        },
+        {
+          "exception": "ZeroDivisionError",
+          "message": "attempted to bind infinite value to parameter",
+          "name": "exp.overflow"
+        },
+        {
+          "name": "is_real.unbound",
+          "result": null
+        },
+        {
+          "name": "is_real.complex",
+          "result": false
+        },
+        {
+          "name": "is_symbol.symbol",
+          "result": true
+        },
+        {
+          "name": "is_symbol.identity",
+          "result": true
+        },
+        {
+          "name": "sympify",
+          "result": {
+            "text": "exp(2*p - q) + sin(p**2 + p*q)",
+            "type": "Add"
+          }
+        }
+      ],
+      "scenario_count": 110
+    },
+    "2.6.0": {
+      "records": [
+        {
+          "name": "sin.signature",
+          "result": "(self, /)"
+        },
+        {
+          "name": "cos.signature",
+          "result": "(self, /)"
+        },
+        {
+          "name": "tan.signature",
+          "result": "(self, /)"
+        },
+        {
+          "name": "exp.signature",
+          "result": "(self, /)"
+        },
+        {
+          "name": "log.signature",
+          "result": "(self, /)"
+        },
+        {
+          "name": "arcsin.signature",
+          "result": "(self, /)"
+        },
+        {
+          "name": "arccos.signature",
+          "result": "(self, /)"
+        },
+        {
+          "name": "arctan.signature",
+          "result": "(self, /)"
+        },
+        {
+          "name": "abs.signature",
+          "result": "(self, /)"
+        },
+        {
+          "name": "sign.signature",
+          "result": "(self, /)"
+        },
+        {
+          "name": "conjugate.signature",
+          "result": "(self, /)"
+        },
+        {
+          "exception": "AttributeError",
+          "message": "type object 'qiskit._accelerate.circuit.ParameterExpression' has no attribute 'sqrt'",
+          "name": "sqrt.signature"
+        },
+        {
+          "name": "gradient.signature",
+          "result": "(self, /, param)"
+        },
+        {
+          "name": "subs.signature",
+          "result": "(self, /, parameter_map, allow_unknown_parameters=False)"
+        },
+        {
+          "name": "assign.signature",
+          "result": "(self, /, parameter, value)"
+        },
+        {
+          "name": "bind.signature",
+          "result": "(self, /, parameter_values, allow_unknown_parameters=False)"
+        },
+        {
+          "name": "bind_all.signature",
+          "result": "(self, /, values)"
+        },
+        {
+          "name": "numeric.signature",
+          "result": "(self, /, strict=True)"
+        },
+        {
+          "name": "is_real.signature",
+          "result": "(self, /)"
+        },
+        {
+          "name": "is_symbol.signature",
+          "result": "(self, /)"
+        },
+        {
+          "name": "sympify.signature",
+          "result": "(self, /)"
+        },
+        {
+          "name": "sin.construction",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "sin(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "sin.bound",
+          "result": {
+            "parameters": [],
+            "text": "0.3894183423086505",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "sin.gradient",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "cos(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "sin.vector",
+          "result": {
+            "parameters": [],
+            "text": "0.3894183423086505",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "cos.construction",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "cos(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "cos.bound",
+          "result": {
+            "parameters": [],
+            "text": "0.9210609940028851",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "cos.gradient",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "-sin(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "cos.vector",
+          "result": {
+            "parameters": [],
+            "text": "0.9210609940028851",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "tan.construction",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "tan(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "tan.bound",
+          "result": {
+            "parameters": [],
+            "text": "0.4227932187381618",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "tan.gradient",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "1/cos(p)/cos(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "tan.vector",
+          "result": {
+            "parameters": [],
+            "text": "0.4227932187381618",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "exp.construction",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "exp(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "exp.bound",
+          "result": {
+            "parameters": [],
+            "text": "1.4918246976412703",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "exp.gradient",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "exp(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "exp.vector",
+          "result": {
+            "parameters": [],
+            "text": "1.4918246976412703",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "log.construction",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "log(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "log.bound",
+          "result": {
+            "parameters": [],
+            "text": "-0.916290731874155",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "log.gradient",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "1/p",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "log.vector",
+          "result": {
+            "parameters": [],
+            "text": "-0.916290731874155",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "arcsin.construction",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "asin(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "arcsin.bound",
+          "result": {
+            "parameters": [],
+            "text": "0.41151684606748806",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "arcsin.gradient",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "1/((1 - p*p)**0.5)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "arcsin.vector",
+          "result": {
+            "parameters": [],
+            "text": "0.41151684606748806",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "arccos.construction",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "acos(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "arccos.bound",
+          "result": {
+            "parameters": [],
+            "text": "1.1592794807274085",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "arccos.gradient",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "(-1)/((1 - p*p)**0.5)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "arccos.vector",
+          "result": {
+            "parameters": [],
+            "text": "1.1592794807274085",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "arctan.construction",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "atan(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "arctan.bound",
+          "result": {
+            "parameters": [],
+            "text": "0.3805063771123649",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "arctan.gradient",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "1/(1 + p*p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "arctan.vector",
+          "result": {
+            "parameters": [],
+            "text": "0.3805063771123649",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "abs.construction",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "abs(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "abs.bound",
+          "result": {
+            "parameters": [],
+            "text": "0.4",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "abs.gradient",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "p/abs(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "abs.vector",
+          "result": {
+            "parameters": [],
+            "text": "0.4",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "sign.construction",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "sign(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "sign.bound",
+          "result": {
+            "parameters": [],
+            "text": "1",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "exception": "RuntimeError",
+          "message": "Derivative not supported on expression: SymbolExpr::derivative does not support sign function.",
+          "name": "sign.gradient"
+        },
+        {
+          "name": "sign.vector",
+          "result": {
+            "parameters": [],
+            "text": "1",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "conjugate.construction",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ]
+            ],
+            "text": "conj(p)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "conjugate.bound",
+          "result": {
+            "parameters": [],
+            "text": "0.4",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "conjugate.gradient",
+          "result": 1.0
+        },
+        {
+          "name": "conjugate.vector",
+          "result": {
+            "parameters": [],
+            "text": "0.4",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "exception": "AttributeError",
+          "message": "'qiskit._accelerate.circuit.Parameter' object has no attribute 'sqrt'",
+          "name": "sqrt.construction"
+        },
+        {
+          "exception": "AttributeError",
+          "message": "'qiskit._accelerate.circuit.Parameter' object has no attribute 'sqrt'",
+          "name": "sqrt.bound"
+        },
+        {
+          "exception": "AttributeError",
+          "message": "'qiskit._accelerate.circuit.Parameter' object has no attribute 'sqrt'",
+          "name": "sqrt.gradient"
+        },
+        {
+          "exception": "AttributeError",
+          "message": "'qiskit._accelerate.circuit.ParameterVectorElement' object has no attribute 'sqrt'",
+          "name": "sqrt.vector"
+        },
+        {
+          "name": "chain.partial",
+          "result": {
+            "parameters": [
+              [
+                "q",
+                "00000000-0000-0000-0000-000000000002"
+              ]
+            ],
+            "text": "exp(0.8 - q) + sin(0.4**2 + 0.4*q)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "chain.full",
+          "result": {
+            "parameters": [],
+            "text": "2.798196522428218",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "chain.gradient",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ],
+              [
+                "q",
+                "00000000-0000-0000-0000-000000000002"
+              ]
+            ],
+            "text": "2*exp(-q + 2*p) + cos(p**2 + p*q)*(q + 2*p**1*1)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "chain.mixed",
+          "result": {
+            "parameters": [],
+            "text": "-4.458941477168072",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "subs.swap",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ],
+              [
+                "q",
+                "00000000-0000-0000-0000-000000000002"
+              ]
+            ],
+            "text": "q - 2*p",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "subs.cross",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ],
+              [
+                "q",
+                "00000000-0000-0000-0000-000000000002"
+              ]
+            ],
+            "text": "p + q - 2*(p - q)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "exception": "TypeError",
+          "message": "'float' object is not an instance of 'ParameterExpression'",
+          "name": "subs.numeric"
+        },
+        {
+          "exception": "CircuitError",
+          "message": "'Cannot bind following parameters not present in expression: {Standalone { name: \"missing\", uuid: 8d0caadd-9d18-460a-bab4-6c83cae47c58 }}'",
+          "name": "subs.unknown"
+        },
+        {
+          "name": "subs.unknown_allowed",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ],
+              [
+                "q",
+                "00000000-0000-0000-0000-000000000002"
+              ]
+            ],
+            "text": "exp(-q + 2*p) + sin(p**2 + p*q)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "subs.identity",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ],
+              [
+                "q",
+                "00000000-0000-0000-0000-000000000002"
+              ]
+            ],
+            "text": "exp(-q + 2*p) + sin(p**2 + p*q)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "exception": "CircuitError",
+          "message": "'Name conflict adding parameters.'",
+          "name": "subs.collision"
+        },
+        {
+          "exception": "CircuitError",
+          "message": "'Cannot bind following parameters not present in expression: {Standalone { name: \"p\", uuid: 00000000-0000-0000-0000-000000000003 }}'",
+          "name": "subs.wrong_uuid"
+        },
+        {
+          "name": "assign.numeric",
+          "result": {
+            "parameters": [
+              [
+                "q",
+                "00000000-0000-0000-0000-000000000002"
+              ]
+            ],
+            "text": "0.4 + q",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "assign.symbolic",
+          "result": {
+            "parameters": [
+              [
+                "q",
+                "00000000-0000-0000-0000-000000000002"
+              ]
+            ],
+            "text": "3*q",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "exception": "TypeError",
+          "message": "Parameter expression with unbound parameters {Standalone { name: \"q\", uuid: 00000000-0000-0000-0000-000000000002 }} is not numeric.",
+          "name": "bind.symbolic"
+        },
+        {
+          "exception": "CircuitError",
+          "message": "'Cannot bind following parameters not present in expression: {Standalone { name: \"missing\", uuid: 81c7c9f2-400c-4ef7-89c7-2b9af0e16003 }}'",
+          "name": "bind.unknown"
+        },
+        {
+          "name": "bind.unknown_allowed",
+          "result": {
+            "parameters": [
+              [
+                "p",
+                "00000000-0000-0000-0000-000000000001"
+              ],
+              [
+                "q",
+                "00000000-0000-0000-0000-000000000002"
+              ]
+            ],
+            "text": "exp(-q + 2*p) + sin(p**2 + p*q)",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "exception": "TypeError",
+          "message": "'str' object is not an instance of 'Parameter'",
+          "name": "bind.string"
+        },
+        {
+          "exception": "CircuitError",
+          "message": "'Cannot bind following parameters not present in expression: {Standalone { name: \"p\", uuid: 00000000-0000-0000-0000-000000000003 }}'",
+          "name": "bind.wrong_uuid"
+        },
+        {
+          "exception": "RuntimeError",
+          "message": "Binding to NaN.",
+          "name": "bind.nan"
+        },
+        {
+          "exception": "RuntimeError",
+          "message": "Binding to NaN.",
+          "name": "bind.infinity"
+        },
+        {
+          "name": "bind.complex",
+          "result": {
+            "parameters": [],
+            "text": "0.39723270501734387+0.18544273862906743i",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "name": "zero.membership",
+          "result": [
+            "p"
+          ]
+        },
+        {
+          "exception": "TypeError",
+          "message": "Parameter expression with unbound parameters {} is not numeric.",
+          "name": "zero.numeric_strict"
+        },
+        {
+          "name": "zero.numeric_nonstrict",
+          "result": 0
+        },
+        {
+          "name": "zero.gradient",
+          "result": 0.0
+        },
+        {
+          "name": "cancel.membership",
+          "result": [
+            "p"
+          ]
+        },
+        {
+          "name": "cancel.numeric",
+          "result": 0
+        },
+        {
+          "name": "constant.gradient",
+          "result": 1.0
+        },
+        {
+          "exception": "ZeroDivisionError",
+          "message": "attempted to bind infinite value to parameter",
+          "name": "abs.zero.gradient"
+        },
+        {
+          "exception": "RuntimeError",
+          "message": "Derivative not supported on expression: SymbolExpr::derivative does not support sign function.",
+          "name": "sign.zero.gradient"
+        },
+        {
+          "name": "log.negative",
+          "result": {
+            "parameters": [],
+            "text": "3.141592653589793i",
+            "type": "ParameterExpression"
+          }
+        },
+        {
+          "exception": "ZeroDivisionError",
+          "message": "attempted to bind infinite value to parameter",
+          "name": "log.zero"
+        },
+        {
+          "exception": "RuntimeError",
+          "message": "Binding to NaN.",
+          "name": "arcsin.outside"
+        },
+        {
+          "exception": "RuntimeError",
+          "message": "Binding to NaN.",
+          "name": "arccos.outside"
+        },
+        {
+          "exception": "ZeroDivisionError",
+          "message": "attempted to bind infinite value to parameter",
+          "name": "exp.overflow"
+        },
+        {
+          "name": "is_real.unbound",
+          "result": null
+        },
+        {
+          "name": "is_real.complex",
+          "result": false
+        },
+        {
+          "name": "is_symbol.symbol",
+          "result": true
+        },
+        {
+          "name": "is_symbol.identity",
+          "result": true
+        },
+        {
+          "name": "sympify",
+          "result": {
+            "text": "exp(2*p - q) + sin(p**2 + p*q)",
+            "type": "Add"
+          }
+        }
+      ],
+      "scenario_count": 110
+    }
+  }
+}

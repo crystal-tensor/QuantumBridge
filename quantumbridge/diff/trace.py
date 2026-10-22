@@ -74,6 +74,26 @@ class Dual:
     def log(self): return self._new(np.log(self.value), lambda: self.derivative / self.value)
     def sqrt(self): return self ** .5
 
+    def arcsin(self):
+        if not -1 < self.value < 1:
+            raise ValueError("Inverse sine derivatives require an input strictly inside (-1, 1).")
+        return self._new(np.arcsin(self.value), lambda: self.derivative / np.sqrt(1-self.value**2))
+
+    def arccos(self):
+        if not -1 < self.value < 1:
+            raise ValueError("Inverse cosine derivatives require an input strictly inside (-1, 1).")
+        return self._new(np.arccos(self.value), lambda: -self.derivative / np.sqrt(1-self.value**2))
+
+    def arctan(self):
+        return self._new(np.arctan(self.value), lambda: self.derivative / (1+self.value**2))
+
+    def sign(self):
+        if self.value == 0:
+            raise UnsupportedFeature("nonsmooth_preprocessing", "Sign is not differentiable at zero.")
+        return self._new(np.sign(self.value), lambda: np.zeros_like(self.derivative))
+
+    def conjugate(self): return self
+
     def __abs__(self):
         if self.value == 0: raise UnsupportedFeature("nonsmooth_preprocessing", "Absolute value is not differentiable at zero.")
         return self._new(abs(self.value), lambda: np.sign(self.value) * self.derivative)
@@ -90,7 +110,8 @@ class Dual:
     def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
         if method != "__call__" or kwargs:
             raise UnsupportedFeature("classical_ufunc", "Unsupported classical differentiation operation.")
-        unary = {np.sin: "sin", np.cos: "cos", np.tan: "tan", np.exp: "exp", np.log: "log", np.sqrt: "sqrt", np.absolute: "__abs__", np.negative: "__neg__"}
+        unary = {np.sin: "sin", np.cos: "cos", np.tan: "tan", np.exp: "exp", np.log: "log", np.sqrt: "sqrt", np.absolute: "__abs__", np.negative: "__neg__",
+                 np.arcsin: "arcsin", np.arccos: "arccos", np.arctan: "arctan", np.sign: "sign", np.conjugate: "conjugate"}
         if ufunc in unary: return getattr(self, unary[ufunc])()
         binary = {np.add: operator.add, np.subtract: operator.sub, np.multiply: operator.mul,
                   np.divide: operator.truediv, np.true_divide: operator.truediv, np.power: operator.pow}

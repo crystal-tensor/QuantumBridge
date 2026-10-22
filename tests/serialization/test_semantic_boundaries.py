@@ -161,7 +161,10 @@ def test_qpy_conflicting_name_uuid_identity_is_rejected_before_binary_output():
     second = Parameter('theta','00000000-0000-0000-0000-000000000002')
     with pytest.raises(ValueError,match='identities'):Circuit(1).ry(first+second,0)
     malformed=Circuit(1)
-    malformed.operations.append(Operation('ry',(0,),params=(first+second,)))
+    # Expression construction now rejects collisions too; bypass Circuit via
+    # separate raw operations to retain the binary writer's independent guard.
+    malformed.operations.append(Operation('ry',(0,),params=(first,)))
+    malformed.operations.append(Operation('ry',(0,),params=(second,)))
     with pytest.raises(UnsupportedFeature,match='uniquely'):qpy_dumps(malformed)
     other = Parameter('phi',first.uuid)
     with pytest.raises(UnsupportedFeature,match='uniquely'):qpy_dumps(Circuit(1).ry(first,0).rx(other,0))
