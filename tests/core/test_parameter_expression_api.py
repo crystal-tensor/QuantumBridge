@@ -61,11 +61,12 @@ def test_circuit_partial_binding_keeps_remaining_parameter_and_ir_expression():
     assert ir["instructions"][0]["params"][0]["parameters"] == ["phi"]
 
 
-def test_strict_binding_rejects_unknown_or_unbound_parameters():
+def test_strict_assignment_rejects_unknown_and_numeric_binding_rejects_unbound_parameters():
     theta = Parameter("theta")
     circuit = Circuit(1).rx(theta, 0)
 
     with pytest.raises(ValueError, match="unknown parameter"):
         circuit.assign_parameters({"other": 0.2})
+    assert circuit.assign_parameters({}).parameters==(theta,)
     with pytest.raises(ValueError, match="not bound"):
-        circuit.assign_parameters({})
+        circuit.bind({})

@@ -10,7 +10,7 @@ from dataclasses import dataclass, field
 from numbers import Real
 from typing import Any, Optional
 
-from quantumbridge.core.parameters import Parameter, ParameterExpression
+from quantumbridge.core.parameters import Parameter, ParameterExpression, ParameterVector, ParameterVectorElement, legacy_parameter
 
 
 def matrix_from_ir(value):
@@ -40,7 +40,7 @@ def matrix_from_ir(value):
     return np.asarray(value, dtype=complex)
 
 
-def decode_instruction_metadata(metadata):
+def decode_instruction_metadata(metadata, *, _vectors=None, _limits=None):
     result = dict(metadata)
     if "matrix" in result:
         result["matrix"] = matrix_from_ir(result["matrix"])
@@ -48,7 +48,12 @@ def decode_instruction_metadata(metadata):
         result["kraus"] = tuple(matrix_from_ir(value) for value in result["kraus"])
     if "control_node" in result and isinstance(result["control_node"], dict):
         from quantumbridge.core.control_flow import ControlBlock
-        result["control_node"] = ControlBlock.from_dict(result["control_node"])
+        result["control_node"] = ControlBlock.from_dict(result["control_node"],
+            serialization_limits=_limits, _parameter_vectors=_vectors)
+    if isinstance(result.get("instruction"),dict) and "params" in result["instruction"]:
+        result["instruction"]=dict(result["instruction"])
+        result["instruction"]["params"]=[param_from_ir(value,_vectors=_vectors,_limits=_limits) if isinstance(value,dict)
+            and ("parameter" in value or "parameter_ast" in value) else value for value in result["instruction"]["params"]]
     return result
 
 
@@ -59,7 +64,12 @@ def _matrix_to_ir(value):
 
 def _param_to_ir(value: Any) -> Any:
     if isinstance(value, Parameter):
-        return {"parameter": value.name, **({"parameter_uuid": value.uuid} if value.uuid is not None else {})}
+        result={"parameter":value.name,"parameter_uuid":value.uuid}
+        if not value._uuid_explicit:result["parameter_uuid_explicit"]=False
+        if isinstance(value,ParameterVectorElement):
+            result["parameter_vector"]={"name":value._vector_name,"root_uuid":value.vector._root_uuid,
+                "length":len(value.vector),"index":value.index}
+        return result
     if isinstance(value, ParameterExpression):
         return {
             "expression": str(value),
@@ -71,14 +81,52 @@ def _param_to_ir(value: Any) -> Any:
     return value
 
 
-def param_from_ir(value):
+def param_from_ir(value, *, _vectors=None, _limits=None):
     if not isinstance(value, dict): return value
-    if set(value) in ({"parameter"}, {"parameter","parameter_uuid"}): return Parameter(value["parameter"],value.get("parameter_uuid"))
+    vectors={} if _vectors is None else _vectors
+    if "parameter" in value:
+        if not set(value)<={"parameter","parameter_uuid","parameter_uuid_explicit","parameter_vector"}:
+            raise ValueError("Unknown QuantumBridge parameter identity fields.")
+        if "parameter_uuid_explicit" in value and type(value["parameter_uuid_explicit"]) is not bool:
+            raise ValueError("Parameter identity provenance must be a boolean.")
+        name,identity=value["parameter"],value.get("parameter_uuid")
+        spec=value.get("parameter_vector")
+        if spec is None:
+            parameter=legacy_parameter(name) if identity is None else Parameter(name,identity)
+        else:
+            from uuid import UUID
+            from quantumbridge.serialization.limits import SerializationLimits
+            if type(spec) is not dict or set(spec)!={"name","root_uuid","length","index"}:
+                raise ValueError("Malformed parameter vector identity.")
+            if type(spec["length"]) is not int or type(spec["index"]) is not int or min(spec["length"],spec["index"])<0:
+                raise ValueError("Parameter vector lengths/indices must be nonnegative integers.")
+            if type(spec["name"]) is not str or type(spec["root_uuid"]) is not str or type(identity) is not str:
+                raise ValueError("Parameter vector identity fields must be strings.")
+            limits=_limits or SerializationLimits()
+            limits.check("max_parameter_nodes",spec["length"],format="ir-json")
+            root_uuid=str(UUID(spec["root_uuid"]))
+            identity=str(UUID(identity))
+            index=spec["index"]
+            if name!=f"{spec['name']}[{index}]":raise ValueError("Vector parameter name does not match its index.")
+            key=(spec["name"],root_uuid,spec["length"])
+            if key not in vectors:
+                count=vectors.get(None,0)+spec["length"]
+                limits.check("max_parameter_nodes",count,format="ir-json")
+                vector=ParameterVector(spec["name"])
+                vector._root_uuid=root_uuid
+                vector.resize(spec["length"])
+                vectors[key]=vector
+                vectors[None]=count
+            vector=vectors[key]
+            parameter=vector[index] if index<len(vector) and vector[index].uuid==identity else ParameterVectorElement(vector,index,identity)
+        if "parameter_uuid_explicit" in value:
+            object.__setattr__(parameter,"_uuid_explicit",value["parameter_uuid_explicit"])
+        return parameter
     if "parameter_ast" in value:
         tree = value["parameter_ast"]
         if tree["op"] not in {"const", "parameter", "neg", "+", "-", "*", "/", "**"}:
             raise ValueError("Unknown executable QuantumBridge parameter AST.")
-        args = tuple(param_from_ir(arg) for arg in tree["args"])
+        args = tuple(param_from_ir(arg,_vectors=vectors,_limits=_limits) for arg in tree["args"])
         return ParameterExpression(tree["op"], args)
     raise ValueError("QuantumBridge parameter expressions require an executable AST, not text.")
 
@@ -99,6 +147,9 @@ class IRInstruction:
             metadata["kraus"] = [_matrix_to_ir(value) for value in self.metadata["kraus"]]
         if "control_node" in self.metadata:
             metadata["control_node"] = self.metadata["control_node"].to_dict()
+        if isinstance(metadata.get("instruction"),dict) and "params" in metadata["instruction"]:
+            metadata["instruction"]=dict(metadata["instruction"])
+            metadata["instruction"]["params"]=[_param_to_ir(value) for value in metadata["instruction"]["params"]]
         return {
             "op": self.op,
             "targets": list(self.targets),
@@ -133,22 +184,24 @@ class IRProgram:
     metadata: dict[str, Any] = field(default_factory=dict)
 
     @classmethod
-    def from_dict(cls, data, validate=True):
+    def from_dict(cls, data, validate=True, *, serialization_limits=None, _parameter_vectors=None):
         if data.get("ir_version") != "qb-ir-v0.1": raise ValueError("Unknown QuantumBridge IR version.")
         registers = data["registers"]
+        vectors={} if _parameter_vectors is None else _parameter_vectors
         result = cls(data["ir_version"], registers["quantum"]["size"], registers["classical"]["size"],
             tuple(IRInstruction(item["op"], tuple(item["targets"]), tuple(item.get("controls", ())),
-                tuple(param_from_ir(value) for value in item.get("params", ())), decode_instruction_metadata(item.get("metadata", {}))) for item in data["instructions"]),
+                tuple(param_from_ir(value,_vectors=vectors,_limits=serialization_limits) for value in item.get("params", ())),
+                decode_instruction_metadata(item.get("metadata", {}),_vectors=vectors,_limits=serialization_limits)) for item in data["instructions"]),
             tuple(IRMeasurement(item["kind"], item["wires"][0], item["bits"][0], dict(item.get("metadata", {}))) for item in data.get("measurements", ())), data.get("name"), dict(data.get("metadata", {})))
         if "global_phase" in result.metadata:
-            result.metadata["global_phase"] = param_from_ir(result.metadata["global_phase"])
+            result.metadata["global_phase"] = param_from_ir(result.metadata["global_phase"],_vectors=vectors,_limits=serialization_limits)
         if validate: result.validate()
         return result
 
     @classmethod
     def from_json(cls, text, *, serialization_limits=None):
         from quantumbridge.schema.serialization import from_json
-        return cls.from_dict(from_json(text, limits=serialization_limits))
+        return cls.from_dict(from_json(text, limits=serialization_limits),serialization_limits=serialization_limits)
 
     def to_json(self, *, serialization_limits=None):
         from quantumbridge.schema.serialization import to_json

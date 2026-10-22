@@ -26,15 +26,20 @@ def read_expression(reader):
     symbols = {}
     for _ in range(count):
         key_type,value_type,value_size = reader.unpack("!ccQ")
-        if key_type != b"p": reader.error("ParameterVector symbol records are unsupported.",UnsupportedFeature)
-        name_size,uid = reader.unpack("!H16s")
-        name = reader.text(name_size)
-        uid_text = str(UUID(bytes=uid))
-        if not name or name in reader.parameters and reader.parameters[name].uuid != uid_text:
-            reader.error("Conflicting symbolic parameter identities.")
-        key = reader.parameters.setdefault(name,Parameter(name,uid_text))
+        if key_type==b"v":
+            key=reader.parameter_vector()
+            uid=UUID(key.uuid).bytes
+        elif key_type==b"p":
+            name_size,uid = reader.unpack("!H16s")
+            name = reader.text(name_size)
+            uid_text = str(UUID(bytes=uid))
+            if not name or name in reader.parameters and (type(reader.parameters[name]) is not Parameter or reader.parameters[name].uuid != uid_text):
+                reader.error("Conflicting symbolic parameter identities.")
+            key = reader.parameters.setdefault(name,Parameter(name,uid_text))
+        else:reader.error("Unsupported parameter symbol type.",UnsupportedFeature)
         if uid in symbols: reader.error("Duplicate symbolic mapping key.")
-        if value_type == b"p":
+        if value_type in {b"p",b"v"}:
+            if value_type!=key_type:reader.error("Symbolic parameter alias type does not match its key.")
             if value_size: reader.error("Parameter alias must have zero payload bytes.")
             value = key
         else: value = reader.value(value_type,value_size)
@@ -97,6 +102,6 @@ def write_expression(expression,limits=None):
     if not records: raise FormatValidationError("Symbolic replay requires an arithmetic operation.",format="qpy",version=13)
     mapping = []
     for name,parameter in sorted(symbols.items()):
-        _,payload = _parameter_value(parameter,limits)
-        mapping.extend((struct.pack("!ccQ",b"p",b"p",0),payload))
+        kind,payload = _parameter_value(parameter,limits)
+        mapping.extend((struct.pack("!ccQ",kind,kind,0),payload))
     return struct.pack("!QQ",len(symbols),len(records)*RECORD.size)+b"".join(records+mapping)

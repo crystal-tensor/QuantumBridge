@@ -8,7 +8,7 @@ from numbers import Integral
 import json
 
 from .classical import ClassicalExpression, Bool, Bit, UnsupportedFeature, lift, register, validate_classical_expr
-from .parameters import Parameter
+from .parameters import Parameter, ParameterVectorElement, legacy_parameter
 
 
 @dataclass(frozen=True)
@@ -46,20 +46,32 @@ def _encode(value):
     from .circuit import Circuit
     if isinstance(value, ClassicalExpression): return {"classical_expr": value.to_dict()}
     if isinstance(value, Circuit): return {"circuit": value.to_ir().to_dict()}
-    if isinstance(value, Parameter): return {"loop_parameter": value.name}
+    if isinstance(value, Parameter):
+        result={"loop_parameter":value.name,"loop_parameter_uuid":value.uuid}
+        if isinstance(value,ParameterVectorElement):
+            from quantumbridge.ir.qb_ir import _param_to_ir
+            result["loop_parameter_vector"]=_param_to_ir(value)["parameter_vector"]
+        return result
     if isinstance(value, tuple): return [_encode(item) for item in value]
     if value is None or isinstance(value, (str, bool, int)): return value
     raise TypeError("Unsupported value in QuantumBridge structured control-flow data.")
 
 
-def _decode(value):
+def _decode(value, *, serialization_limits=None, _parameter_vectors=None):
     from quantumbridge.ir.qb_ir import IRProgram
     from quantumbridge.compat.qiskit_adapter import circuit_from_ir
-    if isinstance(value, list): return tuple(_decode(item) for item in value)
+    if isinstance(value, list): return tuple(_decode(item,serialization_limits=serialization_limits,
+        _parameter_vectors=_parameter_vectors) for item in value)
     if isinstance(value, dict):
         if set(value) == {"classical_expr"}: return ClassicalExpression.from_dict(value["classical_expr"])
-        if set(value) == {"circuit"}: return circuit_from_ir(IRProgram.from_dict(value["circuit"], validate=False))
-        if set(value) == {"loop_parameter"}: return Parameter(value["loop_parameter"])
+        if set(value) == {"circuit"}: return circuit_from_ir(IRProgram.from_dict(value["circuit"], validate=False,
+            serialization_limits=serialization_limits,_parameter_vectors=_parameter_vectors))
+        if set(value)=={"loop_parameter"}:return legacy_parameter(value["loop_parameter"])
+        if set(value)=={"loop_parameter","loop_parameter_uuid"}:return Parameter(value["loop_parameter"],value["loop_parameter_uuid"])
+        if set(value)=={"loop_parameter","loop_parameter_uuid","loop_parameter_vector"}:
+            from quantumbridge.ir.qb_ir import param_from_ir
+            return param_from_ir({"parameter":value["loop_parameter"],"parameter_uuid":value["loop_parameter_uuid"],
+                "parameter_vector":value["loop_parameter_vector"]},_vectors=_parameter_vectors,_limits=serialization_limits)
         raise ValueError("Unknown QuantumBridge control-flow data node.")
     if value is None or isinstance(value, (str, bool, int)): return value
     raise ValueError("Malformed QuantumBridge control-flow data.")
@@ -123,10 +135,11 @@ class ControlBlock:
     def to_json(self): return json.dumps(self.to_dict(), sort_keys=True)
 
     @classmethod
-    def from_dict(cls, data):
+    def from_dict(cls, data, *, serialization_limits=None, _parameter_vectors=None):
         if set(data) != {"version", "kind", "data"} or data["version"] != "qb-control-v1":
             raise ValueError("Malformed or unknown QuantumBridge control-flow schema.")
-        return cls(data["kind"], {key: _decode(value) for key, value in data["data"].items()})
+        return cls(data["kind"], {key: _decode(value,serialization_limits=serialization_limits,
+            _parameter_vectors=_parameter_vectors) for key, value in data["data"].items()})
 
     @classmethod
     def from_json(cls, text): return cls.from_dict(json.loads(text))

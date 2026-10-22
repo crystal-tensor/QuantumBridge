@@ -28,8 +28,10 @@ def record_compiled_parameters(circuit, original_recorder):
         return recorder(evaluate(value)) if isinstance(value, (Parameter, ParameterExpression)) else value
     def walk(body):
         out = body.copy()
-        out.global_phase = angle(body.global_phase)
+        phase = angle(body.global_phase)
         out.operations = [map_control_bodies(op, walk) if op.metadata.get("control_node") is not None
                           else replace(op, params=tuple(angle(value) for value in op.params)) for op in body.operations]
+        # Replace old gate identities before validating the new phase namespace.
+        out.global_phase = phase
         return out
     return walk(circuit), recorder

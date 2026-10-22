@@ -17,7 +17,10 @@ import numpy as np
 
 from .measurements import Measurement
 from .operations import Instruction, Operation
-from .parameters import Parameter, ParameterValue, parameter_set, resolve_parameter
+from .parameters import (
+    Parameter, ParameterExpression, ParameterValue, ParameterVector, ParameterVectorElement,
+    parameter_set, parameter_sort_key, resolve_parameter, validate_parameter_names,
+)
 from quantumbridge.utils.math import gate_matrix
 
 
@@ -50,6 +53,12 @@ class Circuit:
         if not isinstance(phase, (Real, Parameter)) and not hasattr(phase, "parameters"):
             raise TypeError("Circuit global_phase requires a real or native parameter expression.")
         if isinstance(phase, Real) and not np.isfinite(phase): raise ValueError("Circuit global_phase must be finite.")
+        parameters=set(parameter_set((phase,)))
+        if parameters:
+            for op in self.operations:
+                parameters.update(parameter_set(op.params))
+                if "control_node" in op.metadata:parameters.update(op.metadata["control_node"].parameters)
+            validate_parameter_names(parameters)
         self.metadata["global_phase"] = phase
 
     def _check_wire(self, wire: int) -> None:
@@ -78,6 +87,9 @@ class Circuit:
             self._check_wire(wire)
         if len(set(all_wires)) != len(all_wires):
             raise ValueError("QuantumBridge operations require distinct wires.")
+        incoming=set(parameter_set(params))
+        if metadata and "control_node" in metadata:incoming.update(metadata["control_node"].parameters)
+        if incoming:validate_parameter_names((*self.parameters,*incoming))
         self.operations.append(
             Operation(name=name, targets=targets_tuple, controls=controls_tuple, params=tuple(params), metadata=dict(metadata or {}))
         )
@@ -111,6 +123,8 @@ class Circuit:
             merged_metadata.pop("control_flow")
         merged_metadata.update(dict(metadata or {}))
         effective_params = tuple(params) if params else instruction.params
+        incoming=instruction.definition.parameters if instruction.definition is not None else parameter_set(effective_params)
+        if incoming:validate_parameter_names((*self.parameters,*incoming))
         effective_instruction = (
             instruction
             if not controls_tuple
@@ -345,6 +359,8 @@ class Circuit:
     ) -> "Circuit":
         if not isinstance(other, Circuit):
             raise TypeError("QuantumBridge Circuit.compose expects another Circuit.")
+        incoming=other.parameters
+        if incoming:validate_parameter_names((*self.parameters,*incoming))
         target = self if inplace else self.copy()
         qubit_map = _index_map(other.num_qubits, target.num_qubits, qubits, "qubits")
         clbit_map = _index_map(other.num_bits, target.num_bits, clbits, "clbits")
@@ -722,16 +738,29 @@ class Circuit:
         from quantumbridge.execution.array_ownership import native_configuration_copy
         return native_configuration_copy(self, category="native_circuit_array_copy")
 
-    def to_instruction(self, name: Optional[str] = None, label: Optional[str] = None) -> Instruction:
+    def to_instruction(self, name: Optional[str] = None, label: Optional[str] = None, *, parameter_map=None) -> Instruction:
+        if isinstance(name,ABCMapping):
+            if parameter_map is not None:raise TypeError("Instruction parameter map was provided twice.")
+            parameter_map,name=name,None
+        from quantumbridge.execution.array_ownership import native_configuration_copy
+        if parameter_map is None:
+            definition=self.copy()
+            parameters=self.parameters
+        else:
+            if not isinstance(parameter_map,ABCMapping):raise TypeError("Instruction parameter_map must be a mapping.")
+            mapping=_parameter_mapping_from_values(self.parameters,parameter_map,strict=True)
+            if set(mapping)!=set(self.parameters):raise ValueError("Instruction parameter_map must map every circuit parameter.")
+            definition=self.assign_parameters(mapping)
+            parameters=tuple(mapping[parameter] for parameter in self.parameters)
         instruction_name = name or label or self.name or "circuit"
-        metadata = deepcopy(self.metadata)
+        metadata = native_configuration_copy(definition.metadata,category="native_instruction_metadata_copy")
         metadata.setdefault("definition_name", self.name)
         return Instruction(
             name=instruction_name,
             num_qubits=self.num_qubits,
             num_bits=self.num_bits,
-            params=(),
-            definition=self.copy(),
+            params=parameters,
+            definition=definition,
             metadata=metadata,
         )
 
@@ -756,7 +785,8 @@ class Circuit:
             found.update(parameter_set(op.params))
             if "control_node" in op.metadata:
                 found.update(op.metadata["control_node"].parameters)
-        return tuple(sorted(found, key=lambda parameter: parameter.name))
+        validate_parameter_names(found)
+        return tuple(sorted(found, key=parameter_sort_key))
 
     @property
     def num_parameters(self) -> int:
@@ -775,14 +805,15 @@ class Circuit:
         bound = Circuit(self.num_qubits, self.num_bits, self.name,
             native_configuration_copy(self.metadata, memo=_copy_memo, category="native_bound_metadata_copy"))
         if "global_phase" in self.metadata:
-            bound.global_phase = resolve_parameter(self.global_phase, mapping, allow_partial=not strict)
+            bound.global_phase = resolve_parameter(self.global_phase, mapping, allow_partial=True)
         for op in self.operations:
-            params = tuple(resolve_parameter(param, mapping, allow_partial=not strict) for param in op.params)
+            params = tuple(resolve_parameter(param, mapping, allow_partial=True) for param in op.params)
             metadata = native_configuration_copy(op.metadata, memo=_copy_memo, category="native_bound_metadata_copy")
             if "control_node" in metadata:
                 metadata["control_node"] = metadata["control_node"].bind(mapping)
             bound.operations.append(Operation(op.name, op.targets, op.controls, params, metadata))
         bound.measurements = list(self.measurements)
+        bound.parameters
         return _replace_self(self, bound) if inplace else bound
 
     def bind_parameters(
@@ -791,10 +822,13 @@ class Circuit:
         inplace: bool = False,
         strict: bool = True,
     ) -> "Circuit":
-        return self.assign_parameters(parameters, inplace=inplace, strict=strict)
+        bound=self.assign_parameters(parameters,strict=strict)
+        if strict and bound.parameters:
+            raise ValueError("QuantumBridge parameters are not bound: "+", ".join(parameter.name for parameter in bound.parameters))
+        return _replace_self(self,bound) if inplace else bound
 
     def bind(self, mapping: Mapping[Union[Parameter, str], Real]) -> "Circuit":
-        return self.assign_parameters(mapping, strict=True)
+        return self.bind_parameters(mapping,strict=True)
 
     def to_ir(self):
         from quantumbridge.ir.qb_ir import IRProgram
@@ -949,15 +983,50 @@ def _parameter_mapping_from_values(
     parameters: Union[Mapping[Union[Parameter, str], ParameterValue], Sequence[ParameterValue]],
     strict: bool,
 ) -> dict[Union[Parameter, str], ParameterValue]:
+    from quantumbridge.execution.resource_context import current_resources
+    scope=current_resources()
+    if scope is not None and type(parameters) not in (dict,list,tuple,np.ndarray):
+        from quantumbridge.core.classical import UnsupportedFeature
+        raise UnsupportedFeature("managed_parameter_container","Managed binding requires an explicit native mapping or numeric sequence.")
+    def sequence(values):
+        if scope is not None:
+            if type(values) not in (tuple,list,np.ndarray):
+                from quantumbridge.core.classical import UnsupportedFeature
+                raise UnsupportedFeature("managed_parameter_values","Managed parameter sequences must be explicit numeric containers.")
+            if type(values) is np.ndarray:
+                from quantumbridge.execution.array_reservations import numeric_shape
+                if len(numeric_shape(values,real_only=True))!=1:raise ValueError("Parameter values require a one-dimensional sequence.")
+        return tuple(values)
+    def checked(value):
+        if scope is not None:
+            if type(value) not in (Parameter,ParameterVectorElement,ParameterExpression):
+                from quantumbridge.execution.array_reservations import numeric_shape
+                if numeric_shape(value,real_only=True)!=():raise TypeError("Gate parameter values must be real scalars or native expressions.")
+        elif not isinstance(value,(Real,Parameter,ParameterExpression)):
+            raise TypeError("Gate parameter values must be real scalars or native expressions.")
+        return value
     if isinstance(parameters, ABCMapping):
-        mapping = dict(parameters)
-        if strict:
-            known = set(ordered_parameters) | {parameter.name for parameter in ordered_parameters}
-            unknown = sorted(str(key) for key in mapping if key not in known)
-            if unknown:
-                raise ValueError(f"QuantumBridge received unknown parameter bindings: {', '.join(unknown)}")
+        known=set(ordered_parameters)
+        names={parameter.name:parameter for parameter in ordered_parameters}
+        mapping={}
+        for key,value in parameters.items():
+            if scope is not None and type(key) not in (str,Parameter,ParameterVectorElement,ParameterVector):
+                from quantumbridge.core.classical import UnsupportedFeature
+                raise UnsupportedFeature("managed_parameter_key","Managed binding keys must be native parameters, vectors or strings.")
+            entries=((key,value),)
+            if isinstance(key,ParameterVector):
+                values=sequence(value)
+                if len(values)!=len(key):raise ValueError("ParameterVector binding length must match its length.")
+                entries=zip(key,values)
+            for parameter,item in entries:
+                parameter=names.get(parameter,parameter) if isinstance(parameter,str) else parameter
+                if parameter not in known:
+                    if strict:raise ValueError(f"QuantumBridge received unknown parameter bindings: {parameter}")
+                    continue
+                if parameter in mapping:raise ValueError("A parameter was bound more than once.")
+                mapping[parameter]=checked(item)
         return mapping
-    values = tuple(parameters)
+    values = sequence(parameters)
     if len(values) != len(ordered_parameters):
         raise ValueError("QuantumBridge sequence parameter binding length must match circuit.num_parameters.")
-    return {parameter: value for parameter, value in zip(ordered_parameters, values)}
+    return {parameter:checked(value) for parameter,value in zip(ordered_parameters,values)}

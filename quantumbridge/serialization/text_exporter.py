@@ -56,7 +56,7 @@ class SourceExporter:
         self.used.update(reserved)
         for parameter in circuit.parameters:
             if not identifier(parameter.name) or parameter.name in self.used: self.fail("Unrepresentable or conflicting parameter identifier.")
-            if parameter.uuid is not None: self.metadata_loss("Parameter UUID cannot be carried by OpenQASM source.")
+            if parameter._uuid_explicit: self.metadata_loss("Parameter UUID cannot be carried by OpenQASM source.")
             self.parameters[parameter] = parameter.name; self.used.add(parameter.name)
         if self.format == "qasm2" and self.parameters: self.fail("OpenQASM 2 requires numeric bound parameters.")
         self.circuit = GateDecompositionPass(STANDARD).run(_expand_sx(circuit)).circuit

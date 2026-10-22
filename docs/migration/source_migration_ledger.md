@@ -1,6 +1,10 @@
 # Source Migration Ledger
 
-Status: Stage 12-B P1 local code 2ec69c4, full tree e04c0fda;
+Status: Stage 12-B P2 final frozen runtime 742c5102b1cf4ffb5a6f74def7398dd362cde010;
+production 29f8809f, tests 4a528297, examples cecb0397; final same-runtime local
+acceptance completed with public differences and known environment limits
+explicitly retained. Scoped local code SHA follows the normal index check.
+Prior Stage 12-B P1 local code 2ec69c4, full tree e04c0fda;
 final frozen tree 58a823d8 validated, tested production subtree e8220fbf;
 staged/full committed runtime identity and same-tree local acceptance below;
 P0.7 native partial transpose local code cd0370b, frozen tree 03424712 validated;
@@ -1801,3 +1805,40 @@ tests, credentials, package artifacts or environments are copied or vendored:
 - `THIRD_PARTY_NOTICES.md`
 
 Stage 11H source port count remains zero.
+
+## Stage 12-B P2 Parameter Identity And Composite Binding
+
+Independent changes to the existing native parameter, Circuit, Instruction,
+control-flow and IR paths, plus public-format QPY vector-element interchange.
+The installed Qiskit 2.4.1/2.6.0 APIs are black-box comparison oracles only;
+native execution and the SDK-free example never call them. No upstream source
+or tests, package binaries, environments, credentials or cloud data are copied.
+The public QPY protocol is documented at
+https://qiskit.qotlabs.org/docs/api/qiskit/qpy; the vector element record is
+implemented from that published binary data contract, not vendored code.
+
+- `quantumbridge/__init__.py`
+- `quantumbridge/core/__init__.py`
+- `quantumbridge/core/parameters.py`
+- `quantumbridge/core/circuit.py`
+- `quantumbridge/core/operations.py`
+- `quantumbridge/core/control_flow.py`
+- `quantumbridge/diff/compiled_parameters.py`
+- `quantumbridge/ir/qb_ir.py`
+- `quantumbridge/serialization/qpy.py`
+- `quantumbridge/serialization/qpy_expressions.py`
+- `quantumbridge/serialization/text_exporter.py`
+- `tests/core/test_native_parameter_identity_binding.py`
+- `tests/core/test_native_parameter_composition_math.py`
+- `tests/core/test_parameter_binding_resource_boundaries.py`
+- `tests/core/test_parameter_expression_api.py`
+- `tests/serialization/test_parameter_vector_qpy_identity.py`
+- `tests/serialization/test_semantic_boundaries.py`
+- `scripts/probe_parameterized_public_contracts.py`
+- `examples/native_parameterized_execution.py`
+- `docs/compat/stage12_b_p2_parameter_contracts.json`
+- `docs/implementation/stage12_b_p2_parameter_binding_progress.md`
+
+Stage 12-B P2 source port count remains zero. Literal public behavior records
+include an observed 2.4.1/2.6.0 phase-substitution difference, not a claim of
+identical public error/return ABI or complete Circuit/ParameterExpression parity.

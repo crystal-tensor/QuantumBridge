@@ -1,5 +1,24 @@
 # Core Functional Parity Ledger
 
+Stage 12-B P2 adds real scalar UUID identity, native ParameterVectorElement and
+stable resize/order, partial assignment and vector-key binding, composite formal
+parameters/full parameter_map with phase, and typed IR/QPY vector interchange.
+Managed copies and new vector containers use existing resource controls; actual
+H2 compiled-phase and vector loop-local regressions are repaired. Existing
+correct arithmetic/compose/inverse/power and derivative engines are reused.
+Final frozen runtime 742c5102 has SDK-free/main/alternate FULL results
+3628/4412/4410 passed, with skips and pre-existing xfails disclosed. Independent
+frameworks and original complete 28-section local matrix terminate; main/matrix
+per-file coverage agrees at 28268/31180 = 90.66067992302759%, excluded 68.
+Public two-version probes preserve phase-map, error/return ABI and observed
+mixed scalar/vector-root-name ordering differences, not whole-class parity.
+Seven subsets remain NOT_EXECUTED; known pip conflicts and separate dirty Router
+legal failure remain. Full ParameterExpression math API, Gate/to_gate/decompose/
+repeat, wider Circuit/Primitives/QNode/SDK and real hardware are unfinished.
+No Studio/Capture, push, vendor, tag/release or new-SHA remote CI is claimed.
+Highest core replacement stays ACTIVE / INCOMPLETE; C3 PARTIAL. See the
+[P2 report](../implementation/stage12_b_p2_parameter_binding_progress.md).
+
 Stage 12-B P1 connects native Circuit/Instruction inputs to Operator, Statevector
 and DensityMatrix construction, adds real from_instruction state entries and
 Instruction evolution, and fixes typed mixed-radix state-to-Operator conversion.

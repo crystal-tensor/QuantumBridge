@@ -9,6 +9,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from numbers import Real
 from typing import Any, Iterator, Mapping, Sequence, Union
+from uuid import NAMESPACE_URL, UUID, uuid4, uuid5
 
 
 @dataclass(frozen=True)
@@ -16,14 +17,17 @@ class Parameter:
     """Named scalar parameter used by QuantumBridge circuits."""
 
     name: str
-    uuid: str | None = field(default=None, compare=False, repr=False)
+    uuid: str | None = field(default=None, repr=False)
+    _uuid_explicit: bool = field(default=False, init=False, compare=False, repr=False)
 
     def __post_init__(self) -> None:
         if not isinstance(self.name, str) or not self.name:
             raise ValueError("QuantumBridge parameter names must be non-empty strings.")
-        if self.uuid is not None:
-            from uuid import UUID
-            object.__setattr__(self,"uuid",str(UUID(self.uuid)))
+        explicit=self.uuid is not None
+        if explicit and not isinstance(self.uuid,(str,UUID)):
+            raise TypeError("Parameter uuid must be a UUID or UUID string.")
+        object.__setattr__(self,"uuid",str(UUID(str(self.uuid))) if explicit else str(uuid4()))
+        object.__setattr__(self,"_uuid_explicit",explicit)
 
     def __repr__(self) -> str:
         return f"Parameter({self.name!r})"
@@ -192,13 +196,19 @@ class ParameterExpression:
 class ParameterVector(Sequence[Parameter]):
     """Ordered vector of scalar parameters."""
 
-    def __init__(self, name: str, length: int) -> None:
+    def __init__(self, name: str, length: int = 0) -> None:
         if not isinstance(name, str) or not name:
             raise ValueError("QuantumBridge parameter vector names must be non-empty strings.")
-        if not isinstance(length, int) or length < 0:
-            raise ValueError("QuantumBridge parameter vector length cannot be negative.")
         self.name = name
-        self._params = tuple(Parameter(f"{name}[{index}]") for index in range(length))
+        self._root_uuid = str(uuid4())
+        self._params = ()
+        self.resize(length)
+
+    def resize(self, length: int) -> None:
+        if not isinstance(length,int) or length<0:
+            raise ValueError("QuantumBridge parameter vector length must be a nonnegative integer.")
+        prefix=self._params[:length]
+        self._params=prefix+tuple(ParameterVectorElement(self,index) for index in range(len(prefix),length))
 
     def __getitem__(self, index):
         return self._params[index]
@@ -215,6 +225,49 @@ class ParameterVector(Sequence[Parameter]):
     @property
     def params(self) -> tuple[Parameter, ...]:
         return self._params
+
+
+class ParameterVectorElement(Parameter):
+    """A scalar identity with stable vector position, including after resize."""
+
+    def __init__(self, vector: ParameterVector, index: int, uuid=None):
+        if not isinstance(vector,ParameterVector) or not isinstance(index,int) or index<0:
+            raise ValueError("ParameterVectorElement requires a vector and nonnegative index.")
+        identity=uuid if uuid is not None else UUID(int=(UUID(vector._root_uuid).int+index)%(1<<128))
+        super().__init__(f"{vector.name}[{index}]",str(identity))
+        object.__setattr__(self,"_uuid_explicit",uuid is not None)
+        object.__setattr__(self,"_vector",vector)
+        object.__setattr__(self,"_vector_name",vector.name)
+        object.__setattr__(self,"_index",index)
+
+    @property
+    def vector(self) -> ParameterVector:
+        return self._vector
+
+    @property
+    def index(self) -> int:
+        return self._index
+
+
+def parameter_sort_key(parameter):
+    if isinstance(parameter,ParameterVectorElement):
+        return (parameter._vector_name,1,parameter.index)
+    return (parameter.name,0,0)
+
+
+def validate_parameter_names(parameters):
+    names={}
+    for parameter in parameters:
+        previous=names.setdefault(parameter.name,parameter)
+        if previous!=parameter:
+            raise ValueError(f"Conflicting identities for parameter name {parameter.name!r}.")
+
+
+def legacy_parameter(name):
+    # Older native IR stored only a name; it cannot recover separate identities.
+    parameter=Parameter(name,str(uuid5(NAMESPACE_URL,"quantumbridge:parameter:"+name)))
+    object.__setattr__(parameter,"_uuid_explicit",False)
+    return parameter
 
 
 ParameterValue = Union[Real, Parameter, ParameterExpression]

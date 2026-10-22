@@ -7,6 +7,6 @@
 from .circuit import Circuit
 from .measurements import Measurement
 from .operations import Instruction, Operation
-from .parameters import Parameter, ParameterExpression, ParameterVector
+from .parameters import Parameter, ParameterExpression, ParameterVector, ParameterVectorElement
 
-__all__ = ["Circuit", "Instruction", "Measurement", "Operation", "Parameter", "ParameterExpression", "ParameterVector"]
+__all__ = ["Circuit", "Instruction", "Measurement", "Operation", "Parameter", "ParameterExpression", "ParameterVector", "ParameterVectorElement"]

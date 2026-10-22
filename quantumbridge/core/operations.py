@@ -7,7 +7,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any
 
 from .parameters import ParameterValue
@@ -35,14 +35,11 @@ class Instruction:
         object.__setattr__(self, "metadata", dict(self.metadata))
 
     def copy(self, name: str | None = None) -> "Instruction":
-        return Instruction(
-            name=name or self.name,
-            num_qubits=self.num_qubits,
-            num_bits=self.num_bits,
-            params=self.params,
-            definition=None if self.definition is None else self.definition.copy(),
-            metadata=deepcopy(self.metadata),
-        )
+        from quantumbridge.execution.array_ownership import native_configuration_copy
+        from quantumbridge.execution.resource_context import current_resources
+        copied = native_configuration_copy(self, category="native_instruction_copy",
+            strict=current_resources() is not None)
+        return replace(copied, name=name) if name else copied
 
     def inverse(self, name: str | None = None) -> "Instruction":
         if self.definition is not None:

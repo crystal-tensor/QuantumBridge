@@ -9,9 +9,8 @@ import struct
 from uuid import UUID, uuid5, NAMESPACE_URL
 from numbers import Real, Integral
 
-from quantumbridge.core import Circuit, Operation, Measurement, Parameter, ParameterExpression
+from quantumbridge.core import Circuit, Operation, Measurement, Parameter, ParameterExpression, ParameterVector, ParameterVectorElement
 from quantumbridge.core.control_flow import validate_control_flow
-from quantumbridge.compiler.traversal import append_item
 from .limits import SerializationLimits
 from .errors import SerializationError, FormatValidationError, UnsupportedFeature, UnsupportedVersion, ResourceLimitError
 from .common import read_input, write_output, register_specs, BoundedParts
@@ -43,6 +42,7 @@ class Reader:
         self.data, self.pos, self.limits, self.base = memoryview(data), 0, limits, base
         self.instructions = 0
         self.parameters = {}
+        self.vectors = {}
         self.depth,self.budget = depth,({"values":0} if budget is None else budget)
         self.bounded("max_nesting_depth",depth)
 
@@ -64,12 +64,39 @@ class Reader:
 
     def bounded(self,field,value): self.limits.check(field,value,format="qpy",version=13,offset=self.base+self.pos)
 
+    def parameter_vector(self):
+        name_size,length,identity,index=self.unpack("!HQ16sQ")
+        name=self.text(name_size)
+        if not name or not length or index>=length:self.error("Invalid parameter vector size or index.")
+        self.bounded("max_parameter_nodes",length)
+        identity=UUID(bytes=identity)
+        root=UUID(int=(identity.int-index)%(1<<128))
+        key=(name,str(root),length)
+        if key not in self.vectors:
+            count=self.budget.get("vector_elements",0)+length
+            self.bounded("max_parameter_nodes",count)
+            vector=ParameterVector(name)
+            vector._root_uuid=str(root)
+            vector.resize(length)
+            self.vectors[key]=vector
+            self.budget["vector_elements"]=count
+        value=self.vectors[key][index]
+        if value.name in self.parameters:
+            previous=self.parameters[value.name]
+            if type(previous) is not ParameterVectorElement or previous.uuid!=value.uuid:
+                self.error("Conflicting parameter vector identities.",UnsupportedFeature)
+            return previous
+        object.__setattr__(value,"_uuid_explicit",True)
+        self.parameters[value.name]=value
+        return value
+
     def value(self,kind,size):
         self.budget["values"] += 1
         self.bounded("max_parameter_nodes",self.budget["values"])
         start = self.base+self.pos
         sub = Reader(self.take(size),self.limits,start,self.depth+1,self.budget)
         sub.parameters = self.parameters
+        sub.vectors = self.vectors
         if kind == b"f":
             value, = sub.unpack("<d")
             if not math.isfinite(value): sub.error("Nonfinite numeric parameter.")
@@ -79,8 +106,9 @@ class Reader:
             name = sub.text(length)
             if not name: sub.error("Empty parameter name.")
             uid = str(UUID(bytes=uid))
-            if name in self.parameters and self.parameters[name].uuid != uid: sub.error("Distinct UUIDs sharing a parameter name are not representable.",UnsupportedFeature)
+            if name in self.parameters and (type(self.parameters[name]) is not Parameter or self.parameters[name].uuid != uid): sub.error("Distinct parameter identities sharing a name are not representable.",UnsupportedFeature)
             value = self.parameters.setdefault(name,Parameter(name,uid))
+        elif kind == b"v": value=sub.parameter_vector()
         elif kind == b"s": value = sub.text(size)
         elif kind == b"z": value = None
         elif kind == b"e":
@@ -92,6 +120,7 @@ class Reader:
 
     def circuit(self):
         self.parameters = {}
+        self.vectors = {}
         name_size,phase_type,phase_size,nq,nc,metadata_size,nreg,ninst,nvars = self.unpack(CIRCUIT_HEADER)
         for field,value in (("max_qubits",nq),("max_clbits",nc),("max_metadata_bytes",metadata_size),("max_registers",nreg),("max_instructions",ninst)):
             self.bounded(field,value)
@@ -157,7 +186,7 @@ class Reader:
             elif op_name == "barrier": circuit.barrier(*qargs)
             else:
                 operation = Operation(op_name,tuple(qargs[expected_controls:]),tuple(qargs[:expected_controls]),tuple(params),{"label":label} if label else {})
-                append_item(circuit,operation)
+                circuit.operations.append(operation)
             if label and op_name in {"measure","delay","barrier"}:
                 item = circuit.measurements[-1] if op_name == "measure" else circuit.operations[-1]
                 item.metadata["label"] = label
@@ -174,6 +203,12 @@ def _uid(parameter): return UUID(parameter.uuid) if parameter.uuid else uuid5(NA
 
 
 def _parameter_value(value,limits=None):
+    if isinstance(value,ParameterVectorElement):
+        vector=value.vector
+        if value.index>=len(vector):raise UnsupportedFeature("A QPY vector element index is outside its current vector.",format="qpy",version=13)
+        (limits or SerializationLimits()).check("max_parameter_nodes",len(vector),format="qpy",version=13)
+        name=vector.name.encode("utf-8")
+        return b"v",struct.pack("!HQ16sQ",len(name),len(vector),_uid(value).bytes,value.index)+name
     if isinstance(value,Parameter):
         name = value.name.encode("utf-8")
         return b"p",struct.pack("!H16s",len(name),_uid(value).bytes)+name
