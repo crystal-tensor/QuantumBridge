@@ -229,3 +229,38 @@ Public Instruction.control/power remain absent and are not missing APIs.
   or claim U3 complete merely because this supported checkpoint is green.
 - Existing unowned Router missing-ledger dirty-worktree failure is separate
   from controlled-source legal gates; never hide it with invented attribution.
+
+## Local Commit And Actually Read Continuation
+
+Implementation commit:a23c40e9030eb685c2f41fd5b4d1021db1ca9343 on local main,
+25 scoped paths. Its actual tree7a70ad0a10267d4f80b3e722221f7d09d122253c
+equals the audited staged tree. Separate snapshot-audit terminates0 and
+checks1146 actual frozen/worktree/stage runtime blobs. Runtime manifest
+SHA256:3cc539bafa1ac6c2d6a87a3abea228b0e173b7b6e7be254b54d04f1288a247e2.
+No protected path is staged; all five runtime subtrees match R2. The commit
+uses normal local history; the automatic Git identity/amend suggestion was
+not acted on. Cached origin/main showed0behind/46ahead at this implementation
+commit; that is not a fresh remote query or new-SHA remote CI verification.
+
+The final implementation report was sent to the owner-authorized ChatGPT
+conversation. Its complete rendered review and U3B sections0-11 were actually
+read in Chrome (virtualized items28-128 then0-100, with overlap and completed
+answer controls). It accepts this supported checkpoint based on the report,
+not independent unpushed-source or remote-CI inspection. It requests continued
+Instruction/Circuit ABI work, not U4 or full-project completion.
+
+The reply initially mislabeled three Instruction.repeat error tests as Circuit
+tests. Independent separate-repeat241/260 probes then each produced7 actual
+records/exit0: public Circuit.repeat(0/-1) returns empty Circuits;1.5 and2.0
+raise TypeError; True and NumPy integer inputs are accepted with their literal
+observed names. This differs from Instruction.repeat's CircuitError/integral
+float behavior. The evidence was sent back; the complete correction/table and
+completed-answer state were actually read at Chrome AX515-699. Corrected
+classification is7 Instruction plus3 Circuit red cases, still10 scenarios,
+not10 missing functions. No runtime code changed during this clarification.
+
+The corrected complete task is preserved in
+stage12_b_p4u3b_instruction_circuit_abi_execution_prompt.md. It is a received
+continuation, not completed implementation. GLOBAL baseline for future runtime
+changes is91.20221639305609%, exclusions68. This documentary follow-up does
+not alter the tested production/tests/examples/scripts/requirements runtime.
