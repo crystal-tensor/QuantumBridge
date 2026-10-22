@@ -1,6 +1,6 @@
 # Copyright 2026 QuantumBridge Contributors.
 # Licensed under the Apache License, Version 2.0.
-"""SDK-free deferred binding, ordered open controls and lossless native IR."""
+"""SDK-free deferred binding, open controls and real native QPY v13."""
 
 import numpy as np
 
@@ -8,6 +8,7 @@ from quantumbridge import AnnotatedOperation, Circuit, ControlModifier, Paramete
 from quantumbridge.compat.qiskit_adapter import circuit_from_ir
 from quantumbridge.information import Operator, Statevector
 from quantumbridge.ir.qb_ir import IRProgram
+from quantumbridge.serialization import qpy_dumps, qpy_loads
 
 
 def main():
@@ -17,6 +18,8 @@ def main():
     operation = AnnotatedOperation(body.to_gate(), ControlModifier(1, 0))
     source = Circuit(2).append(operation, [0, 1])
     restored = circuit_from_ir(IRProgram.from_json(source.to_ir().to_json()))
+    restored = qpy_loads(qpy_dumps(restored))[0]
+    assert type(restored.operations[0].metadata["annotated_operation"]) is AnnotatedOperation
     assert restored.parameters == (p,)
     bound = restored.assign_parameters({p: .4})
     expected = np.eye(4, dtype=complex)
@@ -24,7 +27,7 @@ def main():
     np.testing.assert_allclose(Operator(bound).data, expected, atol=2e-13)
     gate = resolve_annotated_operation(operation.assign_parameters({p: .4}))
     np.testing.assert_allclose(Statevector(gate).data, expected[:, 0], atol=2e-13)
-    print("Native annotation, UUID binding, open controlled phase and IR mathematics passed.")
+    print("Native annotation, UUID binding, open controlled phase and IR/QPY mathematics passed.")
 
 
 if __name__ == "__main__": main()

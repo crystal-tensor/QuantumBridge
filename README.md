@@ -18,9 +18,19 @@ resolution through the existing Gate/compiler/device/gradient engine. Native
 IR keeps unresolved structure; `standard_gate_definition` and
 `standard_gate_object` expose 31 phase-exact native standard recipes. These
 builders are not public Qiskit standard-gate subclasses or their mutable ABI.
-QASM and our QPY subset reject unresolved annotations; explicitly resolving
-to a Gate changes the object structure. QPY's published annotation records
-are not yet implemented by our codec. SDK-free numeric demonstrations are
+QASM rejects unresolved annotations; explicitly resolving to a Gate changes
+the object structure. P4-U1 now implements standard QPY v13 `a`/`m` binary
+records for supported unitary annotations, including nested/ordered modifiers,
+open controls, custom/standard bases, symbolic base parameters and phase.
+This is independent native code, not an upstream SDK serialization wrapper.
+Symbolic modifier powers are unsupported: v13 stores the exponent as float64.
+Public Qiskit 2.4.1 and 2.6.0 themselves lose the enclosing circuit parameter
+index on v13 annotation reload; object parameters survive, but this is an
+explicit unresolved public binding ABI gap, not claimed lossless interop.
+Standalone custom Instruction records, nonunitary bases, arbitrary object
+metadata and unsupported labels still reject. Mutable params, dedicated
+standard return classes and full original P4 acceptance remain unfinished.
+SDK-free numeric demonstrations are
 `examples/native_annotated_gate.py`, `examples/native_gate_modifier_gradient.py`
 and `examples/native_standard_gate_decomposition.py`. P4-T/P4 and full SDK
 replacement remain incomplete; tests are not a percentage of feature parity.

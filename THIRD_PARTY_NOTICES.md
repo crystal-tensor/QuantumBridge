@@ -21,7 +21,12 @@ format documentation inform behavior and explicit unsupported boundaries;
 installed Qiskit 2.4.1/2.6.0 public calls are optional black-box comparisons.
 No upstream source/tests, new quantum runtime or vendor artifacts are added.
 Native execution and SDK-free examples do not import the upstream SDKs.
-Published QPY annotation records remain unimplemented, not a format limitation.
+P4-U1 independently adds supported QPY v13 `a` annotation / `m` modifier
+binary records in the existing codec. Published IBM record layouts and real
+public dump/load calls are the protocol/behavior references, not copied
+implementation or test source. Unsupported symbolic modifier powers reflect
+v13's float64 field; public v13 circuit parameter-index loss is separately
+reproduced on both public releases and is not presented as repaired.
 
 Status: Stage 11P-C3 work in progress; C2A committed
 Date: 2026-10-21

@@ -6,10 +6,11 @@ import io
 import json
 import math
 import struct
+from dataclasses import dataclass
 from uuid import UUID, uuid5, NAMESPACE_URL
 from numbers import Real, Integral
 
-from quantumbridge.core import Circuit, Operation, Measurement, Parameter, ParameterExpression, ParameterVector, ParameterVectorElement
+from quantumbridge.core import Circuit, Instruction, Operation, Measurement, Parameter, ParameterExpression, ParameterVector, ParameterVectorElement
 from quantumbridge.core.control_flow import validate_control_flow
 from .limits import SerializationLimits
 from .errors import SerializationError, FormatValidationError, UnsupportedFeature, UnsupportedVersion, ResourceLimitError
@@ -23,6 +24,7 @@ INSTRUCTION = struct.Struct("!HHHIIBHqII")
 VALUE = struct.Struct("!cQ")
 LAYOUT = struct.Struct("!ciiiIi")
 CUSTOM_INSTRUCTION = struct.Struct("!HcII?QIIQ")
+MODIFIER = struct.Struct("!cIId")
 OPS = {"id":("IGate",1,0), "x":("XGate",1,0), "y":("YGate",1,0), "z":("ZGate",1,0),
        "h":("HGate",1,0), "s":("SGate",1,0), "sdg":("SdgGate",1,0), "t":("TGate",1,0),
        "tdg":("TdgGate",1,0), "sx":("SXGate",1,0), "sxdg":("SXdgGate",1,0),
@@ -36,6 +38,19 @@ OPS = {"id":("IGate",1,0), "x":("XGate",1,0), "y":("YGate",1,0), "z":("ZGate",1,
        "reset":("Reset",1,0), "measure":("Measure",1,0), "barrier":("Barrier",None,0), "delay":("Delay",1,1)}
 NAMES = {value[0]:name for name,value in OPS.items()}
 CONTROLS = {"cx":1,"cy":1,"cz":1,"ch":1,"crx":1,"cry":1,"crz":1,"cp":1,"ccx":2,"cswap":1}
+CONTROL_BASES = {"cx":"x", "cy":"y", "cz":"z", "ch":"h", "crx":"rx", "cry":"ry", "crz":"rz", "cp":"phase", "ccx":"x", "cswap":"swap"}
+
+
+@dataclass(frozen=True)
+class _CustomRecord:
+    name: str
+    width: int
+    kind: bytes
+    definition: object
+    controls: int
+    state: int
+    base: object
+    payload_depth: int
 
 
 class Reader:
@@ -45,6 +60,7 @@ class Reader:
         self.parameters = {}
         self.vectors = {}
         self.depth,self.budget = depth,({"values":0} if budget is None else budget)
+        self.max_depth = depth
         self.bounded("max_nesting_depth",depth)
 
     def error(self,reason,cls=FormatValidationError):
@@ -77,11 +93,46 @@ class Reader:
         if self.pos != len(self.data): self.error("Trailing bytes in custom base instruction.")
         return name,label,params,nq,nctrl,state
 
-    def custom_gate(self,key,params,label,table,ancestors=()):
+    def base_operation(self,description,table,ancestors):
+        from quantumbridge.core.gates import Gate, ControlledGate
+        key,label,params,width,nctrl,state = description
+        if key in table:
+            record = table[key]
+            if width != record.width or (nctrl,state) != (record.controls,record.state):
+                self.error("Custom base operation header differs from its referenced definition.")
+            return self.custom_operation(key,params,label,table,ancestors)
+        if key not in NAMES: self.error("Unresolved custom base operation reference.",UnsupportedFeature)
+        name = NAMES[key]
+        if OPS[name][1:] != (width,len(params)) or nctrl != CONTROLS.get(name,0) or state >= 1<<nctrl:
+            self.error("Standard base operation signature differs from its header.")
+        if name in {"reset","measure","barrier","delay"}:
+            self.error("Nonunitary or directive annotation bases are not native unitary operations.",UnsupportedFeature)
+        if nctrl:
+            base_name = CONTROL_BASES[name]
+            base_width = width-nctrl
+            body = Circuit(base_width).append(base_name,range(base_width),params=params)
+            result = ControlledGate(Gate(base_name,base_width,params,definition=body),nctrl,state,label or None)
+            result.name = name+("_o"+str(state) if state != (1<<nctrl)-1 else "")
+            return result
+        body = Circuit(width).append(name,range(width),params=params)
+        return Gate(name,width,params,label or None,definition=body)
+
+    def custom_operation(self,key,params,label,table,ancestors=()):
         from quantumbridge.core.gates import Gate, ControlledGate, validate_definition
         if key in ancestors: self.error("Cyclic custom base-gate reference.")
-        self.bounded("max_nesting_depth",self.depth+len(ancestors))
-        display,width,definition,nctrl,state,base = table[key]
+        record = table[key]
+        self.bounded("max_nesting_depth",self.depth+len(ancestors)+record.payload_depth)
+        display,width,definition,nctrl,state,base = (record.name,record.width,record.definition,record.controls,record.state,record.base)
+        if record.kind == b"a":
+            from quantumbridge.core.annotated_operation import AnnotatedOperation, InverseModifier, ControlModifier, PowerModifier
+            if label: self.error("Annotation labels are not represented by the native operation protocol.",UnsupportedFeature)
+            if any(type(value) not in (InverseModifier,ControlModifier,PowerModifier) for value in params):
+                self.error("An annotated invocation requires typed Modifier parameters.")
+            self.budget["expanded"] = self.budget.get("expanded",0)+1+len(params)
+            self.bounded("max_gate_expansion",self.budget["expanded"])
+            result = AnnotatedOperation(self.base_operation(base,table,(*ancestors,key)),list(params))
+            if result.num_qubits != width: self.error("Annotation modifier widths disagree with its definition header.")
+            return result
         self.budget["expanded"] = self.budget.get("expanded",0)+validate_definition(definition)
         self.bounded("max_gate_expansion",self.budget["expanded"])
         formal = definition.parameters
@@ -89,21 +140,14 @@ class Reader:
         if not set(formal) <= set(parameter_set(params)):
             if len(formal) != len(params): self.error("Custom Gate formal parameter mapping is ambiguous.",UnsupportedFeature)
             definition = definition.assign_parameters(dict(zip(formal,params)))
+        if record.kind == b"i":
+            if label: self.error("Instruction labels are not represented by the native base Instruction protocol.",UnsupportedFeature)
+            metadata = dict(definition.metadata)
+            metadata.setdefault("definition_name",definition.name)
+            return Instruction(display,width,params=params,definition=definition,metadata=metadata)
         if base is None: return Gate(display,width,params,label or None,definition=definition)
-        base_key,base_label,base_params,base_width,base_ctrl,base_state = base
-        if base_key in table:
-            expected = table[base_key]
-            if base_width != expected[1] or (base_ctrl,base_state) != expected[3:5]:
-                self.error("Custom base-gate header differs from its referenced definition.")
-            base_gate = self.custom_gate(base_key,base_params,base_label,table,(*ancestors,key))
-        elif base_key in NAMES:
-            op_name = NAMES[base_key]
-            if OPS[op_name][1:] != (base_width,len(base_params)) or base_ctrl != CONTROLS.get(op_name,0) or base_state != (1<<base_ctrl)-1:
-                self.error("Standard base-gate signature differs from its header.")
-            body = Circuit(base_width)
-            body.operations.append(Operation(op_name,tuple(range(base_ctrl,base_width)),tuple(range(base_ctrl)),base_params))
-            base_gate = Gate(op_name,base_width,base_params,base_label or None,definition=body)
-        else: self.error("Unresolved custom base-gate reference.",UnsupportedFeature)
+        base_gate = self.base_operation(base,table,(*ancestors,key))
+        if not isinstance(base_gate,Gate): self.error("A ControlledGate base record must represent a Gate.")
         if base_gate.num_qubits+nctrl != width or base_gate.params != tuple(params):
             self.error("Controlled custom Gate base width/parameters differ from its header.")
         result = ControlledGate(base_gate,nctrl,state,label or None)
@@ -168,8 +212,22 @@ class Reader:
         elif kind == b"e":
             from .qpy_expressions import read_expression
             value = read_expression(sub)
+        elif kind == b"m":
+            from quantumbridge.core.annotated_operation import InverseModifier, ControlModifier, PowerModifier
+            modifier,nctrl,state,power = sub.unpack(MODIFIER)
+            self.budget["modifiers"] = self.budget.get("modifiers",0)+1
+            self.bounded("max_gate_expansion",self.budget["modifiers"])
+            if modifier == b"i": value = InverseModifier()
+            elif modifier == b"c":
+                sub.bounded("max_qubits",nctrl)
+                value = ControlModifier(nctrl,state)
+            elif modifier == b"p":
+                if not math.isfinite(power): sub.error("A modifier power must be finite.")
+                value = PowerModifier(power)
+            else: sub.error("Unknown QPY modifier type.",UnsupportedFeature)
         else: sub.error(f"Unsupported parameter type {kind!r}.",UnsupportedFeature)
         if sub.pos != len(sub.data): sub.error("Invalid parameter payload size.")
+        self.max_depth = max(self.max_depth,sub.max_depth)
         return value
 
     def circuit(self):
@@ -218,43 +276,55 @@ class Reader:
             self.bounded("max_clbits",clbits)
             key = self.text(size)
             if not key or key in custom or key in NAMES: self.error("Conflicting QPY custom definition identifier.")
-            if kind not in {b"g",b"c"} or clbits or (kind == b"g" and (nctrl or state or base_size)):
+            if kind not in {b"g",b"c",b"a",b"i"} or clbits:
                 self.error("This QPY custom record type/control payload is not implemented.",UnsupportedFeature)
+            if kind in {b"g",b"i"} and (nctrl or state or base_size):
+                self.error("A non-controlled definition contains coherent control fields.")
             if kind == b"c" and (not 0 < nctrl < width or state >= 1<<nctrl or not base_size):
                 self.error("Invalid custom ControlledGate control fields.")
-            if not has_definition or not payload_size:
-                self.error("Opaque custom QPY Gate definitions are not executable.",UnsupportedFeature)
-            offset = self.base+self.pos
-            sub = Reader(self.take(payload_size),self.limits,offset,self.depth+1,self.budget)
-            definition = sub.circuit()
-            if sub.pos != len(sub.data): sub.error("Trailing bytes in QPY custom definition.")
-            if definition.num_qubits != width or definition.num_bits:
-                self.error("Custom Gate definition width differs from its header.")
-            from quantumbridge.core.gates import validate_definition
-            validate_definition(definition)
+            definition,payload_depth = None,0
+            if kind == b"a":
+                if has_definition or payload_size or nctrl or state or not base_size:
+                    self.error("An annotation requires a base-operation payload, not a synthesized Gate definition.")
+            else:
+                if not has_definition or not payload_size:
+                    self.error("Opaque custom QPY definitions are not executable.",UnsupportedFeature)
+                offset = self.base+self.pos
+                sub = Reader(self.take(payload_size),self.limits,offset,self.depth+1,self.budget)
+                definition = sub.circuit()
+                if sub.pos != len(sub.data): sub.error("Trailing bytes in QPY custom definition.")
+                if definition.num_qubits != width or definition.num_bits:
+                    self.error("Custom Gate definition width differs from its header.")
+                from quantumbridge.core.gates import validate_definition
+                validate_definition(definition)
+                payload_depth = sub.max_depth-self.depth
+                self.max_depth = max(self.max_depth,sub.max_depth)
             # Public v13 uses a UUID suffix for the serialization-local key;
             # it is not part of the user's Gate name.
             display, separator, suffix = key.rpartition("_")
             try: is_uuid = separator and len(suffix) in (32,36) and UUID(suffix)
             except ValueError: is_uuid = False
             display = display if is_uuid else key
+            if kind == b"a" and display != "annotated": self.error("Nonstandard annotation display name.")
             base = None
             if base_size:
                 offset = self.base+self.pos
                 sub = Reader(self.take(base_size),self.limits,offset,self.depth+1,self.budget)
                 sub.parameters,sub.vectors = self.parameters,self.vectors
                 base = sub.base_instruction()
-            custom[key] = (display,width,definition,nctrl,state,base)
+                payload_depth = max(payload_depth,sub.max_depth-self.depth)
+                self.max_depth = max(self.max_depth,sub.max_depth)
+            custom[key] = _CustomRecord(display,width,kind,definition,nctrl,state,base,payload_depth)
         for key in custom:
             seen = set()
             current = key
-            while current in custom and custom[current][5] is not None:
+            while current in custom and custom[current].base is not None:
                 if current in seen: self.error("Cyclic custom base-gate reference.")
                 seen.add(current)
                 self.budget["references"] = self.budget.get("references",0)+1
                 self.bounded("max_gate_expansion",self.budget["references"])
                 self.bounded("max_nesting_depth",self.depth+len(seen))
-                current = custom[current][5][0]
+                current = custom[current].base[0]
             if current not in custom and current not in NAMES:
                 self.error("Unresolved custom base-gate reference.",UnsupportedFeature)
         circuit = Circuit(nq,nc,name,metadata)
@@ -278,9 +348,11 @@ class Reader:
             params = [self.value(*self.unpack(VALUE)) for _ in range(nparams)]
             if class_name in custom:
                 record = custom[class_name]
-                if nqargs != record[1] or ncargs or (nctrl,ctrl_state) != record[3:5]:
+                if nqargs != record.width or ncargs or (nctrl,ctrl_state) != (record.controls,record.state):
                     self.error("QPY custom Gate invocation differs from its definition.")
-                circuit.append(self.custom_gate(class_name,tuple(params),label,custom),qargs)
+                if record.kind == b"i":
+                    self.error("Standalone custom Instruction records cannot be preserved without native eager flattening.",UnsupportedFeature)
+                circuit.append(self.custom_operation(class_name,tuple(params),label,custom),qargs)
                 continue
             expected = OPS[op_name]
             if (expected[1] is not None and nqargs != expected[1]) or nparams != expected[2] or ncargs != int(op_name == "measure"):
@@ -329,6 +401,54 @@ def _parameter_value(value,limits=None):
     if isinstance(value,Real) and math.isfinite(value): return b"f",struct.pack("<d",float(value))
     if isinstance(value,str): return b"s",value.encode("utf-8")
     raise UnsupportedFeature("Unsupported QPY parameter value.",format="qpy",version=13)
+
+
+def _modifier_value(value,limits,budget):
+    from quantumbridge.core.annotated_operation import InverseModifier, ControlModifier, PowerModifier
+    from quantumbridge.core.parameters import parameter_set, resolve_parameter
+    budget["modifiers"] = budget.get("modifiers",0)+1
+    limits.check("max_gate_expansion",budget["modifiers"],format="qpy",version=13)
+    if type(value) is InverseModifier: payload = MODIFIER.pack(b"i",0,0,0.)
+    elif type(value) is ControlModifier:
+        checked = ControlModifier(value.num_ctrl_qubits,value.ctrl_state)
+        payload = MODIFIER.pack(b"c",checked.num_ctrl_qubits,checked.ctrl_state,0.)
+    elif type(value) is PowerModifier:
+        PowerModifier(value.power)
+        if parameter_set((value.power,)):
+            raise UnsupportedFeature("QPY v13 Modifier power is a float64 field, not a symbolic expression record.",format="qpy",version=13)
+        power = resolve_parameter(value.power,{})
+        if float(power) != power:
+            raise UnsupportedFeature("This modifier power is not exactly representable as QPY float64.",format="qpy",version=13)
+        payload = MODIFIER.pack(b"p",0,0,float(power))
+    else: raise UnsupportedFeature("An annotation requires native typed modifiers.",format="qpy",version=13)
+    return b"m",payload
+
+
+def _object_parameters(operation):
+    from quantumbridge.core.annotated_operation import AnnotatedOperation
+    return operation.modifiers if type(operation) is AnnotatedOperation else operation.params
+
+
+def _object_control_fields(operation,key):
+    from quantumbridge.core.gates import ControlledGate
+    if type(operation) is ControlledGate: return operation.num_ctrl_qubits,operation.ctrl_state
+    if key.decode() in NAMES:
+        count = CONTROLS.get(NAMES[key.decode()],0)
+        return count,(1<<count)-1
+    return 0,0
+
+
+def _base_instruction_payload(operation,key,limits,budget):
+    from quantumbridge.core.annotated_operation import AnnotatedOperation
+    params = _object_parameters(operation)
+    label = (getattr(operation,"label",None) or "").encode()
+    nctrl,state = _object_control_fields(operation,key)
+    data = BoundedParts(limits,"qpy")
+    data.extend((INSTRUCTION.pack(len(key),len(label),len(params),operation.num_qubits,0,0,0,0,nctrl,state),key,label))
+    for value in params:
+        kind,payload = _modifier_value(value,limits,budget) if type(operation) is AnnotatedOperation else _parameter_value(value,limits)
+        data.extend((VALUE.pack(kind,len(payload)),payload))
+    return b"".join(data)
 
 
 def _circuit_bytes(circuit,limits,*,_budget=None,_depth=0,_path="root"):
@@ -384,67 +504,92 @@ def _circuit_bytes(circuit,limits,*,_budget=None,_depth=0,_path="root"):
         parts.extend([REGISTER.pack(spec["kind"].encode(),True,len(spec["bits"]),len(reg_name),True),reg_name,struct.pack("!"+"q"*len(spec["bits"]),*spec["bits"])])
     custom,records = {},[]
     from quantumbridge.core.gates import Gate, ControlledGate, validate_definition
-    def register_gate(gate,path):
-        if type(gate) not in (Gate,ControlledGate) or gate.definition is None or gate.metadata:
-            raise UnsupportedFeature("QPY custom Gate records require a native executable definition without opaque Gate metadata.",format="qpy",version=13)
-        validate_definition(gate.definition,owner=gate)
+    from quantumbridge.core.annotated_operation import AnnotatedOperation, validate_annotated_operation
+    def register_operation(operation,path,depth,ancestors=(),primitive_base=False):
+        limits.check("max_nesting_depth",depth,format="qpy",version=13)
+        if id(operation) in ancestors: raise FormatValidationError("Cyclic custom operation base graph.",format="qpy",version=13)
+        if type(operation) is AnnotatedOperation:
+            validate_annotated_operation(operation)
+            work = 1+len(operation.modifiers)
+            kind = b"a"
+        elif type(operation) in (Gate,ControlledGate,Instruction):
+            metadata = dict(operation.metadata)
+            if type(operation) is Instruction and operation.definition is not None:
+                # to_instruction duplicates circuit metadata and its name.
+                # The definition record already transports those fields;
+                # unrelated per-object metadata still cannot be discarded.
+                expected = dict(operation.definition.metadata)
+                expected.setdefault("definition_name",operation.definition.name)
+                metadata = {key:value for key,value in metadata.items()
+                    if key not in expected or value != expected[key]}
+            if operation.num_bits or metadata:
+                raise UnsupportedFeature("QPY unitary base records cannot carry classical bits or opaque object metadata.",format="qpy",version=13)
+            if operation.definition is None:
+                if primitive_base and type(operation) is Gate and operation.name in OPS:
+                    if OPS[operation.name][1:] != (operation.num_qubits,len(operation.params)):
+                        raise FormatValidationError("Primitive base signature differs from its operation.",format="qpy",version=13)
+                    from quantumbridge.circuit_library import standard_gate
+                    validate_definition(standard_gate(operation.name,*operation.params))
+                    return OPS[operation.name][0].encode()
+                raise UnsupportedFeature("A custom Gate/Instruction QPY base needs an executable definition.",format="qpy",version=13)
+            work = validate_definition(operation.definition,owner=operation)
+            kind = b"c" if type(operation) is ControlledGate else b"i" if type(operation) is Instruction else b"g"
+        else: raise UnsupportedFeature("Only native unitary operation objects have QPY custom records.",format="qpy",version=13)
+        budget["expanded"] = budget.get("expanded",0)+work
+        limits.check("max_gate_expansion",budget["expanded"],format="qpy",version=13)
         budget["definitions"] = budget.get("definitions",0)+1
         limits.check("max_custom_definitions",budget["definitions"],format="qpy",version=13)
-        local_name = (gate.name+"_"+uuid5(NAMESPACE_URL,"quantumbridge:qpy13:"+path).hex).encode()
+        local_name = (operation.name+"_"+uuid5(NAMESPACE_URL,"quantumbridge:qpy13:"+path).hex).encode()
         base_key = None
-        if type(gate) is ControlledGate:
-            limits.check("max_nesting_depth",_depth+path.count("/base"),format="qpy",version=13)
-            base = gate.base_gate
-            if base.definition is None:
-                raise UnsupportedFeature("Opaque controlled base-gate QPY records are not implemented.",format="qpy",version=13)
-            base_key = register_gate(base,path+"/base")
-        records.append((local_name,gate,base_key))
+        if kind in {b"a",b"c"}:
+            base = operation.base_op if kind == b"a" else operation.base_gate
+            base_key = register_operation(base,path+"/base",depth+1,(*ancestors,id(operation)),primitive_base=True)
+        records.append((local_name,operation,base_key,kind,depth))
         return local_name
     for index,item in enumerate(items):
-        gate = item.metadata.get("gate")
-        if gate is None: continue
-        custom[index] = (register_gate(gate,_path+":"+str(index)),gate)
+        gate,annotation = item.metadata.get("gate"),item.metadata.get("annotated_operation")
+        if gate is not None and annotation is not None:
+            raise FormatValidationError("One invocation cannot be both a Gate and annotation.",format="qpy",version=13)
+        operation = annotation if annotation is not None else gate
+        if operation is None: continue
+        custom[index] = (register_operation(operation,_path+":"+str(index),_depth),operation)
     parts.append(struct.pack("!Q",len(records)))
-    for local_name,gate,base_key in records:
-        controlled = type(gate) is ControlledGate
-        body = gate.definition
+    for local_name,operation,base_key,kind,depth in records:
+        controlled,annotated = kind == b"c",kind == b"a"
+        body = None if annotated else operation.definition
         nctrl,state,base_payload = 0,0,b""
         if controlled:
-            nctrl,state = gate.num_ctrl_qubits,gate.ctrl_state
-            closed = Circuit(gate.num_qubits)
+            nctrl,state = operation.num_ctrl_qubits,operation.ctrl_state
+            closed = Circuit(operation.num_qubits)
             opened = [wire for wire in range(nctrl) if not (state>>wire)&1]
             for wire in opened: closed.x(wire)
             body = closed.compose(body)
             for wire in reversed(opened): body.x(wire)
-            base = gate.base_gate
-            base_label = (base.label or "").encode()
-            base_ctrl = base.num_ctrl_qubits if type(base) is ControlledGate else 0
-            base_state = base.ctrl_state if type(base) is ControlledGate else 0
-            data = BoundedParts(limits,"qpy")
-            data.extend((INSTRUCTION.pack(len(base_key),len(base_label),len(base.params),base.num_qubits,0,0,0,0,base_ctrl,base_state),base_key,base_label))
-            for value in base.params:
-                kind,payload = _parameter_value(value,limits)
-                data.extend((VALUE.pack(kind,len(payload)),payload))
-            base_payload = b"".join(data)
-        definition = _circuit_bytes(body,limits,_budget=budget,_depth=_depth+1,_path=local_name.decode())
-        parts.extend((CUSTOM_INSTRUCTION.pack(len(local_name),b"c" if controlled else b"g",gate.num_qubits,0,True,len(definition),nctrl,state,len(base_payload)),local_name,definition,base_payload))
+        if controlled or annotated:
+            base = operation.base_op if annotated else operation.base_gate
+            base_payload = _base_instruction_payload(base,base_key,limits,budget)
+        definition = b"" if annotated else _circuit_bytes(body,limits,_budget=budget,_depth=depth+1,_path=local_name.decode())
+        parts.extend((CUSTOM_INSTRUCTION.pack(len(local_name),kind,operation.num_qubits,0,not annotated,len(definition),nctrl,state,len(base_payload)),local_name,definition,base_payload))
     for index,item in enumerate(items):
         if isinstance(item,Measurement) and item.kind != "computational":
             raise UnsupportedFeature("Only computational-basis measurement has a supported QPY instruction.",format="qpy",version=13)
         op_name = "measure" if isinstance(item,Measurement) else item.name
         if index in custom:
-            class_name,gate = custom[index]
-            if item.controls or len(item.targets) != gate.num_qubits or item.params != gate.params:
+            class_name,operation = custom[index]
+            annotated = type(operation) is AnnotatedOperation
+            if item.name != operation.name or item.controls or len(item.targets) != operation.num_qubits or item.params != operation.params:
                 raise FormatValidationError("Custom Gate invocation and definition disagree.",format="qpy",version=13)
-            if set(item.metadata)-{"gate","label","operation_index"}:
+            allowed = {"annotated_operation","operation_index"} if annotated else {"gate","label","operation_index"}
+            if set(item.metadata)-allowed:
                 raise UnsupportedFeature("Custom Gate instruction metadata is not representable in QPY v13.",format="qpy",version=13)
             label = item.metadata.get("label","").encode()
-            ctrl = gate.num_ctrl_qubits if type(gate) is ControlledGate else 0
-            state = gate.ctrl_state if type(gate) is ControlledGate else 0
-            parts.extend((INSTRUCTION.pack(len(class_name),len(label),len(gate.params),gate.num_qubits,0,0,0,0,ctrl,state),class_name,label))
+            ctrl = operation.num_ctrl_qubits if type(operation) is ControlledGate else 0
+            state = operation.ctrl_state if type(operation) is ControlledGate else 0
+            params = _object_parameters(operation)
+            parts.extend((INSTRUCTION.pack(len(class_name),len(label),len(params),operation.num_qubits,0,0,0,0,ctrl,state),class_name,label))
             parts.extend(struct.pack("!cI",b"q",wire) for wire in item.targets)
-            for value in gate.params:
-                kind,payload = _parameter_value(value,limits)
+            for value in params:
+                kind,payload = _modifier_value(value,limits,budget) if annotated else _parameter_value(value,limits)
                 parts.extend((VALUE.pack(kind,len(payload)),payload))
             continue
         if op_name not in OPS or any(key in item.metadata for key in ("condition","gate_condition","control_flow_stack","control_flow","control_node","matrix","kraus")):

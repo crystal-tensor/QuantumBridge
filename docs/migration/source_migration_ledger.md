@@ -1,5 +1,24 @@
 # Source Migration Ledger
 
+## Stage 12-B P4-U1 Native Annotation Binary Interchange In Progress
+
+Independent Native Implementation: `quantumbridge/serialization/qpy.py`.
+Independent verification: `tests/serialization/test_native_annotated_interchange.py`.
+Updated SDK-free examples: `examples/native_annotated_gate.py`,
+`examples/native_gate_modifier_gradient.py`.
+Native standard QPY v13 annotation and typed modifier records reuse existing
+Circuit/Gate/Instruction, parameter-expression replay, compiler and quantum
+derivative engines. Published layouts at
+https://quantum.cloud.ibm.com/docs/en/api/qiskit/qpy and installed public
+Qiskit 2.4.1/2.6.0 APIs are black-box format/behavior references only.
+No upstream source/tests, SDK packages, environments, binaries or credentials
+are copied; source ports remain zero. Independent complex matrices, symbolic
+calculus, malformed bytes, aggregate limits and non-dense MPS checks are newly
+authored native tests. The public producer/consumer parameter-index defect
+is retained as strict expected failures, not hidden by reappend-based binding
+tests. This is not complete P4-U/P4 or full SDK parity. User Router/Studio
+changes remain excluded and are not given invented attribution.
+
 ## Stage 12-B P4-T Native Annotation And Standard Definitions In Progress
 
 Independent Native Implementation: `quantumbridge/core/annotated_operation.py`,
@@ -22,7 +41,8 @@ https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.circuit.AnnotatedOperati
 https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.circuit.Gate and
 https://quantum.cloud.ibm.com/docs/en/api/qiskit/qpy.
 The latter documents standard annotation support starting in QPY v11; native
-v13 annotation records are deliberately still unsupported in this batch.
+v13 annotation records were unsupported at the P4-T checkpoint; P4-U1's
+later independently tested subset is described above.
 No upstream source, tests, cloud data, credentials, package binaries or
 environments are copied. Source ports remain zero. This is not complete
 P4-T/P4 acceptance or full Qiskit/PennyLane parity. User Router remains outside
