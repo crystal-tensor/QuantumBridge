@@ -78,6 +78,9 @@ class Circuit:
         metadata: Optional[Mapping[str, Any]] = None,
         clbits: Optional[Sequence[int]] = None,
     ) -> "Circuit":
+        from .annotated_operation import AnnotatedOperation
+        if isinstance(name, AnnotatedOperation):
+            return self._append_annotated(name, targets, controls, params, metadata, clbits)
         if isinstance(name, Instruction):
             return self._append_instruction(name, targets=targets, controls=controls, params=params, metadata=metadata, clbits=clbits)
         targets_tuple = tuple(targets)
@@ -202,6 +205,27 @@ class Circuit:
         else:
             extra["gate"] = gate.copy()
         self.operations.append(Operation(gate.name, controls+wires, params=gate.params, metadata=extra))
+        return self
+
+    def _append_annotated(self, operation, targets, controls, params, metadata, clbits):
+        from .annotated_operation import AnnotatedOperation, validate_annotated_operation
+        from .gate_limits import current_gate_limits
+        if type(operation) is not AnnotatedOperation: raise TypeError("Only the native annotation type can be appended.")
+        validate_annotated_operation(operation)
+        wires, controls = tuple(targets), tuple(controls)
+        if params or clbits is not None and tuple(clbits):
+            raise ValueError("Bind annotated parameters explicitly and do not attach classical bits.")
+        if len(wires) != operation.num_qubits: raise ValueError("Annotation append width differs from its operation.")
+        for wire in controls+wires: self._check_wire(wire)
+        if len(set(controls+wires)) != len(controls+wires): raise ValueError("Annotation wires must be distinct.")
+        if controls: operation = operation.control(len(controls), ctrl_state=(metadata or {}).get("ctrl_state"))
+        current_gate_limits().check("max_total_operations", len(self.operations)+1)
+        validate_parameter_names((*self.parameters, *operation.parameters))
+        from .gates import _copy
+        extra = _copy(dict(metadata or {}))
+        if "gate" in extra or "annotated_operation" in extra: raise ValueError("Native definition metadata keys are reserved.")
+        extra["annotated_operation"] = operation.copy()
+        self.operations.append(Operation(operation.name, controls+wires, params=operation.params, metadata=extra))
         return self
 
     def to_gate(self, parameter_map=None, label=None, *, _name=None):
@@ -854,6 +878,9 @@ class Circuit:
 
     @classmethod
     def from_instruction(cls, instruction: Instruction) -> "Circuit":
+        from .annotated_operation import AnnotatedOperation
+        if type(instruction) is AnnotatedOperation:
+            return cls(instruction.num_qubits, instruction.num_clbits).append(instruction, range(instruction.num_qubits))
         if not isinstance(instruction, Instruction):
             raise TypeError("QuantumBridge Circuit.from_instruction expects an Instruction.")
         if instruction.definition is not None:
@@ -875,6 +902,8 @@ class Circuit:
             found.update(parameter_set(op.params))
             if "control_node" in op.metadata:
                 found.update(op.metadata["control_node"].parameters)
+            if "annotated_operation" in op.metadata:
+                found.update(op.metadata["annotated_operation"].parameters)
         validate_parameter_names(found)
         return tuple(sorted(found, key=parameter_sort_key))
 
@@ -903,6 +932,8 @@ class Circuit:
                 metadata["control_node"] = metadata["control_node"].bind(mapping)
             if "gate" in metadata:
                 metadata["gate"] = metadata["gate"].assign_parameters(mapping, strict=False)
+            if "annotated_operation" in metadata:
+                metadata["annotated_operation"] = metadata["annotated_operation"].assign_parameters(mapping, strict=False)
             bound.operations.append(Operation(op.name, op.targets, op.controls, params, metadata))
         bound.measurements = list(self.measurements)
         bound.parameters
@@ -1023,6 +1054,12 @@ def _normalize_condition(condition: Union[dict[str, Any], tuple[Union[int, Seque
 
 
 def _inverse_operation(op: Operation) -> Operation:
+    if "annotated_operation" in op.metadata:
+        annotation = op.metadata["annotated_operation"].inverse()
+        from .gates import _copy
+        metadata = _copy(op.metadata)
+        metadata["annotated_operation"] = annotation.copy()
+        return Operation(annotation.name, op.targets, op.controls, annotation.params, metadata)
     if "gate" in op.metadata:
         gate = op.metadata["gate"].inverse()
         metadata = deepcopy(op.metadata)

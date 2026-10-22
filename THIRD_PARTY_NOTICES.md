@@ -14,6 +14,15 @@ are references, not implementation source ports. Unsupported records and
 observed upstream source-export losses remain explicit. Full protocol and P4
 acceptance are unfinished.
 
+P4-T independently adds native ordered operation modifiers, deferred native
+resolution and standard definition access using existing QuantumBridge
+compiler recipes. IBM's public AnnotatedOperation/Gate API and published QPY
+format documentation inform behavior and explicit unsupported boundaries;
+installed Qiskit 2.4.1/2.6.0 public calls are optional black-box comparisons.
+No upstream source/tests, new quantum runtime or vendor artifacts are added.
+Native execution and SDK-free examples do not import the upstream SDKs.
+Published QPY annotation records remain unimplemented, not a format limitation.
+
 Status: Stage 11P-C3 work in progress; C2A committed
 Date: 2026-10-21
 

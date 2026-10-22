@@ -35,6 +35,8 @@ def _definition_preflight(circuit,limits):
         limits.check("max_instructions",operations,format="qasm")
         ancestors = ancestors | {id(body)}
         for op in body.operations:
+            if "annotated_operation" in op.metadata:
+                raise UnsupportedFeature("Native OpenQASM export does not preserve AnnotatedOperation objects; explicitly resolve to a Gate first.", format="qasm")
             gate = op.metadata.get("gate")
             if gate is not None and gate.definition is not None:
                 definitions += 1
@@ -204,6 +206,8 @@ class SourceExporter:
             else: lines.append(prefix+f"gphase({self.angle(phase,loop_parameters)});")
         for item in circuit.iter_instructions():
             self.emitted += 1; self.limits.check("max_instructions",self.emitted,format=self.format)
+            if "annotated_operation" in item.metadata:
+                self.fail("OpenQASM cannot preserve an AnnotatedOperation object; explicitly resolve it to a Gate before export.")
             if any(key in item.metadata for key in ("control_flow_stack","control_flow")):
                 self.fail("Legacy flattened conditional blocks must be normalized to structured ControlBlock before source export.")
             extra = set(item.metadata)-{"operation_index","control_node","condition","gate_condition","directive","duration","unit","gate"}

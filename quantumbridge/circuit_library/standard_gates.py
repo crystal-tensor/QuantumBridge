@@ -30,6 +30,46 @@ _TWO_QUBIT = {
     "rzz",
 }
 _THREE_QUBIT = {"ccx", "cswap", "fredkin"}
+_DEFINITION_GATES = {
+    "id", "h", "x", "y", "z", "s", "sdg", "t", "tdg", "sx", "sxdg",
+    "rx", "ry", "rz", "phase", "p", "u1", "u", "u2", "u3",
+    "cx", "cz", "swap", "crx", "cry", "crz", "cp", "cphase", "rxx", "ryy", "rzz",
+}
+
+
+def standard_gate_definition(name, *params):
+    """Return a phase-exact native definition using existing compiler recipes.
+
+    Definitions are not canonical public SDK instruction classes. Each call
+    owns its circuit; recursive decomposition remains an explicit operation.
+    """
+    from quantumbridge.core.gates import _validate_primitive_arity, validate_definition
+    from quantumbridge.core.gate_limits import current_gate_limits
+    from quantumbridge.compiler.decomposition import GateDecompositionPass
+    from quantumbridge.core.classical import UnsupportedFeature
+    gate = name.lower()
+    if gate not in _DEFINITION_GATES: raise UnsupportedFeature("standard_gate_definition", f"No native definition recipe for {name!r}.")
+    _validate_primitive_arity(gate, params, {})
+    source = standard_gate(gate, *params)
+    validate_definition(source)
+    if gate == "rz":
+        body = Circuit(1).phase(params[0], 0)
+        body.global_phase = -params[0]/2
+    else:
+        limits = current_gate_limits()
+        body = GateDecompositionPass((_ONE_QUBIT | _TWO_QUBIT | _THREE_QUBIT)-{gate}).run(
+            source, max_operations=limits.max_total_operations,
+            max_expansion_steps=limits.max_decomposition_work,
+            max_depth=limits.max_definition_depth).circuit
+    validate_definition(body)
+    return body
+
+
+def standard_gate_object(name, *params, label=None):
+    """Construct a native Gate with an independently owned real definition."""
+    from quantumbridge.core.gates import Gate
+    body = standard_gate_definition(name, *params)
+    return Gate(name.lower(), body.num_qubits, params, label, definition=body)
 
 
 def standard_gate(name: str, *params, num_qubits: int | None = None) -> Circuit:

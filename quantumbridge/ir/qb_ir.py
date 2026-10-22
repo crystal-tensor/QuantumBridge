@@ -46,6 +46,7 @@ class _DefinitionCodec:
         self.limits = limits or SerializationLimits()
         self.definitions = self.operations = self.depth = 0
         self.parameter_nodes = 0
+        self.modifiers = 0
         self.active = set()
 
     def count(self, field, value):
@@ -117,11 +118,86 @@ def _gate_from_ir(data, vectors, limits, context):
         context.depth -= 1
 
 
+def _annotation_to_ir(operation, context):
+    from quantumbridge.core.annotated_operation import (
+        AnnotatedOperation, ControlModifier, PowerModifier, validate_annotated_operation,
+    )
+    from quantumbridge.core.gates import Gate
+    from quantumbridge.core.operations import Instruction
+    validate_annotated_operation(operation)
+    if id(operation) in context.active: raise ValueError("Cyclic annotated operation record.")
+    context.definition()
+    context.active.add(id(operation))
+    context.depth += 1
+    try:
+        base = operation.base_op
+        if type(base) is AnnotatedOperation:
+            kind, record = "annotated_operation", _annotation_to_ir(base, context)
+        else:
+            kind = "instruction" if type(base) is Instruction else "gate"
+            if kind == "instruction":
+                base = Gate(base.name, base.num_qubits, base.params, definition=base.definition, metadata=base.metadata)
+            record = _gate_to_ir(base, context)
+        context.modifiers += len(operation.modifiers)
+        context.count("max_gate_expansion", context.modifiers)
+        modifiers = []
+        for item in operation.modifiers:
+            if type(item) is ControlModifier:
+                modifiers.append({"type": "control", "num_ctrl_qubits": item.num_ctrl_qubits, "ctrl_state": item.ctrl_state})
+            elif type(item) is PowerModifier:
+                modifiers.append({"type": "power", "power": _param_to_ir(item.power, _context=context)})
+            else: modifiers.append({"type": "inverse"})
+        return {"type": "annotated_operation", "base_kind": kind, "base_op": record, "modifiers": modifiers}
+    finally:
+        context.depth -= 1
+        context.active.remove(id(operation))
+
+
+def _annotation_from_ir(data, vectors, limits, context):
+    from quantumbridge.core.annotated_operation import AnnotatedOperation, InverseModifier, ControlModifier, PowerModifier
+    from quantumbridge.core.operations import Instruction
+    if (type(data) is not dict or set(data) != {"type", "base_kind", "base_op", "modifiers"}
+            or data["type"] != "annotated_operation" or type(data["modifiers"]) is not list):
+        raise ValueError("Malformed annotated operation record.")
+    context.definition()
+    context.modifiers += len(data["modifiers"])
+    context.count("max_gate_expansion", context.modifiers)
+    context.depth += 1
+    try:
+        if data["base_kind"] == "annotated_operation":
+            base = _annotation_from_ir(data["base_op"], vectors, limits, context)
+        elif data["base_kind"] in {"gate", "instruction"}:
+            base = _gate_from_ir(data["base_op"], vectors, limits, context)
+            if data["base_kind"] == "instruction":
+                if data["base_op"]["type"] != "gate": raise ValueError("An Instruction base cannot hide a ControlledGate record.")
+                base = Instruction(base.name, base.num_qubits, params=base.params, definition=base.definition, metadata=base.metadata)
+        else: raise ValueError("Unknown annotated base operation type.")
+        modifiers = []
+        for item in data["modifiers"]:
+            if type(item) is not dict: raise ValueError("Malformed modifier record.")
+            if item.get("type") == "inverse" and set(item) == {"type"}:
+                modifier = InverseModifier()
+            elif item.get("type") == "control" and set(item) == {"type", "num_ctrl_qubits", "ctrl_state"}:
+                modifier = ControlModifier(item["num_ctrl_qubits"], item["ctrl_state"])
+            elif item.get("type") == "power" and set(item) == {"type", "power"}:
+                modifier = PowerModifier(param_from_ir(item["power"], _vectors=vectors, _limits=limits))
+            else: raise ValueError("Unknown or malformed modifier record.")
+            modifiers.append(modifier)
+        return AnnotatedOperation(base, modifiers)
+    finally: context.depth -= 1
+
+
 def decode_instruction_metadata(metadata, *, _vectors=None, _limits=None, _context=None):
     result = dict(metadata)
+    if "global_phase" in result:
+        result["global_phase"] = param_from_ir(result["global_phase"], _vectors=_vectors, _limits=_limits)
     if isinstance(result.get("gate"), dict):
         context = _context or _DefinitionCodec(_limits)
         result["gate"] = _gate_from_ir(result["gate"], {} if _vectors is None else _vectors, context.limits, context)
+    if isinstance(result.get("annotated_operation"), dict):
+        context = _context or _DefinitionCodec(_limits)
+        result["annotated_operation"] = _annotation_from_ir(result["annotated_operation"],
+            {} if _vectors is None else _vectors, context.limits, context)
     if "controlled_base" in result:
         description = result["controlled_base"]
         if type(description) is not dict or set(description) != {"name", "metadata", "controls"} or type(description["controls"]) is not int or description["controls"] < 1:
@@ -251,7 +327,9 @@ class IRInstruction:
     def to_dict(self, *, _context=None) -> dict[str, Any]:
         context = _context or _DefinitionCodec()
         metadata = {key: value for key, value in self.metadata.items() if key not in {"matrix", "kraus"}}
+        if "global_phase" in metadata: metadata["global_phase"] = _param_to_ir(metadata["global_phase"], _context=context)
         if "gate" in metadata: metadata["gate"] = _gate_to_ir(metadata["gate"], context)
+        if "annotated_operation" in metadata: metadata["annotated_operation"] = _annotation_to_ir(metadata["annotated_operation"], context)
         if "controlled_base" in metadata:
             description = metadata["controlled_base"]
             context.definition()

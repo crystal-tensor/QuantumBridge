@@ -25,6 +25,8 @@ def _validate_qargs(qargs, num_qubits: int) -> tuple[int, ...]:
 class DensityMatrix:
     def __init__(self, data, *, dims=None):
         from quantumbridge.core import Circuit, Instruction, Gate, ControlledGate
+        from quantumbridge.core.annotated_operation import AnnotatedOperation
+        if type(data) is AnnotatedOperation: data = Circuit.from_instruction(data)
         from quantumbridge.execution.resource_context import current_resources
         scope=current_resources()
         if (type(data) in (Circuit,Instruction,Gate,ControlledGate) if scope is not None else isinstance(data,(Circuit,Instruction))):
@@ -84,6 +86,8 @@ class DensityMatrix:
     @classmethod
     def from_instruction(cls, instruction) -> "DensityMatrix":
         from quantumbridge.core import Circuit, Instruction, Gate, ControlledGate
+        from quantumbridge.core.annotated_operation import AnnotatedOperation
+        if type(instruction) is AnnotatedOperation: instruction = Circuit.from_instruction(instruction)
         scope=current_resources()
         if scope is not None:
             if type(instruction) not in (Circuit,Instruction,Gate,ControlledGate):

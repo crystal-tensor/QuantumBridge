@@ -34,6 +34,7 @@ from quantumbridge.circuit_library import (
 )
 from quantumbridge.compat import circuit_from_openqasm, circuit_from_qiskit, circuit_to_qiskit
 from quantumbridge.core import Circuit, Instruction, Gate, ControlledGate, Measurement, Operation, Parameter, ParameterExpression, ParameterVector, ParameterVectorElement
+from quantumbridge.core import AnnotatedOperation, Modifier, InverseModifier, ControlModifier, PowerModifier, resolve_annotated_operation
 from quantumbridge.core.control_flow import ExecutionLimits
 from quantumbridge.core.classical import UnsupportedFeature
 from quantumbridge.compiler import transpile
@@ -89,6 +90,7 @@ __all__ = [
     "Instruction",
     "Gate",
     "ControlledGate",
+    "AnnotatedOperation", "Modifier", "InverseModifier", "ControlModifier", "PowerModifier", "resolve_annotated_operation",
     "Job",
     "JobError",
     "JobStatus",

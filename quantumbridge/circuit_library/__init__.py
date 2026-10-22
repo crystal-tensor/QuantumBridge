@@ -7,7 +7,7 @@
 
 from .arithmetic import integer_comparator, weighted_adder
 from .data_preparation import amplitude_encoding, basis_state, initialize
-from .standard_gates import standard_gate
+from .standard_gates import standard_gate, standard_gate_definition, standard_gate_object
 from .templates import efficient_su2, qft, real_amplitudes, two_local, zz_feature_map
 
 __all__ = [
@@ -19,6 +19,8 @@ __all__ = [
     "qft",
     "real_amplitudes",
     "standard_gate",
+    "standard_gate_definition",
+    "standard_gate_object",
     "two_local",
     "weighted_adder",
     "zz_feature_map",

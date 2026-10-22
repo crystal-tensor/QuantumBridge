@@ -82,6 +82,9 @@ class Operator:
         from quantumbridge.execution.resource_context import current_resources
         scope=current_resources()
         from quantumbridge.core.gates import Gate, ControlledGate
+        from quantumbridge.core.annotated_operation import AnnotatedOperation
+        if type(data) is AnnotatedOperation:
+            data = Circuit.from_instruction(data)
         if (type(data) in (Circuit,Instruction,Gate,ControlledGate) if scope is not None else isinstance(data,(Circuit,Instruction))):
             data = self.from_circuit(data).data
         if scope is None:

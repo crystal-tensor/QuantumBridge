@@ -66,3 +66,35 @@ See stage12_b_p4s_custom_gate_interchange_report.md for current evidence and
 remaining format boundaries. Earlier R3 was before these changes.
 Do not use P3 coverage or earlier mixed-runtime focuses as this batch's final
 acceptance, and do not infer full class/SDK parity from current tests.
+
+## P4-T Development Checkpoint
+
+Native ordered annotations/resolution,31 standard definition accessors, actual
+native state/derivative execution and structured annotation IR are now added.
+They close supported parts of the earlier gaps, not original P4 or full SDK
+acceptance. See stage12_b_p4t_annotated_operation_report.md for the frozen
+runtime and terminal development gates. Native QPY annotation records still
+reject, even though public QPY v11+ specifies them. Explicit source/QPY Gate
+lowering changes unresolved object structure and must not be called lossless.
+
+Fresh public2.4.1/2.6.0 ABI calls against the R2 snapshot, logs
+/tmp/qb-stage12b-p4t-abi241.log and /tmp/qb-stage12b-p4t-abi260.log, actually show:
+
+| Contract | Public2.4.1 and2.6.0 | Native R2 |
+| --- | --- | --- |
+| Generic control omitted /False /None | ControlledGate | ControlledGate |
+| Generic control True | AnnotatedOperation | AnnotatedOperation |
+| Generic control annotated signature default | None; explicitNone warns | False; not full warning/signature ABI |
+| Annotation params | base mutable list | base tuple /explicit replacement |
+| Annotation validate_parameter(.4) | returns float | missing AttributeError |
+| RX standard inverse/power annotated=True | concrete RXGate | native builder returns generic annotation |
+| Annotation construction over reset | constructs deferred object | rejects nonunitary base early |
+
+These literal probes use public methods/introspection only, not upstream
+implementation or tests. Public documentation deprecation language is not
+substituted for the measured default return class. The new native31-name
+definition builder is not a family of specialized public standard subclasses.
+Shared mutable Python ParameterVector owner identity across independent base
+copies is not promised; UUID/root/index identity and execution binding are tested.
+Remaining mutable/list/signature/error behavior, validate_parameter, arbitrary
+Operation compatibility and complete P4 acceptance are still substantive work.

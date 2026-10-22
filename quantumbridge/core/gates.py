@@ -3,6 +3,7 @@
 """Native unitary definitions, structural expansion and coherent control."""
 
 from numbers import Integral, Real
+from contextvars import ContextVar
 import fnmatch
 import math
 from itertools import islice
@@ -12,6 +13,8 @@ import numpy as np
 from .operations import Instruction, Operation
 from .parameters import Parameter, parameter_set, resolve_parameter, _coerce_expression
 from .gate_limits import current_gate_limits
+
+_VALIDATION_BUDGET = ContextVar("native_definition_validation_budget", default=None)
 
 
 def _copy(value):
@@ -55,6 +58,15 @@ def _validate_primitive_arity(name, params, metadata):
 
 def validate_definition(circuit, *, owner=None):
     """Validate a whole definition graph before copying or allocating matrices."""
+    budget = _VALIDATION_BUDGET.get()
+    if budget is not None: return _validate_definition(circuit, owner=owner, budget=budget)
+    budget = {"operations": 0, "definitions": 0, "work": 0}
+    token = _VALIDATION_BUDGET.set(budget)
+    try: return _validate_definition(circuit, owner=owner, budget=budget)
+    finally: _VALIDATION_BUDGET.reset(token)
+
+
+def _validate_definition(circuit, *, owner, budget):
     from .circuit import Circuit
     from quantumbridge.utils.math import gate_matrix, validate_unitary_matrix
     from quantumbridge.execution.resource_context import current_resources
@@ -69,7 +81,7 @@ def validate_definition(circuit, *, owner=None):
         if not set(circuit.parameters) <= set(parameter_set(owner.params)):
             raise ValueError("Gate definition parameter namespace no longer matches its owner.")
     stack = [(circuit, 0, frozenset(() if owner is None else (id(owner),)))]
-    operations = definitions = work = 0
+    start = budget["operations"]
     while stack:
         body, depth, ancestors = stack.pop()
         if not isinstance(body, Circuit): raise TypeError("Gate definitions require a native Circuit.")
@@ -79,10 +91,10 @@ def validate_definition(circuit, *, owner=None):
         if id(body) in ancestors: raise ValueError("Cyclic gate definition.")
         ancestors = ancestors | {id(body)}
         limits.check("max_definition_depth", depth)
-        definitions += 1
-        limits.check("max_custom_definitions", definitions)
-        operations += len(body.operations)
-        limits.check("max_total_operations", operations)
+        budget["definitions"] += 1
+        limits.check("max_custom_definitions", budget["definitions"])
+        budget["operations"] += len(body.operations)
+        limits.check("max_total_operations", budget["operations"])
         if body.num_bits or body.measurements or body.has_dynamic_operations:
             raise ValueError("A Gate definition must be unitary and have no classical bits or measurements.")
         _coerce_expression(body.global_phase)
@@ -92,13 +104,20 @@ def validate_definition(circuit, *, owner=None):
                 raise ValueError("A unitary Gate definition requires a finite real global phase.")
         limits.check("max_gate_parameters", len(body.parameters))
         for op in body.operations:
-            work += 1
-            limits.check("max_decomposition_work", work)
+            budget["work"] += 1
+            limits.check("max_decomposition_work", budget["work"])
             if op.metadata.get("directive") or op.metadata.get("requires_zero_input"):
                 raise ValueError("Directive/state preparation instructions are not unitary Gate definitions.")
             if not op.wires or len(set(op.wires)) != len(op.wires) or any(type(w) is not int or not 0 <= w < body.num_qubits for w in op.wires):
                 raise ValueError("Invalid gate definition wire mapping.")
             child = op.metadata.get("gate")
+            annotation = op.metadata.get("annotated_operation")
+            if annotation is not None:
+                from .annotated_operation import validate_annotated_operation
+                validate_annotated_operation(annotation)
+                if child is not None or annotation.num_qubits != len(op.wires) or op.params != annotation.params:
+                    raise ValueError("Invalid annotated definition invocation.")
+                continue
             if child is not None:
                 if current_resources() is not None and type(child) not in (Gate, ControlledGate):
                     from .classical import UnsupportedFeature
@@ -122,7 +141,7 @@ def validate_definition(circuit, *, owner=None):
             matrix = gate_matrix(name, tuple(checked), metadata)
             if matrix.shape != (1 << len(op.wires),) * 2 or not validate_unitary_matrix(matrix):
                 raise ValueError("Gate definition contains an invalid unitary primitive.")
-    return operations
+    return budget["operations"]-start
 
 
 class Gate(Instruction):
@@ -220,8 +239,8 @@ class Gate(Instruction):
 
     def inverse(self, annotated=False):
         if annotated:
-            from .classical import UnsupportedFeature
-            raise UnsupportedFeature("annotated_gate_inverse", "Lazy annotation objects are not implemented yet.")
+            from .annotated_operation import AnnotatedOperation, InverseModifier
+            return AnnotatedOperation(self, InverseModifier())
         from .circuit import Circuit
         body = self.definition if self.definition is not None else Circuit(self.num_qubits).append(self.name, range(self.num_qubits), params=self.params, metadata=self.metadata)
         return body.inverse().to_gate(label=self.label, _name=self.name+"_dg")
@@ -240,7 +259,9 @@ class Gate(Instruction):
     def power(self, exponent, annotated=False):
         from .circuit import Circuit
         from .classical import UnsupportedFeature
-        if annotated: raise UnsupportedFeature("annotated_gate_power")
+        if annotated:
+            from .annotated_operation import AnnotatedOperation, PowerModifier
+            return AnnotatedOperation(self, PowerModifier(exponent))
         if isinstance(exponent, bool) or not isinstance(exponent, Real) or not math.isfinite(exponent):
             raise ValueError("Gate powers require a finite real exponent.")
         if float(exponent).is_integer():
@@ -259,8 +280,8 @@ class Gate(Instruction):
 
     def control(self, num_ctrl_qubits=1, label=None, ctrl_state=None, annotated=False):
         if annotated:
-            from .classical import UnsupportedFeature
-            raise UnsupportedFeature("annotated_gate_control")
+            from .annotated_operation import AnnotatedOperation, ControlModifier
+            return AnnotatedOperation(self, ControlModifier(num_ctrl_qubits, ctrl_state))
         return ControlledGate(self, num_ctrl_qubits, ctrl_state, label)
 
 
@@ -346,7 +367,7 @@ def _append_controlled(out, name, wires, params, controls, metadata):
                    metadata={"controlled_base": {"name": name, "metadata": _copy(metadata), "controls": len(controls)}})
 
 
-def decompose(circuit, selected=None, reps=1, *, _work=None):
+def decompose(circuit, selected=None, reps=1, *, _work=None, _standard=True):
     from .circuit import Circuit, _remap_operation
     from .measurements import Measurement
     from quantumbridge.compiler.traversal import append_item
@@ -357,27 +378,49 @@ def decompose(circuit, selected=None, reps=1, *, _work=None):
     def matches(gate):
         return names is None or any(isinstance(gate, value) if isinstance(value, type) else
             any(fnmatch.fnmatchcase(text, value) for text in (gate.name, gate.label) if text is not None) for value in names)
+    def definition_for(item):
+        gate = item.metadata.get("gate")
+        if "annotated_operation" in item.metadata:
+            from .annotated_operation import AnnotatedOperation, resolve_annotated_operation
+            annotation = item.metadata["annotated_operation"]
+            if (type(annotation) is not AnnotatedOperation or gate is not None or item.name != "annotated"
+                    or item.controls or len(item.targets) != annotation.num_qubits or item.params != annotation.params):
+                raise ValueError("Annotated invocation disagrees with its operation.")
+            if names is not None and not any(isinstance(annotation, value) if isinstance(value, type) else
+                    fnmatch.fnmatchcase(annotation.name, value) for value in names): return None
+            return resolve_annotated_operation(annotation)
+        if gate is None and _standard:
+            from quantumbridge.circuit_library.standard_gates import _DEFINITION_GATES, standard_gate_object
+            if item.name in _DEFINITION_GATES and not any(key in item.metadata for key in ("controlled_base", "matrix", "directive")):
+                candidate = Gate(item.name, len(item.wires), item.params, item.metadata.get("label"))
+                if matches(candidate):
+                    gate = standard_gate_object(item.name, *item.params, label=candidate.label)
+                    if gate.num_qubits != len(item.wires): raise ValueError("Standard definition invocation width differs.")
+        return gate
     limits.check("max_total_operations", len(circuit.operations))
     result = circuit.copy()
     work = [0] if _work is None else _work
     for _ in range(max(0, reps)):
         predicted = 0
+        definitions = {}
         for item in result.operations:
-            gate = item.metadata.get("gate")
-            predicted += len(gate.definition.operations) if gate is not None and gate.definition is not None and matches(gate) else 1
+            gate = definition_for(item)
+            definitions[id(item)] = gate
+            selected_gate = "annotated_operation" in item.metadata or gate is not None and matches(gate)
+            predicted += len(gate.definition.operations) if gate is not None and gate.definition is not None and selected_gate else 1
         limits.check("max_total_operations", predicted)
         out = Circuit(result.num_qubits, result.num_bits, result.name, _copy(result.metadata))
         changed = False
         for item in result.iter_instructions():
             work[0] += 1
             limits.check("max_decomposition_work", work[0])
-            gate = None if isinstance(item, Measurement) else item.metadata.get("gate")
-            if gate is None or gate.definition is None or not matches(gate):
+            gate = None if isinstance(item, Measurement) else definitions[id(item)]
+            if gate is None or gate.definition is None or "annotated_operation" not in item.metadata and not matches(gate):
                 append_item(out, item)
                 continue
             validate_definition(gate.definition, owner=gate)
             limits.check("max_total_operations", len(out.operations)+len(gate.definition.operations))
-            extra = {key: value for key, value in item.metadata.items() if key not in {"gate", "label"}}
+            extra = {key: value for key, value in item.metadata.items() if key not in {"gate", "label", "annotated_operation"}}
             if any(key in extra for key in ("condition", "gate_condition", "control_flow_stack")) and (
                     parameter_set((gate.definition.global_phase,)) or gate.definition.global_phase != 0):
                 from .classical import UnsupportedFeature
@@ -423,15 +466,15 @@ def lower(circuit, *, _ancestors=(), _work=None):
         if changed:
             circuit = circuit.copy()
             circuit.operations = transformed
-    if not any("gate" in op.metadata for op in circuit.operations): return circuit
+    if not any("gate" in op.metadata or "annotated_operation" in op.metadata for op in circuit.operations): return circuit
     result = circuit
     limits = current_gate_limits()
     # Definitions are acyclic and depth bounded before entering expansion.
     for op in circuit.operations:
         if "gate" in op.metadata and op.metadata["gate"].definition is not None:
             validate_definition(op.metadata["gate"].definition, owner=op.metadata["gate"])
-    result = decompose(result, reps=limits.max_definition_depth+1, _work=work)
-    if any("gate" in op.metadata for op in result.operations):
+    result = decompose(result, reps=limits.max_definition_depth+1, _work=work, _standard=False)
+    if any("gate" in op.metadata or "annotated_operation" in op.metadata for op in result.operations):
         from .classical import UnsupportedFeature
         raise UnsupportedFeature("opaque_gate_definition", "An opaque Gate needs an executable definition.")
     return result

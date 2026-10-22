@@ -13,6 +13,18 @@ nonzero internal phase, and unsupported QPY records remain explicit. Run the
 SDK-free demonstration with
 `PYTHONPATH=. python examples/native_custom_gate_interchange.py`.
 
+P4-T development adds native ordered `AnnotatedOperation` modifiers and
+resolution through the existing Gate/compiler/device/gradient engine. Native
+IR keeps unresolved structure; `standard_gate_definition` and
+`standard_gate_object` expose 31 phase-exact native standard recipes. These
+builders are not public Qiskit standard-gate subclasses or their mutable ABI.
+QASM and our QPY subset reject unresolved annotations; explicitly resolving
+to a Gate changes the object structure. QPY's published annotation records
+are not yet implemented by our codec. SDK-free numeric demonstrations are
+`examples/native_annotated_gate.py`, `examples/native_gate_modifier_gradient.py`
+and `examples/native_standard_gate_decomposition.py`. P4-T/P4 and full SDK
+replacement remain incomplete; tests are not a percentage of feature parity.
+
 Native symbolic mathematics passed bounded local acceptance in Stage 12-B P3. Scalar
 functions, symbolic/repeated differentiation and simultaneous substitution now
 feed the native Circuit/Instruction and quantum derivative paths; this is not

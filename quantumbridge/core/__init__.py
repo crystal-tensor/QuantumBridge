@@ -9,8 +9,10 @@ from .measurements import Measurement
 from .operations import Instruction, Operation
 from .gates import Gate, ControlledGate
 from .gate_limits import GateCircuitLimits, gate_circuit_scope
+from .annotated_operation import AnnotatedOperation, Modifier, InverseModifier, ControlModifier, PowerModifier, resolve_annotated_operation
 from .parameters import Parameter, ParameterExpression, ParameterVector, ParameterVectorElement
 from .symbolic_limits import SymbolicExpressionLimits, SymbolicResourceLimitError, symbolic_expression_scope
 
 __all__ = ["Circuit", "Instruction", "Gate", "ControlledGate", "GateCircuitLimits", "gate_circuit_scope", "Measurement", "Operation", "Parameter", "ParameterExpression", "ParameterVector", "ParameterVectorElement"]
 __all__ += ["SymbolicExpressionLimits", "SymbolicResourceLimitError", "symbolic_expression_scope"]
+__all__ += ["AnnotatedOperation", "Modifier", "InverseModifier", "ControlModifier", "PowerModifier", "resolve_annotated_operation"]

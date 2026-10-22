@@ -1,5 +1,33 @@
 # Source Migration Ledger
 
+## Stage 12-B P4-T Native Annotation And Standard Definitions In Progress
+
+Independent Native Implementation: `quantumbridge/core/annotated_operation.py`,
+`quantumbridge/core/gates.py`, `quantumbridge/core/circuit.py`,
+`quantumbridge/core/__init__.py`, `quantumbridge/__init__.py`,
+`quantumbridge/circuit_library/standard_gates.py`, `quantumbridge/circuit_library/__init__.py`,
+`quantumbridge/ir/qb_ir.py`, `quantumbridge/compat/qiskit_adapter.py`,
+`quantumbridge/information/operator.py`, `quantumbridge/information/statevector.py`,
+`quantumbridge/information/density_matrix.py`, `quantumbridge/serialization/text_exporter.py`.
+`quantumbridge/simulator/aer.py` also retains explicit named-noise boundary
+rejection for the new deferred nodes; it does not claim composite noise support.
+Independent verification/examples: `tests/core/test_native_annotated_operation.py`,
+`tests/core/test_native_standard_definitions.py`,
+`tests/serialization/test_native_annotated_interchange.py`,
+`tests/compat/test_native_annotated_public.py`, `examples/native_annotated_gate.py`,
+`examples/native_gate_modifier_gradient.py`, `examples/native_standard_gate_decomposition.py`.
+Reuses existing native Circuit/Gate/compiler/parameter/derivative systems.
+Public behavioral references, not copied implementation/test source:
+https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.circuit.AnnotatedOperation,
+https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.circuit.Gate and
+https://quantum.cloud.ibm.com/docs/en/api/qiskit/qpy.
+The latter documents standard annotation support starting in QPY v11; native
+v13 annotation records are deliberately still unsupported in this batch.
+No upstream source, tests, cloud data, credentials, package binaries or
+environments are copied. Source ports remain zero. This is not complete
+P4-T/P4 acceptance or full Qiskit/PennyLane parity. User Router remains outside
+this owned batch and is not given invented attribution.
+
 ## Stage 12-B P4-S Native Custom Definition Transport In Progress
 
 Independent Native Implementation: `quantumbridge/ir/qb_ir.py`,

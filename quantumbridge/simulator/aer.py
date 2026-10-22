@@ -164,7 +164,8 @@ class NativeAerSimulator(Backend):
         results=[]
         for circuit,parameters in zip(circuits,_parameter_sets_for_circuits(parameter_values,len(circuits))):
             model = options["noise_model"]
-            if model is not None and (model.quantum_errors or model.local_quantum_errors) and any("gate" in op.metadata for op in self._walk(circuit)):
+            if model is not None and (model.quantum_errors or model.local_quantum_errors) and any(
+                    "gate" in op.metadata or "annotated_operation" in op.metadata for op in self._walk(circuit)):
                 raise UnsupportedFeature("composite_gate_noise_boundary", "Named instruction noise needs preserved composite execution boundaries.")
             circuit=circuit.bind(parameters) if parameters else circuit.copy()
             method=self._select(circuit,options);limits=options["aer_limits"] or AerExecutionLimits()
