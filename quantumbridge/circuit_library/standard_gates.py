@@ -68,8 +68,12 @@ def standard_gate_definition(name, *params):
 def standard_gate_object(name, *params, label=None):
     """Construct a native Gate with an independently owned real definition."""
     from quantumbridge.core.gates import Gate
-    body = standard_gate_definition(name, *params)
-    return Gate(name.lower(), body.num_qubits, params, label, definition=body)
+    from quantumbridge.core import Parameter
+    formals = tuple(Parameter("_qb_slot_"+str(index)) for index in range(len(params)))
+    body = standard_gate_definition(name, *formals)
+    result = Gate(name.lower(), body.num_qubits, formals, label, definition=body)
+    if params: result.params = params
+    return result
 
 
 def standard_gate(name: str, *params, num_qubits: int | None = None) -> Circuit:

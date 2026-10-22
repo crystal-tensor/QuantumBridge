@@ -122,3 +122,31 @@ def test_partial_copy_failure_releases_after_error_collection_and_recovers():
     del copied
     gc.collect()
     assert ledger.receipt()["live_memory_bytes"] == 0
+
+
+def test_strict_native_copy_initializes_symbol_hash_fields_before_sets_and_dicts():
+    from quantumbridge import Parameter, ParameterVector
+    from quantumbridge.core.classical import UInt
+    from quantumbridge.execution.array_ownership import native_configuration_copy
+    p, vector = Parameter("p"), ParameterVector("angles", 3)
+    element = vector[1]
+    expression = (p+element)**2
+    dtype = UInt(3)
+    source = {"p": p, "element": element, "expression": expression, "dtype": dtype,
+        "set": frozenset([p, element, expression, dtype]),
+        "map": {p: "p", element: "v", expression: "e", dtype: "type"}, "weights": np.ones(2)}
+    ledger = Ledger(Limits(max_total_memory_bytes=16))
+    with ResourceScope(ledger):
+        copied = native_configuration_copy(source, strict=True)
+        for key in ("p", "element", "expression", "dtype"):
+            assert copied[key] in copied["set"]
+            assert copied["map"][copied[key]] == source["map"][source[key]]
+        assert copied["expression"].parameters == frozenset([copied["p"], copied["element"]])
+        assert copied["p"] is not p and copied["element"].vector is not vector
+        copied["element"].vector.resize(1)
+        assert len(vector) == 3
+        assert not np.shares_memory(copied["weights"], source["weights"])
+        assert ledger.receipt()["live_memory_bytes"] == 16
+    del copied
+    gc.collect()
+    assert ledger.receipt()["live_memory_bytes"] == 0

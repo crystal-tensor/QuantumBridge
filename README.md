@@ -28,12 +28,32 @@ Public Qiskit 2.4.1 and 2.6.0 themselves lose the enclosing circuit parameter
 index on v13 annotation reload; object parameters survive, but this is an
 explicit unresolved public binding ABI gap, not claimed lossless interop.
 Standalone custom Instruction records, nonunitary bases, arbitrary object
-metadata and unsupported labels still reject. Mutable params, dedicated
-standard return classes and full original P4 acceptance remain unfinished.
+metadata and unsupported labels still reject. Dedicated standard return
+classes and full original P4 acceptance remain unfinished.
 SDK-free numeric demonstrations are
 `examples/native_annotated_gate.py`, `examples/native_gate_modifier_gradient.py`
 and `examples/native_standard_gate_decomposition.py`. P4-T/P4 and full SDK
 replacement remain incomplete; tests are not a percentage of feature parity.
+
+P4-U2 work adds a live checked `params` view for Gate/Instruction/annotations,
+real `validate_parameter`, atomic definition rebinding and owned copy isolation.
+It is a MutableSequence proxy, not a literal public Python list or a detached
+list copy. Native formal binding records retain further mutation through native
+IR, including numeric-bound copies. Generic Instruction payload validation is
+permissive; physical Gate angles are real and finite. The standard QPY subset
+still preserves current structure/math, not arbitrary private editable history
+of an already-numeric custom Gate. Changed bound definitions without explicit
+symbolic lineage reject further ambiguous rebinding instead of guessing from
+equal constants. Dedicated public standard Gate classes and exact error ABI,
+dynamic/empty contracts and original P4 joint acceptance remain unfinished.
+The SDK-free executable example is `examples/native_mutable_gate_parameters.py`.
+The exact U2 runtime passed three FULL runs:4263/5291/5289 tests in SDK-free,
+main and alternate environments. Explicit global line coverage is
+30511/33474=91.1484%, not a feature-parity percentage; exclusions remain68.
+Independent JAX/TF checks are FOCUS, not additional FULL runs. See the
+[checkpoint report](docs/implementation/stage12_b_p4u2_mutable_parameter_progress.md)
+for exact input hashes, receipts and remaining contracts. No new push/remote
+CI or complete original28-section matrix is claimed.
 
 Native symbolic mathematics passed bounded local acceptance in Stage 12-B P3. Scalar
 functions, symbolic/repeated differentiation and simultaneous substitution now

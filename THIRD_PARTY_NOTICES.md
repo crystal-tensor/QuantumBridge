@@ -28,6 +28,16 @@ implementation or test source. Unsupported symbolic modifier powers reflect
 v13's float64 field; public v13 circuit parameter-index loss is separately
 reproduced on both public releases and is not presented as repaired.
 
+P4-U2 independently implements checked parameter views, atomic native formal
+rebinding, validation and typed native IR binding records in the existing
+core. Public Gate/Instruction/AnnotatedOperation API documentation and actual
+public 2.4.1/2.6.0 calls are behavior references, not source ports. Native
+lineage records are explicitly QuantumBridge IR, not invented standard QPY
+fields. The existing native storage copier also initializes audited symbol
+hash fields before reconstructing owned hashed collections; resource preflight,
+foreign-protocol rejection and copy ownership remain in force. No upstream
+source/tests, new quantum engine, environment or vendor payload is included.
+
 Status: Stage 11P-C3 work in progress; C2A committed
 Date: 2026-10-21
 

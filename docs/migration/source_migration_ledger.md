@@ -1,5 +1,32 @@
 # Source Migration Ledger
 
+## Stage 12-B P4-U2 Native Mutable Parameters In Progress
+
+Independent Native Implementation:
+`quantumbridge/core/instruction_parameters.py`,
+`quantumbridge/core/operations.py`, `quantumbridge/core/gates.py`,
+`quantumbridge/core/annotated_operation.py`, `quantumbridge/core/circuit.py`,
+`quantumbridge/circuit_library/standard_gates.py`, `quantumbridge/ir/qb_ir.py`,
+`quantumbridge/execution/array_ownership.py`.
+Independent tests: `tests/core/test_native_mutable_parameters.py`,
+`tests/compat/test_native_mutable_parameter_public.py`,
+`tests/serialization/test_native_annotated_interchange.py`,
+`tests/derivative_execution/test_native_configuration_ownership.py`.
+SDK-free example: `examples/native_mutable_gate_parameters.py`.
+Existing native scalar ASTs, Circuit bindings, Gate/control recipes, native IR,
+MPS, QNode derivatives and resource-owned storage are reused. References:
+https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.circuit.Gate,
+https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.circuit.Instruction,
+https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.circuit.AnnotatedOperation.
+Installed public APIs are black-box behavior comparisons only. No upstream
+implementation/tests or new SDK packages are copied/installed; source ports
+remain zero. Native typed binding lineage is not a standard-QPY sidecar claim.
+Observed public partial setter corruption and stale generic definition bugs
+are recorded rather than imitated. Shared copier hash initialization is an
+independently tested native repair, not an unbounded foreign deepcopy fallback.
+Complete P4-U/P4/full SDK parity remains unproven. User Router/Studio changes
+are neither touched nor given invented source attribution.
+
 ## Stage 12-B P4-U1 Native Annotation Binary Interchange In Progress
 
 Independent Native Implementation: `quantumbridge/serialization/qpy.py`.

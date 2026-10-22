@@ -6,7 +6,6 @@ from numbers import Integral, Real
 from contextvars import ContextVar
 import fnmatch
 import math
-from itertools import islice
 
 import numpy as np
 
@@ -27,20 +26,6 @@ def _integer(value, label):
     if isinstance(value, bool) or not isinstance(value, Integral):
         raise TypeError(label + " must be an integer, not a boolean.")
     return int(value)
-
-
-def _parameter_values(values):
-    limits = current_gate_limits()
-    from quantumbridge.execution.resource_context import current_resources
-    if current_resources() is not None and type(values) not in (tuple, list, np.ndarray):
-        from .classical import UnsupportedFeature
-        raise UnsupportedFeature("managed_gate_parameter_container", "Managed Gate parameters require explicit native containers.")
-    if isinstance(values, (tuple, list, np.ndarray)):
-        limits.check("max_gate_parameters", len(values))
-        return tuple(values)
-    bounded = tuple(islice(iter(values), limits.max_gate_parameters+1))
-    limits.check("max_gate_parameters", len(bounded))
-    return bounded
 
 
 def _validate_primitive_arity(name, params, metadata):
@@ -147,25 +132,15 @@ def _validate_definition(circuit, *, owner, budget):
 class Gate(Instruction):
     """A native unitary Instruction with owned, validated circuit structure.
 
-    Parameters are immutable tuples. Explicit reassignment of direct formal
-    parameters updates the owned definition atomically; free-form list mutation
-    is not the public Qiskit mutable-list ABI.
+    A checked live parameter view updates owned definitions atomically while
+    preserving declared formal lineage across repeated rebinding.
     """
 
     def __init__(self, name, num_qubits, params=(), label=None, *, definition=None, metadata=None):
         if isinstance(num_qubits, bool): raise ValueError("A gate width cannot be a boolean.")
         if label is not None and (not isinstance(label, str) or not label): raise ValueError("Invalid gate label.")
-        params = _parameter_values(params)
-        for value in params: _coerce_expression(value)
-        object.__setattr__(self, "name", name)
-        object.__setattr__(self, "num_qubits", num_qubits)
-        object.__setattr__(self, "num_bits", 0)
-        object.__setattr__(self, "_params", tuple(params))
-        object.__setattr__(self, "metadata", _copy(dict(metadata or {})))
         object.__setattr__(self, "label", label)
-        object.__setattr__(self, "_definition", None)
-        Instruction.__post_init__(self)
-        self.definition = definition
+        Instruction.__init__(self, name, num_qubits, 0, params, definition, _copy(dict(metadata or {})))
 
     def __setattr__(self, name, value):
         if name in {"definition", "params"}:
@@ -180,34 +155,44 @@ class Gate(Instruction):
     def num_clbits(self): return 0
 
     @property
-    def params(self): return self._params
+    def params(self): return Instruction.params.fget(self)
 
     @params.setter
     def params(self, values):
-        values = _parameter_values(values)
-        for value in values: _coerce_expression(value)
-        parameter_set(values)
-        old = getattr(self, "_params", ())
-        definition = getattr(self, "_definition", None)
-        if definition is not None:
-            validate_definition(definition, owner=self)
-            if len(old) != len(values) or not all(isinstance(item, Parameter) for item in old):
-                raise ValueError("Definition parameter reassignment requires direct formal Parameters and matching arity.")
-            definition = definition.assign_parameters(dict(zip(old, values)))
-            validate_definition(definition)
-            if not set(definition.parameters) <= set(parameter_set(values)):
-                raise ValueError("Assigned definition has an inconsistent parameter namespace.")
-        object.__setattr__(self, "_params", values)
-        object.__setattr__(self, "_definition", definition)
+        Instruction.params.fset(self, values)
+
+    def _validate_parameter_arity(self, values):
+        if self.definition is None:
+            from quantumbridge.circuit_library.standard_gates import _ONE_QUBIT, _TWO_QUBIT, _THREE_QUBIT
+            if self.name in _ONE_QUBIT | _TWO_QUBIT | _THREE_QUBIT or "controlled_base" in self.metadata:
+                _validate_primitive_arity(self.name, values, self.metadata)
+
+    def validate_parameter(self, value):
+        from .parameters import ParameterExpression
+        if isinstance(value, Parameter): return value
+        if isinstance(value, ParameterExpression):
+            _coerce_expression(value)
+            if value.is_real() is False: raise ValueError("Physical Gate parameters must be real.")
+            return value
+        if not isinstance(value, Real): raise TypeError("Gate parameters must be real scalars or native expressions.")
+        if not isinstance(value, (int, float)):
+            value = int(value) if isinstance(value, np.integer) else float(value) if isinstance(value, np.floating) else value
+        _coerce_expression(value)
+        return value
+
+    def _validate_definition(self, value, params):
+        validate_definition(value)
+        if value.num_qubits != self.num_qubits or not set(value.parameters) <= set(parameter_set(params)):
+            raise ValueError("Gate definition width/parameter namespace differs from its owner.")
 
     @property
     def definition(self): return self._definition
 
     @definition.setter
     def definition(self, value):
-        if value is not None:
-            validate_definition(value, owner=self)
+        if value is not None: self._validate_definition(value, self._params)
         object.__setattr__(self, "_definition", _copy(value))
+        object.__setattr__(self, "_parameter_plan", None)
 
     def copy(self, name=None):
         copied = _copy(self)
@@ -222,7 +207,10 @@ class Gate(Instruction):
         values = _parameter_mapping_from_values(ordered, mapping, strict)
         definition = None if self.definition is None else self.definition.assign_parameters(values, strict=False)
         params = tuple(resolve_parameter(value, values, allow_partial=True) for value in self.params)
-        return Gate(self.name, self.num_qubits, params, self.label, definition=definition, metadata=self.metadata)
+        result = Gate(self.name, self.num_qubits, params, self.label, definition=definition, metadata=self.metadata)
+        from .instruction_parameters import inherit_binding_plan
+        inherit_binding_plan(self, result)
+        return result
 
     def to_matrix(self):
         from quantumbridge.utils.math import gate_matrix
@@ -287,11 +275,12 @@ class Gate(Instruction):
 
 class ControlledGate(Gate):
     @property
-    def params(self): return self._params
+    def params(self): return Instruction.params.fget(self)
 
     @params.setter
     def params(self, values):
-        values = _parameter_values(values)
+        from .instruction_parameters import validated_values
+        values = validated_values(self, values)
         base = getattr(self, "base_gate", None)
         updated = None
         if base is not None:
@@ -309,6 +298,8 @@ class ControlledGate(Gate):
         result.name = self.name
         if self.definition is not None:
             result.definition = self.definition.assign_parameters(values, strict=False)
+        from .instruction_parameters import inherit_binding_plan
+        inherit_binding_plan(self, result)
         return result
 
     def __init__(self, base_gate, num_ctrl_qubits=1, ctrl_state=None, label=None):
@@ -348,6 +339,8 @@ class ControlledGate(Gate):
         object.__setattr__(self, "base_gate", base_gate.copy())
         object.__setattr__(self, "num_ctrl_qubits", n)
         object.__setattr__(self, "ctrl_state", state)
+        from .instruction_parameters import inherit_control_binding_plan
+        inherit_control_binding_plan(base_gate, self)
 
 
 def _append_controlled(out, name, wires, params, controls, metadata):

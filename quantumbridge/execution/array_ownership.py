@@ -255,6 +255,11 @@ def _strict_configuration_copy(value, memo, ledger, category, on_array, *, prefl
                 lambda array=array: array.copy(order="K")))
         memo[id(array)] = copied
         if on_array is not None: on_array(copied)
+    # Hashable native symbols can already be referenced by copied sets/dicts.
+    # Prime their audited fields; replace every field with owned data below
+    # before any reconstructed object escapes this function.
+    for item, fields in native:
+        object.__getattribute__(memo[id(item)], "__dict__").update(fields)
     for item, fields in native:
         object.__getattribute__(memo[id(item)], "__dict__").update(deepcopy(fields, memo))
     return deepcopy(value, memo)

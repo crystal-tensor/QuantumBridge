@@ -232,8 +232,12 @@ class Circuit:
         from .gates import Gate, validate_definition
         validate_definition(self)
         instruction = self.to_instruction(parameter_map=parameter_map)
-        return Gate(_name or self.name or "circuit", self.num_qubits, instruction.params,
-                    label, definition=instruction.definition)
+        result = Gate(_name or self.name or "circuit", self.num_qubits, instruction.params,
+                      label, definition=instruction.definition)
+        if instruction._parameter_plan is not None:
+            from .instruction_parameters import inherit_binding_plan
+            inherit_binding_plan(instruction, result)
+        return result
 
     def decompose(self, gates_to_decompose=None, reps=1):
         from .gates import decompose
@@ -867,7 +871,7 @@ class Circuit:
         instruction_name = name or label or self.name or "circuit"
         metadata = native_configuration_copy(definition.metadata,category="native_instruction_metadata_copy")
         metadata.setdefault("definition_name", self.name)
-        return Instruction(
+        result = Instruction(
             name=instruction_name,
             num_qubits=self.num_qubits,
             num_bits=self.num_bits,
@@ -875,6 +879,11 @@ class Circuit:
             definition=definition,
             metadata=metadata,
         )
+        if parameter_map is not None:
+            from .instruction_parameters import ParameterBindingPlan, owned_copy, definition_signature
+            object.__setattr__(result, "_parameter_plan", ParameterBindingPlan(
+                owned_copy(self), self.parameters, definition_signature(result.definition)))
+        return result
 
     @classmethod
     def from_instruction(cls, instruction: Instruction) -> "Circuit":

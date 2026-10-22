@@ -41,13 +41,14 @@ def matrix_from_ir(value):
 
 
 class _DefinitionCodec:
-    def __init__(self, limits=None):
+    def __init__(self, limits=None, *, include_parameter_bindings=True):
         from quantumbridge.serialization.limits import SerializationLimits
         self.limits = limits or SerializationLimits()
         self.definitions = self.operations = self.depth = 0
         self.parameter_nodes = 0
         self.modifiers = 0
         self.active = set()
+        self.include_parameter_bindings = include_parameter_bindings
 
     def count(self, field, value):
         self.limits.check(field, value, format="qb-ir")
@@ -77,6 +78,16 @@ def _gate_to_ir(gate, context):
         if type(gate) is ControlledGate:
             result.update(base_gate=_gate_to_ir(gate.base_gate, context),
                           num_ctrl_qubits=gate.num_ctrl_qubits, ctrl_state=gate.ctrl_state)
+        if context.include_parameter_bindings:
+            from quantumbridge.core.instruction_parameters import binding_plan_for_serialization
+            plan = binding_plan_for_serialization(gate)
+            if plan is not None:
+                context.definition()
+                context.depth += 1
+                try:
+                    result["parameter_binding"] = {"formals": [_param_to_ir(value, _context=context) for value in plan.formals],
+                        "definition": plan.definition.to_ir().to_dict(_context=context)}
+                finally: context.depth -= 1
         return result
     finally:
         context.depth -= 1
@@ -91,7 +102,7 @@ def _gate_from_ir(data, vectors, limits, context):
         raise ValueError("Unknown native definition record type.")
     controlled = data["type"] == "controlled_gate"
     fields = required | ({"base_gate", "num_ctrl_qubits", "ctrl_state"} if controlled else set())
-    if (set(data) != fields or type(data["num_qubits"]) is not int or data["num_qubits"] < 1
+    if (not fields <= set(data) <= fields | {"parameter_binding"} or type(data["num_qubits"]) is not int or data["num_qubits"] < 1
             or type(data["num_clbits"]) is not int or data["num_clbits"] != 0
             or type(data["params"]) is not list or type(data["metadata"]) is not dict):
         raise ValueError("Malformed native Gate definition record.")
@@ -112,8 +123,22 @@ def _gate_from_ir(data, vectors, limits, context):
                 raise ValueError("Controlled Gate base and definition header disagree.")
             gate.name = data["name"]
             gate.definition = definition
-            return gate
-        return Gate(data["name"], data["num_qubits"], params, data["label"], definition=definition, metadata=metadata)
+        else: gate = Gate(data["name"], data["num_qubits"], params, data["label"], definition=definition, metadata=metadata)
+        if "parameter_binding" in data:
+            binding = data["parameter_binding"]
+            if type(binding) is not dict or set(binding) != {"formals", "definition"} or type(binding["formals"]) is not list or definition is None:
+                raise ValueError("Malformed native parameter binding record.")
+            context.definition()
+            context.count("max_parameter_nodes", len(binding["formals"]))
+            context.depth += 1
+            try:
+                formals = tuple(param_from_ir(value, _vectors=vectors, _limits=limits) for value in binding["formals"])
+                template = circuit_from_ir(IRProgram.from_dict(binding["definition"], serialization_limits=limits,
+                    _parameter_vectors=vectors, _context=context))
+            finally: context.depth -= 1
+            from quantumbridge.core.instruction_parameters import restore_binding_plan
+            restore_binding_plan(gate, template, formals)
+        return gate
     finally:
         context.depth -= 1
 
@@ -136,7 +161,10 @@ def _annotation_to_ir(operation, context):
         else:
             kind = "instruction" if type(base) is Instruction else "gate"
             if kind == "instruction":
+                from quantumbridge.core.instruction_parameters import inherit_binding_plan
+                original = base
                 base = Gate(base.name, base.num_qubits, base.params, definition=base.definition, metadata=base.metadata)
+                inherit_binding_plan(original, base)
             record = _gate_to_ir(base, context)
         context.modifiers += len(operation.modifiers)
         context.count("max_gate_expansion", context.modifiers)
@@ -170,7 +198,10 @@ def _annotation_from_ir(data, vectors, limits, context):
             base = _gate_from_ir(data["base_op"], vectors, limits, context)
             if data["base_kind"] == "instruction":
                 if data["base_op"]["type"] != "gate": raise ValueError("An Instruction base cannot hide a ControlledGate record.")
+                from quantumbridge.core.instruction_parameters import inherit_binding_plan
+                original = base
                 base = Instruction(base.name, base.num_qubits, params=base.params, definition=base.definition, metadata=base.metadata)
+                inherit_binding_plan(original, base)
         else: raise ValueError("Unknown annotated base operation type.")
         modifiers = []
         for item in data["modifiers"]:

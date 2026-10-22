@@ -162,6 +162,10 @@ class AnnotatedOperation:
 
     def is_parameterized(self): return bool(self.parameters)
 
+    def validate_parameter(self, parameter):
+        _inspect(self)
+        return self.base_op.validate_parameter(parameter)
+
     def copy(self):
         validate_annotated_operation(self)
         return _copy(self)
@@ -215,7 +219,8 @@ class AnnotatedOperation:
             base = value.base_op
             content = key(base) if type(base) is AnnotatedOperation else (
                 type(base).__name__, canonical(_gate_to_ir(base if isinstance(base, Gate) else _base_gate(base),
-                    _DefinitionCodec(SerializationLimits(max_nesting_depth=4*current_gate_limits().max_definition_depth)))))
+                    _DefinitionCodec(SerializationLimits(max_nesting_depth=4*current_gate_limits().max_definition_depth),
+                        include_parameter_bindings=False))))
             return content, tuple(value.modifiers)
         return key(self) == key(other)
 

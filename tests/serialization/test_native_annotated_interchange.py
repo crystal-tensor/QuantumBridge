@@ -510,3 +510,79 @@ def test_annotation_qpy_100_wire_mps_never_allocates_dense_matrices(monkeypatch)
     angle = -2*(np.sin(x)+2*x)
     assert node(x) == pytest.approx(np.cos(angle), abs=3e-12)
     assert node.compute_jacobian(x) == pytest.approx(2*np.sin(angle)*(np.cos(x)+2), abs=3e-11)
+
+
+@pytest.mark.parametrize("kind", ["gate", "standard", "controlled", "annotation", "instruction_annotation"])
+def test_native_ir_retains_rebinding_lineage_after_numeric_binding(kind):
+    from quantumbridge.circuit_library import standard_gate_object
+    p = qb.Parameter("p")
+    body = qb.Circuit(1).rx(p, 0)
+    base = standard_gate_object("rx", .2) if kind == "standard" else body.to_instruction() if kind == "instruction_annotation" else body.to_gate()
+    if kind != "standard": base.params[0] = .2
+    if kind == "controlled": base = base.control(ctrl_state=0)
+    annotated = kind in {"annotation", "instruction_annotation"}
+    operation = qb.AnnotatedOperation(base, qb.InverseModifier()) if annotated else base
+    source = qb.Circuit(operation.num_qubits).append(operation, range(operation.num_qubits))
+    restored = roundtrip(source)
+    recovered = restored.operations[0].metadata["annotated_operation" if annotated else "gate"]
+    recovered.params[0] = .7
+    a = -.35 if annotated else .35
+    block = np.array([[np.cos(a), -1j*np.sin(a)], [-1j*np.sin(a), np.cos(a)]])
+    expected = np.eye(4, dtype=complex) if kind == "controlled" else block
+    if kind == "controlled": expected[:2, :2] = block
+    np.testing.assert_allclose(Operator(recovered).data, expected, atol=2e-13)
+    assert base.params == (.2,), "Reloaded mutation must not change the source object."
+
+
+@pytest.mark.parametrize("corruption", ["extra", "arity", "non_parameter", "width", "value", "nonunitary"])
+def test_native_ir_rejects_corrupt_parameter_binding_templates(corruption):
+    p = qb.Parameter("p")
+    gate = qb.Circuit(1).rx(p, 0).to_gate().assign_parameters({p: .2})
+    data = qb.Circuit(1).append(gate, [0]).to_ir().to_dict()
+    binding = data["instructions"][0]["metadata"]["gate"]["parameter_binding"]
+    if corruption == "extra": binding["module"] = "arbitrary"
+    elif corruption == "arity": binding["formals"] = []
+    elif corruption == "non_parameter": binding["formals"] = [.3]
+    elif corruption == "width": binding["definition"]["registers"]["quantum"]["size"] = 2
+    elif corruption == "value": binding["definition"]["instructions"][0]["params"] = [.8]
+    else: binding["definition"]["instructions"][0]["op"] = "reset"
+    with pytest.raises((ValueError, TypeError)): IRProgram.from_dict(data)
+
+
+def test_zero_phase_controlled_gate_binding_template_roundtrip_stays_mutable():
+    p = qb.Parameter("p")
+    body = qb.Circuit(1).rz(p, 0)
+    body.global_phase = p/3
+    gate = body.to_gate().assign_parameters({p: 0.}).control(ctrl_state=0)
+    restored = roundtrip(qb.Circuit(2).append(gate, [0, 1]))
+    gate = restored.operations[0].metadata["gate"]
+    gate.params[0] = .4
+    expected = np.eye(4, dtype=complex)
+    expected[:2, :2] = np.exp(.4j/3)*np.diag(np.exp(1j*np.array([-1, 1])*.2))
+    np.testing.assert_allclose(gate.to_matrix(), expected, atol=1e-13)
+
+
+@pytest.mark.parametrize("numeric", [False, True])
+def test_ir_serialization_does_not_silently_drop_edited_definition_lineage(numeric):
+    p, q = qb.Parameter("p"), qb.Parameter("q")
+    gate = qb.Circuit(1).rx(p, 0).to_gate()
+    gate.params[0] = .5 if numeric else q
+    gate.definition.rz(.5, 0)
+    circuit = qb.Circuit(1).append(gate, [0])
+    if numeric:
+        with pytest.raises(ValueError, match="stale parameter binding lineage"): circuit.to_ir().to_json()
+    else:
+        restored = roundtrip(circuit).operations[0].metadata["gate"]
+        restored.params[0] = .7
+        expected = np.diag(np.exp(1j*np.array([-1, 1])*.25))@np.array([[np.cos(.35), -1j*np.sin(.35)], [-1j*np.sin(.35), np.cos(.35)]])
+        np.testing.assert_allclose(restored.to_matrix(), expected, atol=1e-13)
+
+
+def test_ir_rejects_conflicting_duplicate_formal_bindings():
+    p = qb.Parameter("p")
+    gate = qb.Gate("shared", 1, [p, p], definition=qb.Circuit(1).rx(p, 0))
+    gate.params[:] = [.2, .2]
+    data = qb.Circuit(1).append(gate, [0]).to_ir().to_dict()
+    record = data["instructions"][0]["metadata"]["gate"]
+    record["params"][1] = .7
+    with pytest.raises(ValueError, match="Conflicting repeated binding"): IRProgram.from_dict(data)
