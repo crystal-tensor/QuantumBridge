@@ -171,10 +171,17 @@ sampler50/51. No Router code is in this frozen GLOBAL denominator.
 Runtime identities: production `b4d057c5c1a43b8c2832454d74c2d37a7ad6ba3f`,
 tests `628571daadff19bdd99ad1f945d3835e041f8d3f`,
 examples `0cad5682aab1089d7f035026da639ae6b9c3f65c`.
-Only documentation is updated after the frozen run. Exact scoped stage and
-actual frozen/worktree runtime equality must still be verified before the
-normal local supported-checkpoint commit; follow-up evidence records the
-actual commit, equality audit and complete collaborator reply separately.
+Only documentation was updated after the frozen run. Snapshot-audit actually
+exits0: all1152 controlled frozen/worktree/staged runtime blobs are identical,
+exactly22 owned paths staged, no protected paths or cloud/auth/vendor artifacts.
+Runtime manifest SHA256:
+`e8d0c2e8cd0faa04a632c250f3cd911c877374abbb8314c87740da151babf266`.
+The normal local code commit is `af66875b13593706282dac1ace0481911a2bbb27`;
+actual committed tree `9ff382f452e4d7cff14b66297640e846678fad6b` equals the
+audited staged tree. Actual diff-tree verifies exactly the22 owned paths.
+The five committed runtime subtrees equal the tested frozen subtrees above;
+scripts `4f29fa856fa38764a4d4c275e6b11ba881089eaf` and requirements
+`6986a51bd059a54890a20c7808cd644eff3eb271` are unchanged. There is no push.
 
 The dirty worktree legal run is a separate actual failure:
 `r2-dirty-legal`1failed/3passed/exit1, solely the pre-existing unowned
@@ -190,6 +197,26 @@ and allowed only a supported local checkpoint followed by remaining U3 work.
 It did not independently inspect uncommitted source or remote CI. New-SHA
 remote CI remains NOT_VERIFIED; no push or hardware/cloud acceptance occurred.
 Original28-section matrix remains NOT_RUN; U3B/U3/P4/full SDK stay incomplete.
+
+## Final Report-Based Collaborator Review
+
+The actual commit, all terminal counts, GLOBAL, snapshot/commit identities,
+dirty Router distinction and residual gaps were sent to the owner-authorized
+conversation "Claude 代码泄漏与应对",6a20d458-a76c-83ea-9b49-f8f0caedb3cf.
+The complete rendered reply was actually read: first Chrome AX656-1158
+covered checkpoint review and U3C sections0-6; after the stream recovered,
+AX1234-1759 covered the remaining section6 and sections7-16. Completed-answer
+controls and AX1761 "answer completed" were visible. An intermediate
+connection-interrupted partial reply was not treated as the complete task.
+
+The review accepts af66875 only as the locally validated U3B supported subset,
+identifies no new confirmed outstanding blocker from the supplied report,
+and explicitly states it did not independently inspect unpushed source or
+remote CI. It prioritizes actual Circuit composition, ownership and typed
+classical scope over more standard gate names. The complete normalized next
+task is saved in `stage12_b_p4u3c_composition_classical_scope_execution_prompt.md`.
+That prompt is received work, not implemented or validated U3C functionality.
+Full independent Qiskit/PennyLane parity stays ACTIVE / INCOMPLETE.
 
 ## Remaining Full-Parity Contracts
 
