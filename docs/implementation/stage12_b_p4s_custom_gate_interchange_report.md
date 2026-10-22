@@ -174,3 +174,30 @@ original P4 examples/annotations/ABI and remaining parity work are still require
 These16 development gates do not make original P4 or the highest goal complete.
 Driver SHA256:
 dd01f9bd8a5a65298b31cf53c5434f95f4a5342726007dfa51491f4d8bbf4432.
+
+## Scoped Local Code Checkpoint
+
+Normal code commit `2857901187e9bd30b6f0f81ca71f44b9cc6f9229`, subject
+`feat: add native gate definitions and custom interchange`, full code tree
+`cb4d4fa90c07e00a8f1864d7fd950268d94c1f35`,40 owned paths. Production/tests/
+examples subtree hashes exactly match the tested runtime above. The863-line
+public-contract JSON is literal behavior evidence, not863 implemented SDK
+functions. No user Studio/Router path was staged. Git auto-selected its existing
+committer identity and printed an identity notice; no identity/config/history
+change was made. No push or remote CI verification was attempted.
+
+The execution report has been sent to the exact authorized ChatGPT conversation
+"Claude 代码泄漏与应对" (6a20d458-a76c-83ea-9b49-f8f0caedb3cf), requesting the next
+substantive native implementation prompt while retaining original P4/full-parity
+requirements. Sending a report is not receipt of an assistant reply; that reply
+is recorded only after actually reading its body.
+
+The reply has now actually loaded and been read completely: assistant
+a75b6f9d-752e-43c6-9a4a-589978c2ac55, replying to report
+2c7b7ee3-e4e9-47fb-9ef6-d8ba6d3d3cb4. It acknowledges only the reported supported
+subset, not independent source/remote-CI review, and selects P4-T native
+AnnotatedOperation/modifiers/resolution/standard definitions next. Complete
+normalized execution instructions are saved in
+stage12_b_p4t_annotated_gate_execution_prompt.md, including original P4 obligations
+and the new90.82352219769439% coverage baseline. P4-T is received, not implemented
+or accepted in this P4-S checkpoint. Highest goal remains ACTIVE / INCOMPLETE.
