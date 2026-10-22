@@ -140,7 +140,7 @@ class DynamicExecutionEngine:
     def __init__(self, device, circuit, parameters=None, limits=None, snapshot_context=None):
         if not isinstance(circuit, Circuit): raise TypeError("QuantumBridge execution requires a native Circuit.")
         self.device = device
-        self.circuit = circuit.bind(parameters) if parameters else circuit
+        self.circuit = (circuit.bind(parameters) if parameters else circuit).lowered()
         configured = limits or getattr(device, "execution_limits", None)
         self.limits = configured or ExecutionLimits(max_branches=getattr(device, "max_branches", 4096))
         if not isinstance(self.limits, ExecutionLimits): raise TypeError("QuantumBridge execution_limits requires ExecutionLimits.")

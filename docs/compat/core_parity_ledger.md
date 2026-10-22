@@ -1,5 +1,21 @@
 # Core Functional Parity Ledger
 
+Stage 12-B P4 is IN PROGRESS / PARTIAL. A native Gate/ControlledGate graph now
+has real owned definitions, structural append/decompose/repeat/tensor, coherent
+symbolic control phase, numeric fractional powers and native execution tests.
+Single-control rotation/phase derivatives reach native first/second/HVP and
+all four installed framework graphs. A 100-wire MPS test forbids dense state,
+density and Gate matrix expansion. This is not complete Gate/Circuit parity:
+annotation objects, full mutable/public ABI, standard primitive decomposition,
+full Gate definition-aware IR/QASM/QPY and final same-runtime full matrix/coverage
+acceptance remain required. P4-S now adds native nested definition IR, supported
+QASM declarations and standard QPY v13 g/c custom records with actual bilateral
+public tests. QASM source UUID/labels/object types are not losslessly portable;
+QASM2 internal nonzero phase and unimplemented QPY Instruction/opaque/generic
+multi-control records explicitly reject. Public qasm2.dumps losing custom h/X
+is an observed upstream loss, not a matching case. P3 results below are not P4
+acceptance evidence.
+
 Stage 12-B P3 passed bounded local acceptance, not full-class parity. It implements native
 symbolic sin/cos/tan/exp/log/arcsin/arccos/arctan/abs/sign/conjugate, symbolic
 and repeated/mixed gradients, simultaneous subs, assign, numeric/real/symbol

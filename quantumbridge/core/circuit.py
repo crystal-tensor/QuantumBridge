@@ -104,6 +104,9 @@ class Circuit:
         metadata: Optional[Mapping[str, Any]] = None,
         clbits: Optional[Sequence[int]] = None,
     ) -> "Circuit":
+        from .gates import Gate
+        if isinstance(instruction, Gate):
+            return self._append_gate(instruction, targets, controls, params, metadata, clbits)
         targets_tuple = tuple(int(wire) for wire in targets)
         controls_tuple = tuple(int(wire) for wire in controls)
         clbits_tuple = tuple(range(instruction.num_bits)) if clbits is None else tuple(int(bit) for bit in clbits)
@@ -167,6 +170,91 @@ class Circuit:
             )
         )
         return self
+
+    def _append_gate(self, gate, targets, controls, params, metadata, clbits):
+        from .gates import Gate, ControlledGate, validate_definition
+        from .gate_limits import current_gate_limits
+        from quantumbridge.execution.resource_context import current_resources
+        if current_resources() is not None and type(gate) not in (Gate, ControlledGate):
+            from .classical import UnsupportedFeature
+            raise UnsupportedFeature("managed_gate_type", "Managed append requires an exact native Gate type.")
+        wires, controls = tuple(targets), tuple(controls)
+        if len(wires) != gate.num_qubits or clbits is not None and tuple(clbits):
+            raise ValueError("Gate append requires its exact quantum width and no classical bits.")
+        for wire in controls+wires: self._check_wire(wire)
+        if len(set(controls+wires)) != len(controls+wires): raise ValueError("Gate wires must be distinct.")
+        if params:
+            if len(params) != len(gate.params) or not all(isinstance(p, Parameter) for p in gate.params):
+                raise ValueError("Gate append parameter overrides require direct formal Parameters.")
+            gate = gate.assign_parameters(dict(zip(gate.params, params)))
+        if controls: gate = gate.control(len(controls), ctrl_state=(metadata or {}).get("ctrl_state"))
+        current_gate_limits().check("max_total_operations", len(self.operations)+1)
+        if gate.definition is not None: validate_definition(gate.definition, owner=gate)
+        validate_parameter_names((*self.parameters, *parameter_set(gate.params)))
+        extra = deepcopy(dict(metadata or {}))
+        if "gate" in extra: raise ValueError("The native gate metadata key is reserved.")
+        if gate.label is not None: extra.setdefault("label", gate.label)
+        if gate.definition is None:
+            from .gates import validate_definition as check
+            leaf = Circuit(gate.num_qubits).append(gate.name, range(gate.num_qubits), params=gate.params, metadata=gate.metadata)
+            check(leaf)
+            extra = {**deepcopy(gate.metadata), **extra}
+        else:
+            extra["gate"] = gate.copy()
+        self.operations.append(Operation(gate.name, controls+wires, params=gate.params, metadata=extra))
+        return self
+
+    def to_gate(self, parameter_map=None, label=None, *, _name=None):
+        from .gates import Gate, validate_definition
+        validate_definition(self)
+        instruction = self.to_instruction(parameter_map=parameter_map)
+        return Gate(_name or self.name or "circuit", self.num_qubits, instruction.params,
+                    label, definition=instruction.definition)
+
+    def decompose(self, gates_to_decompose=None, reps=1):
+        from .gates import decompose
+        return decompose(self, gates_to_decompose, reps)
+
+    def lowered(self):
+        from .gates import lower
+        return lower(self)
+
+    def repeat(self, reps):
+        from .gates import _integer
+        from .gate_limits import current_gate_limits
+        reps = _integer(reps, "Circuit repetition count")
+        limits = current_gate_limits()
+        limits.check("max_repeat_count", max(0, reps))
+        limits.check("max_total_operations", max(0, reps)*max(1, len(self.operations)))
+        out = self.copy_empty_like(name=(self.name or "circuit")+"*"+str(reps))
+        if reps <= 0: return out
+        if not self.num_bits and not self.measurements and not self.has_dynamic_operations:
+            if any("gate" in op.metadata for op in self.operations):
+                from .gates import validate_definition
+                validate_definition(self)
+            try: gate = self.to_gate()
+            except ValueError: gate = None
+            if gate is not None:
+                for _ in range(reps): out.append(gate, range(self.num_qubits))
+                return out
+        for _ in range(reps): out.compose(self, inplace=True)
+        return out
+
+    def tensor(self, other, inplace=False):
+        if not isinstance(other, Circuit): raise TypeError("Circuit.tensor requires a native Circuit.")
+        from .gate_limits import current_gate_limits
+        current_gate_limits().check("max_total_operations", len(self.operations)+len(other.operations))
+        validate_parameter_names((*self.parameters, *other.parameters))
+        # Match public qubit order (other's bits first). Native tensors remain
+        # wire-major, so the raw native matrix is kron(other, self).
+        out = Circuit(self.num_qubits+other.num_qubits, self.num_bits+other.num_bits, self.name, deepcopy(self.metadata))
+        out.global_phase = 0.
+        out.compose(other, range(other.num_qubits), range(other.num_bits), inplace=True)
+        out.compose(self, range(other.num_qubits, out.num_qubits), range(other.num_bits, out.num_bits), inplace=True)
+        if inplace:
+            _replace_self(self, out)
+            return None
+        return out
 
     @property
     def calibrations(self) -> dict:
@@ -769,6 +857,8 @@ class Circuit:
         if not isinstance(instruction, Instruction):
             raise TypeError("QuantumBridge Circuit.from_instruction expects an Instruction.")
         if instruction.definition is not None:
+            from .gates import Gate, validate_definition
+            if isinstance(instruction, Gate): validate_definition(instruction.definition, owner=instruction)
             return instruction.definition.copy()
         from quantumbridge.execution.array_ownership import native_configuration_copy
         metadata = native_configuration_copy(instruction.metadata,category="native_instruction_metadata_copy")
@@ -811,6 +901,8 @@ class Circuit:
             metadata = native_configuration_copy(op.metadata, memo=_copy_memo, category="native_bound_metadata_copy")
             if "control_node" in metadata:
                 metadata["control_node"] = metadata["control_node"].bind(mapping)
+            if "gate" in metadata:
+                metadata["gate"] = metadata["gate"].assign_parameters(mapping, strict=False)
             bound.operations.append(Operation(op.name, op.targets, op.controls, params, metadata))
         bound.measurements = list(self.measurements)
         bound.parameters
@@ -931,6 +1023,16 @@ def _normalize_condition(condition: Union[dict[str, Any], tuple[Union[int, Seque
 
 
 def _inverse_operation(op: Operation) -> Operation:
+    if "gate" in op.metadata:
+        gate = op.metadata["gate"].inverse()
+        metadata = deepcopy(op.metadata)
+        metadata["gate"] = gate
+        return Operation(gate.name, op.targets, op.controls, gate.params, metadata)
+    if "controlled_base" in op.metadata:
+        metadata = deepcopy(op.metadata)
+        description = metadata["controlled_base"]
+        description["inverse"] = not description.get("inverse", False)
+        return Operation(op.name, op.targets, op.controls, op.params, metadata)
     if op.name in {"id", "i", "x", "y", "z", "h", "cx", "cy", "cz", "ch", "swap", "dcx", "ecr", "ccx", "cswap"}:
         return _operation_with_metadata(op, {})
     inverse_name = {"s": "sdg", "sdg": "s", "sx": "sxdg", "sxdg": "sx", "t": "tdg", "tdg": "t", "csx": "csxdg", "csxdg": "csx"}.get(op.name)

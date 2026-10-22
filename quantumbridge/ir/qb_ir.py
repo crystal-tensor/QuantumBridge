@@ -40,8 +40,99 @@ def matrix_from_ir(value):
     return np.asarray(value, dtype=complex)
 
 
-def decode_instruction_metadata(metadata, *, _vectors=None, _limits=None):
+class _DefinitionCodec:
+    def __init__(self, limits=None):
+        from quantumbridge.serialization.limits import SerializationLimits
+        self.limits = limits or SerializationLimits()
+        self.definitions = self.operations = self.depth = 0
+        self.parameter_nodes = 0
+        self.active = set()
+
+    def count(self, field, value):
+        self.limits.check(field, value, format="qb-ir")
+
+    def definition(self):
+        self.definitions += 1
+        self.count("max_custom_definitions", self.definitions)
+        self.count("max_nesting_depth", self.depth+1)
+
+
+def _gate_to_ir(gate, context):
+    from quantumbridge.core.gates import Gate, ControlledGate, validate_definition
+    from quantumbridge.serialization.errors import UnsupportedFeature
+    if type(gate) not in (Gate, ControlledGate):
+        raise UnsupportedFeature("Only native Gate types have definition records.", format="qb-ir")
+    if id(gate) in context.active: raise ValueError("Cyclic native Gate definition.")
+    context.definition()
+    context.active.add(id(gate))
+    context.depth += 1
+    try:
+        if gate.definition is not None: validate_definition(gate.definition, owner=gate)
+        result = {"type": "controlled_gate" if type(gate) is ControlledGate else "gate",
+                  "name": gate.name, "label": gate.label, "num_qubits": gate.num_qubits,
+                  "num_clbits": 0, "params": [_param_to_ir(value, _context=context) for value in gate.params],
+                  "metadata": IRInstruction(gate.name, (), metadata=gate.metadata).to_dict(_context=context)["metadata"],
+                  "definition": None if gate.definition is None else gate.definition.to_ir().to_dict(_context=context)}
+        if type(gate) is ControlledGate:
+            result.update(base_gate=_gate_to_ir(gate.base_gate, context),
+                          num_ctrl_qubits=gate.num_ctrl_qubits, ctrl_state=gate.ctrl_state)
+        return result
+    finally:
+        context.depth -= 1
+        context.active.remove(id(gate))
+
+
+def _gate_from_ir(data, vectors, limits, context):
+    from quantumbridge.core.gates import Gate, ControlledGate
+    from quantumbridge.compat.qiskit_adapter import circuit_from_ir
+    required = {"type", "name", "label", "num_qubits", "num_clbits", "params", "metadata", "definition"}
+    if type(data) is not dict or data.get("type") not in {"gate", "controlled_gate"}:
+        raise ValueError("Unknown native definition record type.")
+    controlled = data["type"] == "controlled_gate"
+    fields = required | ({"base_gate", "num_ctrl_qubits", "ctrl_state"} if controlled else set())
+    if (set(data) != fields or type(data["num_qubits"]) is not int or data["num_qubits"] < 1
+            or type(data["num_clbits"]) is not int or data["num_clbits"] != 0
+            or type(data["params"]) is not list or type(data["metadata"]) is not dict):
+        raise ValueError("Malformed native Gate definition record.")
+    context.definition()
+    context.count("max_qubits", data["num_qubits"])
+    context.count("max_parameter_nodes", len(data["params"]))
+    context.depth += 1
+    try:
+        params = tuple(param_from_ir(value, _vectors=vectors, _limits=limits) for value in data["params"])
+        metadata = decode_instruction_metadata(data["metadata"], _vectors=vectors, _limits=limits, _context=context)
+        definition = None if data["definition"] is None else circuit_from_ir(IRProgram.from_dict(
+            data["definition"], serialization_limits=limits, _parameter_vectors=vectors, _context=context))
+        if controlled:
+            if definition is None: raise ValueError("A controlled definition record must be executable.")
+            base = _gate_from_ir(data["base_gate"], vectors, limits, context)
+            gate = ControlledGate(base, data["num_ctrl_qubits"], data["ctrl_state"], data["label"])
+            if gate.num_qubits != data["num_qubits"] or gate.params != params or metadata:
+                raise ValueError("Controlled Gate base and definition header disagree.")
+            gate.name = data["name"]
+            gate.definition = definition
+            return gate
+        return Gate(data["name"], data["num_qubits"], params, data["label"], definition=definition, metadata=metadata)
+    finally:
+        context.depth -= 1
+
+
+def decode_instruction_metadata(metadata, *, _vectors=None, _limits=None, _context=None):
     result = dict(metadata)
+    if isinstance(result.get("gate"), dict):
+        context = _context or _DefinitionCodec(_limits)
+        result["gate"] = _gate_from_ir(result["gate"], {} if _vectors is None else _vectors, context.limits, context)
+    if "controlled_base" in result:
+        description = result["controlled_base"]
+        if type(description) is not dict or set(description) != {"name", "metadata", "controls"} or type(description["controls"]) is not int or description["controls"] < 1:
+            raise ValueError("Malformed controlled primitive definition.")
+        context = _context or _DefinitionCodec(_limits)
+        context.definition()
+        context.depth += 1
+        try:
+            result["controlled_base"] = {**description, "metadata": decode_instruction_metadata(
+                description["metadata"], _vectors=_vectors, _limits=context.limits, _context=context)}
+        finally: context.depth -= 1
     if "matrix" in result:
         result["matrix"] = matrix_from_ir(result["matrix"])
     if "kraus" in result:
@@ -49,7 +140,7 @@ def decode_instruction_metadata(metadata, *, _vectors=None, _limits=None):
     if "control_node" in result and isinstance(result["control_node"], dict):
         from quantumbridge.core.control_flow import ControlBlock
         result["control_node"] = ControlBlock.from_dict(result["control_node"],
-            serialization_limits=_limits, _parameter_vectors=_vectors)
+            serialization_limits=_limits, _parameter_vectors=_vectors, _ir_context=_context)
     if isinstance(result.get("instruction"),dict) and "params" in result["instruction"]:
         result["instruction"]=dict(result["instruction"])
         result["instruction"]["params"]=[param_from_ir(value,_vectors=_vectors,_limits=_limits) if isinstance(value,dict)
@@ -62,7 +153,11 @@ def _matrix_to_ir(value):
     return {"real": matrix.real.tolist(), "imag": matrix.imag.tolist()}
 
 
-def _param_to_ir(value: Any) -> Any:
+def _param_to_ir(value: Any, *, _context=None, _depth=0) -> Any:
+    if _context is not None:
+        _context.parameter_nodes += 1
+        _context.count("max_parameter_nodes", _context.parameter_nodes)
+        _context.count("max_symbolic_expression_depth", _depth)
     if isinstance(value, Parameter):
         result={"parameter":value.name,"parameter_uuid":value.uuid}
         if not value._uuid_explicit:result["parameter_uuid_explicit"]=False
@@ -74,7 +169,7 @@ def _param_to_ir(value: Any) -> Any:
         return {
             "expression": str(value),
             "parameters": sorted(parameter.name for parameter in value.parameters),
-            "parameter_ast": {"op": value.op, "args": [_param_to_ir(arg) for arg in value.args]},
+            "parameter_ast": {"op": value.op, "args": [_param_to_ir(arg, _context=_context, _depth=_depth+1) for arg in value.args]},
         }
     if isinstance(value, Real):
         return float(value)
@@ -153,14 +248,24 @@ class IRInstruction:
     params: tuple[Any, ...] = ()
     metadata: dict[str, Any] = field(default_factory=dict)
 
-    def to_dict(self) -> dict[str, Any]:
+    def to_dict(self, *, _context=None) -> dict[str, Any]:
+        context = _context or _DefinitionCodec()
         metadata = {key: value for key, value in self.metadata.items() if key not in {"matrix", "kraus"}}
+        if "gate" in metadata: metadata["gate"] = _gate_to_ir(metadata["gate"], context)
+        if "controlled_base" in metadata:
+            description = metadata["controlled_base"]
+            context.definition()
+            context.depth += 1
+            try:
+                metadata["controlled_base"] = {**description, "metadata": IRInstruction(
+                    description["name"], (), metadata=description["metadata"]).to_dict(_context=context)["metadata"]}
+            finally: context.depth -= 1
         if "matrix" in self.metadata:
             metadata["matrix"] = _matrix_to_ir(self.metadata["matrix"])
         if "kraus" in self.metadata:
             metadata["kraus"] = [_matrix_to_ir(value) for value in self.metadata["kraus"]]
         if "control_node" in self.metadata:
-            metadata["control_node"] = self.metadata["control_node"].to_dict()
+            metadata["control_node"] = self.metadata["control_node"].to_dict(_ir_context=context)
         if isinstance(metadata.get("instruction"),dict) and "params" in metadata["instruction"]:
             metadata["instruction"]=dict(metadata["instruction"])
             metadata["instruction"]["params"]=[_param_to_ir(value) for value in metadata["instruction"]["params"]]
@@ -168,7 +273,7 @@ class IRInstruction:
             "op": self.op,
             "targets": list(self.targets),
             "controls": list(self.controls),
-            "params": [_param_to_ir(param) for param in self.params],
+            "params": [_param_to_ir(param, _context=context) for param in self.params],
             "metadata": metadata,
         }
 
@@ -198,14 +303,23 @@ class IRProgram:
     metadata: dict[str, Any] = field(default_factory=dict)
 
     @classmethod
-    def from_dict(cls, data, validate=True, *, serialization_limits=None, _parameter_vectors=None):
+    def from_dict(cls, data, validate=True, *, serialization_limits=None, _parameter_vectors=None, _context=None):
+        context = _context or _DefinitionCodec(serialization_limits)
+        serialization_limits = context.limits
+        if _context is None:
+            from quantumbridge.schema.serialization import validate_payload_structure
+            validate_payload_structure(data, limits=serialization_limits)
         if data.get("ir_version") != "qb-ir-v0.1": raise ValueError("Unknown QuantumBridge IR version.")
+        context.operations += len(data["instructions"])
+        context.count("max_instructions", context.operations)
         registers = data["registers"]
+        context.count("max_qubits", registers["quantum"]["size"])
+        context.count("max_clbits", registers["classical"]["size"])
         vectors={} if _parameter_vectors is None else _parameter_vectors
         result = cls(data["ir_version"], registers["quantum"]["size"], registers["classical"]["size"],
             tuple(IRInstruction(item["op"], tuple(item["targets"]), tuple(item.get("controls", ())),
                 tuple(param_from_ir(value,_vectors=vectors,_limits=serialization_limits) for value in item.get("params", ())),
-                decode_instruction_metadata(item.get("metadata", {}),_vectors=vectors,_limits=serialization_limits)) for item in data["instructions"]),
+                decode_instruction_metadata(item.get("metadata", {}),_vectors=vectors,_limits=serialization_limits,_context=context)) for item in data["instructions"]),
             tuple(IRMeasurement(item["kind"], item["wires"][0], item["bits"][0], dict(item.get("metadata", {}))) for item in data.get("measurements", ())), data.get("name"), dict(data.get("metadata", {})))
         if "global_phase" in result.metadata:
             result.metadata["global_phase"] = param_from_ir(result.metadata["global_phase"],_vectors=vectors,_limits=serialization_limits)
@@ -223,7 +337,7 @@ class IRProgram:
         from quantumbridge.schema.serialization import to_json
         from quantumbridge.core.symbolic_limits import symbolic_serialization_limits
         serialization_limits = symbolic_serialization_limits(serialization_limits)
-        return to_json(self.to_dict(), limits=serialization_limits)
+        return to_json(self.to_dict(serialization_limits=serialization_limits), limits=serialization_limits)
 
     def validate(self):
         from quantumbridge.compat.qiskit_adapter import circuit_from_ir
@@ -246,9 +360,12 @@ class IRProgram:
             metadata=dict(circuit.metadata),
         )
 
-    def to_dict(self) -> dict[str, Any]:
+    def to_dict(self, *, serialization_limits=None, _context=None) -> dict[str, Any]:
+        context = _context or _DefinitionCodec(serialization_limits)
+        context.operations += len(self.instructions)
+        context.count("max_instructions", context.operations)
         metadata = dict(self.metadata)
-        if "global_phase" in metadata: metadata["global_phase"] = _param_to_ir(metadata["global_phase"])
+        if "global_phase" in metadata: metadata["global_phase"] = _param_to_ir(metadata["global_phase"], _context=context)
         return {
             "ir_version": self.ir_version,
             "name": self.name,
@@ -256,7 +373,7 @@ class IRProgram:
                 "quantum": {"size": self.num_qubits},
                 "classical": {"size": self.num_bits},
             },
-            "instructions": [instruction.to_dict() for instruction in self.instructions],
+            "instructions": [instruction.to_dict(_context=context) for instruction in self.instructions],
             "measurements": [measurement.to_dict() for measurement in self.measurements],
             "metadata": metadata,
         }

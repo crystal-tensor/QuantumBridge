@@ -190,10 +190,11 @@ class Clifford:
     CLIFFORD_GATES = {"id", "i", "h", "s", "sdg", "sx", "sxdg", "x", "y", "z", "cx", "cy", "cz", "swap", "dcx", "ecr", "iswap"}
 
     def __init__(self, data, validate: bool = True, copy: bool = True):
+        from quantumbridge.core.gates import Gate, ControlledGate
         _workspace_notice()
         if type(data) is Clifford:
             tableau=copied_array(data.tableau,category="clifford_tableau_copy") if copy else data.tableau
-        elif type(data) in (Circuit, Instruction):
+        elif type(data) in (Circuit, Instruction, Gate, ControlledGate):
             tableau = self.from_circuit(data).tableau
         elif type(data) is Pauli:
             tableau = self.from_label(data._body).tableau
@@ -264,6 +265,7 @@ class Clifford:
                 circuit = Circuit(circuit.num_qubits).append(circuit, range(circuit.num_qubits))
         if not isinstance(circuit, Circuit):
             raise TypeError("QuantumBridge Clifford.from_circuit requires a native Circuit or Instruction.")
+        circuit = circuit.lowered()
         if circuit.measurements:
             raise ValueError("QuantumBridge Clifford cannot represent measurement or reset.")
         result = cls.identity(circuit.num_qubits)

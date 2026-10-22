@@ -24,11 +24,34 @@ def identifier(name):
     return isinstance(name,str) and name and (name[0].isalpha() or name[0] == "_") and all(char.isalnum() or char == "_" for char in name)
 
 
+def _definition_preflight(circuit,limits):
+    from quantumbridge.core.gates import validate_definition
+    pending,definitions,operations = [(circuit,0,frozenset())],0,0
+    while pending:
+        body,depth,ancestors = pending.pop()
+        limits.check("max_nesting_depth",depth,format="qasm")
+        if id(body) in ancestors: raise FormatValidationError("Cyclic source definition graph.",format="qasm")
+        operations += len(body.operations)+len(body.measurements)
+        limits.check("max_instructions",operations,format="qasm")
+        ancestors = ancestors | {id(body)}
+        for op in body.operations:
+            gate = op.metadata.get("gate")
+            if gate is not None and gate.definition is not None:
+                definitions += 1
+                limits.check("max_custom_definitions",definitions,format="qasm")
+                validate_definition(gate.definition,owner=gate)
+                pending.append((gate.definition,depth+1,ancestors))
+            node = op.metadata.get("control_node")
+            if node is not None:
+                pending.extend((child,depth+1,ancestors) for child in node.bodies)
+
+
 def _expand_sx(circuit):
     out = Circuit(circuit.num_qubits,circuit.num_bits,circuit.name,deepcopy(circuit.metadata))
     for item in circuit.iter_instructions():
         if isinstance(item,Measurement): append_item(out,item)
         elif item.metadata.get("control_node") is not None: append_item(out,map_control_bodies(item,_expand_sx))
+        elif "gate" in item.metadata: append_item(out,item)
         elif item.name in {"sx","sxdg"}:
             for name in ("h","s" if item.name == "sx" else "sdg","h"):
                 out.operations.append(Operation(name,item.targets,metadata=deepcopy(item.metadata)))
@@ -41,6 +64,7 @@ class SourceExporter:
         self.version,self.format = str(version),"qasm2" if str(version).startswith("2") else "qasm3"
         self.limits = limits or SerializationLimits()
         self.allow_metadata_loss = allow_metadata_loss
+        _definition_preflight(circuit,self.limits)
         from .control_normalization import normalize_source_control
         circuit = normalize_source_control(circuit,self.limits)
         validate_control_flow(circuit)
@@ -59,8 +83,50 @@ class SourceExporter:
             if parameter._uuid_explicit: self.metadata_loss("Parameter UUID cannot be carried by OpenQASM source.")
             self.parameters[parameter] = parameter.name; self.used.add(parameter.name)
         if self.format == "qasm2" and self.parameters: self.fail("OpenQASM 2 requires numeric bound parameters.")
-        self.circuit = GateDecompositionPass(STANDARD).run(_expand_sx(circuit)).circuit
+        self.circuit = self.primitive_source(circuit)
         self.emitted,self.byte_count = 0,0
+        self.gate_names,self.gate_declarations,self.active_gates = {},[],set()
+        self.gate_objects = {}
+
+    def primitive_source(self,circuit):
+        names = set(STANDARD)
+        def collect(body):
+            for op in body.operations:
+                if "gate" in op.metadata: names.add(op.name)
+                node = op.metadata.get("control_node")
+                if node is not None:
+                    for child in node.bodies: collect(child)
+        collect(circuit)
+        return GateDecompositionPass(names).run(_expand_sx(circuit)).circuit
+
+    def gate_reference(self,gate):
+        from quantumbridge.core.gates import Gate, ControlledGate, validate_definition
+        if id(gate) in self.active_gates: self.fail("Recursive custom Gate definition.")
+        if id(gate) in self.gate_names: return self.gate_names[id(gate)]
+        if type(gate) not in (Gate,ControlledGate) or gate.definition is None:
+            self.fail("Source custom Gate declarations require a native executable definition.")
+        validate_definition(gate.definition,owner=gate)
+        self.limits.check("max_nesting_depth",len(self.active_gates)+1,format=self.format)
+        self.limits.check("max_custom_definitions",len(self.gate_names)+1,format=self.format)
+        name = "qb_gate_"+str(len(self.gate_names))
+        while name in self.used: name += "_"
+        self.used.add(name)
+        parameters = gate.definition.parameters
+        self.gate_names[id(gate)] = (name,parameters)
+        self.gate_objects[id(gate)] = gate
+        self.active_gates.add(id(gate))
+        if gate.metadata: self.metadata_loss("OpenQASM cannot carry custom Gate object metadata.")
+        previous = self.wires
+        self.wires = {"q":dict(enumerate("w"+str(w) for w in range(gate.num_qubits))),"c":{}}
+        formal = {parameter:"theta"+str(i) for i,parameter in enumerate(parameters)}
+        try: body = self.block(self.primitive_source(gate.definition),1,formal,_definition=True)
+        finally:
+            self.wires = previous
+            self.active_gates.remove(id(gate))
+        header = "gate "+name+("("+",".join(formal.values())+")" if formal else "")
+        header += " "+",".join("w"+str(w) for w in range(gate.num_qubits))+" {"
+        self.gate_declarations.extend([header,*body,"}"])
+        return name,parameters
 
     def fail(self,reason): raise UnsupportedFeature(reason,format=self.format,version=self.version)
     def metadata_loss(self,reason):
@@ -120,8 +186,10 @@ class SourceExporter:
         if expr.op in CLASSICAL_OPS: return "("+self.classical(expr.args[0])+CLASSICAL_OPS[expr.op]+self.classical(expr.args[1])+")"
         self.fail("Unsupported typed classical source expression.")
 
-    def block(self,circuit,indent=0,loop_parameters=None):
-        self.metadata(circuit)
+    def block(self,circuit,indent=0,loop_parameters=None,*,_definition=False):
+        if not _definition: self.metadata(circuit)
+        elif set(circuit.metadata)-{"global_phase","registers"}:
+            self.metadata_loss("OpenQASM cannot carry custom definition circuit metadata.")
         exporter = self
         class Lines(list):
             def append(self,value):
@@ -138,7 +206,7 @@ class SourceExporter:
             self.emitted += 1; self.limits.check("max_instructions",self.emitted,format=self.format)
             if any(key in item.metadata for key in ("control_flow_stack","control_flow")):
                 self.fail("Legacy flattened conditional blocks must be normalized to structured ControlBlock before source export.")
-            extra = set(item.metadata)-{"operation_index","control_node","condition","gate_condition","directive","duration","unit"}
+            extra = set(item.metadata)-{"operation_index","control_node","condition","gate_condition","directive","duration","unit","gate"}
             if extra: self.metadata_loss("OpenQASM cannot carry instruction metadata: "+", ".join(sorted(extra)))
             condition = item.metadata.get("gate_condition",item.metadata.get("condition"))
             if condition is not None:
@@ -187,7 +255,14 @@ class SourceExporter:
                     lines.append(prefix+"}")
                 else: self.fail("Unsupported control node.")
                 continue
-            if isinstance(item,Measurement):
+            if "gate" in item.metadata:
+                gate = item.metadata["gate"]
+                if item.controls or len(item.targets) != gate.num_qubits or item.params != gate.params:
+                    self.fail("Custom Gate invocation differs from its definition.")
+                name,parameters = self.gate_reference(gate)
+                line = name+("("+",".join(self.angle(value,loop_parameters) for value in parameters)+")" if parameters else "")
+                line += " "+",".join(self.wires["q"][wire] for wire in item.wires)+";"
+            elif isinstance(item,Measurement):
                 if item.kind != "computational": self.fail("Unsupported measurement basis cannot be represented as ordinary measure.")
                 q,c = self.wires["q"][item.wire],self.wires["c"][item.bit]
                 line = f"measure {q} -> {c};" if self.format == "qasm2" else f"{c} = measure {q};"
@@ -213,17 +288,21 @@ class SourceExporter:
             def collect(body):
                 for op in body.operations:
                     used.add(op.name)
+                    if "gate" in op.metadata and op.metadata["gate"].definition is not None:
+                        collect(op.metadata["gate"].definition)
                     node = op.metadata.get("control_node")
                     if node is not None:
                         for child in node.bodies: collect(child)
             collect(self.circuit)
             if "swap" in used: lines.append("gate swap a,b { cx a,b; cx b,a; cx a,b; }")
             if "cswap" in used: lines.append("gate cswap c,a,b { cx b,a; ccx c,a,b; cx b,a; }")
+        body = self.block(self.circuit)
+        lines.extend(self.gate_declarations)
         if self.format == "qasm3": lines.extend(f"input float[64] {name};" for name in self.parameters.values())
         for spec in self.specs:
             kind = ("qreg" if spec["kind"] == "q" else "creg") if self.format == "qasm2" else ("qubit" if spec["kind"] == "q" else "bit")
             lines.append(f'{kind} {spec["name"]}[{len(spec["bits"])}];' if self.format == "qasm2" else f'{kind}[{len(spec["bits"])}] {spec["name"]};')
-        lines.extend(self.block(self.circuit))
+        lines.extend(body)
         result = "\n".join(lines)+"\n"
         self.limits.check("max_input_bytes",len(result.encode()),format=self.format)
         return result

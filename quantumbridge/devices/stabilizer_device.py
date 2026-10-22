@@ -37,7 +37,7 @@ class StabilizerDevice(NativeDeviceDerivatives):
 
         if not isinstance(circuit, Circuit):
             raise TypeError("QuantumBridge StabilizerDevice requires a native Circuit.")
-        bound = circuit.bind(parameters) if parameters else circuit
+        bound = (circuit.bind(parameters) if parameters else circuit).lowered()
         if self.max_qubits is not None and bound.num_qubits > self.max_qubits:
             raise ValueError("QuantumBridge circuit exceeds this device qubit limit.")
         if needs_dynamic_engine(bound,self.noise_model):

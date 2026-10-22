@@ -136,7 +136,8 @@ def test_qasm3_builtin_u_standard_phase_and_explicit_sdk_dialect():
 
 def test_standard_library_does_not_reserve_unrelated_native_instruction_names():
     circuit = qasm3_loads(HEADER+'gate rxx(theta) a,b {rx(theta) a;rx(theta) b;}qubit[2] q;rxx(pi) q[0],q[1];')
-    assert [op.name for op in circuit.operations] == ['rx','rx']
+    assert circuit.operations[0].metadata['gate'].name == 'rxx'
+    assert [op.name for op in circuit.lowered().operations] == ['rx','rx']
     with pytest.raises(UnsupportedFeature):qasm3_loads(HEADER+'qubit[2] q;rxx(pi) q[0],q[1];')
 
 

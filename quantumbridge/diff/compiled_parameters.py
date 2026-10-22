@@ -13,6 +13,7 @@ from quantumbridge.compiler.traversal import map_control_bodies
 
 
 def record_compiled_parameters(circuit, original_recorder):
+    circuit = circuit.lowered()
     from .qnode_engine import AngleRecorder
     recorder = AngleRecorder()
     values = dict(zip(original_recorder.parameters, original_recorder.angles))

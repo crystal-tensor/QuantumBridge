@@ -48,7 +48,7 @@ class StatevectorDevice(NativeDeviceDerivatives):
         return dynamic_branches(self, circuit, parameters)
 
     def _bound_circuit(self, circuit, parameters: Optional[Mapping[Union[Parameter, str], Real]]):
-        return circuit.bind(parameters) if parameters else circuit
+        return (circuit.bind(parameters) if parameters else circuit).lowered()
 
     def statevector(self, circuit, parameters: Optional[Mapping[Union[Parameter, str], Real]] = None) -> np.ndarray:
         circuit = self._bound_circuit(circuit, parameters)

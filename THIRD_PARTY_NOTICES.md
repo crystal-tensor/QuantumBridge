@@ -1,5 +1,19 @@
 # Third-party Notices
 
+## Native Gate Definitions Work In Progress
+
+Stage 12-B P4 independently implements native unitary definition graphs,
+structural transformations and controlled phase in the existing architecture.
+Behavioral references are IBM's public Gate API and installed Qiskit public
+calls, not upstream implementation/test source. Numerical spectral powers use
+the existing NumPy linear algebra runtime; no external quantum engine or
+source port is introduced. Later P4-S independently implements native custom
+definition IR and supported standard QASM2/3 and QPY v13 records. Published
+IBM QPY and OpenQASM language specifications, plus public API black-box calls,
+are references, not implementation source ports. Unsupported records and
+observed upstream source-export losses remain explicit. Full protocol and P4
+acceptance are unfinished.
+
 Status: Stage 11P-C3 work in progress; C2A committed
 Date: 2026-10-21
 

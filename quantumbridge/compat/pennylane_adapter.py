@@ -25,6 +25,7 @@ def observable_from_pennylane(observable) -> PauliString:
 
 
 def circuit_to_pennylane_callable(circuit, observable: Optional[PauliString] = None):
+    circuit = circuit.lowered()
     try:
         import pennylane as qml
     except Exception as exc:

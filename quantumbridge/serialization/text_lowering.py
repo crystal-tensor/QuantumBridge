@@ -315,8 +315,16 @@ class Lowerer:
                         if definition["body"] is None: self.error("Opaque gate calls have no executable definition.",stmt,UnsupportedFeature)
                         if name in call_stack: self.error("Recursive gate definition.",stmt)
                         if len(params) != len(definition["parameters"]) or len(wires) != len(definition["wires"]): self.error("Custom gate argument count mismatch.",stmt)
-                        scope = {**dict(zip(definition["parameters"],params)),**{name:Wires("q",(wire,)) for name,wire in zip(definition["wires"],wires)}}
-                        self.emit(definition["body"],circuit,scope,set(scope),{},call_stack+(name,),depth+1)
+                        scope = {**dict(zip(definition["parameters"],params)),**{name:Wires("q",(wire,)) for wire,name in enumerate(definition["wires"])}}
+                        body = Circuit(len(wires))
+                        self.emit(definition["body"],body,scope,set(scope),{},call_stack+(name,),depth+1)
+                        if any(op.metadata.get("directive") for op in body.operations):
+                            # Source barriers are legal, but a unitary Gate
+                            # object must not acquire directive semantics.
+                            circuit.compose(body,qubits=wires,inplace=True)
+                        else:
+                            from quantumbridge.core.gates import Gate
+                            circuit.append(Gate(name,len(wires),params,definition=body),wires)
                     else:
                         if self.strict and not self.standard_library and data["name"] not in {"U","CX"}: self.error(f"Source does not support gate {name!r} without its standard include.",stmt,UnsupportedFeature)
                         if self.strict and self.format == "qasm2" and data["name"] not in QELIB_NAMES|{"U","CX"}: self.error(f"Gate {data['name']!r} needs an explicit QASM2 definition.",stmt,UnsupportedFeature)
@@ -350,6 +358,9 @@ class Lowerer:
                 if stmt.kind != "gate": continue
                 child = ALIASES.get(stmt.data["name"],stmt.data["name"])
                 if child in self.definitions: definition(child,depth+1)
+                elif child == "gphase" and self.format == "qasm3":
+                    if len(stmt.data["params"]) != 1 or stmt.data["args"]:
+                        self.error("Invalid global-phase instruction in definition.",stmt)
                 elif child not in OPS: self.error("Unknown gate inside definition.",stmt,UnsupportedFeature)
             active.remove(name); visited.add(name)
         for name in self.definitions: definition(name)
@@ -362,6 +373,8 @@ class Lowerer:
                 node = item.metadata.get("control_node")
                 if node is not None:
                     for child in node.bodies: budget(child)
+                gate = item.metadata.get("gate")
+                if gate is not None and gate.definition is not None: budget(gate.definition)
         budget(circuit)
         validate_control_flow(circuit)
         return circuit

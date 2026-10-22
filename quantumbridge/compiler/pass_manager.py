@@ -18,7 +18,10 @@ def _comparison_snapshot(circuit):
     if scope is not None:
         scope.ledger.unavailable("compiler_comparison_python_heap",
             "Canonical pass-comparison strings use the existing JSON encoder; Python container/string allocator memory is not an owned-array or strict RSS bound.")
-    return json.dumps(circuit.to_ir().to_dict(), sort_keys=True)
+    from quantumbridge.core.symbolic_limits import current_symbolic_limits
+    from quantumbridge.serialization.limits import SerializationLimits
+    limits = SerializationLimits(max_symbolic_expression_depth=current_symbolic_limits().max_depth)
+    return json.dumps(circuit.to_ir().to_dict(serialization_limits=limits), sort_keys=True)
 
 
 class PropertySet(dict):
@@ -43,6 +46,7 @@ class PassManager:
         self.property_set = PropertySet()
 
     def run(self, circuit, callback=None):
+        circuit = circuit.lowered()
         from .dag import circuit_to_dag
         from .traversal import transform_segments
         circuit_to_dag(circuit, self.limits)

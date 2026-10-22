@@ -1,5 +1,18 @@
 # QuantumBridge SDK
 
+Stage 12-B P4 is in progress: native Gate definitions, structural decomposition,
+repeat/tensor and symbolic controlled phase now have execution tests. Complete
+Gate/QASM/QPY/annotation contracts and P4 final acceptance are still pending;
+this does not change the incomplete full Qiskit/PennyLane replacement status.
+
+P4-S development adds executable custom Gate IR records, real QASM gate
+declarations and standard QPY v13 custom-definition binary records. Supported
+paths retain native execution and derivatives. This is not complete P4 or
+full-format parity: source cannot preserve UUID/object metadata, QASM2 rejects
+nonzero internal phase, and unsupported QPY records remain explicit. Run the
+SDK-free demonstration with
+`PYTHONPATH=. python examples/native_custom_gate_interchange.py`.
+
 Native symbolic mathematics passed bounded local acceptance in Stage 12-B P3. Scalar
 functions, symbolic/repeated differentiation and simultaneous substitution now
 feed the native Circuit/Instruction and quantum derivative paths; this is not

@@ -391,10 +391,10 @@ def _state_valid(state, atol, rtol):
 
 class Statevector:
     def __init__(self, data, normalize: bool = False, *, dims=None):
-        from quantumbridge.core import Circuit, Instruction
+        from quantumbridge.core import Circuit, Instruction, Gate, ControlledGate
         from quantumbridge.execution.resource_context import current_resources
         scope = current_resources()
-        if (type(data) in (Circuit,Instruction) if scope is not None else isinstance(data,(Circuit,Instruction))):
+        if (type(data) in (Circuit,Instruction,Gate,ControlledGate) if scope is not None else isinstance(data,(Circuit,Instruction))):
             data = self.from_instruction(data).data
         if scope is None:
             self.data = np.asarray(data, dtype=complex)
@@ -434,8 +434,8 @@ class Statevector:
 
     @classmethod
     def from_instruction(cls, instruction) -> "Statevector":
-        from quantumbridge.core import Circuit, Instruction
-        if current_resources() is not None and type(instruction) not in (Circuit,Instruction):
+        from quantumbridge.core import Circuit, Instruction, Gate, ControlledGate
+        if current_resources() is not None and type(instruction) not in (Circuit,Instruction,Gate,ControlledGate):
             from quantumbridge.core.classical import UnsupportedFeature
             raise UnsupportedFeature("managed_state_instruction","Managed state construction requires a native Circuit or Instruction.")
         if isinstance(instruction,Instruction):

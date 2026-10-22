@@ -1,0 +1,863 @@
+{
+  "notes": "Literal outcomes are not newly implemented SDK functions; native bool/error/annotation/structure differences remain Partial.",
+  "reference_mode": "public_calls_only",
+  "status": "PUBLIC_OBSERVED_NOT_FULL_PARITY",
+  "versions": {
+    "2.4.1": {
+      "records": [
+        {
+          "result": {
+            "definition_names": [
+              "rx"
+            ],
+            "gate": true,
+            "instruction": true,
+            "label": null,
+            "name": "unit",
+            "num_clbits": 0,
+            "num_qubits": 1,
+            "params": [
+              "p"
+            ],
+            "type": "Gate"
+          },
+          "scenario": "to_gate.default"
+        },
+        {
+          "result": {
+            "definition_names": [
+              "rx"
+            ],
+            "gate": true,
+            "instruction": true,
+            "label": "label",
+            "name": "unit",
+            "num_clbits": 0,
+            "num_qubits": 1,
+            "params": [
+              "p"
+            ],
+            "type": "Gate"
+          },
+          "scenario": "to_gate.label"
+        },
+        {
+          "error_type": "QiskitError",
+          "message": "'parameter_map should map all circuit parameters. Circuit parameters: ParameterView([Parameter(p)]), parameter_map: {}'",
+          "scenario": "to_gate.map.partial"
+        },
+        {
+          "result": {
+            "definition_names": [
+              "rx"
+            ],
+            "gate": true,
+            "instruction": true,
+            "label": null,
+            "name": "unit",
+            "num_clbits": 0,
+            "num_qubits": 1,
+            "params": [
+              "0.4"
+            ],
+            "type": "Gate"
+          },
+          "scenario": "to_gate.map.numeric"
+        },
+        {
+          "result": {
+            "definition_names": [
+              "rx"
+            ],
+            "gate": true,
+            "instruction": true,
+            "label": null,
+            "name": "unit",
+            "num_clbits": 0,
+            "num_qubits": 1,
+            "params": [
+              "q"
+            ],
+            "type": "Gate"
+          },
+          "scenario": "to_gate.map.symbolic"
+        },
+        {
+          "result": {
+            "definition_names": [
+              "rx"
+            ],
+            "gate": true,
+            "instruction": true,
+            "label": null,
+            "name": "unit",
+            "num_clbits": 0,
+            "num_qubits": 1,
+            "params": [
+              "sin(q)"
+            ],
+            "type": "Gate"
+          },
+          "scenario": "to_gate.map.expression"
+        },
+        {
+          "error_type": "QiskitError",
+          "message": "'parameter_map should map all circuit parameters. Circuit parameters: ParameterView([Parameter(p)]), parameter_map: {Parameter(q): Parameter(p)}'",
+          "scenario": "to_gate.map.unknown"
+        },
+        {
+          "error_type": "QiskitError",
+          "message": "'Circuit with classical bits cannot be converted to gate.'",
+          "scenario": "to_gate.classical"
+        },
+        {
+          "error_type": "QiskitError",
+          "message": "'Circuit with classical bits cannot be converted to gate.'",
+          "scenario": "to_gate.measure"
+        },
+        {
+          "error_type": "QiskitError",
+          "message": "'One or more instructions cannot be converted to a gate. \"reset\" is not a gate instruction'",
+          "scenario": "to_gate.reset"
+        },
+        {
+          "error_type": "QiskitError",
+          "message": "'One or more instructions cannot be converted to a gate. \"barrier\" is not a gate instruction'",
+          "scenario": "to_gate.barrier"
+        },
+        {
+          "error_type": "QiskitError",
+          "message": "'One or more instructions cannot be converted to a gate. \"delay\" is not a gate instruction'",
+          "scenario": "to_gate.delay"
+        },
+        {
+          "error_type": "CircuitError",
+          "message": "'Repeat can only be called with strictly positive integer.'",
+          "scenario": "gate.repeat.-1"
+        },
+        {
+          "result": [],
+          "scenario": "circuit.repeat.-1"
+        },
+        {
+          "error_type": "CircuitError",
+          "message": "'Repeat can only be called with strictly positive integer.'",
+          "scenario": "gate.repeat.0"
+        },
+        {
+          "result": [],
+          "scenario": "circuit.repeat.0"
+        },
+        {
+          "result": {
+            "definition_names": [
+              "unit"
+            ],
+            "gate": true,
+            "instruction": true,
+            "label": null,
+            "name": "unit*1",
+            "num_clbits": 0,
+            "num_qubits": 1,
+            "params": [
+              "p"
+            ],
+            "type": "Gate"
+          },
+          "scenario": "gate.repeat.1"
+        },
+        {
+          "result": [
+            "unit"
+          ],
+          "scenario": "circuit.repeat.1"
+        },
+        {
+          "result": {
+            "definition_names": [
+              "unit",
+              "unit"
+            ],
+            "gate": true,
+            "instruction": true,
+            "label": null,
+            "name": "unit*2",
+            "num_clbits": 0,
+            "num_qubits": 1,
+            "params": [
+              "p"
+            ],
+            "type": "Gate"
+          },
+          "scenario": "gate.repeat.2"
+        },
+        {
+          "result": [
+            "unit",
+            "unit"
+          ],
+          "scenario": "circuit.repeat.2"
+        },
+        {
+          "error_type": "CircuitError",
+          "message": "'Repeat can only be called with strictly positive integer.'",
+          "scenario": "gate.repeat.1.5"
+        },
+        {
+          "error_type": "TypeError",
+          "message": "'float' object cannot be interpreted as an integer",
+          "scenario": "circuit.repeat.1.5"
+        },
+        {
+          "result": {
+            "definition_names": [
+              "unit"
+            ],
+            "gate": true,
+            "instruction": true,
+            "label": null,
+            "name": "unit*1",
+            "num_clbits": 0,
+            "num_qubits": 1,
+            "params": [
+              "p"
+            ],
+            "type": "Gate"
+          },
+          "scenario": "gate.repeat.True"
+        },
+        {
+          "result": [
+            "unit"
+          ],
+          "scenario": "circuit.repeat.True"
+        },
+        {
+          "result": {
+            "definition_names": [
+              "cu",
+              "p"
+            ],
+            "gate": true,
+            "instruction": true,
+            "label": null,
+            "name": "cunit",
+            "num_clbits": 0,
+            "num_qubits": 2,
+            "params": [
+              "p"
+            ],
+            "type": "ControlledGate"
+          },
+          "scenario": "control.False"
+        },
+        {
+          "result": {
+            "definition_names": null,
+            "gate": false,
+            "instruction": false,
+            "label": null,
+            "name": "annotated",
+            "num_clbits": 0,
+            "num_qubits": 2,
+            "params": [
+              "p"
+            ],
+            "type": "AnnotatedOperation"
+          },
+          "scenario": "control.True"
+        },
+        {
+          "result": {
+            "definition_names": [
+              "x",
+              "cunit",
+              "x"
+            ],
+            "gate": true,
+            "instruction": true,
+            "label": null,
+            "name": "cunit_o0",
+            "num_clbits": 0,
+            "num_qubits": 2,
+            "params": [
+              "p"
+            ],
+            "type": "ControlledGate"
+          },
+          "scenario": "control.state.'0'"
+        },
+        {
+          "result": {
+            "definition_names": [
+              "cu",
+              "p"
+            ],
+            "gate": true,
+            "instruction": true,
+            "label": null,
+            "name": "cunit",
+            "num_clbits": 0,
+            "num_qubits": 2,
+            "params": [
+              "p"
+            ],
+            "type": "ControlledGate"
+          },
+          "scenario": "control.state.'1'"
+        },
+        {
+          "error_type": "CircuitError",
+          "message": "'invalid control state specification'",
+          "scenario": "control.state.'10'"
+        },
+        {
+          "result": {
+            "definition_names": [
+              "x",
+              "cunit",
+              "x"
+            ],
+            "gate": true,
+            "instruction": true,
+            "label": null,
+            "name": "cunit_o0",
+            "num_clbits": 0,
+            "num_qubits": 2,
+            "params": [
+              "p"
+            ],
+            "type": "ControlledGate"
+          },
+          "scenario": "control.state.0"
+        },
+        {
+          "result": {
+            "definition_names": [
+              "cu",
+              "p"
+            ],
+            "gate": true,
+            "instruction": true,
+            "label": null,
+            "name": "cunit",
+            "num_clbits": 0,
+            "num_qubits": 2,
+            "params": [
+              "p"
+            ],
+            "type": "ControlledGate"
+          },
+          "scenario": "control.state.1"
+        },
+        {
+          "error_type": "CircuitError",
+          "message": "'invalid control state specification'",
+          "scenario": "control.state.2"
+        },
+        {
+          "error_type": "CircuitError",
+          "message": "'invalid control state specification'",
+          "scenario": "control.state.-1"
+        },
+        {
+          "result": [
+            [
+              0.0,
+              0.0,
+              0.7071067811865475,
+              0.7071067811865475
+            ],
+            [
+              0.0,
+              0.0,
+              0.7071067811865475,
+              -0.7071067811865475
+            ],
+            [
+              0.7071067811865475,
+              0.7071067811865475,
+              0.0,
+              0.0
+            ],
+            [
+              0.7071067811865475,
+              -0.7071067811865475,
+              0.0,
+              0.0
+            ]
+          ],
+          "scenario": "tensor.order"
+        },
+        {
+          "result": true,
+          "scenario": "tensor.inplace_return"
+        },
+        {
+          "result": [
+            "middle"
+          ],
+          "scenario": "decompose.reps.0"
+        },
+        {
+          "result": [
+            "unit"
+          ],
+          "scenario": "decompose.reps.1"
+        },
+        {
+          "result": [
+            "rx"
+          ],
+          "scenario": "decompose.reps.2"
+        },
+        {
+          "result": [
+            "middle"
+          ],
+          "scenario": "decompose.reps.-1"
+        },
+        {
+          "error_type": "TypeError",
+          "message": "'float' object cannot be interpreted as an integer",
+          "scenario": "decompose.reps.1.5"
+        },
+        {
+          "result": [
+            "middle"
+          ],
+          "scenario": "decompose.selected"
+        }
+      ],
+      "scenario_count": 41
+    },
+    "2.6.0": {
+      "records": [
+        {
+          "result": {
+            "definition_names": [
+              "rx"
+            ],
+            "gate": true,
+            "instruction": true,
+            "label": null,
+            "name": "unit",
+            "num_clbits": 0,
+            "num_qubits": 1,
+            "params": [
+              "p"
+            ],
+            "type": "Gate"
+          },
+          "scenario": "to_gate.default"
+        },
+        {
+          "result": {
+            "definition_names": [
+              "rx"
+            ],
+            "gate": true,
+            "instruction": true,
+            "label": "label",
+            "name": "unit",
+            "num_clbits": 0,
+            "num_qubits": 1,
+            "params": [
+              "p"
+            ],
+            "type": "Gate"
+          },
+          "scenario": "to_gate.label"
+        },
+        {
+          "error_type": "QiskitError",
+          "message": "'parameter_map should map all circuit parameters. Circuit parameters: ParameterView([Parameter(p)]), parameter_map: {}'",
+          "scenario": "to_gate.map.partial"
+        },
+        {
+          "result": {
+            "definition_names": [
+              "rx"
+            ],
+            "gate": true,
+            "instruction": true,
+            "label": null,
+            "name": "unit",
+            "num_clbits": 0,
+            "num_qubits": 1,
+            "params": [
+              "0.4"
+            ],
+            "type": "Gate"
+          },
+          "scenario": "to_gate.map.numeric"
+        },
+        {
+          "result": {
+            "definition_names": [
+              "rx"
+            ],
+            "gate": true,
+            "instruction": true,
+            "label": null,
+            "name": "unit",
+            "num_clbits": 0,
+            "num_qubits": 1,
+            "params": [
+              "q"
+            ],
+            "type": "Gate"
+          },
+          "scenario": "to_gate.map.symbolic"
+        },
+        {
+          "result": {
+            "definition_names": [
+              "rx"
+            ],
+            "gate": true,
+            "instruction": true,
+            "label": null,
+            "name": "unit",
+            "num_clbits": 0,
+            "num_qubits": 1,
+            "params": [
+              "sin(q)"
+            ],
+            "type": "Gate"
+          },
+          "scenario": "to_gate.map.expression"
+        },
+        {
+          "error_type": "QiskitError",
+          "message": "'parameter_map should map all circuit parameters. Circuit parameters: ParameterView([Parameter(p)]), parameter_map: {Parameter(q): Parameter(p)}'",
+          "scenario": "to_gate.map.unknown"
+        },
+        {
+          "error_type": "QiskitError",
+          "message": "'Circuit with classical bits cannot be converted to gate.'",
+          "scenario": "to_gate.classical"
+        },
+        {
+          "error_type": "QiskitError",
+          "message": "'Circuit with classical bits cannot be converted to gate.'",
+          "scenario": "to_gate.measure"
+        },
+        {
+          "error_type": "QiskitError",
+          "message": "'One or more instructions cannot be converted to a gate. \"reset\" is not a gate instruction'",
+          "scenario": "to_gate.reset"
+        },
+        {
+          "error_type": "QiskitError",
+          "message": "'One or more instructions cannot be converted to a gate. \"barrier\" is not a gate instruction'",
+          "scenario": "to_gate.barrier"
+        },
+        {
+          "error_type": "QiskitError",
+          "message": "'One or more instructions cannot be converted to a gate. \"delay\" is not a gate instruction'",
+          "scenario": "to_gate.delay"
+        },
+        {
+          "error_type": "CircuitError",
+          "message": "'Repeat can only be called with strictly positive integer.'",
+          "scenario": "gate.repeat.-1"
+        },
+        {
+          "result": [],
+          "scenario": "circuit.repeat.-1"
+        },
+        {
+          "error_type": "CircuitError",
+          "message": "'Repeat can only be called with strictly positive integer.'",
+          "scenario": "gate.repeat.0"
+        },
+        {
+          "result": [],
+          "scenario": "circuit.repeat.0"
+        },
+        {
+          "result": {
+            "definition_names": [
+              "unit"
+            ],
+            "gate": true,
+            "instruction": true,
+            "label": null,
+            "name": "unit*1",
+            "num_clbits": 0,
+            "num_qubits": 1,
+            "params": [
+              "p"
+            ],
+            "type": "Gate"
+          },
+          "scenario": "gate.repeat.1"
+        },
+        {
+          "result": [
+            "unit"
+          ],
+          "scenario": "circuit.repeat.1"
+        },
+        {
+          "result": {
+            "definition_names": [
+              "unit",
+              "unit"
+            ],
+            "gate": true,
+            "instruction": true,
+            "label": null,
+            "name": "unit*2",
+            "num_clbits": 0,
+            "num_qubits": 1,
+            "params": [
+              "p"
+            ],
+            "type": "Gate"
+          },
+          "scenario": "gate.repeat.2"
+        },
+        {
+          "result": [
+            "unit",
+            "unit"
+          ],
+          "scenario": "circuit.repeat.2"
+        },
+        {
+          "error_type": "CircuitError",
+          "message": "'Repeat can only be called with strictly positive integer.'",
+          "scenario": "gate.repeat.1.5"
+        },
+        {
+          "error_type": "TypeError",
+          "message": "'float' object cannot be interpreted as an integer",
+          "scenario": "circuit.repeat.1.5"
+        },
+        {
+          "result": {
+            "definition_names": [
+              "unit"
+            ],
+            "gate": true,
+            "instruction": true,
+            "label": null,
+            "name": "unit*1",
+            "num_clbits": 0,
+            "num_qubits": 1,
+            "params": [
+              "p"
+            ],
+            "type": "Gate"
+          },
+          "scenario": "gate.repeat.True"
+        },
+        {
+          "result": [
+            "unit"
+          ],
+          "scenario": "circuit.repeat.True"
+        },
+        {
+          "result": {
+            "definition_names": [
+              "cu",
+              "p"
+            ],
+            "gate": true,
+            "instruction": true,
+            "label": null,
+            "name": "cunit",
+            "num_clbits": 0,
+            "num_qubits": 2,
+            "params": [
+              "p"
+            ],
+            "type": "ControlledGate"
+          },
+          "scenario": "control.False"
+        },
+        {
+          "result": {
+            "definition_names": null,
+            "gate": false,
+            "instruction": false,
+            "label": null,
+            "name": "annotated",
+            "num_clbits": 0,
+            "num_qubits": 2,
+            "params": [
+              "p"
+            ],
+            "type": "AnnotatedOperation"
+          },
+          "scenario": "control.True"
+        },
+        {
+          "result": {
+            "definition_names": [
+              "x",
+              "cunit",
+              "x"
+            ],
+            "gate": true,
+            "instruction": true,
+            "label": null,
+            "name": "cunit_o0",
+            "num_clbits": 0,
+            "num_qubits": 2,
+            "params": [
+              "p"
+            ],
+            "type": "ControlledGate"
+          },
+          "scenario": "control.state.'0'"
+        },
+        {
+          "result": {
+            "definition_names": [
+              "cu",
+              "p"
+            ],
+            "gate": true,
+            "instruction": true,
+            "label": null,
+            "name": "cunit",
+            "num_clbits": 0,
+            "num_qubits": 2,
+            "params": [
+              "p"
+            ],
+            "type": "ControlledGate"
+          },
+          "scenario": "control.state.'1'"
+        },
+        {
+          "error_type": "CircuitError",
+          "message": "'invalid control state specification'",
+          "scenario": "control.state.'10'"
+        },
+        {
+          "result": {
+            "definition_names": [
+              "x",
+              "cunit",
+              "x"
+            ],
+            "gate": true,
+            "instruction": true,
+            "label": null,
+            "name": "cunit_o0",
+            "num_clbits": 0,
+            "num_qubits": 2,
+            "params": [
+              "p"
+            ],
+            "type": "ControlledGate"
+          },
+          "scenario": "control.state.0"
+        },
+        {
+          "result": {
+            "definition_names": [
+              "cu",
+              "p"
+            ],
+            "gate": true,
+            "instruction": true,
+            "label": null,
+            "name": "cunit",
+            "num_clbits": 0,
+            "num_qubits": 2,
+            "params": [
+              "p"
+            ],
+            "type": "ControlledGate"
+          },
+          "scenario": "control.state.1"
+        },
+        {
+          "error_type": "CircuitError",
+          "message": "'invalid control state specification'",
+          "scenario": "control.state.2"
+        },
+        {
+          "error_type": "CircuitError",
+          "message": "'invalid control state specification'",
+          "scenario": "control.state.-1"
+        },
+        {
+          "result": [
+            [
+              0.0,
+              0.0,
+              0.7071067811865475,
+              0.7071067811865475
+            ],
+            [
+              0.0,
+              0.0,
+              0.7071067811865475,
+              -0.7071067811865475
+            ],
+            [
+              0.7071067811865475,
+              0.7071067811865475,
+              0.0,
+              0.0
+            ],
+            [
+              0.7071067811865475,
+              -0.7071067811865475,
+              0.0,
+              0.0
+            ]
+          ],
+          "scenario": "tensor.order"
+        },
+        {
+          "result": true,
+          "scenario": "tensor.inplace_return"
+        },
+        {
+          "result": [
+            "middle"
+          ],
+          "scenario": "decompose.reps.0"
+        },
+        {
+          "result": [
+            "unit"
+          ],
+          "scenario": "decompose.reps.1"
+        },
+        {
+          "result": [
+            "rx"
+          ],
+          "scenario": "decompose.reps.2"
+        },
+        {
+          "result": [
+            "middle"
+          ],
+          "scenario": "decompose.reps.-1"
+        },
+        {
+          "error_type": "TypeError",
+          "message": "'float' object cannot be interpreted as an integer",
+          "scenario": "decompose.reps.1.5"
+        },
+        {
+          "result": [
+            "middle"
+          ],
+          "scenario": "decompose.selected"
+        }
+      ],
+      "scenario_count": 41
+    }
+  }
+}

@@ -24,10 +24,10 @@ def _validate_qargs(qargs, num_qubits: int) -> tuple[int, ...]:
 
 class DensityMatrix:
     def __init__(self, data, *, dims=None):
-        from quantumbridge.core import Circuit, Instruction
+        from quantumbridge.core import Circuit, Instruction, Gate, ControlledGate
         from quantumbridge.execution.resource_context import current_resources
         scope=current_resources()
-        if (type(data) in (Circuit,Instruction) if scope is not None else isinstance(data,(Circuit,Instruction))):
+        if (type(data) in (Circuit,Instruction,Gate,ControlledGate) if scope is not None else isinstance(data,(Circuit,Instruction))):
             data = self.from_instruction(data).data
         if scope is None:
             self.data = np.asarray(data, dtype=complex)
@@ -83,10 +83,10 @@ class DensityMatrix:
 
     @classmethod
     def from_instruction(cls, instruction) -> "DensityMatrix":
-        from quantumbridge.core import Circuit, Instruction
+        from quantumbridge.core import Circuit, Instruction, Gate, ControlledGate
         scope=current_resources()
         if scope is not None:
-            if type(instruction) not in (Circuit,Instruction):
+            if type(instruction) not in (Circuit,Instruction,Gate,ControlledGate):
                 from quantumbridge.core.classical import UnsupportedFeature
                 raise UnsupportedFeature("managed_state_instruction","Managed state construction requires a native Circuit or Instruction.")
             from quantumbridge.execution.array_reservations import array_layout

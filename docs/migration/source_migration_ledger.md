@@ -1,5 +1,48 @@
 # Source Migration Ledger
 
+## Stage 12-B P4-S Native Custom Definition Transport In Progress
+
+Independent Native Implementation: `quantumbridge/ir/qb_ir.py`,
+`quantumbridge/serialization/qpy.py`, `quantumbridge/serialization/text_exporter.py`,
+`quantumbridge/serialization/text_lowering.py`,
+`quantumbridge/compat/qiskit_adapter.py`, `quantumbridge/core/gates.py`,
+`quantumbridge/core/control_flow.py`, `quantumbridge/compiler/pass_manager.py`,
+`tests/serialization/test_native_custom_gate_interchange.py`,
+`tests/serialization/test_semantic_boundaries.py`,
+`examples/native_custom_gate_interchange.py`.
+Existing native Gate/IR/parameters/compiler/derivative systems are reused.
+Public IBM QPY v13 record specifications and OpenQASM gate declarations are
+format references; installed public dump/load calls are black-box oracles.
+No upstream implementation, tests, tutorial code, package binary, environment
+or credentials are copied. Native codecs do not call the upstream SDK.
+The observed public QASM2 h/X name-collision export loss is explicitly not an
+interop match. This development work is not complete P4 or full SDK parity.
+
+## Stage 12-B P4 Native Gate Work In Progress
+
+Independent Native Implementation: `quantumbridge/core/gates.py`,
+`quantumbridge/core/gate_limits.py`, `quantumbridge/core/circuit.py`,
+`quantumbridge/core/__init__.py`, `quantumbridge/__init__.py`,
+`quantumbridge/utils/math.py`, `quantumbridge/devices/execution.py`,
+`quantumbridge/devices/statevector_device.py`,
+`quantumbridge/information/operator.py`, `quantumbridge/information/statevector.py`,
+`quantumbridge/information/density_matrix.py`,
+`quantumbridge/diff/compiled_parameters.py`, `quantumbridge/diff/adjoint.py`,
+`quantumbridge/compiler/pass_manager.py`, `quantumbridge/ir/qb_ir.py`,
+`quantumbridge/serialization/text_exporter.py`.
+Also `quantumbridge/devices/stabilizer_device.py`,
+`quantumbridge/execution/control_flow_engine.py`, `quantumbridge/information/clifford.py`,
+`quantumbridge/compat/qiskit_adapter.py`, `quantumbridge/compat/pennylane_adapter.py`,
+`quantumbridge/simulator/aer.py`: native definition lowering before name-based
+execution/optional export, and explicit unsupported named-noise boundary guards.
+Native unitary definitions/lifecycle, structural lowering and controlled phase
+reuse existing core/device/math/derivative architecture. Public Gate API and
+literal installed public calls are behavioral references only. No upstream
+source/tests copied, installed or vendored. The independent mathematical
+control/block and Kronecker tests are not upstream test ports. Complete P4
+and complete SDK replacement remain INCOMPLETE. Later P4-S adds tested custom
+serialization subsets, not full protocol parity. User Router is not attributed here.
+
 ## Stage 12-B P3 Bounded Local Acceptance
 
 Independent Native Implementation: `quantumbridge/core/parameters.py`,

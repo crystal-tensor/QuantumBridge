@@ -33,7 +33,7 @@ from quantumbridge.circuit_library import (
     zz_feature_map,
 )
 from quantumbridge.compat import circuit_from_openqasm, circuit_from_qiskit, circuit_to_qiskit
-from quantumbridge.core import Circuit, Instruction, Measurement, Operation, Parameter, ParameterExpression, ParameterVector, ParameterVectorElement
+from quantumbridge.core import Circuit, Instruction, Gate, ControlledGate, Measurement, Operation, Parameter, ParameterExpression, ParameterVector, ParameterVectorElement
 from quantumbridge.core.control_flow import ExecutionLimits
 from quantumbridge.core.classical import UnsupportedFeature
 from quantumbridge.compiler import transpile
@@ -87,6 +87,8 @@ __all__ = [
     "GradientDescentOptimizer",
     "Hamiltonian",
     "Instruction",
+    "Gate",
+    "ControlledGate",
     "Job",
     "JobError",
     "JobStatus",

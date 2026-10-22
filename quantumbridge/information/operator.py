@@ -81,7 +81,8 @@ class Operator:
         from quantumbridge.core import Circuit
         from quantumbridge.execution.resource_context import current_resources
         scope=current_resources()
-        if (type(data) in (Circuit,Instruction) if scope is not None else isinstance(data,(Circuit,Instruction))):
+        from quantumbridge.core.gates import Gate, ControlledGate
+        if (type(data) in (Circuit,Instruction,Gate,ControlledGate) if scope is not None else isinstance(data,(Circuit,Instruction))):
             data = self.from_circuit(data).data
         if scope is None:
             self.data = np.asarray(data, dtype=complex)
@@ -129,6 +130,7 @@ class Operator:
         from quantumbridge.core import Circuit
         if isinstance(circuit,Instruction):
             circuit = Circuit.from_instruction(circuit)
+        circuit = circuit.lowered()
         if circuit.has_dynamic_operations or circuit.measurements:
             raise ValueError("QuantumBridge Operator cannot represent measurement, reset or classical control flow as a unitary.")
         size = 1 << circuit.num_qubits

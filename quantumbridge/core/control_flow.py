@@ -42,30 +42,43 @@ def condition_expression(value):
     return result
 
 
-def _encode(value):
+def _encode(value, *, _ir_context=None):
     from .circuit import Circuit
     if isinstance(value, ClassicalExpression): return {"classical_expr": value.to_dict()}
-    if isinstance(value, Circuit): return {"circuit": value.to_ir().to_dict()}
+    if isinstance(value, Circuit):
+        context = _ir_context
+        if id(value) in context.active: raise ValueError("Cyclic control-body IR graph.")
+        context.depth += 1
+        context.count("max_nesting_depth", context.depth)
+        context.active.add(id(value))
+        try: return {"circuit": value.to_ir().to_dict(_context=context)}
+        finally:
+            context.active.remove(id(value))
+            context.depth -= 1
     if isinstance(value, Parameter):
         result={"loop_parameter":value.name,"loop_parameter_uuid":value.uuid}
         if isinstance(value,ParameterVectorElement):
             from quantumbridge.ir.qb_ir import _param_to_ir
             result["loop_parameter_vector"]=_param_to_ir(value)["parameter_vector"]
         return result
-    if isinstance(value, tuple): return [_encode(item) for item in value]
+    if isinstance(value, tuple): return [_encode(item, _ir_context=_ir_context) for item in value]
     if value is None or isinstance(value, (str, bool, int)): return value
     raise TypeError("Unsupported value in QuantumBridge structured control-flow data.")
 
 
-def _decode(value, *, serialization_limits=None, _parameter_vectors=None):
+def _decode(value, *, serialization_limits=None, _parameter_vectors=None, _ir_context=None):
     from quantumbridge.ir.qb_ir import IRProgram
     from quantumbridge.compat.qiskit_adapter import circuit_from_ir
     if isinstance(value, list): return tuple(_decode(item,serialization_limits=serialization_limits,
-        _parameter_vectors=_parameter_vectors) for item in value)
+        _parameter_vectors=_parameter_vectors, _ir_context=_ir_context) for item in value)
     if isinstance(value, dict):
         if set(value) == {"classical_expr"}: return ClassicalExpression.from_dict(value["classical_expr"])
-        if set(value) == {"circuit"}: return circuit_from_ir(IRProgram.from_dict(value["circuit"], validate=False,
-            serialization_limits=serialization_limits,_parameter_vectors=_parameter_vectors))
+        if set(value) == {"circuit"}:
+            _ir_context.depth += 1
+            _ir_context.count("max_nesting_depth", _ir_context.depth)
+            try: return circuit_from_ir(IRProgram.from_dict(value["circuit"], validate=False,
+                serialization_limits=serialization_limits,_parameter_vectors=_parameter_vectors,_context=_ir_context))
+            finally: _ir_context.depth -= 1
         if set(value)=={"loop_parameter"}:return legacy_parameter(value["loop_parameter"])
         if set(value)=={"loop_parameter","loop_parameter_uuid"}:return Parameter(value["loop_parameter"],value["loop_parameter_uuid"])
         if set(value)=={"loop_parameter","loop_parameter_uuid","loop_parameter_vector"}:
@@ -129,17 +142,27 @@ class ControlBlock:
             return deepcopy(value)
         return ControlBlock(self.kind, {key: mapped(value) for key, value in self.data.items()})
 
-    def to_dict(self):
-        return {"version": "qb-control-v1", "kind": self.kind, "data": {key: _encode(value) for key, value in self.data.items()}}
+    def to_dict(self, *, _ir_context=None):
+        if _ir_context is None:
+            from quantumbridge.ir.qb_ir import _DefinitionCodec
+            _ir_context = _DefinitionCodec()
+        return {"version": "qb-control-v1", "kind": self.kind, "data": {key: _encode(value, _ir_context=_ir_context) for key, value in self.data.items()}}
 
     def to_json(self): return json.dumps(self.to_dict(), sort_keys=True)
 
     @classmethod
-    def from_dict(cls, data, *, serialization_limits=None, _parameter_vectors=None):
+    def from_dict(cls, data, *, serialization_limits=None, _parameter_vectors=None, _ir_context=None):
+        if _ir_context is None:
+            from quantumbridge.ir.qb_ir import _DefinitionCodec
+            from quantumbridge.schema.serialization import validate_payload_structure
+            _ir_context = _DefinitionCodec(serialization_limits)
+            validate_payload_structure(data, limits=_ir_context.limits)
+        serialization_limits = _ir_context.limits
+        _parameter_vectors = {} if _parameter_vectors is None else _parameter_vectors
         if set(data) != {"version", "kind", "data"} or data["version"] != "qb-control-v1":
             raise ValueError("Malformed or unknown QuantumBridge control-flow schema.")
         return cls(data["kind"], {key: _decode(value,serialization_limits=serialization_limits,
-            _parameter_vectors=_parameter_vectors) for key, value in data["data"].items()})
+            _parameter_vectors=_parameter_vectors,_ir_context=_ir_context) for key, value in data["data"].items()})
 
     @classmethod
     def from_json(cls, text): return cls.from_dict(json.loads(text))

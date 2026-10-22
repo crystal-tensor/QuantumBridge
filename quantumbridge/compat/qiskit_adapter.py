@@ -69,6 +69,7 @@ def ir_from_qiskit(qiskit_circuit):
 
 
 def circuit_to_qiskit(circuit: Circuit):
+    circuit = circuit.lowered()
     QuantumCircuit = _require_qiskit()
     qc = QuantumCircuit(circuit.num_qubits, circuit.num_bits)
     qc.global_phase = float(circuit.global_phase)
@@ -106,9 +107,17 @@ def circuit_from_ir(program) -> Circuit:
     from quantumbridge.ir.qb_ir import decode_instruction_metadata
 
     circuit = Circuit(program.num_qubits, program.num_bits, program.name, program.metadata)
+    circuit.global_phase = program.metadata.get("global_phase", 0.)
     for instruction in program.instructions:
-        circuit.append(instruction.op, instruction.targets, controls=instruction.controls,
-                       params=instruction.params, metadata=decode_instruction_metadata(instruction.metadata))
+        metadata = decode_instruction_metadata(instruction.metadata)
+        gate = metadata.pop("gate", None)
+        if gate is not None:
+            if gate.name != instruction.op or gate.num_qubits != len(instruction.targets)+len(instruction.controls) or gate.params != instruction.params or instruction.controls:
+                raise ValueError("IR Gate invocation width/parameters disagree with its definition.")
+            circuit.append(gate, instruction.targets, metadata=metadata)
+        else:
+            circuit.append(instruction.op, instruction.targets, controls=instruction.controls,
+                           params=instruction.params, metadata=metadata)
     for measurement in program.measurements:
         circuit.measurements.append(Measurement(measurement.wire, measurement.bit, measurement.kind, dict(getattr(measurement, "metadata", {}))))
     return circuit

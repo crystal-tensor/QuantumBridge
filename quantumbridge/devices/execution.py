@@ -34,7 +34,7 @@ def prepare_program(circuit, parameters=None, max_qubits=None, noise_model=None,
 
     if not isinstance(circuit, Circuit):
         raise TypeError("QuantumBridge simulation requires a native Circuit.")
-    bound = circuit.bind(parameters) if parameters else circuit
+    bound = (circuit.bind(parameters) if parameters else circuit).lowered()
     if max_qubits is not None and bound.num_qubits > max_qubits:
         raise ValueError("QuantumBridge circuit exceeds this device qubit limit.")
     if not _leaf_only and needs_dynamic_engine(bound,noise_model):

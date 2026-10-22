@@ -287,6 +287,32 @@ def gate_matrix(name: str, params: tuple[Real, ...] = (), metadata: Optional[dic
         if name in {"ch", "csx", "csxdg", "crx", "cry", "crz", "cphase", "cp"}:
             scope.ledger.preflight(memory_bytes=16*(4+16))
         elif name == "dcx":scope.ledger.preflight(memory_bytes=3*16*16)
+    if metadata and "controlled_base" in metadata:
+        from quantumbridge.core.gate_limits import current_gate_limits
+        limits = current_gate_limits()
+        cursor, seen, total_controls = metadata, set(), 0
+        while "controlled_base" in cursor:
+            if id(cursor) in seen: raise ValueError("Cyclic controlled primitive description.")
+            seen.add(id(cursor))
+            limits.check("max_definition_depth", len(seen))
+            description = cursor["controlled_base"]
+            if type(description) is not dict or type(description.get("metadata")) is not dict or type(description.get("name")) is not str:
+                raise ValueError("Malformed controlled primitive description.")
+            count = description.get("controls")
+            if type(count) is not int or count < 1: raise ValueError("Invalid controlled primitive width.")
+            total_controls += count
+            limits.check("max_control_qubits", total_controls)
+            if total_controls >= limits.max_matrix_dimension.bit_length():
+                raise MemoryError("Controlled matrix exceeds max_matrix_dimension before allocation.")
+            cursor = description["metadata"]
+        description = metadata["controlled_base"]
+        base = gate_matrix(description["name"], params, description["metadata"])
+        if description.get("inverse"): base = base.conj().T
+        dimension = (1 << description["controls"])*len(base)
+        limits.check("max_matrix_dimension", dimension)
+        out = _gate_identity(dimension)
+        out[-len(base):, -len(base):] = base
+        return out
     if name == "global_phase": return _gate_array(I2, factor=np.exp(1j * float(params[0])))
     if name in {"id", "i"}:
         return I2 if scope is None else _gate_array(I2)

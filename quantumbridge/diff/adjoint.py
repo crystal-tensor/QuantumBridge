@@ -9,6 +9,8 @@ from quantumbridge.utils.math import apply_unitary, gate_matrix, pauli_matrix, H
 
 
 def gate_derivative(operation, parameters):
+    if "controlled_base" in operation.metadata:
+        raise UnsupportedFeature("controlled_gate_gradient", "This controlled primitive does not yet have a native derivative recipe.")
     name = operation.name
     base = {"crx": "rx", "cry": "ry", "crz": "rz", "cphase": "phase", "cp": "phase"}.get(name, name)
     matrix = gate_matrix(base, parameters)
