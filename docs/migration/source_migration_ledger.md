@@ -1,5 +1,38 @@
 # Source Migration Ledger
 
+## Stage 12-B P4-U3C Composition And Classical Scope In Progress
+
+Independent Native Implementation:
+`quantumbridge/core/composition.py`, `quantumbridge/core/classical_scope.py`,
+`quantumbridge/core/parameter_graph.py`, `quantumbridge/core/circuit.py`,
+`quantumbridge/core/classical.py`, `quantumbridge/core/control_flow.py`,
+`quantumbridge/core/operations.py`,
+`quantumbridge/execution/control_flow_engine.py`,
+`quantumbridge/compat/qiskit_adapter.py`,
+`quantumbridge/compiler/layout.py`, `quantumbridge/compiler/traversal.py`,
+`quantumbridge/compiler/scheduling.py`,
+`quantumbridge/transforms/gate_transforms.py`,
+`quantumbridge/serialization/qpy.py`,
+`quantumbridge/serialization/text_exporter.py`.
+Independent tests: `tests/circuit/test_native_compose_contracts.py`,
+`tests/circuit/test_native_compose_wrap_copy.py`,
+`tests/circuit/test_native_compose_classical_remap.py`,
+`tests/circuit/test_native_compose_inline_captures.py`,
+`tests/circuit/test_native_compose_dynamic.py`,
+`tests/circuit/test_native_compose_phase_parameters.py`,
+`tests/circuit/test_native_compose_resources.py`,
+`tests/serialization/test_native_composed_circuit_roundtrip.py`,
+`tests/compat/test_qiskit_compose_public_differential.py`.
+Native SDK-free example: `examples/native_circuit_composition.py`.
+Behavioral references: actual installed public Qiskit2.4.1/2.6.0 calls;
+https://quantum.cloud.ibm.com/docs/en/api/qiskit/2.4/qiskit.circuit.QuantumCircuit
+and published QPY v13 protocol. No upstream source/tests read or copied.
+All execution remains native. Explicit QASM/QPY scope rejection is not claimed
+as interoperability, and no native-only fake QPY variable sidecar is written.
+General defensive copies remain independent; decoded-symbol interning only
+shares already-decoded symbols/storage within the newly owned result graph.
+Unowned Router/Studio files are not included or given invented provenance.
+
 ## Stage 12-B P4-U3B Instruction And Circuit Contracts In Progress
 
 Independent Native Implementation:

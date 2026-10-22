@@ -4,7 +4,7 @@
 
 from dataclasses import dataclass
 from numbers import Integral
-from uuid import uuid4
+from uuid import UUID, uuid4
 import operator
 
 
@@ -39,7 +39,7 @@ class ClassicalType:
         return hash((self.kind, self.width))
 
     def __post_init__(self):
-        if self.kind not in {"bool", "bit", "uint", "int"}:
+        if self.kind not in {"bool", "bit", "uint", "int", "duration"}:
             raise UnsupportedFeature("classical_type", f"Unsupported classical type {self.kind!r}.")
         if isinstance(self.width, bool) or not isinstance(self.width, Integral) or not 1 <= self.width <= 4096:
             raise ValueError("QuantumBridge classical widths must be integers in [1, 4096].")
@@ -47,6 +47,8 @@ class ClassicalType:
             raise ValueError("QuantumBridge Bool/Bit have width one.")
 
     def normalize(self, value, *, wrap=False):
+        if self.kind == "duration":
+            raise UnsupportedFeature("classical_duration_execution", "Symbolic duration identifiers need a timing executor, not integer storage.")
         if self.kind == "bool":
             if not isinstance(value, bool):
                 raise TypeError("QuantumBridge Bool values require bool, not integers.")
@@ -80,6 +82,10 @@ class UInt(ClassicalType):
 
 class Int(ClassicalType):
     def __init__(self,width=32): super().__init__("int",width)
+
+
+class Duration(ClassicalType):
+    def __init__(self): super().__init__("duration")
 
 
 @dataclass(frozen=True, eq=False)
@@ -121,17 +127,59 @@ class ClassicalExpression:
 
     @classmethod
     def from_dict(cls, data):
-        if not isinstance(data, dict) or set(data) != {"op", "type", "args", "value"}:
+        if not isinstance(data, dict) or set(data)-{"identifier"} != {"op", "type", "args", "value"}:
             raise ValueError("Malformed QuantumBridge classical expression.")
+        if "identifier" in data:
+            kind = data["identifier"]
+            if kind not in {"var", "stretch"} or kind != data["op"] or data["args"]:
+                raise ValueError("Malformed native classical identifier.")
+            identity, name = data["value"]
+            dtype = ClassicalType(**data["type"])
+            if kind == "stretch" and dtype != Duration(): raise TypeError("A Stretch must have Duration type.")
+            return Var(identity, dtype, name=name) if kind == "var" else Stretch(identity, name)
         result = cls(data["op"], ClassicalType(**data["type"]), tuple(cls.from_dict(arg) for arg in data["args"]), data["value"])
         validate_classical_expr(result)
         return result
 
-    def remap(self, bits):
+    def remap(self, bits, identifiers=None):
+        if self.op in {"var", "stretch"}:
+            return (identifiers or {}).get(self.value[0], self)
         value = self.value
         if self.op == "bit": value = bits[value]
         if self.op == "register": value = tuple(bits[bit] for bit in value)
-        return ClassicalExpression(self.op, self.dtype, tuple(arg.remap(bits) for arg in self.args), value)
+        return ClassicalExpression(self.op, self.dtype, tuple(arg.remap(bits, identifiers) for arg in self.args), value)
+
+
+class _Identifier:
+    @property
+    def name(self): return self.value[1]
+    @property
+    def var(self): return UUID(self.value[0])
+    @property
+    def type(self): return self.dtype
+    def __hash__(self): return hash((type(self), self.value, self.dtype))
+    def __eq__(self, other): return type(other) is type(self) and self.value == other.value and self.dtype == other.dtype
+    def __ne__(self, other): return not self == other
+    def to_dict(self): return {**super().to_dict(), "identifier": self.op}
+
+
+class Var(_Identifier, ClassicalExpression):
+    """Immutable named storage identity; legacy variable() keeps infix syntax."""
+    def __init__(self, var, type, *, name):
+        if not isinstance(name, str) or not isinstance(type, ClassicalType):
+            raise TypeError("Var requires a string name and a native classical type.")
+        super().__init__("var", type, value=(str(UUID(str(var))), name))
+    @classmethod
+    def new(cls, name, type): return cls(uuid4(), type, name=name)
+
+
+class Stretch(_Identifier, ClassicalExpression):
+    """A duration identifier, not an executable integer storage variable."""
+    def __init__(self, var, name):
+        if not isinstance(name, str): raise TypeError("Stretch requires a string name.")
+        super().__init__("stretch", Duration(), value=(str(UUID(str(var))), name))
+    @classmethod
+    def new(cls, name): return cls(uuid4(), name)
 
 
 def literal(value, dtype=None):
@@ -217,8 +265,10 @@ def validate_classical_expr(expr, environment=None, num_bits=None, depth=0):
         check = register(expr.value)
         if expr.dtype != check.dtype or num_bits is not None and max(expr.value) >= num_bits:
             raise ValueError("Invalid QuantumBridge register reference/type.")
-    elif op == "var":
-        if not isinstance(expr.value, (tuple, list)) or len(expr.value) != 2 or not all(isinstance(v, str) and v for v in expr.value):
+    elif op in {"var", "stretch"}:
+        if (not isinstance(expr.value, (tuple, list)) or len(expr.value) != 2
+                or not isinstance(expr.value[0], str) or not expr.value[0]
+                or not isinstance(expr.value[1], str) or not expr.value[1] and type(expr) not in {Var, Stretch}):
             raise ValueError("Malformed QuantumBridge variable reference.")
         if environment is not None and environment.get(expr.value[0]) != expr.dtype:
             raise ClassicalExecutionError("undeclared_variable", "QuantumBridge variable is outside its lexical scope.")
@@ -231,7 +281,7 @@ def validate_classical_expr(expr, environment=None, num_bits=None, depth=0):
             raise TypeError("Invalid QuantumBridge unary/logical expression type/arity.")
     else:
         raise UnsupportedFeature("classical_expression", f"Unsupported expression {op!r}.")
-    if op in {"literal", "bit", "register", "var"} and expr.args:
+    if op in {"literal", "bit", "register", "var", "stretch"} and expr.args:
         raise ValueError("QuantumBridge classical leaves cannot contain child expressions.")
     return True
 
@@ -267,7 +317,7 @@ class ClassicalStore:
         result = cls(len(payload["bits"]))
         result.bits = [Bit().normalize(value) for value in payload["bits"]]
         for key, entry in payload["variables"].items():
-            if not isinstance(key, str) or not isinstance(entry["name"], str) or not entry["name"] or not isinstance(entry["initialized"], bool):
+            if not isinstance(key, str) or not isinstance(entry["name"], str) or not isinstance(entry["initialized"], bool):
                 raise ValueError("Malformed QuantumBridge classical storage snapshot.")
             result.types[key], result.names[key] = ClassicalType(**entry["type"]), entry["name"]
             if entry["initialized"]: result.values[key] = result.types[key].normalize(entry["value"])

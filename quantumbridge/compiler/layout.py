@@ -53,6 +53,7 @@ def apply_layout(circuit, layout, target):
     topology_width = max((max(edge) + 1 for edge in target.coupling_map.edges), default=0) if target.coupling_map is not None else 0
     width = target.num_qubits or max(max(layout.mapping.values(), default=-1) + 1, topology_width)
     out = Circuit(width, circuit.num_bits, circuit.name, circuit.metadata)
+    out.metadata.pop("classical_scope",None)
     out.global_phase = 0.
     out = out.compose(circuit, qubits=[layout.physical(index) for index in range(circuit.num_qubits)], clbits=range(circuit.num_bits))
     out.metadata["initial_layout"] = layout.to_dict()

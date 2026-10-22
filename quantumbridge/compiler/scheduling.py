@@ -88,7 +88,9 @@ class SchedulingPass(TransformationPass):
                     "makespan": makespan, "operations": records, "semantics": "static dependency schedule"}
         out = circuit.copy()
         if self.insert_delays:
-            out = circuit.copy_empty_like(); out.global_phase = circuit.global_phase
+            out = circuit.copy_empty_like(vars_mode="drop"); out.global_phase = circuit.global_phase
+            if "classical_scope" in circuit.metadata:
+                out.metadata["classical_scope"] = deepcopy(circuit.metadata["classical_scope"])
             available = [0.] * circuit.num_qubits
             for node, record in zip(nodes, records):
                 for wire in record["wires"]:

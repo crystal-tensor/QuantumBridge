@@ -69,6 +69,10 @@ class Reader:
     def error(self,reason,cls=FormatValidationError):
         raise cls(reason,format="qpy",version=13,offset=self.base+self.pos)
 
+    def canonical_parameter_graph(self, circuit):
+        from quantumbridge.core.parameter_graph import canonical_parameter_graph
+        return canonical_parameter_graph(circuit,self.parameters)
+
     def take(self,size):
         if not isinstance(size,int) or size < 0 or size > len(self.data)-self.pos: self.error("Truncated or invalid binary payload length.")
         start = self.pos; self.pos += size
@@ -287,7 +291,7 @@ class Reader:
         try: metadata = json.loads(self.text(metadata_size),parse_constant=nonfinite)
         except (ValueError,RecursionError): self.error("Invalid JSON circuit metadata.")
         if not isinstance(metadata,dict): self.error("Circuit metadata must be an object.")
-        if set(metadata)&{"registers","global_phase"}: self.error("Metadata conflicts with native structural fields.",UnsupportedFeature)
+        if set(metadata)&{"registers","global_phase","classical_scope"}: self.error("Metadata conflicts with native structural fields or unsupported classical identifiers.",UnsupportedFeature)
         stack = [(metadata,0)]
         while stack:
             value,depth = stack.pop(); self.bounded("max_nesting_depth",depth)
@@ -427,7 +431,7 @@ class Reader:
         if exists != b"\x00" or extra or any(value != -1 for value in (initial,mapping,final)) or input_count not in (-1,0):
             self.error("Native QPY TranspileLayout fields are not implemented.",UnsupportedFeature)
         validate_control_flow(circuit)
-        return circuit
+        return self.canonical_parameter_graph(circuit)
 
 
 def _uid(parameter): return UUID(parameter.uuid) if parameter.uuid else uuid5(NAMESPACE_URL,"quantumbridge:parameter:"+parameter.name)
@@ -544,6 +548,8 @@ def _base_instruction_payload(operation,key,limits,budget):
 def _circuit_bytes(circuit,limits,*,_budget=None,_depth=0,_path="root"):
     budget = {} if _budget is None else _budget
     limits.check("max_nesting_depth",_depth,format="qpy",version=13)
+    if "classical_scope" in circuit.metadata:
+        raise UnsupportedFeature("QPY native classical identifier records are not implemented; metadata cannot substitute for their wire fields.",format="qpy",version=13)
     validate_control_flow(circuit)
     specs = register_specs(circuit)
     for field,value in (("max_qubits",circuit.num_qubits),("max_clbits",circuit.num_bits),("max_registers",len(specs))): limits.check(field,value,format="qpy",version=13)

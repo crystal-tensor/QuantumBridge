@@ -133,11 +133,12 @@ class ControlBlock:
             result["cases"] = tuple((values, body.assign_parameters(mapping, strict=False)) for values, body in result["cases"])
         return ControlBlock(self.kind, result)
 
-    def remap(self, qubits, bits, width, num_bits):
-        from .circuit import Circuit
+    def remap(self, qubits, bits, width, num_bits, *, identifiers=None, copy_operation=True):
+        from .circuit import Circuit, _remap_circuit
         def mapped(value):
-            if isinstance(value, ClassicalExpression): return value.remap(bits)
-            if isinstance(value, Circuit): return Circuit(width, num_bits).compose(value, qubits=[qubits[i] for i in range(value.num_qubits)], clbits=[bits[i] for i in range(value.num_bits)])
+            if isinstance(value, ClassicalExpression): return value.remap(bits,identifiers)
+            if isinstance(value, Circuit): return _remap_circuit(value,qubits,bits,width,num_bits,
+                identifiers=identifiers,copy_operation=copy_operation)
             if isinstance(value, tuple): return tuple(mapped(item) for item in value)
             return deepcopy(value)
         return ControlBlock(self.kind, {key: mapped(value) for key, value in self.data.items()})
@@ -180,7 +181,8 @@ def validate_control_flow(circuit, environment=None, limits=None, depth=0, loop_
     limits = limits or ExecutionLimits()
     if depth > limits.max_control_depth:
         raise ValueError("QuantumBridge control-flow nesting exceeds max_control_depth.")
-    env = dict(environment or {})
+    from .classical_scope import execution_environment
+    env = execution_environment(circuit,environment)
     for item in circuit.iter_instructions():
         if isinstance(item, Measurement):
             circuit._check_wire(item.wire)

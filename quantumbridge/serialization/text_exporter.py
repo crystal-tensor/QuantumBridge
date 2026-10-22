@@ -29,6 +29,8 @@ def _definition_preflight(circuit,limits):
     pending,definitions,operations = [(circuit,0,frozenset())],0,0
     while pending:
         body,depth,ancestors = pending.pop()
+        if "classical_scope" in body.metadata:
+            raise UnsupportedFeature("OpenQASM export does not yet preserve typed classical identifier scopes; these are not discardable metadata.",format="qasm")
         limits.check("max_nesting_depth",depth,format="qasm")
         if id(body) in ancestors: raise FormatValidationError("Cyclic source definition graph.",format="qasm")
         operations += len(body.operations)+len(body.measurements)

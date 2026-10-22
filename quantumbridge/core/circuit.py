@@ -23,6 +23,8 @@ from .parameters import (
 )
 from quantumbridge.utils.math import gate_matrix
 
+_MISSING = object()
+
 
 class Circuit:
     """Ordered QuantumBridge MVP circuit."""
@@ -302,7 +304,7 @@ class Circuit:
         limits.check("max_repeat_count", max(0, reps))
         work = 0 if reps <= 0 else instruction_definition_work(self)
         limits.check("max_total_operations", max(0, reps)*max(1, work))
-        out = self.copy_empty_like(name=(self.name or "circuit")+"**"+str(original_reps))
+        out = self.copy_empty_like(name=(self.name or "circuit")+"**"+str(original_reps),vars_mode="drop")
         if reps <= 0: return out
         if not self.num_bits and not self.measurements and not self.has_dynamic_operations:
             if any("gate" in op.metadata for op in self.operations):
@@ -520,46 +522,19 @@ class Circuit:
         clbits: Optional[Sequence[int]] = None,
         front: bool = False,
         inplace: bool = False,
+        wrap: bool = False,
+        *,
+        copy: bool = True,
+        var_remap=None,
+        inline_captures: bool = False,
     ) -> "Circuit | None":
-        if not isinstance(other, Circuit):
-            raise TypeError("QuantumBridge Circuit.compose expects another Circuit.")
-        incoming=other.parameters
-        if incoming:validate_parameter_names((*self.parameters,*incoming))
-        if inplace:
-            target = Circuit(self.num_qubits, self.num_bits, self.name, self.metadata)
-            target.operations, target.measurements = list(self.operations), list(self.measurements)
-        else: target = self.copy()
-        from .gate_limits import current_gate_limits
-        current_gate_limits().check("max_total_operations", len(target.operations)+len(other.operations)+len(target.measurements)+len(other.measurements))
-        qubit_map = _index_map(other.num_qubits, target.num_qubits, qubits, "qubits")
-        clbit_map = _index_map(other.num_bits, target.num_bits, clbits, "clbits")
-        offset = 0 if front else len(target.operations)
-        mapped_ops = [_remap_operation(op, qubit_map, clbit_map, target.num_qubits, target.num_bits) for op in other.operations]
-        mapped_measurements = [
-            _remap_measurement(measurement, qubit_map, clbit_map, offset, len(other.operations))
-            for measurement in other.measurements
-        ]
-        if front:
-            identity_q = dict(enumerate(range(target.num_qubits)))
-            identity_c = dict(enumerate(range(target.num_bits)))
-            target.measurements = [
-                _remap_measurement(item, identity_q, identity_c, len(mapped_ops), len(target.operations))
-                for item in target.measurements
-            ]
-            target.operations = mapped_ops + target.operations
-            target.measurements = mapped_measurements + target.measurements
-        else:
-            target.operations.extend(mapped_ops)
-            target.measurements.extend(mapped_measurements)
-        target.global_phase = target.global_phase + other.global_phase
-        if inplace:
-            _replace_self(self, target)
-            return None
-        return target
+        from .composition import compose
+        return compose(self, other, qubits, clbits, front, inplace, wrap,
+            copy=copy, var_remap=var_remap, inline_captures=inline_captures)
 
     @property
     def has_structured_control_flow(self):
-        return any("control_node" in op.metadata for op in self.operations)
+        return bool(self.metadata.get("classical_scope")) or any("control_node" in op.metadata for op in self.operations)
 
     @property
     def has_measurements(self):
@@ -571,12 +546,90 @@ class Circuit:
         target.append("control_flow", (), metadata={"control_node": node})
         return target
 
-    def add_var(self, name, dtype, initial=None):
-        from .classical import variable, lift
+    def add_var(self, name, dtype=_MISSING, initial=_MISSING):
+        from .classical import variable, lift, ClassicalType, Var
         from .control_flow import ControlBlock
-        target = variable(name, dtype)
-        self._control(ControlBlock("declare", {"target": target, "initial": None if initial is None else lift(initial, dtype)}))
+        if dtype is _MISSING:
+            if initial is _MISSING: raise TypeError("A public variable declaration needs an initializer.")
+            dtype,initial=initial,_MISSING
+        if isinstance(dtype, ClassicalType):
+            target = variable(name, dtype)
+            self._control(ControlBlock("declare", {"target": target, "initial": None if initial is _MISSING or initial is None else lift(initial, dtype)}))
+            return target
+        if initial is not _MISSING: raise TypeError("Use either a public initializer or explicit native dtype/initial.")
+        value = lift(dtype)
+        target = Var.new(name, value.dtype) if isinstance(name,str) else name
+        if type(target) is not Var: raise TypeError("A named declaration requires Var or a string name.")
+        value = lift(dtype, target.dtype)
+        from .classical_scope import add_identifier
+        from .gate_limits import current_gate_limits
+        current_gate_limits().check("max_total_operations",len(self.operations)+len(self.measurements)+1)
+        add_identifier(self,target,"local")
+        self._control(ControlBlock("store", {"target":target,"value":value}))
         return target
+
+    def add_uninitialized_var(self, var):
+        from .classical import Var
+        from .classical_scope import add_identifier
+        if type(var) is not Var: raise TypeError("Expected a native Var.")
+        add_identifier(self,var,"local")
+
+    def add_input(self, name_or_var, type_=None):
+        from .classical import Var
+        from .classical_scope import add_identifier
+        var = Var.new(name_or_var,type_) if isinstance(name_or_var,str) else name_or_var
+        if type(var) is not Var or type_ is not None and type_ != var.dtype: raise TypeError("Input type differs from its Var.")
+        return add_identifier(self,var,"input")
+
+    def add_capture(self, var):
+        from .classical_scope import add_identifier
+        add_identifier(self,var,"capture")
+
+    def add_stretch(self, name_or_stretch):
+        from .classical import Stretch
+        from .classical_scope import add_identifier
+        var = Stretch.new(name_or_stretch) if isinstance(name_or_stretch,str) else name_or_stretch
+        if type(var) is not Stretch: raise TypeError("Expected a native Stretch or string name.")
+        return add_identifier(self,var,"local")
+
+    def get_identifier(self, name, default=_MISSING):
+        from .classical_scope import get_identifier
+        return get_identifier(self,name) if default is _MISSING else get_identifier(self,name,default)
+
+    def get_var(self, name):
+        from .classical_scope import get_identifier
+        return get_identifier(self,name,kind="var")
+
+    def get_stretch(self, name):
+        from .classical_scope import get_identifier
+        return get_identifier(self,name,kind="stretch")
+
+    def has_var(self, name_or_var):
+        from .classical_scope import entries
+        return any(node.op=="var" and (node.value[1]==name_or_var if isinstance(name_or_var,str)
+            else node.value==name_or_var.value) for node,_,_ in entries(self))
+
+    def has_stretch(self, name_or_stretch):
+        from .classical_scope import entries
+        return any(node.op=="stretch" and (node.value[1]==name_or_stretch if isinstance(name_or_stretch,str)
+            else node.value==name_or_stretch.value) for node,_,_ in entries(self))
+
+    def _iter_identifiers(self, kind, scope=None):
+        from .classical_scope import entries
+        return (node for node,mode,_ in entries(self) if node.op==kind and (scope is None or mode==scope))
+
+    def iter_vars(self): return self._iter_identifiers("var")
+    def iter_input_vars(self): return self._iter_identifiers("var","input")
+    def iter_captured_vars(self): return self._iter_identifiers("var","capture")
+    def iter_declared_vars(self): return self._iter_identifiers("var","local")
+    def iter_stretches(self): return self._iter_identifiers("stretch")
+    def iter_captured_stretches(self): return self._iter_identifiers("stretch","capture")
+    def iter_declared_stretches(self): return self._iter_identifiers("stretch","local")
+
+    @property
+    def num_vars(self): return sum(1 for _ in self.iter_vars())
+    @property
+    def num_stretches(self): return sum(1 for _ in self.iter_stretches())
 
     def store(self, target, value):
         from .classical import lift
@@ -584,7 +637,7 @@ class Circuit:
         return self._control(ControlBlock("store", {"target": target, "value": lift(value, target.dtype)}))
 
     def _mapped_body(self, body, qubits=None, clbits=None):
-        return self.copy_empty_like().compose(body, qubits=qubits, clbits=clbits)
+        return self.copy_empty_like(vars_mode="drop").compose(body, qubits=qubits, clbits=clbits)
 
     def for_loop(self, values, loop_parameter=None, body=None, *, variable=None, qubits=None, clbits=None, inplace=False):
         from .control_flow import ControlBlock
@@ -651,7 +704,7 @@ class Circuit:
             self._check_bit(bit)
         target = self if inplace else self.copy()
         block_id = uuid4().hex
-        mapped_true = target.copy_empty_like().compose(true_body, qubits=qubits, clbits=clbits)
+        mapped_true = target.copy_empty_like(vars_mode="drop").compose(true_body, qubits=qubits, clbits=clbits)
         true_block = _circuit_with_operation_metadata(
             mapped_true,
             {
@@ -661,7 +714,7 @@ class Circuit:
         )
         target.compose(true_block, inplace=True)
         if false_body is not None:
-            mapped_false = target.copy_empty_like().compose(false_body, qubits=qubits, clbits=clbits)
+            mapped_false = target.copy_empty_like(vars_mode="drop").compose(false_body, qubits=qubits, clbits=clbits)
             false_block = _circuit_with_operation_metadata(
                 mapped_false,
                 {"control_flow": {"type": "if_else", "branch": "false", "condition": deepcopy(normalized), "block_id": block_id}},
@@ -826,7 +879,7 @@ class Circuit:
 
     @property
     def has_dynamic_operations(self) -> bool:
-        return any(
+        return bool(self.metadata.get("classical_scope")) or any(
             item.metadata.get("operation_index", len(self.operations)) < len(self.operations)
             or any(key in item.metadata for key in ("condition", "control_flow", "control_flow_stack"))
             for item in self.measurements
@@ -871,10 +924,16 @@ class Circuit:
     def set_unitary(self,state): return self._set("unitary",state)
     def set_superop(self,state): return self._set("superop",state)
 
-    def copy_empty_like(self, name: Optional[str] = None) -> "Circuit":
-        metadata = deepcopy(self.metadata)
+    def copy_empty_like(self, name: Optional[str] = None, *, vars_mode="alike") -> "Circuit":
+        from quantumbridge.execution.array_ownership import native_configuration_copy
+        from quantumbridge.execution.resource_context import current_resources
+        metadata = native_configuration_copy(self.metadata,category="native_empty_circuit_metadata",strict=current_resources() is not None)
         metadata.pop("global_phase", None)
-        return Circuit(self.num_qubits, self.num_bits, name if name is not None else self.name, metadata)
+        metadata.pop("classical_scope",None)
+        result = Circuit(self.num_qubits, self.num_bits, name if name is not None else self.name, metadata)
+        from .classical_scope import copy_scope
+        copy_scope(self,result,vars_mode)
+        return result
 
     def size(self, filter_function: Optional[Callable[[Any], bool]] = None) -> int:
         items = list(self.operations) + list(self.measurements)
@@ -918,11 +977,19 @@ class Circuit:
             max_layer = max(max_layer, layer)
         return max_layer
 
-    def copy(self) -> "Circuit":
+    def copy(self, name=None) -> "Circuit":
         from quantumbridge.execution.array_ownership import native_configuration_copy
-        return native_configuration_copy(self, category="native_circuit_array_copy")
+        result = native_configuration_copy(self, category="native_circuit_array_copy")
+        if name is not None:
+            if not isinstance(name,str): raise TypeError("Circuit copy name must be a string.")
+            result.name=name
+        return result
 
     def to_instruction(self, name: Optional[str] = None, label: Optional[str] = None, *, parameter_map=None) -> Instruction:
+        from .classical_scope import entries
+        if entries(self):
+            from .classical import UnsupportedFeature
+            raise UnsupportedFeature("instruction_with_classical_identifiers", "Inline this circuit; Instruction conversion cannot retain identifier scopes.")
         if isinstance(name,ABCMapping):
             if parameter_map is not None:raise TypeError("Instruction parameter map was provided twice.")
             parameter_map,name=name,None
@@ -1052,23 +1119,38 @@ def _has_global_phase(circuit):
 
 
 def _index_map(source_size: int, target_size: int, selected: Optional[Sequence[int]], label: str) -> dict[int, int]:
+    import operator
+    from numbers import Integral
+    from itertools import islice
+    from .errors import CircuitError
+    from .gate_limits import current_gate_limits
+    if source_size > target_size:raise CircuitError("Composed circuit is wider than its target.")
+    current_gate_limits().check("max_decomposition_work",source_size)
     if selected is None:
         selected_tuple = tuple(range(source_size))
     else:
-        selected_tuple = tuple(int(item) for item in selected)
+        if isinstance(selected,slice):selected=range(target_size)[selected]
+        elif isinstance(selected,Integral):selected=(selected,)
+        try:selected_tuple=tuple(operator.index(item) for item in islice(iter(selected),source_size+1))
+        except TypeError as exc:raise CircuitError("Compose wire mapping needs integer indices, not nested or nonintegral values.") from exc
+        selected_tuple=tuple(item+target_size if item<0 else item for item in selected_tuple)
     if len(selected_tuple) != source_size:
-        raise ValueError(f"QuantumBridge compose {label} length must match the composed circuit.")
+        raise CircuitError(f"QuantumBridge compose {label} length must match the composed circuit.")
     if any(item < 0 or item >= target_size for item in selected_tuple):
-        raise ValueError(f"QuantumBridge compose {label} are outside the target circuit.")
+        raise CircuitError(f"QuantumBridge compose {label} are outside the target circuit.")
     if len(set(selected_tuple)) != len(selected_tuple):
-        raise ValueError(f"QuantumBridge compose {label} must be distinct.")
+        raise CircuitError(f"QuantumBridge compose {label} must be distinct.")
     return {source: target for source, target in enumerate(selected_tuple)}
 
 
-def _remap_metadata(metadata, clbit_map):
+def _remap_metadata(metadata, clbit_map, *, copy_operation=True, remap_control=False):
     from quantumbridge.execution.array_ownership import native_configuration_copy
     from quantumbridge.execution.resource_context import current_resources
-    result = native_configuration_copy(metadata, category="native_remap_metadata", strict=current_resources() is not None)
+    shared = {key:value for key,value in metadata.items() if (remap_control and key=="control_node")
+        or not copy_operation and key in {"gate","instruction_object","annotated_operation"}}
+    result = native_configuration_copy({key:value for key,value in metadata.items() if key not in shared},
+        category="native_remap_metadata", strict=current_resources() is not None)
+    result.update(shared)
     if clbit_map is not None:
         if "instruction_clbits" in result:
             result["instruction_clbits"] = tuple(clbit_map[bit] for bit in result["instruction_clbits"])
@@ -1082,24 +1164,44 @@ def _remap_metadata(metadata, clbit_map):
 
 
 def _remap_measurement(measurement, qubit_map, clbit_map, offset, source_size):
+    position=measurement.metadata.get("operation_index",source_size)
+    if type(position) is not int or not 0 <= position <= source_size:
+        raise ValueError("Measurement operation_index is outside the composed source.")
     metadata = _remap_metadata(measurement.metadata, clbit_map)
-    metadata["operation_index"] = offset + metadata.get("operation_index", source_size)
+    metadata["operation_index"] = offset + position
     return Measurement(qubit_map[measurement.wire], clbit_map[measurement.bit], measurement.kind, metadata)
 
 
-def _remap_operation(op: Operation, qubit_map: Mapping[int, int], clbit_map=None, target_width=None, target_bits=None) -> Operation:
-    metadata = _remap_metadata(op.metadata, clbit_map)
+def _remap_operation(op: Operation, qubit_map: Mapping[int, int], clbit_map=None, target_width=None, target_bits=None, *, identifiers=None, copy_operation=True) -> Operation:
+    metadata = _remap_metadata(op.metadata, clbit_map, copy_operation=copy_operation,remap_control=True)
     if "control_node" in metadata:
         metadata["control_node"] = metadata["control_node"].remap(qubit_map, clbit_map,
             target_width or max(qubit_map.values()) + 1,
-            target_bits if target_bits is not None else max(clbit_map.values(), default=-1) + 1)
-    return Operation(
+            target_bits if target_bits is not None else max(clbit_map.values(), default=-1) + 1,
+            identifiers=identifiers, copy_operation=copy_operation)
+    result = Operation(
         name=op.name,
         targets=tuple(qubit_map[wire] for wire in op.targets),
         controls=tuple(qubit_map[wire] for wire in op.controls),
         params=op.params,
         metadata=metadata,
     )
+    return result
+
+
+def _remap_circuit(circuit, qubits, bits, width, num_bits, *, identifiers=None, copy_operation=True):
+    from quantumbridge.execution.array_ownership import native_configuration_copy
+    from quantumbridge.execution.resource_context import current_resources
+    from .classical_scope import entries, set_entries
+    metadata=native_configuration_copy(circuit.metadata,category="native_compose_body_metadata",strict=current_resources() is not None)
+    metadata.pop("registers",None)
+    out=Circuit(width,num_bits,circuit.name,metadata)
+    records=[((identifiers or {}).get(node.value[0],node),scope,ordered) for node,scope,ordered in entries(circuit)]
+    out.operations=[_remap_operation(op,qubits,bits,width,num_bits,identifiers=identifiers,copy_operation=copy_operation) for op in circuit.operations]
+    out.measurements=[_remap_measurement(item,qubits,bits,0,len(circuit.operations)) for item in circuit.measurements]
+    set_entries(out,records)
+    entries(out)
+    return out
 
 
 def _operation_with_metadata(op: Operation, metadata: Mapping[str, Any]) -> Operation:
@@ -1213,6 +1315,9 @@ def _replace_self(original: Circuit, replacement: Circuit) -> Circuit:
     original.operations = replacement.operations
     original.measurements = replacement.measurements
     original.metadata = replacement.metadata
+    original.__dict__.pop("_classical_identifiers",None)
+    if "_classical_identifiers" in replacement.__dict__:
+        original._classical_identifiers=replacement._classical_identifiers
     return original
 
 

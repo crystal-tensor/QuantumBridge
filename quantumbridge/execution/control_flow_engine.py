@@ -180,6 +180,11 @@ class DynamicExecutionEngine:
     def _program(self, circuit, top=False):
         result, inserted = [], False
         from quantumbridge.core import Operation
+        from quantumbridge.core.classical_scope import entries
+        from quantumbridge.core.control_flow import ControlBlock
+        for variable,scope,ordered in entries(circuit):
+            if not ordered and scope != "capture" and variable.op == "var":
+                result.append(Operation("control_flow",(),metadata={"control_node":ControlBlock("declare",{"target":variable,"initial":None})}))
         from numbers import Real
         phase = circuit.global_phase
         if not isinstance(phase, Real) or phase != 0:

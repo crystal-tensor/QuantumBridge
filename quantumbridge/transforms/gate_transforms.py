@@ -61,7 +61,9 @@ def _expand_definitions(circuit, definitions, limits):
     def expand(body, path=(), nesting=0):
         nonlocal work
         limits.check("max_structure_depth",nesting)
-        out = body.copy_empty_like()
+        out = body.copy_empty_like(vars_mode="drop")
+        if "classical_scope" in body.metadata:
+            out.metadata["classical_scope"] = deepcopy(body.metadata["classical_scope"])
         out.global_phase = body.global_phase
         size = 0
         for operation in body.iter_instructions():

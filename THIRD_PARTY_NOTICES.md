@@ -2,6 +2,15 @@
 
 ## Native Gate Definitions Work In Progress
 
+P4-U3C independently implements native composition, identifier scope/remapping,
+checked operation-owner reuse and decoded-symbol interning. Actual installed
+public Qiskit2.4.1/2.6.0 calls and published IBM API/protocol documentation are
+behavioral references only. No upstream implementation or test source is read,
+ported or vendored. Native ControlBlock, simulators, compiler, IR/QPY and AD
+are reused; the native executor never delegates these computations upstream.
+Unsupported timing/transport/public ABI remains explicit. No new package or
+environment installation, authentication, cloud/hardware or token call occurs.
+
 P4-U3B independently implements native Instruction construction/inverse/repeat,
 owned invocation references, Circuit return/name contracts, native IR and
 published QPY v13 custom Instruction records in the existing engine. Actual

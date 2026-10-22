@@ -63,6 +63,12 @@ def instruction_definition_work(circuit, *, owner=None, params=None):
                 if not is_native_instruction(child): raise TypeError("Unknown native instruction definition.")
                 admit_owner(child)
                 if id(child) in ancestors: raise ValueError("Cyclic instruction definition.")
+                from .standard_gates import invocation_params
+                actual_owner=annotation if annotation is not None else child
+                if (operation.name != actual_owner.name or operation.controls
+                        or len(operation.targets) != actual_owner.num_qubits
+                        or tuple(operation.params) != invocation_params(actual_owner)):
+                    raise ValueError("Instruction definition invocation differs from its operation owner.")
                 if child.definition is not None:
                     stack.append((child.definition, depth+1, ancestors | {id(child)}))
     if owner is not None:
@@ -309,12 +315,33 @@ class Operation:
     params: tuple[ParameterValue, ...] = ()
     metadata: dict[str, Any] = field(default_factory=dict)
 
+    def __getattribute__(self, name):
+        if name in {"params", "name"}:
+            owner = object.__getattribute__(self,"__dict__").get("_shared_owner")
+            if owner is not None:
+                if name == "name": return owner.name
+                from .standard_gates import invocation_params
+                return invocation_params(owner)
+        return object.__getattribute__(self,name)
+
     def __post_init__(self) -> None:
         if not self.name:
             raise ValueError("QuantumBridge operations require a non-empty name.")
         object.__setattr__(self, "targets", tuple(self.targets))
         object.__setattr__(self, "controls", tuple(self.controls))
         object.__setattr__(self, "params", tuple(self.params))
+        owners = [self.metadata[key] for key in ("gate","instruction_object","annotated_operation") if key in self.metadata]
+        if len(owners) == 1:
+            from .gates import is_native_instruction
+            from .annotated_operation import AnnotatedOperation
+            owner = owners[0]
+            if is_native_instruction(owner) or type(owner) is AnnotatedOperation:
+                from .standard_gates import invocation_params
+                from .instruction_parameters import admit_payloads
+                values = invocation_params(owner)
+                admit_payloads(values)
+                if self.name == owner.name and self.params == values:
+                    object.__setattr__(self,"_shared_owner",owner)
 
     @property
     def wires(self) -> tuple[int, ...]:

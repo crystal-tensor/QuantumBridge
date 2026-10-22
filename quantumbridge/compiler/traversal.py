@@ -31,14 +31,14 @@ def map_control_bodies(operation, transform):
 def transform_segments(circuit, transform):
     """Optimize unconditional segments, never across runtime boundaries."""
     out = Circuit(circuit.num_qubits, circuit.num_bits, circuit.name, deepcopy(circuit.metadata))
-    segment = circuit.copy_empty_like()
+    segment = circuit.copy_empty_like(vars_mode="drop")
     def flush():
         nonlocal segment
         if segment.operations:
             result = transform(segment)
             out.operations.extend(result.operations)
             out.global_phase = out.global_phase + result.global_phase
-            segment = circuit.copy_empty_like()
+            segment = circuit.copy_empty_like(vars_mode="drop")
     for item in circuit.iter_instructions():
         if isinstance(item, Measurement):
             flush(); append_item(out, item)

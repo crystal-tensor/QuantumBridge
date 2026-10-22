@@ -89,6 +89,20 @@ contracts remain incomplete. See the
 [Instruction/Circuit progress report](docs/implementation/stage12_b_p4u3b_instruction_circuit_abi_progress.md)
 and run `PYTHONPATH=. python examples/native_instruction_circuit_contracts.py`.
 
+P4-U3C work adds native Circuit wrap/copy composition, checked live operation
+owners, typed Var/Stretch scopes, identifier remapping and capture inlining
+through the existing dynamic executor. Integer/negative/slice quantum and
+classical maps and real parameter/phase/derivative execution are covered by
+focused tests. All31 frozen checkpoint children exit0: SDK-free/main/alternate
+FULL4646/6055/6053 passed; main GLOBAL31678/34681=91.34108013033072%,
+exclusions68 unchanged. The original28-section local matrix also exits0 in
+the SDK-free environment; unavailable optional subsets and pytest-cov were
+not executed there. These results are not complete U3 or full SDK parity.
+Duration execution and typed-scope
+QPY/QASM transport remain unsupported, not metadata-only substitutes. Run the
+SDK-free `PYTHONPATH=. python examples/native_circuit_composition.py` and see
+the [composition progress report](docs/implementation/stage12_b_p4u3c_composition_classical_scope_progress.md).
+
 Native symbolic mathematics passed bounded local acceptance in Stage 12-B P3. Scalar
 functions, symbolic/repeated differentiation and simultaneous substitution now
 feed the native Circuit/Instruction and quantum derivative paths; this is not

@@ -138,7 +138,13 @@ def circuit_from_ir(program) -> Circuit:
                            params=instruction.params, metadata=metadata)
     for measurement in program.measurements:
         circuit.measurements.append(Measurement(measurement.wire, measurement.bit, measurement.kind, dict(getattr(measurement, "metadata", {}))))
-    return circuit
+    from quantumbridge.core.parameter_graph import canonical_parameter_graph
+    from quantumbridge.core.parameters import parameter_set
+    symbols={}
+    for item in program.instructions:
+        for symbol in parameter_set(item.params):symbols.setdefault(symbol.name,symbol)
+    for symbol in parameter_set((circuit.global_phase,)):symbols.setdefault(symbol.name,symbol)
+    return canonical_parameter_graph(circuit,symbols)
 
 
 def ir_to_qiskit(program):
