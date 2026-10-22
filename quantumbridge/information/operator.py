@@ -85,7 +85,8 @@ class Operator:
         from quantumbridge.core.annotated_operation import AnnotatedOperation
         if type(data) is AnnotatedOperation:
             data = Circuit.from_instruction(data)
-        if (type(data) in (Circuit,Instruction,Gate,ControlledGate) if scope is not None else isinstance(data,(Circuit,Instruction))):
+        from quantumbridge.core.gates import is_native_instruction
+        if (type(data) is Circuit or is_native_instruction(data) if scope is not None else isinstance(data,(Circuit,Instruction))):
             data = self.from_circuit(data).data
         if scope is None:
             self.data = np.asarray(data, dtype=complex)
@@ -336,6 +337,7 @@ class Operator:
             name=label or name,
             num_qubits=self.num_qubits,
             metadata={"matrix": self.to_matrix(), "source": "quantumbridge.information.Operator"},
+            label=label,
         )
 
     def to_matrix(self) -> np.ndarray:

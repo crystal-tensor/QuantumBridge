@@ -75,7 +75,8 @@ def _inspect(operation):
             elif type(modifier) is not InverseModifier: raise TypeError("Unknown native modifier type.")
         chain.append(current)
         current = current.base_op
-    if not any(type(current) is kind for kind in (Gate, ControlledGate, Instruction)):
+    from .gates import is_native_instruction
+    if not is_native_instruction(current):
         raise TypeError("An annotation requires a native Gate, Instruction or annotation base.")
     return current, chain, controls
 
@@ -92,7 +93,8 @@ def _base_gate(base):
             from quantumbridge.circuit_library import standard_gate
             body = standard_gate(base.name, *base.params, num_qubits=base.num_qubits)
     validate_definition(body, owner=base)
-    if type(base) in (Gate, ControlledGate) and base.definition is not None: return base.copy()
+    from .gates import is_native_gate
+    if is_native_gate(base) and base.definition is not None: return base.copy()
     return Gate(base.name, base.num_qubits, base.params, getattr(base, "label", None), definition=body)
 
 
@@ -247,6 +249,8 @@ def resolve_annotated_operation(operation, target=None, limits=None):
                 current_gate_limits().check("max_decomposition_work", work)
                 if type(modifier) is InverseModifier: result = result.inverse()
                 elif type(modifier) is ControlModifier: result = result.control(modifier.num_ctrl_qubits, ctrl_state=modifier.ctrl_state)
+                elif isinstance(power, Real) and float(power).is_integer():
+                    result = result._integer_power(int(power))
                 else: result = result.power(power)
         if target is not None:
             from quantumbridge.compiler import transpile

@@ -41,7 +41,7 @@ def matrix_from_ir(value):
 
 
 class _DefinitionCodec:
-    def __init__(self, limits=None, *, include_parameter_bindings=True):
+    def __init__(self, limits=None, *, include_parameter_bindings=True, canonical_parameters=False):
         from quantumbridge.serialization.limits import SerializationLimits
         self.limits = limits or SerializationLimits()
         self.definitions = self.operations = self.depth = 0
@@ -49,6 +49,7 @@ class _DefinitionCodec:
         self.modifiers = 0
         self.active = set()
         self.include_parameter_bindings = include_parameter_bindings
+        self.canonical_parameters = canonical_parameters
 
     def count(self, field, value):
         self.limits.check(field, value, format="qb-ir")
@@ -62,7 +63,9 @@ class _DefinitionCodec:
 def _gate_to_ir(gate, context):
     from quantumbridge.core.gates import Gate, ControlledGate, validate_definition
     from quantumbridge.serialization.errors import UnsupportedFeature
-    if type(gate) not in (Gate, ControlledGate):
+    from quantumbridge.core.gates import is_native_gate
+    from quantumbridge.core.standard_gates import standard_type_name, UnitaryGate, invocation_params
+    if not is_native_gate(gate):
         raise UnsupportedFeature("Only native Gate types have definition records.", format="qb-ir")
     if id(gate) in context.active: raise ValueError("Cyclic native Gate definition.")
     context.definition()
@@ -70,12 +73,16 @@ def _gate_to_ir(gate, context):
     context.depth += 1
     try:
         if gate.definition is not None: validate_definition(gate.definition, owner=gate)
-        result = {"type": "controlled_gate" if type(gate) is ControlledGate else "gate",
+        result = {"type": "controlled_gate" if isinstance(gate, ControlledGate) else "gate",
                   "name": gate.name, "label": gate.label, "num_qubits": gate.num_qubits,
-                  "num_clbits": 0, "params": [_param_to_ir(value, _context=context) for value in gate.params],
+                  "num_clbits": 0, "params": [_param_to_ir(value, _context=context) for value in invocation_params(gate)],
                   "metadata": IRInstruction(gate.name, (), metadata=gate.metadata).to_dict(_context=context)["metadata"],
                   "definition": None if gate.definition is None else gate.definition.to_ir().to_dict(_context=context)}
-        if type(gate) is ControlledGate:
+        standard = standard_type_name(gate)
+        if standard is not None: result["standard_gate"] = standard
+        if type(gate) is UnitaryGate:
+            result["matrix_parameter"] = _matrix_to_ir(gate.params[0])
+        if isinstance(gate, ControlledGate):
             result.update(base_gate=_gate_to_ir(gate.base_gate, context),
                           num_ctrl_qubits=gate.num_ctrl_qubits, ctrl_state=gate.ctrl_state)
         if context.include_parameter_bindings:
@@ -102,7 +109,7 @@ def _gate_from_ir(data, vectors, limits, context):
         raise ValueError("Unknown native definition record type.")
     controlled = data["type"] == "controlled_gate"
     fields = required | ({"base_gate", "num_ctrl_qubits", "ctrl_state"} if controlled else set())
-    if (not fields <= set(data) <= fields | {"parameter_binding"} or type(data["num_qubits"]) is not int or data["num_qubits"] < 1
+    if (not fields <= set(data) <= fields | {"parameter_binding", "standard_gate", "matrix_parameter"} or type(data["num_qubits"]) is not int or data["num_qubits"] < 1
             or type(data["num_clbits"]) is not int or data["num_clbits"] != 0
             or type(data["params"]) is not list or type(data["metadata"]) is not dict):
         raise ValueError("Malformed native Gate definition record.")
@@ -115,11 +122,40 @@ def _gate_from_ir(data, vectors, limits, context):
         metadata = decode_instruction_metadata(data["metadata"], _vectors=vectors, _limits=limits, _context=context)
         definition = None if data["definition"] is None else circuit_from_ir(IRProgram.from_dict(
             data["definition"], serialization_limits=limits, _parameter_vectors=vectors, _context=context))
-        if controlled:
+        if "matrix_parameter" in data and data.get("standard_gate") != "UnitaryGate":
+            raise ValueError("Matrix parameters require an explicit native UnitaryGate type record.")
+        if "standard_gate" in data:
+            from quantumbridge.core.standard_gates import standard_from_record
+            from quantumbridge.core.instruction_parameters import definition_signature
+            if data["standard_gate"] == "UnitaryGate":
+                from quantumbridge.execution.array_reservations import numeric_shape
+                from quantumbridge.core.gate_limits import current_gate_limits
+                matrix = data.get("matrix_parameter")
+                if type(matrix) is not dict or set(matrix) != {"real", "imag"} or params:
+                    raise ValueError("A UnitaryGate record needs exactly one typed matrix parameter.")
+                shape = numeric_shape(matrix["real"], real_only=True)
+                if len(shape) != 2 or shape != numeric_shape(matrix["imag"], real_only=True):
+                    raise ValueError("Unitary matrix parameter real/imag shapes disagree.")
+                context.count("max_numeric_elements", shape[0]*shape[1])
+                current_gate_limits().check("max_matrix_dimension",max(shape))
+                values = (matrix_from_ir(matrix),)
+            else: values = params
+            gate = standard_from_record(data["standard_gate"], values, data["label"], data.get("ctrl_state"))
+            if (isinstance(gate, ControlledGate) != controlled or gate.num_qubits != data["num_qubits"]
+                    or metadata or definition is None or definition_signature(gate.definition) != definition_signature(definition)):
+                raise ValueError("Standard type record differs from its actual executable definition.")
+            if controlled:
+                base = _gate_from_ir(data["base_gate"], vectors, limits, context)
+                if (gate.num_ctrl_qubits != data["num_ctrl_qubits"] or type(base) is not type(gate.base_gate)
+                        or definition_signature(base.definition) != definition_signature(gate.base_gate.definition)):
+                    raise ValueError("Standard control type differs from its actual base operation.")
+            object.__setattr__(gate, "name", data["name"])
+        elif controlled:
             if definition is None: raise ValueError("A controlled definition record must be executable.")
             base = _gate_from_ir(data["base_gate"], vectors, limits, context)
             gate = ControlledGate(base, data["num_ctrl_qubits"], data["ctrl_state"], data["label"])
-            if gate.num_qubits != data["num_qubits"] or gate.params != params or metadata:
+            from quantumbridge.core.standard_gates import invocation_params
+            if gate.num_qubits != data["num_qubits"] or invocation_params(gate) != params or metadata:
                 raise ValueError("Controlled Gate base and definition header disagree.")
             gate.name = data["name"]
             gate.definition = definition
@@ -273,11 +309,15 @@ def _param_to_ir(value: Any, *, _context=None, _depth=0) -> Any:
                 "length":len(value.vector),"index":value.index}
         return result
     if isinstance(value, ParameterExpression):
-        return {
+        result = {
             "expression": str(value),
             "parameters": sorted(parameter.name for parameter in value.parameters),
             "parameter_ast": {"op": value.op, "args": [_param_to_ir(arg, _context=_context, _depth=_depth+1) for arg in value.args]},
         }
+        if _context is not None and _context.canonical_parameters:
+            result.pop("expression")
+            result.pop("parameters")
+        return result
     if isinstance(value, Real):
         return float(value)
     if isinstance(value, complex):

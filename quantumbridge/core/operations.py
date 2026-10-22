@@ -24,10 +24,15 @@ class Instruction:
     params: MutableSequence[Any] = ()
     definition: Any = None
     metadata: dict[str, Any] = field(default_factory=dict)
+    label: str | None = None
 
-    def __init__(self, name, num_qubits, num_bits=0, params=(), definition=None, metadata=None):
+    def __init__(self, name, num_qubits, num_bits=0, params=(), definition=None, metadata=None, *, label=None, num_clbits=None):
         from .instruction_parameters import admit_owner
         admit_owner(self)
+        if num_clbits is not None:
+            if num_bits != 0 and num_bits != num_clbits: raise ValueError("Conflicting classical bit counts.")
+            num_bits = num_clbits
+        if label is not None and not isinstance(label, str): raise TypeError("Instruction label must be a string or None.")
         object.__setattr__(self, "name", name)
         object.__setattr__(self, "num_qubits", num_qubits)
         object.__setattr__(self, "num_bits", num_bits)
@@ -35,6 +40,7 @@ class Instruction:
         object.__setattr__(self, "_definition", None)
         object.__setattr__(self, "_parameter_plan", None)
         object.__setattr__(self, "metadata", dict(metadata or {}))
+        object.__setattr__(self, "label", label)
         self.__post_init__()
         from .instruction_parameters import validated_values
         object.__setattr__(self, "_params", validated_values(self, params))
@@ -51,7 +57,22 @@ class Instruction:
 
     def __setattr__(self, name, value):
         if name in {"params", "definition"}: return object.__setattr__(self, name, value)
+        if name in {"name", "label"}:
+            if value is None and name == "label": return object.__setattr__(self, name, value)
+            if not isinstance(value, str) or name == "name" and not value: raise ValueError("Instruction name/label must be valid strings.")
+            return object.__setattr__(self, name, value)
         raise AttributeError("Use params/definition assignment or copy to update a native Instruction.")
+
+    @property
+    def base_class(self): return type(self)
+
+    @property
+    def mutable(self): return getattr(self, "_mutable", True)
+
+    def to_mutable(self):
+        result = self.copy()
+        object.__setattr__(result, "_mutable", True)
+        return result
 
     @property
     def num_clbits(self): return self.num_bits

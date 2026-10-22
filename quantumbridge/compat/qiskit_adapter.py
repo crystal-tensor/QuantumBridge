@@ -112,15 +112,16 @@ def circuit_from_ir(program) -> Circuit:
         metadata = decode_instruction_metadata(instruction.metadata)
         gate = metadata.pop("gate", None)
         annotation = metadata.pop("annotated_operation", None)
+        from quantumbridge.core.standard_gates import invocation_params
         if annotation is not None:
             from quantumbridge.core.annotated_operation import AnnotatedOperation
             if (type(annotation) is not AnnotatedOperation or gate is not None or instruction.op != annotation.name
-                    or annotation.num_qubits != len(instruction.targets) or instruction.controls or annotation.params != instruction.params):
+                    or annotation.num_qubits != len(instruction.targets) or instruction.controls or invocation_params(annotation) != instruction.params):
                 raise ValueError("IR annotated invocation disagrees with its operation record.")
             circuit.append(annotation, instruction.targets, metadata=metadata)
             continue
         if gate is not None:
-            if gate.name != instruction.op or gate.num_qubits != len(instruction.targets)+len(instruction.controls) or gate.params != instruction.params or instruction.controls:
+            if gate.name != instruction.op or gate.num_qubits != len(instruction.targets)+len(instruction.controls) or invocation_params(gate) != instruction.params or instruction.controls:
                 raise ValueError("IR Gate invocation width/parameters disagree with its definition.")
             circuit.append(gate, instruction.targets, metadata=metadata)
         else:

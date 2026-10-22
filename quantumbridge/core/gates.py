@@ -16,6 +16,15 @@ from .gate_limits import current_gate_limits
 _VALIDATION_BUDGET = ContextVar("native_definition_validation_budget", default=None)
 
 
+def is_native_gate(value):
+    from .standard_gates import STANDARD_GATE_TYPES
+    return any(type(value) is kind for kind in (Gate, ControlledGate, *STANDARD_GATE_TYPES))
+
+
+def is_native_instruction(value):
+    return type(value) is Instruction or is_native_gate(value)
+
+
 def _copy(value):
     from quantumbridge.execution.array_ownership import native_configuration_copy
     from quantumbridge.execution.resource_context import current_resources
@@ -99,12 +108,13 @@ def _validate_definition(circuit, *, owner, budget):
             annotation = op.metadata.get("annotated_operation")
             if annotation is not None:
                 from .annotated_operation import validate_annotated_operation
+                from .standard_gates import invocation_params
                 validate_annotated_operation(annotation)
-                if child is not None or annotation.num_qubits != len(op.wires) or op.params != annotation.params:
+                if child is not None or annotation.num_qubits != len(op.wires) or op.params != invocation_params(annotation):
                     raise ValueError("Invalid annotated definition invocation.")
                 continue
             if child is not None:
-                if current_resources() is not None and type(child) not in (Gate, ControlledGate):
+                if current_resources() is not None and not is_native_gate(child):
                     from .classical import UnsupportedFeature
                     raise UnsupportedFeature("managed_gate_type")
                 if not isinstance(child, Gate) or child.num_qubits != len(op.wires):
@@ -140,7 +150,7 @@ class Gate(Instruction):
         if isinstance(num_qubits, bool): raise ValueError("A gate width cannot be a boolean.")
         if label is not None and (not isinstance(label, str) or not label): raise ValueError("Invalid gate label.")
         object.__setattr__(self, "label", label)
-        Instruction.__init__(self, name, num_qubits, 0, params, definition, _copy(dict(metadata or {})))
+        Instruction.__init__(self, name, num_qubits, 0, params, definition, _copy(dict(metadata or {})), label=label)
 
     def __setattr__(self, name, value):
         if name in {"definition", "params"}:
@@ -196,7 +206,9 @@ class Gate(Instruction):
 
     def copy(self, name=None):
         copied = _copy(self)
-        if name is not None: copied.name = name
+        if name is not None:
+            object.__setattr__(copied, "_mutable", True)
+            copied.name = name
         return copied
 
     def is_parameterized(self): return bool(parameter_set(self.params))
@@ -253,10 +265,10 @@ class Gate(Instruction):
         if isinstance(exponent, bool) or not isinstance(exponent, Real) or not math.isfinite(exponent):
             raise ValueError("Gate powers require a finite real exponent.")
         if float(exponent).is_integer():
-            n = int(exponent)
-            if not n: return Circuit(self.num_qubits).to_gate(_name=self.name+"^0")
-            base = self.inverse() if n < 0 else self
-            return base.repeat(abs(n))
+            result = self._integer_power(int(exponent))
+            if self.is_parameterized(): return result
+            from .standard_gates import UnitaryGate
+            return UnitaryGate(result.to_matrix(), label=self.name+"^"+str(exponent))
         if self.is_parameterized(): raise UnsupportedFeature("symbolic_fractional_gate_power")
         from quantumbridge.execution.resource_context import current_resources
         if current_resources() is not None: raise UnsupportedFeature("managed_fractional_gate_power", "Spectral solver workspace is not a managed native buffer contract.")
@@ -264,7 +276,14 @@ class Gate(Instruction):
         eigenvalues, vectors = np.linalg.eig(matrix)
         if np.linalg.cond(vectors) > 1e8: raise ValueError("Gate spectral basis is ill-conditioned.")
         powered = (vectors * np.exp(1j*float(exponent)*np.angle(eigenvalues))) @ np.linalg.inv(vectors)
-        return Circuit(self.num_qubits).unitary(powered, range(self.num_qubits)).to_gate(_name=self.name+"^"+str(exponent))
+        from .standard_gates import UnitaryGate
+        return UnitaryGate(powered, label=self.name+"^"+str(exponent))
+
+    def _integer_power(self, exponent):
+        from .circuit import Circuit
+        if not exponent: return Circuit(self.num_qubits).to_gate(_name=self.name+"^0")
+        base = self.inverse() if exponent < 0 else self
+        return base.repeat(abs(exponent))
 
     def control(self, num_ctrl_qubits=1, label=None, ctrl_state=None, annotated=False):
         if annotated:
@@ -284,10 +303,21 @@ class ControlledGate(Gate):
         base = getattr(self, "base_gate", None)
         updated = None
         if base is not None:
-            updated = base.copy()
-            updated.params = values
+            from .instruction_parameters import same_values
+            from .standard_gates import UnitaryGate
+            updated = base.copy() if same_values(tuple(base.params), values) else base.to_mutable()
+            if not same_values(tuple(base.params), values): updated.params = values
+            if type(base) is UnitaryGate:
+                candidate = ControlledGate(updated, self.num_ctrl_qubits, self.ctrl_state, self.label)
+                candidate.name = self.name
+                object.__getattribute__(self, "__dict__").update(object.__getattribute__(candidate, "__dict__"))
+                return
         Gate.params.fset(self, values)
         if updated is not None: object.__setattr__(self, "base_gate", updated)
+
+    def validate_parameter(self, value):
+        base = getattr(self, "base_gate", None)
+        return Gate.validate_parameter(self, value) if base is None else base.validate_parameter(value)
 
     def assign_parameters(self, mapping, *, strict=True):
         from .circuit import _parameter_mapping_from_values
@@ -314,7 +344,7 @@ class ControlledGate(Gate):
         if not 0 <= state < (1 << n): raise ValueError("Control state is outside its register.")
         if not isinstance(base_gate, Gate): raise TypeError("ControlledGate requires a native Gate.")
         from quantumbridge.execution.resource_context import current_resources
-        if current_resources() is not None and type(base_gate) not in (Gate, ControlledGate):
+        if current_resources() is not None and not is_native_gate(base_gate):
             from .classical import UnsupportedFeature
             raise UnsupportedFeature("managed_gate_type")
         base = base_gate.definition
@@ -335,8 +365,8 @@ class ControlledGate(Gate):
         for wire in reversed(opened): out.x(wire)
         name = "c"+base_gate.name if n == 1 else "c"+str(n)+base_gate.name
         if opened: name += "_o"+str(state)
-        super().__init__(name, out.num_qubits, base_gate.params, label, definition=out)
         object.__setattr__(self, "base_gate", base_gate.copy())
+        super().__init__(name, out.num_qubits, base_gate.params, label, definition=out)
         object.__setattr__(self, "num_ctrl_qubits", n)
         object.__setattr__(self, "ctrl_state", state)
         from .instruction_parameters import inherit_control_binding_plan
@@ -375,9 +405,10 @@ def decompose(circuit, selected=None, reps=1, *, _work=None, _standard=True):
         gate = item.metadata.get("gate")
         if "annotated_operation" in item.metadata:
             from .annotated_operation import AnnotatedOperation, resolve_annotated_operation
+            from .standard_gates import invocation_params
             annotation = item.metadata["annotated_operation"]
             if (type(annotation) is not AnnotatedOperation or gate is not None or item.name != "annotated"
-                    or item.controls or len(item.targets) != annotation.num_qubits or item.params != annotation.params):
+                    or item.controls or len(item.targets) != annotation.num_qubits or item.params != invocation_params(annotation)):
                 raise ValueError("Annotated invocation disagrees with its operation.")
             if names is not None and not any(isinstance(annotation, value) if isinstance(value, type) else
                     fnmatch.fnmatchcase(annotation.name, value) for value in names): return None

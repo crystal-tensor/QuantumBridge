@@ -191,10 +191,11 @@ class Clifford:
 
     def __init__(self, data, validate: bool = True, copy: bool = True):
         from quantumbridge.core.gates import Gate, ControlledGate
+        from quantumbridge.core.gates import is_native_instruction
         _workspace_notice()
         if type(data) is Clifford:
             tableau=copied_array(data.tableau,category="clifford_tableau_copy") if copy else data.tableau
-        elif type(data) in (Circuit, Instruction, Gate, ControlledGate):
+        elif type(data) is Circuit or is_native_instruction(data):
             tableau = self.from_circuit(data).tableau
         elif type(data) is Pauli:
             tableau = self.from_label(data._body).tableau

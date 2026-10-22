@@ -38,6 +38,18 @@ hash fields before reconstructing owned hashed collections; resource preflight,
 foreign-protocol rejection and copy ownership remain in force. No upstream
 source/tests, new quantum engine, environment or vendor payload is included.
 
+P4-U3 independently implements real native standard Gate classes, safe owned
+frozen/mutable objects and standard return/error contracts. Existing native
+compiler recipes, parameter ASTs, quantum execution and differentiation remain
+the implementation. IBM public APIs and actual installed public2.4.1/2.6.0
+calls are black-box references only, never upstream implementation/test ports.
+Published QPY v13 class/NumPy parameter records and NumPy's documented .npy
+header APIs inform bounded matrix interchange. Native class identity is explicit
+in QuantumBridge IR, never fabricated from a custom Gate's display name.
+Public/private singleton identity and remaining ABI differences stay explicit.
+No upstream source, SDK runtime wrapper, package installation, vendor payload,
+cloud/token call or new execution engine is introduced.
+
 Status: Stage 11P-C3 work in progress; C2A committed
 Date: 2026-10-21
 

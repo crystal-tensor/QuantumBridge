@@ -29,7 +29,8 @@ class DensityMatrix:
         if type(data) is AnnotatedOperation: data = Circuit.from_instruction(data)
         from quantumbridge.execution.resource_context import current_resources
         scope=current_resources()
-        if (type(data) in (Circuit,Instruction,Gate,ControlledGate) if scope is not None else isinstance(data,(Circuit,Instruction))):
+        from quantumbridge.core.gates import is_native_instruction
+        if (type(data) is Circuit or is_native_instruction(data) if scope is not None else isinstance(data,(Circuit,Instruction))):
             data = self.from_instruction(data).data
         if scope is None:
             self.data = np.asarray(data, dtype=complex)
@@ -90,7 +91,8 @@ class DensityMatrix:
         if type(instruction) is AnnotatedOperation: instruction = Circuit.from_instruction(instruction)
         scope=current_resources()
         if scope is not None:
-            if type(instruction) not in (Circuit,Instruction,Gate,ControlledGate):
+            from quantumbridge.core.gates import is_native_instruction
+            if type(instruction) is not Circuit and not is_native_instruction(instruction):
                 from quantumbridge.core.classical import UnsupportedFeature
                 raise UnsupportedFeature("managed_state_instruction","Managed state construction requires a native Circuit or Instruction.")
             from quantumbridge.execution.array_reservations import array_layout

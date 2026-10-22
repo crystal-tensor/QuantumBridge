@@ -105,8 +105,20 @@ class SourceExporter:
         from quantumbridge.core.gates import Gate, ControlledGate, validate_definition
         if id(gate) in self.active_gates: self.fail("Recursive custom Gate definition.")
         if id(gate) in self.gate_names: return self.gate_names[id(gate)]
-        if type(gate) not in (Gate,ControlledGate) or gate.definition is None:
+        from quantumbridge.core.gates import is_native_gate
+        if not is_native_gate(gate) or gate.definition is None:
             self.fail("Source custom Gate declarations require a native executable definition.")
+        from quantumbridge.core.standard_gates import standard_type_name, standard_from_record
+        from quantumbridge.core.instruction_parameters import definition_signature
+        from quantumbridge.core.gates import ControlledGate
+        standard = standard_type_name(gate)
+        if standard is not None and gate.name in STANDARD | {"p"}:
+            expected = standard_from_record(standard, tuple(gate.params), gate.label,
+                gate.ctrl_state if isinstance(gate, ControlledGate) else None)
+            if (gate.name == expected.name and not gate.metadata
+                    and definition_signature(gate.definition) == definition_signature(expected.definition)):
+                name = "u3" if gate.name == "u" else ("u1" if self.format == "qasm2" else "p") if gate.name in {"p", "phase"} else gate.name
+                return name, tuple(gate.params)
         validate_definition(gate.definition,owner=gate)
         self.limits.check("max_nesting_depth",len(self.active_gates)+1,format=self.format)
         self.limits.check("max_custom_definitions",len(self.gate_names)+1,format=self.format)
@@ -261,7 +273,8 @@ class SourceExporter:
                 continue
             if "gate" in item.metadata:
                 gate = item.metadata["gate"]
-                if item.controls or len(item.targets) != gate.num_qubits or item.params != gate.params:
+                from quantumbridge.core.standard_gates import invocation_params
+                if item.controls or len(item.targets) != gate.num_qubits or item.params != invocation_params(gate):
                     self.fail("Custom Gate invocation differs from its definition.")
                 name,parameters = self.gate_reference(gate)
                 line = name+("("+",".join(self.angle(value,loop_parameters) for value in parameters)+")" if parameters else "")

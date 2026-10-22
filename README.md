@@ -55,6 +55,26 @@ Independent JAX/TF checks are FOCUS, not additional FULL runs. See the
 for exact input hashes, receipts and remaining contracts. No new push/remote
 CI or complete original28-section matrix is claimed.
 
+P4-U3 work adds native public standard Gate objects, not aliases to upstream
+SDK classes: RX/RY/RZ, Phase/U, H/X/Y/Z, CX/CY/CZ/CH/Swap/CSwap,
+CRX/CRY/CRZ/CPhase, CCX/CCZ/CU and owned UnitaryGate. The existing engine
+executes their definitions, controlled phase, mutable bindings and derivatives.
+Numeric generic powers now return a real native UnitaryGate; annotation
+lowering keeps structural integer powers for MPS/resource safety. Native IR
+uses explicit class records; QPY uses actual standard class fields and bounded
+NumPy records, including bilateral matrix wire order. Known standard source
+forms preserve coherent phase instead of becoming lossy custom declarations.
+Public singleton identity, canonical definition layouts, all Instruction
+method signatures and all remaining P4 contracts are not claimed identical.
+The supported standard-gate checkpoint passes27 independent local gates:
+SDK-free/main/alternate FULL4473/5728/5726 passed, global line coverage91.2022%,
+exclusions68. These are test/coverage counts, not feature-completion percentages.
+Instruction constructor/inverse/repeat and Circuit return ABI still need U3
+work. This is IN_PROGRESS, not U3/P4/full SDK acceptance. Run the SDK-free example
+`examples/native_standard_gate_contracts.py`; see the
+[U3 checkpoint report](docs/implementation/stage12_b_p4u3_standard_gate_progress.md)
+for true red/green evidence and final-gate status.
+
 Native symbolic mathematics passed bounded local acceptance in Stage 12-B P3. Scalar
 functions, symbolic/repeated differentiation and simultaneous substitution now
 feed the native Circuit/Instruction and quantum derivative paths; this is not

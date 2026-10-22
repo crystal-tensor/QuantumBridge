@@ -1,5 +1,36 @@
 # Source Migration Ledger
 
+## Stage 12-B P4-U3 Native Standard Objects In Progress
+
+Independent Native Implementation:
+`quantumbridge/core/standard_gates.py`, `quantumbridge/core/errors.py`,
+`quantumbridge/core/__init__.py`, `quantumbridge/core/gates.py`,
+`quantumbridge/core/operations.py`, `quantumbridge/core/circuit.py`,
+`quantumbridge/core/annotated_operation.py`,
+`quantumbridge/core/instruction_parameters.py`,
+`quantumbridge/circuit_library/__init__.py`,
+`quantumbridge/compat/qiskit_adapter.py`, `quantumbridge/ir/qb_ir.py`,
+`quantumbridge/serialization/qpy.py`,
+`quantumbridge/serialization/text_exporter.py`,
+`quantumbridge/information/operator.py`,
+`quantumbridge/information/statevector.py`,
+`quantumbridge/information/density_matrix.py`,
+`quantumbridge/information/clifford.py`.
+Independent tests: `tests/core/test_native_standard_gate_contracts.py`,
+`tests/compat/test_native_standard_gate_public.py`,
+`tests/serialization/test_native_standard_gate_interchange.py`.
+SDK-free example: `examples/native_standard_gate_contracts.py`.
+References: official Gate/Instruction/standard circuit-library API pages and
+https://quantum.cloud.ibm.com/docs/en/api/qiskit/qpy,
+plus actual public2.4.1/2.6.0 API calls only. NumPy documents the numeric .npy
+format/header APIs used for bounded parsing; no pickle load is introduced.
+No upstream implementation/tests are inspected, copied or installed. Source
+ports remain zero. The explicit native type field is a QuantumBridge IR
+extension, not a fake standard QPY sidecar. Existing parameter/copy/resource,
+compiler/MPS and derivative engines are reused. Type/error/singleton/definition
+differences and incomplete Instruction/P4/full SDK contracts remain explicit.
+Protected Router/Studio dirt is neither included nor given invented attribution.
+
 ## Stage 12-B P4-U2 Native Mutable Parameters In Progress
 
 Independent Native Implementation:

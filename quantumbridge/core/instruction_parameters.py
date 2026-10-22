@@ -23,8 +23,8 @@ def _managed():
 def admit_owner(owner):
     if not _managed(): return
     from .operations import Instruction
-    from .gates import Gate, ControlledGate
-    if not _exact_type(type(owner), (Instruction, Gate, ControlledGate)):
+    from .gates import is_native_instruction
+    if not is_native_instruction(owner):
         from .classical import UnsupportedFeature
         raise UnsupportedFeature("managed_parameter_owner")
 
@@ -199,7 +199,7 @@ def definition_signature(definition):
         max_nesting_depth=4*limits.max_definition_depth,
         max_custom_definitions=limits.max_custom_definitions,
         max_instructions=limits.max_total_operations,
-        max_gate_expansion=limits.max_decomposition_work), include_parameter_bindings=False)
+        max_gate_expansion=limits.max_decomposition_work), include_parameter_bindings=False, canonical_parameters=True)
     return definition.to_ir().to_dict(_context=context)
 
 

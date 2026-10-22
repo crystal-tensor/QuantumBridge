@@ -178,7 +178,9 @@ class Circuit:
         from .gates import Gate, ControlledGate, validate_definition
         from .gate_limits import current_gate_limits
         from quantumbridge.execution.resource_context import current_resources
-        if current_resources() is not None and type(gate) not in (Gate, ControlledGate):
+        from .gates import is_native_gate
+        from .standard_gates import invocation_params
+        if current_resources() is not None and not is_native_gate(gate):
             from .classical import UnsupportedFeature
             raise UnsupportedFeature("managed_gate_type", "Managed append requires an exact native Gate type.")
         wires, controls = tuple(targets), tuple(controls)
@@ -204,7 +206,7 @@ class Circuit:
             extra = {**deepcopy(gate.metadata), **extra}
         else:
             extra["gate"] = gate.copy()
-        self.operations.append(Operation(gate.name, controls+wires, params=gate.params, metadata=extra))
+        self.operations.append(Operation(gate.name, controls+wires, params=invocation_params(gate), metadata=extra))
         return self
 
     def _append_annotated(self, operation, targets, controls, params, metadata, clbits):
@@ -225,7 +227,8 @@ class Circuit:
         extra = _copy(dict(metadata or {}))
         if "gate" in extra or "annotated_operation" in extra: raise ValueError("Native definition metadata keys are reserved.")
         extra["annotated_operation"] = operation.copy()
-        self.operations.append(Operation(operation.name, controls+wires, params=operation.params, metadata=extra))
+        from .standard_gates import invocation_params
+        self.operations.append(Operation(operation.name, controls+wires, params=invocation_params(operation), metadata=extra))
         return self
 
     def to_gate(self, parameter_map=None, label=None, *, _name=None):
@@ -868,7 +871,7 @@ class Circuit:
             if set(mapping)!=set(self.parameters):raise ValueError("Instruction parameter_map must map every circuit parameter.")
             definition=self.assign_parameters(mapping)
             parameters=tuple(mapping[parameter] for parameter in self.parameters)
-        instruction_name = name or label or self.name or "circuit"
+        instruction_name = name or self.name or "circuit"
         metadata = native_configuration_copy(definition.metadata,category="native_instruction_metadata_copy")
         metadata.setdefault("definition_name", self.name)
         result = Instruction(
@@ -878,6 +881,7 @@ class Circuit:
             params=parameters,
             definition=definition,
             metadata=metadata,
+            label=label,
         )
         if parameter_map is not None:
             from .instruction_parameters import ParameterBindingPlan, owned_copy, definition_signature
@@ -1068,12 +1072,14 @@ def _inverse_operation(op: Operation) -> Operation:
         from .gates import _copy
         metadata = _copy(op.metadata)
         metadata["annotated_operation"] = annotation.copy()
-        return Operation(annotation.name, op.targets, op.controls, annotation.params, metadata)
+        from .standard_gates import invocation_params
+        return Operation(annotation.name, op.targets, op.controls, invocation_params(annotation), metadata)
     if "gate" in op.metadata:
         gate = op.metadata["gate"].inverse()
         metadata = deepcopy(op.metadata)
         metadata["gate"] = gate
-        return Operation(gate.name, op.targets, op.controls, gate.params, metadata)
+        from .standard_gates import invocation_params
+        return Operation(gate.name, op.targets, op.controls, invocation_params(gate), metadata)
     if "controlled_base" in op.metadata:
         metadata = deepcopy(op.metadata)
         description = metadata["controlled_base"]
