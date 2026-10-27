@@ -16,8 +16,8 @@ jobs:
             install: "python -m pip install -e . pytest"
             command: "pytest -q -rs"
           - profile: qiskit-extra
-            install: "python -m pip install -e '.[qiskit]' pytest"
-            command: "pytest -q -rs tests/compat/test_qiskit_adapter_realistic.py tests/compat/test_qiskit_import_basic_circuit.py tests/compat/test_qiskit_export_basic_circuit.py tests/compat/test_qiskit_roundtrip_ir.py"
+            install: "python -m pip install -e '.[qiskit]' qiskit-qasm3-import==0.6.0 pytest"
+            command: "pytest -q -rs tests/compat/test_qiskit_adapter_realistic.py tests/compat/test_qiskit_import_basic_circuit.py tests/compat/test_qiskit_export_basic_circuit.py tests/compat/test_qiskit_roundtrip_ir.py tests/compat/test_native_serialization_differential.py"
           - profile: pennylane-extra
             install: "python -m pip install -e '.[pennylane]' pytest"
             command: "pytest -q -rs tests/compat/test_pennylane_adapter_realistic.py tests/compat/test_pennylane_installed_environment.py tests/qml/test_pennylane_observable_bridge.py tests/qml/test_pennylane_qnode_basic.py"
