@@ -52,7 +52,7 @@ jobs:
           git config user.email '29765585+crystal-tensor@users.noreply.github.com'
           git switch --detach "$snapshot"
           git merge --no-ff --no-commit origin/main
-          git rm -- owner-sync-20261027.bundle
+          git rm --cached -- owner-sync-20261027.bundle
           git commit -m 'chore: synchronize owner-approved native SDK snapshot and framework'
           git push origin HEAD:main
           echo "Synchronized main: $(git rev-parse HEAD)"
