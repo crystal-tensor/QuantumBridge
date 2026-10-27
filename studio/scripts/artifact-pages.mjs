@@ -18,6 +18,13 @@ export async function readArtifact(pathname) {
 }
 
 export function artifactPage(html, resource, locale = "zh-CN", basePath = "/") {
+  // nbconvert's optional CDN helpers must never block the static case body.
+  for (const source of [
+    "https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML-full,Safe",
+  ]) {
+    html = html.replaceAll(`<script src="${source}">`, `<script defer src="${source}">`);
+  }
   const en = locale === "en";
   const label = (zh, english) => en ? english : zh;
   const domain = domains.find(item => item.id === resource.domain);

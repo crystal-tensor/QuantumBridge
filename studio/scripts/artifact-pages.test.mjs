@@ -108,6 +108,19 @@ test("index includes D1, D2, D3 without rewriting scientific artifacts", async (
   assert.match(english, /<body><style>/);
 });
 
+test("optional notebook CDN scripts do not block the case body", async () => {
+  let checked = 0;
+  for (const resource of resources) {
+    const artifact = await readArtifact(resourceHref(resource));
+    const html = artifactPage(artifact.body.toString("utf8"), resource);
+    for (const [tag] of html.matchAll(/<script\b[^>]*\bsrc="https:\/\/cdnjs\.cloudflare\.com\/[^>]+>/g)) {
+      assert.match(tag, /\b(?:defer|async)\b|\btype="module"/, resource.file);
+      checked++;
+    }
+  }
+  assert.ok(checked >= 2*resources.filter(item => item.kind !== "index").length);
+});
+
 test("only registered artifacts are exposed, with malformed paths and write requests rejected", async () => {
   for (const pathname of ["/examples/finance/allocation_hardware_evidence.json", "/examples/finance/not-registered.html", "/examples/finance/index.ipynb", "/examples/science/secret.html", "/examples/finance/%2e%2e%2f%2e%2e%2fREADME.md"]) {
     assert.equal((await fetch(base + pathname)).status, 404, pathname);
