@@ -1,0 +1,21 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,">
+        <title>QuantumBridge · 量子金融案例</title><style>
+        *{box-sizing:border-box;letter-spacing:0}body{margin:0;color:#202427;background:#f6f7f8;font:16px/1.65 system-ui,sans-serif}
+        header{background:#202427;color:white;padding:20px 6%}main{max-width:1050px;margin:auto;padding:28px 22px}
+        h1{font-size:28px;margin:0}h2{font-size:21px}p{max-width:850px}a{color:#086d77}table{width:100%;border-collapse:collapse;background:white}
+        td,th{text-align:left;padding:14px;border-bottom:1px solid #d9dfe2}th{background:#eaf0f1}.scroll{overflow-x:auto}
+        @media(max-width:550px){h1{font-size:23px}td,th{padding:10px;font-size:14px}main{padding:20px 14px}}
+        </style><style>
+    #qb-artifact-nav{box-sizing:border-box;display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;padding:16px 24px;border-bottom:1px solid #cdd8d4;background:#eff5f2;color:#244336;font:14px/1.7 system-ui,sans-serif;letter-spacing:0}
+    #qb-artifact-nav a,#qb-report-directory a{color:#186353;text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
+    #qb-artifact-nav a:focus-visible,#qb-report-directory a:focus-visible{outline:3px solid #408a70;outline-offset:4px}
+    #qb-artifact-nav strong{flex:1 1 220px;font-size:14px;font-weight:600;overflow-wrap:anywhere}
+    #qb-report-directory{margin:28px 0;padding:20px 0;border-top:1px solid #cdd8d4;font:16px/1.8 system-ui,sans-serif;letter-spacing:0}#qb-report-directory h2{font-size:21px}#qb-report-directory li{margin:10px 0}
+    @media(max-width:550px){#qb-artifact-nav{padding:14px 16px;gap:8px 18px;font-size:13px}#qb-artifact-nav strong{flex-basis:100%}}
+    </style><nav id="qb-artifact-nav" aria-label="项目导航"><a href="/QuantumBridge/framework.html?category=finance&lang=zh">返回首页</a><strong>金融 / 金融案例与报告总目录</strong></nav><header>QUANTUMBRIDGE / FINANCE</header><main><h1>量子金融 · 五类可执行案例</h1>
+        <p>中文原理、实现步骤、完整电路、本地采样、中间图表、最终结果和夸父执行入口。</p>
+        <p>这是一组小规模合成研究案例，不代表金融全行业覆盖、量子优势或投资建议。每份案例单独标明硬件状态。</p>
+        <div class="scroll"><table><thead><tr><th>编号</th><th>分类</th><th>案例与输出</th><th>代码</th></tr></thead><tbody><tr><td>01</td><td>量化投资与资产配置</td><td><a href="01_allocation_quafu.html">阅读案例</a></td><td><a href="01_allocation_quafu.ipynb" download>Jupyter notebook</a></td></tr><tr><td>02</td><td>风险计量</td><td><a href="02_risk_quafu.html">阅读案例</a></td><td><a href="02_risk_quafu.ipynb" download>Jupyter notebook</a></td></tr><tr><td>03</td><td>衍生品定价与对冲</td><td><a href="03_derivatives_quafu.html">阅读案例</a></td><td><a href="03_derivatives_quafu.ipynb" download>Jupyter notebook</a></td></tr><tr><td>04</td><td>金融约束优化</td><td><a href="04_constraints_quafu.html">阅读案例</a></td><td><a href="04_constraints_quafu.ipynb" download>Jupyter notebook</a></td></tr><tr><td>05</td><td>相关性与市场波动</td><td><a href="05_correlation_quafu.html">阅读案例</a></td><td><a href="05_correlation_quafu.ipynb" download>Jupyter notebook</a></td></tr></tbody></table></div>
+        <h2>执行状态</h2><ul><li>量化投资与资产配置：已取回真机结果 / 精度尚未通过验收</li><li>风险计量：已取回真机结果 / 精度尚未通过验收</li><li>衍生品定价与对冲：已取回真机结果 / 精度尚未通过验收</li><li>金融约束优化：已取回真机结果 / 精度尚未通过验收</li><li>相关性与市场波动：已取回真机结果 / 精度尚未通过验收</li></ul><p>全批次8个业务电路加1个位序校准，计划9个任务、9216 shots，业务电路最多4量子比特。
+        授权上限为20任务，每任务1024 shots，最多6量子比特。无硬件结果时不以模拟输出代替。</p>
+        <section id="qb-report-directory"><h2>真机诊断与审计报告</h2><ul><li><a href="/QuantumBridge/examples/finance/06_hardware_diagnostics.html">D1 · 真机最小诊断</a> · <a href="/QuantumBridge/examples/finance/06_hardware_diagnostics.ipynb" download>Notebook</a></li><li><a href="/QuantumBridge/examples/finance/finance_quafu_d2_mapping_diagnosis.html">D2 · 位序与映射诊断</a> · <a href="/QuantumBridge/examples/finance/finance_quafu_d2_mapping_diagnosis.ipynb" download>Notebook</a></li><li><a href="/QuantumBridge/examples/finance/finance_quafu_d3_client_contract.html">D3 · 夸父客户端契约审计</a> · <a href="/QuantumBridge/examples/finance/finance_quafu_d3_client_contract.ipynb" download>Notebook</a></li></ul></section></main></html>

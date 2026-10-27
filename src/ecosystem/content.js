@@ -1,0 +1,123 @@
+// The v2.4 architecture deck defines the target, not the implementation status.
+// Keep both languages together so changes remain reviewable.
+export const bi = (zh, en) => ({ "zh-CN": zh, en });
+export const categories = {
+  foundation: bi("计算与运行基座", "Compute & runtime"),
+  application: bi("四大行业应用", "Industry applications"),
+  tools: bi("展示与评测", "Visualization & evaluation"),
+};
+export const modules = [
+  { id: "core", name: "Core", category: "foundation", title: bi("核心电路与编译引擎", "Circuits & compiler"),
+    summary: bi("用同一套电路、算子与原语描述量子计算。", "Describe quantum computation with shared circuits, operators and primitives."),
+    tags: ["Circuit IR", "QNode", "Sampler / Estimator"],
+    concepts: bi("电路描述要执行哪些量子门，算子描述要测量什么。Core 将它们转换为可优化、可微分、可执行的程序。", "Circuits describe quantum operations; operators describe what to measure. Core turns both into programs that can be optimized, differentiated and executed."),
+    features: bi(["量子门、寄存器、参数、测量与控制流，OpenQASM 导入导出", "Pauli、Hamiltonian、费米子、玻色子与稀疏算子，映射与对称性", "QNode、Tape、Sampler、Estimator、参数偏移及设备梯度", "编译 passes、门分解、布局与路由，动态控制流及 JIT 规划", "VQE、QAOA、Grover、振幅估计、动力学与经典优化器协议"], ["Gates, registers, parameters, measurements, control flow and OpenQASM I/O", "Pauli, Hamiltonian, fermionic, bosonic and sparse operators, mappings and symmetries", "QNode, Tape, Sampler, Estimator, parameter-shift and device gradients", "Compiler passes, decomposition, layout and routing, with planned dynamic control flow and JIT", "VQE, QAOA, Grover, amplitude estimation, dynamics and classical optimizer contracts"]),
+    boundary: bi("Core 同时提供 SDK 前端与目标编译能力。它通过协议扩展，不反向依赖行业包。", "Core owns the SDK frontend and target compilation. It exposes extension contracts without importing industry packages."), related: ["os", "simulator", "ml"], slides: "7, 12" },
+  { id: "os", name: "Quantum OS", category: "foundation", title: bi("统一调度与运行基座", "Scheduling & runtime"),
+    summary: bi("让任务在合适的资源上，以可追踪的方式运行。", "Run jobs on suitable resources with a traceable lifecycle."), tags: ["Rust microkernel", "MLFQ", "QOS-DP"],
+    concepts: bi("QB 负责表达计算，QOS 负责决定何时、在哪台设备上执行，并管理资源、状态与恢复。", "QB expresses a computation. QOS decides when and where it runs, then manages resources, job state and recovery."),
+    features: bi(["Router 根据 SLA、成本、等待与校准状态推荐后端", "Scheduler 负责准入、优先级与 MLFQ 策略，支持安全让出点", "量子比特、拓扑、租约、配额与校准资源管理", "租户、权限、凭据隔离和审计", "Runtime、Worker、JobStore、事件、幂等、取消、重试与检查点", "QOS-DP、HAL、DeviceSpec、CalSet 和结果溯源"], ["Router recommends backends using SLA, cost, queue and calibration estimates", "Scheduler handles admission, priorities and MLFQ policies at safe yield boundaries", "Qubit, topology, lease, quota and calibration resource management", "Tenancy, permissions, credential isolation and auditing", "Runtime, workers, job store, events, idempotency, cancellation, retries and checkpoints", "QOS-DP, HAL, DeviceSpec, CalSet and result provenance"]),
+    boundary: bi("Python 分包提供客户端与协议适配，Rust Runtime 独立部署。MLFQ 与实时能力属于需验证的目标设计。", "The Python package provides clients and adapters; the Rust runtime is deployed separately. MLFQ and real-time behavior are target capabilities requiring validation."), related: ["core", "simulator", "benchmark"], slides: "8–11" },
+  { id: "simulator", name: "Simulator", category: "foundation", title: bi("量子仿真与噪声建模", "Simulation & noise"),
+    summary: bi("在经典计算机上验证线路、算法和误差模型。", "Validate circuits, algorithms and noise models on classical computers."), tags: ["CPU / GPU", "Statevector", "Noise"],
+    concepts: bi("模拟器提供可控、可复现的实验环境。统一接口让同一任务可以选择不同仿真内核，再按支持范围迁移到硬件。", "Simulators provide controlled, reproducible experiments. A shared interface lets a job use different simulation engines and later move to supported hardware."),
+    features: bi(["状态向量、概率、counts、期望值与批量线路", "密度矩阵、Kraus 通道、读出噪声与 T1/T2 时间演化", "GPU、多线程、张量网络、分布式和内存预算的扩展路线", "Aer、Lightning、MQT DDSIM 的可选插件与结果归一化", "统一 seed、shots、精度、截断误差与资源配置"], ["Statevectors, probabilities, counts, expectation values and circuit batches", "Density matrices, Kraus channels, readout noise and T1/T2 evolution", "A roadmap for GPUs, threading, tensor networks, distribution and memory budgets", "Optional Aer, Lightning and MQT DDSIM adapters with normalized results", "Shared seeds, shots, precision, truncation error and resource settings"]),
+    boundary: bi("模拟结果与真机结果分别标注，规模与精度按内核和资源条件验收。", "Simulation and hardware results are labeled separately. Scale and accuracy depend on the engine and resource budget."), related: ["core", "os", "science"], slides: "13" },
+  { id: "ml", name: "ML", category: "foundation", title: bi("可微量子机器学习", "Differentiable quantum ML"),
+    summary: bi("把参数化量子线路接入经典模型的训练过程。", "Connect parameterized quantum circuits to classical model training."), tags: ["PyTorch / JAX", "QNN", "Hybrid training"],
+    concepts: bi("输入特征经过编码进入量子线路，测量结果参与损失计算，梯度再更新量子和经典参数。", "Encoded features enter a quantum circuit. Measurements contribute to a loss, and gradients update both quantum and classical parameters."),
+    features: bi(["QNN、QCNN、量子核、QSVM 与聚类", "qGAN、qPCA、量子降维等模型族", "数据编码、批量训练、优化器与检查点", "PyTorch/JAX 连接器与端到端可微训练目标", "TorchQuantum 风格量子层，TensorFlow 存量版本兼容策略"], ["QNNs, QCNNs, quantum kernels, QSVMs and clustering", "Model families including qGAN, qPCA and quantum dimensionality reduction", "Data encoding, batch training, optimizers and checkpoints", "PyTorch/JAX connectors and a path to end-to-end differentiation", "TorchQuantum-style layers and a version-scoped TensorFlow compatibility policy"]),
+    boundary: bi("QNode、Tape 和梯度语义归 Core；ML 负责模型与训练。", "Core owns QNode, Tape and gradient semantics; ML owns models and training."), related: ["core", "simulator", "science"], slides: "14" },
+  { id: "science", name: "Science", category: "application", title: bi("自然科学", "Natural sciences"),
+    summary: bi("连接分子、材料、生物与基础物理问题。", "Connect molecular, materials, biological and physics problems."), tags: ["Hamiltonian", "VQE", "Chemistry"],
+    concepts: bi("将物理系统转化为哈密顿量，再通过求解器计算能量、性质和时间演化，并与经典结果对照。", "Map a physical system to a Hamiltonian, then use solvers to estimate energies, properties and dynamics against classical references."),
+    features: bi(["量子化学：分子哈密顿量、HF、UCCSD、VQE、能级、偶极矩与几何优化", "材料科学：晶格、能带、多体、半导体、电池、催化及表面吸附", "生物医药：小分子、构象、蛋白分区、活性空间及相关能量模型", "基础物理：自旋、多体系统、简化原子核、动力学与观测量"], ["Chemistry: molecular Hamiltonians, HF, UCCSD, VQE, energy levels, dipoles and geometry optimization", "Materials: lattices, bands, many-body systems, semiconductors, batteries, catalysis and adsorption", "Biomedicine: small molecules, conformations, protein fragments, active spaces and energy models", "Physics: spins, many-body systems, simplified nuclear models, dynamics and observables"]),
+    boundary: bi("复杂材料和生物系统采用截断、活性空间及经典量子协同，单独报告规模和误差。", "Complex materials and biological systems require truncation, active spaces and classical–quantum workflows, with explicit scale and error reporting."), related: ["core", "simulator", "ml"], slides: "17, 32" },
+  { id: "finance", name: "Finance", category: "application", title: bi("量子金融", "Quantum finance"),
+    summary: bi("从组合、风险与定价模型进入量子求解。", "Bring portfolio, risk and pricing models to quantum solvers."), tags: ["Portfolio", "VaR / CVaR", "QUBO"],
+    concepts: bi("金融数据先构造成约束优化或概率估计问题，求解后再解码为业务指标，并与经典基线比较。", "Financial data becomes a constrained optimization or probability estimation problem. Solutions are decoded into domain metrics and compared with classical baselines."),
+    features: bi(["资产组合、权重分配、收益风险平衡及预算约束", "VaR/CVaR、市场、信用与流动性风险模型", "期权定价、期货对冲、多资产估值与数值误差", "QUBO/Ising 转换、金融约束、求解与可行性检查", "相关矩阵、市场波动、概率分布与情景生成"], ["Portfolios, allocation weights, risk–return trade-offs and budget constraints", "VaR/CVaR and market, credit and liquidity risk models", "Option pricing, futures hedging, multi-asset valuation and numerical error", "QUBO/Ising encodings, financial constraints, solvers and feasibility checks", "Correlations, volatility, probability distributions and scenario generation"]),
+    boundary: bi("模型需要明确数据与假设，评测同时保留经典基线、误差和计算成本。", "Models need explicit data and assumptions; evaluation retains classical baselines, error and computational cost."), related: ["industry", "core", "benchmark"], slides: "18" },
+  { id: "industry", name: "Industry", category: "application", title: bi("工业组合优化", "Industrial optimization"),
+    summary: bi("把调度、路径与资源问题转化为可求解模型。", "Turn schedules, routes and resource decisions into solvable models."), tags: ["QUBO / Ising", "QAOA", "Constraints"],
+    concepts: bi("先定义目标与约束，再编码、求解和解码。一个好的结果既要降低目标值，也必须满足原始业务约束。", "Define objectives and constraints, then encode, solve and decode. A useful result must improve the objective while satisfying the original constraints."),
+    features: bi(["QUBO/Ising、MaxCut、最小生成树与组合问题", "TSP、VRP、仓储物流、车间排程及时间窗", "供应链、产能、人力设备和多周期资源分配", "电网负荷、新能源、储能及能耗优化", "整数规划、约束优化、量子/经典/混合求解"], ["QUBO/Ising, MaxCut, minimum spanning trees and combinatorial problems", "TSP, VRP, logistics, shop scheduling and time windows", "Supply chains, capacity, workforce, equipment and multi-period allocation", "Grid loads, renewables, storage and energy optimization", "Integer programming, constrained optimization and quantum/classical/hybrid solvers"]),
+    boundary: bi("编码器针对支持的问题族建设，报告可行性、目标值和最优性差距。", "Encoders target supported problem families and report feasibility, objective value and optimality gaps."), related: ["core", "os", "benchmark"], slides: "19" },
+  { id: "crypto", name: "Crypto", category: "application", title: bi("密码与量子安全", "Cryptography & security"),
+    summary: bi("覆盖后量子密码、通信协议与安全实验。", "Cover post-quantum cryptography, communication and security experiments."), tags: ["PQC", "QKD", "QRNG"],
+    concepts: bi("后量子密码是运行在经典计算机上的抗量子算法；QKD 使用量子通信；QRNG 则需要可验证的物理熵源。", "Post-quantum cryptography uses quantum-resistant algorithms on classical computers. QKD uses quantum communication; QRNG needs a validated physical entropy source."),
+    features: bi(["ML-KEM、ML-DSA、SLH-DSA 测试与互操作，UOV/SNOVA 候选研究", "QKD/BB84、认证经典信道、链路噪声、协商与密钥管理", "Shor/Grover、RSA-2048 量子威胁与资源估计", "QRNG 设备、熵源、健康检测与提取", "量子隐私计算、加密数据运算、安全误差校验及协议研究"], ["ML-KEM, ML-DSA and SLH-DSA tests and interoperability; UOV/SNOVA candidate research", "QKD/BB84, authenticated classical channels, link noise and key management", "Shor/Grover and quantum threat/resource estimates for RSA-2048", "QRNG devices, entropy sources, health tests and extraction", "Quantum privacy, encrypted-data computation, security checks and protocol research"]),
+    boundary: bi("RSA-2048 是经典密码评估对象。仿真随机样本不等于物理 QRNG，候选算法不等于标准算法。", "RSA-2048 is a classical cryptographic evaluation target. Simulated random samples are not physical QRNG output; candidate algorithms are not standards."), related: ["core", "os", "benchmark"], slides: "20" },
+  { id: "visual", name: "Visual", category: "tools", title: bi("贯穿全程的可视化", "Visualization across the stack"),
+    summary: bi("从线路和收敛曲线，到行业结果与运行报告。", "Read circuits, convergence, domain results and runtime reports."), tags: ["Circuits", "Results", "Studio"],
+    concepts: bi("可视化将程序、作业与结果变成可理解的图形，并保留数据版本，便于解释、比较与复现。", "Visualization turns programs, jobs and results into understandable views while retaining data versions for explanation, comparison and reproduction."),
+    features: bi(["量子线路、门与测量，编译前后和拓扑路由对照", "概率、状态、梯度、训练收敛、参数扫描和误差缓解比较", "能量谱、金融风险、工业路径与排程", "队列、作业状态、成本、决策解释和报告导出"], ["Circuits, gates, measurements, compilation comparisons and topology routing", "Probabilities, states, gradients, convergence, parameter scans and mitigation comparisons", "Energy spectra, financial risk, industrial routes and schedules", "Queues, job states, costs, routing explanations and report export"]),
+    boundary: bi("Visual 负责渲染，Studio 负责交互工作台，结果由统一数据契约提供。", "Visual renders data, Studio provides the interactive workspace, and shared contracts supply the results."), related: ["benchmark", "os", "science"], slides: "21, 23" },
+  { id: "benchmark", name: "Benchmark", category: "tools", title: bi("算法与硬件评测", "Algorithm & hardware evaluation"),
+    summary: bi("以相同预算与可复现实验比较正确性和性能。", "Compare correctness and performance using reproducible runs and comparable budgets."), tags: ["Baselines", "Metrics", "Manifest"],
+    concepts: bi("一次评测先固定工作负载和环境，再重复执行，比较误差、时延和成本，最后保留完整运行记录。", "A benchmark fixes the workload and environment, repeats execution, compares error, latency and cost, then preserves the full run record."),
+    features: bi(["电路、算法、行业与硬件工作负载", "编译等价、梯度检查、领域指标与经典对照", "精度、延迟、内存、shots、排队、通信和成本", "预热、重复实验、公平预算及回归趋势", "Result、Manifest、环境锁定和校准版本关联"], ["Circuit, algorithm, domain and hardware workloads", "Compiler equivalence, gradient checks, domain metrics and classical references", "Accuracy, latency, memory, shots, queueing, communication and cost", "Warm-up, repeated experiments, comparable budgets and regression trends", "Linked results, manifests, environment locks and calibration versions"]),
+    boundary: bi("模拟、真机与估算结果分别展示；冷编译和热执行分别计时。", "Simulation, hardware and estimates are distinguished; cold compilation and warm execution are timed separately."), related: ["visual", "simulator", "os"], slides: "22, 31" },
+];
+
+export const layers = [
+  {id:"applications", number:"05", name:bi("应用层", "Applications"), short:bi("科学 · 金融 · 工业 · 安全", "Science · Finance · Industry · Security"), modules:["science","finance","industry","crypto"],
+   title:bi("从真实问题出发", "Start with a domain problem"), desc:bi("应用层负责业务语义：要计算什么、有哪些约束、如何解释结果。四个行业包共享下层计算能力。", "The application layer defines what to compute, the constraints, and how to interpret results. Four domain packages share the layers below."),
+   points:bi(["数据与领域模型", "Problem / Constraints / Domain Result", "经典基线与业务可行性"],["Domain data and models", "Problem / Constraints / Domain Result", "Classical references and domain feasibility"]), interface:bi("向 QB 提交模型、算子和求解目标", "Send models, operators and objectives to QB")},
+  {id:"qb", number:"04", name:bi("QB 开发层", "QB SDK"), short:bi("Core · Simulator · ML", "Core · Simulator · ML"), modules:["core","simulator","ml"],
+   title:bi("把问题表达为量子计算", "Express the computation"), desc:bi("开发者使用统一的电路、算子、原语与梯度接口，组织仿真和量子经典混合训练。", "Developers use shared circuit, operator, primitive and gradient APIs to build simulations and quantum–classical training workflows."),
+   points:bi(["电路建模与前端编译", "Sampler / Estimator 与可微计算", "仿真、算法与混合训练"],["Circuit modeling and frontend compilation", "Sampler / Estimator and differentiation", "Simulation, algorithms and hybrid training"]),interface:bi("以 QIR / OpenQASM / JobSpec 连接 QOS", "Connect to QOS through QIR / OpenQASM / JobSpec")},
+  {id:"qos", number:"03", name:bi("QOS 运行基座", "QuantumOS runtime"), short:bi("调度 · 资源 · 安全 · Runtime", "Scheduler · Resources · Security · Runtime"), modules:["os"],
+   title:bi("安排资源，管理每一次运行", "Coordinate resources and jobs"), desc:bi("保留 QuantumOS 的微内核设计，结合 Bridge Router、作业状态和校准服务，将开发请求交给合适的设备。", "Extend the QuantumOS microkernel design with Bridge routing, job state and calibration services to dispatch requests to suitable devices."),
+   points:bi(["MLFQ、准入与优先级", "量子比特、租约、校准与配额", "权限隔离、状态、恢复与溯源"],["MLFQ, admission and priorities", "Qubits, leases, calibration and quotas", "Isolation, state, recovery and provenance"]),interface:bi("通过 QOS-DP 调用编译服务与 HAL", "Use QOS-DP to invoke compilation and HAL")},
+  {id:"compiler", number:"02", name:bi("编译器与 HAL", "Compiler & HAL"), short:bi("目标编译 · 拓扑映射 · 驱动", "Target compilation · Mapping · Drivers"), modules:["core","os"],
+   title:bi("把逻辑程序变为设备指令", "Translate logic into device instructions"), desc:bi("根据门集、连接拓扑与校准信息优化线路，经硬件抽象层调用驱动。开放脉冲接口的设备可扩展到门到脉冲编译。", "Optimize circuits for a gate set, topology and calibration, then use HAL drivers. Devices exposing pulse control can support gate-to-pulse extensions."),
+   points:bi(["IR / QIR / QISA 与门分解", "Topology Mapper、布局与路由", "Q-HAL Driver、微波与激光扩展"],["IR / QIR / QISA and decomposition", "Topology mapping, layout and routing", "Q-HAL drivers, microwave and laser extensions"]),interface:bi("输出设备 API 调用、控制计划或脉冲", "Produce device API calls, control plans or pulses")},
+  {id:"hardware", number:"01", name:bi("硬件与算力", "Hardware & compute"), short:bi("CPU/GPU · 超导 · 离子 · 光量子", "CPU/GPU · Superconducting · Ions · Photonics"), modules:["simulator","os"],
+   title:bi("一切计算的执行基座", "The execution foundation"), desc:bi("经典算力与异构 QPU 构成资源池。每类设备通过插件声明自身能力、连接结构和测量约束。", "Classical compute and heterogeneous QPUs form the resource pool. Plugins declare each device’s capabilities, connectivity and measurement constraints."),
+   points:bi(["CPU/GPU 模拟与经典协同", "超导、离子阱、中性原子及光量子", "DeviceSpec 与 CalSet 能力描述"],["CPU/GPU simulation and classical processing", "Superconducting, ion, neutral-atom and photonic devices", "DeviceSpec and CalSet capability descriptions"]),interface:bi("返回采样、测量、设备事件与结果", "Return samples, measurements, device events and results")},
+];
+export const scenarios = [
+ {id:"science",name:bi("分子能量", "Molecular energy"), module:"science", inputs:bi("分子结构、基组与活性空间", "Molecular geometry, basis and active space"),model:bi("哈密顿量、VQE 与 Estimator", "Hamiltonian, VQE and Estimator"), output:bi("能量、收敛曲线和误差，与经典结果比较。", "Energy, convergence and error compared with a classical reference."),loop:bi("更新变分参数，进入下一轮能量估计。", "Update variational parameters for the next energy estimate.")},
+ {id:"finance",name:bi("投资组合", "Portfolio selection"), module:"finance",inputs:bi("收益、协方差、预算与约束", "Returns, covariance, budget and constraints"),model:bi("QUBO 编码、优化器与采样", "QUBO encoding, optimizer and sampling"),output:bi("资产选择、收益风险与约束满足情况。", "Asset selection, risk–return metrics and constraint feasibility."),loop:bi("调整候选参数，比较可行组合。", "Adjust candidate parameters and compare feasible portfolios.")},
+ {id:"industry",name:bi("工业排程", "Industrial scheduling"),module:"industry",inputs:bi("工序、设备、时间窗与成本", "Operations, machines, time windows and cost"),model:bi("约束编码、QAOA 与混合求解", "Constraint encoding, QAOA and hybrid solving"),output:bi("可行排程、目标值与最优性差距。", "A feasible schedule, objective value and optimality gap."),loop:bi("解码、检查约束，再优化目标。", "Decode, check constraints and refine the objective.")},
+ {id:"crypto",name:bi("QKD 链路", "QKD link simulation"),module:"crypto",inputs:bi("BB84 参数、信道与测量设置", "BB84 parameters, channel and measurement settings"),model:bi("协议线路、信道模型与采样", "Protocol circuits, channel models and sampling"),output:bi("误码率、协议统计与密钥流程的仿真结果。", "Simulated error rates, protocol statistics and key-processing results."),loop:bi("改变信道噪声，研究协议行为。", "Vary channel noise and study protocol behavior.")},
+];
+export const extensions = [
+ ["Router", "quantum_bridge_os.router", bi("基于 SLA、等待、成本和校准推荐后端，保留 decision_trace。", "Recommend backends using SLA, queue, cost and calibration estimates, retaining a decision trace.")],
+ ["Studio", "apps/studio/", bi("统一能力目录、工作流、任务运行、结果中心和实验导出。", "Unify capability catalogs, workflows, job execution, results and experiment export.")],
+ ["Adapters & Plugins", "plugins/", bi("对接 Qiskit、PennyLane、MQT、TorchQuantum 和设备厂商，明确版本与支持范围。", "Connect Qiskit, PennyLane, MQT, TorchQuantum and device vendors with explicit version and capability boundaries.")],
+ ["Experiments & Mitigation", "Core / Simulator / QOS", bi("串联实验表征、校准、动力学、读出校正与 ZNE，形成质量反馈。", "Connect characterization, calibration, dynamics, readout correction and ZNE in a quality feedback loop.")],
+ ["Contracts & Provenance", "contracts/", bi("用 Program、JobSpec、Result 和 Manifest 关联输入、版本与运行记录。", "Link inputs, versions and run records through Program, JobSpec, Result and Manifest contracts.")],
+ ["Developer Tools", "tooling/", bi("提供 CLI、数据预处理、模型导出、日志与项目模板，补齐开发流程。", "Provide a CLI, preprocessing, model export, logs and project templates for the development workflow.")],
+];
+export const tracks = [
+ {id:"start", name:bi("初次了解量子生态", "New to the ecosystem"), tag:bi("先理解概念", "Build the mental model"), steps: [
+ [bi("读懂五层关系", "Read the five layers"),bi("分清硬件、编译器、QOS、QB 与应用各自解决的问题。", "Understand what hardware, compilation, QOS, QB and applications each do."),"architecture"],
+ [bi("认识电路与测量", "Meet circuits and measurements"),bi("从 Core 理解电路、算子、Sampler 和 Estimator。", "Use Core to understand circuits, operators, Sampler and Estimator."),"core"],
+ [bi("先在模拟器上学习", "Learn with a simulator"),bi("比较状态、采样和噪声，区分仿真与真机结果。", "Compare states, sampling and noise; distinguish simulation from hardware."),"simulator"],
+ [bi("跟随一个完整任务", "Follow one complete job"),bi("观察分子能量计算怎样经过各层，再回到参数优化。", "Follow a molecular-energy task through the stack and back to parameter optimization."),"workflow"]]},
+ {id:"developer",name:bi("SDK 与平台开发", "SDK & platform development"),tag:bi("理解接口边界", "Understand the contracts"),steps:[
+ [bi("公共计算协议", "Shared computation contracts"),bi("学习 Circuit IR、Operator、Primitive 与梯度语义。", "Learn Circuit IR, Operator, Primitive and gradient semantics."),"core"],
+ [bi("编译与设备适配", "Compilation and device adaptation"),bi("理解逻辑优化、目标约束、HAL 与能力发现。", "Understand logical optimization, target constraints, HAL and capability discovery."),"architecture"],
+ [bi("作业生命周期", "Job lifecycle"),bi("掌握准入、资源分配、取消、恢复与结果溯源。", "Study admission, resource allocation, cancellation, recovery and provenance."),"os"],
+ [bi("可复现验证", "Reproducible validation"),bi("用参考结果、固定环境与重复实验检验实现。", "Check implementations against references in fixed environments with repeated runs."),"benchmark"]]},
+ {id:"domain",name:bi("行业应用研究", "Domain application research"),tag:bi("从问题走向求解", "Move from problem to solution"),steps:[
+ [bi("选择领域模型", "Choose a domain model"),bi("从科学、金融、工业与安全模块确定输入、目标和约束。", "Identify inputs, objectives and constraints in a science, finance, industry or security module."),"modules"],
+ [bi("建立经典基线", "Establish a classical baseline"),bi("先定义正确性、可行性、误差与比较预算。", "Define correctness, feasibility, error and comparison budgets first."),"benchmark"],
+ [bi("组织混合工作流", "Build a hybrid workflow"),bi("组合编码、量子求解、经典优化与可微训练。", "Combine encoding, quantum solving, classical optimization and differentiable training."),"ml"],
+ [bi("解释并复现实验", "Interpret and reproduce"),bi("展示领域结果，保留运行模式、校准和版本。", "Present domain results while retaining run mode, calibration and versions."),"visual"]]},
+];
+export const glossary = [
+ ["QPU",bi("实际执行量子操作的处理器。其门集、拓扑、噪声与可访问接口共同决定支持哪些任务。", "A processor that performs quantum operations. Its gates, topology, noise and exposed interfaces determine which jobs it supports.")],
+ ["QNode & Estimator",bi("QNode 将参数化线路与执行、测量连接起来；Estimator 根据线路和算子估计期望值，常用于能量和损失计算。", "A QNode connects parameterized circuits with execution and measurement. An Estimator evaluates expectation values from circuits and operators, often for energies or losses.")],
+ ["QIR / OpenQASM / QISA",bi("它们表达不同层次的程序或指令。需要通过明确定义的转换器连接，不能把名称相近当成天然兼容。", "They represent programs or instructions at different levels. Explicit converters connect them; similar names do not imply compatibility.")],
+ ["HAL & QOS-DP",bi("HAL 是硬件抽象层，用统一接口隐藏设备差异。QOS-DP 是 QuantumOS 架构中的驱动协议边界。", "HAL is the hardware abstraction layer that exposes device-independent interfaces. QOS-DP defines the driver-protocol boundary in the QuantumOS design.")],
+ ["QEC & Error mitigation",bi("QEC 通过编码、综合征测量与反馈进行纠错。误差缓解通过额外实验和后处理改善估计，两者目标与资源需求不同。", "QEC uses encoding, syndrome measurements and feedback to correct errors. Error mitigation improves estimates through extra experiments and post-processing; their goals and resource needs differ.")],
+ ["Manifest",bi("一次实验的运行清单，记录输入、参数、代码与依赖版本、设备、校准和制品标识，便于追踪与复现。", "A run manifest records inputs, parameters, code and dependency versions, device, calibration and artifact identifiers for tracing and reproduction.")],
+];
+export const roadmap = [
+ {n:"01",title:bi("计算与运行基座", "Compute & runtime foundation"),packages:"Core / OS / Simulator / ML",desc:bi("先打通硬件插件、编译、QOS 与 QB，统一契约并建立可微计算基础。", "Connect plugins, compilation, QOS and QB, standardize contracts and establish differentiation."),gate:bi("验证数值、梯度、作业状态与恢复", "Validate numerics, gradients, job state and recovery")},
+ {n:"02",title:bi("四大行业能力", "Four application domains"),packages:"Science / Finance / Industry / Crypto",desc:bi("逐项建设领域模型、算法、数据和解码，配套典型工作流与经典基线。", "Build domain models, algorithms, data and decoding with representative workflows and classical baselines."),gate:bi("验证领域误差、业务约束与计算成本", "Validate domain error, constraints and computation cost")},
+ {n:"03",title:bi("工具与交付生态", "Tools & delivery ecosystem"),packages:"Visual / Benchmark + Studio / Plugins",desc:bi("完善可视化、评测和开发工具，推进独立安装、文档、插件与支持矩阵。", "Complete visualization, evaluation and developer tools with independent packaging, docs, plugins and support matrices."),gate:bi("验证可复现报告与兼容性", "Validate reproducible reports and compatibility")},
+];
