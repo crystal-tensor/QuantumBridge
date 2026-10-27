@@ -1,6 +1,6 @@
 // Copyright 2026 QuantumBridge Contributors. Apache-2.0.
 import { domains, directions, foundation } from "./data.js";
-import { resources, projectDocuments, resourceHref, domainResources, directionResources } from "./resources.js";
+import { resourceHref, domainResources, directionResources } from "./resources.js";
 
 const root=document.querySelector("#framework-app");
 const params=new URLSearchParams(location.search);
@@ -48,7 +48,7 @@ function renderShell(){
   <main class="framework-main" id="workspace">
     <header class="framework-topbar"><div class="project-identity"><img class="company-logo" src="./assets/xianggan-logo.jpg" alt="相干(北京)科技有限公司 logo" width="1474" height="500"><div class="project-identity-text"><div class="breadcrumb">QuantumBridge <span>/</span> ${text("项目框架","Project framework")}</div><div class="company-attribution"><span>${text("所属","Owned by")}</span> <span class="company-name">相干(北京)科技有限公司</span></div></div></div><div class="top-actions"><span class="preview-label">${text("架构预览","ARCHITECTURE PREVIEW")}</span><div class="locale-control" role="group" aria-label="${text("语言","Language")}"><button data-locale="zh-CN" aria-pressed="${state.locale==="zh-CN"}">中文</button><button data-locale="en" aria-pressed="${state.locale==="en"}">EN</button></div></div></header>
     <div class="framework-content">
-      <div class="page-heading"><div><div class="eyebrow">QUANTUMBRIDGE / APPLICATION ECOSYSTEM</div><h1>${text("QuantumBridge 应用框架","QuantumBridge application framework")}</h1><p>${text("科学计算、金融、工业优化、量子安全。行业模型共享同一套量子开发与执行基座。","Science, finance, industry and security, built on a shared quantum development and execution foundation.")}</p></div><button class="export-button" data-export>${icon("download")}<span>${text("导出框架","Export framework")}</span></button></div>
+      <div class="page-heading"><div><div class="eyebrow">QUANTUMBRIDGE / APPLICATION ECOSYSTEM</div><h1>${text("QuantumBridge 应用框架","QuantumBridge application framework")}</h1><p>${text("科学计算、金融、工业优化、量子安全。行业模型共享同一套量子开发与执行基座。","Science, finance, industry and security, built on a shared quantum development and execution foundation.")}</p></div></div>
       <div class="scope-strip"><div><strong>04</strong><span>${text("应用大类","Domains")}</span></div><div><strong>19</strong><span>${text("细分方向","Directions")}</span></div><div><strong>01</strong><span>${text("共享计算基座","Shared foundation")}</span></div><p>${icon("flag")}${text("首要目标：Qiskit + PennyLane 核心能力融合","Primary objective: unify Qiskit + PennyLane core capabilities")}</p></div>
       <div class="view-toolbar"><div class="view-tabs" role="tablist" aria-label="${text("框架视图","Framework views")}">${[["overview",text("应用总览","Applications")],["foundation",text("共享基座","Foundation")],["comparison",text("生态对照","Ecosystem reference")]].map(([id,label])=>`<button id="view-${id}" role="tab" data-view="${id}" aria-controls="view-content" aria-selected="${state.view===id}" tabindex="${state.view===id?0:-1}">${label}</button>`).join("")}</div><label class="search-field">${icon("search")}<input type="search" id="direction-search" placeholder="${text("搜索方向、模型或算法","Search directions, models or algorithms")}" aria-label="${text("搜索细分方向","Search directions")}" value="${esc(state.query)}"></label></div>
       <div class="result-line"><span id="result-count" role="status" aria-live="polite"></span><span class="target-status"><span></span>${text("目标规划 · 待逐项验收","TARGET SCOPE · VALIDATION REQUIRED")}</span></div>
@@ -56,7 +56,7 @@ function renderShell(){
       <footer class="framework-footer"><div class="footer-identity"><span>QuantumBridge</span><small>${text("所属","Owned by")} 相干(北京)科技有限公司</small></div><p>${text("分类依据：项目目标分类表 · 不以页面覆盖代替原生函数、真实调用与测试验证。","Based on the project taxonomy. UI coverage does not establish native functionality, real execution or verified parity.")}</p><span>04 / 19</span></footer>
     </div>
   </main>
-  <dialog id="direction-dialog" aria-labelledby="direction-title"></dialog><div class="toast" id="toast" role="status" hidden></div>`;
+  <dialog id="direction-dialog" aria-labelledby="direction-title"></dialog>`;
   root.querySelector("#direction-dialog").addEventListener("close",()=>{
     state.detail=null;history.replaceState(null,"",location.pathname+location.search);
   });
@@ -118,11 +118,6 @@ root.addEventListener("click",event=>{
     const detail=state.detail;state.locale=button.dataset.locale;
     const url=new URL(location.href);url.searchParams.set("lang",state.locale==="en"?"en":"zh");history.replaceState(null,"",url);
     renderShell();if(detail)openDetail(detail);else root.querySelector(`[data-locale="${state.locale}"]`).focus();
-  }else if(button.hasAttribute("data-export")){
-    const payload={project:"QuantumBridge",scope:"target-architecture-not-implementation-certificate",domains,directions,foundation,resources,projectDocuments};
-    const url=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:"application/json;charset=utf-8"}));
-    const anchor=document.createElement("a");anchor.href=url;anchor.download="quantumbridge-framework-4-domains-19-directions.json";anchor.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
-    const toast=root.querySelector("#toast");toast.textContent=text("框架数据已导出","Framework data exported");toast.hidden=false;setTimeout(()=>{toast.hidden=true;},3500);
   }
 });
 root.addEventListener("keydown",event=>{
