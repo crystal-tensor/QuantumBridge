@@ -19,8 +19,8 @@ for(const item of directions){
 const html=await readFile(new URL("../framework.html",import.meta.url),"utf8");
 assert.ok(html.includes("src/framework/main.js")&&html.includes("src/framework/framework.css"));
 const app=await readFile(new URL("../src/framework/main.js",import.meta.url),"utf8");
-assert.ok(app.includes("target-architecture-not-implementation-certificate"));
-assert.ok(app.includes("application/json;charset=utf-8"));
+assert.ok(!app.includes("data-export")&&!app.includes("Export framework"));
+assert.ok(app.includes("UI coverage does not establish native functionality"));
 assert.ok(app.includes("showModal()")&&app.includes('role="tablist"'));
 assert.ok(app.includes("domainResources(domain.id)")&&app.includes("directionResources(item.id)"));
 for(const resource of resources){
