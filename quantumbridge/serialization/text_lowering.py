@@ -139,6 +139,69 @@ class Lowerer:
         if isinstance(value,bool) or not isinstance(value,Integral): self.error("Expected a compile-time integer.",node)
         return int(value)
 
+    def gate_signature(self,literal,node):
+        if literal in self.definitions:
+            definition = self.definitions[literal]
+            return literal,len(definition["wires"]),len(definition["parameters"])
+        name = ALIASES.get(literal,literal)
+        if self.strict and not self.standard_library and literal not in {"U","CX"}: self.error(f"Source does not support gate {name!r} without its standard include.",node,UnsupportedFeature)
+        if self.strict and self.format == "qasm2" and literal not in QELIB_NAMES|{"U","CX"}: self.error(f"Gate {literal!r} needs an explicit QASM2 definition.",node,UnsupportedFeature)
+        if self.strict and self.format == "qasm3" and literal not in STANDARD_NAMES3|{"U"}: self.error(f"Gate {literal!r} needs an explicit QASM3 definition.",node,UnsupportedFeature)
+        if name not in OPS or name in {"measure","reset","barrier","delay"}: self.error(f"Source does not support gate {name!r}.",node,UnsupportedFeature)
+        return name,OPS[name][1],OPS[name][2]
+
+    def validate_definition_body(self,data,node):
+        # Validate each direct call once, without expanding previously admitted bodies.
+        from quantumbridge.core.gate_limits import current_gate_limits
+        gate_limits = current_gate_limits()
+        gate_limits.check("max_gate_parameters",len(data["parameters"]))
+        gate_limits.check("max_circuit_bits",len(data["wires"]))
+        gate_limits.check("max_custom_definitions",len(self.definitions)+1)
+        self.limits.check("max_qubits",len(data["wires"]),format=self.format)
+        self.limits.check("max_parameter_nodes",len(data["parameters"]),format=self.format)
+        scope = {name:Parameter(name) for name in data["parameters"]}
+        for stmt in data["body"] or ():
+            self.expansion += 1
+            self.limits.check("max_gate_expansion",self.expansion,format=self.format,line=stmt.line,column=stmt.column)
+            for arg in stmt.data["args"]:
+                if arg.op != "name" or arg.value not in data["wires"]:
+                    self.error("Gate bodies require unindexed local formal qubits.",arg)
+            if stmt.kind == "barrier": continue
+            literal = stmt.data["name"]
+            if literal == data["name"]: self.error("Recursive gate definition.",stmt)
+            _,width,arity = self.gate_signature(literal,stmt)
+            if len(stmt.data["params"]) != arity or len(stmt.data["args"]) != width:
+                self.error("Gate signature/resource mismatch inside definition.",stmt)
+            if len({arg.value for arg in stmt.data["args"]}) != width:
+                self.error("Duplicate gate qubit operand inside definition.",stmt)
+            for value in stmt.data["params"]:
+                angle = self.expr(value,scope)
+                if not isinstance(angle,(Real,Parameter,ParameterExpression)):
+                    self.error("Gate parameters must be real expressions of local formals.",value)
+        memo = {}
+        def footprint(definition,depth):
+            self.limits.check("max_nesting_depth",depth,format=self.format)
+            gate_limits.check("max_definition_depth",depth+1)
+            name = definition["name"]
+            if name not in memo:
+                height,work = 1,0
+                for stmt in definition["body"] or ():
+                    self.expansion += 1
+                    self.limits.check("max_gate_expansion",self.expansion,format=self.format)
+                    work += 1
+                    if stmt.kind == "gate" and stmt.data["name"] in self.definitions:
+                        child_height,child_work = footprint(self.definitions[stmt.data["name"]],depth+1)
+                        height,work = max(height,child_height+1),work+child_work
+                    self.limits.check("max_gate_expansion",work,format=self.format)
+                    gate_limits.check("max_total_operations",work)
+                    gate_limits.check("max_decomposition_work",work)
+                memo[name] = height,work
+            height,work = memo[name]
+            self.limits.check("max_nesting_depth",depth+height-1,format=self.format)
+            gate_limits.check("max_definition_depth",depth+height)
+            return height,work
+        footprint(data,0)
+
     def collect_registers(self):
         sizes,constants,declared = {"q":0,"c":0},{},set()
         specs = []
@@ -187,6 +250,8 @@ class Lowerer:
             if kind == "empty": continue
             if kind == "include":
                 if data["name"] != ("qelib1.inc" if self.format == "qasm2" else "stdgates.inc"): self.error("Incorrect standard include for this version.",stmt,UnsupportedFeature)
+                if self.format == "qasm2" and (self.standard_library or (set(env)|set(self.definitions)) & QELIB_NAMES):
+                    self.error("Duplicate standard include or conflicting earlier declaration.",stmt)
                 self.standard_library = True; continue
             if self.format == "qasm2" and kind in {"declare","for","while","switch","break","continue","assignment","delay"}:
                 self.error("This source feature requires OpenQASM 3.",stmt,UnsupportedFeature)
@@ -200,11 +265,12 @@ class Lowerer:
                 if len(set(data["parameters"]+data["wires"])) != len(data["parameters"]+data["wires"]): self.error("Duplicate gate formal argument.",stmt)
                 for formal in data["parameters"]+data["wires"]: self.declaration_name(formal,stmt,local=True)
                 self.limits.check("max_custom_definitions",len(self.definitions)+1,format=self.format)
+                if self.format == "qasm2": self.validate_definition_body(data,stmt)
                 self.definitions[name] = data; continue
             if kind == "register" or kind == "declare" and data["type"] in {"qubit","bit"} and data["qualifier"] is None and depth == 0:
                 name = data["name"]
                 self.declaration_name(name,stmt)
-                if name in env: self.error("Duplicate register name.",stmt)
+                if name in env or name in self.definitions: self.error("Duplicate register name.",stmt)
                 env[name] = self.registers[name]
                 if kind == "declare" and data["value"] is not None:
                     if data["measure"]: self.measure(circuit,expression(data["value"]),env[name],stmt)
@@ -295,7 +361,7 @@ class Lowerer:
                     for wire in wires: circuit.delay(duration,wire,unit=data["unit"])
                 continue
             if kind == "gate":
-                name = ALIASES.get(data["name"],data["name"])
+                name = data["name"] if data["name"] in self.definitions else ALIASES.get(data["name"],data["name"])
                 params = tuple(expression(value,True) for value in data["params"])
                 if any(isinstance(value,(ClassicalExpression,Wires)) for value in params): self.error("Runtime gate-angle arithmetic is not implemented outside bound for-loop parameters.",stmt,UnsupportedFeature)
                 if name == "gphase":
@@ -303,6 +369,8 @@ class Lowerer:
                     circuit.global_phase = circuit.global_phase+params[0]; continue
                 operands = [expression(value) for value in data["args"]]
                 if any(not isinstance(value,Wires) or value.kind != "q" for value in operands): self.error("Gate operands must be quantum wires.",stmt)
+                name,width,arity = self.gate_signature(data["name"],stmt)
+                if len(params) != arity or len(operands) != width: self.error("Gate signature/resource mismatch.",stmt)
                 count = max((len(value.indices) for value in operands),default=0)
                 if not count or any(len(value.indices) not in (1,count) for value in operands): self.error("Mismatched gate register broadcast.",stmt)
                 for index in range(count):
@@ -310,6 +378,7 @@ class Lowerer:
                     self.limits.check("max_gate_expansion",self.expansion,format=self.format,line=stmt.line,column=stmt.column)
                     self.limits.check("max_instructions",len(circuit.operations)+len(circuit.measurements)+1,format=self.format)
                     wires = tuple(value.indices[0 if len(value.indices)==1 else index] for value in operands)
+                    if len(set(wires)) != len(wires): self.error("Duplicate gate qubit operand.",stmt)
                     if name in self.definitions:
                         definition = self.definitions[name]
                         if definition["body"] is None: self.error("Opaque gate calls have no executable definition.",stmt,UnsupportedFeature)
@@ -326,11 +395,6 @@ class Lowerer:
                             from quantumbridge.core.gates import Gate
                             circuit.append(Gate(name,len(wires),params,definition=body),wires)
                     else:
-                        if self.strict and not self.standard_library and data["name"] not in {"U","CX"}: self.error(f"Source does not support gate {name!r} without its standard include.",stmt,UnsupportedFeature)
-                        if self.strict and self.format == "qasm2" and data["name"] not in QELIB_NAMES|{"U","CX"}: self.error(f"Gate {data['name']!r} needs an explicit QASM2 definition.",stmt,UnsupportedFeature)
-                        if self.strict and self.format == "qasm3" and data["name"] not in STANDARD_NAMES3|{"U"}: self.error(f"Gate {data['name']!r} needs an explicit QASM3 definition.",stmt,UnsupportedFeature)
-                        if name not in OPS or name in {"measure","reset","barrier","delay"}: self.error(f"Source does not support gate {name!r}.",stmt,UnsupportedFeature)
-                        if len(wires) != OPS[name][1] or len(params) != OPS[name][2] or len(set(wires)) != len(wires): self.error("Gate signature/resource mismatch.",stmt)
                         ctrl = CONTROLS.get(name,0)
                         circuit.append(name,wires[ctrl:],controls=wires[:ctrl],params=params)
                         if self.format == "qasm3" and data["name"] == "U" and self.dialect == "standard":
@@ -346,6 +410,10 @@ class Lowerer:
     def lower(self):
         sizes,specs = self.collect_registers()
         circuit = Circuit(sizes["q"],sizes["c"],metadata={"registers":specs})
+        from quantumbridge.core.bits import QuantumRegister,ClassicalRegister,install_bits
+        qregs=tuple(QuantumRegister(len(spec["bits"]),spec["name"]) for spec in specs if spec["kind"]=="q")
+        cregs=tuple(ClassicalRegister(len(spec["bits"]),spec["name"]) for spec in specs if spec["kind"]=="c")
+        install_bits(circuit,tuple(bit for reg in qregs for bit in reg),tuple(bit for reg in cregs for bit in reg),qregs,cregs)
         self.emit(self.program.statements,circuit,{})
         # Validate even unused definitions: dead source must not hide cycles/typos.
         visited,active = set(),set()
@@ -356,7 +424,8 @@ class Lowerer:
             active.add(name)
             for stmt in self.definitions[name]["body"] or ():
                 if stmt.kind != "gate": continue
-                child = ALIASES.get(stmt.data["name"],stmt.data["name"])
+                literal = stmt.data["name"]
+                child = literal if literal in self.definitions else ALIASES.get(literal,literal)
                 if child in self.definitions: definition(child,depth+1)
                 elif child == "gphase" and self.format == "qasm3":
                     if len(stmt.data["params"]) != 1 or stmt.data["args"]:

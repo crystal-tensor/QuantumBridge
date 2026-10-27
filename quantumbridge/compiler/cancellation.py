@@ -13,7 +13,8 @@ class SimpleGateCancellationPass(TransformationPass):
     cancellable = {"x", "h", "cx", "cz"}
 
     def run(self, circuit):
-        out = Circuit(circuit.num_qubits, circuit.num_bits, circuit.name, circuit.metadata)
+        from quantumbridge.core.circuit_metadata import empty_execution_circuit
+        out = empty_execution_circuit(circuit)
         index = 0
         changed = False
         while index < len(circuit.operations):
@@ -45,7 +46,8 @@ class RemoveZeroRotationPass(TransformationPass):
         self.tolerance = tolerance
 
     def run(self, circuit):
-        out = Circuit(circuit.num_qubits, circuit.num_bits, circuit.name, circuit.metadata)
+        from quantumbridge.core.circuit_metadata import empty_execution_circuit
+        out = empty_execution_circuit(circuit)
         changed = False
         for op in circuit.operations:
             if op.name in {"rx", "ry", "rz", "phase"} and isinstance(op.params[0], Real) and abs(op.params[0]) <= self.tolerance:
@@ -61,7 +63,8 @@ class MergeAdjacentRotationPass(TransformationPass):
         self.tolerance = tolerance
 
     def run(self, circuit):
-        out = Circuit(circuit.num_qubits, circuit.num_bits, circuit.name, circuit.metadata)
+        from quantumbridge.core.circuit_metadata import empty_execution_circuit
+        out = empty_execution_circuit(circuit)
         changed = False
         index = 0
         while index < len(circuit.operations):

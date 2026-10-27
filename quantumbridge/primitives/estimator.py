@@ -13,8 +13,9 @@ import numpy as np
 
 from quantumbridge.core import Circuit, Parameter
 from quantumbridge.devices import StatevectorDevice
-from quantumbridge.primitives.containers import DataBin, PrimitiveResult, PubResult
+from quantumbridge.primitives.legacy_containers import DataBin, PrimitiveResult, PubResult
 from quantumbridge.results import Result
+from .v2 import StatevectorEstimator as StatevectorEstimator
 
 
 class Estimator:
@@ -180,7 +181,7 @@ def _resolve_parameter_sets(circuit: Circuit, pub_parameters, run_parameters) ->
         raise TypeError("QuantumBridge estimator parameters must be a mapping, sequence of mappings, or numeric array.") from exc
 
 
-StatevectorEstimator = Estimator
+LegacyEstimator = Estimator
 
 
 def _parameter_array_to_mappings(circuit: Circuit, values) -> list[Mapping[Union[Parameter, str], Real]]:

@@ -1,0 +1,648 @@
+{
+  "inputs": {
+    "generator_capacity": [
+      2,
+      1
+    ],
+    "on_cost_per_period": [
+      3,
+      2
+    ],
+    "startup_cost": 1,
+    "demand": [
+      2,
+      3
+    ],
+    "initial_status": [
+      0,
+      0
+    ],
+    "penalty": 20,
+    "scope": "capacity adequacy only; no dispatch, ramping, reserve, storage or AC power flow"
+  },
+  "intermediate": {
+    "candidates": [
+      {
+        "bitstring": "0000",
+        "commitment_by_time": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "available_capacity": [
+          0,
+          0
+        ],
+        "capacity_deficit": [
+          2,
+          3
+        ],
+        "startups": 0,
+        "feasible": false,
+        "objective": 0,
+        "penalized_cost": 260
+      },
+      {
+        "bitstring": "0001",
+        "commitment_by_time": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "available_capacity": [
+          0,
+          1
+        ],
+        "capacity_deficit": [
+          2,
+          2
+        ],
+        "startups": 1,
+        "feasible": false,
+        "objective": 3,
+        "penalized_cost": 163
+      },
+      {
+        "bitstring": "0010",
+        "commitment_by_time": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            0
+          ]
+        ],
+        "available_capacity": [
+          0,
+          2
+        ],
+        "capacity_deficit": [
+          2,
+          1
+        ],
+        "startups": 1,
+        "feasible": false,
+        "objective": 4,
+        "penalized_cost": 104
+      },
+      {
+        "bitstring": "0011",
+        "commitment_by_time": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "available_capacity": [
+          0,
+          3
+        ],
+        "capacity_deficit": [
+          2,
+          0
+        ],
+        "startups": 2,
+        "feasible": false,
+        "objective": 7,
+        "penalized_cost": 87
+      },
+      {
+        "bitstring": "0100",
+        "commitment_by_time": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "available_capacity": [
+          1,
+          0
+        ],
+        "capacity_deficit": [
+          1,
+          3
+        ],
+        "startups": 1,
+        "feasible": false,
+        "objective": 3,
+        "penalized_cost": 203
+      },
+      {
+        "bitstring": "0101",
+        "commitment_by_time": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "available_capacity": [
+          1,
+          1
+        ],
+        "capacity_deficit": [
+          1,
+          2
+        ],
+        "startups": 1,
+        "feasible": false,
+        "objective": 5,
+        "penalized_cost": 105
+      },
+      {
+        "bitstring": "0110",
+        "commitment_by_time": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            0
+          ]
+        ],
+        "available_capacity": [
+          1,
+          2
+        ],
+        "capacity_deficit": [
+          1,
+          1
+        ],
+        "startups": 2,
+        "feasible": false,
+        "objective": 7,
+        "penalized_cost": 47
+      },
+      {
+        "bitstring": "0111",
+        "commitment_by_time": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "available_capacity": [
+          1,
+          3
+        ],
+        "capacity_deficit": [
+          1,
+          0
+        ],
+        "startups": 2,
+        "feasible": false,
+        "objective": 9,
+        "penalized_cost": 29
+      },
+      {
+        "bitstring": "1000",
+        "commitment_by_time": [
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "available_capacity": [
+          2,
+          0
+        ],
+        "capacity_deficit": [
+          0,
+          3
+        ],
+        "startups": 1,
+        "feasible": false,
+        "objective": 4,
+        "penalized_cost": 184
+      },
+      {
+        "bitstring": "1001",
+        "commitment_by_time": [
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "available_capacity": [
+          2,
+          1
+        ],
+        "capacity_deficit": [
+          0,
+          2
+        ],
+        "startups": 2,
+        "feasible": false,
+        "objective": 7,
+        "penalized_cost": 87
+      },
+      {
+        "bitstring": "1010",
+        "commitment_by_time": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            0
+          ]
+        ],
+        "available_capacity": [
+          2,
+          2
+        ],
+        "capacity_deficit": [
+          0,
+          1
+        ],
+        "startups": 1,
+        "feasible": false,
+        "objective": 7,
+        "penalized_cost": 27
+      },
+      {
+        "bitstring": "1011",
+        "commitment_by_time": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "available_capacity": [
+          2,
+          3
+        ],
+        "capacity_deficit": [
+          0,
+          0
+        ],
+        "startups": 2,
+        "feasible": true,
+        "objective": 10,
+        "penalized_cost": 10
+      },
+      {
+        "bitstring": "1100",
+        "commitment_by_time": [
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "available_capacity": [
+          3,
+          0
+        ],
+        "capacity_deficit": [
+          0,
+          3
+        ],
+        "startups": 2,
+        "feasible": false,
+        "objective": 7,
+        "penalized_cost": 187
+      },
+      {
+        "bitstring": "1101",
+        "commitment_by_time": [
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "available_capacity": [
+          3,
+          1
+        ],
+        "capacity_deficit": [
+          0,
+          2
+        ],
+        "startups": 2,
+        "feasible": false,
+        "objective": 9,
+        "penalized_cost": 89
+      },
+      {
+        "bitstring": "1110",
+        "commitment_by_time": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            0
+          ]
+        ],
+        "available_capacity": [
+          3,
+          2
+        ],
+        "capacity_deficit": [
+          0,
+          1
+        ],
+        "startups": 2,
+        "feasible": false,
+        "objective": 10,
+        "penalized_cost": 30
+      },
+      {
+        "bitstring": "1111",
+        "commitment_by_time": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "available_capacity": [
+          3,
+          3
+        ],
+        "capacity_deficit": [
+          0,
+          0
+        ],
+        "startups": 2,
+        "feasible": true,
+        "objective": 12,
+        "penalized_cost": 12
+      }
+    ],
+    "optimizer_trace": [
+      {
+        "improvement": 0,
+        "expected_penalized_cost": 101.49999999999994,
+        "gamma": 0.0,
+        "beta": 0.0
+      },
+      {
+        "improvement": 1,
+        "expected_penalized_cost": 101.49999999999993,
+        "gamma": 0.0,
+        "beta": 0.241660973353061
+      },
+      {
+        "improvement": 2,
+        "expected_penalized_cost": 101.49999999999984,
+        "gamma": 0.0,
+        "beta": 1.933287786824488
+      },
+      {
+        "improvement": 3,
+        "expected_penalized_cost": 96.0870543260769,
+        "gamma": 0.7853981633974483,
+        "beta": 1.691626813471427
+      },
+      {
+        "improvement": 4,
+        "expected_penalized_cost": 85.78824134377987,
+        "gamma": 0.7853981633974483,
+        "beta": 1.933287786824488
+      },
+      {
+        "improvement": 5,
+        "expected_penalized_cost": 76.91348598939679,
+        "gamma": 0.7853981633974483,
+        "beta": 2.174948760177549
+      },
+      {
+        "improvement": 6,
+        "expected_penalized_cost": 71.88999643269572,
+        "gamma": 0.7853981633974483,
+        "beta": 2.41660973353061
+      },
+      {
+        "improvement": 7,
+        "expected_penalized_cost": 58.02515893583548,
+        "gamma": 1.5707963267948966,
+        "beta": 2.174948760177549
+      },
+      {
+        "improvement": 8,
+        "expected_penalized_cost": 49.13584013402393,
+        "gamma": 1.5707963267948966,
+        "beta": 2.41660973353061
+      },
+      {
+        "improvement": 9,
+        "expected_penalized_cost": 46.65922171285349,
+        "gamma": 2.356194490192345,
+        "beta": 2.174948760177549
+      },
+      {
+        "improvement": 10,
+        "expected_penalized_cost": 35.63480058958797,
+        "gamma": 2.356194490192345,
+        "beta": 2.41660973353061
+      },
+      {
+        "improvement": 11,
+        "expected_penalized_cost": 31.846520942424053,
+        "gamma": 3.141592653589793,
+        "beta": 2.41660973353061
+      },
+      {
+        "improvement": 12,
+        "expected_penalized_cost": 31.821151368138533,
+        "gamma": 3.041592653589793,
+        "beta": 2.41660973353061
+      },
+      {
+        "improvement": 13,
+        "expected_penalized_cost": 30.90098304270236,
+        "gamma": 3.041592653589793,
+        "beta": 2.51660973353061
+      },
+      {
+        "improvement": 14,
+        "expected_penalized_cost": 30.892975248069476,
+        "gamma": 3.091592653589793,
+        "beta": 2.51660973353061
+      },
+      {
+        "improvement": 15,
+        "expected_penalized_cost": 30.892455562353405,
+        "gamma": 3.066592653589793,
+        "beta": 2.51660973353061
+      },
+      {
+        "improvement": 16,
+        "expected_penalized_cost": 30.85982543944053,
+        "gamma": 3.066592653589793,
+        "beta": 2.49160973353061
+      }
+    ],
+    "cost_pauli_degree": 2,
+    "encoding": "bounded exact diagonal truth-table; degree>2 is not a QUBO"
+  },
+  "reference": {
+    "best_objective": 10,
+    "best_bitstrings": [
+      "1011"
+    ],
+    "feasible_count": 2,
+    "baseline": "complete classical enumeration of sixteen states"
+  },
+  "evidence": {
+    "execution_mode": "local_simulator",
+    "hardware_access": false,
+    "new_cloud_tasks": 0,
+    "experiments": {
+      "qaoa": {
+        "counts": {
+          "1010": 62,
+          "1110": 74,
+          "1111": 342,
+          "1000": 9,
+          "0111": 147,
+          "1011": 212,
+          "0011": 50,
+          "1001": 16,
+          "0101": 15,
+          "0010": 7,
+          "1100": 15,
+          "1101": 26,
+          "0110": 37,
+          "0100": 5,
+          "0001": 4,
+          "0000": 3
+        },
+        "probabilities": [
+          0.0029296875,
+          0.00390625,
+          0.0068359375,
+          0.048828125,
+          0.0048828125,
+          0.0146484375,
+          0.0361328125,
+          0.1435546875,
+          0.0087890625,
+          0.015625,
+          0.060546875,
+          0.20703125,
+          0.0146484375,
+          0.025390625,
+          0.072265625,
+          0.333984375
+        ],
+        "ideal_probabilities": [
+          0.0012466569283977027,
+          0.003128037679655693,
+          0.010830969277084908,
+          0.03913721178719746,
+          0.004674583231737187,
+          0.011725446448535197,
+          0.04032524577494574,
+          0.14621451858784998,
+          0.006978645900762626,
+          0.0163677058110861,
+          0.0604196007441549,
+          0.21311872534133489,
+          0.010574120243137686,
+          0.02463863443457736,
+          0.0894794974273512,
+          0.3211404003821904
+        ],
+        "shots": 1024,
+        "seed": 20261023,
+        "qubits": 4,
+        "gate_count": 26,
+        "openqasm2": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\nrz(0.36799111843077503) q[1];\ncx q[0],q[1];\ncx q[0],q[2];\nrz(-0.0061331853071795138) q[2];\ncx q[0],q[2];\nrz(0.57038623356770146) q[0];\ncx q[1],q[3];\nrz(-0.0061331853071795884) q[3];\ncx q[1],q[3];\nrz(0.33732519189487714) q[1];\ncx q[2],q[3];\nrz(0.49065482457436671) q[3];\ncx q[2],q[3];\nrz(1.4290321765728433) q[2];\nrz(0.70531631032565245) q[3];\nrz(2.2447458224277281) q[0];\nu1(-2.2447458224277281) q[0];\nrx(4.98321946706122) q[0];\nrx(4.98321946706122) q[1];\nrx(4.98321946706122) q[2];\nrx(4.98321946706122) q[3];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+        "bit_order": "q0-first"
+      }
+    },
+    "estimates": {
+      "qaoa": {
+        "estimate": 32.6044921875,
+        "standard_error": 1.2319950613299946,
+        "ideal_reference": 30.859825439440534
+      }
+    },
+    "summary": {
+      "best_observed_feasible": {
+        "bitstring": "1011",
+        "commitment_by_time": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "available_capacity": [
+          2,
+          3
+        ],
+        "capacity_deficit": [
+          0,
+          0
+        ],
+        "startups": 2,
+        "feasible": true,
+        "objective": 10,
+        "penalized_cost": 10
+      },
+      "observed_objective_gap": 0,
+      "feasible_probability": 0.541015625,
+      "optimal_probability": 0.20703125,
+      "decision_rule": "best feasible actually sampled candidate; not the most frequent string"
+    }
+  }
+}

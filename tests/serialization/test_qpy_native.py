@@ -39,7 +39,10 @@ def test_qpy_multiple_circuits_no_padding():
 def test_qpy_quantum_classical_register_mapping():
     c = Circuit(3,2,metadata={'registers':[{'kind':'q','name':'a','bits':[0]},{'kind':'q','name':'b','bits':[1,2]},{'kind':'c','name':'bits','bits':[0,1]}]}).x(2).measure(2,0)
     r = qpy_loads(qpy_dumps(c))[0]
-    assert r.metadata['registers'] == c.metadata['registers'] and r.measurements[0].wire == 2
+    from quantumbridge.core.circuit_metadata import execution_metadata
+    assert execution_metadata(r)['registers'] == c.metadata['registers']
+    assert r.metadata == {} and r.measurements[0].wire == 2
+    assert [(reg.name,len(reg)) for reg in r.qregs+r.cregs] == [('a',1),('b',2),('bits',2)]
 
 
 def test_qpy_instruction_order_measurement_barrier_reset_delay():

@@ -20,6 +20,7 @@ from .limits import CompilationLimits
 from .layout import Layout, apply_layout, select_initial_layout
 from .pass_base import TransformationPass, AnalysisPass, PassResult
 from .scheduling import SchedulingPass
+from quantumbridge.core.circuit_metadata import execution_metadata, execution_copy
 
 
 class _LayoutPass(TransformationPass):
@@ -28,7 +29,7 @@ class _LayoutPass(TransformationPass):
     def run(self, circuit):
         layout = select_initial_layout(circuit, self.target) if self.initial_layout == "topology" else Layout.trivial(circuit.num_qubits) if self.initial_layout is None else self.initial_layout
         out = apply_layout(circuit, layout, self.target)
-        return PassResult(out, {"initial_layout": out.metadata["initial_layout"]}, True)
+        return PassResult(out, {"initial_layout": execution_metadata(out)["initial_layout"]}, True)
 
 
 class _ValidateTargetPass(AnalysisPass):
@@ -50,8 +51,8 @@ class _ValidateTargetPass(AnalysisPass):
                 if not self.target.instruction_supported(name, wires):
                     raise UnsupportedFeature("target_instruction", f"Target does not support {name} on {wires}.")
         walk(circuit)
-        initial = circuit.metadata.get("initial_layout", dict(enumerate(range(circuit.num_qubits))))
-        physical = circuit.metadata.get("routing", {}).get("final_layout", dict(enumerate(range(circuit.num_qubits))))
+        initial = execution_metadata(circuit).get("initial_layout", dict(enumerate(range(circuit.num_qubits))))
+        physical = execution_metadata(circuit).get("routing", {}).get("final_layout", dict(enumerate(range(circuit.num_qubits))))
         return PassResult(circuit, {"target_validated": True,
                                    "logical_final_layout": {logical: physical[wire] for logical, wire in initial.items()}}, False)
 
@@ -165,9 +166,9 @@ def transpile(
     reports = []
     for circuit in items:
         result = manager.run(circuit)
-        out = result.circuit.copy()
-        out.metadata.setdefault("transpile", {})
-        out.metadata["transpile"].update(
+        out = execution_copy(result.circuit)
+        execution_metadata(out).setdefault("transpile", {})
+        execution_metadata(out)["transpile"].update(
             {
                 "optimization_level": optimization_level,
                 "basis_gates": list(manager.metadata["basis_gates"]),

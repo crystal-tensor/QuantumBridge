@@ -32,7 +32,8 @@ class SwapInsertionPass(TransformationPass):
         self.limits = limits or CompilationLimits()
 
     def run(self, circuit):
-        out = Circuit(circuit.num_qubits, circuit.num_bits, circuit.name, deepcopy(circuit.metadata))
+        from quantumbridge.core.circuit_metadata import empty_execution_circuit, execution_metadata
+        out = empty_execution_circuit(circuit)
         permutation = dict(enumerate(range(circuit.num_qubits)))
         history, forward, restored, nested_swaps, reversed_cx = [], 0, 0, 0, 0
         def emit_cx(op):
@@ -89,5 +90,5 @@ class SwapInsertionPass(TransformationPass):
         analyses = {"inserted_swaps": forward, "restoration_swaps": restored, "nested_routing_swaps": nested_swaps,
                     "total_routing_swaps": forward + restored + nested_swaps, "reversed_cx": reversed_cx,
                     "final_layout": dict(permutation), "layout_restored": self.restore_layout}
-        out.metadata["routing"] = analyses
+        execution_metadata(out)["routing"] = analyses
         return PassResult(out, analyses, bool(forward or restored or nested_swaps or reversed_cx))

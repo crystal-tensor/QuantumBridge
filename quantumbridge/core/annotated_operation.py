@@ -103,6 +103,26 @@ def validate_annotated_structure(operation):
     current_gate_limits().check("max_gate_parameters", len(operation.parameters))
 
 
+def _annotation_literal_target_width(operation):
+    import numpy as np
+    from .standard_gates import UnitaryGate
+    from .operations import _matrix_owner_family
+    from quantumbridge.information.operator import _operator_matrix_origin
+    base, chain, controls = _inspect(operation)
+    if type(base) is UnitaryGate:
+        _operator_matrix_origin(base, from_matrix=True)
+        _matrix_owner_family(base, public_unmarked=True)
+        if object.__getattribute__(base, "__dict__")["_params"][0].dtype != np.dtype(complex):
+            from .classical import UnsupportedFeature
+            raise UnsupportedFeature("public_operator_matrix_origin", "Hybrid sources require canonical numeric gate storage.")
+    validate_annotated_operation(operation)
+    # Restrict this representation to an exact raw source and validated
+    # modifier chain. Generic wrappers and source labels are not evidence.
+    if type(base) is not UnitaryGate or not controls or not base.num_qubits:return None
+    if object.__getattribute__(base, "__dict__").get("_public_matrix_basis") is not None:return None
+    return base.num_qubits
+
+
 def validate_annotated_operation(operation):
     base, chain, _ = _inspect(operation)
     ids = {id(base), *(id(node) for node in chain)}
@@ -179,6 +199,7 @@ class AnnotatedOperation:
 
     def assign_parameters(self, mapping, *, strict=True):
         from .circuit import _parameter_mapping_from_values
+        from .instruction_parameters import bind_definition
         validate_annotated_structure(self)
         values = _parameter_mapping_from_values(self.parameters, mapping, strict)
         if type(self.base_op) is AnnotatedOperation or isinstance(self.base_op, Gate):
@@ -190,7 +211,7 @@ class AnnotatedOperation:
                 metadata["global_phase"] = resolve_parameter(metadata["global_phase"], values, allow_partial=True)
             base = Instruction(source.name, source.num_qubits, source.num_bits,
                 tuple(resolve_parameter(value, values, allow_partial=True) for value in source.params),
-                source.label, definition=None if source.definition is None else source.definition.assign_parameters(values, strict=False), metadata=metadata)
+                source.label, definition=None if source.definition is None else bind_definition(source.definition,values), metadata=metadata)
         modifiers = [PowerModifier(resolve_parameter(item.power, values, allow_partial=True)) if type(item) is PowerModifier else item
                      for item in self.modifiers]
         return AnnotatedOperation(base, modifiers)
@@ -208,8 +229,14 @@ class AnnotatedOperation:
         return AnnotatedOperation(self.base_op, [*self.modifiers, PowerModifier(exponent)])
 
     def to_matrix(self):
-        from quantumbridge.information import Operator
-        return Operator(resolve_annotated_operation(self).to_matrix())
+        from quantumbridge.information.operator import Operator, _operator_matrix_origin
+        target_width = _annotation_literal_target_width(self)
+        resolved = resolve_annotated_operation(self)
+        basis = "hybrid" if target_width is not None else _operator_matrix_origin(resolved, from_matrix=True)
+        operator = Operator(resolved.to_matrix())
+        if basis is not None:operator._public_matrix_basis = basis
+        if target_width is not None:operator._literal_target_width = target_width
+        return operator
 
     def __eq__(self, other):
         if type(other) is not AnnotatedOperation: return False

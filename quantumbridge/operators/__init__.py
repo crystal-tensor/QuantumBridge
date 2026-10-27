@@ -8,5 +8,6 @@ from .pauli import Pauli
 from .pauli_list import PauliList
 from .pauli_string import PauliString
 from .sparse_operator import SparsePauliOp, SparsePauliOperator
+from .sparse_observable import SparseObservable
 
-__all__ = ["Hamiltonian", "Pauli", "PauliList", "PauliString", "SparsePauliOp", "SparsePauliOperator"]
+__all__ = ["Hamiltonian", "Pauli", "PauliList", "PauliString", "SparseObservable", "SparsePauliOp", "SparsePauliOperator"]

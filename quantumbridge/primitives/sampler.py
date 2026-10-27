@@ -11,8 +11,9 @@ from typing import Any, Optional, Union
 
 from quantumbridge.core import Circuit, Parameter
 from quantumbridge.devices import ShotSampler
-from quantumbridge.primitives.containers import BitArray, DataBin, PrimitiveResult, PubResult
+from quantumbridge.primitives.legacy_containers import BitArray, DataBin, PrimitiveResult, PubResult
 from quantumbridge.results import Result
+from .v2 import StatevectorSampler as StatevectorSampler
 
 
 class Sampler:
@@ -152,7 +153,7 @@ def _resolve_parameter_sets(circuit: Circuit, pub_parameters, run_parameters) ->
         raise TypeError("QuantumBridge sampler parameters must be a mapping, sequence of mappings, or numeric array.") from exc
 
 
-StatevectorSampler = Sampler
+LegacySampler = Sampler
 
 
 def _parameter_array_to_mappings(circuit: Circuit, values) -> list[Mapping[Union[Parameter, str], Real]]:

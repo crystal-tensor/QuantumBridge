@@ -313,6 +313,9 @@ def gate_matrix(name: str, params: tuple[Real, ...] = (), metadata: Optional[dic
         out = _gate_identity(dimension)
         out[-len(base):, -len(base):] = base
         return out
+    if name == "native_matrix_power":
+        from quantumbridge.diff.matrix_power_jet import matrix_power_value
+        return matrix_power_value(params, metadata)
     if name == "global_phase": return _gate_array(I2, factor=np.exp(1j * float(params[0])))
     if name in {"id", "i"}:
         return I2 if scope is None else _gate_array(I2)

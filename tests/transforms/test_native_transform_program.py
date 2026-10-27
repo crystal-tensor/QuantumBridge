@@ -242,12 +242,14 @@ def test_rotation_merge_never_crosses_dynamic_or_directive_boundaries(boundary):
     elif boundary == "reset": tape.reset(0)
     elif boundary == "barrier": tape.circuit.barrier()
     elif boundary == "condition":
-        tape.circuit.num_bits = 1
+        from quantumbridge import Clbit
+        tape.circuit.add_bits([Clbit()])
         tape.circuit.x(0).c_if(0, 1)
     elif boundary == "store":
         tape.circuit.operations.append(Operation("store", (), metadata={"directive": True}))
     else:
-        tape.circuit.num_bits = 1
+        from quantumbridge import Clbit
+        tape.circuit.add_bits([Clbit()])
         tape.cond(bit(0), lambda branch: branch.x(0))
     tape.ry(.3, 0)
     tape.expval(PauliZ(0))
@@ -481,7 +483,8 @@ def test_invalid_limits_invalid_stage_and_invalid_source():
 def test_cyclic_control_body_and_excessive_nesting_are_bounded():
     from quantumbridge.core.classical import bit
     tape = Tape(1)
-    tape.circuit.num_bits = 1
+    from quantumbridge import Clbit
+    tape.circuit.add_bits([Clbit()])
     tape.cond(bit(0), lambda child: child.x(0))
     tape.expval(PauliZ(0))
     body = tape.circuit.operations[0].metadata["control_node"].bodies[0]

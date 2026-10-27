@@ -1,0 +1,490 @@
+{
+  "inputs": {
+    "variables": {
+      "A": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "B": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    "constraint": "2*A+B <= 5",
+    "profit": "5*A+2*B",
+    "emissions": "4*A+B",
+    "scalarization_weight": 1.2,
+    "objective": "-profit + weight*emissions",
+    "penalty": 20
+  },
+  "intermediate": {
+    "candidates": [
+      {
+        "bitstring": "0000",
+        "allocation_A": 0,
+        "allocation_B": 0,
+        "resource_use": 0,
+        "profit": 0,
+        "emissions": 0,
+        "feasible": true,
+        "objective": 0.0,
+        "penalized_cost": 0.0
+      },
+      {
+        "bitstring": "0001",
+        "allocation_A": 0,
+        "allocation_B": 1,
+        "resource_use": 1,
+        "profit": 2,
+        "emissions": 1,
+        "feasible": true,
+        "objective": -0.8,
+        "penalized_cost": -0.8
+      },
+      {
+        "bitstring": "0010",
+        "allocation_A": 0,
+        "allocation_B": 2,
+        "resource_use": 2,
+        "profit": 4,
+        "emissions": 2,
+        "feasible": true,
+        "objective": -1.6,
+        "penalized_cost": -1.6
+      },
+      {
+        "bitstring": "0011",
+        "allocation_A": 0,
+        "allocation_B": 3,
+        "resource_use": 3,
+        "profit": 6,
+        "emissions": 3,
+        "feasible": true,
+        "objective": -2.4000000000000004,
+        "penalized_cost": -2.4000000000000004
+      },
+      {
+        "bitstring": "0100",
+        "allocation_A": 1,
+        "allocation_B": 0,
+        "resource_use": 2,
+        "profit": 5,
+        "emissions": 4,
+        "feasible": true,
+        "objective": -0.20000000000000018,
+        "penalized_cost": -0.20000000000000018
+      },
+      {
+        "bitstring": "0101",
+        "allocation_A": 1,
+        "allocation_B": 1,
+        "resource_use": 3,
+        "profit": 7,
+        "emissions": 5,
+        "feasible": true,
+        "objective": -1.0,
+        "penalized_cost": -1.0
+      },
+      {
+        "bitstring": "0110",
+        "allocation_A": 1,
+        "allocation_B": 2,
+        "resource_use": 4,
+        "profit": 9,
+        "emissions": 6,
+        "feasible": true,
+        "objective": -1.8000000000000007,
+        "penalized_cost": -1.8000000000000007
+      },
+      {
+        "bitstring": "0111",
+        "allocation_A": 1,
+        "allocation_B": 3,
+        "resource_use": 5,
+        "profit": 11,
+        "emissions": 7,
+        "feasible": true,
+        "objective": -2.5999999999999996,
+        "penalized_cost": -2.5999999999999996
+      },
+      {
+        "bitstring": "1000",
+        "allocation_A": 2,
+        "allocation_B": 0,
+        "resource_use": 4,
+        "profit": 10,
+        "emissions": 8,
+        "feasible": true,
+        "objective": -0.40000000000000036,
+        "penalized_cost": -0.40000000000000036
+      },
+      {
+        "bitstring": "1001",
+        "allocation_A": 2,
+        "allocation_B": 1,
+        "resource_use": 5,
+        "profit": 12,
+        "emissions": 9,
+        "feasible": true,
+        "objective": -1.200000000000001,
+        "penalized_cost": -1.200000000000001
+      },
+      {
+        "bitstring": "1010",
+        "allocation_A": 2,
+        "allocation_B": 2,
+        "resource_use": 6,
+        "profit": 14,
+        "emissions": 10,
+        "feasible": false,
+        "objective": -2.0,
+        "penalized_cost": 18.0
+      },
+      {
+        "bitstring": "1011",
+        "allocation_A": 2,
+        "allocation_B": 3,
+        "resource_use": 7,
+        "profit": 16,
+        "emissions": 11,
+        "feasible": false,
+        "objective": -2.8000000000000007,
+        "penalized_cost": 77.2
+      },
+      {
+        "bitstring": "1100",
+        "allocation_A": 3,
+        "allocation_B": 0,
+        "resource_use": 6,
+        "profit": 15,
+        "emissions": 12,
+        "feasible": false,
+        "objective": -0.6000000000000014,
+        "penalized_cost": 19.4
+      },
+      {
+        "bitstring": "1101",
+        "allocation_A": 3,
+        "allocation_B": 1,
+        "resource_use": 7,
+        "profit": 17,
+        "emissions": 13,
+        "feasible": false,
+        "objective": -1.4000000000000004,
+        "penalized_cost": 78.6
+      },
+      {
+        "bitstring": "1110",
+        "allocation_A": 3,
+        "allocation_B": 2,
+        "resource_use": 8,
+        "profit": 19,
+        "emissions": 14,
+        "feasible": false,
+        "objective": -2.1999999999999993,
+        "penalized_cost": 177.8
+      },
+      {
+        "bitstring": "1111",
+        "allocation_A": 3,
+        "allocation_B": 3,
+        "resource_use": 9,
+        "profit": 21,
+        "emissions": 15,
+        "feasible": false,
+        "objective": -3.0,
+        "penalized_cost": 317.0
+      }
+    ],
+    "optimizer_trace": [
+      {
+        "improvement": 0,
+        "expected_penalized_cost": 42.24999999999997,
+        "gamma": 0.0,
+        "beta": 0.0
+      },
+      {
+        "improvement": 1,
+        "expected_penalized_cost": 42.24999999999996,
+        "gamma": 0.0,
+        "beta": 0.241660973353061
+      },
+      {
+        "improvement": 2,
+        "expected_penalized_cost": 42.24999999999993,
+        "gamma": 0.0,
+        "beta": 1.933287786824488
+      },
+      {
+        "improvement": 3,
+        "expected_penalized_cost": 42.12947643089578,
+        "gamma": 0.7853981633974483,
+        "beta": 1.691626813471427
+      },
+      {
+        "improvement": 4,
+        "expected_penalized_cost": 41.15267090804634,
+        "gamma": 0.7853981633974483,
+        "beta": 1.933287786824488
+      },
+      {
+        "improvement": 5,
+        "expected_penalized_cost": 36.85019254956882,
+        "gamma": 0.7853981633974483,
+        "beta": 2.174948760177549
+      },
+      {
+        "improvement": 6,
+        "expected_penalized_cost": 27.639163231723018,
+        "gamma": 0.7853981633974483,
+        "beta": 2.41660973353061
+      },
+      {
+        "improvement": 7,
+        "expected_penalized_cost": 19.05487679698824,
+        "gamma": 0.7853981633974483,
+        "beta": 2.658270706883671
+      },
+      {
+        "improvement": 8,
+        "expected_penalized_cost": 10.600088390782716,
+        "gamma": 1.5707963267948966,
+        "beta": 2.658270706883671
+      },
+      {
+        "improvement": 9,
+        "expected_penalized_cost": 10.01732427090721,
+        "gamma": 1.5707963267948966,
+        "beta": 2.8582707068836712
+      },
+      {
+        "improvement": 10,
+        "expected_penalized_cost": 9.537630700810405,
+        "gamma": 1.6707963267948966,
+        "beta": 2.8582707068836712
+      },
+      {
+        "improvement": 11,
+        "expected_penalized_cost": 7.909900886802246,
+        "gamma": 1.6707963267948966,
+        "beta": 2.758270706883671
+      },
+      {
+        "improvement": 12,
+        "expected_penalized_cost": 7.8471587881292955,
+        "gamma": 1.7207963267948967,
+        "beta": 2.758270706883671
+      },
+      {
+        "improvement": 13,
+        "expected_penalized_cost": 7.835427820840702,
+        "gamma": 1.7457963267948966,
+        "beta": 2.758270706883671
+      },
+      {
+        "improvement": 14,
+        "expected_penalized_cost": 7.746524635096801,
+        "gamma": 1.7457963267948966,
+        "beta": 2.783270706883671
+      }
+    ],
+    "cost_pauli_degree": 4,
+    "encoding": "bounded exact diagonal truth-table; degree>2 is not a QUBO",
+    "pareto_front": [
+      {
+        "bitstring": "0000",
+        "allocation_A": 0,
+        "allocation_B": 0,
+        "resource_use": 0,
+        "profit": 0,
+        "emissions": 0,
+        "feasible": true,
+        "objective": 0.0,
+        "penalized_cost": 0.0
+      },
+      {
+        "bitstring": "0001",
+        "allocation_A": 0,
+        "allocation_B": 1,
+        "resource_use": 1,
+        "profit": 2,
+        "emissions": 1,
+        "feasible": true,
+        "objective": -0.8,
+        "penalized_cost": -0.8
+      },
+      {
+        "bitstring": "0010",
+        "allocation_A": 0,
+        "allocation_B": 2,
+        "resource_use": 2,
+        "profit": 4,
+        "emissions": 2,
+        "feasible": true,
+        "objective": -1.6,
+        "penalized_cost": -1.6
+      },
+      {
+        "bitstring": "0011",
+        "allocation_A": 0,
+        "allocation_B": 3,
+        "resource_use": 3,
+        "profit": 6,
+        "emissions": 3,
+        "feasible": true,
+        "objective": -2.4000000000000004,
+        "penalized_cost": -2.4000000000000004
+      },
+      {
+        "bitstring": "0101",
+        "allocation_A": 1,
+        "allocation_B": 1,
+        "resource_use": 3,
+        "profit": 7,
+        "emissions": 5,
+        "feasible": true,
+        "objective": -1.0,
+        "penalized_cost": -1.0
+      },
+      {
+        "bitstring": "0110",
+        "allocation_A": 1,
+        "allocation_B": 2,
+        "resource_use": 4,
+        "profit": 9,
+        "emissions": 6,
+        "feasible": true,
+        "objective": -1.8000000000000007,
+        "penalized_cost": -1.8000000000000007
+      },
+      {
+        "bitstring": "0111",
+        "allocation_A": 1,
+        "allocation_B": 3,
+        "resource_use": 5,
+        "profit": 11,
+        "emissions": 7,
+        "feasible": true,
+        "objective": -2.5999999999999996,
+        "penalized_cost": -2.5999999999999996
+      },
+      {
+        "bitstring": "1001",
+        "allocation_A": 2,
+        "allocation_B": 1,
+        "resource_use": 5,
+        "profit": 12,
+        "emissions": 9,
+        "feasible": true,
+        "objective": -1.200000000000001,
+        "penalized_cost": -1.200000000000001
+      }
+    ],
+    "pareto_source": "complete classical feasible enumeration, not a quantum Pareto solver"
+  },
+  "reference": {
+    "best_objective": -2.5999999999999996,
+    "best_bitstrings": [
+      "0111"
+    ],
+    "feasible_count": 10,
+    "baseline": "complete classical enumeration of sixteen states"
+  },
+  "evidence": {
+    "execution_mode": "local_simulator",
+    "hardware_access": false,
+    "new_cloud_tasks": 0,
+    "experiments": {
+      "qaoa": {
+        "counts": {
+          "0100": 88,
+          "0111": 53,
+          "1100": 82,
+          "0011": 83,
+          "0010": 90,
+          "1010": 73,
+          "1001": 88,
+          "0110": 77,
+          "0101": 86,
+          "1101": 36,
+          "0000": 75,
+          "1000": 82,
+          "0001": 75,
+          "1011": 26,
+          "1111": 9,
+          "1110": 1
+        },
+        "probabilities": [
+          0.0732421875,
+          0.0732421875,
+          0.087890625,
+          0.0810546875,
+          0.0859375,
+          0.083984375,
+          0.0751953125,
+          0.0517578125,
+          0.080078125,
+          0.0859375,
+          0.0712890625,
+          0.025390625,
+          0.080078125,
+          0.03515625,
+          0.0009765625,
+          0.0087890625
+        ],
+        "ideal_probabilities": [
+          0.06500820054924447,
+          0.07825017903461509,
+          0.08699887953976274,
+          0.0834741038411244,
+          0.08623083895565001,
+          0.0827357985487674,
+          0.07658534753776172,
+          0.05844349612838109,
+          0.09500757393288696,
+          0.08766724566431056,
+          0.07087919961315237,
+          0.02542010933099418,
+          0.07044339124365305,
+          0.025224306909377988,
+          0.0023345434810704054,
+          0.005296785689246083
+        ],
+        "shots": 1024,
+        "seed": 20261023,
+        "qubits": 4,
+        "gate_count": 59,
+        "openqasm2": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.013656103933001415) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\ncx q[0],q[1];\ncx q[1],q[2];\nrz(-0.20484155899502074) q[2];\ncx q[1],q[2];\ncx q[0],q[1];\ncx q[0],q[1];\ncx q[1],q[3];\nrz(-0.095592727531009669) q[3];\ncx q[1],q[3];\ncx q[0],q[1];\ncx q[0],q[1];\nrz(0.3414025983250345) q[1];\ncx q[0],q[1];\ncx q[0],q[2];\ncx q[2],q[3];\nrz(-0.095592727531009669) q[3];\ncx q[2],q[3];\ncx q[0],q[2];\ncx q[0],q[2];\nrz(0.3414025983250345) q[2];\ncx q[0],q[2];\ncx q[0],q[3];\nrz(0.17752935112901791) q[3];\ncx q[0],q[3];\nrz(-0.47577866102576805) q[0];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.013656103933001415) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[1],q[2];\nrz(0.20484155899502074) q[2];\ncx q[1],q[2];\ncx q[1],q[3];\nrz(0.095592727531009669) q[3];\ncx q[1],q[3];\nrz(-0.34031011001039441) q[1];\ncx q[2],q[3];\nrz(0.095592727531009669) q[3];\ncx q[2],q[3];\nrz(-0.33266269180791369) q[2];\nrz(-0.1731593978704575) q[3];\nrz(0.48998100911608955) q[0];\nu1(-0.48998100911608955) q[0];\nrx(5.5665414137673421) q[0];\nrx(5.5665414137673421) q[1];\nrx(5.5665414137673421) q[2];\nrx(5.5665414137673421) q[3];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+        "bit_order": "q0-first"
+      }
+    },
+    "estimates": {
+      "qaoa": {
+        "estimate": 9.619921875,
+        "standard_error": 1.1031117440726232,
+        "ideal_reference": 7.746524635096801
+      }
+    },
+    "summary": {
+      "best_observed_feasible": {
+        "bitstring": "0111",
+        "allocation_A": 1,
+        "allocation_B": 3,
+        "resource_use": 5,
+        "profit": 11,
+        "emissions": 7,
+        "feasible": true,
+        "objective": -2.5999999999999996,
+        "penalized_cost": -2.5999999999999996
+      },
+      "observed_objective_gap": 0.0,
+      "feasible_probability": 0.7783203125,
+      "optimal_probability": 0.0517578125,
+      "decision_rule": "best feasible actually sampled candidate; not the most frequent string"
+    }
+  }
+}

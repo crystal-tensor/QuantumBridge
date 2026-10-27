@@ -45,9 +45,17 @@ def second_seeds(count, classical, classical_second, direction, limits):
 def second_work(plan, values, classical, classical_second, direction, limits, method=None):
     """Validate all recipes and planned physical work before the first execution."""
     requested = method or plan.node.diff_method
+    # Preserve established shift schedules for ordinary gates. General matrix
+    # functions need adjoint because a fixed shift recipe does not exist.
+    if requested == "best" and any(op.name == "native_matrix_power" for op in plan.circuit.operations):
+        requested = plan.gradient_capability("best")
     if requested == "adjoint":
         from .second_adjoint import second_adjoint_work
         return second_adjoint_work(plan, values, classical, classical_second, direction, limits)
+    if requested == "mps-tangent":
+        from .mps_derivatives import mps_work
+        work, compiled = mps_work(plan, values, classical, classical_second, direction, limits)
+        return compiled, [], classical if direction is None else (classical @ direction).reshape(len(values), 1), work
     if requested not in {"best", "parameter-shift"}:
         raise UnsupportedFeature("second_order_method", "Native second order supports parameter-shift or analytic statevector adjoint, not finite differences.")
     plan.gradient_capability("parameter-shift")
@@ -146,6 +154,9 @@ def execution_second_derivatives(plan, values, method=None, *, direction=None, c
     if work.get("method") == "adjoint":
         from .second_adjoint import execute_second_adjoint
         return execute_second_adjoint(plan, values, classical, classical_second, direction, work)
+    if work.get("method") == "mps-tangent":
+        from .mps_derivatives import execute_mps
+        return execute_mps(plan, values, classical, classical_second, direction, work, recipes)
     receipts = []
     sequence = np.random.SeedSequence(plan.node.seed, spawn_key=(2,))
 
@@ -242,7 +253,7 @@ def transformed_second_work(plan, values, classical, classical_second, direction
     limits.check("max_total_physical_shots", totals["physical_shots"]+plan.forward_physical_shots)
     limits.check("max_memory_bytes", totals["derivative_buffer_bytes"]+8*classical.size+8*classical_second.size)
     limits.check("max_adjoint_operations", totals["adjoint_operations"])
-    if any(work.get("method") == "adjoint" for work in works):
+    if any(work.get("method") in {"adjoint", "mps-tangent"} for work in works):
         limits.check("max_memory_bytes", max(work.get("combined_working_buffer_bytes", 0) for work in works)
                      +totals["derivative_buffer_bytes"]+8*(classical.size+classical_second.size))
     plan.limits.check("max_total_shots", totals["physical_shots"]+plan.forward_physical_shots)
@@ -282,6 +293,8 @@ def transformed_second_derivatives(plan, values, method=None, *, direction=None,
     if physical != totals["physical_shots"]:
         raise RuntimeError("Actual transformed second-order physical work differs from preflight.")
     adjoint = bool(executions) and all(child["gradient_method"] == "adjoint" for child in executions)
+    mps = bool(executions) and all(child["gradient_method"] == "mps-tangent" for child in executions)
+    mixed = bool(executions) and len({child["gradient_method"] for child in executions}) > 1
     plan.metadata.update(derivative_order=2, gradient_method="classical-only" if not executions else "adjoint" if adjoint else "parameter-shift",
         second_order_method="native classical second chain rule" if not executions else "native tangent-over-reverse adjoint" if adjoint else "convolved exact parameter-shift", hvp_streamed=direction is not None,
         postprocessing_second_chain_rule=True, native_postprocessing_derivative=True,
@@ -296,4 +309,7 @@ def transformed_second_derivatives(plan, values, method=None, *, direction=None,
         adjoint_second_sweeps=sum(child.get("adjoint_second_sweeps", 0) for child in executions),
         differentiation_path="actual child second derivatives -> native processor second chain rule -> source classical graph",
         memory_budget_scope="combined second-adjoint child working buffers plus parent derivative arrays" if adjoint else "classical trace and derivative buffers; native device state limits apply separately")
+    if mps or mixed:
+        plan.metadata.update(gradient_method="mps-tangent" if mps else "mixed-native",
+            second_order_method="native mixed MPS forward tangents" if mps else "mixed native child derivative methods")
     return value, matrix, second, spec

@@ -1,5 +1,1022 @@
 # Source Migration Ledger
 
+## Public MPS QNode Derivative Integration
+
+Independent implementation: `quantumbridge/diff/mps_derivatives.py` joins
+the existing QNode/Device plans with native scaled MPS jets. Existing
+`diff/qnode_engine.py`, `diff/second_order.py`, `diff/higher_order_limits.py`,
+`execution/derivative_planning.py`, `execution/device_derivatives.py`,
+`interfaces/native_host.py` and `transforms/program.py` share method,
+direction, component, workspace and planned-work admission. This is not a
+second scheduler or simulator. `core/gates.py` validates unbound transient
+matrix-power sources without dummy-point evaluation;
+`diff/matrix_power_jet.py` uses native bounded local value matrices;
+`information/matrix_functions.py` reports conservative branch-screen
+diagnostics without changing the numeric rejection threshold.
+
+`interfaces/qnode_autodiff.py` independently extends public Torch JVP and
+mixed-mode rules. API reference only, no source port:
+https://docs.pytorch.org/docs/stable/generated/torch.autograd.function.BackwardCFunction.html .
+The existing TensorFlow graph runtime is unchanged after failed development
+experiments; its new mixed-mode blocking tests remain open.
+
+Independent verification:
+`tests/gradients/test_native_mps_moving_power_qnode.py`,
+`tests/derivative_execution/test_mps_tangent_dispatch.py`,
+`tests/interfaces/test_native_mps_moving_power_frameworks.py`,
+`tests/serialization/test_native_mps_power_roundtrip.py`.
+The test-only generator `scripts/probe_native_mps_power_oracles.py` prints
+the data in `tests/information/data/native_mps_power_oracles.json`; closed
+2x2 SU(2) identities and installed mpmath1.3.0 at70 digits are independent
+oracles, not the production block-Frechet evaluator. No source vendor,
+dependency install, credentials, new hardware run or historical evidence edit.
+Full replacement and final validation remain ACTIVE / INCOMPLETE.
+
+R2O3-B-TF diagnostics: independently authored pure TensorFlow mathematical
+probes in `tests/interfaces/probes/` compare nesting/function boundaries,
+native-like NumPy callbacks, public nested custom gradients, two outer
+losses and multioutput cotangents. Their JSON data records failures as well
+as matches in two already installed TF2.21 environments. They are not native
+quantum acceptance or production derivative code. The formal100-wire MPS
+four-framework tests add the exponential/cubic loss; four TF mixed-mode
+cases remain red. Public API reference only:
+https://www.tensorflow.org/api_docs/python/tf/custom_gradient .
+No upstream source/tests copied, dependency install, private global JVP rule,
+SDK runtime delegation or full quantum Hessian tensor substitution. The
+production TF graph adapter remains unchanged after failed experiments.
+
+R2O3-B-TF3 adds the independent explicit VJP mathematical model and host
+callback isolation in `tests/interfaces/probes/probe_tf_differentiable_vjp.py`
+and `tests/interfaces/test_tf_explicit_vjp_model.py`. Analytic-model passes
+are not native callback acceptance; callback failures remain recorded.
+`diff/mps_derivatives.py:_bond_bound` and
+`execution/derivative_planning.py:device_working_bytes` independently correct
+wide barrier/delay resource estimates to match existing noiseless execution.
+Known directives no longer invent Schmidt-rank growth; unknown operations
+are not exempted. New directive/TF/atomicity tests protect actual admission
+and100-wire nondense execution. No upstream source or test implementation,
+dependency installation, full quantum Hessian tensor substitution, private
+JVP registry, cloud task or historical finance edit is involved.
+
+R2O3-B-TF4 adds an independent public-TensorFlow local-matrix prototype in
+`tests/interfaces/probes/probe_tf_native_tensor_execution.py`, the numerical
+generator `scripts/probe_tf_tensor_execution_oracles.py`, the corresponding
+70-digit JSON fixture in `tests/information/data/`, and formal pure-model
+tests in `tests/interfaces/test_tf_native_tensor_model.py`. It evaluates
+noncommuting moving-projector SU(2) powers, full complex operators/states,
+coherent controls and actual TF first/second/mixed AD. Validation returns
+boolean decisions only; trainable quantum math remains in the caller's
+tensor graph. No PyFunc, generic eigensolver, matrix logarithm, finite-
+difference production rule or complete Hessian substitution is introduced.
+This is mathematical preparation, not native Circuit/Compiler/QNode/Device
+integration or100-wire TF contraction. The production TensorFlow adapters
+remain unchanged. No upstream code/tests copied, dependency installed,
+SDK executor invoked, Git operation, cloud task or Studio/Router change.
+
+The subsequent TF5 baseline in
+`tests/interfaces/test_native_tf_tensor_execution.py` independently adds
+real two-/four-qubit QNode mixed-AD contracts and source/UUID/stored-frame
+isolation checks, reusing the existing high-precision fixture. Its failures
+remain real blocking failures; no production adapter is introduced or
+accepted from this baseline. The actually received TF5 prompt is archived,
+not treated as code-review or implementation evidence.
+
+TF5 internal local-operator increment:
+`interfaces/tensorflow_native_execution.py` consumes the existing lowered
+ExecutionPlan's native_matrix_power occurrence. It reuses native `_decode`,
+`_source_body`, `_admit` and record_compiled_parameters; it does not introduce
+another IR, parameter-identity system, compiler or public QNode path.
+`interfaces/tensorflow_native_math.py` is an adaptation of our independently
+authored TF4 mathematical prototype, using public optional TF operations.
+The constructor is framework-free; trainable source expressions and local
+complex matrices are evaluated in TF, without numeric quantum callbacks.
+The kernel preserves existing inverse/integer/single-fractional modifiers,
+coherent controls and scalar phases in its verified local domain. Larger
+powered bodies and sequential fractional principal powers remain explicit
+Unsupported. No public dispatch, Device derivative admission, complete TF
+graph accounting or100-wire contraction is implemented by this kernel.
+
+Independent tests in `test_native_tf_local_operators.py`,
+`test_native_tf_local_contracts.py` and `test_native_tf_local_admission.py`
+use existing70-digit numeric fixtures, native Frechet comparisons, actual TF
+mixed AD, IR/QPY and ParameterVector sources, runtime retrace/invalid-input
+checks and pre-allocation admission guards. The original prototype and
+formal public blocking tests are retained. No upstream source/tests copied,
+new dependencies, cloud work, auth changes or Git mutation. Full native
+Qiskit/PennyLane parity and complete TF5 public integration remain incomplete.
+
+TF6 whole-QNode increment:
+`interfaces/tensorflow_whole_execution.py` consumes the existing lowered
+ExecutionPlan, compiled occurrence recorder and output layout. It scans the
+entire plan before choosing a bounded float64/complex128 native TF tensor
+execution path. It uses the existing native fixed primitives, local powered
+operator and wire/UUID/global-phase semantics, with no second Circuit or
+SDK executor. `interfaces/tensorflow_autodiff.py` selects this path only for
+the verified complete low-qubit domain; ordinary circuits and trainable
+observable coefficients retain their existing complete paths. The old
+`tensorflow_graph.py` higher-order refusal remains unchanged.
+
+`interfaces/tensorflow_native_derivatives.py` independently implements a
+public custom-gradient VJP and streamed FoR second rule. Only the second
+quantum rule's point has the true-third boundary; cotangent/direction edges
+remain live for legal external-loss chain rules. No loss-specific HVP,
+stop-gradient, private JVP registration, finite-difference derivative,
+quantum NumPy callback or complete Hessian injection is introduced.
+
+`execution/derivative_planning.py:tensorflow_statevector_work` extends shared
+static admission using existing HigherOrderLimits, Device and parent-ledger
+preflight. It conservatively estimates native source graph, work and tensor
+workspace. It neither measures the TF allocator nor provides a per-runtime
+shared TF ledger. Unified-limit and managed-scope graph execution remain
+explicitly refused, so M2 is PARTIAL and100-wire M3 remains unimplemented.
+
+New whole-QNode execution/mixed-AD/resource tests preserve old blocking tests
+and use independently generated full-state data in
+`tests/information/data/tf_whole_qnode_oracles.json`. The generator
+`scripts/probe_tf_whole_qnode_oracles.py` uses already installed test-only
+mpmath at70 digits with no QB/SDK/TF imports. Installed PennyLane0.44.1 and
+0.42.3 max_diff/method observations are external diagnostics only, authored
+in `scripts/probe_pl_tf_derivative_order.py` and recorded without omitting
+nonfinite, disconnected, mismatch or exception outcomes. No upstream code
+or tests copied, dependency installed, cloud call, Git mutation or finance
+evidence change. TF6 source port count remains zero. Complete native full
+functional parity/full replacement remains ACTIVE / INCOMPLETE.
+
+TF6-M2 eager managed increment reuses existing UnifiedResourceLedger and
+ResourceScope; there is no TF private account or scheduler. Pure-tensor
+primal/VJP/streamed-second rules reserve from the same existing ledger,
+charge conservative attempted work before execution and commit completed
+logical tensor evaluations only on success. Error cleanup releases live
+reservations without erasing already charged attempts. Parent/child scopes
+share the ledger's existing RLock/account tree. `_admit` in
+`diff/matrix_power_jet.py` accepts an explicit already-reserved workspace
+amount so TF's local kernel does not double-charge its whole-plan reservation;
+all existing native callers retain the default non-prepaid admission.
+
+Work metadata records native compiled-plan/observable/method/limit identity
+and no retained managed quantum-graph cache. Runtime derivatives validate
+finite cotangent/direction seeds with public TF ops. Managed eager scopes
+and unified_limits now support the existing low-qubit domain; managed
+traced graphs are still refused. Unmanaged cached ConcreteFunctions retain
+their frozen admitted plan and runtime assertions, without cumulative
+Python accounting. Metadata labels this boundary explicitly. M2 remains
+PARTIAL: no arbitrary external TF graph account, exact allocator limit,
+complete multi-direction/full-Hessian managed request contract or100-wire
+MPS integration is accepted. No vendor/dependency/cloud/Git operation.
+
+TF6-M2B controlled cached-graph increment (experimental, M2 still PARTIAL):
+
+- `execution/derivative_request.py`: shared immutable operation/order/count/
+  parameter/plan/resource descriptions, with validated derivative order.
+- `execution/derivative_planning.py`, `execution/device_derivatives.py`:
+  request-specific logical bounds and native scalar-gradient query support;
+  full-Hessian storage limits are separate from directional HVP limits.
+- `interfaces/tensorflow_managed.py`, `qml/qnode.py`: public optional-TF
+  managed compilation into owned native mathematical snapshots; existing
+  ResourceScope/UnifiedResourceLedger construction/invocation accounting,
+  runtime finite guards, live owner/configuration checks and cache reuse.
+- `interfaces/tensorflow_native_derivatives.py`,
+  `interfaces/tensorflow_whole_execution.py`: optional compiled first/second
+  evaluation hooks and explicit approved order, retaining default eager math.
+- New independently authored derivative-request, cached-execution, scope,
+  concurrency and budget-attribution tests; failed and green JUnit receipts
+  are retained separately, without widening skip/xfail or tolerances.
+- `tests/interfaces/probes/probe_tf_cached_mixed_boundary.py` and its JSON
+  receipts: independent public-TF models, including an analytic cubic
+  reference and inline-TF-only real/complex diagnostic references.
+
+Controlled CPU entry points record conservative attempted work and successful
+logical evaluations. No Python callback inside a graph pretends to count
+every execution. Direct raw ConcreteFunctions/external losses are OUT_OF_SCOPE;
+TF allocator/RSS and retained outputs are ESTIMATED_ONLY/unavailable. Owner
+expiry refuses execution, including tighten-then-GC; source mathematics stay
+at the frozen version. A callable with opaque external AD is explicitly
+charged its approved-order conservative envelope, while explicit derivative
+queries retain distinct budgets. Two cached external RoF tests remain red;
+no M2/M3 acceptance or SDK full replacement follows from green subsets.
+Public TF docs were consulted and installed runtime control flow inspected
+for diagnosis only. No TF/SDK implementation or tests copied, private JVP
+registry modified, dependency installed, cloud/Git operation performed, or
+financial evidence changed. TF6-M2B source port count remains zero.
+
+TF6-M2C starts with a separate no-QB/no-SDK public-TF boundary experiment:
+`tests/interfaces/probes/probe_tf_trace_inline_boundary.py` and generated
+`probes/data/tf_trace_inline_boundary_{main,alternate}.json`. All three model
+families use independently derived elementary analytic J/H references.
+Actual FoR/RoF/TapeTape, JVP/VJP, two nonlinear losses, two input points,
+fixed signatures and public graph-inspection receipts are retained. The
+experiment does not change production dispatch or claim QuantumBridge
+integration. Source port count remains zero; no package source/test or
+dependency payload is copied or installed.
+
+TF6-M2D native frozen binding / trace-inline implementation:
+
+- `diff/compiled_parameters.py` factors the existing scalar evaluator from
+  the circuit-copying recorder and adds an immutable, validated native scalar
+  binding descriptor. It validates/rebuilds only native scalar AST nodes at
+  construction, retaining actual parameter UUIDs, not a new parser/namespace.
+- `diff/symbolic_power.py` preserves a native power occurrence when its input
+  is still a symbolic Parameter/ParameterExpression, instead of attempting a
+  numeric principal-phase decision. Numeric/framework callers retain their
+  established paths.
+- `interfaces/tensorflow_native_execution.py` and
+  `interfaces/tensorflow_whole_execution.py` add an opt-in read-only scalar
+  evaluation route. Original default recording/dispatch remains unchanged.
+- `interfaces/tensorflow_inline.py`, `qml/qnode.py` expose an explicit
+  compile_tensorflow_inline mode. The existing native storage pool owns the
+  source, device, observables and scalar binding snapshot. Plan identity
+  includes actual compiled circuit, local source bodies, observables, input
+  UUID order and native binding AST; no cached TF graph is reconstructed.
+- New frozen-binding, inline-QNode and resource/ownership tests forbid
+  QNode._construct, recorder/circuit copy/lowering, old Host/GraphKernel,
+  dense Gate fallback and py/numpy quantum callbacks during actual execution.
+- `scripts/probe_tf_inline_oracles.py` and
+  `tests/information/data/tf_inline_qnode_oracles.json` add two independent
+  70-digit SU(2) points and real/imag state jets, using our earlier scalar
+  reference generator, no QB/SDK/TF execution.
+
+Resource contracts remain separate: inline static bounds/runtime assertions
+do not pretend to account every external graph invocation or allocator byte.
+An active managed scope refuses inline entry. Direct external cached graphs
+are OUT_OF_SCOPE, including post-trace owner checks. Native AST syntax only
+is currently accepted for the scalar map; opaque foreign tensor callables
+require a future validated binding strategy. No source install, vendor,
+private JVP/stop-gradient patch, graph-import shortcut, Git/cloud operation or
+financial evidence change. TF6-M2D source port count remains zero. M2 is still
+PARTIAL until all method/resource boundaries and original gates are accepted.
+
+TF6-M2E capability isolation / request sequences / performance diagnostics:
+
+- `execution/derivative_planning.py` derives immutable per-handle contracts
+  from the existing ExecutionPlan gradient selector and shared derivative
+  request. No ecosystem-inventory level or new global registry is used.
+- `interfaces/tensorflow_managed.py` and `interfaces/tensorflow_inline.py`
+  expose read-only contracts and checked declared requests. Experimental
+  cached callable order two is excluded from verified capabilities. Explicit
+  query and eager/co-traced inline math retain separate supported subsets.
+  Default ordinary QNode selection is unchanged. Bare legacy diagnostic
+  calls and opaque external cached AD remain unguaranteed, not silently safe.
+- `interfaces/tensorflow_native_derivatives.py` isolates first-order quantum
+  point differentiation from cotangent transposition, after an independent
+  public-TF cubic probe exposed a false first-JVP refusal. Higher-order
+  experimental behavior is not relabeled as fixed.
+- New capability and request-sequence tests exercise early typed refusals,
+  ordinary default dispatch, mutable snapshots, value/gradient/HVP sequences,
+  charged failed attempts and RuntimeError/KeyboardInterrupt cleanup.
+- `tests/interfaces/probes/probe_tf_first_order_guard.py` and its two actual
+  environment JSON records use only elementary TF cubic functions, not QB
+  or a quantum SDK. Its disconnected cached-RoF result is negative evidence.
+- `scripts/probe_tf_inline_performance.py` measures four actual frozen native
+  plans against our existing independent fixtures. Results include timings,
+  public graph/FunctionDef counts, trace count and output lifecycle. Unavailable
+  allocator data is null with a reason, never replaced with a static estimate.
+
+No imported source/tests, tensor-value cache, private gradient hook, host
+quantum callback, derivative injection, dependency install, vendor, Git/cloud
+operation, Studio/Router or finance evidence change. Source port count remains
+zero. These are development subsets, not full M2 or full native SDK parity.
+
+TF6-M2F request safety / executed-plan identity / default Jacobian audit:
+
+- `interfaces/tensorflow_managed.py` normalizes explicit request seeds once
+  through a common protocol helper used by contract checks, estimation and
+  execution. Missing JVP/HVP tangent, missing VJP cotangent, empty batches
+  and inapplicable seeds refuse before cached quantum execution.
+- `interfaces/tensorflow_whole_execution.py` fingerprints the actual native
+  executed store, including local bodies/bindings/modifiers/control states,
+  fixed matrix bytes and structured Pauli/Hamiltonian coefficients. Managed
+  and inline ownership guards reuse it, not a second operation store.
+- Managed compiled identity includes the native resource-plan identity,
+  actual mathematical fingerprint and admitted scalar-map GraphDef byte
+  hash. The graph is not imported, reverse-parsed or used to reconstruct
+  quantum math. The scalar callable identity is guarded at Python entry.
+- New safety tests first exposed16 failures/1 pass and later pass within
+  the current163-case combined suite. A complete nine-request chain exports
+  actual mathematical results, request counts, parent/child work deltas,
+  runtime origins and source hashes only after its assertions succeed.
+- Expanded ordinary/GenericGate/ControlledGate/fixed-/moving-projector and
+  multi-output default tests retain20 newly exposed eager-Jacobian/pfor
+  failures. An attempted transport fix was rejected after missing quantum
+  Hessian terms and vectorization failures; no new callback adapter remains
+  in `interfaces/tensorflow_autodiff.py` from this increment.
+- `tests/interfaces/probes/probe_tf_eager_jacobian_boundary.py` is an
+  independent public-TF/NumPy sin/cos experiment, no QB or quantum SDK.
+  Both installed TF environments reproduce8 matches,2 finite mismatches and
+  2 vectorization errors across its12 scenarios. Negative outcomes remain
+  negative; the process exit0 means diagnostic collection only.
+
+No upstream implementation/test source, private gradient hook, stop-gradient,
+input-value cache, host Hessian injection, dependency installation, vendor,
+Git/cloud operation, Studio/Router or financial receipt change. Source port
+count remains zero. M2F/M2 remain PARTIAL; M3 NOT_STARTED; native full
+functional parity/replacement remains ACTIVE / INCOMPLETE.
+
+TF6-M2G default eager-Jacobian/pfor correctness increment:
+
+- `execution/derivative_planning.py` permits an explicit parameter-shift
+  opt-in for the same native statevector work planner; defaults are unchanged.
+- `interfaces/tensorflow_whole_execution.py` reuses the lowered native plan,
+  whole-plan capability scan and readonly local tensor math. Actual native
+  shift recipes build first derivatives where shift is selected. Reverse
+  derivatives of those tensor evaluations retain quantum curvature. The
+  quantum Jacobian custom edge is independent of external cotangents, not
+  a cached or host-supplied matrix. Genuine unsupported orders use a public
+  TF execution assertion when a legal lower-order graph is merely recording
+  its backward function. No upstream implementation is incorporated.
+- `interfaces/tensorflow_autodiff.py` selects this bounded graph only when
+  TF traces an eager native VJP, including a second VJP reached from an
+  actual loss gradient. Ordinary eager forward/VJP behavior is preserved.
+  Live owner changes and active shared-ledger contexts refuse explicitly.
+  Structural work bounds are not external pfor scheduling or allocator counts.
+- Controlled tests retain original red XML, add public default method/quantum
+  Hessian/HVP and policy checks, plus actual frozen-plan complex-state,
+  open-control and IR/QPY tests. Two original policy assertions now recognize
+  only precise TF error carriers with an exact QB feature marker; mathematical
+  assertions are not loosened, and no skip/xfail is added for the original20.
+- `tests/interfaces/probes/probe_tf_pfor_pure_tensor.py` independently checks
+  scalar polynomials, sin/cos and local complex rotations in eager/traced
+  pfor and mixed-AD modes using public TF/NumPy. The older negative callback
+  probe is retained, not converted to passing mathematical evidence.
+
+Source port count remains zero. No private TF hooks, NumPy Hessian transport,
+input-dependent tensor cache, new circuit store, package installation,
+Git/cloud/auth mutation, Studio/Router or financial evidence changes. Original
+cached-RoF2 and MPS4 remain unresolved. M2/M2G PARTIAL, M3 NOT_STARTED;
+independent native full functional parity/replacement ACTIVE / INCOMPLETE.
+
+The M2G broad strict SDK-free run additionally exposed an existing
+`execution/array_reservations.py` CPU DLPack compatibility defect on NumPy1.26.
+Version-aware use of published pre2.1 and modern copy=False protocols now
+retains shared storage and avoids retrying a producer TypeError. Four added
+tests cover both protocol signatures and single-invocation failure behavior;
+the existing actual-buffer/non-CPU refusal test is retained. This is an
+independent fix using public NumPy API documentation, not a source port.
+
+TF6-M2H managed native-source RoF increment:
+
+- `qml/qnode.py` optionally retains a FrozenParameterBinding during the same
+  original `from_circuit` construction. The actual input must be identical,
+  its parameter occurrences must remain complete, and compiler/input rewrites
+  do not inherit an assumed mapping. No second invocation of user Python or
+  second retained Circuit/parameter system is introduced. Unsupported native
+  scalar syntax preserves the previous captured-TF query contract; resource
+  errors do not bypass limits via fallback.
+- `interfaces/tensorflow_managed.py` uses that same mathematical snapshot for
+  bounded synchronous eager AD without cached-inner quantum/scalar functions.
+  Explicit query graph caching remains separate and real. Existing ledger,
+  parent/child, completion, concurrency and live-owner rules are retained.
+  Static source/work fingerprints avoid rebuilding/lowering a Circuit during
+  invocation; original resource-plan identity checks are also retained.
+- `interfaces/tensorflow_whole_execution.py` fingerprints source and actual
+  executed stores, now including measurement kind/wires/shots/seed/metadata.
+  Zero-parameter managed native values are handled without a wrong empty
+  tensor dtype/shape. Original two RoF mathematical assertions are unchanged.
+- Controlled new tests cover complete native complex states, 2/4-qubit
+  lineage, both nonlinear losses and points, actual RoF/FoR/TapeTape, approved
+  orders, streamed HVP, exact error/owner/scope boundaries and cached outer
+  graph limitations. Six broader scalar-capture RoF failures are retained,
+  not xfailed/skipped or relabeled as supported refusals.
+- Public-function-boundary probes compare actually invoked cached vs inline
+  functions, without private TF gradient hooks. Source audits inspect the
+  three current scalar maps and prove the appended RX is already in the
+  final native snapshot. The RY source is correctly retained as its native
+  SX/RZ decomposition with global phase, not assumed to be one primitive.
+
+Source port count zero. No GraphDef execution import, scalar GraphDef lowerer,
+new dependency/vendor, Git/auth/TLS/cloud mutation, financial receipt change
+or Studio/Router change. M2/M2H PARTIAL; M3 NOT_STARTED; full native SDK
+functional parity/replacement ACTIVE / INCOMPLETE. The actual M2I guidance
+permits a future bounded scalar-data-to-existing-AST constructor, but receipt
+of that guidance and a completed source audit are not its implementation.
+
+TF6-M2I restricted scalar-data lowering increment:
+
+- `interfaces/tensorflow_scalar_lowering.py` reads a bounded private protobuf
+  snapshot, validates the entire DAG including unused nodes, and performs a
+  layout/tree-work pass before constructing existing native scalar AST nodes.
+  The result retains only FrozenParameterBinding and immutable work/provenance
+  metadata. No source graph is imported for execution or retained by the result.
+- The initial domain is a registered static float64 vector placeholder and
+  float64 vector result; exact static Pack/Unpack/Reshape/ReverseV2 and the
+  validated StridedSlice subset preserve native UUID/index columns. Arithmetic
+  is Add/AddV2/Sub/Mul/Sin/Cos/Exp and literal scalar exponent2 Pow only.
+  Integer constants remain layout metadata. Unknown functions, state/resource
+  operations, control edges, cycles, nonfinite constants, dynamic layouts,
+  remote devices and unvalidated attributes fail closed. Resource errors never
+  select a fallback. Existing query behavior outside the subset is preserved.
+- `interfaces/tensorflow_managed.py` uses this import only when the original
+  native AST retention is unavailable. The same user QNode construction and
+  existing final native operation snapshot are used, without rerunning user
+  Python, rebuilding a runtime Circuit or inventing another parameter system.
+  Existing unified ledgers/scopes reserve and charge construction work; Python
+  tensor/AST memory remains a conservative estimate, not observed allocator RSS.
+- Independent elementary NumPy references, actual public TF AD, mutation and
+  budget tests cover values, full J/H, mixed derivatives, VJP, directional HVP,
+  negative/zero inputs, reverse/slice/reshape columns, literal-square refusal
+  boundaries and scope/concurrency. Six original scalar-capture RoF assertions
+  remain unchanged and now pass on both installed environments.
+
+Public TF API descriptions and black-box runtime behavior only; no TF/Qiskit/
+PennyLane source, tests, binaries, environments or credentials copied. Source
+port count remains zero. No Git/auth/TLS/cloud/financial/Studio/Router/tag/
+release change. M2 PARTIAL; M3 NOT_STARTED; full native SDK replacement remains
+ACTIVE / INCOMPLETE and the original100-wire MPS four failures remain formal.
+
+TF6-M2J public-path failure-atomicity increment:
+
+- `interfaces/tensorflow_scalar_lowering.py` distinguishes its explicitly
+  unsupported scalar subset from validation/identity/domain/budget failures.
+  It still never executes GraphDef data or adds native operators. Missing
+  native support may preserve a separately validated old TF query, not an
+  unchecked blanket exception fallback. Opaque experimental node types are
+  refused. Unused input positions preserve their existing query semantics
+  without silently pruning native UUIDs.
+- `interfaces/tensorflow_managed.py` independently admits the original public
+  captured TF graph on a capability miss: unchanged source, bounded storage,
+  no function/control/state/resource/PyFunc/custom-gradient indirection, local
+  CPU and finite numeric source data. Fixed immutable eager captures retain
+  their existing query behavior, but are validated and hashed into snapshot
+  identity. Reading fixed source data is not host quantum/Hessian execution.
+  No second scalar runtime, Circuit or parameter system is introduced.
+- `qml/qnode.py` limits optional native AST capture retries to the actual
+  named frozen-expression/power subset misses; other UnsupportedFeature
+  errors propagate without re-recording after identity/domain/safety failure.
+- New independent tests cover phase-by-phase exception atomicity, source
+  identity, open/closed controls, global phase, later RX, vector shrink/regrow,
+  multiple occurrences, owner/config invalidation and the real lowered-source
+  value/gradient/JVP/VJP/HVP/full-Hessian/value query chain. Resources and
+  partial-construction failures do not publish an unchecked fallback handle.
+- `tests/interfaces/probes/run_native_gate_with_provenance.py` records actual
+  selected-source manifests before/after and actual post-test imports in the
+  same pytest/example process. It does not retrospectively convert the older
+  M2I483 receipts into frozen or complete five-origin evidence.
+
+Source port count zero. Public TensorFlow metadata/runtime behavior only;
+no upstream source/test/payload/vendor/install or Git/auth/TLS/cloud/financial/
+Studio/Router/tag/release change. Native full SDK replacement ACTIVE/INCOMPLETE,
+M2 PARTIAL, M3 NOT_STARTED;100-wire MPS failures remain independent and open.
+
+M2J follow-up source-dtype validation: actual TensorFlow bfloat16 eager data
+and TensorProto data may have NumPy storage-kind V even though TF identifies
+them as floating. Finite checks now use the public TF dtype classification,
+so nonfinite fixed data cannot evade source admission. Independent tests cover
+floating/complex formats, fixed captures and in-graph constants; finite old
+bfloat16 queries are preserved, without adding a native lowering operator or
+mixed-precision claim. The obsolete J4 candidate was explicitly interrupted
+for this reproduced defect, not restarted due to observation timeout. Its
+partial480-pass/exit2 receipts are not complete or latest-source passes.
+
+## Native Scaled MPS Tangent Kernel
+
+Independent native extensions: `quantumbridge/execution/mps_arrays.py`
+adds managed component-scale buffers and checked rescaling;
+`quantumbridge/information/matrix_product_state.py` adds an opt-in internal
+normalization-factor path using its existing contraction, routing and SVD
+engine. Ordinary apply/project/measurement semantics remain normalized.
+`quantumbridge/information/mps_tangent.py` owns bounded coherent components
+with complex scales, checked numerical-rank/bond limits and rescaled
+bilinear Pauli contractions. `quantumbridge/diff/mps_tangent.py` propagates
+all four mixed state terms and both bra/ket expectation contributions.
+
+Independent verification: `tests/information/test_native_mps_tangent.py`,
+`tests/gradients/test_native_mps_tangent_kernel.py`,
+`tests/derivative_execution/test_mps_tangent_resources.py`. Existing numerical
+fixtures were previously generated with test-only mpmath; the new long-chain
+overlap oracle uses standard-library Decimal on the represented product
+state, not the production rescaling algorithm. No third-party code/tests
+copied; no vendor/install/credential access/hardware task. Public QNode
+integration, aggregate derivative planning and four-framework/IR/QPY
+acceptance remain pending for this general MPS kernel. Full replacement
+remains ACTIVE / INCOMPLETE.
+
+## Native Mixed Matrix-Power Direction Continuation
+
+Independent extensions: `quantumbridge/information/matrix_functions.py`
+adds four-block mixed Frechet jets while retaining the three-block same-
+direction rule; `quantumbridge/diff/matrix_power_jet.py` retains every source
+UUID and evaluates genuine scalar/Gate/global-phase mixed directional jets.
+`quantumbridge/core/gates.py`, `quantumbridge/diff/symbolic_power.py`,
+`quantumbridge/diff/adjoint.py`, `quantumbridge/diff/qnode_engine.py`,
+`quantumbridge/diff/second_adjoint.py` and `quantumbridge/interfaces/native_host.py`
+integrate multi-parameter occurrences with the existing runtime. Direction
+work and workspace bounds are included in second-adjoint preflight.
+`quantumbridge/interfaces/qnode_autodiff.py` independently implements Autograd
+forward JVP and mixed second-mode rules using public extension APIs only.
+Reference: https://github.com/HIPS/autograd/blob/master/docs/tutorial.md .
+
+Independent verification: `tests/information/test_native_mixed_power_frechet.py`,
+`tests/gradients/test_native_mixed_power_qnode.py`,
+`tests/interfaces/test_native_mixed_power_frameworks.py`, and extended
+`tests/compat/test_qiskit_moving_power_differential.py`. The native numerical
+example remains `examples/native_symbolic_power_qnode.py`. The independently
+authored `scripts/probe_native_mixed_power_oracles.py` generates the numerical
+fixture `tests/information/data/native_mixed_power_oracles.json` via installed
+mpmath1.3.0 at70 decimal digits; this is test-side numerical differentiation,
+not a production derivative algorithm or copied SDK implementation.
+No dependency installation/vendor/credential access/new cloud task. This
+extends the previous one-input checkpoint, but does not close general moving
+exponents, nonunitary Frechet rules, generic MPS derivatives or full replacement.
+
+## Native Moving-Projector Power Jets
+
+Independently authored implementation:
+`quantumbridge/diff/matrix_power_jet.py`, plus local triangular-block Frechet
+jets in `quantumbridge/information/matrix_functions.py`. The existing native
+bounded matrix-function implementation is reused rather than copied from an
+upstream library. The mathematical reference is Higham's public explanation:
+https://nhigham.com/2020/06/23/what-is-a-frechet-derivative/ .
+Integration extends `quantumbridge/diff/symbolic_power.py`,
+`quantumbridge/core/gates.py`, `quantumbridge/utils/math.py`,
+`quantumbridge/diff/adjoint.py`, `quantumbridge/diff/second_adjoint.py`,
+`quantumbridge/diff/second_order.py`, and `quantumbridge/diff/qnode_engine.py`.
+Transient sources use bounded native IR and actual UUIDs; no external callable
+or SDK object is serialized. Original symbolic annotation transport is kept.
+Independent verification: `tests/information/test_native_unitary_power_frechet.py`,
+`tests/gradients/test_native_moving_power_qnode.py`,
+`tests/interfaces/test_native_moving_power_frameworks.py`, and
+`tests/compat/test_qiskit_moving_power_differential.py` (test-only public calls).
+The existing `examples/native_symbolic_power_qnode.py` includes the new native
+numerical path. No new dependency, vendor, credential access or cloud task.
+Single-free-parameter generic Gate bodies and fixed modifier exponents are
+supported for analytic native adjoint derivatives. General multi-parameter
+mixed jets, variable-exponent moving projectors, nested power annotations
+inside generic bodies, arbitrary custom primitive derivatives and exact
+parameter-shift recipes remain incomplete. Full replacement remains open.
+
+## Native Symbolic Spectral Power Continuation
+
+Independently authored native implementation:
+`quantumbridge/diff/symbolic_power.py`. Existing structural lowering in
+`quantumbridge/core/gates.py` accepts a private recording resolver;
+`quantumbridge/diff/compiled_parameters.py` retains live classical graphs
+before annotation resolution. `quantumbridge/interfaces/symbolic_math.py`
+provides guarded scalar principal phases in JAX/TF; Torch/Autograd and native
+first/second traces preserve the same branch with analytic derivatives.
+Independent verification: `tests/gradients/test_native_symbolic_power.py`
+and `tests/interfaces/test_native_symbolic_power_frameworks.py`.
+SDK-free executable numerical example: `examples/native_symbolic_power_qnode.py`.
+No upstream source or tests ported, no added dependency, no vendor or tokens.
+Fixed projectors, nested controls, global phases and parameterized exponents
+are supported; arbitrary moving-projector Frechet rules remain incomplete.
+The original full replacement objective and final acceptance gates remain open.
+
+## Offline Application Artifact Validation
+
+`scripts/check_application_artifacts.py` independently validates the fourteen
+executed notebook exports and literal local evidence without running crypto,
+reading credentials or making network calls. It checks executed cells, image
+outputs, count conservation, finite estimates and no physical-hardware claims.
+
+## Offline Industrial And Security Application Studies
+
+Independent implementations: `quantumbridge/applications/industry.py`,
+`quantumbridge/applications/security.py`,
+`tests/applications/test_industry_cases.py`, and
+`tests/applications/test_security_cases.py`. The shared notebook generator,
+teaching notes and display helpers are independently authored, using existing
+native APIs and installed notebook tooling. No SDK code or tests were ported.
+Public mathematical references are listed in each notebook. OpenSSL provider
+and cryptography AEAD calls are external-library integration, not independently
+implemented cryptographic primitives. No dependency was installed or vendored.
+Outputs under `output/jupyter-notebook/industry/` and
+`output/jupyter-notebook/security/` are local evidence; new cloud calls zero.
+Private keys remain in an owner-only temporary directory or process memory,
+not artifacts. This does not certify complete industrial, security or SDK parity.
+
+## Offline Scientific Application Studies
+
+Independently authored: `quantumbridge/applications/__init__.py`,
+`quantumbridge/applications/common.py`, `quantumbridge/applications/science.py`,
+`tests/applications/test_science_cases.py`,
+`scripts/application_notebook_support.py`, `scripts/application_lessons.py`,
+and `scripts/build_application_notebooks.py`. No upstream source or test port.
+Mathematical references are linked per notebook. Native library calls reuse
+existing in-repository implementations; general bounded diagonal costs are
+not mislabeled QUBO when their Pauli degree exceeds two. Outputs under
+`output/jupyter-notebook/science/` contain executed local evidence only.
+Four teaching cases do not certify full scientific-domain or SDK coverage.
+
+## Five Finance Categories With Explicit Quafu Execution
+
+Independent native implementation: `quantumbridge/finance/__init__.py`,
+`quantumbridge/finance/kernels.py`, `quantumbridge/finance/cases.py`,
+`quantumbridge/finance/execution.py`. Independently authored verification:
+`tests/finance/test_finance_cases.py`; tutorial generation:
+`scripts/build_finance_notebooks.py`. The five Chinese notebooks and executed
+outputs live in `output/jupyter-notebook/finance/`.
+
+The published Qiskit Finance portfolio, credit-risk and call-pricing tutorials
+are application-definition references, not copied source. Native Circuit,
+StatevectorDevice, serialization, existing portfolio exact helpers and the
+existing QuafuCloudBackend are reused. Mathematical Walsh/projector identities,
+binomial risk-neutral valuation, discrete expected shortfall and signed
+interference define independently implemented small synthetic workflows.
+No Qiskit/PennyLane executor or source is used by these calculations. Direct
+sampling is not QAE and does not inherit its speedup claims. Classical local
+training/postprocessing and remote hardware circuits are explicitly separated.
+An opt-in persistent cloud receipt ledger enforces the owner's batch limits;
+actual hardware results are not claimed before final counts are retrieved.
+No SDK source, site-packages, venv, wheel or token is copied into the project.
+
+Hardware-acceptance continuation: `quantumbridge/finance/statistics.py` and
+`quantumbridge/finance/acceptance.py` independently implement Wilson-score
+intervals, empirical multinomial bootstrap with discrete expected shortfall,
+DKW quantile stability, optimization conditional/unconditional success and
+same-circuit TVD diagnostics. No new financial model, circuit or cloud task is
+introduced. `tests/finance/test_finance_hardware_guards.py` and
+`tests/finance/test_finance_statistics.py` are independent tests. The existing
+`quantumbridge/compat/quafu/cloud_backend.py` rejects invalid noninteger counts
+and prioritizes explicit failure/cancellation over stale result counts.
+`scripts/run_finance_cloud_batch.py` uses explicit hidden credential input and
+the owner's fixed budget; credentials are not embedded or exported. A journal
+checksum detects inconsistent edits, not adversarial authenticated forgery.
+
+D1 independently authored preparation/measurement diagnostics:
+`quantumbridge/finance/compiled_diagnostics.py`,
+`quantumbridge/finance/hardware_diagnostics.py`,
+`tests/finance/test_finance_compiled_diagnostics.py`,
+`tests/finance/test_finance_hardware_diagnostics.py`, and
+`scripts/run_finance_diagnostics.py`; read-only replay notebook generation:
+`scripts/build_finance_diagnostic_notebook.py`. Returned public QASM2 and literal QLISP
+U/CZ/Measure descriptions are protocol data, not vendored provider code.
+Sparse physical wires are compacted into the existing native simulator;
+the bounded QLISP translator is independently implemented. Only all-zero-input
+ideal distributions are compared, not full unitary/pulse equivalence. A
+separate sealed ledger shares the original batch's OS lock, freezes original
+submissions, fingerprints immutable original evidence, persists submit intent,
+and counts original plus diagnostic jobs against the same 20-task ceiling.
+Four additional zero/one probes have an independent four-task ceiling.
+No automatic one-hot jobs, financial count changes, readout mitigation, source
+copying, installation, credentials in artifacts, or full SDK parity claims.
+
+D2 independently authored offline follow-up:
+`quantumbridge/finance/mapping_diagnostics.py`,
+`tests/finance/test_finance_mapping_diagnostics.py`,
+`scripts/analyze_finance_mapping.py`, and
+`scripts/build_finance_mapping_notebook.py`. It reuses the native compiled
+parser, fixed original receipts and D1 probes. Finite count-order permutations,
+noiseless multinomial scores, empirical joint-error bootstrap and combinatorial
+basis-pattern identifiability are independently implemented. No upstream SDK
+executor/source, inferred readout matrix, count correction or new hardware
+submission is used. D2 disables outbound connections and the submit gateway;
+all thirteen existing task sources/counts/metadata are fingerprinted unchanged.
+
+D3 independently authored contract/provenance continuation:
+`quantumbridge/finance/client_contract.py`,
+`tests/finance/test_finance_client_contract.py`,
+`scripts/audit_finance_client_contract.py`, and
+`scripts/build_finance_client_contract_notebook.py`. Installed distributions,
+public method signatures/help and package-file ownership metadata establish the
+actual client; no upstream implementation/test source is read or copied.
+The three linked public documentation pages are contract references only;
+their credential examples are not copied or used. Strict bounded label
+permutations preserve count totals and inverse recovery. Documentation hints
+never fill missing historical response fields. The existing Quafu gateway adds
+an opt-in read-only submission guard requiring an explicit transport, with no
+implicit credentialed client construction. Original thirteen task evidence and
+financial decoding stay unchanged; raw HTTP and SDK internal decoding remain
+explicitly unverified. No SDK install, live client call or new hardware task.
+
+
+## Stage 12-B R2M Controlled Public Power Closure In Progress
+
+Independent native changes in `quantumbridge/core/gates.py`,
+`quantumbridge/core/standard_gates.py` and `quantumbridge/core/circuit_data.py`
+reuse the existing native Operator matrix-function engine and single Circuit
+store. Controlled RX/RY/RZ numeric powers now use principal matrix powers,
+not unconditionally scaled angles; deferred symbolic objects bind before
+numeric resolution. A canonical owned UnitaryGate survives the public factory
+boundary into existing IR/QPY records. Specialized inverse return classes and
+fixed-gate label/mutability follow actual public observations.
+
+Independent projector/scalar-phase mathematical tests are in
+`tests/core/test_native_controlled_public_powers.py`; public-only development
+observations are in `tests/compat/test_qiskit_controlled_power_differential.py`.
+Actual installed Qiskit2.4.1/2.6.0 APIs are behavioral references only, not
+implementation/test-source inputs or a runtime backend. An observed public
+open-controlled Phase power drops its control state in both versions; the
+native mathematically correct active block is retained and is not claimed as
+bug-for-bug matching. Managed powers reuse existing owned-buffer/workspace
+accounting, rather than a new spectral solver or dependency. General symbolic
+fractional-power QNode compilation is still unsupported. No dependencies,
+upstream source, SDK executor, cloud task or full-parity claim is introduced.
+
+## Stage 12-B R2L Native Fractional Operator Branch Repair In Progress
+
+Independent native implementation: `quantumbridge/information/matrix_functions.py`;
+independent tests: `tests/information/test_native_operator_powers.py` and
+`tests/information/test_native_operator_power_branch_jordan.py`; captured exact
+binary-input oracle: `tests/information/data/operator_branch_actual_input.json`;
+development-only probe: `scripts/probe_operator_branch_jordan.py`.
+Independent SDK-free matrix/state/density workflow:
+`examples/native_operator_branch_powers.py`.
+The existing native owned-array, Schur, binomial scaling and resource engines
+are reused. Standard-library Fraction certifies a constant-size exact binary
+2x2 discriminant identity; it is not a new matrix execution backend and never
+coalesces a merely close pair. Exact disconnected components reuse the same
+native function. A quantified conservative branch-sensitivity screen refuses
+unresolved coupled Schur pairs before returning an unreliable finite result.
+Python scalar-certificate allocator/RSS is explicitly not measured; native
+array/workspace budgets are unchanged. The already installed mpmath is used
+only for an independent development oracle for the precise binary input, not
+in runtime code. Actual public Qiskit2.4.1/2.6.0 calls are observations, not
+implementation/test source. Higham's published matrix-function identities are
+mathematical references only; no SciPy/Qiskit source or test was read/copied.
+Rounded near-cut similarity inputs are distinguished from exact Jordan blocks;
+the oracle correction and justified refusals are not counted as native numeric
+parity passes. No dependencies, SDK wrapping, MPS dense fallback, cloud tasks,
+financial evidence changes, Studio/Router, OAuth or Git history changes.
+This remains an incomplete part of the full original R2/full replacement goal.
+
+## Stage 12-B P4-U3D2-R2J ParameterVector Namespace Audit
+
+Independent native implementation: `quantumbridge/core/parameters.py`,
+`quantumbridge/serialization/qpy.py`; independent tests:
+`tests/core/test_native_parameter_vector_contract.py`. The existing public
+ParameterView/circuit/native IR/compiled-parameter/derivative engines are reused.
+Actual installed public2.4.1/2.6.0 API observations establish name/UUID/equality/
+hash distinctions, vector/list/slice/resize behavior, mutation differences and
+bilateral standard QPY execution. No upstream implementation or tests are read
+or copied. Name/UUID identity and scalar-vs-vector inequality remain unchanged.
+The vector name is read-only, list aliases stay live across atomic resize, and
+all new identities are admitted before allocation. Managed scalar/vector
+callbacks are refused before truth/index/equality or materialization. Empty
+vector names are encoded in normal QPY fields and retain UUID/index/root under
+actual binding. Public2.6 vector length/list-cache divergence and2.4 negative
+slice resize are explicitly not reproduced. Native negative lengths refuse.
+The new independent nested Generic/control/annotation/IR/QPY tests assert
+complex matrices, parameter snapshots/partial rebinding and native first/second/
+streamed derivatives. The same transported vector chain executes real first,
+second and directional derivatives in Torch, Autograd, JAX and TensorFlow;
+framework tests use independent closed-form references, not upstream tests.
+Public UUID object and remaining name/representation ABI
+are not claimed complete. No dependencies, vendor, Studio/Router, credentials,
+cloud/hardware or release work is added.
+
+## Stage 12-B P4-U3D2-R2 Native Public Parameter Snapshot Continuation
+
+Independent native implementation: `quantumbridge/core/parameter_view.py`,
+`quantumbridge/core/public_circuit.py`, `quantumbridge/core/circuit.py`,
+`quantumbridge/core/__init__.py`, `quantumbridge/__init__.py`.
+Independent verification: `tests/circuit/test_native_public_parameter_view.py`,
+`tests/core/test_native_annotated_operation.py` and the SDK-free
+`examples/native_public_circuit_frames.py`.
+
+The published IBM QuantumCircuit parameter ordering documentation and actual
+public Qiskit2.4.1/2.6.0 ParameterView calls are the behavioral references. No
+upstream implementation or test source is read, copied or vendored. Native
+snapshot construction, local mutation, copy protocols, ordering/UUID queries,
+sequence/set comparison, reflected/augmented operators and one-shot operand
+consumption are implemented independently. The public view never owns or
+replaces a circuit parameter store; formal binding plans retain tuple formals.
+Aggregate logical parameter admission precedes output sorting/snapshot creation;
+view copying and query iteration are bounded, and managed foreign callbacks are
+refused before protocol invocation or mutation. Existing native IR/QPY, owned
+definitions and actual native derivatives remain authoritative. The old test
+that refused now-supported two-control RY differentiation is strengthened to
+analytic first/second/HVP execution; fractional symbolic annotation and a truly
+unknown derivative recipe still have explicit refusal tests. This is not full
+Parameter/ParameterVector representation or entire SDK parity/frozen acceptance.
+No additional dependency, credential, hardware/cloud or Studio/Router work.
+
+## Stage 12-B P4-U3D2-R2 Controlled Base And Derivative Closure In Progress
+
+Independent native continuation: `quantumbridge/serialization/qpy.py`,
+`quantumbridge/core/instruction_parameters.py`, `quantumbridge/ir/qb_ir.py`,
+`quantumbridge/diff/adjoint.py`, `quantumbridge/diff/qnode_engine.py`,
+`quantumbridge/interfaces/native_host.py`. Independent verification:
+`tests/circuit/test_native_public_controlled_base_lifecycle.py`,
+`tests/circuit/test_native_controlled_namespace_atomicity.py`,
+`tests/serialization/test_native_invalidated_binding_ir.py`,
+`tests/serialization/test_native_annotated_interchange.py`,
+`tests/serialization/test_qpy_dynamic_controls.py`,
+`tests/serialization/test_qpy_native_controlled_primitives.py`,
+`tests/gradients/test_native_controlled_derivatives.py`.
+
+Actual public Qiskit2.4.1/2.6.0 construction, ownership, Operator and QPYv13
+calls are behavioral references; no implementation or test source is read or
+copied. Native structural multi-control export uses the alternating control
+parity identity and elementary phase conjugations, not dense Gate export.
+Native MCPhaseGate/MCXGate binary import resolves to bounded native generic
+ControlledGate objects, not new public standard subclasses. Coherent derivative
+blocks are zero in inactive control subspaces; controlled Pauli rotations use
+both half- and unit-frequency shifts. Native adjoint and existing second-adjoint
+and framework engines are reused. Managed matrices retain actual storage leases
+and malformed/oversized descriptors fail before numerical allocation.
+
+Edited numeric formal history is retained by an explicit native IR invalidated
+record. The actual executable definition and genuinely stale template are both
+validated; the old plan is not activated and ambiguous rebinding still refuses
+atomically. This is not a public QPY history extension or an ignored signature.
+Actual public failures are explicit differences: labeled open CCX QPY self-load
+raises TypeError, symbolic annotation QPY self-load omits the enclosing parameter
+index, and same-name/different-UUID append/compose/data failures can mutate the
+public circuit. Native atomic refusal is intentional, not a claimed error ABI
+match. No second Circuit store, simulator, parameter graph, upstream runtime
+delegate, vendor, credentials, hardware/cloud or Studio/Router work is added.
+Current focused development results do not satisfy final frozen/full SDK gates.
+
+## Stage 12-B P4-U3D2-R2 Generic Owner Lifecycle In Progress
+
+Independent Native Implementation in the existing authoritative Circuit store:
+`quantumbridge/core/circuit_data.py`, `quantumbridge/core/operations.py`,
+`quantumbridge/core/gates.py`, `quantumbridge/core/standard_gates.py`,
+`quantumbridge/core/circuit.py`, `quantumbridge/ir/qb_ir.py`,
+`quantumbridge/compat/qiskit_adapter.py`, `quantumbridge/serialization/qpy.py`.
+Independent tests: `tests/compat/test_qiskit_public_owner_context_lifecycle.py`,
+`tests/circuit/test_native_public_control_annotation_frames.py`,
+`tests/serialization/test_native_public_deferred_instruction_qpy.py`,
+`tests/circuit/test_native_public_definition_mutation_math.py`.
+The SDK-free `examples/native_public_circuit_frames.py` asserts actual native
+Operator/Jacobian/HVP, format, classical-device and refusal results.
+
+Actual installed public2.4.1/2.6.0 Generic Gate/Instruction/ControlledGate/
+AnnotatedOperation source/context/mutation, control-return, binding/Operator
+and standard QPYv13 calls are measured independently. Their implementation or
+test source is not read/copied. Captured parameters, bounded control-base
+traversal, owned inverse bases, controlled-name IR records and real QPY custom
+classical headers/operands are implemented natively. Defined nonunitary
+Instructions run through existing local devices; deferred nonunitary annotation
+resolution remains explicitly illegal. The observed numeric mapped Instruction
+phase error in public2.4.1 is retained as UPSTREAM_ERROR / native intentional
+safety difference, not counted as MATCH. No second executor/operation store,
+upstream runtime delegation, private portable sidecar, vendoring, credentials,
+cloud/hardware or Studio/Router change is added. Current focused tests do not
+replace the original full frozen gates or establish full SDK replacement.
+
+The same R2 definition-mutation supplement adds independently authored nested
+graph/copy/phase/order/control/annotation math and actual dual-version Operator
+observations. A conversion-derived Instruction definition name is atomically
+updated when its owned definition is replaced; unrelated user tags and foreign
+equality callbacks are not used or discarded. Public copy admits raw definition
+graphs and real bit resources before copying, reusing instruction_definition_work
+and existing budgets. Definition signatures/formal plans remain the native
+lineage checks, not a second versioned Circuit store. Both public versions'
+overridden ControlledGate inverse differences are explicitly observed, not
+claimed as native ABI matches. The SDK-free example actually asserts this
+definition->opencontrol->orderedannotation->QPY->Operator/Hessian/HVP path.
+
+## Stage 12-B P4-U3D2-R2 Metadata Domains In Progress
+
+Independent native implementation: `quantumbridge/core/circuit_metadata.py`,
+with the existing Circuit/public Circuit, classical scope, compiler, binding,
+QNode/Tape, native IR and serialization paths. Independent tests:
+`tests/circuit/test_native_public_metadata_domains.py`,
+`tests/compat/test_qiskit_public_metadata_differential.py`.
+Actual public Qiskit 2.4.1/2.6.0 calls measure constructor/setter reference,
+deep-copy/factory policy and the versioned decompose container difference.
+These are behavioral observations only; no upstream implementation or tests
+are inspected or copied. Native execution fields are separate from public
+user data, with the same authoritative operation/measurement stores. Standard
+QPY transports JSON user metadata and real header/register records, not an
+execution sidecar. Native IR has a typed versioned execution record; definition
+signatures omit only nonsemantic public user data, not phase, scope, bit graphs
+or formal bindings. Legacy fluent Circuit configuration behavior is retained;
+decoded QPY metadata no longer exposes internal register descriptors, which
+remain actual register owners and private configuration. No pickle, arbitrary
+object decoder, vendored source, cloud credentials or hardware call is added.
+The stage and full SDK replacement remain incomplete, pending all original
+frozen acceptance gates and remaining public ABI work.
+The subsequent real main-wide red exposed old width-only transform fixtures.
+Binding and conditional Tape capture now validate actual bit graphs; negative
+tests protect against silent width trimming, while positive fixtures create
+real Clbits. Independently maintained tests are
+`tests/circuit/test_native_bit_resources.py`,
+`tests/transforms/test_native_basic_transforms.py`,
+`tests/transforms/test_native_transform_program.py`, and
+`tests/transforms/test_native_deferred_measurements.py`.
+
+## Stage 12-B P4-U3D2-R2 Public Binding In Progress
+
+Independent Native Implementation: `quantumbridge/core/public_circuit.py`,
+`quantumbridge/core/instruction_parameters.py`, `quantumbridge/core/circuit.py`,
+`quantumbridge/core/operations.py`, `quantumbridge/core/gates.py`,
+`quantumbridge/core/standard_gates.py`,
+`quantumbridge/core/annotated_operation.py`, `quantumbridge/core/control_flow.py`,
+`quantumbridge/core/errors.py`, `quantumbridge/serialization/qpy.py`.
+Independent tests: `tests/compat/test_qiskit_public_binding_differential.py`,
+`tests/circuit/test_native_public_parameter_binding.py`,
+`tests/circuit/test_native_public_selective_decompose.py`,
+`tests/circuit/test_native_public_definition_factories.py`,
+`tests/serialization/test_qpy_native_controlled_primitives.py`,
+with selective-layered public outcomes in
+`tests/compat/test_qiskit_public_frames_factories_differential.py`.
+Actual installed public Qiskit2.4.1/2.6.0 binding/query calls and method
+signatures are behavioral references, not implementation source. Each version
+is actually called for Parameter/string/vector/iterable/flat_input/strict,
+unknown UUID/error/default/query and return/name outcomes. Native binding,
+managed ownership/resource admission, UUID views, native formal plans and
+existing IR/QPY/AD engines implement the supported behavior independently.
+The native internal bind_definition entry prevents public auto-naming from
+changing structural binding signatures; no signature field is ignored to
+hide a mismatch. No upstream implementation or test source is inspected,
+copied or vendored. This historical increment did not implement exact public
+metadata/ParameterView/conversion/recipe ABI; later continuations are recorded
+above. Final stage acceptance remains incomplete; no current frozen FULL/GLOBAL
+or remote CI is claimed from these development tests.
+The later selective decomposition checks independently measure public names,
+labels, wildcard/type/mixed selectors and exact per-layer contexts in both
+versions. Native raw definition and bounded selector admission now precede
+copy/expansion; independent full complex matrices, phase, bind/inverse/HVP and
+same-name custom definitions protect actual native execution, not merely type
+or operation-name assertions.
+The later conversion slice creates actual local default bit/register owners,
+retains the normalized formal template, and adds native QiskitError/CircuitError
+contract classes without an upstream exception dependency. Public2.4.1's
+unbound mapped Instruction phase is separately observed as an upstream error;
+public2.6.0 is actually observed to bind it correctly. This difference is not
+hidden as MATCH. Native controlled-involution QPY standard records and a
+five-operation same-axis doubly controlled rotation identity are independently
+implemented and checked against analytic matrices and actual public loaders.
+No upstream implementation, test source or third-party code is read or copied;
+the rotation identity uses the existing native primitives without dense export.
+
+## Stage 12-B P4-U3D2-R Cached Frames And Factories In Progress
+
+Independent Native Implementation: `quantumbridge/core/operations.py`,
+`quantumbridge/core/circuit_data.py`, `quantumbridge/core/public_circuit.py`,
+`quantumbridge/core/circuit.py`, `quantumbridge/core/standard_gates.py`,
+`quantumbridge/core/gates.py`, `quantumbridge/serialization/qpy.py`.
+Independent tests: `tests/circuit/test_native_public_cached_frames.py`,
+`tests/circuit/test_native_public_owner_lifecycle.py`,
+`tests/circuit/test_native_public_factories.py`,
+`tests/circuit/test_native_public_zero_width_factories.py`,
+`tests/compat/test_qiskit_public_frames_factories_differential.py`.
+Native SDK-free numerical example: `examples/native_public_circuit_frames.py`.
+Actual public Qiskit2.4.1/2.6.0 Gate/Instruction/CircuitInstruction/factory calls
+and standard qpy.dump(version=13)/load are behavioral references only. The
+public probes record errors and a public Rust PanicException as outcomes;
+completion of a probe is not evidence that every API call succeeds. No
+implementation, test source, tutorial code or documentation prose is copied.
+Native data, handles, parameter binding, scalar complex matrices, coherent
+control, IR/QPY and four-interface derivatives reuse the existing native
+authoritative store and engines. Native generic owner rebinding maintains
+checked formal lineage; it does not imitate public stale owner/definition
+combinations that fail real Operator execution. This observable difference,
+remaining factory metadata/naming/recipe gaps and the lack of final frozen
+FULL/GLOBAL/matrix acceptance are explicit. No Studio/Router attribution is
+invented and no foreign code is vendored or executed by the native engine.
+
+## Stage 12-B P4-U3D2 Native Public ABI And Register Interchange In Progress
+
+Independent Native Implementation: `quantumbridge/core/public_circuit.py`,
+`quantumbridge/core/circuit_data.py`, `quantumbridge/core/operations.py`,
+`quantumbridge/core/standard_gates.py`, `quantumbridge/circuit_library/__init__.py`,
+`quantumbridge/serialization/qpy_registers.py`,
+`quantumbridge/serialization/control_normalization.py`,
+`quantumbridge/serialization/text_lowering.py`,
+`quantumbridge/information/operator.py`, `quantumbridge/information/statevector.py`,
+`quantumbridge/information/density_matrix.py`, `quantumbridge/information/clifford.py`,
+`quantumbridge/information/channels.py`, with the existing U3D modules below.
+Independent tests: `tests/circuit/test_native_public_quantumcircuit.py`,
+`tests/circuit/test_native_public_execution_frames.py`,
+`tests/circuit/test_native_public_builder_gate_classes.py`,
+`tests/circuit/test_native_public_closed_loops.py`,
+`tests/circuit/test_native_public_handle_resources.py`,
+`tests/circuit/test_native_circuit_inplace_contracts.py`,
+`tests/serialization/test_qpy_native_bit_graph.py`,
+`tests/serialization/test_qasm_native_register_declarations.py`,
+`tests/compat/test_qiskit_public_quantumcircuit_differential.py`.
+SDK-free examples: `examples/native_public_quantumcircuit.py`,
+`examples/native_bit_register_qpy_gradient.py`.
+Behavioral references: actual public Qiskit2.4.1/2.6.0 calls, public Operator
+results and standard qpy.dump(version=13)/load calls;
+https://quantum.cloud.ibm.com/docs/en/api/qiskit/2.4/qpy and
+https://quantum.cloud.ibm.com/docs/en/api/qiskit/1.3/qpy for the published
+register record flags/mappings retained by v13. No upstream implementation,
+test source, tutorial code or documentation prose is copied or vendored.
+One authoritative operation store and native execution engines are retained.
+Actual QPY records replace the earlier temporary noncanonical-graph rejection;
+normal register arrays also have real supported QASM declarations. Source
+aliases/reordered/loose graphs and nonportable ancilla records still reject.
+No metadata sidecar is substituted for these standard records. This remains
+unfrozen supported-subset development, not full U3D/U3/P4/SDK acceptance.
+
+## Stage 12-B P4-U3D Bit/Register Foundations In Progress
+
+Independent Native Implementation: `quantumbridge/core/bits.py`,
+`quantumbridge/core/circuit.py`, `quantumbridge/core/composition.py`,
+`quantumbridge/core/gates.py`, `quantumbridge/core/gate_limits.py`,
+`quantumbridge/core/__init__.py`, `quantumbridge/__init__.py`,
+`quantumbridge/ir/qb_ir.py`, `quantumbridge/compat/qiskit_adapter.py`,
+`quantumbridge/qml/tape.py`, `quantumbridge/serialization/common.py`,
+`quantumbridge/serialization/qpy.py`.
+Independent tests: `tests/circuit/test_native_bit_identity.py`,
+`tests/circuit/test_native_register_contracts.py`,
+`tests/circuit/test_native_zero_width.py`,
+`tests/circuit/test_native_bit_resources.py`,
+`tests/serialization/test_native_bits_registers_roundtrip.py`,
+`tests/compat/test_qiskit_bits_registers_public_differential.py`.
+Native numerical example: `examples/native_bit_register_identity.py`.
+References: actual public Qiskit2.4.1/2.6.0 calls and
+https://quantum.cloud.ibm.com/docs/en/api/qiskit/2.4/qpy .
+No upstream implementation/test source is inspected, copied or vendored.
+The new native IR structural bit_graph record is not a claimed QPY extension.
+The initial temporary rejection of native-register records is superseded by
+the actual supported QPYv13 records described in U3D2 above. This development
+does not establish full U3D/U3/P4/SDK parity. No unowned Router/Studio code is
+edited or assigned a speculative source provenance.
+
 ## Stage 12-B P4-U3C Composition And Classical Scope In Progress
 
 Independent Native Implementation:
@@ -2089,3 +3106,247 @@ implemented from that published binary data contract, not vendored code.
 Stage 12-B P2 source port count remains zero. Literal public behavior records
 include an observed 2.4.1/2.6.0 phase-substitution difference, not a claim of
 identical public error/return ABI or complete Circuit/ParameterExpression parity.
+
+## TF7 Native MPS Mixed-AD Integration
+
+Independent native development, source-port count zero. No upstream SDK source,
+tests, examples, environments or binary packages were imported. Public TF tensor
+and AD operations execute existing QuantumBridge compiled local operations on
+the existing physical (left,2,right) tensor-chain convention. Shared native
+gather/restore routing and exact uncompressed local index splits avoid QR/SVD
+gauge differentiation. Existing dense and MPS tangent math are numerical
+comparison oracles, not TF host quantum callbacks or Hessian payloads.
+
+Changed native boundaries: `information/matrix_product_state.py`,
+`diff/mps_derivatives.py`, `execution/derivative_planning.py`,
+`interfaces/tensorflow_whole_execution.py`, `interfaces/tensorflow_mps_execution.py`,
+`interfaces/tensorflow_autodiff.py` and `interfaces/tensorflow_managed.py`.
+New math/resource tests are `tests/interfaces/test_native_tf_mps_tensor_chain.py`
+and `tests/interfaces/test_native_tf_mps_resource_contract.py`. The original
+four 100-wire mathematical tests are not rewritten. Supported exact analytic
+low-bond execution is not general MPS parity; original R2 final gates remain open.
+`tests/interfaces/test_native_tf_mps_legacy_selection.py` additionally protects
+existing parameter-shift, variance/probability and wider-local-power native
+host contracts. New tensor specialization is selected only for its admitted
+MPS-tangent domain. Named missing tensor rules can retain prior host admission;
+resource, identity and mathematical-domain errors are never generic fallback.
+
+## TF8 Exact Local Matrix Coverage
+
+Independent development; source-port count remains zero. The existing native
+`unitary` matrix payload (one/two wires only) enters the TF MPS fixed-operation
+store after common work admission and strict native unitarity validation.
+Existing q0-first routing, exact index splits, parameter bindings, local power
+math, observable conversion, source fingerprints and shared ledgers are reused.
+Storage estimates additionally count cumulative local evolution, operator,
+power-graph and observable-contraction history. These are structural bounds,
+not measured TensorFlow allocator/RSS guarantees.
+
+Formal tests live in `tests/interfaces/test_native_tf_mps_exact_*.py`; the
+explicit `probes/diagnose_tf_mps_pfor_variant.py` preserves failed pure-TF and
+native AD-loop diagnostics without adding exclusions or changing production
+math. No upstream source, examples, tests, package trees or binary artifacts
+were copied. Public QuantumCircuit.unitary dispatch and full SDK parity remain
+incomplete; passing lower-level Circuit tests do not close those gaps.
+
+## QC1 Public Unitary And Append Local Basis
+
+Independent development, source-port count zero. Changes reuse existing public
+Circuit frames, UnitaryGate/ControlledGate/AnnotatedOperation, owned-array and
+GateCircuitLimits admission, native global q0-first math and standard QPYv13
+records. Explicit invocation/owner provenance distinguishes literal public
+matrices from native numerical factories; no source-name/value guessing,
+ndarray registry, parallel operation store, executor or private QPY sidecar.
+Shared-DAG family classification memoizes analysis while charging each expanded
+reference and checking active cycles, depth and existing work/node limits.
+Definition types, operation containers, parameter tuples and provenance enums
+are admitted before accessing foreign properties, iterators or equality hooks.
+Standard matrix record factories retain their proven decoded native coordinates
+when a restored Gate is detached and reused; no provenance sidecar is encoded.
+
+Affected native boundaries are core/public_circuit.py, circuit_data.py,
+operations.py, standard_gates.py, circuit.py, gates.py; information/operator.py;
+serialization/qpy.py and text_api.py. New QC1 tests/probes use independent
+complex math and installed SDK public calls. Five narrowly authorized old
+public-entry expectations in test_native_controlled_public_powers.py are
+corrected with original matrices/exponents/tolerances retained and additional
+native Operator/Circuit/state/density checks. No upstream implementation code,
+source tests, examples, binaries, credentials or dependency trees are imported.
+
+Unproved compound Operator matrix origins are explicitly refused by the public
+unitary wrapper rather than silently reinterpreted; their native numerical
+data/operations remain unchanged. Native raw inverse metadata still has a
+precise QPY refusal; raw native QPY followed by inverse is independently
+checked. These and native-owned versus upstream-alias behavior are open parity
+gaps, not completed functions. Original R2 FULL/GLOBAL/coverage/exclusion/matrix/
+all-example/legal/frozen-Git final gates remain open.
+
+## QC2 Explicit Public Operator Convention
+
+Independent native development; source-port count zero. The only production
+boundary in this batch is information/operator.py: a same-class owned
+as_qiskit_operator conversion, immutable arithmetic convention distinct from
+existing matrix provenance, native-kernel front/subsystem mapping, factor-order
+dimension propagation and existing resource admission. No additional matrix
+store/class/registry/executor, circuit change or serialization sidecar. QPYv13
+and real JSON IR continue the QC1 standard-record construction boundaries.
+Original default-public56-red probes and native arithmetic assertions stay
+unchanged; opt-in proofs have separate receipts and cannot replace those reds.
+
+The explicit-public conversion normalizes proved circuit-native coordinates
+once, copies raw literal matrices without permutation and preserves public
+coordinates thereafter. Malformed owners are qualified before derived reads;
+raw tensor dtype conversion and destination share prior allocation admission.
+Native default products, mixed-radix and MatrixFunctions power math are not
+migrated. Full default API parity and all original R2 final gates stay open.
+
+## QC3 Native Arithmetic Entry And Channel Callsite
+
+Independent implementation; source-port count zero. New as_native_operator
+is the existing Operator type with an owned matrix and immutable native call
+convention, separate from physical matrix origin. Native data/dimensions stay
+unchanged; explicit public/native conversion uses the preexisting subsystem
+reverse map (including unequal dimensions/rectangles) once per direction.
+Raw literal public selection, implicit native defaults and unresolved-origin
+refusals remain unchanged. Explicit native multiplication and factor geometry
+retain proved native physical output coordinates, not guessed source labels.
+
+Only confirmed external dense arithmetic receiver migrated:
+information/channels.py:_embed_operator, with two explicit native operands.
+Same-named Circuit/Pauli/Clifford/Channel/Torch methods are not migrated.
+AST candidate inventory preserves unresolved aliases/dynamic attributes and
+separate constructor/data-source candidates. No claim all constructors or
+external user code are ready for a default switch. Existing resource/owner
+admission now also checks conversion element work before copying. Production
+scope is information/operator.py and information/channels.py; no new executor,
+matrix registry, store, format sidecar or from_native_circuit constructor.
+Original public-default56 failures and all original R2 final gates stay open.
+
+An actual mixed-convention add/sub defect was found after the first QC3 freeze:
+the existing binary helper read other.data before admission and inherited a
+trusted native marker. Its existing arithmetic path now checks native owner,
+mode and representation before reads, refuses incompatible conventions and
+admits known raw conversion/output allocation groups together. Legacy native
+numeric semantics, scalar math and existing kernels are unchanged. Old frozen
+partial gates are recorded as interrupted, never reused as final acceptance.
+
+### QC4 State-To-Operator Construction Origins
+
+Existing native Statevector/DensityMatrix factories now retain their proved
+high-first matrix coordinates through the existing Operator basis marker.
+Statevector still allocates one projector buffer; DensityMatrix still borrows
+its source array. Explicit public conversion owns a separate snapshot. Exact
+native receiver/data/dims/shape and existing graph/work/array admission protect
+the publication boundary. General native representation is no longer coupled
+to explicit-native arithmetic selection; default arithmetic is unchanged.
+No new Operator class, native constructor, converter, ndarray registry or
+upstream numerical implementation is introduced. Production scope versus the
+QC3 checkpoint is only information/statevector.py, density_matrix.py and
+operator.py; legal notices/new tests document independent development.
+
+Latest frozen1589 selected-source state-factory regression: both installed
+SDK environments7258passed/4unchangedoriginalxfail; TF/MPS305passed each;
+strictSDKfree805passed;9actualnumericalexamplescompleted. All terminal exit0,
+same-process import origins and before/after manifests verified. This is NOT
+QC4/H4B acceptance or full-worktree/staged/commit equality.
+
+Two newly formalized consumer-origin reds remain OPEN: circuit-derived
+AnnotatedOperation inverse matrix and Circuit-derived Kraus's complete public
+SuperOp. Raw matrix/Clifford/Pauli/sparse/Kraus literals are not blanket-tagged.
+OriginalQC4-H4B prompt is received for those repairs. Default56, external
+constructor/user ABI risks and all originalR2 final gates remain OPEN; full
+independent native replacement remains ACTIVE/INCOMPLETE. Local-only unchanged.
+
+### QC4 H4B/H4C Matrix Owner Continuation
+
+Existing annotation matrix construction now shares the finite Gate/Operator
+origin classifier while retaining resolved numeric data. Native Circuit-derived
+Channel construction and six existing representations preserve a readonly
+native/unresolved coordinate enum through copies and derived conversions.
+Raw channel matrix buffers remain literals. Existing work/storage/graph
+admission qualifies canonical owners before field callbacks/copies. No channel
+numeric/vectorization algorithm or extra execution system is imported.
+
+A finite hybrid source variant on the SAME Operator handles exact canonical
+raw UnitaryGate plus bounded annotation control/inverse/power chains. One
+readonly target width plus checked qubit dimensions describe native-control /
+literal-public-target coordinates. Independent register-index maps establish
+hybrid->public and hybrid->native permutations. Existing owned permutation
+storage is reused, no dense permutation matrix/array registry/private QPY
+sidecar. Default arithmetic and raw legacy numeric matrices remain unchanged.
+Materialized matrix QPY13/JSON transports are tested; arbitrary modifier
+interoperability is not thereby claimed. Direct Channel(hybrid) still requires
+an existing explicit selection and remains an OPEN no-opt-in parity gap.
+
+Latest same1595-source terminal regression: Main/Alternate each7489passed/
+4unchangedoriginalxfail, TF-MPS305passed each, strictSDKfree932passed and
+9actual numerical examples complete. Originaltwo source reds and new56hybrid
+matrix cases are actual PASS, not xfail or relaxed tolerances. Source archive,
+in-process origins, JUnit/exits and before/after fingerprints retained under
+tmp/r2o3b-qc4-h4c-*. No preexisting test changed from priorstatebaseline. These
+bounded receipts are not full replacement/default readiness or full Git-state
+equality. Default56/fullR2 remain OPEN, fullgoalACTIVEINCOMPLETE/localonly.
+
+### QC4 H4D Direct Hybrid Channel Boundary
+
+The existing Operator->Channel numeric consumption boundary now converts only
+admitted bounded hybrid sources to one independent owned native snapshot.
+No permanent user opt-in is needed for bare Kraus(Operator(annotation)) in
+this proved domain. Source storage stays hybrid; successful Channel storage
+is normalized native, and raw/native paths are not converted twice. Nested
+unproved generalized Stinespring factors remain refused. Existing channel
+kernels and column-vectorization remain unchanged, no upstream source copied.
+
+Public red57 per actual Qiskit environment retained; focused337pass each on
+latest1598selected source. Whole-map/evolution/trace preservation, six channel
+representations and owner/resource/fault checks pass. A test-only physicalwire
+oracle correction is recorded, not counted as a production math fix. Latest
+source frozen; six affected gates require terminal verification before bounded
+review. SDKfree1053 and nineexamples terminal pass, four longer gates RUNNING.
+Default56actualfailures remain open on bothSDKs. No full SDK/default readiness,
+full Git-state equality or originalR2final-gate acceptance is implied.
+
+H4D final same1598-source terminal receipts now verified: Main/Alternate
+broad7703passed each plus four unchangedoriginalxfail, TF-MPS305passed each,
+strictSDKfree1053passed, nineactualexamplescomplete, all six exit0 with before/
+after/currentmanifest equality. Actualsameprocess origins/JUnits retained;
+93newactualSDK channelprobes and originalfiveTF100wiremixedAD/thirdrefusal
+individually PASS. Newnative50math+71resource cases also SDKfreePASS. Previous
+RUNNING checkpoints above are superseded by these terminal receipts, not by
+rewriting historical evidence. Fouroriginalxfail/default56remain unresolved;
+all originalR2/fullgoal conditions remain OPEN/INCOMPLETE. Proposal is bounded
+hybrid Channel construction readiness, not wholeSDK/default ABI acceptance.
+
+### QC4 H5 Gate And Clifford Sources
+
+ActualtwoSDK red45first and18opaqueInstructiontransport failures drove minimal
+existingfactory repairs. Clifford booltableau is no longer coerced into dense
+Operator; existing exact-native owner checks qualify matrix construction before
+callbacks/copies. Circuit/qualifiedOperator nativeorigin, rawtableau/matrix
+literalorigin, mixedproducts unresolved preserved through existing algebra.
+Tableau synthesis math and numericphase unchanged; projectiveClifford vs full
+Operator phases explicitly distinguished. Explicitpublic/provedhybrid exported
+instructions reuse existing UnitGate/nativeframe, not privateformat metadata;
+legacydefaultcustomInstruction is not silently migrated. Extraownedcopies and
+validationpeak remain real measured costs, not zero-copy claims.
+
+During frozenaudit, nativeOperator mixedpartition(4,)/(2,4)/(4,2) revealed real
+wrongbinary-origin propagation. Kept actual9reds eachSDK and oldfourownedtest
+SIGINT/terminalexit2 partialreceipts. R1 normalizes only admitted finite matching
+2^n-square native nonqubitOperator through existing declaredpublic/radix map,
+thenexistingCliffordfrom_matrix with literal/publicorigin. Independent digit
+enumeration, sourceimmutability, exactsynthesisphase, budget/ownership/concurrency
+andnegative paths prove the relation. No native.data/reshape/kernel change.
+LatestR1focused363PASS each;1601SHA0924e250... exactsourcearchive retained.
+Freshsixgates required. SDKfree1212PASS+4absentSDKoptionaloracleSKIPs andnine
+examples exit0 verified; four longerfreshgates RUNNING. Originaldefault56fail
+each persists. AlloriginalR2/fullreplacement conditions OPEN/INCOMPLETE;
+no finalSDK/default/readiness or fullGitstate equality implied by these subsets.
+
+R1 final1601source is now terminalverified: Main/Altbroad8043PASS+same4oldxfail,
+TF-MPS305PASS each, strictSDKfree1212PASS+4explicitoldoptionalQiskitoracleSKIPs,
+nineactualexamplesexit0, all sixexit0 andbefore/after/currentmanifest equality.
+Originalfour100wiremixedAD/true-thirdrefusal, new144SDKsourceprobes, and actual
+twoSDK bilateralQPY/mixedradixSV/MPS/Compiler/IR transports verified. Default56
+actualfailures andfullgoal/R2 remainopen. BoundedGate/Cliffordconstructionready
+proposal is not wholeSDK/defaultABI or Qiskitsynthesizerphaseidentity claim.

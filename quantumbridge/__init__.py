@@ -34,6 +34,11 @@ from quantumbridge.circuit_library import (
 )
 from quantumbridge.compat import circuit_from_openqasm, circuit_from_qiskit, circuit_to_qiskit
 from quantumbridge.core import Circuit, Instruction, Gate, ControlledGate, Measurement, Operation, Parameter, ParameterExpression, ParameterVector, ParameterVectorElement
+from quantumbridge.core import ParameterView
+from quantumbridge.core import Bit, Qubit, Clbit, AncillaQubit, QuantumRegister, ClassicalRegister, AncillaRegister, BitLocations
+from quantumbridge.core import QuantumCircuit,CircuitInstruction,InstructionSet
+from quantumbridge.core import (ControlFlowOp, IfElseOp, ForLoopOp, WhileLoopOp,
+    SwitchCaseOp, BreakLoopOp, ContinueLoopOp, CASE_DEFAULT)
 from quantumbridge.core import AnnotatedOperation, Modifier, InverseModifier, ControlModifier, PowerModifier, resolve_annotated_operation
 from quantumbridge.core.control_flow import ExecutionLimits
 from quantumbridge.core.classical import UnsupportedFeature
@@ -41,7 +46,7 @@ from quantumbridge.compiler import transpile
 from quantumbridge.devices import ShotSampler, StatevectorDevice, StabilizerDevice, DensityMatrixDevice, MatrixProductStateDevice
 from quantumbridge.diff import parameter_shift
 from quantumbridge.information import DensityMatrix, Statevector, MatrixProductState
-from quantumbridge.operators import Pauli, SparsePauliOperator
+from quantumbridge.operators import Pauli, SparseObservable, SparsePauliOperator
 from quantumbridge.primitives import (
     BackendEstimator,
     BackendEstimatorV2,
@@ -50,9 +55,17 @@ from quantumbridge.primitives import (
     BitArray,
     DataBin,
     Estimator,
+    LegacyBitArray,
+    LegacyDataBin,
+    LegacyEstimator,
+    LegacyPrimitiveResult,
+    LegacyPubResult,
+    LegacySampler,
+    PrimitiveJob,
     PrimitiveResult,
     PubResult,
     Sampler,
+    SamplerPubResult,
     StatevectorEstimator,
     StatevectorSampler,
 )
@@ -65,6 +78,10 @@ from quantumbridge.utils.math import Hamiltonian, PauliString, PauliX, PauliY, P
 __all__ = [
     "AmplitudeEstimationResult",
     "Circuit",
+    "QuantumCircuit", "CircuitInstruction", "InstructionSet",
+    "ControlFlowOp", "IfElseOp", "ForLoopOp", "WhileLoopOp", "SwitchCaseOp",
+    "BreakLoopOp", "ContinueLoopOp", "CASE_DEFAULT",
+    "Bit", "Qubit", "Clbit", "AncillaQubit", "QuantumRegister", "ClassicalRegister", "AncillaRegister", "BitLocations",
     "ExecutionLimits",
     "UnsupportedFeature",
     "Backend",
@@ -101,6 +118,7 @@ __all__ = [
     "ParameterExpression",
     "ParameterVector",
     "ParameterVectorElement",
+    "ParameterView",
     "Options",
     "OptimizerResult",
     "NumPyEigensolver",
@@ -113,11 +131,20 @@ __all__ = [
     "PhaseEstimationResult",
     "QiskitBackendNotFoundError",
     "PrimitiveResult",
+    "PrimitiveJob",
     "PubResult",
     "Result",
     "Sampler",
+    "SamplerPubResult",
+    "LegacyBitArray",
+    "LegacyDataBin",
+    "LegacyEstimator",
+    "LegacyPrimitiveResult",
+    "LegacyPubResult",
+    "LegacySampler",
     "ShotSampler",
     "SparsePauliOperator",
+    "SparseObservable",
     "StatevectorEstimator",
     "StatevectorDevice",
     "StatevectorSampler",

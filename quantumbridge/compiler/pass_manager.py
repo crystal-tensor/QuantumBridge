@@ -21,7 +21,9 @@ def _comparison_snapshot(circuit):
     from quantumbridge.core.symbolic_limits import current_symbolic_limits
     from quantumbridge.serialization.limits import SerializationLimits
     limits = SerializationLimits(max_symbolic_expression_depth=current_symbolic_limits().max_depth)
-    return json.dumps(circuit.to_ir().to_dict(serialization_limits=limits), sort_keys=True)
+    from quantumbridge.ir.qb_ir import _DefinitionCodec
+    context=_DefinitionCodec(limits,include_user_metadata=False)
+    return json.dumps(circuit.to_ir().to_dict(_context=context), sort_keys=True)
 
 
 class PropertySet(dict):
@@ -50,7 +52,8 @@ class PassManager:
         from .dag import circuit_to_dag
         from .traversal import transform_segments
         circuit_to_dag(circuit, self.limits)
-        current = circuit.copy()
+        from quantumbridge.core.circuit_metadata import execution_copy
+        current = execution_copy(circuit)
         analyses, trace, changed = {}, [], False
         self.property_set = PropertySet()
         count = 0

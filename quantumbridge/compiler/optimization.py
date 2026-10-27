@@ -14,7 +14,8 @@ from .pass_base import PassResult, TransformationPass, copy_terminal_measurement
 
 class RemoveIdentityPass(TransformationPass):
     def run(self, circuit):
-        out = Circuit(circuit.num_qubits, circuit.num_bits, circuit.name, circuit.metadata)
+        from quantumbridge.core.circuit_metadata import empty_execution_circuit
+        out = empty_execution_circuit(circuit)
         removed = 0
         for op in circuit.operations:
             if op.name in {"id", "identity"}:
@@ -30,7 +31,8 @@ class CancelAdjacentInversePass(TransformationPass):
     self_inverse = {"x", "y", "z", "h", "cx", "cz", "swap"}
 
     def run(self, circuit):
-        out = Circuit(circuit.num_qubits, circuit.num_bits, circuit.name, circuit.metadata)
+        from quantumbridge.core.circuit_metadata import empty_execution_circuit
+        out = empty_execution_circuit(circuit)
         index = 0
         cancelled = 0
         while index < len(circuit.operations):

@@ -1,5 +1,23 @@
 # QuantumBridge SDK
 
+[Application framework / 应用框架](https://crystal-tensor.github.io/QuantumBridge/framework.html)
+organizes four domains and 19 directions with executable research notebooks.
+It is a scope and evidence browser, not a certificate of complete SDK parity.
+For a local preview run `node studio/scripts/serve.mjs` and open
+`http://127.0.0.1:8765/framework.html`.
+
+The 2026-10-27 development snapshot includes native public circuit/bit/register
+contracts, Primitives V2, moving-power differentiation and MPS/TensorFlow work,
+plus standard QPY13 control-flow and scoped-variable transport. This is still
+work in progress, not complete Qiskit/PennyLane parity. The publication check
+passed 1305 focused tests with 3 existing expected failures, and all 7 page
+navigation/export checks. Desktop/mobile home-case-home navigation covered all
+19 cases, with notebook downloads. A separate full-suite run stalled and was
+stopped; no full-suite pass or current global coverage is claimed. Four known
+legacy primitive-container contract conflicts remain unresolved (the separate
+primitive suite returned 156 passed and 4 failed). Private
+proposals, credentials, environments and temporary diagnostics are not published.
+
 Stage 12-B P4 is in progress: native Gate definitions, structural decomposition,
 repeat/tensor and symbolic controlled phase now have execution tests. Complete
 Gate/QASM/QPY/annotation contracts and P4 final acceptance are still pending;
@@ -27,7 +45,8 @@ Symbolic modifier powers are unsupported: v13 stores the exponent as float64.
 Public Qiskit 2.4.1 and 2.6.0 themselves lose the enclosing circuit parameter
 index on v13 annotation reload; object parameters survive, but this is an
 explicit unresolved public binding ABI gap, not claimed lossless interop.
-Standalone custom Instruction records, nonunitary bases, arbitrary object
+The original U1 subset rejected standalone custom Instruction records and
+nonunitary bases; later U3B/R2 support is described below. Arbitrary object
 metadata and unsupported labels still reject. Dedicated standard return
 classes and full original P4 acceptance remain unfinished.
 SDK-free numeric demonstrations are
@@ -102,6 +121,126 @@ Duration execution and typed-scope
 QPY/QASM transport remain unsupported, not metadata-only substitutes. Run the
 SDK-free `PYTHONPATH=. python examples/native_circuit_composition.py` and see
 the [composition progress report](docs/implementation/stage12_b_p4u3c_composition_classical_scope_progress.md).
+
+P4-U3D is in development: native Bit/Register identity and aliases now feed
+actual execution operands. Native QuantumCircuit provides checked public
+append/builders, CircuitInstruction contexts and InstructionSet handles while
+Circuit retains fluent returns, sharing the existing authoritative store and
+engines. Standard invocation parameter frames, real QPYv13 normal/loose/alias/
+external-register records, and representable QASM register-array declarations
+have targeted numeric tests. Unsupported source aliases, ancilla QPY and typed
+scope transport remain explicit. These are supported subsets, not complete
+QuantumCircuit, QPY or SDK parity. No new frozen FULL/GLOBAL acceptance is
+claimed. Run the SDK-free examples `examples/native_public_quantumcircuit.py`
+and `examples/native_bit_register_qpy_gradient.py`. See the
+[bit/register work log](docs/implementation/stage12_b_p4u3d_bits_registers_progress.md)
+and the SDK-free `examples/native_bit_register_identity.py` example.
+
+U3D2-R development extends cached invocation frames to native generic Gate and
+Instruction owners, checked data replacement and indexed handle inversion.
+Public copy/empty-copy/repeat/power/tensor/decompose outputs now retain actual
+native stores and have independent phase/parameter/execution tests. Scalar
+1x1 UnitaryGate matrices have real zero-qubit execution, coherent control and
+bilateral standard QPY tests. The SDK-free numeric example is
+`examples/native_public_circuit_frames.py`. Native generic inverse/compose do
+not reproduce upstream stale owner/definition states that cannot execute;
+this is an explicit observable difference, not full public ABI parity.
+Canonical decomposition recipes, factory naming/metadata, all remaining
+operation classes and typed public contexts still need work. Current tests
+are development FOCUS, not new frozen FULL/GLOBAL/matrix acceptance.
+
+U3D2-R2 adds a measured public binding subset: Parameter/string/vector mappings,
+ordered iterables, flat_input/strict, inplace return rules, non-inplace names
+and UUID-preserving get_parameter/has_parameter queries. Public naming is
+kept out of internal definition binding, so native IR formal binding plans
+remain deterministic and editable. Invalid binds remain atomic, with managed
+callback rejection and bounded iterable/vector admission. These additions do
+not complete public metadata or all conversion/decomposition contracts.
+The later ParameterView continuation below adds the measured public snapshot
+container. Full SDK parity and final frozen
+acceptance are still pending.
+
+Public Gate/Instruction conversion now creates actual local default q/c bit
+owners and keeps complete formal maps, UUIDs, operand order and coherent phase.
+Native QiskitError remains a ValueError-compatible extension, with no upstream
+exception dependency. The custom-layer selective decompose subset is tested
+for names, labels, wildcard/type/mixed selectors and one layer per repetition,
+with definition/selector admission before copying. QPY can structurally export
+the supported doubly controlled X/Z/Swap and same-axis rotations; the latter
+use five native primitives without dense export. Public2.4.1's mapped
+Instruction-phase bug is recorded, not copied; actual2.6.0 behavior matches.
+Public metadata now has a separate user-data domain: setting a user key named
+global_phase, classical_scope or registers cannot change executable state.
+Constructor/setter reference, deep-copy factories and empty-metadata factories
+are measured against actual public 2.4.1/2.6.0 calls. Decompose currently follows
+2.4.1's shared dictionary; 2.6.0's shallow outer-copy difference is explicit.
+Native IR retains typed execution state; standard QPY carries JSON user data
+separately from real phase/register records. Non-JSON objects remain valid
+in memory but explicitly refuse unsupported portable encoding. QPY-decoded
+internal register descriptions are no longer exposed as user metadata; real
+register owners remain available. Legacy fluent Circuit metadata configuration
+is unchanged. All dynamic/annotation/control and canonical definition recipes
+and the final frozen acceptance are incomplete.
+
+The R2 owner-lifecycle continuation extends captured generic invocation frames
+to ControlledGate and AnnotatedOperation: later source parameter mutation does
+not replace captured executable slots. Binding, explicit data replacement,
+inverse/copy/compose and native IR/QPY have full complex-matrix and derivative
+tests, including 100-wire MPS without dense expansion and four AD interfaces.
+Generic controlled names retain the actual open-control suffix, including
+literal suffixes in user-assigned names. Real QPYv13 custom Instruction and
+annotation records now carry supported classical widths and operand mappings.
+Measurement/reset annotations can be constructed and transported but illegal
+unitary resolution is refused. A measured custom Instruction roundtrip runs on
+the four native local devices; this does not establish real cloud execution.
+These are development subsets, not final frozen acceptance, complete QPY,
+complete public ABI or full Qiskit/PennyLane functional parity.
+Definition replacement and nested graph mutation now also have independent
+complex-matrix/factory/transport tests. Conversion-derived Instruction names
+update atomically, and public copy rejects malformed/cyclic/over-budget raw
+definitions before copying. Actual public ControlledGate inverse can use a
+stale base or fail after definition replacement; native mathematical consistency
+is retained as an explicit intentional difference, not identical public ABI.
+
+The controlled-base continuation tests two/open/nested control ownership against
+two actual public versions and independent complex-matrix oracles. Supported
+multi-control rotation/fixed-gate QPY export is structural, not a dense matrix
+escape. Variable-width MCPhaseGate/MCXGate import uses native generic controlled
+objects; dedicated public subclasses are not implemented by this change.
+Native controlled derivatives are zero outside the active subspace and use the
+correct half-frequency shifts for controlled Pauli rotations. Tests exercise
+Jacobian/Hessian/HVP, four AD interfaces and 100-wire nested-control MPS execution.
+Native IR now explicitly preserves invalidated numeric formal history and the
+actual edited definition, while still refusing ambiguous subsequent rebinding.
+Labeled open CCX public QPY reload and symbolic annotation parameter indexing
+have measured upstream failures; they are not claimed lossless public transport.
+Same-name/different-UUID native update failures remain atomic even where measured
+public updates are not. These are supported development slices, not original R2
+frozen acceptance or full SDK replacement. No cloud/hardware execution is proved.
+
+Public QuantumCircuit.parameters now returns an independent native ParameterView
+snapshot, with ordered iteration/indexing/list slices, mutable data/remove,
+copy semantics, set comparisons and the measured reflected/augmented operators.
+Intersection preserves order and duplicates; union, difference and symmetric
+difference return sets. Snapshot mutation cannot change circuit parameters,
+captured invocation slots, formal binding plans, IR/QPY or real derivatives.
+Both installed public reference versions are called for these contracts; no
+upstream implementation is used at runtime. Logical parameter/work bounds and
+managed foreign-callback admission apply before copying or changing the view.
+Legacy fluent Circuit.parameters remains a tuple. This closes a specific public
+collection gap, not all Parameter/ParameterVector representations, public circuit
+ABI, original frozen acceptance or full Qiskit/PennyLane functional parity.
+
+The subsequent vector audit adds a read-only vector name, live list parameters,
+list slices, stable-UUID shrink/regrowth, native integral indices and lengths,
+empty vector names and atomic, bounded growth. Managed scalar/vector input
+admission precedes foreign truth/index/equality callbacks. Both native IR and
+standard QPY retain empty-name vector identities and actual bindings. Native
+list mutation keeps length/iteration/params coherent, matching measured2.4.1;
+measured2.6.0 can diverge after manual params-list mutation, an explicit safety
+difference. Negative lengths are refused rather than copying2.4.1's negative
+slice truncation. Public UUID objects/complete scalar-name/representation ABI
+and general noninteger Operator powers remain distinct unfinished requirements.
 
 Native symbolic mathematics passed bounded local acceptance in Stage 12-B P3. Scalar
 functions, symbolic/repeated differentiation and simultaneous substitution now

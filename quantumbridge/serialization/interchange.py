@@ -26,14 +26,19 @@ def serialize_circuit(circuit,format="qasm3",*,metadata_policy="reject",**option
     sidecar = {}
     source = circuit
     if metadata_policy == "external":
-        sidecar = {"name":circuit.name,"metadata":deepcopy({key:value for key,value in circuit.metadata.items() if key not in {"global_phase","registers"}}),
+        from quantumbridge.core.circuit_metadata import execution_metadata, is_separated, serialized_user_metadata
+        if format in {"qasm2","qasm3","qpy"} and "classical_scope" in execution_metadata(circuit):
+            raise UnsupportedFeature("An external metadata artifact cannot replace typed classical scope transport.",format=format)
+        sidecar = {"name":circuit.name,"metadata":deepcopy(serialized_user_metadata(circuit)),
                    "parameter_uuids":{parameter.name:parameter.uuid for parameter in circuit.parameters}}
         source = circuit.copy()
         source.name = None
-        source.metadata = {key:value for key,value in source.metadata.items() if key in {"global_phase","registers"}}
+        source.metadata = {} if is_separated(source) else {key:value for key,value in source.metadata.items() if key in {"global_phase","registers"}}
         if format in {"qasm2","qasm3"}:
             mapping = {parameter:Parameter(parameter.name) for parameter in source.parameters if parameter.uuid is not None}
-            source = source.assign_parameters(mapping,strict=False)
+            from quantumbridge.core.circuit import Circuit
+            source = Circuit.assign_parameters(source,mapping,strict=False,_copy_user_metadata=False)
+            source.name = None
     if format == "qasm2": data,version = qasm2_dumps(source,**options),"2.0"
     elif format == "qasm3": data,version = qasm3_dumps(source,**options),options.get("version","3.0")
     elif format == "qpy": data,version = qpy_dumps(source,**options),str(options.get("version",13))
@@ -62,7 +67,9 @@ def deserialize_circuit(data,format=None,**options):
     if sidecar:
         if set(sidecar) != {"name","metadata","parameter_uuids"}: raise FormatValidationError("Invalid external sidecar schema.",format=format)
         result.name = sidecar["name"]
-        result.metadata.update(deepcopy(sidecar["metadata"]))
+        from quantumbridge.core.circuit_metadata import is_separated
+        if not is_separated(result):result._execution_metadata=deepcopy(result.metadata)
+        result.metadata=deepcopy(sidecar["metadata"])
         mapping = {parameter:Parameter(parameter.name,sidecar["parameter_uuids"][parameter.name]) for parameter in result.parameters if parameter.name in sidecar["parameter_uuids"]}
         result = result.assign_parameters(mapping,strict=False)
     return result

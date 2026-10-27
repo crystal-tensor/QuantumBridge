@@ -73,27 +73,31 @@ def test_sampler_v2_run_pubs_supports_single_tuple_pub():
 
 def test_sampler_v2_accepts_qiskit_style_numpy_parameter_values_and_alias():
     theta = Parameter("theta")
-    circuit = Circuit(1).ry(theta, 0)
+    circuit = Circuit(1, 1).ry(theta, 0)
+    circuit.measure(0, 0)
 
-    result = StatevectorSampler(shots=24, seed=11).run_pubs((circuit, np.asarray([[0.0], [pi]]), 24))
+    result = StatevectorSampler(default_shots=24, seed=11).run([(circuit, np.asarray([[0.0], [pi]]), 24)]).result()
 
     assert len(result) == 1
-    assert result[0].data.counts == [{"0": 24}, {"1": 24}]
-    assert result[0].data.meas[0].get_counts() == {"0": 24}
-    assert result[0].data.meas[1].get_counts() == {"1": 24}
-    assert result[0].metadata["num_parameter_sets"] == 2
+    assert result[0].data.shape == (2,)
+    assert result[0].data.c.get_counts(0) == {"0": 24}
+    assert result[0].data.c.get_counts(1) == {"1": 24}
+    assert result[0].metadata["shots"] == 24
 
 
 def test_sampler_v2_result_is_job_like_for_qiskit_style_result_call():
-    result = StatevectorSampler(shots=12, seed=5).run([(Circuit(1).x(0),)])
+    circuit = Circuit(1, 1).x(0)
+    circuit.measure(0, 0)
+    job = StatevectorSampler(default_shots=12, seed=5).run([(circuit,)])
 
-    assert result.result() is result
-    assert result.done()
-    assert result.status() == "DONE"
-    assert not result.running()
-    assert not result.cancelled()
-    assert result.job_id() == "quantumbridge-primitive-result"
-    assert result.result()[0].data.meas.get_counts() == {"1": 12}
+    assert job.result() is not job
+    assert job.result() is job.result()
+    assert job.done()
+    assert job.status() == "DONE"
+    assert not job.running()
+    assert not job.cancelled()
+    assert job.job_id() != "quantumbridge-primitive-result"
+    assert job.result()[0].data.c.get_counts() == {"1": 12}
 
 
 def test_backend_sampler_v2_uses_backend_execution_model():
@@ -129,16 +133,18 @@ def test_estimator_v2_accepts_numpy_parameter_values_nested_observables_and_alia
     theta = Parameter("theta")
     circuit = Circuit(1).ry(theta, 0)
 
-    result = StatevectorEstimator(default_precision=0.02).run_pubs(
-        (circuit, [[PauliZ(0)], [PauliX(0)]], np.asarray([[0.0], [pi / 2]]))
-    )
+    estimator = StatevectorEstimator(default_precision=0.02, seed=17)
+    pub = (circuit, [[PauliZ(0)], [PauliX(0)]], np.asarray([[0.0], [pi / 2]]))
+    result = estimator.run([pub], precision=0.0).result()
 
     assert len(result) == 1
-    assert result[0].data.observable_shape == (((),), ((),))
-    assert result[0].data.evs[0][0][0] == 1.0
-    assert abs(result[0].data.evs[1][1][0] - 1.0) < 1e-12
-    assert result[0].metadata["precision"] == 0.02
-    assert result[0].metadata["num_parameter_sets"] == 2
+    assert result[0].data.shape == (2, 2)
+    assert result[0].data.evs[0][0] == 1.0
+    assert abs(result[0].data.evs[1][1] - 1.0) < 1e-12
+    assert result[0].metadata["target_precision"] == 0.0
+    noisy = estimator.run([pub]).result()[0]
+    assert noisy.metadata["target_precision"] == 0.02
+    np.testing.assert_allclose(noisy.data.evs, np.random.default_rng(17).normal(result[0].data.evs, 0.02), atol=3e-14, rtol=0)
 
 
 def test_backend_estimator_v2_uses_backend_execution_model():

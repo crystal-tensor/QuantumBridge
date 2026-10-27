@@ -1,0 +1,2896 @@
+{
+  "data": {
+    "provenance": "Pure TensorFlow public AD APIs; analytic Python/math oracle; no SDK import; diagnostic, not native acceptance.",
+    "tensorflow": "2.21.0",
+    "python": "3.12.6",
+    "outcomes": {
+      "matches_analytic": 48,
+      "wrong_finite": 12,
+      "disconnected_or_nonfinite": 0,
+      "exception": 0
+    },
+    "records": [
+      {
+        "function": "scalar",
+        "inner_tf_function": false,
+        "outer_execution": "eager",
+        "mode": "for",
+        "loss_jvp_read_location": "inside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552614,
+          "vjp": 0.652629141924224
+        },
+        "actual": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552613,
+          "vjp": 0.652629141924224
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 1.1102230246251565e-16,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "scalar",
+        "inner_tf_function": false,
+        "outer_execution": "eager",
+        "mode": "for",
+        "loss_jvp_read_location": "outside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552614,
+          "vjp": 0.652629141924224
+        },
+        "actual": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552613,
+          "vjp": 0.652629141924224
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 1.1102230246251565e-16,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "scalar",
+        "inner_tf_function": false,
+        "outer_execution": "eager",
+        "mode": "rof",
+        "loss_jvp_read_location": "inside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552614,
+          "vjp": 0.652629141924224
+        },
+        "actual": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552613,
+          "vjp": 0.652629141924224
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 1.1102230246251565e-16,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "scalar",
+        "inner_tf_function": false,
+        "outer_execution": "eager",
+        "mode": "rof",
+        "loss_jvp_read_location": "outside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552614,
+          "vjp": 0.652629141924224
+        },
+        "actual": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552613,
+          "vjp": 0.652629141924224
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 1.1102230246251565e-16,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "scalar",
+        "inner_tf_function": false,
+        "outer_execution": "eager",
+        "mode": "tape_tape",
+        "loss_jvp_read_location": "not_applicable",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552614,
+          "vjp": 0.652629141924224
+        },
+        "actual": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552613,
+          "vjp": 0.652629141924224
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 1.1102230246251565e-16,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "scalar",
+        "inner_tf_function": false,
+        "outer_execution": "traced",
+        "mode": "for",
+        "loss_jvp_read_location": "inside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552614,
+          "vjp": 0.652629141924224
+        },
+        "actual": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552613,
+          "vjp": 0.652629141924224
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 1.1102230246251565e-16,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "scalar",
+        "inner_tf_function": false,
+        "outer_execution": "traced",
+        "mode": "for",
+        "loss_jvp_read_location": "outside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552614,
+          "vjp": 0.652629141924224
+        },
+        "actual": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552613,
+          "vjp": 0.652629141924224
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 1.1102230246251565e-16,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "scalar",
+        "inner_tf_function": false,
+        "outer_execution": "traced",
+        "mode": "rof",
+        "loss_jvp_read_location": "inside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552614,
+          "vjp": 0.652629141924224
+        },
+        "actual": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552613,
+          "vjp": 0.652629141924224
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 1.1102230246251565e-16,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "scalar",
+        "inner_tf_function": false,
+        "outer_execution": "traced",
+        "mode": "rof",
+        "loss_jvp_read_location": "outside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552614,
+          "vjp": 0.652629141924224
+        },
+        "actual": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552613,
+          "vjp": 0.652629141924224
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 1.1102230246251565e-16,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "scalar",
+        "inner_tf_function": false,
+        "outer_execution": "traced",
+        "mode": "tape_tape",
+        "loss_jvp_read_location": "not_applicable",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552614,
+          "vjp": 0.652629141924224
+        },
+        "actual": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552613,
+          "vjp": 0.652629141924224
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 1.1102230246251565e-16,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "scalar",
+        "inner_tf_function": true,
+        "outer_execution": "eager",
+        "mode": "for",
+        "loss_jvp_read_location": "inside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552614,
+          "vjp": 0.652629141924224
+        },
+        "actual": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552613,
+          "vjp": 0.652629141924224
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 1.1102230246251565e-16,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "scalar",
+        "inner_tf_function": true,
+        "outer_execution": "eager",
+        "mode": "for",
+        "loss_jvp_read_location": "outside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552614,
+          "vjp": 0.652629141924224
+        },
+        "actual": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552613,
+          "vjp": 0.652629141924224
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 1.1102230246251565e-16,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "scalar",
+        "inner_tf_function": true,
+        "outer_execution": "eager",
+        "mode": "rof",
+        "loss_jvp_read_location": "inside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552614,
+          "vjp": 0.652629141924224
+        },
+        "actual": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6953874234918352,
+          "vjp": 0.652629141924224
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 0.017824872836573857,
+          "vjp": 0
+        },
+        "outcome": "wrong_finite"
+      },
+      {
+        "function": "scalar",
+        "inner_tf_function": true,
+        "outer_execution": "eager",
+        "mode": "rof",
+        "loss_jvp_read_location": "outside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552614,
+          "vjp": 0.652629141924224
+        },
+        "actual": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6953874234918352,
+          "vjp": 0.652629141924224
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 0.017824872836573857,
+          "vjp": 0
+        },
+        "outcome": "wrong_finite"
+      },
+      {
+        "function": "scalar",
+        "inner_tf_function": true,
+        "outer_execution": "eager",
+        "mode": "tape_tape",
+        "loss_jvp_read_location": "not_applicable",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552614,
+          "vjp": 0.652629141924224
+        },
+        "actual": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552613,
+          "vjp": 0.652629141924224
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 1.1102230246251565e-16,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "scalar",
+        "inner_tf_function": true,
+        "outer_execution": "traced",
+        "mode": "for",
+        "loss_jvp_read_location": "inside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552614,
+          "vjp": 0.652629141924224
+        },
+        "actual": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552613,
+          "vjp": 0.652629141924224
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 1.1102230246251565e-16,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "scalar",
+        "inner_tf_function": true,
+        "outer_execution": "traced",
+        "mode": "for",
+        "loss_jvp_read_location": "outside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552614,
+          "vjp": 0.652629141924224
+        },
+        "actual": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552613,
+          "vjp": 0.652629141924224
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 1.1102230246251565e-16,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "scalar",
+        "inner_tf_function": true,
+        "outer_execution": "traced",
+        "mode": "rof",
+        "loss_jvp_read_location": "inside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552614,
+          "vjp": 0.652629141924224
+        },
+        "actual": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6953874234918352,
+          "vjp": 0.652629141924224
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 0.017824872836573857,
+          "vjp": 0
+        },
+        "outcome": "wrong_finite"
+      },
+      {
+        "function": "scalar",
+        "inner_tf_function": true,
+        "outer_execution": "traced",
+        "mode": "rof",
+        "loss_jvp_read_location": "outside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552614,
+          "vjp": 0.652629141924224
+        },
+        "actual": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6953874234918352,
+          "vjp": 0.652629141924224
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 0.017824872836573857,
+          "vjp": 0
+        },
+        "outcome": "wrong_finite"
+      },
+      {
+        "function": "scalar",
+        "inner_tf_function": true,
+        "outer_execution": "traced",
+        "mode": "tape_tape",
+        "loss_jvp_read_location": "not_applicable",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552614,
+          "vjp": 0.652629141924224
+        },
+        "actual": {
+          "primal": 0.361615431964962,
+          "loss": 0.003796461456228861,
+          "jvp": 0.3729309382424138,
+          "loss_jvp": 0.045956601705809785,
+          "gradient": 0.11489150426452445,
+          "hvp": 0.6775625506552613,
+          "vjp": 0.652629141924224
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 1.1102230246251565e-16,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "vector",
+        "inner_tf_function": false,
+        "outer_execution": "eager",
+        "mode": "for",
+        "loss_jvp_read_location": "inside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364636,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832286,
+            0.05282467631524132
+          ],
+          "hvp": [
+            1.5066825207992454,
+            0.21703597826203347
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774966
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 1.1102230246251565e-16,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 1.1102230246251565e-16,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 4.163336342344337e-17
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "vector",
+        "inner_tf_function": false,
+        "outer_execution": "eager",
+        "mode": "for",
+        "loss_jvp_read_location": "outside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364636,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832286,
+            0.05282467631524132
+          ],
+          "hvp": [
+            1.5066825207992454,
+            0.21703597826203347
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774966
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 1.1102230246251565e-16,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 1.1102230246251565e-16,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 4.163336342344337e-17
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "vector",
+        "inner_tf_function": false,
+        "outer_execution": "eager",
+        "mode": "rof",
+        "loss_jvp_read_location": "inside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364636,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832286,
+            0.05282467631524132
+          ],
+          "hvp": [
+            1.5066825207992454,
+            0.21703597826203347
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774966
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 1.1102230246251565e-16,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 1.1102230246251565e-16,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 4.163336342344337e-17
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "vector",
+        "inner_tf_function": false,
+        "outer_execution": "eager",
+        "mode": "rof",
+        "loss_jvp_read_location": "outside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364636,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832286,
+            0.05282467631524132
+          ],
+          "hvp": [
+            1.5066825207992454,
+            0.21703597826203347
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774966
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 1.1102230246251565e-16,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 1.1102230246251565e-16,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 4.163336342344337e-17
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "vector",
+        "inner_tf_function": false,
+        "outer_execution": "eager",
+        "mode": "tape_tape",
+        "loss_jvp_read_location": "not_applicable",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832286,
+            0.05282467631524132
+          ],
+          "hvp": [
+            1.5066825207992454,
+            0.21703597826203347
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774966
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 1.1102230246251565e-16,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 4.163336342344337e-17
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "vector",
+        "inner_tf_function": false,
+        "outer_execution": "traced",
+        "mode": "for",
+        "loss_jvp_read_location": "inside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364636,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832286,
+            0.05282467631524132
+          ],
+          "hvp": [
+            1.5066825207992454,
+            0.21703597826203347
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774966
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 1.1102230246251565e-16,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 1.1102230246251565e-16,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 4.163336342344337e-17
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "vector",
+        "inner_tf_function": false,
+        "outer_execution": "traced",
+        "mode": "for",
+        "loss_jvp_read_location": "outside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364636,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832286,
+            0.05282467631524132
+          ],
+          "hvp": [
+            1.5066825207992454,
+            0.21703597826203347
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774966
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 1.1102230246251565e-16,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 1.1102230246251565e-16,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 4.163336342344337e-17
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "vector",
+        "inner_tf_function": false,
+        "outer_execution": "traced",
+        "mode": "rof",
+        "loss_jvp_read_location": "inside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364636,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832286,
+            0.05282467631524132
+          ],
+          "hvp": [
+            1.5066825207992454,
+            0.21703597826203347
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774966
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 1.1102230246251565e-16,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 1.1102230246251565e-16,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 4.163336342344337e-17
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "vector",
+        "inner_tf_function": false,
+        "outer_execution": "traced",
+        "mode": "rof",
+        "loss_jvp_read_location": "outside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364636,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832286,
+            0.05282467631524132
+          ],
+          "hvp": [
+            1.5066825207992454,
+            0.21703597826203347
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774966
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 1.1102230246251565e-16,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 1.1102230246251565e-16,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 4.163336342344337e-17
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "vector",
+        "inner_tf_function": false,
+        "outer_execution": "traced",
+        "mode": "tape_tape",
+        "loss_jvp_read_location": "not_applicable",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832286,
+            0.05282467631524132
+          ],
+          "hvp": [
+            1.5066825207992454,
+            0.21703597826203347
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774966
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 1.1102230246251565e-16,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 4.163336342344337e-17
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "vector",
+        "inner_tf_function": true,
+        "outer_execution": "eager",
+        "mode": "for",
+        "loss_jvp_read_location": "inside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364636,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832286,
+            0.05282467631524132
+          ],
+          "hvp": [
+            1.5066825207992454,
+            0.21703597826203347
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774966
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 1.1102230246251565e-16,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 1.1102230246251565e-16,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 4.163336342344337e-17
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "vector",
+        "inner_tf_function": true,
+        "outer_execution": "eager",
+        "mode": "for",
+        "loss_jvp_read_location": "outside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364636,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832286,
+            0.05282467631524132
+          ],
+          "hvp": [
+            1.5066825207992454,
+            0.21703597826203347
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774966
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 1.1102230246251565e-16,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 1.1102230246251565e-16,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 4.163336342344337e-17
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "vector",
+        "inner_tf_function": true,
+        "outer_execution": "eager",
+        "mode": "rof",
+        "loss_jvp_read_location": "inside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364636,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832286,
+            0.05282467631524132
+          ],
+          "hvp": [
+            1.6038122792617742,
+            0.11632321094938619
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774966
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 1.1102230246251565e-16,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 1.1102230246251565e-16,
+          "hvp": 0.10071276731264725,
+          "vjp": 4.163336342344337e-17
+        },
+        "outcome": "wrong_finite"
+      },
+      {
+        "function": "vector",
+        "inner_tf_function": true,
+        "outer_execution": "eager",
+        "mode": "rof",
+        "loss_jvp_read_location": "outside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364636,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832286,
+            0.05282467631524132
+          ],
+          "hvp": [
+            1.6038122792617742,
+            0.11632321094938619
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774966
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 1.1102230246251565e-16,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 1.1102230246251565e-16,
+          "hvp": 0.10071276731264725,
+          "vjp": 4.163336342344337e-17
+        },
+        "outcome": "wrong_finite"
+      },
+      {
+        "function": "vector",
+        "inner_tf_function": true,
+        "outer_execution": "eager",
+        "mode": "tape_tape",
+        "loss_jvp_read_location": "not_applicable",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832286,
+            0.05282467631524132
+          ],
+          "hvp": [
+            1.5066825207992454,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774966
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 1.1102230246251565e-16,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 4.163336342344337e-17
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "vector",
+        "inner_tf_function": true,
+        "outer_execution": "traced",
+        "mode": "for",
+        "loss_jvp_read_location": "inside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364636,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832286,
+            0.05282467631524132
+          ],
+          "hvp": [
+            1.5066825207992454,
+            0.21703597826203347
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774966
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 1.1102230246251565e-16,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 1.1102230246251565e-16,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 4.163336342344337e-17
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "vector",
+        "inner_tf_function": true,
+        "outer_execution": "traced",
+        "mode": "for",
+        "loss_jvp_read_location": "outside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364636,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832286,
+            0.05282467631524132
+          ],
+          "hvp": [
+            1.5066825207992454,
+            0.21703597826203347
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774966
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 1.1102230246251565e-16,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 1.1102230246251565e-16,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 4.163336342344337e-17
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "vector",
+        "inner_tf_function": true,
+        "outer_execution": "traced",
+        "mode": "rof",
+        "loss_jvp_read_location": "inside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364636,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832286,
+            0.05282467631524132
+          ],
+          "hvp": [
+            1.6038122792617742,
+            0.11632321094938619
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774966
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 1.1102230246251565e-16,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 1.1102230246251565e-16,
+          "hvp": 0.10071276731264725,
+          "vjp": 4.163336342344337e-17
+        },
+        "outcome": "wrong_finite"
+      },
+      {
+        "function": "vector",
+        "inner_tf_function": true,
+        "outer_execution": "traced",
+        "mode": "rof",
+        "loss_jvp_read_location": "outside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364636,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832286,
+            0.05282467631524132
+          ],
+          "hvp": [
+            1.6038122792617742,
+            0.11632321094938619
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774966
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 1.1102230246251565e-16,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 1.1102230246251565e-16,
+          "hvp": 0.10071276731264725,
+          "vjp": 4.163336342344337e-17
+        },
+        "outcome": "wrong_finite"
+      },
+      {
+        "function": "vector",
+        "inner_tf_function": true,
+        "outer_execution": "traced",
+        "mode": "tape_tape",
+        "loss_jvp_read_location": "not_applicable",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832286,
+            0.05282467631524132
+          ],
+          "hvp": [
+            1.5066825207992454,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774966
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 1.1102230246251565e-16,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 4.163336342344337e-17
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "custom_vector",
+        "inner_tf_function": false,
+        "outer_execution": "eager",
+        "mode": "for",
+        "loss_jvp_read_location": "inside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364636,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.2170359782620334
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 1.1102230246251565e-16,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 0,
+          "hvp": 2.7755575615628914e-17,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "custom_vector",
+        "inner_tf_function": false,
+        "outer_execution": "eager",
+        "mode": "for",
+        "loss_jvp_read_location": "outside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364636,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.2170359782620334
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 1.1102230246251565e-16,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 0,
+          "hvp": 2.7755575615628914e-17,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "custom_vector",
+        "inner_tf_function": false,
+        "outer_execution": "eager",
+        "mode": "rof",
+        "loss_jvp_read_location": "inside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364636,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.2170359782620334
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 1.1102230246251565e-16,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 0,
+          "hvp": 2.7755575615628914e-17,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "custom_vector",
+        "inner_tf_function": false,
+        "outer_execution": "eager",
+        "mode": "rof",
+        "loss_jvp_read_location": "outside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364636,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.2170359782620334
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 1.1102230246251565e-16,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 0,
+          "hvp": 2.7755575615628914e-17,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "custom_vector",
+        "inner_tf_function": false,
+        "outer_execution": "eager",
+        "mode": "tape_tape",
+        "loss_jvp_read_location": "not_applicable",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992458,
+            0.2170359782620334
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "custom_vector",
+        "inner_tf_function": false,
+        "outer_execution": "traced",
+        "mode": "for",
+        "loss_jvp_read_location": "inside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364636,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.2170359782620334
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 1.1102230246251565e-16,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 0,
+          "hvp": 2.7755575615628914e-17,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "custom_vector",
+        "inner_tf_function": false,
+        "outer_execution": "traced",
+        "mode": "for",
+        "loss_jvp_read_location": "outside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364636,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.2170359782620334
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 1.1102230246251565e-16,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 0,
+          "hvp": 2.7755575615628914e-17,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "custom_vector",
+        "inner_tf_function": false,
+        "outer_execution": "traced",
+        "mode": "rof",
+        "loss_jvp_read_location": "inside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364636,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.2170359782620334
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 1.1102230246251565e-16,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 0,
+          "hvp": 2.7755575615628914e-17,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "custom_vector",
+        "inner_tf_function": false,
+        "outer_execution": "traced",
+        "mode": "rof",
+        "loss_jvp_read_location": "outside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364636,
+          "loss_jvp": 0.27548177837871907,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.2170359782620334
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 1.1102230246251565e-16,
+          "loss_jvp": 5.551115123125783e-17,
+          "gradient": 0,
+          "hvp": 2.7755575615628914e-17,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "custom_vector",
+        "inner_tf_function": false,
+        "outer_execution": "traced",
+        "mode": "tape_tape",
+        "loss_jvp_read_location": "not_applicable",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992458,
+            0.2170359782620334
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "custom_vector",
+        "inner_tf_function": true,
+        "outer_execution": "eager",
+        "mode": "for",
+        "loss_jvp_read_location": "inside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992458,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "custom_vector",
+        "inner_tf_function": true,
+        "outer_execution": "eager",
+        "mode": "for",
+        "loss_jvp_read_location": "outside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992458,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "custom_vector",
+        "inner_tf_function": true,
+        "outer_execution": "eager",
+        "mode": "rof",
+        "loss_jvp_read_location": "inside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.6038122792617746,
+            0.11632321094938626
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 0.10071276731264718,
+          "vjp": 0
+        },
+        "outcome": "wrong_finite"
+      },
+      {
+        "function": "custom_vector",
+        "inner_tf_function": true,
+        "outer_execution": "eager",
+        "mode": "rof",
+        "loss_jvp_read_location": "outside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.6038122792617746,
+            0.11632321094938626
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 0.10071276731264718,
+          "vjp": 0
+        },
+        "outcome": "wrong_finite"
+      },
+      {
+        "function": "custom_vector",
+        "inner_tf_function": true,
+        "outer_execution": "eager",
+        "mode": "tape_tape",
+        "loss_jvp_read_location": "not_applicable",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992458,
+            0.2170359782620334
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "custom_vector",
+        "inner_tf_function": true,
+        "outer_execution": "traced",
+        "mode": "for",
+        "loss_jvp_read_location": "inside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992458,
+            0.2170359782620334
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "custom_vector",
+        "inner_tf_function": true,
+        "outer_execution": "traced",
+        "mode": "for",
+        "loss_jvp_read_location": "outside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992458,
+            0.2170359782620334
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      },
+      {
+        "function": "custom_vector",
+        "inner_tf_function": true,
+        "outer_execution": "traced",
+        "mode": "rof",
+        "loss_jvp_read_location": "inside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.6038122792617746,
+            0.11632321094938626
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 0.10071276731264718,
+          "vjp": 0
+        },
+        "outcome": "wrong_finite"
+      },
+      {
+        "function": "custom_vector",
+        "inner_tf_function": true,
+        "outer_execution": "traced",
+        "mode": "rof",
+        "loss_jvp_read_location": "outside_tape",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.6038122792617746,
+            0.11632321094938626
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 0.10071276731264718,
+          "vjp": 0
+        },
+        "outcome": "wrong_finite"
+      },
+      {
+        "function": "custom_vector",
+        "inner_tf_function": true,
+        "outer_execution": "traced",
+        "mode": "tape_tape",
+        "loss_jvp_read_location": "not_applicable",
+        "dtype": "float64",
+        "expected": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992456,
+            0.21703597826203344
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992458,
+            0.2170359782620334
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "absolute_errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 0
+        },
+        "outcome": "matches_analytic"
+      }
+    ]
+  },
+  "stderr": "WARNING:tensorflow:5 out of the last 5 calls to <function run.<locals>.evaluate at 0x16454d4e0> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.\nWARNING:tensorflow:5 out of the last 9 calls to <function scalar at 0x102c9e3e0> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.\nWARNING:tensorflow:6 out of the last 6 calls to <function run.<locals>.evaluate at 0x165d55120> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.\nWARNING:tensorflow:5 out of the last 9 calls to <function vector at 0x1035e4e00> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.\nWARNING:tensorflow:5 out of the last 9 calls to <tensorflow.python.ops.custom_gradient.Bind object at 0x102cc8f50> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.\n"
+}

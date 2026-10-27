@@ -132,6 +132,47 @@ def test_cpu_dlpack_borrow_shares_storage_and_forbids_device_copy():
     with pytest.raises(UnsupportedFeature): borrow_callback_array([.3])
 
 
+@pytest.mark.parametrize("copy_keyword", [False, True])
+def test_dlpack_numpy_protocol_versions_share_storage_without_retry(copy_keyword, monkeypatch):
+    from quantumbridge.execution import array_reservations as reservations
+    source, calls = np.arange(6.), []
+    convert = np.from_dlpack
+    class Borrowed:
+        def __dlpack_device__(self): return (1, 0)
+        def __dlpack__(self, **kwargs): return source.__dlpack__(**kwargs)
+    def legacy(value, /):
+        calls.append("legacy")
+        return convert(value)
+    def modern(value, /, *, copy):
+        assert copy is False
+        calls.append("modern")
+        return convert(value)
+    monkeypatch.setattr(reservations, "_DLPACK_COPY_KEYWORD", copy_keyword)
+    monkeypatch.setattr(np, "from_dlpack", modern if copy_keyword else legacy)
+    result = borrow_callback_array(Borrowed())
+    assert np.shares_memory(result, source) and not result.flags.owndata
+    assert calls == ["modern" if copy_keyword else "legacy"]
+
+
+@pytest.mark.parametrize("copy_keyword", [False, True])
+def test_dlpack_exporter_typeerror_is_never_retried_without_copy_guard(copy_keyword, monkeypatch):
+    from quantumbridge.execution import array_reservations as reservations
+    calls = []
+    class Broken:
+        def __dlpack_device__(self): return (1, 0)
+        def __dlpack__(self, **kwargs):
+            calls.append(kwargs)
+            raise TypeError("producer failure, not a NumPy signature mismatch")
+    def convert(value, *args, **kwargs):
+        return value.__dlpack__(**kwargs)
+    monkeypatch.setattr(reservations, "_DLPACK_COPY_KEYWORD", copy_keyword)
+    monkeypatch.setattr(np, "from_dlpack", convert)
+    with pytest.raises(UnsupportedFeature) as failure:
+        borrow_callback_array(Broken())
+    assert len(calls) == 1
+    assert isinstance(failure.value.__cause__, TypeError)
+
+
 def test_empty_scalar_layout_and_unmanaged_factory_contract():
     assert array_layout((), np.float32)[2] == 4
     result = scope_array(None, "plain", (2,), float, lambda: np.ones(2))

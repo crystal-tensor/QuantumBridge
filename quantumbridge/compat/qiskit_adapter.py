@@ -107,7 +107,12 @@ def circuit_from_ir(program) -> Circuit:
     from quantumbridge.ir.qb_ir import decode_instruction_metadata
 
     circuit = Circuit(program.num_qubits, program.num_bits, program.name, program.metadata)
-    if "global_phase" in program.metadata: circuit.global_phase = program.metadata["global_phase"]
+    if program.execution is not None:
+        circuit._execution_metadata=program.execution.configuration()
+    from quantumbridge.core.bits import restore_bit_graph
+    restore_bit_graph(circuit,program.bit_graph)
+    if program.execution is not None:circuit.global_phase=program.execution.global_phase
+    elif "global_phase" in program.metadata: circuit.global_phase = program.metadata["global_phase"]
     for instruction in program.instructions:
         metadata = decode_instruction_metadata(instruction.metadata)
         gate = metadata.pop("gate", None)
@@ -127,7 +132,8 @@ def circuit_from_ir(program) -> Circuit:
             if (type(annotation) is not AnnotatedOperation or gate is not None or instruction.op != annotation.name
                     or annotation.num_qubits != len(instruction.targets) or instruction.controls or invocation_params(annotation) != instruction.params):
                 raise ValueError("IR annotated invocation disagrees with its operation record.")
-            circuit.append(annotation, instruction.targets, metadata=metadata)
+            bits=metadata.pop("instruction_clbits",())
+            circuit.append(annotation, instruction.targets, metadata=metadata,clbits=bits)
             continue
         if gate is not None:
             if gate.name != instruction.op or gate.num_qubits != len(instruction.targets)+len(instruction.controls) or invocation_params(gate) != instruction.params or instruction.controls:

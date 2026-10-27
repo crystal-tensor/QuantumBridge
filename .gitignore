@@ -19,3 +19,15 @@ studio/.vite/
 .venv/
 venv/
 .DS_Store
+.codex-build/
+.playwright-mcp/
+tmp/
+.env
+.env.*
+*.whl
+*.dist-info/
+# Owner-only business proposals and local generated diagnostics stay local.
+studio/reports/qb-project/
+output/*
+!output/jupyter-notebook/
+!output/jupyter-notebook/**

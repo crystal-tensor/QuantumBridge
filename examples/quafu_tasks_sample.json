@@ -1,0 +1,61 @@
+{
+  "total": 8,
+  "items": [
+    {
+      "taskId": "sample-a",
+      "taskName": "bell",
+      "chipName": "Baihua",
+      "status": "Pending",
+      "submitTime": "2026-06-13-10-00-00"
+    },
+    {
+      "taskId": "sample-b",
+      "taskName": "qaoa",
+      "chipName": "Baihua",
+      "status": "Submitted",
+      "submitTime": "2026-06-13-10-02-00"
+    },
+    {
+      "taskId": "sample-c",
+      "taskName": "ghz",
+      "chipName": "Baihua",
+      "status": "Transpiled",
+      "submitTime": "2026-06-13-10-04-00"
+    },
+    {
+      "taskId": "sample-d",
+      "taskName": "vqe",
+      "chipName": "Dongling",
+      "status": "Finished",
+      "submitTime": "2026-06-13-09-40-00"
+    },
+    {
+      "taskId": "sample-e",
+      "taskName": "bell",
+      "chipName": "Yunmeng",
+      "status": "Pending",
+      "submitTime": "2026-06-13-10-05-00"
+    },
+    {
+      "taskId": "sample-f",
+      "taskName": "noise-check",
+      "chipName": "Yunmeng",
+      "status": "Failed",
+      "submitTime": "2026-06-13-09-20-00"
+    },
+    {
+      "taskId": "sample-g",
+      "taskName": "bell",
+      "chipName": "Miaofeng",
+      "status": "Canceled",
+      "submitTime": "2026-06-13-08-50-00"
+    },
+    {
+      "taskId": "sample-h",
+      "taskName": "ghz",
+      "chipName": "Hongluo",
+      "status": "Finished",
+      "submitTime": "2026-06-13-08-40-00"
+    }
+  ]
+}

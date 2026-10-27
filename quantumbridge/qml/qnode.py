@@ -37,7 +37,7 @@ class QNode:
         if interface not in {None, "auto", "numpy", "torch", "autograd", "jax", "tf", "tensorflow"}:
             raise ValueError("Unknown QuantumBridge QNode interface.")
 
-    def _construct(self, args, kwargs, *, prepare_only=False):
+    def _construct(self, args, kwargs, *, prepare_only=False, capture_native_parameters=False):
         from quantumbridge.diff.qnode_engine import AngleRecorder, ExecutionPlan, measurement_tree
         if self.transform_program is not None and not prepare_only:
             from quantumbridge.interfaces.qnode_autodiff import _leaves
@@ -45,6 +45,9 @@ class QNode:
             _reject_unsupported_interface(_leaves((args, kwargs)))
         recorder = AngleRecorder()
         tape = Tape(self.num_qubits, recorder, shots=self.shots, seed=self.seed)
+        if capture_native_parameters and len(args) == 1 and not kwargs and self.compiler_options is None:
+            tape._capture_native_parameter_input = args[0]
+            tape._capture_native_parameter_limits = self.higher_order_limits
         returned = self.fn(tape, *args, **kwargs)
         if self.compiler_options is not None:
             from quantumbridge.compiler import native_transpile
@@ -52,7 +55,8 @@ class QNode:
             from quantumbridge.core.classical import UnsupportedFeature
             compiled = native_transpile(tape.circuit, **self.compiler_options)
             identity = dict(enumerate(range(self.num_qubits)))
-            if compiled.num_qubits != self.num_qubits or compiled.metadata.get("initial_layout") != identity or compiled.metadata.get("routing", {}).get("final_layout", identity) != identity:
+            from quantumbridge.core.circuit_metadata import execution_metadata
+            if compiled.num_qubits != self.num_qubits or execution_metadata(compiled).get("initial_layout") != identity or execution_metadata(compiled).get("routing", {}).get("final_layout", identity) != identity:
                 raise UnsupportedFeature("compiled_qnode_layout", "QNode measurements currently require equal width and restored identity layout.")
             tape.circuit, recorder = record_compiled_parameters(compiled, recorder)
         tree = measurement_tree(returned, tape)
@@ -104,6 +108,9 @@ class QNode:
         from quantumbridge.diff.compiled_parameters import record_compiled_parameters
         parameters = circuit.parameters
         def program(tape,*values):
+            capture = (len(values) == 1 and hasattr(tape, "_capture_native_parameter_input")
+                and values[0] is tape._capture_native_parameter_input
+                and not getattr(tape.parameter_transform, "angles", ()))
             if len(values) == 1 and isinstance(values[0],(tuple,list)):
                 values = tuple(values[0])
             elif len(values) == 1 and hasattr(values[0],"shape") and len(values[0].shape):
@@ -114,10 +121,33 @@ class QNode:
                     values = tuple(values[0].reshape(-1))
             if len(values) != len(parameters): raise ValueError("Circuit QNode argument count must match its free parameter count.")
             source = AngleRecorder()
-            source.parameters,source.angles = list(parameters),list(values)
-            prepared,recorded = record_compiled_parameters(circuit,source)
-            mapping = {parameter:tape.parameter_transform(value) for parameter,value in zip(recorded.parameters,recorded.angles)}
-            tape.circuit = prepared.assign_parameters(mapping)
+            source.parameters = list(parameters)
+            if capture:
+                from quantumbridge.core.classical import UnsupportedFeature
+                from quantumbridge.diff.compiled_parameters import FrozenParameterBinding
+                try:
+                    source.angles = list(parameters)
+                    prepared, recorded = record_compiled_parameters(circuit, source)
+                    binding = FrozenParameterBinding.create(tuple(parameters), tuple(recorded.angles),
+                        limits=tape._capture_native_parameter_limits)
+                except UnsupportedFeature as error:
+                    if error.feature not in {"frozen_parameter_expression", "frozen_parameter_power"}:
+                        raise
+                    # Optional native capture must not revoke an existing TF
+                    # scalar-subset query. Identity/domain/safety errors and
+                    # resource failures must not enter this fallback.
+                    capture = False
+            if capture:
+                angles = binding.evaluate(tuple(values))
+            else:
+                source.angles = list(values)
+                prepared, recorded = record_compiled_parameters(circuit, source)
+                angles = recorded.angles
+            mapping = {parameter:tape.parameter_transform(value) for parameter,value in zip(recorded.parameters,angles)}
+            if capture:
+                tape._native_parameter_binding = (binding, tuple(tape.parameter_transform.parameters))
+            from quantumbridge.core.circuit import Circuit
+            tape.circuit = Circuit.assign_parameters(prepared,mapping,_copy_user_metadata=False)
             return tape.expval(observable)
         return cls(program,circuit.num_qubits,**options)
 
@@ -191,6 +221,35 @@ class QNode:
         """
         from quantumbridge.interfaces.tensorflow_autodiff import execute_tensorflow
         return execute_tensorflow(self, args, kwargs, return_status=True)
+
+    def compile_tensorflow(self, *, input_signature, max_derivative_order=None, controlled_execution=True):
+        """Freeze a native tensor plan with a scoped, synchronous CPU entry.
+
+        Mathematical sources are snapshots. Owner execution/resource settings
+        must remain unchanged and the QNode owner must stay alive; compile a
+        new handle after reconfiguration.
+        A raw internal ConcreteFunction has no Python invocation accounting.
+        Cached outer reverse-over-forward remains experimental, not accepted.
+        Use handle.execute(request) for explicit queries, or its checked
+        differentiable_call for a declared first-order contract. Bare handle
+        calls preserve the experimental diagnostic envelope, not verified
+        second-order callable support.
+        """
+        from quantumbridge.interfaces.tensorflow_managed import ManagedTensorFlowQNode
+        return ManagedTensorFlowQNode(self, input_signature=input_signature,
+            max_derivative_order=max_derivative_order, controlled_execution=controlled_execution)
+
+    def compile_tensorflow_inline(self, *, parameters, input_signature, max_derivative_order=2):
+        """Freeze native scalar syntax for explicit trace-inline differentiation.
+
+        Unlike compile_tensorflow, this mode has static bounds and runtime
+        numerical guards, not per-execution accounting of external TF graphs.
+        Active resource scopes are refused. Python owner checks run when this
+        callable is entered, not on direct calls to a user's cached TF graph.
+        """
+        from quantumbridge.interfaces.tensorflow_inline import TraceInlineTensorFlowQNode
+        return TraceInlineTensorFlowQNode(self, parameters=parameters,
+            input_signature=input_signature, max_derivative_order=max_derivative_order)
 
     def jax_hvp_with_status(self, tangent, *args, **kwargs):
         """Return a native directional HVP and runtime status (CPU query API)."""

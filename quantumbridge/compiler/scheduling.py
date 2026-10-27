@@ -86,11 +86,12 @@ class SchedulingPass(TransformationPass):
                     "start": starts[node.node_id], "duration": durations[node.node_id], "end": ends[node.node_id]} for node in nodes]
         schedule = {"method": self.method, "unit": "dt" if target.dt is not None else "s", "dt": target.dt,
                     "makespan": makespan, "operations": records, "semantics": "static dependency schedule"}
-        out = circuit.copy()
+        from quantumbridge.core.circuit_metadata import execution_copy, empty_execution_circuit, execution_metadata
+        out = execution_copy(circuit)
         if self.insert_delays:
-            out = circuit.copy_empty_like(vars_mode="drop"); out.global_phase = circuit.global_phase
-            if "classical_scope" in circuit.metadata:
-                out.metadata["classical_scope"] = deepcopy(circuit.metadata["classical_scope"])
+            out = empty_execution_circuit(circuit)
+            from quantumbridge.core.bits import copy_bits
+            copy_bits(circuit,out)
             available = [0.] * circuit.num_qubits
             for node, record in zip(nodes, records):
                 for wire in record["wires"]:
@@ -98,5 +99,5 @@ class SchedulingPass(TransformationPass):
                     if gap > tolerance: out.delay(gap, wire, unit=schedule["unit"])
                     available[wire] = record["end"]
                 append_item(out, node.instruction)
-        out.metadata["schedule"] = deepcopy(schedule)
+        execution_metadata(out)["schedule"] = deepcopy(schedule)
         return PassResult(out, {"schedule": schedule, "critical_path_duration": makespan}, True)

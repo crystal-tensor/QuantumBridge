@@ -46,7 +46,7 @@ from .random import (
 )
 from .statevector import Statevector
 from .stabilizer_state import StabilizerState
-from quantumbridge.operators import Pauli, PauliList
+from quantumbridge.operators import Pauli, PauliList, SparseObservable
 
 __all__ = [
     "Chi",
@@ -58,6 +58,7 @@ __all__ = [
     "Operator",
     "Pauli",
     "PauliList",
+    "SparseObservable",
     "PTM",
     "Statevector",
     "StabilizerState",

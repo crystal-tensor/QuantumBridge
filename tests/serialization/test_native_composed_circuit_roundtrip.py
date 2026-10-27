@@ -31,7 +31,20 @@ def test_qpy_rejects_scope_only_identifiers_instead_of_faking_a_zero_variable_he
     elif kind=="capture":source.add_capture(ce.Var.new("a",ce.Bool()))
     else:source.add_stretch("s")
     source.metadata=json.loads(json.dumps(source.metadata))
-    with pytest.raises(UnsupportedFeature,match="classical|identifier"):qpy_dumps(source)
+    if kind == "stretch":
+        with pytest.raises(UnsupportedFeature,match="classical|identifier"):qpy_dumps(source)
+    else:
+        # Owner approved only these three former Unsupported cases after
+        # actual standard-variable-table/public-reader evidence was obtained.
+        from quantumbridge.serialization.qpy import FILE_HEADER, CIRCUIT_HEADER
+        from quantumbridge.core.classical_scope import entries
+        payload = qpy_dumps(source)
+        assert CIRCUIT_HEADER.unpack_from(payload, FILE_HEADER.size+1)[-1] == 1
+        restored = qpy_loads(payload)[0]
+        variable, scope, ordered = entries(restored)[0]
+        assert scope == kind and not ordered
+        assert variable.var == source.get_var("a").var and variable.dtype == ce.Bool()
+        assert "classical_scope" not in restored.metadata
 
 
 @pytest.mark.parametrize("version",[2,3])

@@ -1,0 +1,153 @@
+{
+  "diagnostic_only": true,
+  "exit": 0,
+  "data": {
+    "tensorflow": "2.21.0",
+    "expected": {
+      "primal": 0.5501017165689682,
+      "loss": 0.06255086863074452,
+      "jvp": 0.5507394794364637,
+      "loss_jvp": 0.2754817783787191,
+      "gradient": [
+        0.7283229531832287,
+        0.05282467631524133
+      ],
+      "hvp": [
+        1.5066825207992456,
+        0.21703597826203344
+      ],
+      "vjp": [
+        1.0192374411146234,
+        0.07392446946774962
+      ]
+    },
+    "records": [
+      {
+        "inner_tf_function": false,
+        "mode": "for",
+        "error": "AttributeError: 'NoneType' object has no attribute '_id'"
+      },
+      {
+        "inner_tf_function": false,
+        "mode": "rof",
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": null,
+          "loss_jvp": null,
+          "gradient": null,
+          "hvp": null,
+          "vjp": null
+        },
+        "errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": null,
+          "loss_jvp": null,
+          "gradient": null,
+          "hvp": null,
+          "vjp": null
+        }
+      },
+      {
+        "inner_tf_function": false,
+        "mode": "tape_tape",
+        "error": "ValueError: None values not supported."
+      },
+      {
+        "inner_tf_function": true,
+        "mode": "for",
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992458,
+            0.2170359782620334
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 0
+        }
+      },
+      {
+        "inner_tf_function": true,
+        "mode": "rof",
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.6038122792617746,
+            0.11632321094938626
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 0.10071276731264718,
+          "vjp": 0
+        }
+      },
+      {
+        "inner_tf_function": true,
+        "mode": "tape_tape",
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992458,
+            0.2170359782620334
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 0
+        }
+      }
+    ]
+  },
+  "stderr": ""
+}

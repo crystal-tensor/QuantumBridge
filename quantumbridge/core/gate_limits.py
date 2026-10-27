@@ -18,6 +18,7 @@ class GateCircuitLimits:
     max_repeat_count: int = 100000
     max_matrix_dimension: int = 256
     max_custom_definitions: int = 100000
+    max_circuit_bits: int = 100000
 
     def __post_init__(self):
         if any(isinstance(value, bool) or not isinstance(value, Integral) or value < 1

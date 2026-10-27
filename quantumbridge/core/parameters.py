@@ -22,6 +22,17 @@ _GUARDED_DERIVATIVES = frozenset({"abs_gradient", "sign_gradient"})
 EXPRESSION_OPS = UNARY_FUNCTIONS | _GUARDED_DERIVATIVES | {"const", "parameter", "neg", "+", "-", "*", "/", "**"}
 
 
+def _admit_parameter_values(*values):
+    from .composition import _admit_graph
+    _admit_graph(tuple(value.hex if type(value) is UUID else value for value in values))
+
+
+def _check_vector_size(size):
+    from .gate_limits import current_gate_limits
+    current_gate_limits().check("max_gate_parameters",size)
+    current_symbolic_limits().check("max_parameters",size)
+
+
 class _SymbolicMethods:
     def sin(self): return self.expression()._unary("sin")
     def cos(self): return self.expression()._unary("cos")
@@ -58,6 +69,11 @@ class Parameter(_SymbolicMethods):
     _uuid_explicit: bool = field(default=False, init=False, compare=False, repr=False)
 
     def __post_init__(self) -> None:
+        from quantumbridge.execution.resource_context import current_resources
+        if current_resources() is not None and not any(type(self) is kind for kind in (Parameter,ParameterVectorElement)):
+            from .classical import UnsupportedFeature
+            raise UnsupportedFeature("managed_parameter_type")
+        _admit_parameter_values(self.name,self.uuid)
         if not isinstance(self.name, str) or not self.name:
             raise ValueError("QuantumBridge parameter names must be non-empty strings.")
         explicit=self.uuid is not None
@@ -125,6 +141,8 @@ class ParameterExpression(_SymbolicMethods):
     _nodes: int = field(init=False, compare=False, repr=False)
     _depth: int = field(init=False, compare=False, repr=False)
     _parameters: frozenset = field(init=False, compare=False, repr=False)
+    _dependencies: frozenset = field(init=False, compare=False, repr=False)
+    _retained_parameters: frozenset = field(default_factory=frozenset, compare=False, repr=False, kw_only=True)
     _derivative_order: int = field(default=0, init=False, compare=False, repr=False)
 
     def __post_init__(self):
@@ -135,6 +153,13 @@ class ParameterExpression(_SymbolicMethods):
         if len(self.args) != arity:
             raise ValueError("Incorrect native parameter AST arity.")
         limits = current_symbolic_limits()
+        if type(self._retained_parameters) is not frozenset:
+            raise TypeError("Retained parameter context must be an owned frozenset.")
+        _check_vector_size(len(self._retained_parameters))
+        if any(type(p) not in (Parameter,ParameterVectorElement) for p in self._retained_parameters):
+            raise TypeError("Retained parameter context requires exact native identities.")
+        _admit_parameter_values(self._retained_parameters)
+        charge_symbolic_work(len(self._retained_parameters))
         if self.op == "const":
             object.__setattr__(self, "args", (_checked_numeric(self.args[0]),))
             nodes, depth, parameters, order = 1, 1, frozenset(), 0
@@ -151,11 +176,25 @@ class ParameterExpression(_SymbolicMethods):
             limits.check("max_depth", depth)
             parameters = frozenset().union(*(arg.parameters for arg in self.args))
             order = max(arg._derivative_order for arg in self.args)
+        dependencies = (frozenset() if self.op == "const" else frozenset(self.args) if self.op == "parameter"
+                        else frozenset().union(*(arg._dependencies for arg in self.args)))
+        parameters = parameters | self._retained_parameters
         limits.check("max_parameters", len(parameters))
         validate_parameter_names(parameters)
+        if self._retained_parameters:
+            identities = {}
+            for parameter in parameters:
+                descriptor = (type(parameter),parameter.name)
+                if type(parameter) is ParameterVectorElement:
+                    owner = parameter.vector
+                    if type(owner) is not ParameterVector: raise TypeError("Retained vector context requires a native owner.")
+                    descriptor += (owner._root_uuid,len(owner),parameter.index)
+                previous = identities.setdefault(parameter.uuid,descriptor)
+                if previous != descriptor: raise ValueError("Conflicting retained parameter UUID descriptors.")
         object.__setattr__(self, "_nodes", nodes)
         object.__setattr__(self, "_depth", depth)
         object.__setattr__(self, "_parameters", parameters)
+        object.__setattr__(self, "_dependencies", dependencies)
         object.__setattr__(self, "_derivative_order", order)
 
     def expression(self): return self
@@ -175,7 +214,9 @@ class ParameterExpression(_SymbolicMethods):
         result = self._replace(mapping)
         if result.parameters:
             if not allow_partial:
-                raise ValueError("QuantumBridge parameters are not fully bound: " + ", ".join(sorted(p.name for p in result.parameters)))
+                try: return result.numeric(strict=False)
+                except TypeError:
+                    raise ValueError("QuantumBridge parameters are not fully bound: " + ", ".join(sorted(p.name for p in result.parameters))) from None
             return result
         return result.numeric()
 
@@ -220,23 +261,44 @@ class ParameterExpression(_SymbolicMethods):
         def visit(node):
             work.charge()
             if id(node) in memo: return memo[id(node)]
-            if node.op == "const": result = node
+            if node.op == "const": result = ParameterExpression("const",node.args) if node._retained_parameters else node
             elif node.op == "parameter":
                 # Never revisit a replacement: batch substitution is simultaneous.
-                result = _coerce_expression(mapping.get(node.args[0], node))
+                result = _coerce_expression(mapping.get(node.args[0], node.args[0]))
             else:
                 children = tuple(visit(arg) for arg in node.args)
                 result = ParameterExpression(node.op, children).simplify()
             memo[id(node)] = result
             return result
-        return _with_derivative_order(visit(self), self._derivative_order)
+        parameters = set()
+        work.charge(len(self.parameters))
+        for parameter in self.parameters:
+            parameters.update(_coerce_expression(mapping.get(parameter,parameter)).parameters)
+        return _with_derivative_order(_with_parameter_context(visit(self),frozenset(parameters)), self._derivative_order)
 
     def gradient(self, parameter):
+        result = self._gradient_expression(parameter)
+        value = _constant_value(result, allow_cancellation=True)
+        if value is _NOT_CONSTANT:
+            return result
+        value = _checked_numeric(value)
+        if isinstance(value, Integral):
+            return float(value) if -1 <= value <= 1 else int(value)
+        if isinstance(value, Real):
+            return float(value)
+        return float(value.real) if value.imag == 0 else complex(value)
+
+    def _gradient_expression(self, parameter):
+        """Same calculus with an AST result for internal repeated derivatives."""
         if not isinstance(parameter, Parameter):
             raise TypeError("Symbolic differentiation requires a native Parameter identity.")
         order = self._derivative_order + 1
         current_symbolic_limits().check("max_derivative_order", order)
-        return _with_derivative_order(_differentiate(self, parameter), order)
+        _constant_value(self, allow_cancellation=True)
+        result = _differentiate(self, parameter)
+        if result._dependencies:
+            result = _with_parameter_context(result,self.parameters)
+        return _with_derivative_order(result, order)
 
     def numeric(self, strict=True):
         if type(strict) is not bool: raise TypeError("numeric strict must be boolean.")
@@ -248,8 +310,8 @@ class ParameterExpression(_SymbolicMethods):
         return _checked_numeric(result)
 
     def is_real(self):
-        if self.parameters: return None
-        value = self.numeric()
+        try: value = self.numeric(strict=False)
+        except TypeError: return None
         return isinstance(value, Real) or value.imag == 0
 
     def is_symbol(self):
@@ -276,7 +338,7 @@ class ParameterExpression(_SymbolicMethods):
         return self.bind(mapping, allow_partial=False)
 
     def simplify(self):
-        return _with_derivative_order(self._simplify(), self._derivative_order)
+        return _with_derivative_order(_with_parameter_context(self._simplify(),self.parameters), self._derivative_order)
 
     def _simplify(self):
         if self.op in {"const", "parameter"}:
@@ -299,6 +361,9 @@ class ParameterExpression(_SymbolicMethods):
         if self.op == "+" and _literal(left, 0): return right
         if self.op in {"*", "/", "**"} and _literal(right, 1): return left
         if self.op == "*" and _literal(left, 1): return right
+        if self.op == "*" and ((_literal(left,0) and right.op == "parameter")
+                               or (_literal(right,0) and left.op == "parameter")):
+            return ParameterExpression("const",(0,))
         return self
 
     def _unary(self, name):
@@ -320,9 +385,9 @@ class ParameterExpression(_SymbolicMethods):
         return f"({self.args[0]} {symbol} {self.args[1]})"
 
     def __float__(self) -> float:
-        return float(self.numeric())
+        return float(self.numeric(strict=False))
 
-    def __complex__(self): return complex(self.numeric())
+    def __complex__(self): return complex(self.numeric(strict=False))
 
     def __neg__(self) -> "ParameterExpression":
         return ParameterExpression("neg", (self,))
@@ -362,33 +427,51 @@ class ParameterVector(Sequence[Parameter]):
     """Ordered vector of scalar parameters."""
 
     def __init__(self, name: str, length: int = 0) -> None:
-        if not isinstance(name, str) or not name:
-            raise ValueError("QuantumBridge parameter vector names must be non-empty strings.")
-        self.name = name
+        _admit_parameter_values(self,name,length)
+        if not isinstance(name, str):
+            raise TypeError("QuantumBridge parameter vector names must be strings.")
+        self._name = name
         self._root_uuid = str(uuid4())
-        self._params = ()
+        self._params = []
         self.resize(length)
 
     def resize(self, length: int) -> None:
-        if not isinstance(length,int) or length<0:
-            raise ValueError("QuantumBridge parameter vector length must be a nonnegative integer.")
-        prefix=self._params[:length]
-        self._params=prefix+tuple(ParameterVectorElement(self,index) for index in range(len(prefix),length))
+        from .bits import integer_index
+        _admit_parameter_values(self,length)
+        length=integer_index(length)
+        if length<0:raise OverflowError("Parameter vector length cannot be negative.")
+        _check_vector_size(length)
+        if length>len(self._params):
+            # Stage new identities before changing the list borrowed by callers.
+            added=[ParameterVectorElement(self,index) for index in range(len(self._params),length)]
+            self._params.extend(added)
+        else:del self._params[length:]
+
+    @property
+    def name(self):return self._name
 
     def __getitem__(self, index):
+        _admit_parameter_values(self,index)
         return self._params[index]
 
     def __iter__(self) -> Iterator[Parameter]:
+        _admit_parameter_values(self)
         return iter(self._params)
 
     def __len__(self) -> int:
+        _admit_parameter_values(self)
         return len(self._params)
+
+    def index(self,value,start=0,stop=None):
+        _admit_parameter_values(self,value,start,stop)
+        return self._params.index(value,start) if stop is None else self._params.index(value,start,stop)
 
     def __repr__(self) -> str:
         return f"ParameterVector({self.name!r}, {len(self)})"
 
     @property
-    def params(self) -> tuple[Parameter, ...]:
+    def params(self) -> list[Parameter]:
+        _admit_parameter_values(self)
         return self._params
 
 
@@ -396,8 +479,17 @@ class ParameterVectorElement(Parameter):
     """A scalar identity with stable vector position, including after resize."""
 
     def __init__(self, vector: ParameterVector, index: int, uuid=None):
-        if not isinstance(vector,ParameterVector) or not isinstance(index,int) or index<0:
-            raise ValueError("ParameterVectorElement requires a vector and nonnegative index.")
+        from .bits import integer_index
+        from quantumbridge.execution.resource_context import current_resources
+        if current_resources() is not None and type(vector) is not ParameterVector:
+            from .classical import UnsupportedFeature
+            raise UnsupportedFeature("managed_parameter_vector_owner")
+        _admit_parameter_values(index,uuid)
+        if not isinstance(vector,ParameterVector):raise TypeError("ParameterVectorElement requires a native vector.")
+        _admit_parameter_values(vector.name,vector._root_uuid)
+        index=integer_index(index)
+        if index<0:raise OverflowError("Parameter vector index cannot be negative.")
+        _check_vector_size(index+1)
         identity=uuid if uuid is not None else UUID(int=(UUID(vector._root_uuid).int+index)%(1<<128))
         super().__init__(f"{vector.name}[{index}]",str(identity))
         object.__setattr__(self,"_uuid_explicit",uuid is not None)
@@ -462,8 +554,9 @@ def resolve_parameter(value: ParameterValue, mapping: Mapping[Union[Parameter, s
         result = value._replace(local)
         if result.parameters:
             if allow_partial: return result
-            raise ValueError("QuantumBridge parameters are not fully bound.")
-        numeric = result.numeric()
+            try: numeric = result.numeric(strict=False)
+            except TypeError: raise ValueError("QuantumBridge parameters are not fully bound.") from None
+        else: numeric = result.numeric()
         if not isinstance(numeric, Real):
             if numeric.imag != 0:
                 raise ValueError("Physical gate angles and global phase must be real; no imaginary part may be discarded.")
@@ -533,9 +626,18 @@ def _literal(value, target):
 
 def _with_derivative_order(expression, order):
     if expression._derivative_order >= order: return expression
-    result = ParameterExpression(expression.op, expression.args)
+    result = ParameterExpression(expression.op, expression.args,_retained_parameters=expression._retained_parameters)
     object.__setattr__(result, "_derivative_order", order)
     return result
+
+
+def _with_parameter_context(expression, parameters):
+    """Keep observable symbol identities separate from mathematical operands."""
+    _check_vector_size(len(parameters))
+    retained = frozenset(parameters)-expression.parameters
+    if not retained: return expression
+    return ParameterExpression(expression.op,expression.args,
+                               _retained_parameters=expression._retained_parameters|retained)
 
 
 _NOT_CONSTANT = object()
@@ -550,12 +652,16 @@ def _constant_value(expression, *, allow_cancellation=False):
         if node.op == "const": result = node.args[0]
         elif node.op == "parameter": result = _NOT_CONSTANT
         elif allow_cancellation and node.op == "*" and any(_literal(arg, 0) for arg in node.args):
+            for arg in node.args: visit(arg)
             result = 0
         elif allow_cancellation and node.op == "-" and node.args[0] == node.args[1]:
+            visit(node.args[0])
             result = 0
         else:
             args = tuple(visit(arg) for arg in node.args)
-            if any(arg is _NOT_CONSTANT for arg in args): result = _NOT_CONSTANT
+            if (allow_cancellation and node.op == "/" and args[0] is not _NOT_CONSTANT
+                    and args[0] == 0 and args[1] is _NOT_CONSTANT): result = 0
+            elif any(arg is _NOT_CONSTANT for arg in args): result = _NOT_CONSTANT
             elif node.op == "neg": result = -args[0]
             elif node.op in UNARY_FUNCTIONS | _GUARDED_DERIVATIVES:
                 result = _evaluate_unary(node.op, args[0])
@@ -589,7 +695,7 @@ def _evaluate_unary(op, value):
 def _differentiate(expression, parameter):
     work, memo = _SymbolicWork(), {}
     work.validate(expression)
-    zero, one = _coerce_expression(0.), _coerce_expression(1.)
+    zero, one = _coerce_expression(0), _coerce_expression(1)
 
     def mul(left, right):
         if _literal(left, 0) or _literal(right, 0): return zero
@@ -598,7 +704,7 @@ def _differentiate(expression, parameter):
     def visit(node):
         work.charge()
         if id(node) in memo: return memo[id(node)]
-        if parameter not in node.parameters: result = zero
+        if parameter not in node._dependencies: result = zero
         elif node.op == "parameter": result = one
         elif node.op == "neg": result = -visit(node.args[0])
         elif node.op in UNARY_FUNCTIONS | _GUARDED_DERIVATIVES:

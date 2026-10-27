@@ -12,6 +12,22 @@ from quantumbridge.utils.math import gate_matrix, pauli_matrix
 from quantumbridge.execution import mps_arrays as arrays
 
 
+def mps_routing(wires, width):
+    """Gather operands in matrix order and restore the physical q0-first chain."""
+    selected = tuple(wires)
+    if not selected or len(set(selected)) != len(selected) or any(
+            type(wire) is not int or not 0 <= wire < width for wire in selected):
+        raise ValueError("MPS routing requires distinct valid physical wires.")
+    labels, swaps, start = list(range(width)), [], min(selected)
+    for offset, wire in enumerate(selected):
+        position = labels.index(wire)
+        while position > start+offset:
+            labels[position-1], labels[position] = labels[position], labels[position-1]
+            swaps.append(position-1)
+            position -= 1
+    return start, tuple(swaps)
+
+
 class MatrixProductState:
     """Open-boundary qubit MPS in q0-first order with an orthogonality center.
 
@@ -128,7 +144,7 @@ class MatrixProductState:
             self._tensors[index - 1] = updated
             self._center -= 1
 
-    def _split(self, start, width, block):
+    def _split(self, start, width, block, *, _tangent_factors=None):
         left, right = block.shape[0], block.shape[-1]
         tensors = list(self._tensors)
         peak, discarded_weight, truncations = self.peak_bond_dimension, self.discarded_weight, self.truncations
@@ -143,18 +159,29 @@ class MatrixProductState:
             np.cumsum(squared[::-1], out=tails)
             tails = tails[::-1]
             rank = len(singular)
-            for candidate in range(1, len(singular)):
-                if tails[candidate] <= self.cutoff * total:
-                    rank = candidate
-                    break
-            if self.max_bond_dim is not None:
-                rank = min(rank, self.max_bond_dim)
+            if _tangent_factors is None:
+                for candidate in range(1, len(singular)):
+                    if tails[candidate] <= self.cutoff * total:
+                        rank = candidate
+                        break
+                if self.max_bond_dim is not None:
+                    rank = min(rank, self.max_bond_dim)
+            else:
+                # Tangents must not inherit an approximate simulation cutoff.
+                # Only numerical-null Schmidt values may be removed; their
+                # discarded weight is still recorded in the existing receipt.
+                floor = 8 * np.finfo(float).eps * max(matrix.shape) * singular[0]
+                rank = max(1, sum(float(value) > floor for value in singular))
+                if self.max_bond_dim is not None and rank > self.max_bond_dim:
+                    raise MemoryError("MPS tangent numerical rank exceeds max_bond_dim; refusing derivative truncation.")
             peak = max(peak, rank)
             discarded = float(np.sum(squared[rank:]) / total) if total else 0.0
             if discarded:
                 discarded_weight += discarded
                 truncations += 1
             retained = float(np.sum(squared[:rank]))
+            if _tangent_factors is not None:
+                _tangent_factors.append(float(np.sqrt(retained)))
             tensors[start + offset] = arrays.reshaped(u[:, :rank], (left, 2, rank))
             block = arrays.owned("mps_schmidt_next_block", (rank, vh.shape[1]), vh.dtype)
             np.multiply(singular[:rank, None], vh[:rank], out=block)
@@ -165,7 +192,7 @@ class MatrixProductState:
         self._tensors, self._center = tensors, start + width - 1
         self.peak_bond_dimension, self.discarded_weight, self.truncations = peak, discarded_weight, truncations
 
-    def _block_gate(self, matrix, start, width):
+    def _block_gate(self, matrix, start, width, *, _tangent_factors=None):
         self._move_center(start)
         left = self._tensors[start].shape[0]
         right = self._tensors[start + width - 1].shape[2]
@@ -175,10 +202,22 @@ class MatrixProductState:
             block = arrays.contracted(block, tensor)
         reshaped = arrays.reshaped(block, (left, 1 << width, right))
         block = arrays.einsum("ij,ajb->aib", reshaped.shape, matrix, reshaped)
+        if _tangent_factors is not None:
+            scale = arrays.component_scale(block)
+            _tangent_factors.append(scale)
+            if scale == 0:
+                return False
+            block = arrays.rescaled(block, scale)
         norm = arrays.norm_squared(block)
         if norm <= 0:
             raise ValueError("QuantumBridge cannot normalize a zero MPS branch.")
-        self._split(start, width, arrays.divided(block, np.sqrt(norm)))
+        if _tangent_factors is None:
+            self._split(start, width, arrays.divided(block, np.sqrt(norm)))
+        else:
+            _tangent_factors.append(float(np.sqrt(norm)))
+            self._split(start, width, arrays.divided(block, np.sqrt(norm)),
+                        _tangent_factors=_tangent_factors)
+        return True
 
     def apply(self, matrix, wires):
         """Apply a supplied local matrix, normalizing the resulting pure branch."""
@@ -190,7 +229,7 @@ class MatrixProductState:
             self._tensors, self._center, self.peak_bond_dimension, self.discarded_weight, self.truncations = original
             raise
 
-    def _apply(self, matrix, wires):
+    def _apply(self, matrix, wires, *, _tangent_factors=None):
         selected = self._wires(wires)
         if not selected:
             raise ValueError("QuantumBridge MPS matrix application requires wires.")
@@ -198,22 +237,21 @@ class MatrixProductState:
         dimension = 1 << len(selected)
         if matrix.shape != (dimension, dimension) or not arrays.finite(matrix):
             raise ValueError("QuantumBridge MPS matrix dimensions must match its wires.")
+        def block_gate(matrix, start, width):
+            if _tangent_factors is None:
+                return self._block_gate(matrix, start, width)
+            return self._block_gate(matrix, start, width, _tangent_factors=_tangent_factors)
         if len(selected) == 1:
-            self._block_gate(matrix, selected[0], 1)
+            block_gate(matrix, selected[0], 1)
             return self
         # Gather logical wires in the matrix's order, then restore physical order.
-        labels, swaps = list(range(self.num_qubits)), []
-        start = min(selected)
-        for offset, wire in enumerate(selected):
-            position = labels.index(wire)
-            while position > start + offset:
-                self._block_gate(gate_matrix("swap"), position - 1, 2)
-                labels[position - 1], labels[position] = labels[position], labels[position - 1]
-                swaps.append(position - 1)
-                position -= 1
-        self._block_gate(matrix, start, len(selected))
+        start, swaps = mps_routing(tuple(int(wire) for wire in selected), self.num_qubits)
+        for position in swaps:
+            block_gate(gate_matrix("swap"), position, 2)
+        if block_gate(matrix, start, len(selected)) is False:
+            return self
         for position in reversed(swaps):
-            self._block_gate(gate_matrix("swap"), position, 2)
+            block_gate(gate_matrix("swap"), position, 2)
         return self
 
     def statevector(self):

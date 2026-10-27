@@ -66,6 +66,8 @@ FUNCTIONS = [
 
 
 def numeric_at(expression, mapping):
+    if type(expression) in (int, float, complex):
+        return expression
     return expression.bind({key: value for key, value in mapping.items() if key in expression.parameters})
 
 
@@ -80,7 +82,10 @@ def test_eleven_elementary_families_have_independent_values_and_two_derivatives(
     assert expression.bind({parameter: value}) == pytest.approx(forward(value))
     derivative = expression.gradient(parameter)
     assert numeric_at(derivative, {parameter: value}) == pytest.approx(first(value))
-    assert numeric_at(derivative.gradient(parameter), {parameter: value}) == pytest.approx(second(value))
+    internal = expression._gradient_expression(parameter)
+    assert type(internal) is ParameterExpression
+    assert numeric_at(internal, {parameter: value}) == pytest.approx(first(value))
+    assert numeric_at(internal._gradient_expression(parameter), {parameter: value}) == pytest.approx(second(value))
     assert expression.is_real() is None
 
 
@@ -146,12 +151,15 @@ def test_numeric_and_syntactic_membership_are_distinct_and_constants_remain_diff
         assert expression.parameters == {p}
         with pytest.raises(TypeError, match="Unbound"): expression.numeric()
         assert expression.numeric(strict=False) == 0
-        assert expression.gradient(p).numeric() == 0
+        derivative = expression.gradient(p)
+        assert type(derivative) is float and derivative == 0
     assert (p+0).is_symbol()
     assert not p.sin().is_symbol()
     constant = (p+3).gradient(p)
-    assert constant.numeric() == 1
-    assert constant.gradient(p).numeric() == 0
+    assert type(constant) is float and constant == 1
+    internal = (p+3)._gradient_expression(p)
+    assert type(internal) is ParameterExpression and internal.numeric() == 1
+    assert internal._gradient_expression(p).numeric() == 0
     assert p.assign(p, 3).is_real() is True
     assert (p+1j).assign(p, .2).is_real() is False
     assert (p+1j).bind_all({p: .2, Parameter("unused"): 4}) == .2+1j

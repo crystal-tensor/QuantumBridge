@@ -12,9 +12,11 @@ import math
 def invocation_params(operation):
     """Matrix-valued object parameters are not scalar execution arguments."""
     from .annotated_operation import AnnotatedOperation
-    if type(operation) is AnnotatedOperation: return invocation_params(operation.base_op)
-    if type(operation) is CUGate: return tuple(operation.params)
-    if isinstance(operation, ControlledGate): return invocation_params(operation.base_gate)
+    seen=set()
+    while type(operation) is AnnotatedOperation or isinstance(operation,ControlledGate) and type(operation) is not CUGate:
+        if id(operation) in seen:raise ValueError("Cyclic operation base parameter graph.")
+        seen.add(id(operation));current_gate_limits().check("max_definition_depth",len(seen))
+        operation=operation.base_op if type(operation) is AnnotatedOperation else operation.base_gate
     return () if type(operation) is UnitaryGate else tuple(operation.params)
 
 
@@ -57,7 +59,9 @@ class _StandardGate(Gate):
         from .instruction_parameters import admit_owner
         admit_owner(self)
         if self._arity == 1: return type(self)(-self.params[0])
-        if self._arity == 0: return self.copy()
+        if self._arity == 0:
+            partner={"s":SdgGate,"sdg":SGate,"t":TdgGate,"tdg":TGate,"sx":SXdgGate,"sxdg":SXGate}.get(self._operation)
+            return type(self)() if partner is None else partner()
         theta, phi, lam = self.params
         return UGate(-theta, -lam, -phi)
 
@@ -98,6 +102,9 @@ class _AngleGate(_StandardGate):
 class RXGate(_AngleGate): _operation = "rx"
 class RYGate(_AngleGate): _operation = "ry"
 class RZGate(_AngleGate): _operation = "rz"
+class RXXGate(_AngleGate): _operation, _width = "rxx", 2
+class RYYGate(_AngleGate): _operation, _width = "ryy", 2
+class RZZGate(_AngleGate): _operation, _width = "rzz", 2
 class PhaseGate(_AngleGate):
     _operation = "phase"
 
@@ -123,6 +130,13 @@ class _FixedGate(_StandardGate):
 
 
 class HGate(_FixedGate): _operation = "h"
+class IGate(_FixedGate): _operation = "id"
+class SGate(_FixedGate): _operation = "s"
+class SdgGate(_FixedGate): _operation = "sdg"
+class TGate(_FixedGate): _operation = "t"
+class TdgGate(_FixedGate): _operation = "tdg"
+class SXGate(_FixedGate): _operation = "sx"
+class SXdgGate(_FixedGate): _operation = "sxdg"
 class XGate(_FixedGate): _operation = "x"
 class YGate(_FixedGate): _operation = "y"
 class ZGate(_FixedGate):
@@ -155,15 +169,21 @@ class _ControlledStandard(ControlledGate):
         base = self.base_gate.assign_parameters(mapping, strict=strict)
         result = type(self)(*base.params, label=self.label, ctrl_state=self.ctrl_state)
         if self.definition is not None:
-            object.__setattr__(result, "_definition", self.definition.assign_parameters(mapping, strict=False))
+            from .instruction_parameters import bind_definition
+            object.__setattr__(result, "_definition", bind_definition(self.definition,mapping))
         return result
 
     def inverse(self, annotated=False):
         return type(self)(*self.base_gate.inverse().params, ctrl_state=self.ctrl_state)
 
     def power(self, exponent, annotated=False):
-        if self._arity == 1:
+        from .instruction_parameters import admit_owner, admit_payloads
+        admit_owner(self)
+        admit_payloads((exponent, annotated))
+        if self._base_type is PhaseGate:
             return type(self)(*self.base_gate.power(exponent).params, ctrl_state=self.ctrl_state)
+        if self.is_parameterized() and not annotated:
+            raise TypeError("Bind controlled Gate parameters or request an annotated power.")
         return Gate.power(self, exponent, annotated=annotated)
 
     def control(self, num_ctrl_qubits=1, label=None, ctrl_state=None, annotated=None):
@@ -270,7 +290,7 @@ class UnitaryGate(Gate):
         from quantumbridge.execution.array_reservations import numeric_shape, numeric_array
         from quantumbridge.utils.math import validate_unitary_matrix
         shape = numeric_shape(parameter)
-        if len(shape) != 2 or shape[0] != shape[1] or shape[0] < 2 or shape[0] & (shape[0]-1):
+        if len(shape) != 2 or shape[0] != shape[1] or shape[0] < 1 or shape[0] & (shape[0]-1):
             raise ValueError("UnitaryGate needs a nonempty square power-of-two matrix.")
         current_gate_limits().check("max_matrix_dimension", shape[0])
         matrix = numeric_array(parameter, category="native_unitary_parameter", copy=True)
@@ -280,7 +300,10 @@ class UnitaryGate(Gate):
     @property
     def definition(self):
         from .circuit import Circuit
-        return Circuit(self.num_qubits).unitary(self._params[0], range(self.num_qubits))
+        result=Circuit(self.num_qubits).unitary(self._params[0], range(self.num_qubits))
+        basis=getattr(self,"_public_matrix_basis",None)
+        if basis is not None:object.__setattr__(result.operations[0],"_public_matrix_basis",basis)
+        return result
 
     @definition.setter
     def definition(self, value):
@@ -313,15 +336,42 @@ class UnitaryGate(Gate):
         return _copy(self._params[0])
 
     def inverse(self, annotated=False):
-        if annotated: return Gate.inverse(self, annotated=True)
-        return UnitaryGate(self.to_matrix().conj().T)
+        from .instruction_parameters import admit_owner
+        admit_owner(self)
+        result=UnitaryGate(self.to_matrix().conj().T)
+        basis=getattr(self,"_public_matrix_basis",None)
+        if basis is not None:object.__setattr__(result,"_public_matrix_basis",basis)
+        return result
+
+    def power(self, exponent, annotated=False):
+        result=super().power(exponent,annotated=annotated)
+        if getattr(self,"_public_matrix_basis",None)=="native" and type(result) is UnitaryGate:
+            object.__setattr__(result,"_public_matrix_basis","native")
+        if getattr(self,"_public_matrix_basis",None)=="little" and type(result) is UnitaryGate:
+            # Integer powers lower the definition; fractional powers use the
+            # displayed matrix directly. Keep both results in the source basis.
+            if float(exponent).is_integer():
+                from quantumbridge.information.operator import _reverse_qubit_order
+                result=UnitaryGate(_reverse_qubit_order(result.to_matrix(),self.num_qubits),label=result.label)
+            object.__setattr__(result,"_public_matrix_basis","little")
+        return result
 
 
 _CONTROLLED_CLASSES = {"rx": CRXGate, "ry": CRYGate, "rz": CRZGate, "phase": CPhaseGate,
     "x": CXGate, "y": CYGate, "z": CZGate, "h": CHGate, "swap": CSwapGate}
 STANDARD_GATE_TYPES = (RXGate, RYGate, RZGate, PhaseGate, UGate, HGate, XGate, YGate,
     ZGate, SwapGate, CRXGate, CRYGate, CRZGate, CPhaseGate, CXGate, CYGate, CZGate,
-    CHGate, CSwapGate, CCXGate, CCZGate, CUGate, UnitaryGate)
+    CHGate, CSwapGate, CCXGate, CCZGate, CUGate, UnitaryGate,
+    IGate, SGate, SdgGate, TGate, TdgGate, SXGate, SXdgGate, RXXGate, RYYGate, RZZGate)
+
+STANDARD_GATE_NAMES={
+    "id":IGate,"i":IGate,"h":HGate,"x":XGate,"y":YGate,"z":ZGate,
+    "s":SGate,"sdg":SdgGate,"t":TGate,"tdg":TdgGate,"sx":SXGate,"sxdg":SXdgGate,
+    "rx":RXGate,"ry":RYGate,"rz":RZGate,"phase":PhaseGate,"p":PhaseGate,"u":UGate,"u3":UGate,
+    "cx":CXGate,"cy":CYGate,"cz":CZGate,"ch":CHGate,"swap":SwapGate,"cswap":CSwapGate,
+    "crx":CRXGate,"cry":CRYGate,"crz":CRZGate,"cp":CPhaseGate,"cphase":CPhaseGate,
+    "ccx":CCXGate,"ccz":CCZGate,"cu":CUGate,"rxx":RXXGate,"ryy":RYYGate,"rzz":RZZGate,
+}
 
 
 def standard_type_name(gate):
@@ -332,4 +382,7 @@ def standard_from_record(name, params, label=None, ctrl_state=None):
     kind = next((kind for kind in STANDARD_GATE_TYPES if kind.__name__ == name), None)
     if kind is None: raise ValueError("Unknown native standard Gate type.")
     if issubclass(kind, _ControlledStandard): return kind(*params, label=label, ctrl_state=ctrl_state)
-    return kind(*params, label=label)
+    result=kind(*params, label=label)
+    # Decoded records and canonical format checks use native matrix coordinates.
+    if kind is UnitaryGate:object.__setattr__(result,"_public_matrix_basis","native")
+    return result

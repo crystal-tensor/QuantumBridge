@@ -7,6 +7,7 @@ from collections.abc import Mapping
 from .classical import ClassicalExpression, ClassicalType, Var, Stretch, validate_classical_expr
 from .errors import CircuitError
 from .gate_limits import current_gate_limits
+from .circuit_metadata import execution_metadata
 
 
 _KEY = "classical_scope"
@@ -18,8 +19,8 @@ def entries(circuit):
     if current_resources() is not None:
         from .instruction_parameters import admit_payloads
         from .classical import UnsupportedFeature
-        if type(circuit.metadata) is not dict: raise UnsupportedFeature("managed_classical_scope_metadata")
-    payload = circuit.metadata.get(_KEY)
+        if type(execution_metadata(circuit)) is not dict: raise UnsupportedFeature("managed_classical_scope_metadata")
+    payload = execution_metadata(circuit).get(_KEY)
     result, names, identities = [], set(), set()
     if payload is not None:
         if current_resources() is not None: admit_payloads((payload,))
@@ -57,8 +58,8 @@ def entries(circuit):
 def set_entries(circuit, records):
     serialized = [{"node": node.to_dict(), "scope": scope} for node,scope,ordered in records if not ordered]
     for record in serialized: record["node"]["value"]=list(record["node"]["value"])
-    if serialized: circuit.metadata[_KEY] = {"version":1, "identifiers":serialized}
-    else: circuit.metadata.pop(_KEY, None)
+    if serialized: execution_metadata(circuit)[_KEY] = {"version":1, "identifiers":serialized}
+    else: execution_metadata(circuit).pop(_KEY, None)
     circuit._classical_identifiers = {node.value[0]:node for node,_,ordered in records if not ordered}
 
 
@@ -83,7 +84,7 @@ def get_identifier(circuit, name, default=_MISSING, kind=None):
 
 def copy_scope(source, target, mode):
     if mode not in {"alike","captures","drop"}: raise ValueError("Unknown vars_mode.")
-    if mode == "drop": target.metadata.pop(_KEY,None); return
+    if mode == "drop": execution_metadata(target).pop(_KEY,None); return
     records = []
     for node,scope,_ in entries(source):
         if type(node) not in {Var,Stretch}:

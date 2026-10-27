@@ -1,0 +1,144 @@
+{
+  "inputs": {
+    "sites": 2,
+    "spin_modes": 4,
+    "particle_sector": 2,
+    "hopping_t": 1.0,
+    "measured_U": 4.0,
+    "boundary": "open two-site cluster"
+  },
+  "intermediate": {
+    "interaction_sweep": [
+      {
+        "U_over_t": 0.0,
+        "energy_N2": -2.0,
+        "finite_cluster_charge_gap": 2.0,
+        "double_occupation": 0.4999999999999998
+      },
+      {
+        "U_over_t": 1.0,
+        "energy_N2": -1.56155281280883,
+        "finite_cluster_charge_gap": 2.12310562561766,
+        "double_occupation": 0.37873218748183335
+      },
+      {
+        "U_over_t": 2.0,
+        "energy_N2": -1.2360679774997894,
+        "finite_cluster_charge_gap": 2.4721359549995787,
+        "double_occupation": 0.2763932022500212
+      },
+      {
+        "U_over_t": 4.0,
+        "energy_N2": -0.8284271247461902,
+        "finite_cluster_charge_gap": 3.6568542494923806,
+        "double_occupation": 0.14644660940672627
+      },
+      {
+        "U_over_t": 6.0,
+        "energy_N2": -0.6055512754639891,
+        "finite_cluster_charge_gap": 5.211102550927978,
+        "double_occupation": 0.08397485283107811
+      },
+      {
+        "U_over_t": 8.0,
+        "energy_N2": -0.47213595499957944,
+        "finite_cluster_charge_gap": 6.944271909999159,
+        "double_occupation": 0.052786404500042045
+      }
+    ],
+    "mode_order": [
+      "site0 up",
+      "site0 down",
+      "site1 up",
+      "site1 down"
+    ],
+    "preparation_amplitudes": [
+      0.0,
+      0.0,
+      0.0,
+      -0.27059805007309856,
+      0.0,
+      -1.1102230246251565e-16,
+      0.6532814824381883,
+      0.0,
+      0.0,
+      -0.6532814824381884,
+      0.0,
+      0.0,
+      -0.2705980500730985,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "state_preparation_source": "classical exact sector eigensolver, not a quantum ground-state solver"
+  },
+  "reference": {
+    "U4_energy_analytic": -0.8284271247461903,
+    "U4_double_occupation_analytic": 0.14644660940672627
+  },
+  "evidence": {
+    "execution_mode": "local_simulator",
+    "hardware_access": false,
+    "new_cloud_tasks": 0,
+    "experiments": {
+      "occupation": {
+        "counts": {
+          "0110": 430,
+          "1001": 418,
+          "1100": 91,
+          "0011": 85
+        },
+        "probabilities": [
+          0.0,
+          0.0,
+          0.0,
+          0.0830078125,
+          0.0,
+          0.0,
+          0.419921875,
+          0.0,
+          0.0,
+          0.408203125,
+          0.0,
+          0.0,
+          0.0888671875,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "ideal_probabilities": [
+          3.0814879110195774e-33,
+          9.495567745759799e-66,
+          3.0814879110195774e-33,
+          0.07322330470336316,
+          6.077163357286271e-64,
+          1.2325951644078304e-32,
+          0.42677669529663664,
+          1.232595164407831e-32,
+          1.232595164407831e-32,
+          0.42677669529663664,
+          0.0,
+          0.0,
+          0.07322330470336304,
+          1.7333369499485123e-33,
+          0.0,
+          0.0
+        ],
+        "shots": 1024,
+        "seed": 20261023,
+        "qubits": 4,
+        "gate_count": 41,
+        "openqasm2": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nry(1.5707963267948968) q[0];\nry(1.5707963267948966) q[1];\ncx q[0],q[1];\nry(0.78539816339744828) q[1];\ncx q[0],q[1];\nry(1.5707963267948966) q[2];\ncx q[0],q[2];\nry(1.5707963267948966) q[2];\ncx q[0],q[2];\nry(-0.39269908169872414) q[3];\ncx q[2],q[3];\nry(0.39269908169872414) q[3];\ncx q[2],q[3];\ncx q[1],q[3];\nry(-1.1780972450961724) q[3];\ncx q[1],q[3];\ncx q[1],q[3];\ncx q[2],q[3];\nry(-0.39269908169872414) q[3];\ncx q[2],q[3];\ncx q[1],q[3];\ncx q[0],q[3];\nry(-1.1780972450961724) q[3];\ncx q[0],q[3];\ncx q[0],q[3];\ncx q[2],q[3];\nry(-0.39269908169872414) q[3];\ncx q[2],q[3];\ncx q[0],q[3];\ncx q[0],q[3];\ncx q[1],q[3];\nry(1.1780972450961724) q[3];\ncx q[1],q[3];\ncx q[0],q[3];\ncx q[0],q[3];\ncx q[1],q[3];\ncx q[2],q[3];\nry(1.9634954084936207) q[3];\ncx q[2],q[3];\ncx q[1],q[3];\ncx q[0],q[3];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+        "bit_order": "q0-first"
+      }
+    },
+    "estimates": {
+      "occupation": {
+        "estimate": 0.171875,
+        "standard_error": 0.011795503574239316,
+        "ideal_reference": 0.1464466094067262
+      }
+    },
+    "summary": {}
+  }
+}

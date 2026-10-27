@@ -249,12 +249,18 @@ class ExecutionPlan:
         if getattr(self.node.device, "simulation", None) == "exact_stabilizer": raise UnsupportedFeature("tableau_continuous_gradient")
         if any(request.kind not in {"expval", "var", "probs", "pauli_group"} for request in self.requests): raise UnsupportedFeature("gradient_measurement")
         if method == "backprop": raise UnsupportedFeature("simulator_backprop", "Framework VJPs are available; differentiable simulator backprop is not implemented.")
-        if method not in {"parameter-shift", "finite-diff", "adjoint", "best"}: raise UnsupportedFeature("gradient_method", f"Unknown native gradient method {method}.")
-        from quantumbridge.devices import StatevectorDevice
+        if method not in {"parameter-shift", "finite-diff", "adjoint", "best", "mps-tangent"}: raise UnsupportedFeature("gradient_method", f"Unknown native gradient method {method}.")
+        from quantumbridge.devices import StatevectorDevice, MatrixProductStateDevice
         analytic = all(shots is None for shots in self.shots.partitions) and all(request.shots is None for request in self.requests)
         adjoint_ok = type(self.node.device) is StatevectorDevice and not self.circuit.has_dynamic_operations and analytic
-        if method == "best": method = "adjoint" if adjoint_ok else "parameter-shift"
+        mps_ok = (type(self.node.device) is MatrixProductStateDevice and analytic
+            and not self.circuit.has_dynamic_operations and not self.circuit.has_simulator_instructions
+            and self.node.device.noise_model is None)
+        if method == "best":
+            method = "mps-tangent" if mps_ok and any(op.name == "native_matrix_power" for op in self.circuit.operations) else "adjoint" if adjoint_ok else "parameter-shift"
         if method == "adjoint" and not adjoint_ok: raise UnsupportedFeature("adjoint_capability", "Adjoint requires analytic unitary Statevector execution.")
+        if method == "mps-tangent" and not mps_ok:
+            raise UnsupportedFeature("mps_tangent_capability", "MPS tangents require analytic noiseless unitary MPS execution.")
         return method
 
     def _occurrences(self):
@@ -268,14 +274,20 @@ class ExecutionPlan:
                     if isinstance(parameter, Parameter) and parameter in self.recorder.parameters:
                         if in_loop: raise UnsupportedFeature("parameterized_loop_gradient", "A reused loop-body occurrence needs a loop-aware gradient rule.")
                         if parameter in found: raise UnsupportedFeature("reused_gate_occurrence", "Shared inputs must retain separate gate occurrences.")
-                        if index or len(operation.params) != 1: raise UnsupportedFeature("gate_gradient_recipe")
+                        if operation.name != "native_matrix_power" and (index or len(operation.params) != 1):
+                            raise UnsupportedFeature("gate_gradient_recipe")
                         found[parameter] = operation
         walk(self.circuit)
         return found
 
     def shift_recipe(self, operation, value):
+        if operation.name == "native_matrix_power":
+            raise UnsupportedFeature("matrix_power_parameter_shift",
+                "A moving-projector matrix function has no fixed native parameter-shift recipe; use analytic adjoint or MPS tangents.")
         gate_derivative(operation, (value,))
-        if operation.name in {"crx", "cry", "crz"}:
+        from .adjoint import gate_derivative_spec
+        base,controls,_ = gate_derivative_spec(operation)
+        if controls and base in {"rx","ry","rz","rxx","ryy","rzz"}:
             shifts = np.asarray([np.pi / 2, 3 * np.pi / 2])
             frequencies = np.asarray([.5, 1.])
             coefficients = np.linalg.solve(2 * np.sin(frequencies[:, None] * shifts), frequencies)
@@ -289,6 +301,9 @@ class ExecutionPlan:
 
     def jacobian(self, values, method=None, step=1e-6):
         method = self.gradient_capability(method or self.node.diff_method)
+        if method == "mps-tangent":
+            from .mps_derivatives import mps_jacobian
+            return mps_jacobian(self, values)
         base = self.evaluate(values)
         base_metadata = deepcopy(self.metadata)
         receipts = [{"evaluation_id":str(uuid4()),"kind":"base",**deepcopy(self.metadata)}]

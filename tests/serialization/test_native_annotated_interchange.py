@@ -570,7 +570,17 @@ def test_ir_serialization_does_not_silently_drop_edited_definition_lineage(numer
     gate.definition.rz(.5, 0)
     circuit = qb.Circuit(1).append(gate, [0])
     if numeric:
-        with pytest.raises(ValueError, match="stale parameter binding lineage"): circuit.to_ir().to_json()
+        from quantumbridge.core.instruction_parameters import binding_plan_for_serialization
+        with pytest.raises(ValueError,match="stale parameter binding lineage"):binding_plan_for_serialization(gate)
+        payload=circuit.to_ir().to_dict()
+        assert payload["instructions"][0]["metadata"]["gate"]["parameter_binding"]["invalidated"] is True
+        restored=roundtrip(circuit).operations[0].metadata["gate"]
+        expected=np.diag(np.exp(1j*np.array([-1,1])*.25))@np.array([[np.cos(.25),-1j*np.sin(.25)],[-1j*np.sin(.25),np.cos(.25)]])
+        for owner in (gate,restored):
+            np.testing.assert_allclose(owner.to_matrix(),expected,atol=1e-13)
+            plan=owner._parameter_plan
+            with pytest.raises(ValueError,match="explicit symbolic formals"):owner.params[0]=.7
+            assert owner.params==[.5] and owner._parameter_plan is plan
     else:
         restored = roundtrip(circuit).operations[0].metadata["gate"]
         restored.params[0] = .7

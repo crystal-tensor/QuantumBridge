@@ -10,7 +10,7 @@ import numpy as np
 from quantumbridge.core.classical import UnsupportedFeature
 from quantumbridge.qml.measurements import MeasurementRequest
 from quantumbridge.utils.math import Hamiltonian, PauliString, apply_unitary, gate_matrix, observable_matrix
-from .adjoint import apply_observable, gate_derivative
+from .adjoint import apply_observable, gate_derivative, gate_second_derivative
 from .processing import result_payload
 from .trace import flatten_tree
 
@@ -86,17 +86,32 @@ def second_adjoint_work(plan, values, classical, classical_second, direction, li
     local_dimension = max((1 << len(op.wires) for op in plan.circuit.operations
                            if not op.metadata.get("directive")), default=1)
     buffer_bytes = 20*16*(1 << width)+4*dense_bytes+4*16*local_dimension**2+derivative_bytes
+    matrix_functions = [op for op in plan.circuit.operations if op.name == "native_matrix_power"]
+    if matrix_functions:
+        buffer_bytes += max(16*128*(4*(1 << len(op.wires)))**2 for op in matrix_functions)
     limits.check("max_memory_bytes", buffer_bytes)
     device_limit = plan.node.device.max_memory_mb
     if device_limit is not None and buffer_bytes > device_limit*1024**2:
         raise MemoryError("Second adjoint combined working buffers exceed device max_memory_mb.")
     operations = max(1, columns)*(1 << width)*(max(1, len(plan.circuit.operations))*local_dimension*(3+16*output_size)+8*observable_work)
+    matrix_function_work = 0
+    if matrix_functions:
+        from quantumbridge.core.gate_limits import current_gate_limits
+        # Count preflight, forward direction, reverse direction and per-input
+        # mixed jets; each evaluator is itself capped by the native work guard.
+        calls = sum(len(op.params) for op in matrix_functions)+columns*sum(
+            1+output_size*(1+len(op.params)) for op in matrix_functions)
+        matrix_function_work = calls*current_gate_limits().max_decomposition_work
+        operations += matrix_function_work
     limits.check("max_adjoint_operations", operations)
     occurrences = plan._occurrences()
+    mapping = dict(zip(plan.recorder.parameters, values))
     for index, parameter in enumerate(plan.recorder.parameters):
         if parameter in occurrences and (np.any(classical[index]) or np.any(classical_second[index])):
-            gate_derivative(occurrences[parameter], (values[index],))
-    bound = plan.circuit.bind(dict(zip(plan.recorder.parameters, values)))
+            operation = occurrences[parameter]
+            gate_derivative(operation, tuple(mapping.get(item, item) for item in operation.params),
+                parameter_index=operation.params.index(parameter))
+    bound = plan.circuit.bind(mapping)
     for operation in bound.operations:
         if operation.metadata.get("directive") and operation.name in {"barrier", "delay"}:
             continue
@@ -111,6 +126,7 @@ def second_adjoint_work(plan, values, classical, classical_second, direction, li
             "evaluation_count": 1+columns, "tape_count": 1+columns,
             "physical_shots": 0, "sample_elements": 0, "derivative_buffer_bytes": derivative_bytes,
             "combined_working_buffer_bytes": buffer_bytes, "adjoint_operations": operations,
+            "matrix_function_derivative_work_bound": matrix_function_work,
             "adjoint_second_sweeps": columns*output_size, "output_size": output_size,
             "linear_size": output_size, "method": "adjoint", "direction_independent_sampling_schedule": False}
     limits.check("max_total_tapes", work["tape_count"])
@@ -184,7 +200,12 @@ def _execute_second_adjoint(plan, values, classical, classical_second, direction
             matrix = gate_matrix(operation.name, operation.params, operation.metadata)
             index = indices.get(raw.params[0]) if len(raw.params) == 1 else None
             tangent_next = apply(tangent, matrix, operation)
-            if index in active:
+            if raw.name == "native_matrix_power":
+                from .matrix_power_jet import matrix_power_directional
+                local_direction = tuple(projection[indices[p]] if indices.get(p) in active else 0. for p in raw.params)
+                if any(local_direction):
+                    tangent_next += apply(primal, matrix_power_directional(operation.params, raw.metadata, local_direction), operation)
+            elif index in active:
                 tangent_next += projection[index]*apply(primal, gate_derivative(raw, operation.params), operation)
             primal, tangent = apply(primal, matrix, operation), tangent_next
         phase = np.exp(1j*float(bound.global_phase))
@@ -201,13 +222,38 @@ def _execute_second_adjoint(plan, values, classical, classical_second, direction
                     matrix = gate_matrix(operation.name, operation.params, operation.metadata)
                     inverse = matrix.conj().T
                     before, before_tangent = apply(psi, inverse, operation), apply(psi_tangent, inverse, operation)
+                    if raw.name == "native_matrix_power":
+                        from .matrix_power_jet import matrix_power_directional, matrix_power_directions
+                        local_direction = tuple(projection[indices[p]] if indices.get(p) in active else 0. for p in raw.params)
+                        directional = matrix_power_directional(operation.params, raw.metadata, local_direction) if any(local_direction) else None
+                        if directional is not None:
+                            before_tangent += apply(psi, directional.conj().T, operation)
+                        for local, parameter in enumerate(raw.params):
+                            index = indices.get(parameter)
+                            if index not in active: continue
+                            seed = tuple(float(j == local) for j in range(len(raw.params)))
+                            _, derivative, _, mixed = matrix_power_directions(operation.params, raw.metadata, seed, local_direction)
+                            differentiated = apply(before, derivative, operation)
+                            gradient = 2*np.vdot(adjoint, differentiated).real
+                            gradient_tangent = 2*(np.vdot(adjoint_tangent, differentiated)
+                                + np.vdot(adjoint, apply(before_tangent, derivative, operation))
+                                + np.vdot(adjoint, apply(before, mixed, operation))).real
+                            if column == 0: jacobian[row] += gradient*classical[index]
+                            second[row, :, column] += gradient_tangent*classical[index]+gradient*classical_second[index, :, column]
+                        previous_tangent = apply(adjoint_tangent, inverse, operation)
+                        if directional is not None:
+                            previous_tangent += apply(adjoint, directional.conj().T, operation)
+                        adjoint, adjoint_tangent = apply(adjoint, inverse, operation), previous_tangent
+                        psi, psi_tangent = before, before_tangent
+                        continue
                     index = indices.get(raw.params[0]) if len(raw.params) == 1 else None
                     derivative = gate_derivative(raw, operation.params) if index in active else None
                     if derivative is not None:
                         before_tangent += projection[index]*apply(psi, derivative.conj().T, operation)
                         differentiated = apply(before, derivative, operation)
                         gradient = 2*np.vdot(adjoint, differentiated).real
-                        second_gate = derivative @ inverse @ derivative
+                        second_gate = (gate_second_derivative(raw, operation.params)
+                            if raw.name == "native_matrix_power" else derivative @ inverse @ derivative)
                         gradient_tangent = 2*(np.vdot(adjoint_tangent, differentiated)
                             + np.vdot(adjoint, apply(before_tangent, derivative, operation))
                             + projection[index]*np.vdot(adjoint, apply(before, second_gate, operation))).real

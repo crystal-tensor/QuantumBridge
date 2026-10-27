@@ -1,7 +1,8 @@
 # Copyright 2026 QuantumBridge Contributors.
 # Licensed under the Apache License, Version 2.0.
 from .limits import SerializationLimits
-from .errors import SerializationError, FormatValidationError, UnsupportedVersion
+from .errors import SerializationError, FormatValidationError, UnsupportedVersion, UnsupportedFeature
+from quantumbridge.core.classical import UnsupportedFeature as CoreUnsupportedFeature
 from .text_parser import SourceParser
 from .text_lowering import Lowerer
 from .text_exporter import SourceExporter
@@ -29,6 +30,9 @@ def source_dumps(circuit,version,**options):
     options["limits"] = symbolic_serialization_limits(options.get("limits"))
     try: return SourceExporter(circuit,version,**options).dumps()
     except SerializationError: raise
+    except CoreUnsupportedFeature as exc:
+        raise UnsupportedFeature(str(exc),format="qasm2" if version == "2.0" else "qasm3",
+            version=version,feature=exc.feature) from exc
     except (ValueError,TypeError,KeyError,RecursionError,OverflowError) as exc:
         raise FormatValidationError(str(exc),format="qasm2" if version == "2.0" else "qasm3",version=version) from exc
 

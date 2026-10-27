@@ -1,0 +1,556 @@
+{
+  "inputs": {
+    "photons_per_scenario": 1024,
+    "seed": 20261023,
+    "channel": "ideal local single-qubit simulation",
+    "eve_model": "random-basis intercept-resend",
+    "illustrative_abort_qber": 0.11
+  },
+  "intermediate": {
+    "scenarios": [
+      {
+        "photons": 1024,
+        "sifted_count": 507,
+        "sifted_errors": 0,
+        "qber": 0.0,
+        "qber_standard_error": 0.0,
+        "eve": false
+      },
+      {
+        "photons": 1024,
+        "sifted_count": 507,
+        "sifted_errors": 131,
+        "qber": 0.2583826429980276,
+        "qber_standard_error": 0.019460157573801824,
+        "eve": true
+      }
+    ],
+    "clean_transcript_first24": [
+      {
+        "index": 0,
+        "alice_bit": 1,
+        "alice_basis": 0,
+        "bob_basis": 0,
+        "bob_bit": 1,
+        "sifted": true
+      },
+      {
+        "index": 1,
+        "alice_bit": 1,
+        "alice_basis": 1,
+        "bob_basis": 1,
+        "bob_bit": 1,
+        "sifted": true
+      },
+      {
+        "index": 2,
+        "alice_bit": 1,
+        "alice_basis": 1,
+        "bob_basis": 1,
+        "bob_bit": 1,
+        "sifted": true
+      },
+      {
+        "index": 3,
+        "alice_bit": 0,
+        "alice_basis": 0,
+        "bob_basis": 1,
+        "bob_bit": 0,
+        "sifted": false
+      },
+      {
+        "index": 4,
+        "alice_bit": 0,
+        "alice_basis": 1,
+        "bob_basis": 1,
+        "bob_bit": 0,
+        "sifted": true
+      },
+      {
+        "index": 5,
+        "alice_bit": 1,
+        "alice_basis": 1,
+        "bob_basis": 1,
+        "bob_bit": 1,
+        "sifted": true
+      },
+      {
+        "index": 6,
+        "alice_bit": 0,
+        "alice_basis": 1,
+        "bob_basis": 1,
+        "bob_bit": 0,
+        "sifted": true
+      },
+      {
+        "index": 7,
+        "alice_bit": 1,
+        "alice_basis": 1,
+        "bob_basis": 0,
+        "bob_bit": 1,
+        "sifted": false
+      },
+      {
+        "index": 8,
+        "alice_bit": 0,
+        "alice_basis": 1,
+        "bob_basis": 0,
+        "bob_bit": 0,
+        "sifted": false
+      },
+      {
+        "index": 9,
+        "alice_bit": 0,
+        "alice_basis": 0,
+        "bob_basis": 1,
+        "bob_bit": 0,
+        "sifted": false
+      },
+      {
+        "index": 10,
+        "alice_bit": 1,
+        "alice_basis": 0,
+        "bob_basis": 0,
+        "bob_bit": 1,
+        "sifted": true
+      },
+      {
+        "index": 11,
+        "alice_bit": 0,
+        "alice_basis": 1,
+        "bob_basis": 0,
+        "bob_bit": 1,
+        "sifted": false
+      },
+      {
+        "index": 12,
+        "alice_bit": 1,
+        "alice_basis": 1,
+        "bob_basis": 0,
+        "bob_bit": 0,
+        "sifted": false
+      },
+      {
+        "index": 13,
+        "alice_bit": 1,
+        "alice_basis": 0,
+        "bob_basis": 0,
+        "bob_bit": 1,
+        "sifted": true
+      },
+      {
+        "index": 14,
+        "alice_bit": 0,
+        "alice_basis": 0,
+        "bob_basis": 0,
+        "bob_bit": 0,
+        "sifted": true
+      },
+      {
+        "index": 15,
+        "alice_bit": 0,
+        "alice_basis": 1,
+        "bob_basis": 1,
+        "bob_bit": 0,
+        "sifted": true
+      },
+      {
+        "index": 16,
+        "alice_bit": 1,
+        "alice_basis": 0,
+        "bob_basis": 1,
+        "bob_bit": 0,
+        "sifted": false
+      },
+      {
+        "index": 17,
+        "alice_bit": 0,
+        "alice_basis": 0,
+        "bob_basis": 1,
+        "bob_bit": 0,
+        "sifted": false
+      },
+      {
+        "index": 18,
+        "alice_bit": 1,
+        "alice_basis": 0,
+        "bob_basis": 1,
+        "bob_bit": 1,
+        "sifted": false
+      },
+      {
+        "index": 19,
+        "alice_bit": 1,
+        "alice_basis": 0,
+        "bob_basis": 0,
+        "bob_bit": 1,
+        "sifted": true
+      },
+      {
+        "index": 20,
+        "alice_bit": 1,
+        "alice_basis": 0,
+        "bob_basis": 1,
+        "bob_bit": 1,
+        "sifted": false
+      },
+      {
+        "index": 21,
+        "alice_bit": 0,
+        "alice_basis": 0,
+        "bob_basis": 1,
+        "bob_bit": 1,
+        "sifted": false
+      },
+      {
+        "index": 22,
+        "alice_bit": 1,
+        "alice_basis": 0,
+        "bob_basis": 1,
+        "bob_bit": 1,
+        "sifted": false
+      },
+      {
+        "index": 23,
+        "alice_bit": 1,
+        "alice_basis": 1,
+        "bob_basis": 1,
+        "bob_bit": 1,
+        "sifted": true
+      }
+    ],
+    "eve_transcript_first24": [
+      {
+        "index": 0,
+        "alice_bit": 1,
+        "alice_basis": 0,
+        "bob_basis": 0,
+        "bob_bit": 1,
+        "sifted": true
+      },
+      {
+        "index": 1,
+        "alice_bit": 1,
+        "alice_basis": 1,
+        "bob_basis": 1,
+        "bob_bit": 1,
+        "sifted": true
+      },
+      {
+        "index": 2,
+        "alice_bit": 1,
+        "alice_basis": 1,
+        "bob_basis": 1,
+        "bob_bit": 0,
+        "sifted": true
+      },
+      {
+        "index": 3,
+        "alice_bit": 0,
+        "alice_basis": 0,
+        "bob_basis": 1,
+        "bob_bit": 0,
+        "sifted": false
+      },
+      {
+        "index": 4,
+        "alice_bit": 0,
+        "alice_basis": 1,
+        "bob_basis": 1,
+        "bob_bit": 1,
+        "sifted": true
+      },
+      {
+        "index": 5,
+        "alice_bit": 1,
+        "alice_basis": 1,
+        "bob_basis": 1,
+        "bob_bit": 1,
+        "sifted": true
+      },
+      {
+        "index": 6,
+        "alice_bit": 0,
+        "alice_basis": 1,
+        "bob_basis": 1,
+        "bob_bit": 0,
+        "sifted": true
+      },
+      {
+        "index": 7,
+        "alice_bit": 1,
+        "alice_basis": 1,
+        "bob_basis": 0,
+        "bob_bit": 1,
+        "sifted": false
+      },
+      {
+        "index": 8,
+        "alice_bit": 0,
+        "alice_basis": 1,
+        "bob_basis": 0,
+        "bob_bit": 1,
+        "sifted": false
+      },
+      {
+        "index": 9,
+        "alice_bit": 0,
+        "alice_basis": 0,
+        "bob_basis": 1,
+        "bob_bit": 0,
+        "sifted": false
+      },
+      {
+        "index": 10,
+        "alice_bit": 1,
+        "alice_basis": 0,
+        "bob_basis": 0,
+        "bob_bit": 1,
+        "sifted": true
+      },
+      {
+        "index": 11,
+        "alice_bit": 0,
+        "alice_basis": 1,
+        "bob_basis": 0,
+        "bob_bit": 1,
+        "sifted": false
+      },
+      {
+        "index": 12,
+        "alice_bit": 1,
+        "alice_basis": 1,
+        "bob_basis": 0,
+        "bob_bit": 0,
+        "sifted": false
+      },
+      {
+        "index": 13,
+        "alice_bit": 1,
+        "alice_basis": 0,
+        "bob_basis": 0,
+        "bob_bit": 0,
+        "sifted": true
+      },
+      {
+        "index": 14,
+        "alice_bit": 0,
+        "alice_basis": 0,
+        "bob_basis": 0,
+        "bob_bit": 0,
+        "sifted": true
+      },
+      {
+        "index": 15,
+        "alice_bit": 0,
+        "alice_basis": 1,
+        "bob_basis": 1,
+        "bob_bit": 1,
+        "sifted": true
+      },
+      {
+        "index": 16,
+        "alice_bit": 1,
+        "alice_basis": 0,
+        "bob_basis": 1,
+        "bob_bit": 0,
+        "sifted": false
+      },
+      {
+        "index": 17,
+        "alice_bit": 0,
+        "alice_basis": 0,
+        "bob_basis": 1,
+        "bob_bit": 0,
+        "sifted": false
+      },
+      {
+        "index": 18,
+        "alice_bit": 1,
+        "alice_basis": 0,
+        "bob_basis": 1,
+        "bob_bit": 1,
+        "sifted": false
+      },
+      {
+        "index": 19,
+        "alice_bit": 1,
+        "alice_basis": 0,
+        "bob_basis": 0,
+        "bob_bit": 1,
+        "sifted": true
+      },
+      {
+        "index": 20,
+        "alice_bit": 1,
+        "alice_basis": 0,
+        "bob_basis": 1,
+        "bob_bit": 1,
+        "sifted": false
+      },
+      {
+        "index": 21,
+        "alice_bit": 0,
+        "alice_basis": 0,
+        "bob_basis": 1,
+        "bob_bit": 0,
+        "sifted": false
+      },
+      {
+        "index": 22,
+        "alice_bit": 1,
+        "alice_basis": 0,
+        "bob_basis": 1,
+        "bob_bit": 1,
+        "sifted": false
+      },
+      {
+        "index": 23,
+        "alice_bit": 1,
+        "alice_basis": 1,
+        "bob_basis": 1,
+        "bob_bit": 1,
+        "sifted": true
+      }
+    ],
+    "single_error_correction_example": {
+      "data": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "encoded": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1
+      ],
+      "corrupted": [
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1
+      ],
+      "syndrome": 5,
+      "decoded": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "limit": "Hamming(7,4) single-error teaching block; not a QKD reconciliation stack; no double-error guarantee"
+    },
+    "chart_rows": [
+      {
+        "label": "No Eve",
+        "value": 0.0
+      },
+      {
+        "label": "Intercept-resend",
+        "value": 0.2583826429980276
+      }
+    ],
+    "chart_units": "Sifted QBER",
+    "chart_title": "Seeded local BB84 protocol experiment"
+  },
+  "reference": {
+    "ideal_clean_qber": 0.0,
+    "ideal_intercept_resend_qber": 0.25
+  },
+  "evidence": {
+    "execution_mode": "local_simulator",
+    "hardware_access": false,
+    "new_cloud_tasks": 0,
+    "experiments": {
+      "z_basis_bit1": {
+        "counts": {
+          "1": 1024
+        },
+        "probabilities": [
+          0.0,
+          1.0
+        ],
+        "ideal_probabilities": [
+          0.0,
+          1.0
+        ],
+        "shots": 1024,
+        "seed": 20261023,
+        "qubits": 1,
+        "gate_count": 1,
+        "openqasm2": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\ncreg c[1];\nx q[0];\nmeasure q[0] -> c[0];\n",
+        "bit_order": "q0-first"
+      },
+      "x_basis_bit1": {
+        "counts": {
+          "1": 1024
+        },
+        "probabilities": [
+          0.0,
+          1.0
+        ],
+        "ideal_probabilities": [
+          0.0,
+          0.9999999999999996
+        ],
+        "shots": 1024,
+        "seed": 20261024,
+        "qubits": 1,
+        "gate_count": 3,
+        "openqasm2": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\ncreg c[1];\nx q[0];\nh q[0];\nh q[0];\nmeasure q[0] -> c[0];\n",
+        "bit_order": "q0-first"
+      },
+      "mismatched_bases": {
+        "counts": {
+          "0": 529,
+          "1": 495
+        },
+        "probabilities": [
+          0.5166015625,
+          0.4833984375
+        ],
+        "ideal_probabilities": [
+          0.4999999999999999,
+          0.4999999999999999
+        ],
+        "shots": 1024,
+        "seed": 20261025,
+        "qubits": 1,
+        "gate_count": 2,
+        "openqasm2": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\ncreg c[1];\nx q[0];\nh q[0];\nmeasure q[0] -> c[0];\n",
+        "bit_order": "q0-first"
+      }
+    },
+    "estimates": {
+      "z_basis_bit1": {
+        "estimate": 1.0,
+        "standard_error": 0.0,
+        "ideal_reference": 1.0
+      },
+      "x_basis_bit1": {
+        "estimate": 1.0,
+        "standard_error": 0.0,
+        "ideal_reference": 0.9999999999999996
+      },
+      "mismatched_bases": {
+        "estimate": 0.4833984375,
+        "standard_error": 0.015624015530982232,
+        "ideal_reference": 0.4999999999999999
+      }
+    },
+    "summary": {
+      "clean_qber": 0.0,
+      "eve_qber": 0.2583826429980276,
+      "eve_scenario_aborted": true,
+      "production_key_emitted": false,
+      "authentication_and_finite_key_proof": "not implemented; all bits are public seeded teaching data"
+    }
+  }
+}

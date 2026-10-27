@@ -72,8 +72,8 @@ class Tape:
                 node = operation.metadata.get("control_node")
                 if node is not None:
                     pending.extend(node.bodies)
-        from quantumbridge.execution.array_ownership import native_configuration_copy
-        return native_configuration_copy(self, memo=memo, category="native_tape_array_copy")
+        from quantumbridge.core.circuit_metadata import execution_copy
+        return execution_copy(self, memo=memo, category="native_tape_array_copy",strict=False)
 
     def _record_measurement(self, request: MeasurementRequest):
         self.measurements.append(request)
@@ -145,29 +145,33 @@ class Tape:
 
     def measure(self, wire, reset=False):
         from quantumbridge.core.classical import bit
+        from quantumbridge.core.bits import Clbit
         position = self.circuit.num_bits
-        self.circuit.num_bits += 1
+        self.circuit.add_bits([Clbit()])
         self.circuit.measure(wire, position)
         if reset: self.circuit.reset(wire)
         return bit(position)
 
     def cond(self, condition, true_fn, false_fn=None):
         from quantumbridge.core.classical import ClassicalExpression
+        from quantumbridge.core.bits import bit_graph
+        bit_graph(self.circuit)
         if not isinstance(condition, ClassicalExpression):
             raise TypeError("QuantumBridge Tape.cond requires a runtime classical expression.")
         def record(fn):
             if fn is None: return None
             branch = Tape(self.circuit.num_qubits, self.parameter_transform)
-            branch.circuit.num_bits = self.circuit.num_bits
+            from quantumbridge.core.bits import copy_bits
+            copy_bits(self.circuit,branch.circuit)
             fn(branch)
             if branch.measurements:
                 raise ValueError("QuantumBridge conditional Tape callbacks cannot return terminal measurements.")
-            self.circuit.num_bits = max(self.circuit.num_bits, branch.circuit.num_bits)
+            self.circuit.add_bits(branch.circuit.clbits[self.circuit.num_bits:])
             return branch.circuit
         true, false = record(true_fn), record(false_fn)
         if true is None: raise TypeError("QuantumBridge Tape.cond requires a true callback.")
-        true.num_bits = self.circuit.num_bits
-        if false is not None: false.num_bits = self.circuit.num_bits
+        true.add_bits(self.circuit.clbits[true.num_bits:])
+        if false is not None:false.add_bits(self.circuit.clbits[false.num_bits:])
         self.circuit.if_else(condition, true, false, inplace=True)
 
     def reset(self, wire):

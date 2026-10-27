@@ -15,6 +15,7 @@ _NUMERIC_SCALAR_TYPES = (bool, int, float, complex, np.bool_, np.int8, np.int16,
     np.int32, np.int64, np.uint8, np.uint16, np.uint32, np.uint64, np.longlong,
     np.ulonglong, np.float16, np.float32, np.float64, np.longdouble,
     np.complex64, np.complex128, np.clongdouble)
+_DLPACK_COPY_KEYWORD = np.lib.NumpyVersion(np.__version__) >= "2.1.0"
 
 
 def borrow_callback_array(value):
@@ -28,7 +29,9 @@ def borrow_callback_array(value):
     if convert is None:
         raise UnsupportedFeature("framework_callback_buffer", "This NumPy version cannot borrow DLPack callback storage.")
     try:
-        return convert(value, copy=False)
+        # Older NumPy borrows via the original DLPack protocol, before copy
+        # negotiation was added. Do not retry a producer's own TypeError.
+        return convert(value, copy=False) if _DLPACK_COPY_KEYWORD else convert(value)
     except (BufferError, TypeError, RuntimeError) as error:
         raise UnsupportedFeature("framework_callback_buffer", "This callback buffer cannot be borrowed without copying.") from error
 

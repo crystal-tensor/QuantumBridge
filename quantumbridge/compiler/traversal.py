@@ -30,7 +30,8 @@ def map_control_bodies(operation, transform):
 
 def transform_segments(circuit, transform):
     """Optimize unconditional segments, never across runtime boundaries."""
-    out = Circuit(circuit.num_qubits, circuit.num_bits, circuit.name, deepcopy(circuit.metadata))
+    from quantumbridge.core.circuit_metadata import empty_execution_circuit
+    out = empty_execution_circuit(circuit)
     segment = circuit.copy_empty_like(vars_mode="drop")
     def flush():
         nonlocal segment

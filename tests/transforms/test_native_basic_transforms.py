@@ -76,10 +76,12 @@ def test_cancellation_cannot_cross_side_effect_or_runtime_boundary(boundary):
     elif boundary == "reset": tape.reset(0)
     elif boundary == "store": tape.circuit.operations.append(Operation("store",(),metadata={"directive":True}))
     elif boundary == "condition":
-        tape.circuit.num_bits = 1
+        from quantumbridge import Clbit
+        tape.circuit.add_bits([Clbit()])
         tape.circuit.z(0).c_if(0,1)
     elif boundary == "control":
-        tape.circuit.num_bits = 1
+        from quantumbridge import Clbit
+        tape.circuit.add_bits([Clbit()])
         tape.cond(bit(0),lambda branch:branch.z(0))
     else: tape.circuit.append("opaque_side_effect",[0],metadata={"unknown_effect":True})
     tape.x(0)
@@ -348,7 +350,8 @@ def test_dynamic_decomposition_keeps_lexical_phase_and_ordered_measurement():
 
 def test_decomposition_output_budget_is_shared_across_control_bodies():
     tape = Tape(1)
-    tape.circuit.num_bits = 1
+    from quantumbridge import Clbit
+    tape.circuit.add_bits([Clbit()])
     tape.cond(bit(0),lambda branch:branch.h(0))
     tape.cond(bit(0),lambda branch:branch.h(0))
     tape.expval(PauliZ(0))

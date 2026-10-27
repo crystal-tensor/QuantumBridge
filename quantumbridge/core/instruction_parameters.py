@@ -199,7 +199,7 @@ def definition_signature(definition):
         max_nesting_depth=4*limits.max_definition_depth,
         max_custom_definitions=limits.max_custom_definitions,
         max_instructions=limits.max_total_operations,
-        max_gate_expansion=limits.max_decomposition_work), include_parameter_bindings=False, canonical_parameters=True)
+        max_gate_expansion=limits.max_decomposition_work), include_parameter_bindings=False, canonical_parameters=True, include_user_metadata=False)
     return definition.to_ir().to_dict(_context=context)
 
 
@@ -214,6 +214,13 @@ def same_values(left, right):
     if len(left) != len(right): return False
     native = (int, float, complex, bool, str, type(None), Parameter, ParameterExpression)
     return all(a is b or _exact_type(type(a), native) and _exact_type(type(b), native) and a == b for a, b in zip(left, right))
+
+
+def bind_definition(definition, mapping):
+    """Bind an internal definition without public output naming side effects."""
+    from .circuit import Circuit,is_native_circuit
+    if not is_native_circuit(definition):raise TypeError("An executable definition must be a native Circuit.")
+    return Circuit.assign_parameters(definition,mapping,strict=False,_copy_user_metadata=False)
 
 
 def prepare_definition_update(owner, values):
@@ -239,7 +246,7 @@ def prepare_definition_update(owner, values):
         if parameter in mapping and not same_values((mapping[parameter],), (value,)):
             raise ValueError("Repeated formal parameters cannot receive conflicting values.")
         mapping[parameter] = value
-    result = template.assign_parameters(mapping, strict=False)
+    result = bind_definition(template,mapping)
     owner._validate_definition(result, values)
     return result, ParameterBindingPlan(template, formals, definition_signature(result))
 
@@ -279,23 +286,24 @@ def inherit_control_binding_plan(base, result):
         symbolic = Gate(base.name, base.num_qubits, formals, metadata=base.metadata)
     else: return
     template = symbolic.control(result.num_ctrl_qubits, ctrl_state=result.ctrl_state).definition
-    definition = template.assign_parameters(dict(zip(formals, result._params)), strict=False)
+    definition = bind_definition(template,dict(zip(formals, result._params)))
     result._validate_definition(definition, result._params)
     object.__setattr__(result, "_definition", definition)
     object.__setattr__(result, "_parameter_plan", ParameterBindingPlan(
         owned_copy(template), formals, definition_signature(result.definition)))
 
 
-def binding_plan_for_serialization(owner):
+def binding_plan_for_serialization(owner, *, preserve_invalidated=False):
     plan = getattr(owner, "_parameter_plan", None)
     if plan is None: return None
     if definition_signature(owner.definition) == plan.signature: return plan
     if all(isinstance(value, Parameter) for value in owner._params):
         return ParameterBindingPlan(owner.definition, owner._params, definition_signature(owner.definition))
+    if preserve_invalidated:return plan
     raise ValueError("A changed bound definition cannot silently retain stale parameter binding lineage.")
 
 
-def restore_binding_plan(owner, template, formals):
+def restore_binding_plan(owner, template, formals, *, invalidated=False):
     if len(formals) != len(owner._params) or any(type(value) not in (Parameter, ParameterVectorElement) for value in formals):
         raise ValueError("Malformed native parameter binding formals.")
     owner._validate_definition(template, formals)
@@ -304,8 +312,13 @@ def restore_binding_plan(owner, template, formals):
         if parameter in mapping and not same_values((mapping[parameter],), (value,)):
             raise ValueError("Conflicting repeated binding formals.")
         mapping[parameter] = value
-    expected = template.assign_parameters(mapping, strict=False)
+    expected = bind_definition(template,mapping)
     signature = definition_signature(owner.definition)
-    if definition_signature(expected) != signature:
+    expected_signature=definition_signature(expected)
+    if invalidated:
+        if parameter_set(owner._params) or expected_signature==signature:
+            raise ValueError("An invalidated binding record must retain a genuinely stale nonsymbolic history.")
+        signature=expected_signature
+    elif expected_signature != signature:
         raise ValueError("Parameter binding template does not describe the actual executable definition.")
     object.__setattr__(owner, "_parameter_plan", ParameterBindingPlan(template, tuple(formals), signature))

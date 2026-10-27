@@ -400,7 +400,7 @@ class TransformedExecutionPlan:
         self._processing_values(values)
         results, matrices, executions, derivative_receipts = [], [], [], []
         selected = [plan.gradient_capability(method or self.node.diff_method) for plan in self.child_plans]
-        repetitions = [2+sum(4 if operation.name in {"crx","cry","crz"} and chosen == "parameter-shift" else 2
+        repetitions = [1+len(plan.recorder.parameters) if chosen == "mps-tangent" else 2+sum(4 if operation.name in {"crx","cry","crz"} and chosen == "parameter-shift" else 2
                                for operation in plan._occurrences().values()) if chosen != "adjoint" else 1
                        for plan,chosen in zip(self.child_plans,selected)]
         total_shots = sum(check_batch((child,),self.limits)[1]*count for child,count in zip(self.prepared.tapes,repetitions))

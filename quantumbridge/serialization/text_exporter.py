@@ -15,6 +15,7 @@ from quantumbridge.compiler.decomposition import GateDecompositionPass
 from .errors import UnsupportedFeature, FormatValidationError
 from .common import register_specs
 from .limits import SerializationLimits
+from quantumbridge.core.circuit_metadata import execution_metadata, empty_execution_circuit, serialized_user_metadata
 
 STANDARD = {"id","h","x","y","z","s","sdg","t","tdg","rx","ry","rz","phase","u","u1","u2","u3","cx","cy","cz","ch","swap","ccx","cswap","cp"}
 CLASSICAL_OPS = {"eq":"==","ne":"!=","lt":"<","le":"<=","gt":">","ge":">=","and":"&","or":"|","xor":"^","add":"+","sub":"-","mul":"*","shl":"<<","shr":">>","logical_and":"&&","logical_or":"||"}
@@ -29,7 +30,8 @@ def _definition_preflight(circuit,limits):
     pending,definitions,operations = [(circuit,0,frozenset())],0,0
     while pending:
         body,depth,ancestors = pending.pop()
-        if "classical_scope" in body.metadata:
+        register_specs(body)
+        if "classical_scope" in execution_metadata(body):
             raise UnsupportedFeature("OpenQASM export does not yet preserve typed classical identifier scopes; these are not discardable metadata.",format="qasm")
         limits.check("max_nesting_depth",depth,format="qasm")
         if id(body) in ancestors: raise FormatValidationError("Cyclic source definition graph.",format="qasm")
@@ -53,7 +55,7 @@ def _definition_preflight(circuit,limits):
 
 
 def _expand_sx(circuit):
-    out = Circuit(circuit.num_qubits,circuit.num_bits,circuit.name,deepcopy(circuit.metadata))
+    out = empty_execution_circuit(circuit)
     for item in circuit.iter_instructions():
         if isinstance(item,Measurement): append_item(out,item)
         elif item.metadata.get("control_node") is not None: append_item(out,map_control_bodies(item,_expand_sx))
@@ -71,10 +73,10 @@ class SourceExporter:
         self.limits = limits or SerializationLimits()
         self.allow_metadata_loss = allow_metadata_loss
         _definition_preflight(circuit,self.limits)
+        self.specs = register_specs(circuit)
         from .control_normalization import normalize_source_control
         circuit = normalize_source_control(circuit,self.limits)
         validate_control_flow(circuit)
-        self.specs = register_specs(circuit)
         self.wires = {"q":{},"c":{}}
         for spec in self.specs:
             if not identifier(spec["name"]): self.fail("Register name is not a source identifier.")
@@ -152,8 +154,10 @@ class SourceExporter:
         warnings.warn(reason,UserWarning,stacklevel=3)
 
     def metadata(self,circuit):
-        extra = set(circuit.metadata)-{"global_phase","registers","control_flow"}
-        if extra: self.metadata_loss("OpenQASM has no standard fields for metadata: "+", ".join(sorted(extra)))
+        from quantumbridge.core.circuit_metadata import is_separated
+        metadata=serialized_user_metadata(circuit)
+        if not is_separated(circuit):metadata.pop("control_flow",None)
+        if metadata: self.metadata_loss("OpenQASM has no standard fields for circuit user metadata.")
         if circuit.name is not None: self.metadata_loss("OpenQASM has no circuit-name object field.")
 
     def angle(self,value,loop_parameters=None,depth=0):
@@ -206,7 +210,7 @@ class SourceExporter:
 
     def block(self,circuit,indent=0,loop_parameters=None,*,_definition=False):
         if not _definition: self.metadata(circuit)
-        elif set(circuit.metadata)-{"global_phase","registers"}:
+        elif serialized_user_metadata(circuit):
             self.metadata_loss("OpenQASM cannot carry custom definition circuit metadata.")
         exporter = self
         class Lines(list):

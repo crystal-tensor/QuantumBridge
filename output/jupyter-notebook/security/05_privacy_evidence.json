@@ -1,0 +1,128 @@
+{
+  "inputs": {
+    "encryption": "cryptography AES-256-GCM",
+    "nonce_bytes": 12,
+    "nonce_policy": "fresh OS randomness with fresh key per example",
+    "data": "synthetic quantum-job counts only",
+    "audit": "HMAC-SHA256 chain; expected length and tail retained by verifier"
+  },
+  "intermediate": {
+    "access_decisions": [
+      {
+        "role": "viewer",
+        "action": "read",
+        "allowed": true
+      },
+      {
+        "role": "viewer",
+        "action": "prepare_local",
+        "allowed": false
+      },
+      {
+        "role": "operator",
+        "action": "prepare_local",
+        "allowed": true
+      },
+      {
+        "role": "unknown",
+        "action": "read",
+        "allowed": false
+      }
+    ],
+    "integrity_checks": [
+      {
+        "attack": "ciphertext",
+        "rejected": true
+      },
+      {
+        "attack": "metadata",
+        "rejected": true
+      }
+    ],
+    "public_audit_records": [
+      {
+        "index": 0,
+        "previous": "0000000000000000000000000000000000000000000000000000000000000000",
+        "payload": {
+          "role": "viewer",
+          "action": "read",
+          "allowed": true
+        },
+        "tag": "44d486605437be30b1f0315f65533b01494257a03d70678fbf6ecbbb6970bd57"
+      },
+      {
+        "index": 1,
+        "previous": "44d486605437be30b1f0315f65533b01494257a03d70678fbf6ecbbb6970bd57",
+        "payload": {
+          "role": "viewer",
+          "action": "prepare_local",
+          "allowed": false
+        },
+        "tag": "d5e62a80d05c8b496a4c41820a587a01e1447431cdead7f1cd6fde1a335278b5"
+      },
+      {
+        "index": 2,
+        "previous": "d5e62a80d05c8b496a4c41820a587a01e1447431cdead7f1cd6fde1a335278b5",
+        "payload": {
+          "role": "operator",
+          "action": "prepare_local",
+          "allowed": true
+        },
+        "tag": "23a6137317c77095909d1b8ab19d64f842742103a6b0db95175c9bfa0a210c71"
+      },
+      {
+        "index": 3,
+        "previous": "23a6137317c77095909d1b8ab19d64f842742103a6b0db95175c9bfa0a210c71",
+        "payload": {
+          "role": "unknown",
+          "action": "read",
+          "allowed": false
+        },
+        "tag": "182fa649792e9d9b04ca3239954f314830cb5d021219c52abf4278cf06dba556"
+      }
+    ],
+    "chart_rows": [
+      {
+        "label": "Round trip",
+        "value": 1
+      },
+      {
+        "label": "Ciphertext rejected",
+        "value": 1
+      },
+      {
+        "label": "Metadata rejected",
+        "value": 1
+      },
+      {
+        "label": "Audit tamper rejected",
+        "value": 1
+      }
+    ],
+    "chart_units": "Check passed (1/0)",
+    "chart_title": "Actual classical cryptography checks"
+  },
+  "reference": {
+    "tag_overhead_bytes": 16
+  },
+  "evidence": {
+    "execution_mode": "local_classical",
+    "hardware_access": false,
+    "new_cloud_tasks": 0,
+    "experiments": {},
+    "estimates": {},
+    "summary": {
+      "roundtrip_ok": true,
+      "ciphertext_bytes": 75,
+      "plaintext_bytes": 59,
+      "altered_ciphertext_rejected": true,
+      "altered_aad_rejected": true,
+      "valid_audit_accepted": true,
+      "audit_tamper_rejected": true,
+      "truncation_rejected_with_anchor": true,
+      "secret_material_exported": false,
+      "identity_authentication": "not implemented; roles are explicit teaching inputs",
+      "homomorphic_or_mpc_implemented": false
+    }
+  }
+}

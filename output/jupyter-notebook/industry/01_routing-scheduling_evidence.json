@@ -1,0 +1,820 @@
+{
+  "inputs": {
+    "jobs": [
+      "A",
+      "B"
+    ],
+    "machine_order": [
+      0,
+      1
+    ],
+    "operation_duration": 1,
+    "start_windows": {
+      "first_operation": [
+        0,
+        1
+      ],
+      "second_operation": [
+        1,
+        2
+      ]
+    },
+    "completion_weights": {
+      "A": 2,
+      "B": 1
+    },
+    "penalty": 10,
+    "scope": "fixed four-operation job shop; no vehicle routing or TSP claim"
+  },
+  "intermediate": {
+    "candidates": [
+      {
+        "bitstring": "0000",
+        "operations": [
+          {
+            "name": "A1",
+            "machine": 0,
+            "start": 0,
+            "duration": 1
+          },
+          {
+            "name": "A2",
+            "machine": 1,
+            "start": 1,
+            "duration": 1
+          },
+          {
+            "name": "B1",
+            "machine": 0,
+            "start": 0,
+            "duration": 1
+          },
+          {
+            "name": "B2",
+            "machine": 1,
+            "start": 1,
+            "duration": 1
+          }
+        ],
+        "precedence_violations": 0,
+        "machine_conflicts": 2,
+        "feasible": false,
+        "weighted_completion": 6,
+        "makespan": 2,
+        "objective": 6,
+        "penalized_cost": 26
+      },
+      {
+        "bitstring": "0001",
+        "operations": [
+          {
+            "name": "A1",
+            "machine": 0,
+            "start": 0,
+            "duration": 1
+          },
+          {
+            "name": "A2",
+            "machine": 1,
+            "start": 1,
+            "duration": 1
+          },
+          {
+            "name": "B1",
+            "machine": 0,
+            "start": 0,
+            "duration": 1
+          },
+          {
+            "name": "B2",
+            "machine": 1,
+            "start": 2,
+            "duration": 1
+          }
+        ],
+        "precedence_violations": 0,
+        "machine_conflicts": 1,
+        "feasible": false,
+        "weighted_completion": 7,
+        "makespan": 3,
+        "objective": 7,
+        "penalized_cost": 17
+      },
+      {
+        "bitstring": "0010",
+        "operations": [
+          {
+            "name": "A1",
+            "machine": 0,
+            "start": 0,
+            "duration": 1
+          },
+          {
+            "name": "A2",
+            "machine": 1,
+            "start": 2,
+            "duration": 1
+          },
+          {
+            "name": "B1",
+            "machine": 0,
+            "start": 0,
+            "duration": 1
+          },
+          {
+            "name": "B2",
+            "machine": 1,
+            "start": 1,
+            "duration": 1
+          }
+        ],
+        "precedence_violations": 0,
+        "machine_conflicts": 1,
+        "feasible": false,
+        "weighted_completion": 8,
+        "makespan": 3,
+        "objective": 8,
+        "penalized_cost": 18
+      },
+      {
+        "bitstring": "0011",
+        "operations": [
+          {
+            "name": "A1",
+            "machine": 0,
+            "start": 0,
+            "duration": 1
+          },
+          {
+            "name": "A2",
+            "machine": 1,
+            "start": 2,
+            "duration": 1
+          },
+          {
+            "name": "B1",
+            "machine": 0,
+            "start": 0,
+            "duration": 1
+          },
+          {
+            "name": "B2",
+            "machine": 1,
+            "start": 2,
+            "duration": 1
+          }
+        ],
+        "precedence_violations": 0,
+        "machine_conflicts": 2,
+        "feasible": false,
+        "weighted_completion": 9,
+        "makespan": 3,
+        "objective": 9,
+        "penalized_cost": 29
+      },
+      {
+        "bitstring": "0100",
+        "operations": [
+          {
+            "name": "A1",
+            "machine": 0,
+            "start": 0,
+            "duration": 1
+          },
+          {
+            "name": "A2",
+            "machine": 1,
+            "start": 1,
+            "duration": 1
+          },
+          {
+            "name": "B1",
+            "machine": 0,
+            "start": 1,
+            "duration": 1
+          },
+          {
+            "name": "B2",
+            "machine": 1,
+            "start": 1,
+            "duration": 1
+          }
+        ],
+        "precedence_violations": 1,
+        "machine_conflicts": 1,
+        "feasible": false,
+        "weighted_completion": 6,
+        "makespan": 2,
+        "objective": 6,
+        "penalized_cost": 26
+      },
+      {
+        "bitstring": "0101",
+        "operations": [
+          {
+            "name": "A1",
+            "machine": 0,
+            "start": 0,
+            "duration": 1
+          },
+          {
+            "name": "A2",
+            "machine": 1,
+            "start": 1,
+            "duration": 1
+          },
+          {
+            "name": "B1",
+            "machine": 0,
+            "start": 1,
+            "duration": 1
+          },
+          {
+            "name": "B2",
+            "machine": 1,
+            "start": 2,
+            "duration": 1
+          }
+        ],
+        "precedence_violations": 0,
+        "machine_conflicts": 0,
+        "feasible": true,
+        "weighted_completion": 7,
+        "makespan": 3,
+        "objective": 7,
+        "penalized_cost": 7
+      },
+      {
+        "bitstring": "0110",
+        "operations": [
+          {
+            "name": "A1",
+            "machine": 0,
+            "start": 0,
+            "duration": 1
+          },
+          {
+            "name": "A2",
+            "machine": 1,
+            "start": 2,
+            "duration": 1
+          },
+          {
+            "name": "B1",
+            "machine": 0,
+            "start": 1,
+            "duration": 1
+          },
+          {
+            "name": "B2",
+            "machine": 1,
+            "start": 1,
+            "duration": 1
+          }
+        ],
+        "precedence_violations": 1,
+        "machine_conflicts": 0,
+        "feasible": false,
+        "weighted_completion": 8,
+        "makespan": 3,
+        "objective": 8,
+        "penalized_cost": 18
+      },
+      {
+        "bitstring": "0111",
+        "operations": [
+          {
+            "name": "A1",
+            "machine": 0,
+            "start": 0,
+            "duration": 1
+          },
+          {
+            "name": "A2",
+            "machine": 1,
+            "start": 2,
+            "duration": 1
+          },
+          {
+            "name": "B1",
+            "machine": 0,
+            "start": 1,
+            "duration": 1
+          },
+          {
+            "name": "B2",
+            "machine": 1,
+            "start": 2,
+            "duration": 1
+          }
+        ],
+        "precedence_violations": 0,
+        "machine_conflicts": 1,
+        "feasible": false,
+        "weighted_completion": 9,
+        "makespan": 3,
+        "objective": 9,
+        "penalized_cost": 19
+      },
+      {
+        "bitstring": "1000",
+        "operations": [
+          {
+            "name": "A1",
+            "machine": 0,
+            "start": 1,
+            "duration": 1
+          },
+          {
+            "name": "A2",
+            "machine": 1,
+            "start": 1,
+            "duration": 1
+          },
+          {
+            "name": "B1",
+            "machine": 0,
+            "start": 0,
+            "duration": 1
+          },
+          {
+            "name": "B2",
+            "machine": 1,
+            "start": 1,
+            "duration": 1
+          }
+        ],
+        "precedence_violations": 1,
+        "machine_conflicts": 1,
+        "feasible": false,
+        "weighted_completion": 6,
+        "makespan": 2,
+        "objective": 6,
+        "penalized_cost": 26
+      },
+      {
+        "bitstring": "1001",
+        "operations": [
+          {
+            "name": "A1",
+            "machine": 0,
+            "start": 1,
+            "duration": 1
+          },
+          {
+            "name": "A2",
+            "machine": 1,
+            "start": 1,
+            "duration": 1
+          },
+          {
+            "name": "B1",
+            "machine": 0,
+            "start": 0,
+            "duration": 1
+          },
+          {
+            "name": "B2",
+            "machine": 1,
+            "start": 2,
+            "duration": 1
+          }
+        ],
+        "precedence_violations": 1,
+        "machine_conflicts": 0,
+        "feasible": false,
+        "weighted_completion": 7,
+        "makespan": 3,
+        "objective": 7,
+        "penalized_cost": 17
+      },
+      {
+        "bitstring": "1010",
+        "operations": [
+          {
+            "name": "A1",
+            "machine": 0,
+            "start": 1,
+            "duration": 1
+          },
+          {
+            "name": "A2",
+            "machine": 1,
+            "start": 2,
+            "duration": 1
+          },
+          {
+            "name": "B1",
+            "machine": 0,
+            "start": 0,
+            "duration": 1
+          },
+          {
+            "name": "B2",
+            "machine": 1,
+            "start": 1,
+            "duration": 1
+          }
+        ],
+        "precedence_violations": 0,
+        "machine_conflicts": 0,
+        "feasible": true,
+        "weighted_completion": 8,
+        "makespan": 3,
+        "objective": 8,
+        "penalized_cost": 8
+      },
+      {
+        "bitstring": "1011",
+        "operations": [
+          {
+            "name": "A1",
+            "machine": 0,
+            "start": 1,
+            "duration": 1
+          },
+          {
+            "name": "A2",
+            "machine": 1,
+            "start": 2,
+            "duration": 1
+          },
+          {
+            "name": "B1",
+            "machine": 0,
+            "start": 0,
+            "duration": 1
+          },
+          {
+            "name": "B2",
+            "machine": 1,
+            "start": 2,
+            "duration": 1
+          }
+        ],
+        "precedence_violations": 0,
+        "machine_conflicts": 1,
+        "feasible": false,
+        "weighted_completion": 9,
+        "makespan": 3,
+        "objective": 9,
+        "penalized_cost": 19
+      },
+      {
+        "bitstring": "1100",
+        "operations": [
+          {
+            "name": "A1",
+            "machine": 0,
+            "start": 1,
+            "duration": 1
+          },
+          {
+            "name": "A2",
+            "machine": 1,
+            "start": 1,
+            "duration": 1
+          },
+          {
+            "name": "B1",
+            "machine": 0,
+            "start": 1,
+            "duration": 1
+          },
+          {
+            "name": "B2",
+            "machine": 1,
+            "start": 1,
+            "duration": 1
+          }
+        ],
+        "precedence_violations": 2,
+        "machine_conflicts": 2,
+        "feasible": false,
+        "weighted_completion": 6,
+        "makespan": 2,
+        "objective": 6,
+        "penalized_cost": 46
+      },
+      {
+        "bitstring": "1101",
+        "operations": [
+          {
+            "name": "A1",
+            "machine": 0,
+            "start": 1,
+            "duration": 1
+          },
+          {
+            "name": "A2",
+            "machine": 1,
+            "start": 1,
+            "duration": 1
+          },
+          {
+            "name": "B1",
+            "machine": 0,
+            "start": 1,
+            "duration": 1
+          },
+          {
+            "name": "B2",
+            "machine": 1,
+            "start": 2,
+            "duration": 1
+          }
+        ],
+        "precedence_violations": 1,
+        "machine_conflicts": 1,
+        "feasible": false,
+        "weighted_completion": 7,
+        "makespan": 3,
+        "objective": 7,
+        "penalized_cost": 27
+      },
+      {
+        "bitstring": "1110",
+        "operations": [
+          {
+            "name": "A1",
+            "machine": 0,
+            "start": 1,
+            "duration": 1
+          },
+          {
+            "name": "A2",
+            "machine": 1,
+            "start": 2,
+            "duration": 1
+          },
+          {
+            "name": "B1",
+            "machine": 0,
+            "start": 1,
+            "duration": 1
+          },
+          {
+            "name": "B2",
+            "machine": 1,
+            "start": 1,
+            "duration": 1
+          }
+        ],
+        "precedence_violations": 1,
+        "machine_conflicts": 1,
+        "feasible": false,
+        "weighted_completion": 8,
+        "makespan": 3,
+        "objective": 8,
+        "penalized_cost": 28
+      },
+      {
+        "bitstring": "1111",
+        "operations": [
+          {
+            "name": "A1",
+            "machine": 0,
+            "start": 1,
+            "duration": 1
+          },
+          {
+            "name": "A2",
+            "machine": 1,
+            "start": 2,
+            "duration": 1
+          },
+          {
+            "name": "B1",
+            "machine": 0,
+            "start": 1,
+            "duration": 1
+          },
+          {
+            "name": "B2",
+            "machine": 1,
+            "start": 2,
+            "duration": 1
+          }
+        ],
+        "precedence_violations": 0,
+        "machine_conflicts": 2,
+        "feasible": false,
+        "weighted_completion": 9,
+        "makespan": 3,
+        "objective": 9,
+        "penalized_cost": 29
+      }
+    ],
+    "optimizer_trace": [
+      {
+        "improvement": 0,
+        "expected_penalized_cost": 22.499999999999986,
+        "gamma": 0.0,
+        "beta": 0.0
+      },
+      {
+        "improvement": 1,
+        "expected_penalized_cost": 22.499999999999964,
+        "gamma": 0.0,
+        "beta": 1.933287786824488
+      },
+      {
+        "improvement": 2,
+        "expected_penalized_cost": 21.641811252105608,
+        "gamma": 0.7853981633974483,
+        "beta": 0.966643893412244
+      },
+      {
+        "improvement": 3,
+        "expected_penalized_cost": 20.579874536226345,
+        "gamma": 0.7853981633974483,
+        "beta": 1.208304866765305
+      },
+      {
+        "improvement": 4,
+        "expected_penalized_cost": 19.655744615596547,
+        "gamma": 0.7853981633974483,
+        "beta": 2.658270706883671
+      },
+      {
+        "improvement": 5,
+        "expected_penalized_cost": 18.921019511353943,
+        "gamma": 1.5707963267948966,
+        "beta": 1.208304866765305
+      },
+      {
+        "improvement": 6,
+        "expected_penalized_cost": 17.27573700432657,
+        "gamma": 1.5707963267948966,
+        "beta": 2.658270706883671
+      },
+      {
+        "improvement": 7,
+        "expected_penalized_cost": 15.598978802079287,
+        "gamma": 2.356194490192345,
+        "beta": 2.658270706883671
+      },
+      {
+        "improvement": 8,
+        "expected_penalized_cost": 14.762589717512519,
+        "gamma": 3.141592653589793,
+        "beta": 2.658270706883671
+      },
+      {
+        "improvement": 9,
+        "expected_penalized_cost": 14.689761599949291,
+        "gamma": 3.3415926535897933,
+        "beta": 2.658270706883671
+      },
+      {
+        "improvement": 10,
+        "expected_penalized_cost": 14.674533728547466,
+        "gamma": 3.4415926535897934,
+        "beta": 2.658270706883671
+      },
+      {
+        "improvement": 11,
+        "expected_penalized_cost": 14.146101934856727,
+        "gamma": 3.4415926535897934,
+        "beta": 2.758270706883671
+      },
+      {
+        "improvement": 12,
+        "expected_penalized_cost": 14.136269113020681,
+        "gamma": 3.491592653589793,
+        "beta": 2.758270706883671
+      },
+      {
+        "improvement": 13,
+        "expected_penalized_cost": 14.132704141712894,
+        "gamma": 3.516592653589793,
+        "beta": 2.758270706883671
+      }
+    ],
+    "cost_pauli_degree": 2,
+    "encoding": "bounded exact diagonal truth-table; degree>2 is not a QUBO"
+  },
+  "reference": {
+    "best_objective": 7,
+    "best_bitstrings": [
+      "0101"
+    ],
+    "feasible_count": 2,
+    "baseline": "complete classical enumeration of sixteen states"
+  },
+  "evidence": {
+    "execution_mode": "local_simulator",
+    "hardware_access": false,
+    "new_cloud_tasks": 0,
+    "experiments": {
+      "qaoa": {
+        "counts": {
+          "0101": 215,
+          "1001": 101,
+          "1011": 67,
+          "0010": 78,
+          "1010": 218,
+          "0011": 17,
+          "0111": 61,
+          "0110": 117,
+          "1111": 25,
+          "0001": 92,
+          "1100": 11,
+          "0000": 21,
+          "1101": 1
+        },
+        "probabilities": [
+          0.0205078125,
+          0.08984375,
+          0.076171875,
+          0.0166015625,
+          0.0,
+          0.2099609375,
+          0.1142578125,
+          0.0595703125,
+          0.0,
+          0.0986328125,
+          0.212890625,
+          0.0654296875,
+          0.0107421875,
+          0.0009765625,
+          0.0,
+          0.0244140625
+        ],
+        "ideal_probabilities": [
+          0.02316918586285312,
+          0.08017353854876383,
+          0.07676386143515501,
+          0.014026771835982119,
+          0.0005612265152671339,
+          0.21994223605432292,
+          0.11092935690940914,
+          0.05881416448977439,
+          0.0007733959098508099,
+          0.11637300271814278,
+          0.2121700983013035,
+          0.060930487039476525,
+          0.007147811858555257,
+          0.00011124467035451412,
+          0.00014307586982428803,
+          0.017970541980963723
+        ],
+        "shots": 1024,
+        "seed": 20261023,
+        "qubits": 4,
+        "gate_count": 26,
+        "openqasm2": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\nrz(0.90169042399738275) q[1];\ncx q[0],q[1];\ncx q[0],q[2];\nrz(-0.45084521199869149) q[2];\ncx q[0],q[2];\nrz(-0.4508452119986916) q[0];\ncx q[1],q[3];\nrz(-0.45084521199869149) q[3];\ncx q[1],q[3];\nrz(-0.4508452119986916) q[1];\ncx q[2],q[3];\nrz(0.90169042399738275) q[3];\ncx q[2],q[3];\nrz(0.27050712719921477) q[2];\nrz(0.3606761695989531) q[3];\nrz(2.7952403143918865) q[0];\nu1(-2.7952403143918865) q[0];\nrx(5.5165414137673423) q[0];\nrx(5.5165414137673423) q[1];\nrx(5.5165414137673423) q[2];\nrx(5.5165414137673423) q[3];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+        "bit_order": "q0-first"
+      }
+    },
+    "estimates": {
+      "qaoa": {
+        "estimate": 14.4228515625,
+        "standard_error": 0.21883051093421485,
+        "ideal_reference": 14.132704141712894
+      }
+    },
+    "summary": {
+      "best_observed_feasible": {
+        "bitstring": "0101",
+        "operations": [
+          {
+            "name": "A1",
+            "machine": 0,
+            "start": 0,
+            "duration": 1
+          },
+          {
+            "name": "A2",
+            "machine": 1,
+            "start": 1,
+            "duration": 1
+          },
+          {
+            "name": "B1",
+            "machine": 0,
+            "start": 1,
+            "duration": 1
+          },
+          {
+            "name": "B2",
+            "machine": 1,
+            "start": 2,
+            "duration": 1
+          }
+        ],
+        "precedence_violations": 0,
+        "machine_conflicts": 0,
+        "feasible": true,
+        "weighted_completion": 7,
+        "makespan": 3,
+        "objective": 7,
+        "penalized_cost": 7
+      },
+      "observed_objective_gap": 0,
+      "feasible_probability": 0.4228515625,
+      "optimal_probability": 0.2099609375,
+      "decision_rule": "best feasible actually sampled candidate; not the most frequent string"
+    }
+  }
+}

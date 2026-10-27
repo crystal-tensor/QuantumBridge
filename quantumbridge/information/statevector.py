@@ -213,6 +213,29 @@ def _state_data(state):
     return data,dimensions,density
 
 
+def _state_operator_data(state, expected_type):
+    """Qualify a native coordinate owner before publishing matrix provenance."""
+    from quantumbridge.core.classical import UnsupportedFeature
+    from quantumbridge.core.composition import _admit_graph
+    from quantumbridge.core.gate_limits import current_gate_limits
+    if type(state) is not expected_type:
+        raise UnsupportedFeature("state_operator_origin", "Operator construction requires the native state type.")
+    fields = object.__getattribute__(state, "__dict__")
+    data, dims = fields.get("data"), fields.get("_dims")
+    if type(dims) is not tuple or any(type(dim) is not int or dim < 1 for dim in dims):
+        raise ValueError("State operator construction requires native dimension descriptors.")
+    if type(data) is not np.ndarray or data.dtype.kind not in "biufc":
+        raise UnsupportedFeature("state_operator_storage")
+    size = prod(dims)
+    shape = (size,) if expected_type is Statevector else (size, size)
+    if data.shape != shape:
+        raise ValueError("State dimensions do not match its numeric buffer.")
+    current_gate_limits().check("max_matrix_dimension", size)
+    current_gate_limits().check("max_decomposition_work", size * size)
+    _admit_graph(state)
+    return _state_data(state)
+
+
 def _state_operand(value, size, *, density):
     from .density_matrix import DensityMatrix
     from quantumbridge.execution.array_reservations import numeric_shape
@@ -397,7 +420,8 @@ class Statevector:
         from quantumbridge.execution.resource_context import current_resources
         scope = current_resources()
         from quantumbridge.core.gates import is_native_instruction
-        if (type(data) is Circuit or is_native_instruction(data) if scope is not None else isinstance(data,(Circuit,Instruction))):
+        from quantumbridge.core.circuit import is_native_circuit
+        if (is_native_circuit(data) or is_native_instruction(data) if scope is not None else isinstance(data,(Circuit,Instruction))):
             data = self.from_instruction(data).data
         if scope is None:
             self.data = np.asarray(data, dtype=complex)
@@ -441,7 +465,8 @@ class Statevector:
         from quantumbridge.core.annotated_operation import AnnotatedOperation
         if type(instruction) is AnnotatedOperation: instruction = Circuit.from_instruction(instruction)
         from quantumbridge.core.gates import is_native_instruction
-        if current_resources() is not None and type(instruction) is not Circuit and not is_native_instruction(instruction):
+        from quantumbridge.core.circuit import is_native_circuit
+        if current_resources() is not None and not is_native_circuit(instruction) and not is_native_instruction(instruction):
             from quantumbridge.core.classical import UnsupportedFeature
             raise UnsupportedFeature("managed_state_instruction","Managed state construction requires a native Circuit or Instruction.")
         if isinstance(instruction,Instruction):
@@ -639,7 +664,7 @@ class Statevector:
         from quantumbridge.information.operator import Operator
         from quantumbridge.execution.array_ownership import retained_array, storage_ledger
         from quantumbridge.execution.array_reservations import array_layout
-        data,dimensions,_=_state_data(self)
+        data,dimensions,_=_state_operator_data(self,Statevector)
         scope=current_resources()
         ledger=storage_ledger(data) if scope is None else scope.ledger
         shape=(len(data),len(data))
@@ -647,7 +672,9 @@ class Statevector:
         result=retained_array(ledger,"statevector_operator_projector",shape,complex)
         for column in range(len(data)):
             np.multiply(data,complex(data[column]).conjugate(),out=result[:,column])
-        return Operator(result,input_dims=dimensions,output_dims=dimensions)
+        operator=Operator(result,input_dims=dimensions,output_dims=dimensions)
+        operator._public_matrix_basis="native"
+        return operator
 
     def to_density_matrix(self):
         from quantumbridge.information.density_matrix import DensityMatrix

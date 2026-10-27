@@ -40,6 +40,7 @@ OPS = {"id":("IGate",1,0), "x":("XGate",1,0), "y":("YGate",1,0), "z":("ZGate",1,
        "unitary":("UnitaryGate",None,1),
        "reset":("Reset",1,0), "measure":("Measure",1,0), "barrier":("Barrier",None,0), "delay":("Delay",1,1)}
 NAMES = {value[0]:name for name,value in OPS.items()}
+DYNAMIC_CONTROLS = {"MCPhaseGate": ("phase", "mcphase", 1), "MCXGate": ("x", "mcx", 0)}
 CONTROLS = {"cx":1,"cy":1,"cz":1,"ch":1,"csx":1,"crx":1,"cry":1,"crz":1,"cp":1,"ccx":2,"ccz":2,"cu":1,"cswap":1}
 CONTROL_BASES = {"cx":"x", "cy":"y", "cz":"z", "ch":"h", "csx":"sx", "crx":"rx", "cry":"ry", "crz":"rz", "cp":"phase", "ccx":"x", "ccz":"z", "cu":"u", "cswap":"swap"}
 
@@ -54,6 +55,7 @@ class _CustomRecord:
     state: int
     base: object
     payload_depth: int
+    clbits: int = 0
 
 
 class Reader:
@@ -61,9 +63,16 @@ class Reader:
         self.data, self.pos, self.limits, self.base = memoryview(data), 0, limits, base
         self.instructions = 0
         self.parameters = {}
+        self.parameter_identities = {}
         self.vectors = {}
         self.depth,self.budget = depth,({"values":0} if budget is None else budget)
         self.max_depth = depth
+        self.circuit_owner = None
+        self.loop_depth = self.parameter_loop_depth = 0
+        self.classical_vars = []
+        self.variable_identities = {}
+        self.enclosing_variables = {}
+        self.nested_control_block = False
         self.bounded("max_nesting_depth",depth)
 
     def error(self,reason,cls=FormatValidationError):
@@ -94,33 +103,59 @@ class Reader:
         self.budget["expanded"] = self.budget.get("expanded",0)+2
         self.bounded("max_gate_expansion",self.budget["expanded"])
 
+    def dynamic_controlled_operation(self,key,label,params,width,nctrl,state,clbits):
+        base_name,display,nparams = DYNAMIC_CONTROLS[key]
+        if (nctrl < 1 or width != nctrl+1 or clbits or len(params) != nparams
+                or not 0 <= state < 1<<nctrl):
+            self.error("Dynamic controlled Gate signature differs from its header.")
+        if any(not isinstance(value,(Real,Parameter,ParameterExpression)) or isinstance(value,bool) for value in params):
+            self.error("Non-numeric dynamic controlled Gate parameter.")
+        from quantumbridge.core.gate_limits import current_gate_limits
+        limits = current_gate_limits()
+        limits.check("max_control_qubits",nctrl)
+        if nctrl+1 >= limits.max_matrix_dimension.bit_length():
+            raise MemoryError("Dynamic controlled Gate exceeds max_matrix_dimension before construction.")
+        self.budget["expanded"] = self.budget.get("expanded",0)+2*nctrl+2
+        self.admit_standard_object()
+        from quantumbridge.core.standard_gates import PhaseGate,XGate
+        from quantumbridge.core.gates import ControlledGate
+        base = PhaseGate(*params) if base_name == "phase" else XGate()
+        result = ControlledGate(base,nctrl,state,label or None)
+        result._restore_display_name(display+("_o"+str(state) if state != (1<<nctrl)-1 else ""))
+        return result
+
     def base_instruction(self):
         name_size,label_size,nparams,nq,nc,condition,condition_size,condition_value,nctrl,state = self.unpack(INSTRUCTION)
         self.bounded("max_parameter_nodes",nparams)
         self.bounded("max_qubits",nq)
-        if nc or condition or condition_size: self.error("Unsupported custom base instruction classical fields.",UnsupportedFeature)
+        self.bounded("max_clbits",nc)
+        if condition or condition_size: self.error("Unsupported custom base instruction condition fields.",UnsupportedFeature)
         name,label = self.text(name_size),self.text(label_size)
         # A base-gate record has the usual header and parameters, but no wire
         # argument records: it is not an invocation on a containing circuit.
         params = tuple(self.value(*self.unpack(VALUE)) for _ in range(nparams))
         if self.pos != len(self.data): self.error("Trailing bytes in custom base instruction.")
-        return name,label,params,nq,nctrl,state
+        return name,label,params,nq,nctrl,state,nc
 
     def base_operation(self,description,table,ancestors):
         from quantumbridge.core.gates import Gate, ControlledGate
-        key,label,params,width,nctrl,state = description
+        key,label,params,width,nctrl,state,clbits = description
         if key in table:
             record = table[key]
-            if width != record.width or (nctrl,state) != (record.controls,record.state):
+            if width != record.width or clbits != record.clbits or (nctrl,state) != (record.controls,record.state):
                 self.error("Custom base operation header differs from its referenced definition.")
             return self.custom_operation(key,params,label,table,ancestors)
+        if key in DYNAMIC_CONTROLS:
+            return self.dynamic_controlled_operation(key,label,params,width,nctrl,state,clbits)
         if key not in NAMES: self.error("Unresolved custom base operation reference.",UnsupportedFeature)
         name = NAMES[key]
         if (OPS[name][1] is not None and OPS[name][1] != width or OPS[name][2] != len(params)
-                or nctrl != CONTROLS.get(name,0) or state >= 1<<nctrl):
+                or clbits != int(name=="measure") or nctrl != CONTROLS.get(name,0) or state >= 1<<nctrl):
             self.error("Standard base operation signature differs from its header.")
         if name in {"reset","measure","barrier","delay"}:
-            self.error("Nonunitary or directive annotation bases are not native unitary operations.",UnsupportedFeature)
+            metadata={"directive":True} if name in {"barrier","delay"} else {}
+            if name=="delay":metadata.update(unit="dt",duration=params[0])
+            return Instruction(name,width,clbits,params,label or None,metadata=metadata)
         from quantumbridge.core.standard_gates import STANDARD_GATE_TYPES, standard_from_record
         if key in {kind.__name__ for kind in STANDARD_GATE_TYPES}:
             self.admit_standard_object()
@@ -132,7 +167,7 @@ class Reader:
             base_width = width-nctrl
             body = Circuit(base_width).append(base_name,range(base_width),params=params)
             result = ControlledGate(Gate(base_name,base_width,params,definition=body),nctrl,state,label or None)
-            result.name = name+("_o"+str(state) if state != (1<<nctrl)-1 else "")
+            result._restore_display_name(name+("_o"+str(state) if state != (1<<nctrl)-1 else ""))
             return result
         body = Circuit(width).append(name,range(width),params=params)
         return Gate(name,width,params,label or None,definition=body)
@@ -151,14 +186,14 @@ class Reader:
             self.budget["expanded"] = self.budget.get("expanded",0)+1+len(params)
             self.bounded("max_gate_expansion",self.budget["expanded"])
             result = AnnotatedOperation(self.base_operation(base,table,(*ancestors,key)),list(params))
-            if result.num_qubits != width: self.error("Annotation modifier widths disagree with its definition header.")
+            if result.num_qubits != width or result.num_clbits != record.clbits:self.error("Annotation modifier widths disagree with its definition header.")
             return result
         from quantumbridge.core.operations import instruction_definition_work
         work = (1 if definition is None else instruction_definition_work(definition)) if record.kind == b"i" else validate_definition(definition)
         self.budget["expanded"] = self.budget.get("expanded",0)+work
         self.bounded("max_gate_expansion",self.budget["expanded"])
         if record.kind == b"i" and definition is None:
-            return Instruction(display, width, params=params, label=label or None)
+            return Instruction(display, width, record.clbits,params=params, label=label or None)
         formal = definition.parameters
         from quantumbridge.core.parameters import parameter_set
         if not set(formal) <= set(parameter_set(params)):
@@ -167,7 +202,7 @@ class Reader:
         if record.kind == b"i":
             metadata = dict(definition.metadata)
             metadata.setdefault("definition_name",definition.name)
-            return Instruction(display,width,params=params,label=label or None,definition=definition,metadata=metadata)
+            return Instruction(display,width,record.clbits,params=params,label=label or None,definition=definition,metadata=metadata)
         if base is None: return Gate(display,width,params,label or None,definition=definition)
         base_gate = self.base_operation(base,table,(*ancestors,key))
         if not isinstance(base_gate,Gate): self.error("A ControlledGate base record must represent a Gate.")
@@ -181,17 +216,40 @@ class Reader:
         for wire in opened: actual.x(wire)
         actual = actual.compose(definition)
         for wire in reversed(opened): actual.x(wire)
-        result.name = display
+        result._restore_display_name(display)
         result.definition = actual
         return result
+
+    def parameter_identity(self, name, identity, kind, vector_identity=None):
+        previous = self.parameters.get(name)
+        if previous is not None and (type(previous) is not kind or previous.uuid != identity):
+            self.error("Conflicting parameter identities sharing a name.",UnsupportedFeature)
+        descriptor = (name,kind,vector_identity)
+        if identity in self.parameter_identities and self.parameter_identities[identity] != descriptor:
+            self.error("Conflicting names or parameter kinds for one UUID identity.")
+        self.parameter_identities[identity] = descriptor
+        return previous
+
+    def parameter(self):
+        length,identity = self.unpack("!H16s")
+        name = self.text(length)
+        if not name: self.error("Empty parameter name.")
+        identity = str(UUID(bytes=identity))
+        value = self.parameter_identity(name,identity,Parameter)
+        if value is None:
+            value = Parameter(name,identity)
+            self.parameters[name] = value
+        return value
 
     def parameter_vector(self):
         name_size,length,identity,index=self.unpack("!HQ16sQ")
         name=self.text(name_size)
-        if not name or not length or index>=length:self.error("Invalid parameter vector size or index.")
+        if not length or index>=length:self.error("Invalid parameter vector size or index.")
         self.bounded("max_parameter_nodes",length)
         identity=UUID(bytes=identity)
         root=UUID(int=(identity.int-index)%(1<<128))
+        previous = self.parameter_identity(f"{name}[{index}]",str(identity),ParameterVectorElement,
+                                           (str(root),length,index))
         key=(name,str(root),length)
         if key not in self.vectors:
             count=self.budget.get("vector_elements",0)+length
@@ -202,11 +260,7 @@ class Reader:
             self.vectors[key]=vector
             self.budget["vector_elements"]=count
         value=self.vectors[key][index]
-        if value.name in self.parameters:
-            previous=self.parameters[value.name]
-            if type(previous) is not ParameterVectorElement or previous.uuid!=value.uuid:
-                self.error("Conflicting parameter vector identities.",UnsupportedFeature)
-            return previous
+        if previous is not None:return previous
         object.__setattr__(value,"_uuid_explicit",True)
         self.parameters[value.name]=value
         return value
@@ -217,21 +271,53 @@ class Reader:
         start = self.base+self.pos
         sub = Reader(self.take(size),self.limits,start,self.depth+1,self.budget)
         sub.parameters = self.parameters
+        sub.parameter_identities = self.parameter_identities
         sub.vectors = self.vectors
+        sub.circuit_owner = self.circuit_owner
+        sub.loop_depth = self.loop_depth
+        sub.parameter_loop_depth = self.parameter_loop_depth
+        sub.classical_vars = self.classical_vars
+        sub.variable_identities = self.variable_identities
+        sub.enclosing_variables = self.enclosing_variables
         if kind == b"f":
             value, = sub.unpack("<d")
             if not math.isfinite(value): sub.error("Nonfinite numeric parameter.")
         elif kind == b"i": value, = sub.unpack("<q")
-        elif kind == b"p":
-            length,uid = sub.unpack("!H16s")
-            name = sub.text(length)
-            if not name: sub.error("Empty parameter name.")
-            uid = str(UUID(bytes=uid))
-            if name in self.parameters and (type(self.parameters[name]) is not Parameter or self.parameters[name].uuid != uid): sub.error("Distinct parameter identities sharing a name are not representable.",UnsupportedFeature)
-            value = self.parameters.setdefault(name,Parameter(name,uid))
+        elif kind == b"p": value = sub.parameter()
         elif kind == b"v": value=sub.parameter_vector()
         elif kind == b"s": value = sub.text(size)
         elif kind == b"z": value = None
+        elif kind == b"d":
+            from quantumbridge.core.control_flow_operations import CASE_DEFAULT
+            value = CASE_DEFAULT
+        elif kind == b"R":
+            from .qpy_control_records import read_resource
+            value = read_resource(sub, sub.text(size))
+        elif kind == b"r":
+            from .qpy_control_records import admit_range
+            start_, stop_, step = sub.unpack("!qqq")
+            if not step:
+                sub.error("A QPY range step cannot be zero.")
+            value = range(start_, stop_, step)
+            admit_range(value, self.limits, self.budget)
+        elif kind == b"t":
+            count, = sub.unpack("!Q")
+            sub.bounded("max_parameter_nodes", count+self.budget["values"])
+            if count*VALUE.size > len(sub.data)-sub.pos:
+                sub.error("QPY sequence count exceeds its parameter payload.")
+            value = tuple(sub.value(*sub.unpack(VALUE)) for _ in range(count))
+        elif kind == b"q":
+            from .qpy_classical import lexical_variables
+            sub.enclosing_variables = lexical_variables(self.circuit_owner, self.enclosing_variables)
+            value = sub.circuit(_control_block=True, _loop_depth=self.parameter_loop_depth)
+            for symbol in sub.parameters.values():
+                previous = self.parameter_identity(symbol.name, symbol.uuid, type(symbol),
+                    (symbol.vector._root_uuid, len(symbol.vector), symbol.index) if type(symbol) is ParameterVectorElement else None)
+                if previous is None:
+                    self.parameters[symbol.name] = symbol
+        elif kind == b"x":
+            from .qpy_classical import read_expression
+            value = read_expression(sub)
         elif kind == b"e":
             from .qpy_expressions import read_expression
             value = read_expression(sub)
@@ -274,14 +360,16 @@ class Reader:
         self.max_depth = max(self.max_depth,sub.max_depth)
         return value
 
-    def circuit(self):
+    def circuit(self, *, _control_block=False, _loop_depth=0):
+        self.loop_depth = self.parameter_loop_depth = _loop_depth
+        self.nested_control_block = _control_block
         self.parameters = {}
+        self.parameter_identities = {}
         self.vectors = {}
         name_size,phase_type,phase_size,nq,nc,metadata_size,nreg,ninst,nvars = self.unpack(CIRCUIT_HEADER)
         for field,value in (("max_qubits",nq),("max_clbits",nc),("max_metadata_bytes",metadata_size),("max_registers",nreg),("max_instructions",ninst)):
             self.bounded(field,value)
-        if not nq: self.error("Zero-qubit circuits are not supported by the native Circuit.",UnsupportedFeature)
-        if nvars: self.error("QPY standalone classical variables are not implemented.",UnsupportedFeature)
+        self.bounded("max_parameter_nodes", nvars)
         name = self.text(name_size) if name_size else None
         self.budget["instructions"] = self.budget.get("instructions",0)+ninst
         self.bounded("max_instructions",self.budget["instructions"])
@@ -291,23 +379,35 @@ class Reader:
         try: metadata = json.loads(self.text(metadata_size),parse_constant=nonfinite)
         except (ValueError,RecursionError): self.error("Invalid JSON circuit metadata.")
         if not isinstance(metadata,dict): self.error("Circuit metadata must be an object.")
-        if set(metadata)&{"registers","global_phase","classical_scope"}: self.error("Metadata conflicts with native structural fields or unsupported classical identifiers.",UnsupportedFeature)
         stack = [(metadata,0)]
         while stack:
             value,depth = stack.pop(); self.bounded("max_nesting_depth",depth)
             if isinstance(value,(dict,list)):
                 stack.extend((child,depth+1) for child in (value.values() if isinstance(value,dict) else value))
-        specs = []
+        specs = [];register_work=0
         for _ in range(nreg):
             raw = self.take(REGISTER.size)
             if raw[1] not in (0,1) or raw[-1] not in (0,1): self.error("Invalid canonical register boolean flags.")
             kind,standalone,size,length,in_circuit = REGISTER.unpack(raw)
             if kind not in {b"q",b"c"}: self.error("Invalid register type.")
             self.bounded("max_qubits" if kind == b"q" else "max_clbits",size)
+            register_work+=size
+            self.bounded("max_gate_expansion",self.budget.get("register_bits",0)+register_work)
+            from quantumbridge.core.gate_limits import current_gate_limits
+            current_gate_limits().check("max_decomposition_work",register_work)
             reg_name = self.text(length)
             bits = list(self.unpack("!"+"q"*size))
-            if not standalone or not in_circuit: self.error("Alias/external registers are not implemented.",UnsupportedFeature)
-            specs.append({"kind":kind.decode(),"name":reg_name,"bits":bits})
+            specs.append({"kind":kind.decode(),"name":reg_name,"bits":bits,
+                "standalone":standalone,"in_circuit":in_circuit})
+        circuit = Circuit(nq,nc,name,metadata)
+        circuit._execution_metadata={}
+        circuit.global_phase = phase
+        from .qpy_registers import restore_register_records
+        restore_register_records(circuit,specs,self.limits,self.budget)
+        self.circuit_owner = circuit
+        from .qpy_classical import read_declarations
+        read_declarations(self, circuit, nvars)
+        from .qpy_control_records import CONTROL_NAMES
         custom_count, = self.unpack("!Q")
         self.budget["definitions"] = self.budget.get("definitions",0)+custom_count
         self.bounded("max_custom_definitions",self.budget["definitions"])
@@ -319,8 +419,8 @@ class Reader:
             self.bounded("max_qubits",width)
             self.bounded("max_clbits",clbits)
             key = self.text(size)
-            if not key or key in custom or key in NAMES: self.error("Conflicting QPY custom definition identifier.")
-            if kind not in {b"g",b"c",b"a",b"i"} or clbits:
+            if not key or key in custom or key in NAMES or key in DYNAMIC_CONTROLS or key in CONTROL_NAMES: self.error("Conflicting QPY custom definition identifier.")
+            if kind not in {b"g",b"c",b"a",b"i"} or clbits and kind not in {b"a",b"i"}:
                 self.error("This QPY custom record type/control payload is not implemented.",UnsupportedFeature)
             if kind in {b"g",b"i"} and (nctrl or state or base_size):
                 self.error("A non-controlled definition contains coherent control fields.")
@@ -339,7 +439,7 @@ class Reader:
                 sub = Reader(self.take(payload_size),self.limits,offset,self.depth+1,self.budget)
                 definition = sub.circuit()
                 if sub.pos != len(sub.data): sub.error("Trailing bytes in QPY custom definition.")
-                if definition.num_qubits != width or definition.num_bits:
+                if definition.num_qubits != width or definition.num_bits != clbits:
                     self.error("Custom Gate definition width differs from its header.")
                 from quantumbridge.core.gates import validate_definition
                 from quantumbridge.core.operations import instruction_definition_work
@@ -358,10 +458,11 @@ class Reader:
                 offset = self.base+self.pos
                 sub = Reader(self.take(base_size),self.limits,offset,self.depth+1,self.budget)
                 sub.parameters,sub.vectors = self.parameters,self.vectors
+                sub.parameter_identities = self.parameter_identities
                 base = sub.base_instruction()
                 payload_depth = max(payload_depth,sub.max_depth-self.depth)
                 self.max_depth = max(self.max_depth,sub.max_depth)
-            custom[key] = _CustomRecord(display,width,kind,definition,nctrl,state,base,payload_depth)
+            custom[key] = _CustomRecord(display,width,kind,definition,nctrl,state,base,payload_depth,clbits)
         for key in custom:
             seen = set()
             current = key
@@ -372,34 +473,55 @@ class Reader:
                 self.bounded("max_gate_expansion",self.budget["references"])
                 self.bounded("max_nesting_depth",self.depth+len(seen))
                 current = custom[current].base[0]
-            if current not in custom and current not in NAMES:
+            if current not in custom and current not in NAMES and current not in DYNAMIC_CONTROLS:
                 self.error("Unresolved custom base-gate reference.",UnsupportedFeature)
-        circuit = Circuit(nq,nc,name,metadata)
-        circuit.global_phase = phase
-        circuit.metadata["registers"] = specs
-        register_specs(circuit)
         for _ in range(ninst):
             name_size,label_size,nparams,nqargs,ncargs,condition,condition_length,condition_value,nctrl,ctrl_state = self.unpack(INSTRUCTION)
             if nqargs > nq or ncargs > nc: self.error("Instruction arity exceeds circuit resources.")
             self.bounded("max_parameter_nodes",nparams)
             class_name, label = self.text(name_size), self.text(label_size)
-            if condition or condition_length: self.error("QPY conditional instructions require an unimplemented protocol branch.",UnsupportedFeature)
-            if class_name not in NAMES and class_name not in custom: self.error(f"Unknown instruction class {class_name!r}.",UnsupportedFeature)
+            classical_condition = None
+            if condition == 1:
+                from .qpy_control_records import read_resource
+                classical_condition = (read_resource(self, self.text(condition_length)), condition_value)
+            elif condition == 2 and not condition_length:
+                kind, size = self.unpack(VALUE)
+                if kind != b"x":
+                    self.error("QPY conditional expression requires an expression parameter record.")
+                classical_condition = self.value(kind, size)
+            elif condition or condition_length:
+                self.error("Unsupported QPY13 conditional flag.",UnsupportedFeature)
+            if classical_condition is not None and class_name not in {"IfElseOp", "WhileLoopOp"}:
+                self.error("Conditional non-control QPY instructions are not implemented.", UnsupportedFeature)
+            if class_name not in NAMES and class_name not in custom and class_name not in DYNAMIC_CONTROLS and class_name not in CONTROL_NAMES: self.error(f"Unknown instruction class {class_name!r}.",UnsupportedFeature)
             op_name = NAMES.get(class_name)
             qargs,cargs = [],[]
             for index in range(nqargs+ncargs):
                 kind,wire = self.unpack("!cI")
                 if kind != (b"q" if index < nqargs else b"c") or wire >= (nq if index < nqargs else nc): self.error("Invalid instruction argument mapping.")
                 (qargs if index < nqargs else cargs).append(wire)
-            if len(set(qargs)) != len(qargs): self.error("Repeated quantum instruction argument.")
-            params = [self.value(*self.unpack(VALUE)) for _ in range(nparams)]
+            if len(set(qargs)) != len(qargs) or len(set(cargs))!=len(cargs): self.error("Repeated instruction argument.")
+            self.parameter_loop_depth = self.loop_depth+int(class_name in {"ForLoopOp", "WhileLoopOp"})
+            try:
+                params = [self.value(*self.unpack(VALUE)) for _ in range(nparams)]
+            finally:
+                self.parameter_loop_depth = self.loop_depth
+            if class_name in CONTROL_NAMES:
+                from .qpy_control_records import decode_operation
+                circuit.operations.append(decode_operation(self, class_name, label or None, params,
+                    qargs, cargs, classical_condition, nctrl, ctrl_state))
+                continue
             if class_name in custom:
                 record = custom[class_name]
-                if nqargs != record.width or ncargs or (nctrl,ctrl_state) != (record.controls,record.state):
+                if nqargs != record.width or ncargs != record.clbits or (nctrl,ctrl_state) != (record.controls,record.state):
                     self.error("QPY custom Gate invocation differs from its definition.")
                 if record.kind == b"i":
-                    circuit._append_instruction_reference(self.custom_operation(class_name,tuple(params),label,custom), qargs)
-                else: circuit.append(self.custom_operation(class_name,tuple(params),label,custom),qargs)
+                    circuit._append_instruction_reference(self.custom_operation(class_name,tuple(params),label,custom), qargs,cargs)
+                else:circuit.append(self.custom_operation(class_name,tuple(params),label,custom),qargs,clbits=cargs)
+                continue
+            if class_name in DYNAMIC_CONTROLS:
+                gate = self.dynamic_controlled_operation(class_name,label,params,nqargs,nctrl,ctrl_state,ncargs)
+                circuit.append(gate,qargs)
                 continue
             expected = OPS[op_name]
             if (expected[1] is not None and nqargs != expected[1]) or nparams != expected[2] or ncargs != int(op_name == "measure"):
@@ -430,7 +552,13 @@ class Reader:
         exists,initial,mapping,final,extra,input_count = self.unpack(LAYOUT)
         if exists != b"\x00" or extra or any(value != -1 for value in (initial,mapping,final)) or input_count not in (-1,0):
             self.error("Native QPY TranspileLayout fields are not implemented.",UnsupportedFeature)
-        validate_control_flow(circuit)
+        from .qpy_classical import validate_circuit
+        validate_circuit(circuit, self.limits, self.loop_depth,
+                         self.enclosing_variables if _control_block else None)
+        from quantumbridge.core.control_flow_operations import operation_owner
+        if _control_block or any(operation_owner(op) is not None for op in circuit.operations):
+            from .qpy_control_records import public_block
+            circuit = public_block(circuit)
         return self.canonical_parameter_graph(circuit)
 
 
@@ -449,7 +577,7 @@ def _same_parameters(left, right):
 
 
 def _unitary_wire_order(matrix):
-    if matrix.ndim != 2 or matrix.shape[0] != matrix.shape[1] or matrix.shape[0] < 2 or matrix.shape[0] & (matrix.shape[0]-1):
+    if matrix.ndim != 2 or matrix.shape[0] != matrix.shape[1] or matrix.shape[0] < 1 or matrix.shape[0] & (matrix.shape[0]-1):
         raise FormatValidationError("A NumPy Gate parameter requires a square qubit matrix.",format="qpy",version=13)
     from quantumbridge.execution.array_ownership import retained_array
     from quantumbridge.execution.resource_context import current_resources
@@ -487,7 +615,8 @@ def _parameter_value(value,limits=None,*,budget=None):
         name = value.name.encode("utf-8")
         return b"p",struct.pack("!H16s",len(name),_uid(value).bytes)+name
     if isinstance(value,ParameterExpression):
-        if value.op in {"const","parameter"}: return _parameter_value(value.args[0],limits,budget=budget)
+        if value.op in {"const","parameter"} and not value._retained_parameters:
+            return _parameter_value(value.args[0],limits,budget=budget)
         from .qpy_expressions import write_expression
         return b"e",write_expression(value,limits)
     if isinstance(value,bool): raise UnsupportedFeature("Boolean gate parameters are unsupported.",format="qpy",version=13)
@@ -538,24 +667,184 @@ def _base_instruction_payload(operation,key,limits,budget):
     label = (getattr(operation,"label",None) or "").encode()
     nctrl,state = _object_control_fields(operation,key)
     data = BoundedParts(limits,"qpy")
-    data.extend((INSTRUCTION.pack(len(key),len(label),len(params),operation.num_qubits,0,0,0,0,nctrl,state),key,label))
+    data.extend((INSTRUCTION.pack(len(key),len(label),len(params),operation.num_qubits,operation.num_clbits,0,0,0,nctrl,state),key,label))
     for value in params:
         kind,payload = _modifier_value(value,limits,budget) if type(operation) is AnnotatedOperation else _parameter_value(value,limits,budget=budget)
         data.extend((VALUE.pack(kind,len(payload)),payload))
     return b"".join(data)
 
 
-def _circuit_bytes(circuit,limits,*,_budget=None,_depth=0,_path="root"):
+def _flatten_controlled_entry(item,limits):
+    """Flatten only audited coherent-control descriptors, never opaque metadata."""
+    def descriptor(value):
+        return (type(value) is dict and all(type(key) is str for key in value)
+            and set(value)=={"name","metadata","controls"} and type(value["name"]) is str
+            and type(value["metadata"]) is dict and all(type(key) is str for key in value["metadata"])
+            and type(value["controls"]) is int and value["controls"]>0)
+    base=item.metadata.get("controlled_base");controls,targets=item.controls,item.targets
+    segment=len(controls);seen=set()
+    while descriptor(base) and base["name"]=="native_controlled":
+        if id(base) in seen:raise FormatValidationError("Cyclic coherent control descriptor.",format="qpy",version=13)
+        seen.add(id(base));limits.check("max_nesting_depth",len(seen),format="qpy",version=13)
+        if base["controls"]!=segment or set(base["metadata"])!={"controlled_base"}:
+            raise UnsupportedFeature("Nested coherent control has opaque or inconsistent metadata.",format="qpy",version=13)
+        child=base["metadata"]["controlled_base"]
+        if not descriptor(child):raise UnsupportedFeature("Unsupported nested coherent control descriptor.",format="qpy",version=13)
+        segment=child["controls"]
+        if segment>=len(targets):raise FormatValidationError("Nested controls exceed base operands.",format="qpy",version=13)
+        from quantumbridge.core.gate_limits import current_gate_limits
+        current_gate_limits().check("max_control_qubits",len(controls)+segment)
+        controls,targets=controls+targets[:segment],targets[segment:]
+        base=child
+    if not seen:return item
+    if not descriptor(base) or base["metadata"]:
+        raise UnsupportedFeature("Nested coherent control cannot discard base metadata.",format="qpy",version=13)
+    metadata={**item.metadata,"controlled_base":{**base,"controls":len(controls)}}
+    return Operation(item.name,targets,controls,item.params,metadata)
+
+
+def _standard_instruction_entry(item,limits=None,budget=None,planned=None):
+    if type(item) is not Operation:return item
+    if type(item.metadata) is not dict or any(type(key) is not str for key in item.metadata):
+        raise UnsupportedFeature("QPY operation metadata requires a native dictionary.",format="qpy",version=13)
+    if (item.name=="unitary" and not item.controls and not item.params
+            and "matrix" in item.metadata
+            and not set(item.metadata)-{"matrix","label","operation_index"}):
+        from quantumbridge.core.standard_gates import UnitaryGate
+        from quantumbridge.execution.array_reservations import numeric_shape
+        from quantumbridge.core.gate_limits import current_gate_limits
+        limits=limits or SerializationLimits()
+        shape=numeric_shape(item.metadata["matrix"])
+        if shape!=(1<<len(item.targets),)*2:
+            raise FormatValidationError("Unitary matrix width differs from its operands.",format="qpy",version=13)
+        current_gate_limits().check("max_matrix_dimension",shape[0])
+        limits.check("max_numeric_elements",shape[0]*shape[1],format="qpy",version=13)
+        limits.check("max_input_bytes",shape[0]*shape[1]*16,format="qpy",version=13)
+        owner=UnitaryGate(item.metadata["matrix"],label=item.metadata.get("label"))
+        metadata={key:value for key,value in item.metadata.items() if key!="matrix"}
+        return Operation(owner.name,item.targets,metadata={**metadata,"gate":owner})
+    if item.name=="native_controlled":
+        item=_flatten_controlled_entry(item,limits or SerializationLimits())
+        base=item.metadata.get("controlled_base",{})
+        canonical={"cx":"ccx","cz":"ccz","swap":"cswap"}
+        rotations={"crx":"crx","cry":"cry","crz":"crz","cp":"cp","cphase":"cp"}
+        axes={"rx":"crx","ry":"cry","rz":"crz","phase":"cp","p":"cp","u1":"cp"}
+        admitted=(type(base) is dict and all(type(key) is str for key in base)
+            and set(base)=={"name","metadata","controls"} and type(base.get("name")) is str
+            and type(base.get("metadata")) is dict and not base["metadata"]
+            and type(base.get("controls")) is int and base["controls"]>0
+            and type(item.controls) is tuple and len(item.controls)==base["controls"]
+            and type(item.targets) is tuple and type(item.params) is tuple
+            and all(type(key) is str for key in item.metadata)
+            and not set(item.metadata)-{"controlled_base","label","operation_index"})
+        wrapped=admitted and len(item.targets)==2
+        flat=admitted and len(item.targets)==1
+        if wrapped and len(item.controls)==1 and base["name"] in canonical and not item.params:
+            controls=item.controls if base["name"]=="swap" else item.controls+item.targets[:1]
+            targets=item.targets if base["name"]=="swap" else item.targets[1:]
+            metadata={key:value for key,value in item.metadata.items() if key!="controlled_base"}
+            return Operation(canonical[base["name"]],targets,controls,metadata=metadata)
+        if flat and len(item.controls)==2 and base["name"] in {"x","z"} and not item.params:
+            metadata={key:value for key,value in item.metadata.items() if key!="controlled_base"}
+            return Operation("cc"+base["name"],item.targets,item.controls,metadata=metadata)
+        name=rotations.get(base["name"]) if wrapped else axes.get(base["name"]) if flat else None
+        constant={"sx":(math.pi/2,(("h",()),),(("h",()),)),
+            "sxdg":(-math.pi/2,(("h",()),),(("h",()),)),
+            "x":(math.pi,(("h",()),),(("h",()),)),"z":(math.pi,(),()),
+            "y":(math.pi,(("sdg",()),("h",())),(("h",()),("s",()))),
+            "h":(math.pi,(("ry",(-math.pi/4,)),),(("ry",(math.pi/4,)),))}
+        constant_name=base["name"] if flat else {"csx":"sx","csxdg":"sxdg","cy":"y","ch":"h","cx":"x","cz":"z"}.get(base["name"]) if wrapped else None
+        fixed=constant.get(constant_name) if not item.params else None
+        if name is not None and len(item.params)==1 or fixed is not None:
+            from quantumbridge.core.gates import Gate
+            from quantumbridge.core.gate_limits import current_gate_limits
+            from quantumbridge.core.parameters import _coerce_expression,resolve_parameter
+            from quantumbridge.execution.array_reservations import numeric_shape
+            limits=limits or SerializationLimits();budget={} if budget is None else budget
+            planned=[0,0] if planned is None else planned
+            count=len(item.controls)+int(wrapped)
+            current_gate_limits().check("max_control_qubits",count)
+            limits.check("max_qubits",count+1,format="qpy",version=13)
+            prefix,suffix=((),()) if fixed is None else fixed[1:]
+            work=(count-1)*(1<<count)+1+len(prefix)+len(suffix)
+            limits.check("max_gate_expansion",budget.get("expanded",0)+planned[0]+work,format="qpy",version=13)
+            limits.check("max_instructions",budget.get("instructions",0)+planned[0]+work,format="qpy",version=13)
+            limits.check("max_custom_definitions",budget.get("definitions",0)+planned[1]+1,format="qpy",version=13)
+            current_gate_limits().check("max_total_operations",work)
+            current_gate_limits().check("max_decomposition_work",work)
+            value=item.params[0] if fixed is None else fixed[0]
+            if type(value) not in (Parameter,ParameterVectorElement,ParameterExpression):
+                if numeric_shape(value,real_only=True)!=():
+                    raise UnsupportedFeature("Controlled rotation angle must be a native scalar.",format="qpy",version=13)
+            angle=_coerce_expression(value)
+            if angle.parameters:
+                limits.check("max_symbolic_expression_depth",angle._depth+2,format="qpy",version=13)
+                unit=angle/(1<<(count-1))
+            else:unit=resolve_parameter(angle,{})/(1<<(count-1))
+            label=item.metadata.get("label")
+            if label is not None and type(label) is not str:
+                raise UnsupportedFeature("QPY labels require native strings.",format="qpy",version=13)
+            if fixed is not None:name="cp"
+            body=Circuit(count+1,name="native_c"+(str(count) if count!=2 else "")+name)
+            for primitive,params in prefix:body.append(primitive,(count,),params=params)
+            if count==2:
+                body.append(name,(2,),controls=(1,),params=(unit,))
+                body.cx(0,1)
+                body.append(name,(2,),controls=(1,),params=(-unit,))
+                body.cx(0,1)
+                body.append(name,(2,),controls=(0,),params=(unit,))
+            else:
+                # The alternating sum of all nonempty control parities is
+                # 2**(count-1) times their AND. Same-axis rotations commute.
+                for mask in range(1,1<<count):
+                    members=tuple(wire for wire in range(count) if mask>>wire&1)
+                    pivot=members[-1]
+                    for wire in members[:-1]:body.cx(wire,pivot)
+                    body.append(name,(count,),controls=(pivot,),params=(unit if len(members)%2 else -unit,))
+                    for wire in reversed(members[:-1]):body.cx(wire,pivot)
+            for primitive,params in suffix:body.append(primitive,(count,),params=params)
+            owner=Gate(body.name,count+1,body.parameters,label,definition=body)
+            planned[0]+=work;planned[1]+=1
+            metadata={"gate":owner}
+            if label is not None:metadata["label"]=label
+            return Operation(owner.name,item.wires,params=tuple(owner.params),metadata=metadata)
+    owner=item.metadata.get("instruction_object")
+    if type(owner) is not Instruction or owner.definition is not None or owner.name not in {"measure","reset","barrier","delay"}:return item
+    bits=item.metadata.get("instruction_clbits",())
+    if (item.name!=owner.name or item.controls or len(item.targets)!=owner.num_qubits
+            or len(bits)!=owner.num_clbits or tuple(item.params)!=tuple(owner.params)):
+        raise FormatValidationError("Builtin instruction invocation differs from its native owner.",format="qpy",version=13)
+    metadata={**owner.metadata,**{key:value for key,value in item.metadata.items()
+        if key not in {"instruction_object","instruction_clbits"}}}
+    if owner.name=="measure":
+        if owner.num_qubits!=1 or owner.num_clbits!=1 or owner.params:
+            raise FormatValidationError("Measurement signature differs from the standard record.",format="qpy",version=13)
+        return Measurement(item.targets[0],bits[0],metadata=metadata)
+    if bits:raise FormatValidationError("Builtin directive/reset cannot take classical operands.",format="qpy",version=13)
+    return Operation(owner.name,item.targets,params=tuple(owner.params),metadata=metadata)
+
+
+def _circuit_bytes(circuit,limits,*,_budget=None,_depth=0,_path="root",_loop_depth=0,_ancestors=(),_enclosing_variables=None):
     budget = {} if _budget is None else _budget
     limits.check("max_nesting_depth",_depth,format="qpy",version=13)
-    if "classical_scope" in circuit.metadata:
-        raise UnsupportedFeature("QPY native classical identifier records are not implemented; metadata cannot substitute for their wire fields.",format="qpy",version=13)
-    validate_control_flow(circuit)
-    specs = register_specs(circuit)
+    if id(circuit) in _ancestors:
+        raise FormatValidationError("Cyclic QPY control block graph.", format="qpy", version=13)
+    _ancestors = (*_ancestors, id(circuit))
+    from quantumbridge.core.circuit_metadata import execution_metadata, serialized_user_metadata
+    from .qpy_classical import validate_circuit, declaration_bytes
+    variable_count, variable_payload = declaration_bytes(circuit, limits, budget, _enclosing_variables)
+    validate_circuit(circuit, limits, _loop_depth, _enclosing_variables)
+    from .qpy_registers import register_records
+    specs = register_records(circuit,limits,budget)
     for field,value in (("max_qubits",circuit.num_qubits),("max_clbits",circuit.num_bits),("max_registers",len(specs))): limits.check(field,value,format="qpy",version=13)
-    items = list(circuit.iter_instructions())
-    budget["instructions"] = budget.get("instructions",0)+len(items)
+    from quantumbridge.core.operations import Operation,execution_operation
+    budget["instructions"] = budget.get("instructions",0)+len(circuit.operations)+len(circuit.measurements)
     limits.check("max_instructions",budget["instructions"],format="qpy",version=13)
+    planned=[0,0]
+    from quantumbridge.core.control_flow_operations import operation_owner
+    items = [item if type(item) is Operation and operation_owner(item) is not None else
+        _standard_instruction_entry(execution_operation(item,standardize_inverse=True,serialization_limits=limits),limits,budget,planned)
+        if type(item) is Operation else item for item in circuit.iter_instructions()]
     names,identities,nodes = {},{},0
     def parameter_identity(value,depth=0):
         nonlocal nodes
@@ -571,6 +860,7 @@ def _circuit_bytes(circuit,limits,*,_budget=None,_depth=0,_path="root"):
             names[value.name],identities[uid] = (uid,kind),(value.name,kind)
         elif isinstance(value,ParameterExpression):
             for child in value.args: parameter_identity(child,depth+1)
+            for parameter in value._retained_parameters: parameter_identity(parameter,depth+1)
     parameter_identity(circuit.global_phase)
     for item in items:
         for value in getattr(item,"params",()): parameter_identity(value)
@@ -579,25 +869,21 @@ def _circuit_bytes(circuit,limits,*,_budget=None,_depth=0,_path="root"):
     name = (circuit.name or "").encode("utf-8")
     phase_type,phase = _parameter_value(circuit.global_phase,limits,budget=budget)
     if phase_type in {b"f",b"i"}: phase_type,phase = b"f",struct.pack("!d",float(circuit.global_phase))
-    metadata = {key:value for key,value in circuit.metadata.items() if key not in {"global_phase","registers"}}
-    def json_value(value,depth=0):
-        limits.check("max_nesting_depth",depth,format="qpy",version=13)
-        if isinstance(value,dict):
-            if any(not isinstance(key,str) for key in value): raise UnsupportedFeature("JSON metadata keys must be strings; use an external sidecar.",format="qpy",version=13)
-            for child in value.values(): json_value(child,depth+1)
-        elif isinstance(value,list):
-            for child in value: json_value(child,depth+1)
-        elif value is not None and type(value) not in {str,int,float,bool}:
-            raise UnsupportedFeature("Metadata must use exact JSON types; use an external sidecar.",format="qpy",version=13)
-    json_value(metadata)
+    metadata = serialized_user_metadata(circuit)
+    from quantumbridge.core.circuit_metadata import is_separated
+    if not is_separated(circuit):
+        metadata = {key: value for key, value in metadata.items() if key != "classical_scope"}
+    from .common import checked_json_metadata
+    checked_json_metadata(metadata,limits,format="qpy")
     try: encoded_metadata = json.dumps(metadata,ensure_ascii=True,allow_nan=False,separators=(",",":")).encode()
     except (TypeError,ValueError,RecursionError) as exc: raise UnsupportedFeature("Metadata must be finite JSON data.",format="qpy",version=13) from exc
     limits.check("max_metadata_bytes",len(encoded_metadata),format="qpy",version=13)
     parts = BoundedParts(limits,"qpy")
-    parts.extend([CIRCUIT_HEADER.pack(len(name),phase_type,len(phase),circuit.num_qubits,circuit.num_bits,len(encoded_metadata),len(specs),len(items),0),name,phase,encoded_metadata])
+    parts.extend([CIRCUIT_HEADER.pack(len(name),phase_type,len(phase),circuit.num_qubits,circuit.num_bits,len(encoded_metadata),len(specs),len(items),variable_count),name,phase,encoded_metadata])
     for spec in specs:
         reg_name = spec["name"].encode()
-        parts.extend([REGISTER.pack(spec["kind"].encode(),True,len(spec["bits"]),len(reg_name),True),reg_name,struct.pack("!"+"q"*len(spec["bits"]),*spec["bits"])])
+        parts.extend([REGISTER.pack(spec["kind"].encode(),spec["standalone"],len(spec["bits"]),len(reg_name),spec["in_circuit"]),reg_name,struct.pack("!"+"q"*len(spec["bits"]),*spec["bits"])])
+    parts.append(variable_payload)
     custom,records = {},[]
     from quantumbridge.core.gates import Gate, ControlledGate, validate_definition
     from quantumbridge.core.annotated_operation import AnnotatedOperation, validate_annotated_structure
@@ -628,8 +914,8 @@ def _circuit_bytes(circuit,limits,*,_budget=None,_depth=0,_path="root"):
                 expected.setdefault("definition_name",operation.definition.name)
                 metadata = {key:value for key,value in metadata.items()
                     if key not in expected or value != expected[key]}
-            if operation.num_bits or metadata:
-                raise UnsupportedFeature("QPY unitary base records cannot carry classical bits or opaque object metadata.",format="qpy",version=13)
+            if metadata:
+                raise UnsupportedFeature("QPY base records cannot carry opaque object metadata.",format="qpy",version=13)
             if operation.definition is None and type(operation) is not Instruction:
                 if primitive_base and type(operation) is Gate and operation.name in OPS:
                     if OPS[operation.name][1:] != (operation.num_qubits,len(operation.params)):
@@ -654,6 +940,8 @@ def _circuit_bytes(circuit,limits,*,_budget=None,_depth=0,_path="root"):
         records.append((local_name,operation,base_key,kind,depth))
         return local_name
     for index,item in enumerate(items):
+        if type(item) is Operation and operation_owner(item) is not None:
+            continue
         gate,annotation = item.metadata.get("gate"),item.metadata.get("annotated_operation")
         instruction = item.metadata.get("instruction_object")
         if sum(value is not None for value in (gate, annotation, instruction)) > 1:
@@ -699,8 +987,13 @@ def _circuit_bytes(circuit,limits,*,_budget=None,_depth=0,_path="root"):
             base = operation.base_op if annotated else operation.base_gate
             base_payload = _base_instruction_payload(base,base_key,limits,budget)
         definition = b"" if body is None else _circuit_bytes(body,limits,_budget=budget,_depth=depth+1,_path=local_name.decode())
-        parts.extend((CUSTOM_INSTRUCTION.pack(len(local_name),kind,operation.num_qubits,0,body is not None,len(definition),nctrl,state,len(base_payload)),local_name,definition,base_payload))
+        parts.extend((CUSTOM_INSTRUCTION.pack(len(local_name),kind,operation.num_qubits,operation.num_clbits,body is not None,len(definition),nctrl,state,len(base_payload)),local_name,definition,base_payload))
     for index,item in enumerate(items):
+        if type(item) is Operation and operation_owner(item) is not None:
+            from .qpy_control_records import encode_operation
+            parts.append(encode_operation(item, circuit, limits, budget, _depth,
+                _path+"/"+str(index), _loop_depth, _ancestors))
+            continue
         if isinstance(item,Measurement) and item.kind != "computational":
             raise UnsupportedFeature("Only computational-basis measurement has a supported QPY instruction.",format="qpy",version=13)
         op_name = "measure" if isinstance(item,Measurement) else item.name
@@ -710,19 +1003,20 @@ def _circuit_bytes(circuit,limits,*,_budget=None,_depth=0,_path="root"):
             from quantumbridge.core.standard_gates import invocation_params
             if item.name != operation.name or item.controls or len(item.targets) != operation.num_qubits or item.params != invocation_params(operation):
                 raise FormatValidationError("Custom Gate invocation and definition disagree.",format="qpy",version=13)
-            allowed = {"annotated_operation","operation_index"} if annotated else {"gate","label","operation_index"}
+            allowed = {"annotated_operation","instruction_clbits","operation_index"} if annotated else {"gate","label","operation_index"}
             if type(operation) is Instruction:
                 allowed = {"instruction_object", "instruction_clbits", "label", "operation_index"}
-                if item.metadata.get("instruction_clbits", ()):
-                    raise UnsupportedFeature("Classical custom Instruction invocation fields are not implemented in QPY.",format="qpy",version=13)
+            clbits=item.metadata.get("instruction_clbits",())
+            if len(clbits)!=operation.num_clbits:raise FormatValidationError("Custom classical invocation width differs from its operation.",format="qpy",version=13)
             if set(item.metadata)-allowed:
                 raise UnsupportedFeature("Custom Gate instruction metadata is not representable in QPY v13.",format="qpy",version=13)
             label = item.metadata.get("label","").encode()
             ctrl = operation.num_ctrl_qubits if isinstance(operation, ControlledGate) else 0
             state = operation.ctrl_state if isinstance(operation, ControlledGate) else 0
             params = _object_parameters(operation)
-            parts.extend((INSTRUCTION.pack(len(class_name),len(label),len(params),operation.num_qubits,0,0,0,0,ctrl,state),class_name,label))
+            parts.extend((INSTRUCTION.pack(len(class_name),len(label),len(params),operation.num_qubits,len(clbits),0,0,0,ctrl,state),class_name,label))
             parts.extend(struct.pack("!cI",b"q",wire) for wire in item.targets)
+            parts.extend(struct.pack("!cI",b"c",bit) for bit in clbits)
             for value in params:
                 kind,payload = _modifier_value(value,limits,budget) if annotated else _parameter_value(value,limits,budget=budget)
                 parts.extend((VALUE.pack(kind,len(payload)),payload))

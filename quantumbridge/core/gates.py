@@ -9,7 +9,7 @@ import math
 
 import numpy as np
 
-from .operations import Instruction, Operation
+from .operations import Instruction, Operation,execution_operation
 from .parameters import Parameter, parameter_set, resolve_parameter, _coerce_expression
 from .gate_limits import current_gate_limits
 
@@ -22,13 +22,13 @@ def is_native_gate(value):
 
 
 def is_native_instruction(value):
-    return type(value) is Instruction or is_native_gate(value)
+    from .control_flow_operations import is_control_owner
+    return type(value) is Instruction or is_native_gate(value) or is_control_owner(value)
 
 
 def _copy(value):
-    from quantumbridge.execution.array_ownership import native_configuration_copy
-    from quantumbridge.execution.resource_context import current_resources
-    return native_configuration_copy(value, category="native_gate_definition_copy", strict=current_resources() is not None)
+    from .circuit_metadata import execution_copy
+    return execution_copy(value, category="native_gate_definition_copy")
 
 
 def _integer(value, label):
@@ -45,7 +45,12 @@ def _validate_primitive_arity(name, params, metadata):
         current_gate_limits().check("max_definition_depth", len(seen))
         description = metadata["controlled_base"]
         name, metadata = description["name"], description["metadata"]
-    expected = (1 if name in {"rx", "ry", "rz", "phase", "p", "u1", "crx", "cry", "crz", "cp", "cphase", "rxx", "ryy", "rzz", "global_phase"}
+    if name == "native_matrix_power":
+        from quantumbridge.diff.matrix_power_jet import matrix_power_parameter_count
+        if len(params) != matrix_power_parameter_count(metadata):
+            raise ValueError("Matrix-power gate parameter count does not match its source.")
+        return
+    expected = (1 if name in {"rx", "ry", "rz", "phase", "p", "u1", "crx", "cry", "crz", "cp", "cphase", "rxx", "ryy", "rzz", "global_phase", "native_matrix_power"}
                 else 2 if name == "u2" else 3 if name in {"u", "u3"} else 0)
     if len(params) != expected: raise ValueError("Primitive gate parameter count does not match its operation.")
 
@@ -61,11 +66,11 @@ def validate_definition(circuit, *, owner=None):
 
 
 def _validate_definition(circuit, *, owner, budget):
-    from .circuit import Circuit
+    from .circuit import Circuit,is_native_circuit
     from quantumbridge.utils.math import gate_matrix, validate_unitary_matrix
     from quantumbridge.execution.resource_context import current_resources
     if not isinstance(circuit, Circuit): raise TypeError("Gate definitions require a native Circuit.")
-    if current_resources() is not None and type(circuit) is not Circuit:
+    if current_resources() is not None and not is_native_circuit(circuit):
         from .classical import UnsupportedFeature
         raise UnsupportedFeature("managed_gate_definition_type", "Managed Gate definitions require the exact native Circuit type.")
     limits = current_gate_limits()
@@ -74,16 +79,17 @@ def _validate_definition(circuit, *, owner, budget):
             raise ValueError("Gate definition width no longer matches its owner.")
         if not set(circuit.parameters) <= set(parameter_set(owner.params)):
             raise ValueError("Gate definition parameter namespace no longer matches its owner.")
-    stack = [(circuit, 0, frozenset(() if owner is None else (id(owner),)))]
+    # Keep ephemeral execution owners alive while their definition is pending.
+    stack = [(circuit, 0, () if owner is None else (owner,))]
     start = budget["operations"]
     while stack:
         body, depth, ancestors = stack.pop()
         if not isinstance(body, Circuit): raise TypeError("Gate definitions require a native Circuit.")
-        if current_resources() is not None and type(body) is not Circuit:
+        if current_resources() is not None and not is_native_circuit(body):
             from .classical import UnsupportedFeature
             raise UnsupportedFeature("managed_gate_definition_type")
-        if id(body) in ancestors: raise ValueError("Cyclic gate definition.")
-        ancestors = ancestors | {id(body)}
+        if any(body is ancestor for ancestor in ancestors): raise ValueError("Cyclic gate definition.")
+        ancestors = ancestors+(body,)
         limits.check("max_definition_depth", depth)
         budget["definitions"] += 1
         limits.check("max_custom_definitions", budget["definitions"])
@@ -98,21 +104,26 @@ def _validate_definition(circuit, *, owner, budget):
                 raise ValueError("A unitary Gate definition requires a finite real global phase.")
         limits.check("max_gate_parameters", len(body.parameters))
         for op in body.operations:
+            op=execution_operation(op)
             budget["work"] += 1
             limits.check("max_decomposition_work", budget["work"])
             if op.metadata.get("directive") or op.metadata.get("requires_zero_input"):
                 raise ValueError("Directive/state preparation instructions are not unitary Gate definitions.")
-            if not op.wires or len(set(op.wires)) != len(op.wires) or any(type(w) is not int or not 0 <= w < body.num_qubits for w in op.wires):
-                raise ValueError("Invalid gate definition wire mapping.")
             child = op.metadata.get("gate")
             instruction = op.metadata.get("instruction_object")
+            scalar_child=(is_native_gate(child) and type(child.num_qubits) is int and child.num_qubits==0
+                or type(instruction) is Instruction and type(instruction.num_qubits) is int and instruction.num_qubits==0)
+            scalar_matrix=op.name=="unitary" and not op.controls
+            if (not op.wires and not (scalar_child or scalar_matrix) or len(set(op.wires)) != len(op.wires)
+                    or any(type(w) is not int or not 0 <= w < body.num_qubits for w in op.wires)):
+                raise ValueError("Invalid gate definition wire mapping.")
             if instruction is not None:
                 if (type(instruction) is not Instruction or child is not None or op.controls
                         or instruction.num_bits or instruction.num_qubits != len(op.wires)
                         or tuple(op.params) != tuple(instruction.params) or instruction.definition is None):
                     raise ValueError("A Gate requires an executable unitary Instruction definition.")
-                if id(instruction) in ancestors: raise ValueError("Cyclic instruction definition.")
-                stack.append((instruction.definition, depth+1, ancestors | {id(instruction)}))
+                if any(instruction is ancestor for ancestor in ancestors): raise ValueError("Cyclic instruction definition.")
+                stack.append((instruction.definition, depth+1, ancestors+(instruction,)))
                 continue
             annotation = op.metadata.get("annotated_operation")
             if annotation is not None:
@@ -128,9 +139,10 @@ def _validate_definition(circuit, *, owner, budget):
                     raise UnsupportedFeature("managed_gate_type")
                 if not isinstance(child, Gate) or child.num_qubits != len(op.wires):
                     raise ValueError("Invalid native gate node width or type.")
-                if id(child) in ancestors: raise ValueError("Cyclic gate definition.")
-                if child.definition is not None:
-                    stack.append((child.definition, depth+1, ancestors | {id(child)}))
+                if any(child is ancestor for ancestor in ancestors): raise ValueError("Cyclic gate definition.")
+                definition = child.definition
+                if definition is not None:
+                    stack.append((definition, depth+1, ancestors+(child,)))
                     continue
             # Symbolic arguments need not be evaluated to check a primitive's
             # arity/unitarity. Numeric custom matrices still receive validation.
@@ -138,6 +150,12 @@ def _validate_definition(circuit, *, owner, budget):
             name = child.name if child is not None else op.name
             params = child.params if child is not None else op.params
             _validate_primitive_arity(name, params, metadata)
+            if name == "native_matrix_power" and parameter_set(params):
+                from quantumbridge.diff.matrix_power_jet import _decode
+                annotation, _, _ = _decode((0.,)*len(params), metadata)
+                if annotation.num_qubits != len(op.wires):
+                    raise ValueError("Matrix-power definition width disagrees with its invocation.")
+                continue
             checked = []
             for value in params:
                 _coerce_expression(value)
@@ -159,7 +177,7 @@ class Gate(Instruction):
         if isinstance(num_qubits, bool): raise ValueError("A gate width cannot be a boolean.")
         if label is not None and (not isinstance(label, str) or not label): raise ValueError("Invalid gate label.")
         object.__setattr__(self, "label", label)
-        if not isinstance(num_qubits, int) or num_qubits < 1: raise ValueError("A Gate needs a positive qubit count.")
+        if not isinstance(num_qubits, int) or num_qubits < 0: raise ValueError("A Gate needs a nonnegative qubit count.")
         Instruction.__init__(self, name, num_qubits, 0, params, label,
             definition=definition, metadata=_copy(dict(metadata or {})))
 
@@ -226,9 +244,10 @@ class Gate(Instruction):
 
     def assign_parameters(self, mapping, *, strict=True):
         from .circuit import _parameter_mapping_from_values
+        from .instruction_parameters import bind_definition
         ordered = tuple(sorted(parameter_set(self.params), key=lambda p: (p.name, p.uuid)))
         values = _parameter_mapping_from_values(ordered, mapping, strict)
-        definition = None if self.definition is None else self.definition.assign_parameters(values, strict=False)
+        definition = None if self.definition is None else bind_definition(self.definition,values)
         params = tuple(resolve_parameter(value, values, allow_partial=True) for value in self.params)
         result = Gate(self.name, self.num_qubits, params, self.label, definition=definition, metadata=self.metadata)
         from .instruction_parameters import inherit_binding_plan
@@ -254,7 +273,10 @@ class Gate(Instruction):
             return AnnotatedOperation(self, InverseModifier())
         from .circuit import Circuit
         body = self.definition if self.definition is not None else Circuit(self.num_qubits).append(self.name, range(self.num_qubits), params=self.params, metadata=self.metadata)
-        return body.inverse().to_gate(label=self.label, _name=self.name+"_dg")
+        result=body.inverse().to_gate(label=self.label, _name=self.name+"_dg")
+        if getattr(self,"_public_matrix_basis",None)=="literal_wrapper":
+            object.__setattr__(result,"_public_matrix_basis","literal_wrapper")
+        return result
 
     def repeat(self, n):
         from .circuit import Circuit
@@ -265,11 +287,17 @@ class Gate(Instruction):
         current_gate_limits().check("max_total_operations", n*max(1, count))
         body = Circuit(self.num_qubits)
         for _ in range(n): body.append(self, range(self.num_qubits))
-        return body.to_gate(_name=self.name+"*"+str(n))
+        result=body.to_gate(_name=self.name+"*"+str(n))
+        from .standard_gates import UnitaryGate
+        if type(self) is UnitaryGate or getattr(self,"_public_matrix_basis",None)=="literal_wrapper":
+            object.__setattr__(result,"_public_matrix_basis","literal_wrapper")
+        return result
 
     def power(self, exponent, annotated=False):
-        from .circuit import Circuit
         from .classical import UnsupportedFeature
+        from .instruction_parameters import admit_owner, admit_payloads
+        admit_owner(self)
+        admit_payloads((exponent, annotated))
         if annotated:
             from .annotated_operation import AnnotatedOperation, PowerModifier
             return AnnotatedOperation(self, PowerModifier(exponent))
@@ -279,16 +307,18 @@ class Gate(Instruction):
             result = self._integer_power(int(exponent))
             if self.is_parameterized(): return result
             from .standard_gates import UnitaryGate
-            return UnitaryGate(result.to_matrix(), label=self.name+"^"+str(exponent))
+            output=UnitaryGate(result.to_matrix(), label=self.name+"^"+str(exponent))
+            if type(self) is not UnitaryGate and getattr(self,"_public_matrix_basis",None)!="literal_wrapper":
+                object.__setattr__(output,"_public_matrix_basis","native")
+            return output
         if self.is_parameterized(): raise UnsupportedFeature("symbolic_fractional_gate_power")
-        from quantumbridge.execution.resource_context import current_resources
-        if current_resources() is not None: raise UnsupportedFeature("managed_fractional_gate_power", "Spectral solver workspace is not a managed native buffer contract.")
-        matrix = self.to_matrix()
-        eigenvalues, vectors = np.linalg.eig(matrix)
-        if np.linalg.cond(vectors) > 1e8: raise ValueError("Gate spectral basis is ill-conditioned.")
-        powered = (vectors * np.exp(1j*float(exponent)*np.angle(eigenvalues))) @ np.linalg.inv(vectors)
+        from quantumbridge.information import Operator
+        powered = Operator(self.to_matrix()).power(exponent, branch_cut_rotation=0, assume_unitary=True).data
         from .standard_gates import UnitaryGate
-        return UnitaryGate(powered, label=self.name+"^"+str(exponent))
+        output=UnitaryGate(powered, label=self.name+"^"+str(exponent))
+        if type(self) is not UnitaryGate and getattr(self,"_public_matrix_basis",None)!="literal_wrapper":
+            object.__setattr__(output,"_public_matrix_basis","native")
+        return output
 
     def _integer_power(self, exponent):
         from .circuit import Circuit
@@ -305,6 +335,40 @@ class Gate(Instruction):
 
 class ControlledGate(Gate):
     @property
+    def name(self):
+        fields=object.__getattribute__(self,"__dict__")
+        if type(self) is not ControlledGate:return fields["name"]
+        name=fields["_closed_control_name"]
+        count,state=fields.get("num_ctrl_qubits"),fields.get("ctrl_state")
+        return name+"_o"+str(state) if count is not None and state!=(1<<count)-1 else name
+
+    @name.setter
+    def name(self,value):
+        fields=object.__getattribute__(self,"__dict__")
+        fields["_closed_control_name" if type(self) is ControlledGate else "name"]=value
+
+    def _restore_display_name(self,value):
+        if type(self) is not ControlledGate:self.name=value;return
+        suffix="_o"+str(self.ctrl_state)
+        if self.ctrl_state!=(1<<self.num_ctrl_qubits)-1 and value.endswith(suffix):value=value[:-len(suffix)]
+        self.name=value
+
+    @property
+    def _params(self):
+        if type(self) is not ControlledGate:return object.__getattribute__(self,"__dict__")["_params"]
+        current=self;seen=set()
+        while type(current) is ControlledGate:
+            if id(current) in seen:raise ValueError("Cyclic controlled base parameter graph.")
+            seen.add(id(current));current_gate_limits().check("max_definition_depth",len(seen))
+            current=object.__getattribute__(current,"__dict__")["base_gate"]
+        return object.__getattribute__(current,"_params")
+
+    @_params.setter
+    def _params(self,values):
+        if type(self) is ControlledGate:object.__setattr__(self.base_gate,"_params",values)
+        else:object.__getattribute__(self,"__dict__")["_params"]=values
+
+    @property
     def params(self): return Instruction.params.fget(self)
 
     @params.setter
@@ -320,7 +384,7 @@ class ControlledGate(Gate):
             if not same_values(tuple(base.params), values): updated.params = values
             if type(base) is UnitaryGate:
                 candidate = ControlledGate(updated, self.num_ctrl_qubits, self.ctrl_state, self.label)
-                candidate.name = self.name
+                candidate._restore_display_name(self.name)
                 object.__getattribute__(self, "__dict__").update(object.__getattribute__(candidate, "__dict__"))
                 return
         Gate.params.fset(self, values)
@@ -336,12 +400,25 @@ class ControlledGate(Gate):
         values = _parameter_mapping_from_values(ordered, mapping, strict)
         result = ControlledGate(self.base_gate.assign_parameters(values, strict=False),
                                 self.num_ctrl_qubits, self.ctrl_state, self.label)
-        result.name = self.name
+        result._restore_display_name(self.name)
         if self.definition is not None:
-            result.definition = self.definition.assign_parameters(values, strict=False)
+            from .instruction_parameters import bind_definition
+            result.definition = bind_definition(self.definition,values)
         from .instruction_parameters import inherit_binding_plan
         inherit_binding_plan(self, result)
         return result
+
+    def inverse(self, annotated=False):
+        from .instruction_parameters import admit_owner,definition_signature
+        from .standard_gates import invocation_params
+        admit_owner(self)
+        if annotated or type(self) is not ControlledGate: return Gate.inverse(self,annotated)
+        invocation_params(self)
+        validate_definition(self.definition,owner=self)
+        canonical=ControlledGate(self.base_gate,self.num_ctrl_qubits,self.ctrl_state,self.label)
+        if (self.metadata or definition_signature(self.definition)!=definition_signature(canonical.definition)):
+            return Gate.inverse(self)
+        return ControlledGate(self.base_gate.inverse(),self.num_ctrl_qubits,self.ctrl_state)
 
     def __init__(self, base_gate, num_ctrl_qubits=1, ctrl_state=None, label=None):
         from .circuit import Circuit
@@ -375,7 +452,7 @@ class ControlledGate(Gate):
             _append_controlled(out, op.name, tuple(n+w for w in op.wires), op.params, tuple(range(n)), op.metadata)
         for wire in reversed(opened): out.x(wire)
         name = "c"+base_gate.name if n == 1 else "c"+str(n)+base_gate.name
-        if opened: name += "_o"+str(state)
+        if opened and type(self) is not ControlledGate: name += "_o"+str(state)
         object.__setattr__(self, "base_gate", base_gate.copy())
         super().__init__(name, out.num_qubits, base_gate.params, label, definition=out)
         object.__setattr__(self, "num_ctrl_qubits", n)
@@ -401,18 +478,27 @@ def _append_controlled(out, name, wires, params, controls, metadata):
                    metadata={"controlled_base": {"name": name, "metadata": _copy(metadata), "controls": len(controls)}})
 
 
-def decompose(circuit, selected=None, reps=1, *, _work=None, _standard=True):
+def decompose(circuit, selected=None, reps=1, *, _work=None, _standard=True, _annotation_resolver=None):
+    from itertools import islice
     from .circuit import Circuit, _remap_operation
+    from .operations import instruction_definition_work
     from .measurements import Measurement
     from quantumbridge.compiler.traversal import append_item
     reps = _integer(reps, "Decomposition repetitions")
     limits = current_gate_limits()
     limits.check("max_decomposition_work", max(0, reps))
-    names = None if selected is None else (selected,) if isinstance(selected, (str, type)) else tuple(selected)
+    if selected is None:names=None
+    elif isinstance(selected,(str,type)):names=(selected,)
+    else:
+        if type(selected) in (list,tuple):limits.check("max_decomposition_work",len(selected))
+        names=tuple(islice(iter(selected),limits.max_decomposition_work+1))
+        limits.check("max_decomposition_work",len(names))
+    instruction_definition_work(circuit,_resolve_frames=False)
     def matches(gate):
         return names is None or any(isinstance(gate, value) if isinstance(value, type) else
             any(fnmatch.fnmatchcase(text, value) for text in (gate.name, gate.label) if text is not None) for value in names)
     def definition_for(item):
+        item=execution_operation(item)
         gate = item.metadata.get("gate")
         if "instruction_object" in item.metadata:
             from .operations import instruction_definition_work
@@ -434,7 +520,7 @@ def decompose(circuit, selected=None, reps=1, *, _work=None, _standard=True):
                 raise ValueError("Annotated invocation disagrees with its operation.")
             if names is not None and not any(isinstance(annotation, value) if isinstance(value, type) else
                     fnmatch.fnmatchcase(annotation.name, value) for value in names): return None
-            return resolve_annotated_operation(annotation)
+            return resolve_annotated_operation(annotation) if _annotation_resolver is None else _annotation_resolver(annotation)
         if gate is None and _standard:
             from quantumbridge.circuit_library.standard_gates import _DEFINITION_GATES, standard_gate_object
             if item.name in _DEFINITION_GATES and not any(key in item.metadata for key in ("controlled_base", "matrix", "directive")):
@@ -444,7 +530,7 @@ def decompose(circuit, selected=None, reps=1, *, _work=None, _standard=True):
                     if gate.num_qubits != len(item.wires): raise ValueError("Standard definition invocation width differs.")
         return gate
     limits.check("max_total_operations", len(circuit.operations))
-    result = circuit.copy()
+    result = _copy(circuit)
     work = [0] if _work is None else _work
     for _ in range(max(0, reps)):
         predicted = 0
@@ -455,14 +541,15 @@ def decompose(circuit, selected=None, reps=1, *, _work=None, _standard=True):
             selected_gate = "annotated_operation" in item.metadata or gate is not None and matches(gate)
             predicted += len(gate.definition.operations) if gate is not None and gate.definition is not None and selected_gate else 1
         limits.check("max_total_operations", predicted)
-        out = Circuit(result.num_qubits, result.num_bits, result.name, _copy(result.metadata))
+        from .circuit_metadata import empty_execution_circuit
+        out = empty_execution_circuit(result)
         changed = False
         for item in result.iter_instructions():
             work[0] += 1
             limits.check("max_decomposition_work", work[0])
             gate = None if isinstance(item, Measurement) else definitions[id(item)]
             if (type(gate) is Instruction and matches(gate)
-                    and (gate.definition is not None or gate.name in {"measure", "reset"})):
+                    and (gate.definition is not None or gate.name in {"measure", "reset", "barrier", "delay"})):
                 extra = {key: value for key, value in item.metadata.items() if key not in {"instruction_object", "instruction_clbits", "label"}}
                 if gate.definition is not None and any(key in extra for key in ("condition", "gate_condition", "control_flow_stack")) and (
                         parameter_set((gate.definition.global_phase,)) or gate.definition.global_phase != 0):
@@ -494,10 +581,18 @@ def decompose(circuit, selected=None, reps=1, *, _work=None, _standard=True):
     return result
 
 
-def lower(circuit, *, _ancestors=(), _work=None):
+def lower(circuit, *, _ancestors=(), _work=None, _annotation_resolver=None):
     if id(circuit) in _ancestors: raise ValueError("Cyclic circuit/control definition.")
     current_gate_limits().check("max_definition_depth", len(_ancestors))
     work = [0] if _work is None else _work
+    from .control_flow_operations import operation_owner
+    if any(getattr(op,"_public_matrix_basis",None)=="little" or operation_owner(op) is not None
+           for op in circuit.operations):
+        from .circuit_metadata import empty_execution_circuit
+        result=empty_execution_circuit(circuit)
+        result.operations=[execution_operation(op) for op in circuit.operations]
+        result.measurements=_copy(circuit.measurements)
+        circuit=result
     if any("control_node" in op.metadata for op in circuit.operations):
         from .control_flow import ControlBlock
         ancestors = (*_ancestors, id(circuit))
@@ -508,7 +603,7 @@ def lower(circuit, *, _ancestors=(), _work=None):
             if node is None:
                 transformed.append(op)
                 continue
-            replacements = {id(body): lower(body, _ancestors=ancestors, _work=work) for body in node.bodies}
+            replacements = {id(body): lower(body, _ancestors=ancestors, _work=work, _annotation_resolver=_annotation_resolver) for body in node.bodies}
             if all(replacements[id(body)] is body for body in node.bodies): transformed.append(op)
             else:
                 data = dict(node.data)
@@ -520,7 +615,7 @@ def lower(circuit, *, _ancestors=(), _work=None):
                     {**_copy(op.metadata), "control_node": ControlBlock(node.kind, data)}))
                 changed = True
         if changed:
-            circuit = circuit.copy()
+            circuit = _copy(circuit)
             circuit.operations = transformed
     if not any(set(op.metadata) & {"gate", "annotated_operation", "instruction_object"} for op in circuit.operations): return circuit
     result = circuit
@@ -532,10 +627,10 @@ def lower(circuit, *, _ancestors=(), _work=None):
             instruction_definition_work(op.metadata["instruction_object"].definition, owner=op.metadata["instruction_object"])
         if "gate" in op.metadata and op.metadata["gate"].definition is not None:
             validate_definition(op.metadata["gate"].definition, owner=op.metadata["gate"])
-    result = decompose(result, reps=limits.max_definition_depth+1, _work=work, _standard=False)
+    result = decompose(result, reps=limits.max_definition_depth+1, _work=work, _standard=False, _annotation_resolver=_annotation_resolver)
     if any(set(op.metadata) & {"gate", "annotated_operation", "instruction_object"} for op in result.operations):
         from .classical import UnsupportedFeature
         raise UnsupportedFeature("opaque_gate_definition", "An opaque Gate needs an executable definition.")
     if any("control_node" in op.metadata for op in result.operations):
-        return lower(result, _ancestors=(*_ancestors, id(circuit)), _work=work)
+        return lower(result, _ancestors=(*_ancestors, id(circuit)), _work=work, _annotation_resolver=_annotation_resolver)
     return result

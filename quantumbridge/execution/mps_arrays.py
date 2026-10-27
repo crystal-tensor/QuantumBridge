@@ -231,3 +231,25 @@ def norm_squared(value):
     if scope is not None:
         scope.ledger.unavailable("mps_norm_allocator_workspace", "The explicit norm input is bounded; internal linalg/BLAS workspace is not observed RSS.")
     return float(np.linalg.norm(vector)**2)
+
+
+def component_scale(value):
+    """Largest real/imaginary component without squaring tiny amplitudes."""
+    scratch = owned("mps_component_scale", value.shape, float)
+    np.absolute(value.real, out=scratch)
+    scale = float(np.max(scratch))
+    if value.dtype.kind == "c":
+        np.absolute(value.imag, out=scratch)
+        scale = max(scale, float(np.max(scratch)))
+    return scale
+
+
+def rescaled(value, scalar):
+    """Scale a tangent buffer, refusing silent loss of nonzero components."""
+    with np.errstate(over="raise", invalid="raise", divide="raise", under="ignore"):
+        result = divided(value, scalar)
+    for original, changed in zip(value.flat, result.flat):
+        if ((original.real != 0 and changed.real == 0)
+                or (original.imag != 0 and changed.imag == 0)):
+            raise FloatingPointError("MPS tangent buffer rescaling underflows complex128.")
+    return result

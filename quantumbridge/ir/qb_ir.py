@@ -41,7 +41,7 @@ def matrix_from_ir(value):
 
 
 class _DefinitionCodec:
-    def __init__(self, limits=None, *, include_parameter_bindings=True, canonical_parameters=False):
+    def __init__(self, limits=None, *, include_parameter_bindings=True, canonical_parameters=False, include_user_metadata=True):
         from quantumbridge.serialization.limits import SerializationLimits
         self.limits = limits or SerializationLimits()
         self.definitions = self.operations = self.depth = 0
@@ -50,6 +50,7 @@ class _DefinitionCodec:
         self.active = set()
         self.include_parameter_bindings = include_parameter_bindings
         self.canonical_parameters = canonical_parameters
+        self.include_user_metadata = include_user_metadata
 
     def count(self, field, value):
         self.limits.check(field, value, format="qb-ir")
@@ -85,15 +86,17 @@ def _gate_to_ir(gate, context):
         if isinstance(gate, ControlledGate):
             result.update(base_gate=_gate_to_ir(gate.base_gate, context),
                           num_ctrl_qubits=gate.num_ctrl_qubits, ctrl_state=gate.ctrl_state)
+            if type(gate) is ControlledGate:result["closed_control_name"]=gate._closed_control_name
         if context.include_parameter_bindings:
-            from quantumbridge.core.instruction_parameters import binding_plan_for_serialization
-            plan = binding_plan_for_serialization(gate)
+            from quantumbridge.core.instruction_parameters import binding_plan_for_serialization,definition_signature
+            plan = binding_plan_for_serialization(gate,preserve_invalidated=True)
             if plan is not None:
                 context.definition()
                 context.depth += 1
                 try:
                     result["parameter_binding"] = {"formals": [_param_to_ir(value, _context=context) for value in plan.formals],
                         "definition": plan.definition.to_ir().to_dict(_context=context)}
+                    if definition_signature(gate.definition)!=plan.signature:result["parameter_binding"]["invalidated"]=True
                 finally: context.depth -= 1
         return result
     finally:
@@ -108,9 +111,13 @@ def _gate_from_ir(data, vectors, limits, context):
     if type(data) is not dict or data.get("type") not in {"gate", "controlled_gate"}:
         raise ValueError("Unknown native definition record type.")
     controlled = data["type"] == "controlled_gate"
+    if "closed_control_name" in data and (not controlled or "standard_gate" in data):
+        raise ValueError("A closed control name requires a generic controlled record.")
     fields = required | ({"base_gate", "num_ctrl_qubits", "ctrl_state"} if controlled else set())
-    if (not fields <= set(data) <= fields | {"parameter_binding", "standard_gate", "matrix_parameter"} or type(data["num_qubits"]) is not int or data["num_qubits"] < 1
+    if (not fields <= set(data) <= fields | {"parameter_binding", "standard_gate", "matrix_parameter", "closed_control_name"} or type(data["num_qubits"]) is not int or data["num_qubits"] < 0
             or type(data["num_clbits"]) is not int or data["num_clbits"] != 0
+            or type(data["name"]) is not str or not data["name"]
+            or not any(type(data["label"]) is kind for kind in (str,type(None)))
             or type(data["params"]) is not list or type(data["metadata"]) is not dict):
         raise ValueError("Malformed native Gate definition record.")
     context.definition()
@@ -157,12 +164,18 @@ def _gate_from_ir(data, vectors, limits, context):
             from quantumbridge.core.standard_gates import invocation_params
             if gate.num_qubits != data["num_qubits"] or invocation_params(gate) != params or metadata:
                 raise ValueError("Controlled Gate base and definition header disagree.")
-            gate.name = data["name"]
+            if "closed_control_name" in data:
+                if type(data["closed_control_name"]) is not str:raise ValueError("Invalid native controlled name.")
+                gate.name=data["closed_control_name"]
+                if gate.name!=data["name"]:raise ValueError("Controlled display and closed name disagree.")
+            else:gate._restore_display_name(data["name"])
             gate.definition = definition
         else: gate = Gate(data["name"], data["num_qubits"], params, data["label"], definition=definition, metadata=metadata)
         if "parameter_binding" in data:
             binding = data["parameter_binding"]
-            if type(binding) is not dict or set(binding) != {"formals", "definition"} or type(binding["formals"]) is not list or definition is None:
+            if (type(binding) is not dict or not {"formals","definition"}<=set(binding)<={"formals","definition","invalidated"}
+                    or "invalidated" in binding and binding["invalidated"] is not True
+                    or type(binding["formals"]) is not list or definition is None):
                 raise ValueError("Malformed native parameter binding record.")
             context.definition()
             context.count("max_parameter_nodes", len(binding["formals"]))
@@ -173,7 +186,7 @@ def _gate_from_ir(data, vectors, limits, context):
                     _parameter_vectors=vectors, _context=context))
             finally: context.depth -= 1
             from quantumbridge.core.instruction_parameters import restore_binding_plan
-            restore_binding_plan(gate, template, formals)
+            restore_binding_plan(gate, template, formals,invalidated=binding.get("invalidated",False))
         return gate
     finally:
         context.depth -= 1
@@ -194,14 +207,15 @@ def _instruction_to_ir(instruction, context):
             "metadata": IRInstruction(instruction.name, (), metadata=instruction.metadata).to_dict(_context=context)["metadata"],
             "definition": None if instruction.definition is None else instruction.definition.to_ir().to_dict(_context=context)}
         if context.include_parameter_bindings:
-            from quantumbridge.core.instruction_parameters import binding_plan_for_serialization
-            plan = binding_plan_for_serialization(instruction)
+            from quantumbridge.core.instruction_parameters import binding_plan_for_serialization,definition_signature
+            plan = binding_plan_for_serialization(instruction,preserve_invalidated=True)
             if plan is not None:
                 context.definition()
                 context.depth += 1
                 try:
                     result["parameter_binding"] = {"formals": [_param_to_ir(value, _context=context) for value in plan.formals],
                         "definition": plan.definition.to_ir().to_dict(_context=context)}
+                    if definition_signature(instruction.definition)!=plan.signature:result["parameter_binding"]["invalidated"]=True
                 finally: context.depth -= 1
         return result
     finally:
@@ -232,7 +246,9 @@ def _instruction_from_ir(data, vectors, limits, context):
             definition=definition, metadata=metadata)
         if "parameter_binding" in data:
             binding = data["parameter_binding"]
-            if type(binding) is not dict or set(binding) != {"formals", "definition"} or type(binding["formals"]) is not list:
+            if (type(binding) is not dict or not {"formals","definition"}<=set(binding)<={"formals","definition","invalidated"}
+                    or "invalidated" in binding and binding["invalidated"] is not True
+                    or type(binding["formals"]) is not list):
                 raise ValueError("Malformed Instruction binding record.")
             context.definition()
             context.depth += 1
@@ -242,7 +258,7 @@ def _instruction_from_ir(data, vectors, limits, context):
                     _parameter_vectors=vectors, _context=context))
             finally: context.depth -= 1
             from quantumbridge.core.instruction_parameters import restore_binding_plan
-            restore_binding_plan(result, template, formals)
+            restore_binding_plan(result, template, formals,invalidated=binding.get("invalidated",False))
         return result
     finally: context.depth -= 1
 
@@ -385,6 +401,10 @@ def _param_to_ir(value: Any, *, _context=None, _depth=0) -> Any:
             "parameters": sorted(parameter.name for parameter in value.parameters),
             "parameter_ast": {"op": value.op, "args": [_param_to_ir(arg, _context=_context, _depth=_depth+1) for arg in value.args]},
         }
+        if value._retained_parameters:
+            from quantumbridge.core.parameters import parameter_sort_key
+            result["parameter_ast"]["parameter_context"] = [_param_to_ir(parameter,_context=_context,_depth=_depth+1)
+                for parameter in sorted(value._retained_parameters,key=parameter_sort_key)]
         if _context is not None and _context.canonical_parameters:
             result.pop("expression")
             result.pop("parameters")
@@ -451,10 +471,16 @@ def param_from_ir(value, *, _vectors=None, _limits=None, _depth=0):
         return parameter
     if "parameter_ast" in value:
         tree = value["parameter_ast"]
-        if type(tree) is not dict or set(tree) != {"op", "args"} or tree["op"] not in EXPRESSION_OPS or type(tree["args"]) not in (tuple, list):
+        if type(tree) is not dict or not {"op","args"} <= set(tree) <= {"op","args","parameter_context"} or tree["op"] not in EXPRESSION_OPS or type(tree["args"]) not in (tuple, list):
             raise ValueError("Unknown executable QuantumBridge parameter AST.")
+        context = tree.get("parameter_context",[])
+        if type(context) is not list: raise ValueError("Parameter context must be an explicit identity list.")
+        limits.check("max_parameter_nodes",vectors.get("expression_nodes",0)+len(context),format="ir-json")
+        retained = tuple(param_from_ir(item,_vectors=vectors,_limits=limits,_depth=_depth+1) for item in context)
+        if any(not isinstance(item,Parameter) for item in retained) or len(set(retained)) != len(retained):
+            raise ValueError("Parameter context requires distinct native scalar identities.")
         args = tuple(param_from_ir(arg,_vectors=vectors,_limits=limits,_depth=_depth+1) for arg in tree["args"])
-        return ParameterExpression(tree["op"], args)
+        return ParameterExpression(tree["op"], args,_retained_parameters=frozenset(retained))
     raise ValueError("QuantumBridge parameter expressions require an executable AST, not text.")
 
 
@@ -514,6 +540,56 @@ class IRMeasurement:
 
 
 @dataclass(frozen=True)
+class IRExecutionState:
+    global_phase: Any = 0.
+    classical_scope: Optional[dict[str, Any]] = None
+    calibrations: Optional[dict[str, Any]] = None
+    control_flow: Optional[list[Any]] = None
+    initial_layout: Optional[dict[int, int]] = None
+    routing: Optional[dict[str, Any]] = None
+    schedule: Optional[dict[str, Any]] = None
+    transpile: Optional[dict[str, Any]] = None
+
+    @classmethod
+    def from_dict(cls, data, context, vectors):
+        if type(data) is not dict or set(data)-{"version", *cls.__dataclass_fields__} or type(data.get("version")) is not int or data["version"] != 1:
+            raise ValueError("Malformed native IR execution record.")
+        fields = {key: value for key, value in data.items() if key not in {"version", "global_phase"}}
+        for key, value in fields.items():
+            expected = list if key in {"control_flow", "initial_layout"} else dict
+            if value is not None and type(value) is not expected: raise ValueError("Malformed native IR execution field.")
+        if fields.get("initial_layout") is not None:fields["initial_layout"] = cls.layout_from_ir(fields["initial_layout"])
+        if fields.get("routing") is not None:
+            fields["routing"] = dict(fields["routing"])
+            if "final_layout" in fields["routing"]:fields["routing"]["final_layout"] = cls.layout_from_ir(fields["routing"]["final_layout"])
+        return cls(param_from_ir(data.get("global_phase", 0.), _vectors=vectors, _limits=context.limits), **fields)
+
+    @staticmethod
+    def layout_from_ir(data):
+        if type(data) is not list or any(type(pair) is not list or len(pair) != 2 or any(type(i) is not int or i < 0 for i in pair) for pair in data):
+            raise ValueError("Malformed native IR layout record.")
+        result = dict(data)
+        if len(result) != len(data) or len(set(result.values())) != len(data):raise ValueError("Native IR layout must be injective.")
+        return result
+
+    def to_dict(self, context):
+        result = {"version": 1, "global_phase": _param_to_ir(self.global_phase, _context=context)}
+        for key in self.__dataclass_fields__:
+            if key == "global_phase": continue
+            value = getattr(self,key)
+            if value is None: continue
+            if type(value) is not (list if key == "control_flow" else dict):raise ValueError("Malformed native IR execution field.")
+            if key == "initial_layout":value = [list(pair) for pair in value.items()]
+            elif key == "routing" and "final_layout" in value:
+                value = {**value,"final_layout":[list(pair) for pair in value["final_layout"].items()]}
+            result[key] = value
+        return result
+
+    def configuration(self):
+        return {key:getattr(self,key) for key in self.__dataclass_fields__ if getattr(self,key) is not None}
+
+
+@dataclass(frozen=True)
 class IRProgram:
     ir_version: str
     num_qubits: int
@@ -522,6 +598,8 @@ class IRProgram:
     measurements: tuple[IRMeasurement, ...] = ()
     name: Optional[str] = None
     metadata: dict[str, Any] = field(default_factory=dict)
+    bit_graph: Optional[dict[str, Any]] = None
+    execution: Optional[IRExecutionState] = None
 
     @classmethod
     def from_dict(cls, data, validate=True, *, serialization_limits=None, _parameter_vectors=None, _context=None):
@@ -536,13 +614,17 @@ class IRProgram:
         registers = data["registers"]
         context.count("max_qubits", registers["quantum"]["size"])
         context.count("max_clbits", registers["classical"]["size"])
+        graph=registers.get("bit_graph")
+        if type(graph) is dict and type(graph.get("groups")) is list:
+            context.count("max_registers",len(graph["groups"]))
         vectors={} if _parameter_vectors is None else _parameter_vectors
         result = cls(data["ir_version"], registers["quantum"]["size"], registers["classical"]["size"],
             tuple(IRInstruction(item["op"], tuple(item["targets"]), tuple(item.get("controls", ())),
                 tuple(param_from_ir(value,_vectors=vectors,_limits=serialization_limits) for value in item.get("params", ())),
                 decode_instruction_metadata(item.get("metadata", {}),_vectors=vectors,_limits=serialization_limits,_context=context)) for item in data["instructions"]),
-            tuple(IRMeasurement(item["kind"], item["wires"][0], item["bits"][0], dict(item.get("metadata", {}))) for item in data.get("measurements", ())), data.get("name"), dict(data.get("metadata", {})))
-        if "global_phase" in result.metadata:
+            tuple(IRMeasurement(item["kind"], item["wires"][0], item["bits"][0], dict(item.get("metadata", {}))) for item in data.get("measurements", ())), data.get("name"), dict(data.get("metadata", {})),graph,
+            None if "execution" not in data else IRExecutionState.from_dict(data["execution"],context,vectors))
+        if result.execution is None and "global_phase" in result.metadata:
             result.metadata["global_phase"] = param_from_ir(result.metadata["global_phase"],_vectors=vectors,_limits=serialization_limits)
         if validate: result.validate()
         return result
@@ -569,32 +651,50 @@ class IRProgram:
 
     @classmethod
     def from_circuit(cls, circuit) -> "IRProgram":
+        from quantumbridge.core.bits import bit_graph
+        from quantumbridge.core.operations import execution_operation
+        from quantumbridge.core.circuit_metadata import is_separated, execution_metadata
+        execution = None
+        if is_separated(circuit):
+            configuration = execution_metadata(circuit)
+            if set(configuration)-{*IRExecutionState.__dataclass_fields__, "registers"}:
+                from quantumbridge.serialization.errors import UnsupportedFeature
+                raise UnsupportedFeature("This executable configuration has no typed IR transport record.",format="qb-ir")
+            execution = IRExecutionState(**{key:value for key,value in configuration.items() if key != "registers"})
         return cls(
             ir_version="qb-ir-v0.1",
             num_qubits=circuit.num_qubits,
             num_bits=circuit.num_bits,
             instructions=tuple(
-                IRInstruction(op.name, op.targets, op.controls, op.params, op.metadata) for op in circuit.operations
+                IRInstruction(op.name, op.targets, op.controls, op.params, op.metadata)
+                for op in (execution_operation(item,standardize_inverse=True) for item in circuit.operations)
             ),
             measurements=tuple(IRMeasurement(item.kind, item.wire, item.bit, dict(item.metadata)) for item in circuit.measurements),
             name=circuit.name,
-            metadata=dict(circuit.metadata),
+            metadata=circuit.metadata if execution is not None else dict(circuit.metadata),
+            bit_graph=bit_graph(circuit),
+            execution=execution,
         )
 
     def to_dict(self, *, serialization_limits=None, _context=None) -> dict[str, Any]:
         context = _context or _DefinitionCodec(serialization_limits)
         context.operations += len(self.instructions)
         context.count("max_instructions", context.operations)
-        metadata = dict(self.metadata)
-        if "global_phase" in metadata: metadata["global_phase"] = _param_to_ir(metadata["global_phase"], _context=context)
+        if self.execution is not None and context.include_user_metadata:
+            from quantumbridge.serialization.common import checked_json_metadata
+            checked_json_metadata(self.metadata,context.limits,format="qb-ir")
+        metadata = {} if self.execution is not None and not context.include_user_metadata else dict(self.metadata)
+        if self.execution is None and "global_phase" in metadata: metadata["global_phase"] = _param_to_ir(metadata["global_phase"], _context=context)
         return {
             "ir_version": self.ir_version,
             "name": self.name,
             "registers": {
                 "quantum": {"size": self.num_qubits},
                 "classical": {"size": self.num_bits},
+                **({} if self.bit_graph is None else {"bit_graph":self.bit_graph}),
             },
             "instructions": [instruction.to_dict(_context=context) for instruction in self.instructions],
             "measurements": [measurement.to_dict() for measurement in self.measurements],
             "metadata": metadata,
+            **({} if self.execution is None else {"execution": self.execution.to_dict(context)}),
         }

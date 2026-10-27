@@ -3,5 +3,9 @@
 """Public circuit-contract failures, distinct from execution resource limits."""
 
 
-class CircuitError(ValueError):
+class QiskitError(ValueError):
+    """Native public SDK-contract error; no upstream exception dependency."""
+
+
+class CircuitError(QiskitError):
     """A circuit object's public arguments do not satisfy its contract."""

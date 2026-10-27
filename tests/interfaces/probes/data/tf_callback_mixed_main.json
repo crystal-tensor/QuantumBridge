@@ -1,0 +1,178 @@
+{
+  "diagnostic_only": true,
+  "exit": 0,
+  "data": {
+    "tensorflow": "2.21.0",
+    "expected": {
+      "primal": 0.5501017165689682,
+      "loss": 0.06255086863074452,
+      "jvp": 0.5507394794364637,
+      "loss_jvp": 0.2754817783787191,
+      "gradient": [
+        0.7283229531832287,
+        0.05282467631524133
+      ],
+      "hvp": [
+        1.5066825207992456,
+        0.21703597826203344
+      ],
+      "vjp": [
+        1.0192374411146234,
+        0.07392446946774962
+      ]
+    },
+    "records": [
+      {
+        "inner_tf_function": false,
+        "outer_traced": false,
+        "mode": "for",
+        "error": "TypeError: Cannot iterate over a scalar tensor."
+      },
+      {
+        "inner_tf_function": false,
+        "outer_traced": false,
+        "mode": "rof",
+        "error": "TypeError: Cannot iterate over a scalar tensor."
+      },
+      {
+        "inner_tf_function": false,
+        "outer_traced": false,
+        "mode": "tape_tape",
+        "error": "TypeError: Cannot iterate over a scalar tensor."
+      },
+      {
+        "inner_tf_function": false,
+        "outer_traced": true,
+        "mode": "for",
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            0,
+            0
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": 0,
+          "hvp": 1.5066825207992456,
+          "vjp": 0
+        }
+      },
+      {
+        "inner_tf_function": false,
+        "outer_traced": true,
+        "mode": "rof",
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            0,
+            0
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": 0,
+          "hvp": 1.5066825207992456,
+          "vjp": 0
+        }
+      },
+      {
+        "inner_tf_function": false,
+        "outer_traced": true,
+        "mode": "tape_tape",
+        "actual": {
+          "primal": 0.5501017165689682,
+          "loss": 0.06255086863074452,
+          "jvp": 0.5507394794364637,
+          "loss_jvp": 0.2754817783787191,
+          "gradient": [
+            0.7283229531832287,
+            0.05282467631524133
+          ],
+          "hvp": [
+            1.5066825207992458,
+            0.2170359782620334
+          ],
+          "vjp": [
+            1.0192374411146234,
+            0.07392446946774962
+          ]
+        },
+        "errors": {
+          "primal": 0,
+          "loss": 0,
+          "jvp": 0,
+          "loss_jvp": 0,
+          "gradient": 0,
+          "hvp": 2.220446049250313e-16,
+          "vjp": 0
+        }
+      },
+      {
+        "inner_tf_function": true,
+        "outer_traced": false,
+        "mode": "for",
+        "error": "TypeError: InternalError.__init__() missing 2 required positional arguments: 'op' and 'message'"
+      },
+      {
+        "inner_tf_function": true,
+        "outer_traced": false,
+        "mode": "rof",
+        "error": "TypeError: InternalError.__init__() missing 2 required positional arguments: 'op' and 'message'"
+      },
+      {
+        "inner_tf_function": true,
+        "outer_traced": false,
+        "mode": "tape_tape",
+        "error": "TypeError: <tf.Tensor 'x:0' shape=(2,) dtype=float64> is out of scope and cannot be used here. Use return values, explicit Python locals or TensorFlow collections to access it.\nPlease see https://www.tensorflow.org/guide/function#all_outputs_of_a_tffunction_must_be_return_values for more information.\n\n<tf.Tensor 'x:0' shape=(2,) dtype=float64> was defined here:\n    File \"/Users/avalok/work/QuantumBridge/tests/interfaces/probes/probe_tf_callback_mixed.py\", line 103, in <module>\n    File \"/Users/avalok/work/QuantumBridge/tests/interfaces/probes/probe_tf_callback_mixed.py\", line 92, in run\n    File \"/Users/avalok/work/QuantumBridge/tests/interfaces/probes/probe_tf_callback_mixed.py\", line 88, in evaluate\n    File \"/Users/avalok/work/QuantumBridge/tests/interfaces/probes/probe_tf_mixed_ad_semantics.py\", line 84, in experiment\n    File \"/private/tmp/qb-stage11pb-main-tf-env/lib/python3.12/site-packages/tensorflow/python/util/traceback_utils.py\", line 164, in error_handler\n    File \"/private/tmp/qb-stage11pb-main-tf-env/lib/python3.12/site-packages/tensorflow/python/eager/polymorphic_function/polymorphic_function.py\", line 833, in __call__\n    File \"/private/tmp/qb-stage11pb-main-tf-env/lib/python3.12/site-packages/tensorflow/python/eager/polymorphic_function/polymorphic_function.py\", line 889, in _call\n    File \"/private/tmp/qb-stage11pb-main-tf-env/lib/python3.12/site-packages/tensorflow/python/eager/polymorphic_function/polymorphic_function.py\", line 696, in _initialize\n    File \"/private/tmp/qb-stage11pb-main-tf-env/lib/python3.12/site-packages/tensorflow/python/eager/polymorphic_function/tracing_compilation.py\", line 178, in trace_function\n    File \"/private/tmp/qb-stage11pb-main-tf-env/lib/python3.12/site-packages/tensorflow/python/eager/polymorphic_function/tracing_compilation.py\", line 283, in _maybe_define_function\n    File \"/private/tmp/qb-stage11pb-main-tf-env/lib/python3.12/site-packages/tensorflow/python/eager/polymorphic_function/tracing_compilation.py\", line 303, in _create_concrete_function\n    File \"/private/tmp/qb-stage11pb-main-tf-env/lib/python3.12/site-packages/tensorflow/core/function/polymorphism/function_type.py\", line 356, in placeholder_arguments\n    File \"/private/tmp/qb-stage11pb-main-tf-env/lib/python3.12/site-packages/tensorflow/python/framework/tensor.py\", line 1020, in placeholder_value\n    File \"/private/tmp/qb-stage11pb-main-tf-env/lib/python3.12/site-packages/tensorflow/python/framework/tensor.py\", line 1058, in _graph_placeholder\n    File \"/private/tmp/qb-stage11pb-main-tf-env/lib/python3.12/site-packages/tensorflow/python/framework/func_graph.py\", line 614, in _create_op_internal\n    File \"/private/tmp/qb-stage11pb-main-tf-env/lib/python3.12/site-packages/tensorflow/python/framework/ops.py\", line 2726, in _create_op_internal\n    File \"/private/tmp/qb-stage11pb-main-tf-env/lib/python3.12/site-packages/tensorflow/python/framework/ops.py\", line 1221, in from_node_def\n\nThe tensor <tf.Tensor 'x:0' shape=(2,) dtype=float64> cannot be accessed from here, because it was defined in FuncGraph(name=function, id=481429420608), which is out of scope."
+      },
+      {
+        "inner_tf_function": true,
+        "outer_traced": true,
+        "mode": "for",
+        "error": "InaccessibleTensorError: <tf.Tensor 'x:0' shape=(2,) dtype=float64> is out of scope and cannot be used here. Use return values, explicit Python locals or TensorFlow collections to access it.\nPlease see https://www.tensorflow.org/guide/function#all_outputs_of_a_tffunction_must_be_return_values for more information.\n\n<tf.Tensor 'x:0' shape=(2,) dtype=float64> was defined here:\n    File \"/Users/avalok/work/QuantumBridge/tests/interfaces/probes/probe_tf_callback_mixed.py\", line 103, in <module>\n    File \"/Users/avalok/work/QuantumBridge/tests/interfaces/probes/probe_tf_callback_mixed.py\", line 92, in run\n    File \"/Users/avalok/work/QuantumBridge/tests/interfaces/probes/probe_tf_callback_mixed.py\", line 88, in evaluate\n    File \"/Users/avalok/work/QuantumBridge/tests/interfaces/probes/probe_tf_mixed_ad_semantics.py\", line 59, in experiment\n    File \"/private/tmp/qb-stage11pb-main-tf-env/lib/python3.12/site-packages/tensorflow/core/function/polymorphism/function_type.py\", line 356, in placeholder_arguments\n\nThe tensor <tf.Tensor 'x:0' shape=(2,) dtype=float64> cannot be accessed from FuncGraph(name=evaluate, id=481429886656), because it was defined in FuncGraph(name=function, id=481429890752), which is out of scope."
+      },
+      {
+        "inner_tf_function": true,
+        "outer_traced": true,
+        "mode": "rof",
+        "error": "InaccessibleTensorError: <tf.Tensor 'x:0' shape=(2,) dtype=float64> is out of scope and cannot be used here. Use return values, explicit Python locals or TensorFlow collections to access it.\nPlease see https://www.tensorflow.org/guide/function#all_outputs_of_a_tffunction_must_be_return_values for more information.\n\n<tf.Tensor 'x:0' shape=(2,) dtype=float64> was defined here:\n    File \"/Users/avalok/work/QuantumBridge/tests/interfaces/probes/probe_tf_callback_mixed.py\", line 103, in <module>\n    File \"/Users/avalok/work/QuantumBridge/tests/interfaces/probes/probe_tf_callback_mixed.py\", line 92, in run\n    File \"/Users/avalok/work/QuantumBridge/tests/interfaces/probes/probe_tf_callback_mixed.py\", line 88, in evaluate\n    File \"/Users/avalok/work/QuantumBridge/tests/interfaces/probes/probe_tf_mixed_ad_semantics.py\", line 71, in experiment\n    File \"/private/tmp/qb-stage11pb-main-tf-env/lib/python3.12/site-packages/tensorflow/core/function/polymorphism/function_type.py\", line 356, in placeholder_arguments\n\nThe tensor <tf.Tensor 'x:0' shape=(2,) dtype=float64> cannot be accessed from FuncGraph(name=evaluate, id=481429699648), because it was defined in FuncGraph(name=function, id=481430051776), which is out of scope."
+      },
+      {
+        "inner_tf_function": true,
+        "outer_traced": true,
+        "mode": "tape_tape",
+        "error": "InaccessibleTensorError: <tf.Tensor 'x:0' shape=(2,) dtype=float64> is out of scope and cannot be used here. Use return values, explicit Python locals or TensorFlow collections to access it.\nPlease see https://www.tensorflow.org/guide/function#all_outputs_of_a_tffunction_must_be_return_values for more information.\n\n<tf.Tensor 'x:0' shape=(2,) dtype=float64> was defined here:\n    File \"/Users/avalok/work/QuantumBridge/tests/interfaces/probes/probe_tf_callback_mixed.py\", line 103, in <module>\n    File \"/Users/avalok/work/QuantumBridge/tests/interfaces/probes/probe_tf_callback_mixed.py\", line 92, in run\n    File \"/Users/avalok/work/QuantumBridge/tests/interfaces/probes/probe_tf_callback_mixed.py\", line 88, in evaluate\n    File \"/Users/avalok/work/QuantumBridge/tests/interfaces/probes/probe_tf_mixed_ad_semantics.py\", line 84, in experiment\n    File \"/private/tmp/qb-stage11pb-main-tf-env/lib/python3.12/site-packages/tensorflow/core/function/polymorphism/function_type.py\", line 356, in placeholder_arguments\n\nThe tensor <tf.Tensor 'x:0' shape=(2,) dtype=float64> cannot be accessed from FuncGraph(name=evaluate, id=481429891904), because it was defined in FuncGraph(name=function, id=481430057024), which is out of scope."
+      }
+    ]
+  },
+  "stderr": ""
+}

@@ -1,0 +1,165 @@
+{
+  "case": "derivatives",
+  "title": "衍生品定价与对冲",
+  "inputs": {
+    "spot": 100.0,
+    "strike": 100.0,
+    "rate": 0.03,
+    "volatility": 0.2,
+    "maturity": 1.0,
+    "steps": 3,
+    "spot_bump": 1.0,
+    "risk_neutral_up_probability": 0.5145864613275055,
+    "up": 1.1224009024456676,
+    "down": 0.8909472522884107,
+    "probabilities": [
+      0.1143761977991435,
+      0.1212501057274098,
+      0.1212501057274098,
+      0.12853712941853138,
+      0.1212501057274098,
+      0.12853712941853138,
+      0.12853712941853138,
+      0.13626209676303294
+    ],
+    "measure": "risk-neutral Q, not physical P"
+  },
+  "intermediate": {
+    "terminal_prices": [
+      70.72223522189248,
+      89.09472522884107,
+      89.09472522884107,
+      112.24009024456676,
+      89.09472522884107,
+      112.24009024456676,
+      112.24009024456676,
+      141.39824580805166
+    ],
+    "call_payoff": [
+      0.0,
+      0.0,
+      0.0,
+      12.240090244566758,
+      0.0,
+      12.240090244566758,
+      12.240090244566758,
+      41.398245808051655
+    ],
+    "put_payoff": [
+      29.277764778107525,
+      10.905274771158929,
+      10.905274771158929,
+      0.0,
+      10.905274771158929,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "delta_payoff": [
+      0.0,
+      0.0,
+      0.0,
+      1.122400902445662,
+      0.0,
+      1.122400902445662,
+      1.122400902445662,
+      1.4139824580805112
+    ]
+  },
+  "reference": {
+    "call_price": 10.054718210561122,
+    "delta": 0.6069969747193295,
+    "black_scholes_call": 9.413403383853016,
+    "discretization_note": "binomial-vs-Black-Scholes difference is model error, not shot error"
+  },
+  "local_results": {
+    "risk_neutral_paths": {
+      "execution_mode": "local_simulator",
+      "hardware_access": false,
+      "counts": {
+        "010": 127,
+        "100": 120,
+        "111": 160,
+        "001": 118,
+        "110": 130,
+        "011": 126,
+        "000": 126,
+        "101": 117
+      },
+      "probabilities": [
+        0.123046875,
+        0.115234375,
+        0.1240234375,
+        0.123046875,
+        0.1171875,
+        0.1142578125,
+        0.126953125,
+        0.15625
+      ],
+      "shots": 1024,
+      "ideal_probabilities": [
+        0.1143761977991436,
+        0.12125010572740981,
+        0.12125010572740981,
+        0.12853712941853135,
+        0.12125010572740981,
+        0.12853712941853135,
+        0.12853712941853135,
+        0.13626209676303286
+      ],
+      "seed": 20261023,
+      "artifact": {
+        "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncreg c[3];\nry(1.5999733890172156) q[0];\nry(1.5999733890172156) q[1];\nry(1.5999733890172156) q[2];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\n",
+        "sha256": "c5d559677a78a2d097c287572b770ff1c6354c635c86f336f96de47e14006710",
+        "num_qubits": 3,
+        "gates": 3,
+        "two_qubit_gates": 0
+      },
+      "bit_order": "q0-first"
+    }
+  },
+  "local_analysis": {
+    "call_price": 10.604082028610357,
+    "put_price": 7.268318290473128,
+    "delta": 0.6111653021038301,
+    "call_price_standard_error": 0.4322500740840186,
+    "call_approximate_95pct_interval": [
+      9.75687188340568,
+      11.451292173815034
+    ],
+    "delta_standard_error": 0.018571803329481735,
+    "unhedged_terminal_pnl": [
+      10.92702440479655,
+      10.92702440479655,
+      10.92702440479655,
+      -1.3130658397702089,
+      10.92702440479655,
+      -1.3130658397702089,
+      -1.3130658397702089,
+      -30.471221403255107
+    ],
+    "hedged_terminal_pnl": [
+      -8.827804995153656,
+      2.4008234103426815,
+      2.4008234103426815,
+      4.306377167915336,
+      2.4008234103426815,
+      4.306377167915336,
+      4.306377167915336,
+      -7.031325441821842
+    ],
+    "unhedged_pnl_std": 14.246288262071923,
+    "hedged_pnl_std": 5.105514027236635,
+    "put_call_parity_residual": 0.38031709298805083,
+    "model": "3-step risk-neutral binomial; static delta hedge; not a continuous dynamic hedge"
+  },
+  "hardware_status": "not_executed",
+  "hardware_results": null,
+  "hardware_analysis": null,
+  "acceptance": {
+    "case": "derivatives",
+    "hardware_status": "NOT_EXECUTED",
+    "hardware_results": null
+  },
+  "scope": "synthetic small research case; not full industry coverage or investment advice"
+}

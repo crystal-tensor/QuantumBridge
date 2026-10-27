@@ -11,6 +11,7 @@ from __future__ import annotations
 import hashlib
 import os
 import time
+from numbers import Integral
 from collections.abc import Mapping
 from typing import Any, Callable, Protocol
 
@@ -255,13 +256,24 @@ class QuafuCloudBackend:
         *,
         token: str | None = None,
         transport: QuafuCloudTransport | None = None,
+        read_only: bool = False,
     ) -> None:
+        if type(read_only) is not bool:
+            raise TypeError("read_only must be a bool")
+        if read_only and transport is None:
+            raise ValueError("read-only mode requires an explicit transport; it never constructs a credentialed client")
         if not str(backend_name).strip():
             raise ValueError("Quafu cloud backend_name must be non-empty")
         if token is not None and transport is not None:
             raise ValueError("Pass either token or transport, not both")
         self.name = str(backend_name)
+        self._read_only = read_only
         self._transport = transport if transport is not None else QuarkStudioTransport(token=token)
+
+    @property
+    def read_only(self) -> bool:
+        """Submission policy, not a guarantee about an injected transport's internals."""
+        return self._read_only
 
     def status(self) -> Any:
         status = getattr(self._transport, "status", None)
@@ -278,6 +290,8 @@ class QuafuCloudBackend:
         compile: bool = True,
         auto_measure: bool = True,
     ) -> QuafuCloudJob:
+        if self.read_only:
+            raise JobError("read-only cloud backend refuses submission")
         shots = _validate_shots(shots)
         prepared = _prepare_circuit(circuit, auto_measure=auto_measure)
         from quantumbridge.serialization import serialize_circuit
@@ -361,23 +375,27 @@ def _extract_counts(payload: Mapping[str, Any]) -> dict[str, int]:
         candidates.extend((data.get("count"), data.get("counts")))
     for candidate in candidates:
         if isinstance(candidate, Mapping):
-            counts = {str(key): int(value) for key, value in candidate.items()}
-            if counts and all(value >= 0 for value in counts.values()):
+            if any(not isinstance(key, str) or isinstance(value, bool)
+                   or not isinstance(value, Integral) or value < 0
+                   for key, value in candidate.items()):
+                raise JobError("Quafu counts must map string labels to nonnegative integers")
+            counts = {key: int(value) for key, value in candidate.items()}
+            if counts and sum(counts.values()) > 0:
                 return counts
     return {}
 
 
 def _status_from_payload(payload: Mapping[str, Any]) -> JobStatus:
-    if _extract_counts(payload):
-        return JobStatus.DONE
     status_value = payload.get("status", payload.get("state", payload.get("task_status", "running")))
     normalized = str(status_value).strip().lower().replace("_", " ")
-    if normalized in {"done", "finished", "completed", "success", "succeeded"}:
-        return JobStatus.DONE
     if normalized in {"cancelled", "canceled"}:
         return JobStatus.CANCELLED
     if normalized in {"error", "failed", "failure", "invalid"} or payload.get("error"):
         return JobStatus.ERROR
+    if _extract_counts(payload):
+        return JobStatus.DONE
+    if normalized in {"done", "finished", "completed", "success", "succeeded"}:
+        return JobStatus.DONE
     if normalized in {"queued", "pending", "waiting", "submitted"}:
         return JobStatus.QUEUED
     return JobStatus.RUNNING

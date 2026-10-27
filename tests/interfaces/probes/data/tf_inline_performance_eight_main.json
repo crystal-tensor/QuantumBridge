@@ -1,0 +1,110 @@
+{
+  "case": "eight_parameter_hvp",
+  "tensorflow_version": "2.21.0",
+  "tensorflow_origin": "/private/tmp/qb-stage11pb-main-tf-env/lib/python3.12/site-packages/tensorflow/__init__.py",
+  "python": "3.12.6 (v3.12.6:a4a2d2b0d85, Sep  6 2024, 16:08:03) [Clang 13.0.0 (clang-1300.0.29.30)]",
+  "python_executable": "/private/tmp/qb-stage11pb-main-tf-env/bin/python",
+  "width": 1,
+  "parameter_count": 8,
+  "output_count": 1,
+  "handle_creation_seconds": 0.047632375033572316,
+  "repeated_static_fingerprint_seconds": 0.0010055874998215586,
+  "modes": {
+    "value": {
+      "eager_seconds": 0.08141858299495652,
+      "first_outer_trace_and_call_seconds": 0.29882270796224475,
+      "subsequent_cached_call_seconds": [
+        0.0007727080374024808,
+        0.0006481250165961683,
+        0.0007093329913914204
+      ],
+      "graph": {
+        "top_level_nodes": 945,
+        "function_definitions": 4,
+        "total_function_nodes": 184,
+        "callback_ops": [],
+        "trace_count": 1
+      },
+      "max_absolute_oracle_error": 1.1102230246251565e-16
+    },
+    "for": {
+      "eager_seconds": 1.696698459039908,
+      "first_outer_trace_and_call_seconds": 5.093986666994169,
+      "subsequent_cached_call_seconds": [
+        0.004569875018205494,
+        0.0043377080000936985,
+        0.004300833970773965
+      ],
+      "graph": {
+        "top_level_nodes": 10878,
+        "function_definitions": 104,
+        "total_function_nodes": 1788,
+        "callback_ops": [],
+        "trace_count": 1
+      },
+      "max_absolute_oracle_error": 8.326672684688674e-17
+    },
+    "rof": {
+      "eager_seconds": 0.4383175839902833,
+      "first_outer_trace_and_call_seconds": 2.958761083020363,
+      "subsequent_cached_call_seconds": [
+        0.0025849590310826898,
+        0.0026884159888140857,
+        0.0027153329574503005
+      ],
+      "graph": {
+        "top_level_nodes": 6824,
+        "function_definitions": 171,
+        "total_function_nodes": 2571,
+        "callback_ops": [],
+        "trace_count": 1
+      },
+      "max_absolute_oracle_error": 7.632783294297951e-17
+    },
+    "tape_tape": {
+      "eager_seconds": 0.9174864169908687,
+      "first_outer_trace_and_call_seconds": 3.889108875009697,
+      "subsequent_cached_call_seconds": [
+        0.0026968750171363354,
+        0.002687667030841112,
+        0.002779332979116589
+      ],
+      "graph": {
+        "top_level_nodes": 9784,
+        "function_definitions": 95,
+        "total_function_nodes": 1724,
+        "callback_ops": [],
+        "trace_count": 1
+      },
+      "max_absolute_oracle_error": 6.938893903907228e-17
+    }
+  },
+  "memory_before": {
+    "available": false,
+    "current": null,
+    "peak": null,
+    "reason": "ValueError: Allocator stats not available for device 'CPU:0'"
+  },
+  "memory_while_retained": {
+    "available": false,
+    "current": null,
+    "peak": null,
+    "reason": "ValueError: Allocator stats not available for device 'CPU:0'"
+  },
+  "memory_after_output_release": {
+    "available": false,
+    "current": null,
+    "peak": null,
+    "reason": "ValueError: Allocator stats not available for device 'CPU:0'"
+  },
+  "python_output_collected": true,
+  "retained_output_payload_bytes": 64,
+  "python_collection_scope": "Python Tensor object only; not proof of backend allocator release",
+  "process_cumulative_maxrss_raw": 1243201536,
+  "process_maxrss_scope": "Cumulative process RSS, raw OS units; not tensor workspace",
+  "static_estimated_workspace_bytes": 648224,
+  "observed_per_operation_peak_workspace": null,
+  "workspace_scope": "Allocator observation is process-wide if available, not per-operation workspace",
+  "optimization": "NONE: measurement only; no parameter-dependent tensor cache",
+  "timing_scope": "Single process diagnostic with concurrent local regression workloads; not isolated benchmark"
+}

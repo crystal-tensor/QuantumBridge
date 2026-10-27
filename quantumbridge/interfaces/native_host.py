@@ -202,7 +202,13 @@ class NativeHostKernel:
                 raise UnsupportedFeature(interface + "_gradient_method", "framework bridge requires native shift or adjoint, not finite differences.")
             from quantumbridge.diff.adjoint import gate_derivative
             for operation in child._occurrences().values():
-                gate_derivative(operation, (1.,))
+                if operation.name == "native_matrix_power":
+                    from quantumbridge.diff.matrix_power_jet import _decode
+                    # Only validate the static source here. A dummy trace point
+                    # may lie on a cut even when the runtime input is valid.
+                    _decode((1.,)*len(operation.params), operation.metadata)
+                else:
+                    gate_derivative(operation, (1.,))
         self.forward_shot_bound, self.derivative_shot_bound = self._shot_work(plan)
         limits.check("max_total_shots", self.derivative_shot_bound + (self.forward_shot_bound if interface == "tensorflow" else 0))
 
@@ -210,8 +216,9 @@ class NativeHostKernel:
         work, forward_work = 0, 0
         for child in getattr(plan, "child_plans", (plan,)):
             method = child.gradient_capability(self.node.diff_method)
-            repetitions = 2 + sum(4 if operation.name in {"crx", "cry", "crz"} else 2
-                                  for operation in child._occurrences().values()) if method != "adjoint" else 2
+            repetitions = (1+len(child.recorder.parameters) if method == "mps-tangent" else 2
+                if method == "adjoint" else 2+sum(2*len(child.shift_recipe(operation,1.))
+                    for operation in child._occurrences().values()))
             for request in child.requests:
                 if request.seed is not None and (request.shots is not None or any(self.shots.partitions)):
                     raise UnsupportedFeature("local_seed_gradient", "framework shifted sampling needs independent node-level seed streams.")
@@ -373,12 +380,19 @@ class NativeHostKernel:
             limits.check("max_total_physical_shots", work["physical_shots"])
             limits.check("max_adjoint_operations", work["adjoint_operations"])
             self.limits.check("max_total_shots", work["physical_shots"])
+        mps_admission = False
         for index in active:
             prepared = self.prepare_second(values, direction=incoming[index])
             work = prepared[-1]
+            mps_admission |= any(child.gradient_capability(self.node.diff_method) == "mps-tangent"
+                for child in getattr(prepared[0], "child_plans", (prepared[0],)))
             del prepared
             for key in totals: totals[key] += work.get(key, 0)
             check_totals(totals)
+        from quantumbridge.execution.resource_context import current_resources
+        scope = current_resources()
+        if mps_admission and scope is not None and not getattr(scope, "derivative_work_precharged", False):
+            scope.ledger.preflight(derivative_work=totals["adjoint_operations"], tapes=totals["tape_count"])
         result, receipts = np.zeros(self.size), []
         observed = dict.fromkeys(totals, 0)
         for index in active:

@@ -11,6 +11,33 @@ _tf_guard_registered = set()
 _tf_registration_lock = RLock()
 
 
+def principal_angle(value):
+    """Branch-stable scalar phase with unit first and zero second derivative."""
+    import math
+    import numpy as np
+    module = type(value).__module__
+    if module.startswith("tensorflow"):
+        import tensorflow as tf
+        pi = tf.constant(math.pi, dtype=value.dtype)
+        wrapped = tf.math.atan2(tf.math.sin(value), tf.math.cos(value))
+        tolerance = tf.constant(64*np.finfo(value.dtype.as_numpy_dtype).eps, dtype=value.dtype)
+        assertions = [tf.debugging.assert_all_finite(value, "Power phase must be finite."),
+                      tf.debugging.assert_greater(tf.abs(tf.abs(wrapped)-pi), tolerance, message="Fractional power branch switch is nondifferentiable.")]
+        with tf.control_dependencies([item for item in assertions if item is not None]):
+            return tf.identity(wrapped)
+    import jax
+    import jax.numpy as jnp
+    def guard(source):
+        point = float(source)
+        if not math.isfinite(point):
+            raise UnsupportedFeature("symbolic_power_branch", "Power phase must be finite.")
+        wrapped = math.atan2(math.sin(point), math.cos(point))
+        if abs(abs(wrapped)-math.pi) <= 64*np.finfo(source.dtype).eps:
+            raise UnsupportedFeature("symbolic_power_branch", "Fractional power branch switch is nondifferentiable.")
+    jax.debug.callback(guard, value, ordered=True)
+    return jnp.arctan2(jnp.sin(value), jnp.cos(value))
+
+
 def _assert_domain(value, name):
     bad = value == 0 if name in {"abs", "sign"} else abs(value) >= 1
     if bad:

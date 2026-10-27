@@ -326,15 +326,26 @@ def test_managed_annotation_rejects_foreign_intake_without_callbacks():
 
 
 def test_annotation_fractional_symbolic_and_unknown_generator_remain_explicit():
-    from quantumbridge.qml import QNode
+    from quantumbridge.diff.adjoint import gate_derivative
     p = qb.Parameter("p")
     op = qb.AnnotatedOperation(qb.Gate("ry", 1, [p]), qb.PowerModifier(.5))
     with pytest.raises(qb.UnsupportedFeature): qb.resolve_annotated_operation(op)
-    unknown = qb.AnnotatedOperation(qb.Gate("ry", 1, [p]), qb.ControlModifier(2))
-    circuit = qb.Circuit(3).h(0).h(1).append(unknown, [0, 1, 2])
     with pytest.raises(qb.UnsupportedFeature):
-        node = QNode.from_circuit(circuit, qb.PauliZ(2), diff_method="parameter-shift")
-        node.compute_jacobian(.3)
+        gate_derivative(qb.Operation("unknown_generator",(0,),params=(p,)),(.3,))
+
+
+@pytest.mark.parametrize("method",["parameter-shift","adjoint"])
+def test_annotation_two_control_rotation_has_real_native_first_and_second_derivatives(method):
+    from quantumbridge.qml import QNode
+    p=qb.Parameter("p")
+    operation=qb.AnnotatedOperation(qb.Gate("ry",1,[p]),qb.ControlModifier(2))
+    circuit=qb.Circuit(3).h(0).h(1).append(operation,[0,1,2])
+    node=QNode.from_circuit(circuit,qb.PauliZ(2),diff_method=method,max_diff=2)
+    x=.3
+    np.testing.assert_allclose(node(x),.75+.25*np.cos(x),atol=3e-12,rtol=0)
+    np.testing.assert_allclose(node.compute_jacobian(x),-.25*np.sin(x),atol=3e-10,rtol=0)
+    np.testing.assert_allclose(node.compute_hessian(x),-.25*np.cos(x),atol=5e-10,rtol=0)
+    np.testing.assert_allclose(node.compute_hvp(.7,x),-.175*np.cos(x),atol=5e-10,rtol=0)
 
 
 def test_named_annotation_noise_boundary_rejects_instead_of_silently_lowering():

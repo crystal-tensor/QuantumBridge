@@ -1,0 +1,46 @@
+{
+  "diagnostic_only": true,
+  "tensorflow": "2.21.0",
+  "tensorflow_origin": "/private/tmp/qb-stage11pb-main-tf-env/lib/python3.12/site-packages/tensorflow/__init__.py",
+  "analytic_gradient": [
+    0.41069999999999995,
+    2.0172
+  ],
+  "analytic_jvp": [
+    0.16427999999999998,
+    -0.6051599999999999
+  ],
+  "records": [
+    {
+      "mode": "gradient",
+      "outcome": "returned",
+      "value": [
+        0.41069999999999995,
+        2.0172
+      ]
+    },
+    {
+      "mode": "jvp",
+      "outcome": "returned",
+      "value": [
+        0.16427999999999998,
+        -0.6051599999999999
+      ]
+    },
+    {
+      "mode": "for",
+      "outcome": "refused",
+      "error": "RuntimeError: SECOND_POINT_FORBIDDEN"
+    },
+    {
+      "mode": "rof",
+      "outcome": "disconnected",
+      "value": null
+    },
+    {
+      "mode": "tape",
+      "outcome": "refused",
+      "error": "RuntimeError: SECOND_POINT_FORBIDDEN"
+    }
+  ]
+}

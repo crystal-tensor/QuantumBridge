@@ -61,9 +61,8 @@ def _expand_definitions(circuit, definitions, limits):
     def expand(body, path=(), nesting=0):
         nonlocal work
         limits.check("max_structure_depth",nesting)
-        out = body.copy_empty_like(vars_mode="drop")
-        if "classical_scope" in body.metadata:
-            out.metadata["classical_scope"] = deepcopy(body.metadata["classical_scope"])
+        from quantumbridge.core.circuit_metadata import empty_execution_circuit
+        out = empty_execution_circuit(body)
         out.global_phase = body.global_phase
         size = 0
         for operation in body.iter_instructions():
@@ -159,7 +158,8 @@ def compile(tape, *, basis_set=None, target=None, coupling_map=None, optimizatio
         restore_layout=restore_layout,scheduling_method=scheduling_method,
         seed_transpiler=seed_transpiler,limits=compilation_limits)
     identity = dict(enumerate(range(tape.circuit.num_qubits)))
-    if compiled.num_qubits != tape.circuit.num_qubits or compiled.metadata.get("initial_layout") != identity or compiled.metadata.get("routing",{}).get("final_layout",identity) != identity:
+    from quantumbridge.core.circuit_metadata import execution_metadata
+    if compiled.num_qubits != tape.circuit.num_qubits or execution_metadata(compiled).get("initial_layout") != identity or execution_metadata(compiled).get("routing",{}).get("final_layout",identity) != identity:
         raise UnsupportedFeature("compiled_transform_layout", "Transform measurements require equal width and restored identity layout; unproved remapping is rejected.")
     out = tape.copy()
     out.circuit = compiled

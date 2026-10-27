@@ -50,6 +50,7 @@ def execute_device_derivatives(device, request, *, ledger=None, return_status=Fa
             try:
                 stage = "execution"
                 ledger.consume(derivative_work=work["derivative_work"], category="planned_derivative_work")
+                scope.derivative_work_precharged = True
                 matrix = second = None
                 if request.derivative_order == 2:
                     base, matrix, second, spec = plan.second_derivatives(prepared.point,
@@ -65,8 +66,8 @@ def execute_device_derivatives(device, request, *, ledger=None, return_status=Fa
                 elif request.derivative_order:
                     base, matrix, spec = plan.jacobian(prepared.point, prepared.node.diff_method)
                     matrix = matrix @ prepared.classical
-                    if request.derivative_kind == "vjp":
-                        vector = flatten_tree(request.cotangent)[0] @ matrix
+                    if request.derivative_kind in {"gradient", "vjp"}:
+                        vector = matrix[0] if request.derivative_kind == "gradient" else flatten_tree(request.cotangent)[0] @ matrix
                         items = [vector[indices].reshape(shape) for shape, indices in prepared.layout]
                         derivative = items[0] if prepared.single else tuple(items)
                     elif request.derivative_kind == "jvp":

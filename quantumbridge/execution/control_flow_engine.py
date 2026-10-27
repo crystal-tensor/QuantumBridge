@@ -146,6 +146,11 @@ class DynamicExecutionEngine:
         if not isinstance(self.limits, ExecutionLimits): raise TypeError("QuantumBridge execution_limits requires ExecutionLimits.")
         if getattr(device, "max_qubits", None) is not None and circuit.num_qubits > device.max_qubits: raise ValueError("Circuit exceeds device qubit limit.")
         validate_control_flow(self.circuit, limits=self.limits)
+        from quantumbridge.execution.resource_context import current_resources
+        resources = current_resources()
+        if resources is not None:
+            resources.ledger.unavailable("dynamic_classical_python_storage",
+                "Control dispatch and loop tests consume shared work; Python classical stores, branch headers and allocator RSS are not measured numeric buffers.")
         self.adapter = QuantumStateAdapter(device, circuit.num_qubits)
         self.snapshots=snapshot_context
         if self.snapshots is None and circuit.has_simulator_instructions:
@@ -237,10 +242,17 @@ class DynamicExecutionEngine:
                 result.append(child)
         return result
 
-    def _tick(self, branch):
+    def _tick(self, branch, *, control=False):
         branch.steps += 1
         if branch.steps > self.limits.max_instruction_executions:
             raise ClassicalExecutionError("max_instruction_executions", "QuantumBridge dynamic instruction budget exhausted.")
+        if control:
+            from quantumbridge.execution.resource_context import current_resources
+            resources = current_resources()
+            if resources is not None:
+                # Classical dispatch/loop tests are actual runtime work, not
+                # another quantum tape or an extra measurement shot.
+                resources.ledger.consume(derivative_work=1, category="dynamic_control_step")
 
     def _cap(self, branches):
         if len(branches) > self.limits.max_branches:
@@ -353,7 +365,7 @@ class DynamicExecutionEngine:
             while active:
                 entering = []
                 for current in active:
-                    self._tick(current)
+                    self._tick(current, control=True)
                     done = iteration >= len(data["values"]) if kind == "for" else not classical_eval(data["condition"], current.store)
                     if done: finished.append(current)
                     else: entering.append(current)
@@ -396,8 +408,10 @@ class DynamicExecutionEngine:
             updated = []
             for branch in branches:
                 if branch.signal: updated.append(branch); continue
-                self._tick(branch)
                 node = None if isinstance(item, (tuple, Measurement)) else item.metadata.get("control_node")
+                conditional = not isinstance(item, tuple) and any(key in item.metadata for key in
+                    ("condition", "gate_condition", "control_flow", "control_flow_stack"))
+                self._tick(branch, control=node is not None or conditional)
                 if node is not None:
                     if condition_enabled(item.metadata, branch.store.bits, branch.decisions): updated.extend(self._node(node, branch, rng, depth, binding or {}))
                     else: updated.append(branch)

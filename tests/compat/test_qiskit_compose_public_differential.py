@@ -163,8 +163,22 @@ def test_actual_public_wrapped_qpy_loads_binds_and_executes_natively():
 def test_public_qpy_metadata_cannot_smuggle_a_fake_native_classical_scope():
     import io
     from qiskit import qpy
-    from quantumbridge.serialization import qpy_loads,UnsupportedFeature
+    from quantumbridge.serialization import qpy_loads,qpy_dumps,UnsupportedFeature
+    from quantumbridge.core.circuit_metadata import execution_metadata
+    from quantumbridge.compat.qiskit_adapter import circuit_from_ir
     source=qb.Circuit(1);source.add_var("a",True)
     fake=public.QuantumCircuit(1);fake.metadata=source.metadata
     stream=io.BytesIO();qpy.dump(fake,stream,version=13)
-    with pytest.raises(UnsupportedFeature,match="classical"):qpy_loads(stream.getvalue())
+    # QPY_USER_METADATA_VS_EXECUTION_SCOPE_CONTRACT_CORRECTION -- one test only.
+    restored=qpy_loads(stream.getvalue())[0]
+    for body in (restored,restored.copy(),restored.compose(qb.Circuit(1)),circuit_from_ir(restored.to_ir())):
+        assert body.metadata==fake.metadata
+        assert execution_metadata(body) is not body.metadata
+        assert "classical_scope" not in execution_metadata(body)
+        assert body.num_vars==0
+        assert not tuple(body.iter_captured_vars()) and not tuple(body.iter_declared_vars())
+        assert not tuple(body.iter_input_vars())
+        with pytest.raises(KeyError):body.get_var("a")
+        np.testing.assert_allclose(qb.StatevectorDevice().statevector(body),[1.,0.],atol=5e-13,rtol=0)
+    assert source.num_vars==1 and len(tuple(source.iter_declared_vars()))==1
+    with pytest.raises(UnsupportedFeature,match="classical"):qpy_dumps(source)

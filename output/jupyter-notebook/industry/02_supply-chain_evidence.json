@@ -1,0 +1,635 @@
+{
+  "inputs": {
+    "shipping_cost": [
+      [
+        2,
+        5
+      ],
+      [
+        4,
+        1
+      ]
+    ],
+    "supplier_capacity": [
+      1,
+      1
+    ],
+    "customer_demand": [
+      1,
+      1
+    ],
+    "bit_order": [
+      "S0-C0",
+      "S0-C1",
+      "S1-C0",
+      "S1-C1"
+    ],
+    "penalty": 20,
+    "units": "one indivisible shipment per selected edge; synthetic costs"
+  },
+  "intermediate": {
+    "candidates": [
+      {
+        "bitstring": "0000",
+        "shipping_matrix": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "supplier_load": [
+          0,
+          0
+        ],
+        "customer_received": [
+          0,
+          0
+        ],
+        "violations": 2,
+        "feasible": false,
+        "objective": 0,
+        "penalized_cost": 40
+      },
+      {
+        "bitstring": "0001",
+        "shipping_matrix": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "supplier_load": [
+          0,
+          1
+        ],
+        "customer_received": [
+          0,
+          1
+        ],
+        "violations": 1,
+        "feasible": false,
+        "objective": 1,
+        "penalized_cost": 21
+      },
+      {
+        "bitstring": "0010",
+        "shipping_matrix": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            0
+          ]
+        ],
+        "supplier_load": [
+          0,
+          1
+        ],
+        "customer_received": [
+          1,
+          0
+        ],
+        "violations": 1,
+        "feasible": false,
+        "objective": 4,
+        "penalized_cost": 24
+      },
+      {
+        "bitstring": "0011",
+        "shipping_matrix": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "supplier_load": [
+          0,
+          2
+        ],
+        "customer_received": [
+          1,
+          1
+        ],
+        "violations": 1,
+        "feasible": false,
+        "objective": 5,
+        "penalized_cost": 25
+      },
+      {
+        "bitstring": "0100",
+        "shipping_matrix": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "supplier_load": [
+          1,
+          0
+        ],
+        "customer_received": [
+          0,
+          1
+        ],
+        "violations": 1,
+        "feasible": false,
+        "objective": 5,
+        "penalized_cost": 25
+      },
+      {
+        "bitstring": "0101",
+        "shipping_matrix": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "supplier_load": [
+          1,
+          1
+        ],
+        "customer_received": [
+          0,
+          2
+        ],
+        "violations": 2,
+        "feasible": false,
+        "objective": 6,
+        "penalized_cost": 46
+      },
+      {
+        "bitstring": "0110",
+        "shipping_matrix": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            0
+          ]
+        ],
+        "supplier_load": [
+          1,
+          1
+        ],
+        "customer_received": [
+          1,
+          1
+        ],
+        "violations": 0,
+        "feasible": true,
+        "objective": 9,
+        "penalized_cost": 9
+      },
+      {
+        "bitstring": "0111",
+        "shipping_matrix": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "supplier_load": [
+          1,
+          2
+        ],
+        "customer_received": [
+          1,
+          2
+        ],
+        "violations": 2,
+        "feasible": false,
+        "objective": 10,
+        "penalized_cost": 50
+      },
+      {
+        "bitstring": "1000",
+        "shipping_matrix": [
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "supplier_load": [
+          1,
+          0
+        ],
+        "customer_received": [
+          1,
+          0
+        ],
+        "violations": 1,
+        "feasible": false,
+        "objective": 2,
+        "penalized_cost": 22
+      },
+      {
+        "bitstring": "1001",
+        "shipping_matrix": [
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "supplier_load": [
+          1,
+          1
+        ],
+        "customer_received": [
+          1,
+          1
+        ],
+        "violations": 0,
+        "feasible": true,
+        "objective": 3,
+        "penalized_cost": 3
+      },
+      {
+        "bitstring": "1010",
+        "shipping_matrix": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            0
+          ]
+        ],
+        "supplier_load": [
+          1,
+          1
+        ],
+        "customer_received": [
+          2,
+          0
+        ],
+        "violations": 2,
+        "feasible": false,
+        "objective": 6,
+        "penalized_cost": 46
+      },
+      {
+        "bitstring": "1011",
+        "shipping_matrix": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "supplier_load": [
+          1,
+          2
+        ],
+        "customer_received": [
+          2,
+          1
+        ],
+        "violations": 2,
+        "feasible": false,
+        "objective": 7,
+        "penalized_cost": 47
+      },
+      {
+        "bitstring": "1100",
+        "shipping_matrix": [
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "supplier_load": [
+          2,
+          0
+        ],
+        "customer_received": [
+          1,
+          1
+        ],
+        "violations": 1,
+        "feasible": false,
+        "objective": 7,
+        "penalized_cost": 27
+      },
+      {
+        "bitstring": "1101",
+        "shipping_matrix": [
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "supplier_load": [
+          2,
+          1
+        ],
+        "customer_received": [
+          1,
+          2
+        ],
+        "violations": 2,
+        "feasible": false,
+        "objective": 8,
+        "penalized_cost": 48
+      },
+      {
+        "bitstring": "1110",
+        "shipping_matrix": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            0
+          ]
+        ],
+        "supplier_load": [
+          2,
+          1
+        ],
+        "customer_received": [
+          2,
+          1
+        ],
+        "violations": 2,
+        "feasible": false,
+        "objective": 11,
+        "penalized_cost": 51
+      },
+      {
+        "bitstring": "1111",
+        "shipping_matrix": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "supplier_load": [
+          2,
+          2
+        ],
+        "customer_received": [
+          2,
+          2
+        ],
+        "violations": 4,
+        "feasible": false,
+        "objective": 12,
+        "penalized_cost": 92
+      }
+    ],
+    "optimizer_trace": [
+      {
+        "improvement": 0,
+        "expected_penalized_cost": 35.99999999999998,
+        "gamma": 0.0,
+        "beta": 0.0
+      },
+      {
+        "improvement": 1,
+        "expected_penalized_cost": 35.999999999999964,
+        "gamma": 0.0,
+        "beta": 0.241660973353061
+      },
+      {
+        "improvement": 2,
+        "expected_penalized_cost": 35.99999999999995,
+        "gamma": 0.0,
+        "beta": 1.933287786824488
+      },
+      {
+        "improvement": 3,
+        "expected_penalized_cost": 33.82669312065788,
+        "gamma": 0.7853981633974483,
+        "beta": 1.208304866765305
+      },
+      {
+        "improvement": 4,
+        "expected_penalized_cost": 32.39864310224307,
+        "gamma": 0.7853981633974483,
+        "beta": 2.41660973353061
+      },
+      {
+        "improvement": 5,
+        "expected_penalized_cost": 29.766774677884424,
+        "gamma": 0.7853981633974483,
+        "beta": 2.658270706883671
+      },
+      {
+        "improvement": 6,
+        "expected_penalized_cost": 24.719806258126848,
+        "gamma": 1.5707963267948966,
+        "beta": 2.658270706883671
+      },
+      {
+        "improvement": 7,
+        "expected_penalized_cost": 21.32732414158169,
+        "gamma": 2.356194490192345,
+        "beta": 2.658270706883671
+      },
+      {
+        "improvement": 8,
+        "expected_penalized_cost": 19.819541496154848,
+        "gamma": 3.141592653589793,
+        "beta": 2.658270706883671
+      },
+      {
+        "improvement": 9,
+        "expected_penalized_cost": 19.741012263020338,
+        "gamma": 3.3415926535897933,
+        "beta": 2.658270706883671
+      },
+      {
+        "improvement": 10,
+        "expected_penalized_cost": 18.992464818062246,
+        "gamma": 3.3415926535897933,
+        "beta": 2.758270706883671
+      },
+      {
+        "improvement": 11,
+        "expected_penalized_cost": 18.97022840252041,
+        "gamma": 3.391592653589793,
+        "beta": 2.758270706883671
+      },
+      {
+        "improvement": 12,
+        "expected_penalized_cost": 18.961928836014145,
+        "gamma": 3.416592653589793,
+        "beta": 2.758270706883671
+      },
+      {
+        "improvement": 13,
+        "expected_penalized_cost": 18.936060377084196,
+        "gamma": 3.416592653589793,
+        "beta": 2.7332707068836712
+      }
+    ],
+    "cost_pauli_degree": 2,
+    "encoding": "bounded exact diagonal truth-table; degree>2 is not a QUBO"
+  },
+  "reference": {
+    "best_objective": 3,
+    "best_bitstrings": [
+      "1001"
+    ],
+    "feasible_count": 2,
+    "baseline": "complete classical enumeration of sixteen states"
+  },
+  "evidence": {
+    "execution_mode": "local_simulator",
+    "hardware_access": false,
+    "new_cloud_tasks": 0,
+    "experiments": {
+      "qaoa": {
+        "counts": {
+          "0011": 89,
+          "0110": 166,
+          "1100": 98,
+          "0010": 107,
+          "1001": 192,
+          "0100": 92,
+          "0101": 17,
+          "0001": 106,
+          "1000": 85,
+          "0000": 42,
+          "1010": 21,
+          "1111": 7,
+          "1110": 1,
+          "0111": 1
+        },
+        "probabilities": [
+          0.041015625,
+          0.103515625,
+          0.1044921875,
+          0.0869140625,
+          0.08984375,
+          0.0166015625,
+          0.162109375,
+          0.0009765625,
+          0.0830078125,
+          0.1875,
+          0.0205078125,
+          0.0,
+          0.095703125,
+          0.0,
+          0.0009765625,
+          0.0068359375
+        ],
+        "ideal_probabilities": [
+          0.039048954718764205,
+          0.10182940935872163,
+          0.09960201990300116,
+          0.08807775526618528,
+          0.09630352309393003,
+          0.014085615813276846,
+          0.16896232855420695,
+          0.00016162878348985143,
+          0.09813380924695878,
+          0.1915937641003132,
+          0.014033815246362772,
+          5.946127044825011e-05,
+          0.08344115587934914,
+          1.957752510173202e-05,
+          0.00010837681079286814,
+          0.0045388044290971446
+        ],
+        "shots": 1024,
+        "seed": 20261023,
+        "qubits": 4,
+        "gate_count": 26,
+        "openqasm2": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\nrz(0.38388681501008914) q[1];\ncx q[0],q[1];\ncx q[0],q[2];\nrz(0.76777363002017818) q[2];\ncx q[0],q[2];\nrz(-0.46066417801210691) q[0];\ncx q[1],q[3];\nrz(0.76777363002017818) q[3];\ncx q[1],q[3];\nrz(-0.57583022251513349) q[1];\ncx q[2],q[3];\nrz(0.38388681501008903) q[3];\ncx q[2],q[3];\nrz(-0.53744154101412478) q[2];\nrz(-0.42227549651109803) q[3];\nrz(2.5336529790665874) q[0];\nu1(-2.5336529790665874) q[0];\nrx(5.4665414137673425) q[0];\nrx(5.4665414137673425) q[1];\nrx(5.4665414137673425) q[2];\nrx(5.4665414137673425) q[3];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+        "bit_order": "q0-first"
+      }
+    },
+    "estimates": {
+      "qaoa": {
+        "estimate": 19.607421875,
+        "standard_error": 0.3999163004020277,
+        "ideal_reference": 18.936060377084196
+      }
+    },
+    "summary": {
+      "best_observed_feasible": {
+        "bitstring": "1001",
+        "shipping_matrix": [
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "supplier_load": [
+          1,
+          1
+        ],
+        "customer_received": [
+          1,
+          1
+        ],
+        "violations": 0,
+        "feasible": true,
+        "objective": 3,
+        "penalized_cost": 3
+      },
+      "observed_objective_gap": 0,
+      "feasible_probability": 0.349609375,
+      "optimal_probability": 0.1875,
+      "decision_rule": "best feasible actually sampled candidate; not the most frequent string"
+    }
+  }
+}

@@ -1,0 +1,511 @@
+{
+  "tensorflow": "2.21.0",
+  "tensorflow_origin": "/private/tmp/qb-stage11pb-alternate-tf-env/lib/python3.12/site-packages/tensorflow/__init__.py",
+  "assertions_completed": true,
+  "records": [
+    {
+      "complex_model": false,
+      "scalar_model": false,
+      "traced": false,
+      "mode": "jacobian_hessian",
+      "point": [
+        0.37,
+        0.82
+      ],
+      "outcome": "match",
+      "top_level_nodes": 417,
+      "function_definitions": 0,
+      "callback_ops": []
+    },
+    {
+      "complex_model": false,
+      "scalar_model": false,
+      "traced": false,
+      "mode": "jacobian_hessian",
+      "point": [
+        0.41,
+        0.91
+      ],
+      "outcome": "match",
+      "top_level_nodes": 417,
+      "function_definitions": 0,
+      "callback_ops": []
+    },
+    {
+      "complex_model": false,
+      "scalar_model": false,
+      "traced": false,
+      "mode": "for",
+      "point": [
+        0.37,
+        0.82
+      ],
+      "outcome": "match",
+      "top_level_nodes": 78,
+      "function_definitions": 15,
+      "callback_ops": []
+    },
+    {
+      "complex_model": false,
+      "scalar_model": false,
+      "traced": false,
+      "mode": "for",
+      "point": [
+        0.41,
+        0.91
+      ],
+      "outcome": "match",
+      "top_level_nodes": 78,
+      "function_definitions": 15,
+      "callback_ops": []
+    },
+    {
+      "complex_model": false,
+      "scalar_model": false,
+      "traced": false,
+      "mode": "rof",
+      "point": [
+        0.37,
+        0.82
+      ],
+      "outcome": "match",
+      "top_level_nodes": 69,
+      "function_definitions": 24,
+      "callback_ops": []
+    },
+    {
+      "complex_model": false,
+      "scalar_model": false,
+      "traced": false,
+      "mode": "rof",
+      "point": [
+        0.41,
+        0.91
+      ],
+      "outcome": "match",
+      "top_level_nodes": 69,
+      "function_definitions": 24,
+      "callback_ops": []
+    },
+    {
+      "complex_model": false,
+      "scalar_model": false,
+      "traced": true,
+      "mode": "jacobian_hessian",
+      "point": [
+        0.37,
+        0.82
+      ],
+      "outcome": "match",
+      "top_level_nodes": 417,
+      "function_definitions": 0,
+      "callback_ops": []
+    },
+    {
+      "complex_model": false,
+      "scalar_model": false,
+      "traced": true,
+      "mode": "jacobian_hessian",
+      "point": [
+        0.41,
+        0.91
+      ],
+      "outcome": "match",
+      "top_level_nodes": 417,
+      "function_definitions": 0,
+      "callback_ops": []
+    },
+    {
+      "complex_model": false,
+      "scalar_model": false,
+      "traced": true,
+      "mode": "for",
+      "point": [
+        0.37,
+        0.82
+      ],
+      "outcome": "match",
+      "top_level_nodes": 78,
+      "function_definitions": 15,
+      "callback_ops": []
+    },
+    {
+      "complex_model": false,
+      "scalar_model": false,
+      "traced": true,
+      "mode": "for",
+      "point": [
+        0.41,
+        0.91
+      ],
+      "outcome": "match",
+      "top_level_nodes": 78,
+      "function_definitions": 15,
+      "callback_ops": []
+    },
+    {
+      "complex_model": false,
+      "scalar_model": false,
+      "traced": true,
+      "mode": "rof",
+      "point": [
+        0.37,
+        0.82
+      ],
+      "outcome": "match",
+      "top_level_nodes": 69,
+      "function_definitions": 24,
+      "callback_ops": []
+    },
+    {
+      "complex_model": false,
+      "scalar_model": false,
+      "traced": true,
+      "mode": "rof",
+      "point": [
+        0.41,
+        0.91
+      ],
+      "outcome": "match",
+      "top_level_nodes": 69,
+      "function_definitions": 24,
+      "callback_ops": []
+    },
+    {
+      "complex_model": true,
+      "scalar_model": false,
+      "traced": false,
+      "mode": "jacobian_hessian",
+      "point": [
+        0.37,
+        0.82
+      ],
+      "outcome": "match",
+      "top_level_nodes": 1079,
+      "function_definitions": 0,
+      "callback_ops": []
+    },
+    {
+      "complex_model": true,
+      "scalar_model": false,
+      "traced": false,
+      "mode": "jacobian_hessian",
+      "point": [
+        0.41,
+        0.91
+      ],
+      "outcome": "match",
+      "top_level_nodes": 1079,
+      "function_definitions": 0,
+      "callback_ops": []
+    },
+    {
+      "complex_model": true,
+      "scalar_model": false,
+      "traced": false,
+      "mode": "for",
+      "point": [
+        0.37,
+        0.82
+      ],
+      "outcome": "match",
+      "top_level_nodes": 306,
+      "function_definitions": 36,
+      "callback_ops": []
+    },
+    {
+      "complex_model": true,
+      "scalar_model": false,
+      "traced": false,
+      "mode": "for",
+      "point": [
+        0.41,
+        0.91
+      ],
+      "outcome": "match",
+      "top_level_nodes": 306,
+      "function_definitions": 36,
+      "callback_ops": []
+    },
+    {
+      "complex_model": true,
+      "scalar_model": false,
+      "traced": false,
+      "mode": "rof",
+      "point": [
+        0.37,
+        0.82
+      ],
+      "outcome": "match",
+      "top_level_nodes": 280,
+      "function_definitions": 63,
+      "callback_ops": []
+    },
+    {
+      "complex_model": true,
+      "scalar_model": false,
+      "traced": false,
+      "mode": "rof",
+      "point": [
+        0.41,
+        0.91
+      ],
+      "outcome": "match",
+      "top_level_nodes": 280,
+      "function_definitions": 63,
+      "callback_ops": []
+    },
+    {
+      "complex_model": true,
+      "scalar_model": false,
+      "traced": true,
+      "mode": "jacobian_hessian",
+      "point": [
+        0.37,
+        0.82
+      ],
+      "outcome": "match",
+      "top_level_nodes": 1079,
+      "function_definitions": 0,
+      "callback_ops": []
+    },
+    {
+      "complex_model": true,
+      "scalar_model": false,
+      "traced": true,
+      "mode": "jacobian_hessian",
+      "point": [
+        0.41,
+        0.91
+      ],
+      "outcome": "match",
+      "top_level_nodes": 1079,
+      "function_definitions": 0,
+      "callback_ops": []
+    },
+    {
+      "complex_model": true,
+      "scalar_model": false,
+      "traced": true,
+      "mode": "for",
+      "point": [
+        0.37,
+        0.82
+      ],
+      "outcome": "match",
+      "top_level_nodes": 306,
+      "function_definitions": 36,
+      "callback_ops": []
+    },
+    {
+      "complex_model": true,
+      "scalar_model": false,
+      "traced": true,
+      "mode": "for",
+      "point": [
+        0.41,
+        0.91
+      ],
+      "outcome": "match",
+      "top_level_nodes": 306,
+      "function_definitions": 36,
+      "callback_ops": []
+    },
+    {
+      "complex_model": true,
+      "scalar_model": false,
+      "traced": true,
+      "mode": "rof",
+      "point": [
+        0.37,
+        0.82
+      ],
+      "outcome": "match",
+      "top_level_nodes": 280,
+      "function_definitions": 63,
+      "callback_ops": []
+    },
+    {
+      "complex_model": true,
+      "scalar_model": false,
+      "traced": true,
+      "mode": "rof",
+      "point": [
+        0.41,
+        0.91
+      ],
+      "outcome": "match",
+      "top_level_nodes": 280,
+      "function_definitions": 63,
+      "callback_ops": []
+    },
+    {
+      "complex_model": false,
+      "scalar_model": true,
+      "traced": false,
+      "mode": "jacobian_hessian",
+      "point": [
+        0.37,
+        0.82
+      ],
+      "outcome": "match",
+      "top_level_nodes": 320,
+      "function_definitions": 0,
+      "callback_ops": []
+    },
+    {
+      "complex_model": false,
+      "scalar_model": true,
+      "traced": false,
+      "mode": "jacobian_hessian",
+      "point": [
+        0.41,
+        0.91
+      ],
+      "outcome": "match",
+      "top_level_nodes": 320,
+      "function_definitions": 0,
+      "callback_ops": []
+    },
+    {
+      "complex_model": false,
+      "scalar_model": true,
+      "traced": false,
+      "mode": "for",
+      "point": [
+        0.37,
+        0.82
+      ],
+      "outcome": "match",
+      "top_level_nodes": 64,
+      "function_definitions": 11,
+      "callback_ops": []
+    },
+    {
+      "complex_model": false,
+      "scalar_model": true,
+      "traced": false,
+      "mode": "for",
+      "point": [
+        0.41,
+        0.91
+      ],
+      "outcome": "match",
+      "top_level_nodes": 64,
+      "function_definitions": 11,
+      "callback_ops": []
+    },
+    {
+      "complex_model": false,
+      "scalar_model": true,
+      "traced": false,
+      "mode": "rof",
+      "point": [
+        0.37,
+        0.82
+      ],
+      "outcome": "match",
+      "top_level_nodes": 58,
+      "function_definitions": 18,
+      "callback_ops": []
+    },
+    {
+      "complex_model": false,
+      "scalar_model": true,
+      "traced": false,
+      "mode": "rof",
+      "point": [
+        0.41,
+        0.91
+      ],
+      "outcome": "match",
+      "top_level_nodes": 58,
+      "function_definitions": 18,
+      "callback_ops": []
+    },
+    {
+      "complex_model": false,
+      "scalar_model": true,
+      "traced": true,
+      "mode": "jacobian_hessian",
+      "point": [
+        0.37,
+        0.82
+      ],
+      "outcome": "match",
+      "top_level_nodes": 320,
+      "function_definitions": 0,
+      "callback_ops": []
+    },
+    {
+      "complex_model": false,
+      "scalar_model": true,
+      "traced": true,
+      "mode": "jacobian_hessian",
+      "point": [
+        0.41,
+        0.91
+      ],
+      "outcome": "match",
+      "top_level_nodes": 320,
+      "function_definitions": 0,
+      "callback_ops": []
+    },
+    {
+      "complex_model": false,
+      "scalar_model": true,
+      "traced": true,
+      "mode": "for",
+      "point": [
+        0.37,
+        0.82
+      ],
+      "outcome": "match",
+      "top_level_nodes": 64,
+      "function_definitions": 11,
+      "callback_ops": []
+    },
+    {
+      "complex_model": false,
+      "scalar_model": true,
+      "traced": true,
+      "mode": "for",
+      "point": [
+        0.41,
+        0.91
+      ],
+      "outcome": "match",
+      "top_level_nodes": 64,
+      "function_definitions": 11,
+      "callback_ops": []
+    },
+    {
+      "complex_model": false,
+      "scalar_model": true,
+      "traced": true,
+      "mode": "rof",
+      "point": [
+        0.37,
+        0.82
+      ],
+      "outcome": "match",
+      "top_level_nodes": 58,
+      "function_definitions": 18,
+      "callback_ops": []
+    },
+    {
+      "complex_model": false,
+      "scalar_model": true,
+      "traced": true,
+      "mode": "rof",
+      "point": [
+        0.41,
+        0.91
+      ],
+      "outcome": "match",
+      "top_level_nodes": 58,
+      "function_definitions": 18,
+      "callback_ops": []
+    }
+  ]
+}

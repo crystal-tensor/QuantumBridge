@@ -1,0 +1,183 @@
+{
+  "diagnostic_only": true,
+  "tensorflow": "2.21.0",
+  "tensorflow_origin": "/private/tmp/qb-stage11pb-alternate-tf-env/lib/python3.12/site-packages/tensorflow/__init__.py",
+  "records": [
+    {
+      "case": "real",
+      "mode": "tape",
+      "loss": "square",
+      "reference": "inline TensorFlow TapeTape cross-check, not an independent mathematical oracle",
+      "expected": [
+        4.129919275778119,
+        3.828238731749991
+      ],
+      "outcome": "match",
+      "actual": [
+        4.129919275778119,
+        3.828238731749991
+      ]
+    },
+    {
+      "case": "real",
+      "mode": "for",
+      "loss": "square",
+      "reference": "inline TensorFlow TapeTape cross-check, not an independent mathematical oracle",
+      "expected": [
+        4.129919275778119,
+        3.828238731749991
+      ],
+      "outcome": "match",
+      "actual": [
+        4.12991927577812,
+        3.828238731749992
+      ]
+    },
+    {
+      "case": "real",
+      "mode": "rof",
+      "loss": "square",
+      "reference": "inline TensorFlow TapeTape cross-check, not an independent mathematical oracle",
+      "expected": [
+        4.129919275778119,
+        3.828238731749991
+      ],
+      "outcome": "mismatch",
+      "actual": [
+        2.3178048482509492,
+        1.7837073648599926
+      ]
+    },
+    {
+      "case": "complex",
+      "mode": "tape",
+      "loss": "square",
+      "reference": "inline TensorFlow TapeTape cross-check, not an independent mathematical oracle",
+      "expected": [
+        0.5476824625538477,
+        -1.1547098574428278
+      ],
+      "outcome": "match",
+      "actual": [
+        0.5476824625538477,
+        -1.1547098574428278
+      ]
+    },
+    {
+      "case": "complex",
+      "mode": "for",
+      "loss": "square",
+      "reference": "inline TensorFlow TapeTape cross-check, not an independent mathematical oracle",
+      "expected": [
+        0.5476824625538477,
+        -1.1547098574428278
+      ],
+      "outcome": "match",
+      "actual": [
+        0.5476824625538477,
+        -1.1547098574428278
+      ]
+    },
+    {
+      "case": "complex",
+      "mode": "rof",
+      "loss": "square",
+      "reference": "inline TensorFlow TapeTape cross-check, not an independent mathematical oracle",
+      "expected": [
+        0.5476824625538477,
+        -1.1547098574428278
+      ],
+      "outcome": "mismatch",
+      "actual": [
+        -0.28177248843954017,
+        -0.7311815087103288
+      ]
+    },
+    {
+      "case": "cube",
+      "mode": "tape",
+      "loss": "square",
+      "reference": "elementary closed-form derivative, no TensorFlow differentiation",
+      "expected": [
+        -0.3079006800000001,
+        -3.1834958399999986
+      ],
+      "outcome": "match",
+      "actual": [
+        -0.30790068,
+        -3.183495839999999
+      ]
+    },
+    {
+      "case": "cube",
+      "mode": "for",
+      "loss": "square",
+      "reference": "elementary closed-form derivative, no TensorFlow differentiation",
+      "expected": [
+        -0.3079006800000001,
+        -3.1834958399999986
+      ],
+      "outcome": "match",
+      "actual": [
+        -0.30790068000000004,
+        -3.183495839999999
+      ]
+    },
+    {
+      "case": "cube",
+      "mode": "rof",
+      "loss": "square",
+      "reference": "elementary closed-form derivative, no TensorFlow differentiation",
+      "expected": [
+        -0.3079006800000001,
+        -3.1834958399999986
+      ],
+      "outcome": "mismatch",
+      "actual": [
+        0.13493959199999997,
+        -2.4414575039999997
+      ]
+    },
+    {
+      "case": "cube",
+      "mode": "tape",
+      "loss": "linear",
+      "reference": "elementary closed-form derivative, no TensorFlow differentiation",
+      "expected": [
+        0.8879999999999999,
+        -1.476
+      ],
+      "outcome": "match",
+      "actual": [
+        0.8880000000000001,
+        -1.4759999999999998
+      ]
+    },
+    {
+      "case": "cube",
+      "mode": "for",
+      "loss": "linear",
+      "reference": "elementary closed-form derivative, no TensorFlow differentiation",
+      "expected": [
+        0.8879999999999999,
+        -1.476
+      ],
+      "outcome": "match",
+      "actual": [
+        0.8879999999999999,
+        -1.4759999999999998
+      ]
+    },
+    {
+      "case": "cube",
+      "mode": "rof",
+      "loss": "linear",
+      "reference": "elementary closed-form derivative, no TensorFlow differentiation",
+      "expected": [
+        0.8879999999999999,
+        -1.476
+      ],
+      "outcome": "disconnected"
+    }
+  ]
+}

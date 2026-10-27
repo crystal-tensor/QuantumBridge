@@ -4,6 +4,7 @@
 from copy import deepcopy
 from dataclasses import replace
 from quantumbridge.core import Circuit, Measurement
+from quantumbridge.core.operations import Operation,execution_operation
 from quantumbridge.core.control_flow import ControlBlock, condition_expression
 from quantumbridge.compiler.traversal import append_item, map_control_bodies
 from .errors import UnsupportedFeature
@@ -11,12 +12,16 @@ from .errors import UnsupportedFeature
 
 def normalize_source_control(circuit,limits,depth=0):
     limits.check("max_nesting_depth",depth,format="qasm")
-    out = Circuit(circuit.num_qubits,circuit.num_bits,circuit.name,deepcopy(circuit.metadata))
+    from quantumbridge.core.circuit_metadata import empty_execution_circuit
+    out = empty_execution_circuit(circuit)
+    from quantumbridge.core.bits import copy_bits
+    copy_bits(circuit,out)
     items = list(circuit.iter_instructions())
     limits.check("max_instructions",len(items),format="qasm")
     index = 0
     while index < len(items):
         item = items[index]
+        if type(item) is Operation:item=execution_operation(item)
         frames = item.metadata.get("control_flow_stack",[])
         if not frames:
             if "control_flow" in item.metadata:

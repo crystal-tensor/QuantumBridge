@@ -1,0 +1,367 @@
+{
+  "inputs": {
+    "nodes": 4,
+    "edges": [
+      [
+        0,
+        1,
+        1
+      ],
+      [
+        1,
+        2,
+        2
+      ],
+      [
+        2,
+        3,
+        1
+      ],
+      [
+        3,
+        0,
+        2
+      ],
+      [
+        0,
+        2,
+        0.5
+      ]
+    ],
+    "objective": "minimize minus cut weight",
+    "penalty": 0
+  },
+  "intermediate": {
+    "candidates": [
+      {
+        "bitstring": "0000",
+        "partition0": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "cut_weight": 0,
+        "feasible": true,
+        "objective": 0,
+        "penalized_cost": 0
+      },
+      {
+        "bitstring": "0001",
+        "partition0": [
+          0,
+          1,
+          2
+        ],
+        "cut_weight": 3,
+        "feasible": true,
+        "objective": -3,
+        "penalized_cost": -3
+      },
+      {
+        "bitstring": "0010",
+        "partition0": [
+          0,
+          1,
+          3
+        ],
+        "cut_weight": 3.5,
+        "feasible": true,
+        "objective": -3.5,
+        "penalized_cost": -3.5
+      },
+      {
+        "bitstring": "0011",
+        "partition0": [
+          0,
+          1
+        ],
+        "cut_weight": 4.5,
+        "feasible": true,
+        "objective": -4.5,
+        "penalized_cost": -4.5
+      },
+      {
+        "bitstring": "0100",
+        "partition0": [
+          0,
+          2,
+          3
+        ],
+        "cut_weight": 3,
+        "feasible": true,
+        "objective": -3,
+        "penalized_cost": -3
+      },
+      {
+        "bitstring": "0101",
+        "partition0": [
+          0,
+          2
+        ],
+        "cut_weight": 6,
+        "feasible": true,
+        "objective": -6,
+        "penalized_cost": -6
+      },
+      {
+        "bitstring": "0110",
+        "partition0": [
+          0,
+          3
+        ],
+        "cut_weight": 2.5,
+        "feasible": true,
+        "objective": -2.5,
+        "penalized_cost": -2.5
+      },
+      {
+        "bitstring": "0111",
+        "partition0": [
+          0
+        ],
+        "cut_weight": 3.5,
+        "feasible": true,
+        "objective": -3.5,
+        "penalized_cost": -3.5
+      },
+      {
+        "bitstring": "1000",
+        "partition0": [
+          1,
+          2,
+          3
+        ],
+        "cut_weight": 3.5,
+        "feasible": true,
+        "objective": -3.5,
+        "penalized_cost": -3.5
+      },
+      {
+        "bitstring": "1001",
+        "partition0": [
+          1,
+          2
+        ],
+        "cut_weight": 2.5,
+        "feasible": true,
+        "objective": -2.5,
+        "penalized_cost": -2.5
+      },
+      {
+        "bitstring": "1010",
+        "partition0": [
+          1,
+          3
+        ],
+        "cut_weight": 6,
+        "feasible": true,
+        "objective": -6,
+        "penalized_cost": -6
+      },
+      {
+        "bitstring": "1011",
+        "partition0": [
+          1
+        ],
+        "cut_weight": 3,
+        "feasible": true,
+        "objective": -3,
+        "penalized_cost": -3
+      },
+      {
+        "bitstring": "1100",
+        "partition0": [
+          2,
+          3
+        ],
+        "cut_weight": 4.5,
+        "feasible": true,
+        "objective": -4.5,
+        "penalized_cost": -4.5
+      },
+      {
+        "bitstring": "1101",
+        "partition0": [
+          2
+        ],
+        "cut_weight": 3.5,
+        "feasible": true,
+        "objective": -3.5,
+        "penalized_cost": -3.5
+      },
+      {
+        "bitstring": "1110",
+        "partition0": [
+          3
+        ],
+        "cut_weight": 3,
+        "feasible": true,
+        "objective": -3,
+        "penalized_cost": -3
+      },
+      {
+        "bitstring": "1111",
+        "partition0": [],
+        "cut_weight": 0,
+        "feasible": true,
+        "objective": 0,
+        "penalized_cost": 0
+      }
+    ],
+    "optimizer_trace": [
+      {
+        "improvement": 0,
+        "expected_penalized_cost": -3.2499999999999982,
+        "gamma": 0.0,
+        "beta": 0.0
+      },
+      {
+        "improvement": 1,
+        "expected_penalized_cost": -3.25,
+        "gamma": 0.0,
+        "beta": 0.724982920059183
+      },
+      {
+        "improvement": 2,
+        "expected_penalized_cost": -3.6406203095924585,
+        "gamma": 0.7853981633974483,
+        "beta": 0.966643893412244
+      },
+      {
+        "improvement": 3,
+        "expected_penalized_cost": -3.877745348201112,
+        "gamma": 0.7853981633974483,
+        "beta": 1.208304866765305
+      },
+      {
+        "improvement": 4,
+        "expected_penalized_cost": -3.900098075823017,
+        "gamma": 1.5707963267948966,
+        "beta": 0.966643893412244
+      },
+      {
+        "improvement": 5,
+        "expected_penalized_cost": -4.376084217366988,
+        "gamma": 1.5707963267948966,
+        "beta": 1.208304866765305
+      },
+      {
+        "improvement": 6,
+        "expected_penalized_cost": -4.6898280756243365,
+        "gamma": 2.356194490192345,
+        "beta": 1.208304866765305
+      },
+      {
+        "improvement": 7,
+        "expected_penalized_cost": -4.796387136909223,
+        "gamma": 3.141592653589793,
+        "beta": 1.208304866765305
+      }
+    ],
+    "cost_pauli_degree": 2,
+    "encoding": "bounded exact diagonal truth-table; degree>2 is not a QUBO"
+  },
+  "reference": {
+    "best_objective": -6,
+    "best_bitstrings": [
+      "0101",
+      "1010"
+    ],
+    "feasible_count": 16,
+    "baseline": "complete classical enumeration of sixteen states"
+  },
+  "evidence": {
+    "execution_mode": "local_simulator",
+    "hardware_access": false,
+    "new_cloud_tasks": 0,
+    "experiments": {
+      "qaoa": {
+        "counts": {
+          "0101": 236,
+          "1010": 213,
+          "1100": 177,
+          "0011": 166,
+          "1001": 35,
+          "1101": 21,
+          "0110": 38,
+          "1111": 23,
+          "0010": 27,
+          "1011": 9,
+          "1000": 23,
+          "0111": 23,
+          "1110": 8,
+          "0000": 15,
+          "0001": 5,
+          "0100": 5
+        },
+        "probabilities": [
+          0.0146484375,
+          0.0048828125,
+          0.0263671875,
+          0.162109375,
+          0.0048828125,
+          0.23046875,
+          0.037109375,
+          0.0224609375,
+          0.0224609375,
+          0.0341796875,
+          0.2080078125,
+          0.0087890625,
+          0.1728515625,
+          0.0205078125,
+          0.0078125,
+          0.0224609375
+        ],
+        "ideal_probabilities": [
+          0.01633713016939828,
+          0.005714334501677848,
+          0.01962118493167596,
+          0.15966049436604693,
+          0.005714334501677867,
+          0.23564534308028126,
+          0.03768599351756534,
+          0.01962118493167595,
+          0.01962118493167596,
+          0.03768599351756535,
+          0.23564534308028126,
+          0.005714334501677867,
+          0.15966049436604696,
+          0.01962118493167597,
+          0.005714334501677847,
+          0.01633713016939828
+        ],
+        "shots": 1024,
+        "seed": 20261023,
+        "qubits": 4,
+        "gate_count": 25,
+        "openqasm2": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\nrz(0.52359877559829893) q[1];\ncx q[0],q[1];\ncx q[0],q[2];\nrz(0.26179938779914935) q[2];\ncx q[0],q[2];\ncx q[0],q[3];\nrz(1.0471975511965976) q[3];\ncx q[0],q[3];\ncx q[1],q[2];\nrz(1.0471975511965979) q[2];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.52359877559829882) q[3];\ncx q[2],q[3];\nrz(2.879793265790644) q[0];\nu1(-2.879793265790644) q[0];\nrx(2.4166097335306098) q[0];\nrx(2.4166097335306098) q[1];\nrx(2.4166097335306098) q[2];\nrx(2.4166097335306098) q[3];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+        "bit_order": "q0-first"
+      }
+    },
+    "estimates": {
+      "qaoa": {
+        "estimate": -4.716796875,
+        "standard_error": 0.04560139595495194,
+        "ideal_reference": -4.796387136909223
+      }
+    },
+    "summary": {
+      "best_observed_feasible": {
+        "bitstring": "0101",
+        "partition0": [
+          0,
+          2
+        ],
+        "cut_weight": 6,
+        "feasible": true,
+        "objective": -6,
+        "penalized_cost": -6
+      },
+      "observed_objective_gap": 0,
+      "feasible_probability": 1.0,
+      "optimal_probability": 0.4384765625,
+      "decision_rule": "best feasible actually sampled candidate; not the most frequent string"
+    }
+  }
+}

@@ -1,0 +1,519 @@
+{
+  "case": "allocation",
+  "title": "量化投资与资产配置",
+  "inputs": {
+    "asset_names": [
+      "Synthetic A",
+      "Synthetic B",
+      "Synthetic C",
+      "Synthetic D"
+    ],
+    "expected_returns": [
+      0.17,
+      0.14,
+      0.11,
+      0.09
+    ],
+    "covariance": [
+      [
+        0.12,
+        0.03,
+        0.02,
+        0.01
+      ],
+      [
+        0.03,
+        0.1,
+        0.01,
+        0.02
+      ],
+      [
+        0.02,
+        0.01,
+        0.08,
+        0.01
+      ],
+      [
+        0.01,
+        0.02,
+        0.01,
+        0.06
+      ]
+    ],
+    "risk_factor": 0.65,
+    "holdings": 2,
+    "penalty": 1.6,
+    "previous_selection": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "transaction_cost_per_changed_bit": 0,
+    "data_source": "fixed synthetic annualized inputs, not observed market quotes"
+  },
+  "intermediate": {
+    "candidates": [
+      {
+        "bitstring": "0000",
+        "selection": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "objective": 0.0,
+        "feasible": false,
+        "violations": {
+          "holdings": -2
+        },
+        "penalized_cost": 6.4
+      },
+      {
+        "bitstring": "0001",
+        "selection": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "objective": -0.051,
+        "feasible": false,
+        "violations": {
+          "holdings": -1
+        },
+        "penalized_cost": 1.5490000000000002
+      },
+      {
+        "bitstring": "0010",
+        "selection": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "objective": -0.057999999999999996,
+        "feasible": false,
+        "violations": {
+          "holdings": -1
+        },
+        "penalized_cost": 1.542
+      },
+      {
+        "bitstring": "0011",
+        "selection": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "objective": -0.09600000000000003,
+        "feasible": true,
+        "violations": {
+          "holdings": 0
+        },
+        "penalized_cost": -0.09600000000000003
+      },
+      {
+        "bitstring": "0100",
+        "selection": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "objective": -0.07500000000000001,
+        "feasible": false,
+        "violations": {
+          "holdings": -1
+        },
+        "penalized_cost": 1.5250000000000001
+      },
+      {
+        "bitstring": "0101",
+        "selection": [
+          0,
+          1,
+          0,
+          1
+        ],
+        "objective": -0.1,
+        "feasible": true,
+        "violations": {
+          "holdings": 0
+        },
+        "penalized_cost": -0.1
+      },
+      {
+        "bitstring": "0110",
+        "selection": [
+          0,
+          1,
+          1,
+          0
+        ],
+        "objective": -0.12,
+        "feasible": true,
+        "violations": {
+          "holdings": 0
+        },
+        "penalized_cost": -0.12
+      },
+      {
+        "bitstring": "0111",
+        "selection": [
+          0,
+          1,
+          1,
+          1
+        ],
+        "objective": -0.13199999999999998,
+        "feasible": false,
+        "violations": {
+          "holdings": 1
+        },
+        "penalized_cost": 1.4680000000000002
+      },
+      {
+        "bitstring": "1000",
+        "selection": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "objective": -0.09200000000000001,
+        "feasible": false,
+        "violations": {
+          "holdings": -1
+        },
+        "penalized_cost": 1.508
+      },
+      {
+        "bitstring": "1001",
+        "selection": [
+          1,
+          0,
+          0,
+          1
+        ],
+        "objective": -0.13,
+        "feasible": true,
+        "violations": {
+          "holdings": 0
+        },
+        "penalized_cost": -0.13
+      },
+      {
+        "bitstring": "1010",
+        "selection": [
+          1,
+          0,
+          1,
+          0
+        ],
+        "objective": -0.12400000000000003,
+        "feasible": true,
+        "violations": {
+          "holdings": 0
+        },
+        "penalized_cost": -0.12400000000000003
+      },
+      {
+        "bitstring": "1011",
+        "selection": [
+          1,
+          0,
+          1,
+          1
+        ],
+        "objective": -0.14899999999999997,
+        "feasible": false,
+        "violations": {
+          "holdings": 1
+        },
+        "penalized_cost": 1.451
+      },
+      {
+        "bitstring": "1100",
+        "selection": [
+          1,
+          1,
+          0,
+          0
+        ],
+        "objective": -0.12800000000000003,
+        "feasible": true,
+        "violations": {
+          "holdings": 0
+        },
+        "penalized_cost": -0.12800000000000003
+      },
+      {
+        "bitstring": "1101",
+        "selection": [
+          1,
+          1,
+          0,
+          1
+        ],
+        "objective": -0.13999999999999996,
+        "feasible": false,
+        "violations": {
+          "holdings": 1
+        },
+        "penalized_cost": 1.4600000000000002
+      },
+      {
+        "bitstring": "1110",
+        "selection": [
+          1,
+          1,
+          1,
+          0
+        ],
+        "objective": -0.14700000000000002,
+        "feasible": false,
+        "violations": {
+          "holdings": 1
+        },
+        "penalized_cost": 1.453
+      },
+      {
+        "bitstring": "1111",
+        "selection": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "objective": -0.14599999999999996,
+        "feasible": false,
+        "violations": {
+          "holdings": 2
+        },
+        "penalized_cost": 6.2540000000000004
+      }
+    ],
+    "local_optimizer_trace": [
+      {
+        "evaluation": 0,
+        "expected_cost": 1.494499999999999,
+        "gamma": 0.0,
+        "beta": 0.0,
+        "phase": "local-grid"
+      },
+      {
+        "evaluation": 1,
+        "expected_cost": 1.4944999999999986,
+        "gamma": 0.0,
+        "beta": 0.241660973353061,
+        "phase": "local-grid"
+      },
+      {
+        "evaluation": 2,
+        "expected_cost": 1.494499999999998,
+        "gamma": 0.0,
+        "beta": 1.933287786824488,
+        "phase": "local-grid"
+      },
+      {
+        "evaluation": 3,
+        "expected_cost": 1.2023735565759657,
+        "gamma": 0.7853981633974483,
+        "beta": 0.966643893412244,
+        "phase": "local-grid"
+      },
+      {
+        "evaluation": 4,
+        "expected_cost": 0.7570587232072071,
+        "gamma": 0.7853981633974483,
+        "beta": 1.208304866765305,
+        "phase": "local-grid"
+      },
+      {
+        "evaluation": 5,
+        "expected_cost": 0.46127730701536257,
+        "gamma": 1.5707963267948966,
+        "beta": 1.208304866765305,
+        "phase": "local-grid"
+      },
+      {
+        "evaluation": 6,
+        "expected_cost": 0.40857276029418593,
+        "gamma": 2.356194490192345,
+        "beta": 2.899931680236732,
+        "phase": "local-grid"
+      },
+      {
+        "evaluation": 7,
+        "expected_cost": 0.39420793784383873,
+        "gamma": 2.106194490192345,
+        "beta": 2.899931680236732,
+        "phase": "local-refine"
+      },
+      {
+        "evaluation": 8,
+        "expected_cost": 0.39420793784383873,
+        "gamma": 2.106194490192345,
+        "beta": 2.899931680236732,
+        "phase": "local-refine"
+      },
+      {
+        "evaluation": 9,
+        "expected_cost": 0.39420793784383873,
+        "gamma": 2.106194490192345,
+        "beta": 2.899931680236732,
+        "phase": "local-refine"
+      },
+      {
+        "evaluation": 10,
+        "expected_cost": 0.3788151930469435,
+        "gamma": 2.106194490192345,
+        "beta": 2.845931680236732,
+        "phase": "local-refine"
+      },
+      {
+        "evaluation": 11,
+        "expected_cost": 0.3760765066262138,
+        "gamma": 2.073794490192345,
+        "beta": 2.878331680236732,
+        "phase": "local-refine"
+      },
+      {
+        "evaluation": 12,
+        "expected_cost": 0.37170074692187205,
+        "gamma": 2.054354490192345,
+        "beta": 2.858891680236732,
+        "phase": "local-refine"
+      },
+      {
+        "evaluation": 13,
+        "expected_cost": 0.3713758962956394,
+        "gamma": 2.042690490192345,
+        "beta": 2.858891680236732,
+        "phase": "local-refine"
+      },
+      {
+        "evaluation": 14,
+        "expected_cost": 0.3712126015884654,
+        "gamma": 2.0356920901923448,
+        "beta": 2.858891680236732,
+        "phase": "local-refine"
+      }
+    ]
+  },
+  "reference": {
+    "best_selection": "1001",
+    "best_objective": -0.13,
+    "feasible_count": 6,
+    "penalized_global_minimum_is_feasible": true,
+    "existing_native_exact_solver": [
+      1,
+      0,
+      0,
+      1
+    ]
+  },
+  "local_results": {
+    "qaoa": {
+      "execution_mode": "local_simulator",
+      "hardware_access": false,
+      "counts": {
+        "0101": 127,
+        "1001": 121,
+        "1101": 37,
+        "0011": 123,
+        "1100": 134,
+        "1010": 105,
+        "0110": 118,
+        "0100": 30,
+        "1011": 37,
+        "1110": 40,
+        "0010": 36,
+        "0001": 30,
+        "0111": 38,
+        "1000": 29,
+        "1111": 10,
+        "0000": 9
+      },
+      "probabilities": [
+        0.0087890625,
+        0.029296875,
+        0.03515625,
+        0.1201171875,
+        0.029296875,
+        0.1240234375,
+        0.115234375,
+        0.037109375,
+        0.0283203125,
+        0.1181640625,
+        0.1025390625,
+        0.0361328125,
+        0.130859375,
+        0.0361328125,
+        0.0390625,
+        0.009765625
+      ],
+      "shots": 1024,
+      "ideal_probabilities": [
+        0.008345694480299712,
+        0.028400342449932135,
+        0.028454527088108424,
+        0.12374531456715437,
+        0.02878772588987704,
+        0.12382992888481455,
+        0.12443832984082193,
+        0.031020841094608193,
+        0.02892041493736302,
+        0.12463859444534102,
+        0.12431248060123098,
+        0.03116026780562963,
+        0.12439762219338944,
+        0.030878000812865455,
+        0.03093563657042896,
+        0.0077342783381341125
+      ],
+      "seed": 20261023,
+      "artifact": {
+        "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\nrz(0.0077936144341207514) q[3];\nrz(0.0099758264756745086) q[2];\ncx q[2],q[3];\nrz(0.50081766353660062) q[3];\ncx q[2],q[3];\nrz(0.01122280478513393) q[1];\ncx q[1],q[3];\nrz(0.50284400328947199) q[3];\ncx q[1],q[3];\ncx q[1],q[2];\nrz(0.50081766353660062) q[2];\ncx q[1],q[2];\nrz(0.016522462600336012) q[0];\ncx q[0],q[3];\nrz(0.50081766353660062) q[3];\ncx q[0],q[3];\ncx q[0],q[2];\nrz(0.50284400328947199) q[2];\ncx q[0],q[2];\ncx q[0],q[1];\nrz(0.50487034304234357) q[1];\ncx q[0],q[1];\nrx(5.7177833604734642) q[0];\nrx(5.7177833604734642) q[1];\nrx(5.7177833604734642) q[2];\nrx(5.7177833604734642) q[3];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+        "sha256": "503493d33caa8539ceaa7642045cc416e2ea8a743d80b964c43d1b421e52758c",
+        "num_qubits": 4,
+        "gates": 30,
+        "two_qubit_gates": 12
+      },
+      "bit_order": "q0-first"
+    }
+  },
+  "local_analysis": {
+    "feasible_probability": 0.7109375,
+    "optimal_probability": 0.1181640625,
+    "expected_penalized_cost": 0.43812988281250004,
+    "best_observed_feasible": {
+      "bitstring": "1001",
+      "selection": [
+        1,
+        0,
+        0,
+        1
+      ],
+      "objective": -0.13,
+      "feasible": true,
+      "violations": {
+        "holdings": 0
+      },
+      "penalized_cost": -0.13
+    },
+    "best_observed_gap": 0.0,
+    "decision_rule": "best feasible sampled candidate; not necessarily the most frequent string"
+  },
+  "hardware_status": "not_executed",
+  "hardware_results": null,
+  "hardware_analysis": null,
+  "acceptance": {
+    "case": "allocation",
+    "hardware_status": "NOT_EXECUTED",
+    "hardware_results": null
+  },
+  "scope": "synthetic small research case; not full industry coverage or investment advice"
+}

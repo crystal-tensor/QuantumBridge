@@ -207,7 +207,10 @@ class DAGCircuit:
 
 
 def circuit_to_dag(circuit, limits=None):
-    dag = DAGCircuit(circuit.num_qubits, circuit.num_bits, name=circuit.name, metadata=circuit.metadata, limits=limits)
+    from quantumbridge.core.circuit_metadata import is_separated, inherit_execution
+    dag = DAGCircuit(circuit.num_qubits, circuit.num_bits, name=circuit.name,
+        metadata=None if is_separated(circuit) else circuit.metadata, limits=limits)
+    if is_separated(circuit):dag.metadata=circuit.metadata;inherit_execution(circuit,dag)
     from quantumbridge.core.control_flow import ExecutionLimits
     validate_control_flow(circuit, limits=ExecutionLimits(max_control_depth=dag.limits.max_control_nesting))
     total = 0
@@ -239,7 +242,8 @@ def circuit_to_dag(circuit, limits=None):
 
 def dag_to_circuit(dag, validate=True):
     if validate: dag._order()
-    circuit = Circuit(dag.num_qubits, dag.num_bits, dag.name, deepcopy(dag.metadata))
+    from quantumbridge.core.circuit_metadata import empty_execution_circuit
+    circuit = empty_execution_circuit(dag)
     for node in dag.topological_op_nodes():
         item = deepcopy(node.instruction)
         if isinstance(item, Measurement):

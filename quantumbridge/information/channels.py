@@ -40,11 +40,96 @@ def _channel_input(value):
         raise UnsupportedFeature("mixed_radix_operator_channel","Channel conversion does not yet preserve mixed-radix Operator input/output partitions.")
     if current_resources() is None:return value
     from quantumbridge.core import Circuit
+    from quantumbridge.core.circuit import is_native_circuit
     from quantumbridge.core.classical import UnsupportedFeature
     kind=type(value)
     if issubclass(kind,np.ndarray):return np.ndarray.view(value,np.ndarray)
-    if any(kind is native for native in (Kraus,Choi,SuperOp,PTM,Chi,Stinespring,Operator,Circuit,list,tuple)):return value
+    if is_native_circuit(value) or any(kind is native for native in (Kraus,Choi,SuperOp,PTM,Chi,Stinespring,Operator,list,tuple)):return value
     raise UnsupportedFeature("managed_channel_input","Managed channels cannot invoke foreign constructor or matrix protocols.")
+
+
+def _channel_matrix_origin(value):
+    """Admit an existing coordinate owner before reading its numeric fields."""
+    from quantumbridge.core.classical import UnsupportedFeature
+    from quantumbridge.core.composition import _admit_graph
+    from quantumbridge.core.circuit import is_native_circuit
+    from quantumbridge.core.gate_limits import current_gate_limits
+    from quantumbridge.information.operator import _admit_public_arithmetic_owner
+    kind = type(value)
+    if kind is Operator:
+        origin = _admit_public_arithmetic_owner(value)
+        if origin == "hybrid":
+            from math import isfinite
+            # Canonical ndarray scalars need no temporary Boolean matrix.
+            if any(not isfinite(item.real) or not isfinite(item.imag) for item in value.data.flat):
+                raise ValueError("Hybrid channel input must contain finite coefficients.")
+            return "native"
+        return origin
+    if is_native_circuit(value):
+        _admit_graph(value)
+        return "native"
+    native_types = (Kraus, SuperOp, Choi, PTM, Chi, Stinespring)
+    if not any(kind is native for native in native_types):
+        if issubclass(kind, (*native_types, Operator)):
+            raise UnsupportedFeature("channel_matrix_origin_owner")
+        return None
+    fields = object.__getattribute__(value, "__dict__")
+    origin = fields.get("_public_matrix_basis")
+    if origin is not None and (type(origin) is not str or origin not in ("native", "unresolved")):
+        raise UnsupportedFeature("channel_matrix_origin")
+    incoming, outgoing = fields.get("_input_dim"), fields.get("_output_dim")
+    if any(type(dim) is not int or dim < 1 for dim in (incoming, outgoing)):
+        raise ValueError("Channel dimensions require positive native integers.")
+    if kind is Kraus:
+        left, right, standard = (fields.get(key) for key in ("_left", "_right", "_is_standard"))
+        if type(left) is not tuple or type(right) is not tuple or not left or len(left) != len(right) or type(standard) is not bool:
+            raise ValueError("Invalid native Kraus storage descriptor.")
+        matrices, shape = left + right, (outgoing, incoming)
+        if standard and right is not left:raise ValueError("Standard Kraus factors must share their canonical tuple.")
+        data = fields.get("data")
+        if standard:
+            if data is not left:raise ValueError("Kraus public data differs from its factors.")
+        elif type(data) is not tuple or len(data) != 2 or data[0] is not left or data[1] is not right:
+            raise ValueError("Generalized Kraus public data differs from its factors.")
+    elif kind is Stinespring:
+        environment = fields.get("_environment_dim")
+        if type(environment) is not int or environment < 1:raise ValueError("Invalid Stinespring environment dimension.")
+        matrices = (fields.get("_left_data"), fields.get("_right_data"))
+        shape = (outgoing * environment, incoming)
+        standard, data = fields.get("_is_standard"), fields.get("data")
+        if type(standard) is not bool:raise ValueError("Invalid Stinespring factor descriptor.")
+        if standard:
+            if matrices[0] is not matrices[1] or data is not matrices[0]:
+                raise ValueError("Standard Stinespring data differs from its factors.")
+        elif type(data) is not tuple or len(data) != 2 or data[0] is not matrices[0] or data[1] is not matrices[1]:
+            raise ValueError("Generalized Stinespring data differs from its factors.")
+    else:
+        matrices = (fields.get("data"),)
+        shape = (outgoing * incoming,) * 2 if kind is Choi else (outgoing ** 2, incoming ** 2)
+    limits = current_gate_limits()
+    limits.check("max_matrix_dimension", max(shape))
+    limits.check("max_decomposition_work", len(matrices) * shape[0] * shape[1])
+    for matrix in matrices:
+        if type(matrix) is not np.ndarray or matrix.dtype.kind not in "biufc":
+            raise UnsupportedFeature("channel_matrix_origin_storage")
+        if matrix.shape != shape:raise ValueError("Channel dimensions do not match its numeric buffer.")
+    _admit_graph(value)
+    return origin
+
+
+def _set_channel_origin(result, origin):
+    if origin is not None and (type(origin) is not str or origin not in ("native", "unresolved")):
+        from quantumbridge.core.classical import UnsupportedFeature
+        raise UnsupportedFeature("channel_matrix_origin")
+    if origin is not None:
+        fields = object.__getattribute__(result, "__dict__")
+        if "_public_matrix_basis" not in fields:result._public_matrix_basis = origin
+        elif fields["_public_matrix_basis"] != origin:raise ValueError("Channel origin cannot be overwritten.")
+    return result
+
+
+def _combined_channel_origin(first, second):
+    return first if first == second else "unresolved"
 
 
 def _matrix_rank(value):
@@ -81,16 +166,23 @@ def _dims_for_dimension(dimension: int) -> tuple[int, ...]:
     return (dimension,)
 
 
-def _operator_data(data) -> np.ndarray:
+def _operator_data(data, *, _normalize_hybrid=True) -> np.ndarray:
+    if issubclass(type(data), Operator):
+        _channel_matrix_origin(data)
+        if object.__getattribute__(data, "__dict__").get("_public_matrix_basis") == "hybrid":
+            if not _normalize_hybrid:
+                from quantumbridge.core.classical import UnsupportedFeature
+                raise UnsupportedFeature("channel_matrix_origin", "Nested channel factors require a common declared representation.")
+            # This is already one independent, owned native snapshot. Do not
+            # copy it again before handing it to the existing channel kernel.
+            return data.as_native_operator().data
+        return _matrix_array(data.data, copy=True)
     if current_resources() is not None:
-        from quantumbridge.core import Circuit
+        from quantumbridge.core.circuit import is_native_circuit
         from quantumbridge.core.classical import UnsupportedFeature
-        if type(data) is Operator:return _matrix_array(data.data, copy=True)
-        if type(data) is Circuit:return Operator.from_circuit(data).data
+        if is_native_circuit(data):return Operator.from_circuit(data).data
         if issubclass(type(data), np.ndarray) or type(data) is tuple or type(data) is list:return _matrix_array(data)
         raise UnsupportedFeature("managed_channel_operator", "Managed channel input requires a native operator/circuit or numeric buffer; foreign matrix factories are not dispatched.")
-    if isinstance(data, Operator):
-        return np.array(data.data, copy=True)
     if hasattr(data, "operations"):
         return Operator.from_circuit(data).data
     if hasattr(data, "to_matrix"):
@@ -267,8 +359,8 @@ def _embed_operator(matrix: np.ndarray, qargs: tuple[int, ...], num_qubits: int)
     if current_resources() is not None:
         from quantumbridge.information.operator import _expand_subsystem_operator
         return _expand_subsystem_operator(matrix,qargs,num_qubits)
-    identity = Operator(np.eye(1 << num_qubits, dtype=complex))
-    return identity.compose(Operator(matrix), qargs=qargs).data
+    identity = Operator(np.eye(1 << num_qubits, dtype=complex)).as_native_operator()
+    return identity.compose(Operator(matrix).as_native_operator(), qargs=qargs).data
 
 
 def _validation_choi(channel):
@@ -355,6 +447,13 @@ class _QuantumChannel:
     _input_dim: int
     _output_dim: int
 
+    def __setattr__(self, name, value):
+        if name == "_public_matrix_basis":
+            if name in self.__dict__:raise AttributeError("Channel matrix origin is immutable.")
+            if type(value) is not str or value not in ("native", "unresolved"):
+                raise ValueError("Unknown channel matrix origin.")
+        object.__setattr__(self, name, value)
+
     @property
     def dim(self) -> tuple[int, int]:
         return (self._input_dim, self._output_dim)
@@ -405,6 +504,7 @@ class _QuantumChannel:
         return Stinespring(self)
 
     def compose(self, other, qargs=None, front: bool = False):
+        origin = _combined_channel_origin(_channel_matrix_origin(self), _channel_matrix_origin(other))
         other_channel = SuperOp(other)
         if qargs is not None:
             if self.num_qubits is None or other_channel.num_qubits is None:
@@ -419,7 +519,8 @@ class _QuantumChannel:
                 _embed_operator(op, normalized, self.num_qubits)
                 for op in other_kraus._right
             )
-            other_channel = Kraus(left if other_kraus._is_standard else (left, right)).to_superop()
+            other_channel = _set_channel_origin(Kraus(left if other_kraus._is_standard else (left, right)),
+                _channel_matrix_origin(other_kraus)).to_superop()
 
         this = self.to_superop()
         if current_resources() is not None:
@@ -436,12 +537,13 @@ class _QuantumChannel:
             result = other_channel.data @ this.data if current_resources() is None else arrays.contracted(other_channel.data,this.data)
             input_dim = this._input_dim
             output_dim = other_channel._output_dim
-        return type(self)(SuperOp._from_matrix(result, input_dim, output_dim))
+        return type(self)(SuperOp._from_matrix(result, input_dim, output_dim, _origin=origin))
 
     def dot(self, other, qargs=None):
         return self.compose(other, qargs=qargs, front=True)
 
     def tensor(self, other):
+        origin = _combined_channel_origin(_channel_matrix_origin(self), _channel_matrix_origin(other))
         other_kraus = Kraus(other)
         this_kraus = self.to_kraus()
         if current_resources() is not None:
@@ -456,7 +558,7 @@ class _QuantumChannel:
             for targets,first,second in groups:
                 for output,(a,b) in zip(targets,product(first,second)):
                     kron_into(a,b,output,scope=current_resources())
-            return type(self)(Kraus(outputs if standard else (outputs[:count],outputs[count:])))
+            return type(self)(_set_channel_origin(Kraus(outputs if standard else (outputs[:count],outputs[count:])), origin))
         left = tuple(
             np.kron(left, right)
             for left in this_kraus._left
@@ -468,19 +570,20 @@ class _QuantumChannel:
             for right in other_kraus._right
         )
         data = left if this_kraus._is_standard and other_kraus._is_standard else (left, right)
-        return type(self)(Kraus(data))
+        return type(self)(_set_channel_origin(Kraus(data), origin))
 
     def expand(self, other):
         return type(self)(other).tensor(self)
 
     def power(self, n: int):
+        origin = _channel_matrix_origin(self)
         if not isinstance(n, int):
             raise ValueError("QuantumBridge channel power requires an integer exponent.")
         if self._input_dim != self._output_dim:
             raise ValueError("QuantumBridge channel power requires equal input and output dimensions.")
         from quantumbridge.execution import mps_arrays as arrays
         powered=arrays.matrix_power(self.to_superop().data,n)
-        return type(self)(SuperOp._from_matrix(powered, self._input_dim, self._output_dim))
+        return type(self)(SuperOp._from_matrix(powered, self._input_dim, self._output_dim, _origin=origin))
 
     def tensorpower(self, n: int):
         if not isinstance(n, int) or n < 0:
@@ -495,20 +598,22 @@ class _QuantumChannel:
         return result
 
     def adjoint(self):
+        origin = _channel_matrix_origin(self)
         data=self.to_superop().data
         if current_resources() is None:matrix=data.conj().T
         else:
             from quantumbridge.execution import mps_arrays as arrays
             matrix=arrays.conjugated(data).T
-        return type(self)(SuperOp._from_matrix(matrix, self._output_dim, self._input_dim))
+        return type(self)(SuperOp._from_matrix(matrix, self._output_dim, self._input_dim, _origin=origin))
 
     def conjugate(self):
+        origin = _channel_matrix_origin(self)
         data=self.to_superop().data
         if current_resources() is None:matrix=np.conjugate(data)
         else:
             from quantumbridge.execution import mps_arrays as arrays
             matrix=arrays.conjugated(data)
-        return type(self)(SuperOp._from_matrix(matrix, self._input_dim, self._output_dim))
+        return type(self)(SuperOp._from_matrix(matrix, self._input_dim, self._output_dim, _origin=origin))
 
     def transpose(self):
         return self.conjugate().adjoint()
@@ -582,12 +687,14 @@ class _QuantumChannel:
         return DensityMatrix(output)
 
     def to_operator(self) -> Operator:
+        origin = _channel_matrix_origin(self)
         kraus = self.to_kraus()
         if not kraus._is_standard or len(kraus._left) != 1:
             raise ValueError("QuantumBridge channel is not representable by one operator.")
         operator = Operator(kraus._left[0])
         if not operator.is_unitary():
             raise ValueError("QuantumBridge channel operator is not unitary.")
+        if origin is not None:operator._public_matrix_basis = origin
         return operator
 
     def to_instruction(self):
@@ -609,6 +716,7 @@ class _QuantumChannel:
         return self.dot(other)
 
     def __add__(self, other):
+        origin = _combined_channel_origin(_channel_matrix_origin(self), _channel_matrix_origin(other))
         other_channel = SuperOp(other)
         this = self.to_superop()
         if this.dim != other_channel.dim:
@@ -622,9 +730,11 @@ class _QuantumChannel:
             matrix,
             self._input_dim,
             self._output_dim,
+            _origin=origin,
         ))
 
     def __sub__(self, other):
+        origin = _combined_channel_origin(_channel_matrix_origin(self), _channel_matrix_origin(other))
         other_channel = SuperOp(other)
         this = self.to_superop()
         if this.dim != other_channel.dim:
@@ -638,9 +748,11 @@ class _QuantumChannel:
             matrix,
             self._input_dim,
             self._output_dim,
+            _origin=origin,
         ))
 
     def __mul__(self, scalar):
+        origin = _channel_matrix_origin(self)
         if not np.isscalar(scalar):
             return NotImplemented
         data=self.to_superop().data
@@ -655,6 +767,7 @@ class _QuantumChannel:
             matrix,
             self._input_dim,
             self._output_dim,
+            _origin=origin,
         ))
 
     def __rmul__(self, scalar):
@@ -692,6 +805,7 @@ class Kraus(_QuantumChannel):
     """Standard or generalized Kraus representation of a quantum map."""
 
     def __init__(self, data):
+        origin = _channel_matrix_origin(data)
         data=_channel_input(data)
         if isinstance(data, Kraus):
             if current_resources() is not None and not data._is_standard:
@@ -751,6 +865,7 @@ class Kraus(_QuantumChannel):
         else:
             self.data = (self._left, self._right)
         self._output_dim, self._input_dim = shape
+        _set_channel_origin(self, origin)
 
     @classmethod
     def from_channel(cls, channel) -> "Kraus":
@@ -760,17 +875,19 @@ class Kraus(_QuantumChannel):
         return self.copy()
 
     def to_superop(self) -> "SuperOp":
+        origin = _channel_matrix_origin(self)
         if current_resources() is not None:
-            return SuperOp._from_matrix(_choi_to_superop(_validation_choi(self),self._input_dim,self._output_dim),self._input_dim,self._output_dim)
+            return SuperOp._from_matrix(_choi_to_superop(_validation_choi(self),self._input_dim,self._output_dim),self._input_dim,self._output_dim,_origin=origin)
         matrix = sum(
             np.kron(right.conj(), left)
             for left, right in zip(self._left, self._right)
         )
-        return SuperOp._from_matrix(matrix, self._input_dim, self._output_dim)
+        return SuperOp._from_matrix(matrix, self._input_dim, self._output_dim, _origin=origin)
 
     def to_choi(self) -> "Choi":
+        origin = _channel_matrix_origin(self)
         if current_resources() is not None:
-            return Choi._from_matrix(_validation_choi(self),self._input_dim,self._output_dim)
+            return Choi._from_matrix(_validation_choi(self),self._input_dim,self._output_dim,_origin=origin)
         matrix = sum(
             np.outer(
                 left.reshape(-1, order="F"),
@@ -778,47 +895,53 @@ class Kraus(_QuantumChannel):
             )
             for left, right in zip(self._left, self._right)
         )
-        return Choi._from_matrix(matrix, self._input_dim, self._output_dim)
+        return Choi._from_matrix(matrix, self._input_dim, self._output_dim, _origin=origin)
 
 
 class SuperOp(_QuantumChannel):
     """Column-vectorized matrix representation of a quantum channel."""
 
     def __init__(self, data):
+        origin = _channel_matrix_origin(data)
         data=_channel_input(data)
         if isinstance(data, SuperOp):
             self.data = _matrix_array(data.data, copy=True)
             self._input_dim = data._input_dim
             self._output_dim = data._output_dim
+            _set_channel_origin(self, origin)
             return
         if isinstance(data, _QuantumChannel):
             converted = data.to_superop()
             self.data = _matrix_array(converted.data, copy=True)
             self._input_dim = converted._input_dim
             self._output_dim = converted._output_dim
+            _set_channel_origin(self, origin)
             return
         if isinstance(data, Operator) or hasattr(data, "operations") or hasattr(data, "to_matrix"):
             converted = self.from_operator(data)
             self.data = converted.data
             self._input_dim = converted._input_dim
             self._output_dim = converted._output_dim
+            _set_channel_origin(self, origin)
             return
         matrix = _matrix_array(data)
         if matrix.ndim != 2:
             raise ValueError("QuantumBridge SuperOp data must be a matrix.")
         self._input_dim, self._output_dim = _infer_superop_dimensions(matrix.shape)
         self.data = matrix
+        _set_channel_origin(self, origin)
 
     @classmethod
-    def _from_matrix(cls, matrix: np.ndarray, input_dim: int, output_dim: int) -> "SuperOp":
+    def _from_matrix(cls, matrix: np.ndarray, input_dim: int, output_dim: int, *, _origin=None) -> "SuperOp":
         instance = cls.__new__(cls)
         instance.data = _matrix_array(matrix)
         instance._input_dim = int(input_dim)
         instance._output_dim = int(output_dim)
-        return instance
+        return _set_channel_origin(instance, _origin)
 
     @classmethod
     def from_operator(cls, operator) -> "SuperOp":
+        origin = _channel_matrix_origin(operator)
         matrix = _operator_data(operator)
         if matrix.ndim != 2:
             raise ValueError("QuantumBridge SuperOp operator input must be a matrix.")
@@ -829,38 +952,43 @@ class SuperOp(_QuantumChannel):
             for row in range(output_dim**2):
                 for column in range(input_dim**2):
                     result[row,column]=complex(matrix[row//output_dim,column//input_dim]).conjugate()*matrix[row%output_dim,column%input_dim]
-            return cls._from_matrix(result,input_dim,output_dim)
-        return cls._from_matrix(np.kron(matrix.conj(), matrix), input_dim, output_dim)
+            return cls._from_matrix(result,input_dim,output_dim,_origin=origin)
+        return cls._from_matrix(np.kron(matrix.conj(), matrix), input_dim, output_dim,_origin=origin)
 
     def to_superop(self) -> "SuperOp":
         return self.copy()
 
     def to_choi(self) -> "Choi":
+        origin = _channel_matrix_origin(self)
         matrix = _superop_to_choi(self.data, self._input_dim, self._output_dim)
-        return Choi._from_matrix(matrix, self._input_dim, self._output_dim)
+        return Choi._from_matrix(matrix, self._input_dim, self._output_dim, _origin=origin)
 
 
 class Choi(_QuantumChannel):
     """Choi-matrix representation of a quantum channel."""
 
     def __init__(self, data):
+        origin = _channel_matrix_origin(data)
         data=_channel_input(data)
         if isinstance(data, Choi):
             self.data = _matrix_array(data.data, copy=True)
             self._input_dim = data._input_dim
             self._output_dim = data._output_dim
+            _set_channel_origin(self, origin)
             return
         if isinstance(data, _QuantumChannel):
             converted = data.to_superop().to_choi()
             self.data = _matrix_array(converted.data, copy=True)
             self._input_dim = converted._input_dim
             self._output_dim = converted._output_dim
+            _set_channel_origin(self, origin)
             return
         if isinstance(data, Operator) or hasattr(data, "operations") or hasattr(data, "to_matrix"):
             converted = Kraus(data).to_choi()
             self.data = converted.data
             self._input_dim = converted._input_dim
             self._output_dim = converted._output_dim
+            _set_channel_origin(self, origin)
             return
         matrix = _matrix_array(data)
         if matrix.ndim != 2 or matrix.shape[0] != matrix.shape[1]:
@@ -874,14 +1002,15 @@ class Choi(_QuantumChannel):
             self._input_dim = channel_dim
             self._output_dim = 1
         self.data = matrix
+        _set_channel_origin(self, origin)
 
     @classmethod
-    def _from_matrix(cls, matrix: np.ndarray, input_dim: int, output_dim: int) -> "Choi":
+    def _from_matrix(cls, matrix: np.ndarray, input_dim: int, output_dim: int, *, _origin=None) -> "Choi":
         instance = cls.__new__(cls)
         instance.data = _matrix_array(matrix)
         instance._input_dim = int(input_dim)
         instance._output_dim = int(output_dim)
-        return instance
+        return _set_channel_origin(instance, _origin)
 
     @classmethod
     def from_channel(cls, channel) -> "Choi":
@@ -891,19 +1020,22 @@ class Choi(_QuantumChannel):
         return self.copy()
 
     def to_superop(self) -> SuperOp:
+        origin = _channel_matrix_origin(self)
         matrix = _choi_to_superop(self.data, self._input_dim, self._output_dim)
-        return SuperOp._from_matrix(matrix, self._input_dim, self._output_dim)
+        return SuperOp._from_matrix(matrix, self._input_dim, self._output_dim, _origin=origin)
 
 
 class PTM(_QuantumChannel):
     """Pauli-transfer-matrix representation for equal-dimension qubit channels."""
 
     def __init__(self, data):
+        origin = _channel_matrix_origin(data)
         data=_channel_input(data)
         if isinstance(data, PTM):
             self.data = _matrix_array(data.data, copy=True)
             self._input_dim = data._input_dim
             self._output_dim = data._output_dim
+            _set_channel_origin(self, origin)
             return
         if (
             isinstance(data, _QuantumChannel)
@@ -916,6 +1048,7 @@ class PTM(_QuantumChannel):
             self.data = converted.data
             self._input_dim = converted._input_dim
             self._output_dim = converted._output_dim
+            _set_channel_origin(self, origin)
             return
         matrix = _matrix_array(data)
         if matrix.ndim != 2 or matrix.shape[0] != matrix.shape[1]:
@@ -926,9 +1059,11 @@ class PTM(_QuantumChannel):
         self.data = _real_if_close(matrix)
         self._input_dim = dimension
         self._output_dim = dimension
+        _set_channel_origin(self, origin)
 
     @classmethod
     def from_superop(cls, channel: SuperOp) -> "PTM":
+        origin = _channel_matrix_origin(channel)
         if channel._input_dim != channel._output_dim or not _is_power_of_two(channel._input_dim):
             raise ValueError("QuantumBridge PTM requires an equal-dimension qubit channel.")
         num_qubits = int(np.log2(channel._input_dim))
@@ -938,25 +1073,28 @@ class PTM(_QuantumChannel):
             from quantumbridge.execution import mps_arrays as arrays
             matrix=arrays.contracted(arrays.contracted(arrays.conjugated(change).T,channel.data),change)
             np.divide(matrix,channel._input_dim,out=matrix)
-        return cls(_real_if_close(matrix))
+        return _set_channel_origin(cls(_real_if_close(matrix)), origin)
 
     def to_superop(self) -> SuperOp:
+        origin = _channel_matrix_origin(self)
         if current_resources() is not None:
-            return SuperOp._from_matrix(_choi_to_superop(_validation_choi(self),self._input_dim,self._output_dim),self._input_dim,self._output_dim)
+            return SuperOp._from_matrix(_choi_to_superop(_validation_choi(self),self._input_dim,self._output_dim),self._input_dim,self._output_dim,_origin=origin)
         change = _pauli_change_matrix(self.num_qubits or 0)
         matrix = change @ self.data @ change.conj().T / self._input_dim
-        return SuperOp._from_matrix(matrix, self._input_dim, self._output_dim)
+        return SuperOp._from_matrix(matrix, self._input_dim, self._output_dim, _origin=origin)
 
 
 class Chi(_QuantumChannel):
     """Pauli-basis process-matrix representation for n-qubit channels."""
 
     def __init__(self, data):
+        origin = _channel_matrix_origin(data)
         data=_channel_input(data)
         if isinstance(data, Chi):
             self.data = _matrix_array(data.data, copy=True)
             self._input_dim = data._input_dim
             self._output_dim = data._output_dim
+            _set_channel_origin(self, origin)
             return
         if (
             isinstance(data, _QuantumChannel)
@@ -969,6 +1107,7 @@ class Chi(_QuantumChannel):
             self.data = converted.data
             self._input_dim = converted._input_dim
             self._output_dim = converted._output_dim
+            _set_channel_origin(self, origin)
             return
         matrix = _matrix_array(data)
         if matrix.ndim != 2 or matrix.shape[0] != matrix.shape[1]:
@@ -979,9 +1118,11 @@ class Chi(_QuantumChannel):
         self.data = matrix
         self._input_dim = dimension
         self._output_dim = dimension
+        _set_channel_origin(self, origin)
 
     @classmethod
     def from_choi(cls, channel: Choi) -> "Chi":
+        origin = _channel_matrix_origin(channel)
         if channel._input_dim != channel._output_dim or not _is_power_of_two(channel._input_dim):
             raise ValueError("QuantumBridge Chi requires an equal-dimension qubit channel.")
         num_qubits = int(np.log2(channel._input_dim))
@@ -991,14 +1132,15 @@ class Chi(_QuantumChannel):
             from quantumbridge.execution import mps_arrays as arrays
             matrix=arrays.contracted(arrays.contracted(arrays.conjugated(change).T,channel.data),change)
             np.divide(matrix,channel._input_dim,out=matrix)
-        return cls(matrix)
+        return _set_channel_origin(cls(matrix), origin)
 
     def to_choi(self) -> Choi:
+        origin = _channel_matrix_origin(self)
         if current_resources() is not None:
-            return Choi._from_matrix(_validation_choi(self),self._input_dim,self._output_dim)
+            return Choi._from_matrix(_validation_choi(self),self._input_dim,self._output_dim,_origin=origin)
         change = _pauli_change_matrix(self.num_qubits or 0)
         matrix = change @ self.data @ change.conj().T / self._input_dim
-        return Choi._from_matrix(matrix, self._input_dim, self._output_dim)
+        return Choi._from_matrix(matrix, self._input_dim, self._output_dim, _origin=origin)
 
     def to_superop(self) -> SuperOp:
         return self.to_choi().to_superop()
@@ -1008,6 +1150,7 @@ class Stinespring(_QuantumChannel):
     """Standard or generalized Stinespring representation of a quantum map."""
 
     def __init__(self, data):
+        origin = _channel_matrix_origin(data)
         data=_channel_input(data)
         if isinstance(data, Stinespring):
             self._left_data = _matrix_array(data._left_data, copy=True)
@@ -1041,8 +1184,8 @@ class Stinespring(_QuantumChannel):
             self._environment_dim = environment_dim
         else:
             generalized = isinstance(data, tuple) and len(data) == 2
-            left_data = _operator_data(data[0] if generalized else data)
-            right_data = _operator_data(data[1]) if generalized else left_data
+            left_data = _operator_data(data[0] if generalized else data, _normalize_hybrid=not generalized)
+            right_data = _operator_data(data[1], _normalize_hybrid=False) if generalized else left_data
             if left_data.ndim != 2 or right_data.ndim != 2:
                 raise ValueError("QuantumBridge Stinespring data must be a matrix.")
             if left_data.shape != right_data.shape:
@@ -1056,6 +1199,7 @@ class Stinespring(_QuantumChannel):
             self._environment_dim = left_data.shape[0] // self._output_dim
 
         self._set_public_data()
+        _set_channel_origin(self, origin)
 
     @classmethod
     def _from_matrix(
@@ -1090,6 +1234,7 @@ class Stinespring(_QuantumChannel):
             self.data = (self._left_data, self._right_data)
 
     def to_kraus(self) -> Kraus:
+        origin = _channel_matrix_origin(self)
         left_tensor = self._left_data.reshape(
             self._output_dim,
             self._environment_dim,
@@ -1097,23 +1242,25 @@ class Stinespring(_QuantumChannel):
         )
         left = tuple(left_tensor[:, index, :] for index in range(self._environment_dim))
         if self._is_standard:
-            return Kraus(left)
+            return _set_channel_origin(Kraus(left), origin)
         right_tensor = self._right_data.reshape(
             self._output_dim,
             self._environment_dim,
             self._input_dim,
         )
         right = tuple(right_tensor[:, index, :] for index in range(self._environment_dim))
-        return Kraus((left, right))
+        return _set_channel_origin(Kraus((left, right)), origin)
 
     def to_superop(self) -> SuperOp:
+        origin = _channel_matrix_origin(self)
         if current_resources() is not None:
-            return SuperOp._from_matrix(_choi_to_superop(_validation_choi(self),self._input_dim,self._output_dim),self._input_dim,self._output_dim)
+            return SuperOp._from_matrix(_choi_to_superop(_validation_choi(self),self._input_dim,self._output_dim),self._input_dim,self._output_dim,_origin=origin)
         return self.to_kraus().to_superop()
 
     def to_choi(self) -> Choi:
+        origin = _channel_matrix_origin(self)
         if current_resources() is not None:
-            return Choi._from_matrix(_validation_choi(self),self._input_dim,self._output_dim)
+            return Choi._from_matrix(_validation_choi(self),self._input_dim,self._output_dim,_origin=origin)
         return self.to_kraus().to_choi()
 
 

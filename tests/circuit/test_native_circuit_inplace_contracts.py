@@ -84,7 +84,14 @@ def test_instruction_constructor_safe_alias_and_conflict_do_not_guess_old_defini
     with pytest.raises(TypeError): qb.Instruction("i", 1, 0, [], qb.Circuit(1))
 
 
-def test_zero_width_instruction_can_be_staged_without_claiming_zero_width_execution():
+def test_zero_width_instruction_repeat_can_be_staged_without_claiming_opaque_execution():
     owner = qb.Instruction("i", 0, 0, [])
     assert owner.num_qubits == 0 and owner.copy().num_qubits == 0
-    with pytest.raises(qb.UnsupportedFeature): owner.repeat(2)
+    repeated=owner.repeat(2)
+    assert repeated.num_qubits==0 and len(repeated.definition.operations)==2
+    with pytest.raises(qb.UnsupportedFeature): qb.StatevectorDevice().statevector(qb.Circuit.from_instruction(repeated))
+
+
+def test_zero_width_instruction_with_real_definition_repeats_coherent_phase():
+    body=qb.Circuit(0);body.global_phase=.3
+    np.testing.assert_allclose(Operator(body.to_instruction().repeat(2)).data,[[np.exp(.6j)]],atol=3e-13,rtol=0)

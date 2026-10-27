@@ -29,6 +29,40 @@ def _workspace_notice():
             "Known ndarray roots are admitted; Python labels, RNG state, scalar/iterator workspace and bounded immutable gate-cache objects are not measured RSS.")
 
 
+def _clifford_matrix_origin(owner, *, dense=False):
+    from quantumbridge.core.classical import UnsupportedFeature
+    from quantumbridge.core.composition import _admit_graph
+    from quantumbridge.core.gate_limits import current_gate_limits
+    if type(owner) is not Clifford:raise UnsupportedFeature("clifford_matrix_owner")
+    fields = object.__getattribute__(owner, "__dict__")
+    width, tableau, basis = (fields.get(key) for key in ("num_qubits", "tableau", "_public_matrix_basis"))
+    if basis is not None and (type(basis) is not str or basis not in ("native", "unresolved")):
+        raise UnsupportedFeature("clifford_matrix_origin")
+    if type(width) is not int or width < 0:raise ValueError("Clifford width must be a native nonnegative integer.")
+    limits = current_gate_limits()
+    limits.check("max_circuit_bits", width)
+    if type(tableau) is not np.ndarray or tableau.dtype != np.dtype(bool):
+        raise UnsupportedFeature("clifford_matrix_storage")
+    if tableau.shape != (2 * width, 2 * width + 1):raise ValueError("Clifford width differs from its tableau shape.")
+    limits.check("max_decomposition_work", tableau.size)
+    if dense:
+        if width > limits.max_matrix_dimension.bit_length() - 1:
+            raise MemoryError("Clifford matrix exceeds max_matrix_dimension before synthesis.")
+        limits.check("max_decomposition_work", (1 << width) ** 2)
+        # Validate the signed symplectic owner without an array workspace.
+        for left in range(2 * width):
+            for right in range(left + 1, 2 * width):
+                if _symplectic_product(tableau[left, :-1], tableau[right, :-1]) != int(right == left + width):
+                    raise ValueError("Clifford tableau is not symplectic.")
+    _admit_graph(owner)
+    return basis
+
+
+def _with_clifford_origin(result, origin):
+    if origin is not None:result._public_matrix_basis = origin
+    return result
+
+
 def _matrix_input(value,category):
     return (np.asarray(value,dtype=complex) if current_resources() is None else
         numeric_array(value,category=category))
@@ -189,17 +223,45 @@ class Clifford:
 
     CLIFFORD_GATES = {"id", "i", "h", "s", "sdg", "sx", "sxdg", "x", "y", "z", "cx", "cy", "cz", "swap", "dcx", "ecr", "iswap"}
 
+    def __setattr__(self, name, value):
+        if name == "_public_matrix_basis" and name in self.__dict__:
+            raise AttributeError("Clifford matrix origin cannot be overwritten.")
+        object.__setattr__(self, name, value)
+
     def __init__(self, data, validate: bool = True, copy: bool = True):
         from quantumbridge.core.gates import Gate, ControlledGate
         from quantumbridge.core.gates import is_native_instruction
+        from quantumbridge.core.circuit import is_native_circuit
         _workspace_notice()
+        origin = None
         if type(data) is Clifford:
+            origin = _clifford_matrix_origin(data)
             tableau=copied_array(data.tableau,category="clifford_tableau_copy") if copy else data.tableau
-        elif type(data) is Circuit or is_native_instruction(data):
-            tableau = self.from_circuit(data).tableau
+        elif is_native_circuit(data) or is_native_instruction(data):
+            converted = self.from_circuit(data)
+            origin = _clifford_matrix_origin(converted)
+            tableau = converted.tableau
         elif type(data) is Pauli:
             tableau = self.from_label(data._body).tableau
-        elif type(data) is Operator:
+        elif issubclass(type(data), Operator):
+            from quantumbridge.information.operator import _admit_public_arithmetic_owner
+            origin = _admit_public_arithmetic_owner(data)
+            if origin == "hybrid":
+                data = data.as_native_operator()
+                origin = "native"
+            elif origin == "native" and data.num_qubits is None:
+                from math import isfinite
+                size = data.data.shape[0]
+                if (data.data.shape != (size, size) or size & (size - 1)
+                        or data._input_dims != data._output_dims):
+                    raise ValueError("Mixed-radix Clifford construction needs matching power-of-two square partitions.")
+                if any(not isfinite(value.real) or not isfinite(value.imag) for value in data.data.flat):
+                    raise ValueError("Mixed-radix Clifford input must be finite.")
+                # A qudit partition is not the tableau's binary partition.
+                # Materialize its declared public frame before interpreting
+                # the numerical map as a projective qubit Clifford.
+                data = data.as_qiskit_operator()
+                origin = None
             tableau = self.from_matrix(data.data).tableau
         elif type(data) is dict:
             tableau = self.from_dict(data).tableau
@@ -235,6 +297,7 @@ class Clifford:
         self.num_qubits = len(tableau) // 2
         if validate and not self.is_unitary():
             raise ValueError("QuantumBridge Clifford tableau is not symplectic.")
+        _with_clifford_origin(self, origin)
 
     @classmethod
     def identity(cls, num_qubits: int) -> "Clifford":
@@ -257,6 +320,14 @@ class Clifford:
 
     @classmethod
     def from_circuit(cls, circuit) -> "Clifford":
+        from quantumbridge.core.circuit import is_native_circuit
+        from quantumbridge.core.gates import is_native_instruction
+        from quantumbridge.core.composition import _admit_graph
+        from quantumbridge.information.operator import _operator_matrix_origin
+        if not is_native_circuit(circuit) and not is_native_instruction(circuit):
+            raise TypeError("Clifford.from_circuit requires a native circuit or instruction owner.")
+        _admit_graph(circuit)
+        origin = _operator_matrix_origin(circuit)
         if isinstance(circuit, Instruction):
             if circuit.metadata.get("condition") is not None or circuit.metadata.get("control_flow") is not None:
                 raise ValueError("QuantumBridge Clifford cannot represent classical control flow.")
@@ -283,7 +354,7 @@ class Clifford:
                 result._append_matrix(matrix, qubits)
             except (ValueError, TypeError) as exc:
                 raise ValueError(f"QuantumBridge operation {operation.name!r} is not a supported Clifford gate.") from exc
-        return result
+        return _with_clifford_origin(result, origin)
 
     @classmethod
     def from_matrix(cls, matrix) -> "Clifford":
@@ -305,6 +376,9 @@ class Clifford:
 
     @classmethod
     def from_operator(cls, operator) -> "Clifford":
+        if issubclass(type(operator), (Operator, Clifford)):
+            if issubclass(type(operator), Clifford):_clifford_matrix_origin(operator)
+            return cls(operator)
         if current_resources() is not None:
             from quantumbridge.information.channels import _operator_data
             return cls.from_matrix(operator.to_matrix() if type(operator) in (Clifford,Pauli) else _operator_data(operator))
@@ -471,15 +545,18 @@ class Clifford:
         return result
 
     def _embedded(self, qargs, width: int) -> "Clifford":
+        origin = _clifford_matrix_origin(self)
         selected = _validate_qargs(qargs, self.num_qubits, width)
         result = Clifford.identity(width)
         for index, qubit in enumerate(selected):
             result._set_row(qubit, self._row_pauli(index)._embedded(selected, width))
             result._set_row(width + qubit, self._row_pauli(self.num_qubits + index)._embedded(selected, width))
-        return result
+        return _with_clifford_origin(result, origin)
 
     def compose(self, other, qargs=None, front: bool = False) -> "Clifford":
+        origin = _clifford_matrix_origin(self)
         operand = other if isinstance(other, Clifford) else Clifford(other)
+        other_origin = _clifford_matrix_origin(operand)
         if qargs is not None:
             operand = operand._embedded(qargs, self.num_qubits)
         if self.num_qubits != operand.num_qubits:
@@ -488,12 +565,13 @@ class Clifford:
         result = Clifford.identity(self.num_qubits)
         for row in range(2 * self.num_qubits):
             result._set_row(row, second.conjugate_pauli(first._row_pauli(row)))
-        return result
+        return _with_clifford_origin(result, origin if origin == other_origin else "unresolved")
 
     def dot(self, other, qargs=None) -> "Clifford":
         return self.compose(other, qargs=qargs, front=True)
 
     def adjoint(self) -> "Clifford":
+        origin = _clifford_matrix_origin(self)
         width = self.num_qubits
         result=Clifford.identity(width)
         for row in range(2*width):
@@ -502,7 +580,7 @@ class Clifford:
         for row in range(2 * width):
             image = self.conjugate_pauli(result._row_pauli(row))
             result.phase[row] = bool(image.phase // 2)
-        return result
+        return _with_clifford_origin(result, origin)
 
     def conjugate(self) -> "Clifford":
         result = self.copy()
@@ -514,24 +592,28 @@ class Clifford:
         return self.adjoint().conjugate()
 
     def tensor(self, other) -> "Clifford":
+        origin = _clifford_matrix_origin(self)
         operand = other if isinstance(other, Clifford) else Clifford(other)
+        other_origin = _clifford_matrix_origin(operand)
         width = self.num_qubits + operand.num_qubits
         result = Clifford.identity(width)
         for source, positions in ((operand, tuple(range(operand.num_qubits))), (self, tuple(range(operand.num_qubits, width)))):
             for offset, qubit in enumerate(positions):
                 result._set_row(qubit, source._row_pauli(offset)._embedded(positions, width))
                 result._set_row(width + qubit, source._row_pauli(source.num_qubits + offset)._embedded(positions, width))
-        return result
+        return _with_clifford_origin(result, origin if origin == other_origin else "unresolved")
 
     def expand(self, other) -> "Clifford":
         return Clifford(other).tensor(self)
 
     def power(self, n: int) -> "Clifford":
+        origin = _clifford_matrix_origin(self)
         if not isinstance(n, Integral) or n < 1:
             raise ValueError("QuantumBridge Clifford powers must be positive integers; use adjoint() for the inverse.")
         factor = self.copy()
         remaining = int(n)
         result = Clifford.identity(self.num_qubits)
+        _with_clifford_origin(result, origin)
         while remaining:
             if remaining & 1:
                 result = result.compose(factor)
@@ -594,6 +676,7 @@ class Clifford:
         return circuit
 
     def to_matrix(self) -> np.ndarray:
+        _clifford_matrix_origin(self, dense=True)
         scope=current_resources()
         if scope is not None:
             from quantumbridge.execution.array_reservations import array_layout
@@ -603,7 +686,10 @@ class Clifford:
         return Operator.from_circuit(self.to_circuit()).data
 
     def to_operator(self) -> Operator:
-        return Operator(self.to_matrix())
+        origin = _clifford_matrix_origin(self, dense=True)
+        result = Operator(self.to_matrix())
+        if origin is not None:result._public_matrix_basis = origin
+        return result
 
     def to_instruction(self) -> Instruction:
         return self.to_circuit().to_instruction(name="clifford")

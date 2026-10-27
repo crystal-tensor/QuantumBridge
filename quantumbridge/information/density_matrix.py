@@ -11,6 +11,7 @@ from typing import Union
 
 from .statevector import Statevector, _sample_measurements, _tensor_arrays, _mapped_evolution_data, _expectation_value
 from .statevector import _state_arithmetic, _state_trace, _state_dictionary, _state_valid, _state_data, _state_arrays
+from .statevector import _state_operator_data
 from quantumbridge.execution.resource_context import current_resources, meter_native_samples
 from .state_dimensions import (
     state_dimensions, qubit_count, basis_digits, basis_index, basis_label,
@@ -30,7 +31,8 @@ class DensityMatrix:
         from quantumbridge.execution.resource_context import current_resources
         scope=current_resources()
         from quantumbridge.core.gates import is_native_instruction
-        if (type(data) is Circuit or is_native_instruction(data) if scope is not None else isinstance(data,(Circuit,Instruction))):
+        from quantumbridge.core.circuit import is_native_circuit
+        if (is_native_circuit(data) or is_native_instruction(data) if scope is not None else isinstance(data,(Circuit,Instruction))):
             data = self.from_instruction(data).data
         if scope is None:
             self.data = np.asarray(data, dtype=complex)
@@ -92,7 +94,8 @@ class DensityMatrix:
         scope=current_resources()
         if scope is not None:
             from quantumbridge.core.gates import is_native_instruction
-            if type(instruction) is not Circuit and not is_native_instruction(instruction):
+            from quantumbridge.core.circuit import is_native_circuit
+            if not is_native_circuit(instruction) and not is_native_instruction(instruction):
                 from quantumbridge.core.classical import UnsupportedFeature
                 raise UnsupportedFeature("managed_state_instruction","Managed state construction requires a native Circuit or Instruction.")
             from quantumbridge.execution.array_reservations import array_layout
@@ -339,7 +342,10 @@ class DensityMatrix:
     def to_operator(self):
         from quantumbridge.information.operator import Operator
 
-        return Operator(self.data,input_dims=self._dims,output_dims=self._dims)
+        data,dimensions,_=_state_operator_data(self,DensityMatrix)
+        operator=Operator(data,input_dims=dimensions,output_dims=dimensions)
+        operator._public_matrix_basis="native"
+        return operator
 
     def to_statevector(self, atol: float = 1e-10) -> Statevector:
         from quantumbridge.execution.resource_context import current_resources

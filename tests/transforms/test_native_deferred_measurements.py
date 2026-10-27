@@ -562,7 +562,8 @@ def test_kraus_nonunitary_matrices_snapshots_and_undefined_full_state_fail():
 
 def test_unsupported_loops_store_arithmetic_and_undefined_values_do_not_silently_run():
     def undefined(t):
-        t.circuit.num_bits = 1
+        from quantumbridge import Clbit
+        t.circuit.add_bits([Clbit()])
         t.cond(bit(0), lambda b: b.x(1))
         return t.probs([1])
     with pytest.raises(UnsupportedFeature, match="undefined_measurement"):
@@ -671,7 +672,7 @@ def test_measurement_dependent_gate_angles_and_oversized_classical_storage_rejec
         m = t.measure(0)
         t.circuit.num_bits = 100001
         return t.probs(records=m)
-    with pytest.raises(MemoryError, match="classical-bit budget"):
+    with pytest.raises(MemoryError, match="max_circuit_bits"):
         QNode(too_wide, 2)()
 
 

@@ -197,7 +197,10 @@ def _immutable_callback_data(value, seen=None):
 
 def _strict_configuration_copy(value, memo, ledger, category, on_array, *, preflight_group=False):
     from quantumbridge.core.classical import UnsupportedFeature
+    from quantumbridge.core.operations import Operation
+    from quantumbridge.core.unitary_inverse import inverse_matrix_owner,seal_inverse_copy
     pending, seen, arrays, native = [value], set(memo), [], []
+    inverse_operations=[]
     atomic = (type(None), bool, int, float, complex, str, bytes, type, range)
     while pending:
         item = pending.pop()
@@ -237,6 +240,9 @@ def _strict_configuration_copy(value, memo, ledger, category, on_array, *, prefl
                 raise UnsupportedFeature("persistent_native_slots", "This native slotted configuration has no controlled copy contract.") from None
             if type(fields) is not dict:
                 raise UnsupportedFeature("persistent_native_fields")
+            if kind is Operation and ("_native_inverse_owner" in fields or "_native_inverse_qualification" in fields):
+                inverse_matrix_owner(item)
+                inverse_operations.append(item)
             native.append((item, fields))
             pending.append(fields)
         else:
@@ -262,6 +268,8 @@ def _strict_configuration_copy(value, memo, ledger, category, on_array, *, prefl
         object.__getattribute__(memo[id(item)], "__dict__").update(fields)
     for item, fields in native:
         object.__getattribute__(memo[id(item)], "__dict__").update(deepcopy(fields, memo))
+    for item in inverse_operations:
+        seal_inverse_copy(memo[id(item)])
     return deepcopy(value, memo)
 
 

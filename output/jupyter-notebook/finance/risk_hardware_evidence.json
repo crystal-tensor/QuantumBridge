@@ -1,0 +1,803 @@
+{
+  "case": "risk",
+  "title": "风险计量",
+  "inputs": {
+    "losses": [
+      0,
+      1,
+      2,
+      4,
+      6,
+      8,
+      12,
+      20
+    ],
+    "probabilities": {
+      "base": [
+        0.52,
+        0.2,
+        0.12,
+        0.07,
+        0.04,
+        0.025,
+        0.015,
+        0.01
+      ],
+      "stress": [
+        0.4,
+        0.18,
+        0.14,
+        0.1,
+        0.07,
+        0.05,
+        0.035,
+        0.025
+      ]
+    },
+    "confidence": 0.95,
+    "loss_unit": "synthetic monetary units",
+    "measure": "physical scenario probabilities"
+  },
+  "intermediate": {
+    "loss_table": [
+      {
+        "state": "000",
+        "loss": 0,
+        "base": 0.52,
+        "stress": 0.4
+      },
+      {
+        "state": "001",
+        "loss": 1,
+        "base": 0.2,
+        "stress": 0.18
+      },
+      {
+        "state": "010",
+        "loss": 2,
+        "base": 0.12,
+        "stress": 0.14
+      },
+      {
+        "state": "011",
+        "loss": 4,
+        "base": 0.07,
+        "stress": 0.1
+      },
+      {
+        "state": "100",
+        "loss": 6,
+        "base": 0.04,
+        "stress": 0.07
+      },
+      {
+        "state": "101",
+        "loss": 8,
+        "base": 0.025,
+        "stress": 0.05
+      },
+      {
+        "state": "110",
+        "loss": 12,
+        "base": 0.015,
+        "stress": 0.035
+      },
+      {
+        "state": "111",
+        "loss": 20,
+        "base": 0.01,
+        "stress": 0.025
+      }
+    ]
+  },
+  "reference": {
+    "base": {
+      "confidence": 0.95,
+      "expected_loss": 1.54,
+      "VaR": 6.0,
+      "CVaR_expected_shortfall": 11.599999999999994,
+      "cdf": [
+        0.52,
+        0.72,
+        0.84,
+        0.9099999999999999,
+        0.95,
+        0.975,
+        0.99,
+        1.0
+      ],
+      "sorted_losses": [
+        0.0,
+        1.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        12.0,
+        20.0
+      ]
+    },
+    "stress": {
+      "confidence": 0.95,
+      "expected_loss": 2.6,
+      "VaR": 12.0,
+      "CVaR_expected_shortfall": 15.999999999999996,
+      "cdf": [
+        0.4,
+        0.5800000000000001,
+        0.7200000000000001,
+        0.8200000000000001,
+        0.8900000000000001,
+        0.9400000000000002,
+        0.9750000000000002,
+        1.0000000000000002
+      ],
+      "sorted_losses": [
+        0.0,
+        1.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        12.0,
+        20.0
+      ]
+    }
+  },
+  "local_results": {
+    "base": {
+      "execution_mode": "local_simulator",
+      "hardware_access": false,
+      "counts": {
+        "000": 538,
+        "001": 181,
+        "101": 23,
+        "100": 50,
+        "011": 81,
+        "010": 114,
+        "110": 23,
+        "111": 14
+      },
+      "probabilities": [
+        0.525390625,
+        0.1767578125,
+        0.111328125,
+        0.0791015625,
+        0.048828125,
+        0.0224609375,
+        0.0224609375,
+        0.013671875
+      ],
+      "shots": 1024,
+      "ideal_probabilities": [
+        0.5200000000000001,
+        0.1999999999999999,
+        0.12,
+        0.07,
+        0.03999999999999998,
+        0.025,
+        0.014999999999999993,
+        0.010000000000000004
+      ],
+      "seed": 20261023,
+      "artifact": {
+        "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncreg c[3];\nry(0.60938530803079505) q[0];\nry(1.0296695346928471) q[1];\ncx q[0],q[1];\nry(-0.08057280042072712) q[1];\ncx q[0],q[1];\nry(1.280527799832917) q[2];\ncx q[1],q[2];\nry(-0.056442558007722965) q[2];\ncx q[1],q[2];\ncx q[0],q[2];\nry(-0.07315547743777312) q[2];\ncx q[0],q[2];\ncx q[0],q[2];\ncx q[1],q[2];\nry(-0.040687429273846998) q[2];\ncx q[1],q[2];\ncx q[0],q[2];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\n",
+        "sha256": "e6fec722015d95e7e6a25ffc17f24012ba408030fee60b9e5f2a6b20e5f60128",
+        "num_qubits": 3,
+        "gates": 17,
+        "two_qubit_gates": 10
+      },
+      "bit_order": "q0-first"
+    },
+    "stress": {
+      "execution_mode": "local_simulator",
+      "hardware_access": false,
+      "counts": {
+        "011": 111,
+        "001": 164,
+        "000": 402,
+        "010": 163,
+        "111": 34,
+        "100": 69,
+        "110": 32,
+        "101": 49
+      },
+      "probabilities": [
+        0.392578125,
+        0.16015625,
+        0.1591796875,
+        0.1083984375,
+        0.0673828125,
+        0.0478515625,
+        0.03125,
+        0.033203125
+      ],
+      "shots": 1024,
+      "ideal_probabilities": [
+        0.4000000000000003,
+        0.18000000000000005,
+        0.14000000000000015,
+        0.1,
+        0.06999999999999995,
+        0.04999999999999996,
+        0.034999999999999996,
+        0.024999999999999984
+      ],
+      "seed": 20261024,
+      "artifact": {
+        "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncreg c[3];\nry(0.87629806116834041) q[0];\nry(1.1871075101026491) q[1];\ncx q[0],q[1];\nry(-0.043851907238125487) q[1];\ncx q[0],q[1];\nry(1.3479475607541149) q[2];\ncx q[1],q[2];\nry(-0.055400686821092282) q[2];\ncx q[1],q[2];\ncx q[0],q[2];\nry(-0.055400686821092282) q[2];\ncx q[0],q[2];\ncx q[0],q[2];\ncx q[1],q[2];\nry(-0.055400686821092282) q[2];\ncx q[1],q[2];\ncx q[0],q[2];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\n",
+        "sha256": "7e84362517c916020d33f1fad25f944a60e11dea452e39b46d4fa9f8dde137c4",
+        "num_qubits": 3,
+        "gates": 17,
+        "two_qubit_gates": 10
+      },
+      "bit_order": "q0-first"
+    }
+  },
+  "local_analysis": {
+    "base": {
+      "confidence": 0.95,
+      "expected_loss": 1.7314453125,
+      "VaR": 8.0,
+      "CVaR_expected_shortfall": 13.078124999999996,
+      "cdf": [
+        0.525390625,
+        0.7021484375,
+        0.8134765625,
+        0.892578125,
+        0.94140625,
+        0.9638671875,
+        0.986328125,
+        1.0
+      ],
+      "sorted_losses": [
+        0.0,
+        1.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        12.0,
+        20.0
+      ]
+    },
+    "stress": {
+      "confidence": 0.95,
+      "expected_loss": 2.73828125,
+      "VaR": 12.0,
+      "CVaR_expected_shortfall": 17.312499999999996,
+      "cdf": [
+        0.392578125,
+        0.552734375,
+        0.7119140625,
+        0.8203125,
+        0.8876953125,
+        0.935546875,
+        0.966796875,
+        1.0
+      ],
+      "sorted_losses": [
+        0.0,
+        1.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        12.0,
+        20.0
+      ]
+    }
+  },
+  "hardware_status": "completed",
+  "hardware_results": {
+    "base": {
+      "execution_mode": "cloud_hardware",
+      "hardware_access": true,
+      "counts": {
+        "001": 298,
+        "111": 63,
+        "000": 305,
+        "010": 91,
+        "110": 40,
+        "100": 51,
+        "011": 107,
+        "101": 69
+      },
+      "raw_counts": {
+        "100": 298,
+        "111": 63,
+        "000": 305,
+        "010": 91,
+        "011": 40,
+        "001": 51,
+        "110": 107,
+        "101": 69
+      },
+      "probabilities": [
+        0.2978515625,
+        0.291015625,
+        0.0888671875,
+        0.1044921875,
+        0.0498046875,
+        0.0673828125,
+        0.0390625,
+        0.0615234375
+      ],
+      "shots": 1024,
+      "task_id": "2610231235440801552",
+      "backend": "Dongling",
+      "provider_bit_order": "q0-last",
+      "bit_order": "q0-first",
+      "artifact": {
+        "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncreg c[3];\nry(0.60938530803079505) q[0];\nry(1.0296695346928471) q[1];\ncx q[0],q[1];\nry(-0.08057280042072712) q[1];\ncx q[0],q[1];\nry(1.280527799832917) q[2];\ncx q[1],q[2];\nry(-0.056442558007722965) q[2];\ncx q[1],q[2];\ncx q[0],q[2];\nry(-0.07315547743777312) q[2];\ncx q[0],q[2];\ncx q[0],q[2];\ncx q[1],q[2];\nry(-0.040687429273846998) q[2];\ncx q[1],q[2];\ncx q[0],q[2];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\n",
+        "sha256": "e6fec722015d95e7e6a25ffc17f24012ba408030fee60b9e5f2a6b20e5f60128",
+        "num_qubits": 3,
+        "gates": 17,
+        "two_qubit_gates": 10
+      }
+    },
+    "stress": {
+      "execution_mode": "cloud_hardware",
+      "hardware_access": true,
+      "counts": {
+        "010": 98,
+        "011": 169,
+        "000": 250,
+        "001": 283,
+        "110": 39,
+        "111": 75,
+        "101": 71,
+        "100": 39
+      },
+      "raw_counts": {
+        "010": 98,
+        "110": 169,
+        "000": 250,
+        "100": 283,
+        "011": 39,
+        "111": 75,
+        "101": 71,
+        "001": 39
+      },
+      "probabilities": [
+        0.244140625,
+        0.2763671875,
+        0.095703125,
+        0.1650390625,
+        0.0380859375,
+        0.0693359375,
+        0.0380859375,
+        0.0732421875
+      ],
+      "shots": 1024,
+      "task_id": "2610231235484838251",
+      "backend": "Dongling",
+      "provider_bit_order": "q0-last",
+      "bit_order": "q0-first",
+      "artifact": {
+        "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncreg c[3];\nry(0.87629806116834041) q[0];\nry(1.1871075101026491) q[1];\ncx q[0],q[1];\nry(-0.043851907238125487) q[1];\ncx q[0],q[1];\nry(1.3479475607541149) q[2];\ncx q[1],q[2];\nry(-0.055400686821092282) q[2];\ncx q[1],q[2];\ncx q[0],q[2];\nry(-0.055400686821092282) q[2];\ncx q[0],q[2];\ncx q[0],q[2];\ncx q[1],q[2];\nry(-0.055400686821092282) q[2];\ncx q[1],q[2];\ncx q[0],q[2];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\n",
+        "sha256": "7e84362517c916020d33f1fad25f944a60e11dea452e39b46d4fa9f8dde137c4",
+        "num_qubits": 3,
+        "gates": 17,
+        "two_qubit_gates": 10
+      }
+    }
+  },
+  "hardware_analysis": {
+    "base": {
+      "confidence": 0.95,
+      "expected_loss": 3.423828125,
+      "VaR": 20.0,
+      "CVaR_expected_shortfall": 20.0,
+      "cdf": [
+        0.2978515625,
+        0.5888671875,
+        0.677734375,
+        0.7822265625,
+        0.83203125,
+        0.8994140625,
+        0.9384765625,
+        1.0
+      ],
+      "sorted_losses": [
+        0.0,
+        1.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        12.0,
+        20.0
+      ]
+    },
+    "stress": {
+      "confidence": 0.95,
+      "expected_loss": 3.8330078125,
+      "VaR": 20.0,
+      "CVaR_expected_shortfall": 20.0,
+      "cdf": [
+        0.244140625,
+        0.5205078125,
+        0.6162109375,
+        0.78125,
+        0.8193359375,
+        0.888671875,
+        0.9267578125,
+        1.0
+      ],
+      "sorted_losses": [
+        0.0,
+        1.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        12.0,
+        20.0
+      ]
+    }
+  },
+  "acceptance": {
+    "case": "risk",
+    "hardware_status": "INCONCLUSIVE",
+    "hardware_status_reason": "business tolerances not approved; receipt consistency is not independent hardware certification",
+    "reference": {
+      "base": {
+        "confidence": 0.95,
+        "expected_loss": 1.54,
+        "VaR": 6.0,
+        "CVaR_expected_shortfall": 11.599999999999994,
+        "cdf": [
+          0.52,
+          0.72,
+          0.84,
+          0.9099999999999999,
+          0.95,
+          0.975,
+          0.99,
+          1.0
+        ],
+        "sorted_losses": [
+          0.0,
+          1.0,
+          2.0,
+          4.0,
+          6.0,
+          8.0,
+          12.0,
+          20.0
+        ]
+      },
+      "stress": {
+        "confidence": 0.95,
+        "expected_loss": 2.6,
+        "VaR": 12.0,
+        "CVaR_expected_shortfall": 15.999999999999996,
+        "cdf": [
+          0.4,
+          0.5800000000000001,
+          0.7200000000000001,
+          0.8200000000000001,
+          0.8900000000000001,
+          0.9400000000000002,
+          0.9750000000000002,
+          1.0000000000000002
+        ],
+        "sorted_losses": [
+          0.0,
+          1.0,
+          2.0,
+          4.0,
+          6.0,
+          8.0,
+          12.0,
+          20.0
+        ]
+      }
+    },
+    "ideal_circuit_analysis": {
+      "base": {
+        "confidence": 0.95,
+        "expected_loss": 1.5399999999999998,
+        "VaR": 6.0,
+        "CVaR_expected_shortfall": 11.599999999999994,
+        "cdf": [
+          0.5200000000000001,
+          0.72,
+          0.84,
+          0.9099999999999999,
+          0.95,
+          0.975,
+          0.99,
+          1.0
+        ],
+        "sorted_losses": [
+          0.0,
+          1.0,
+          2.0,
+          4.0,
+          6.0,
+          8.0,
+          12.0,
+          20.0
+        ]
+      },
+      "stress": {
+        "confidence": 0.95,
+        "expected_loss": 2.5999999999999996,
+        "VaR": 12.0,
+        "CVaR_expected_shortfall": 15.999999999999993,
+        "cdf": [
+          0.4000000000000003,
+          0.5800000000000003,
+          0.7200000000000004,
+          0.8200000000000004,
+          0.8900000000000003,
+          0.9400000000000003,
+          0.9750000000000003,
+          1.0000000000000002
+        ],
+        "sorted_losses": [
+          0.0,
+          1.0,
+          2.0,
+          4.0,
+          6.0,
+          8.0,
+          12.0,
+          20.0
+        ]
+      }
+    },
+    "measured_analysis": {
+      "base": {
+        "confidence": 0.95,
+        "expected_loss": 3.423828125,
+        "VaR": 20.0,
+        "CVaR_expected_shortfall": 20.0,
+        "cdf": [
+          0.2978515625,
+          0.5888671875,
+          0.677734375,
+          0.7822265625,
+          0.83203125,
+          0.8994140625,
+          0.9384765625,
+          1.0
+        ],
+        "sorted_losses": [
+          0.0,
+          1.0,
+          2.0,
+          4.0,
+          6.0,
+          8.0,
+          12.0,
+          20.0
+        ]
+      },
+      "stress": {
+        "confidence": 0.95,
+        "expected_loss": 3.8330078125,
+        "VaR": 20.0,
+        "CVaR_expected_shortfall": 20.0,
+        "cdf": [
+          0.244140625,
+          0.5205078125,
+          0.6162109375,
+          0.78125,
+          0.8193359375,
+          0.888671875,
+          0.9267578125,
+          1.0
+        ],
+        "sorted_losses": [
+          0.0,
+          1.0,
+          2.0,
+          4.0,
+          6.0,
+          8.0,
+          12.0,
+          20.0
+        ]
+      }
+    },
+    "experiment_diagnostics": {
+      "base": {
+        "total_variation_distance": 0.2532812500000001,
+        "simultaneous_probability_intervals": {
+          "000": [
+            0.26035415215405994,
+            0.338279563143224
+          ],
+          "001": [
+            0.25382817114925227,
+            0.3312327712353794
+          ],
+          "010": [
+            0.06743831809460143,
+            0.1162563395873144
+          ],
+          "011": [
+            0.08115797560820197,
+            0.13356016301691898
+          ],
+          "100": [
+            0.03426150051171556,
+            0.07187445481218753
+          ],
+          "101": [
+            0.04894663168411726,
+            0.0920907397008916
+          ],
+          "110": [
+            0.025573574561597128,
+            0.059233737613852463
+          ],
+          "111": [
+            0.04399853886322492,
+            0.08540502716808201
+          ]
+        },
+        "interval_method": "Bonferroni-adjusted Wilson score; approximate, not exact simultaneous coverage",
+        "shots": 1024,
+        "status": "INCONCLUSIVE",
+        "status_reason": "no owner-approved business tolerance; diagnostics are not a certification",
+        "circuit_sha256": "e6fec722015d95e7e6a25ffc17f24012ba408030fee60b9e5f2a6b20e5f60128",
+        "execution_mode": "cloud_hardware",
+        "risk_uncertainty": {
+          "point": {
+            "confidence": 0.95,
+            "expected_loss": 3.423828125,
+            "VaR": 20.0,
+            "CVaR_expected_shortfall": 20.0,
+            "cdf": [
+              0.2978515625,
+              0.5888671875,
+              0.677734375,
+              0.7822265625,
+              0.83203125,
+              0.8994140625,
+              0.9384765625,
+              1.0
+            ],
+            "sorted_losses": [
+              0.0,
+              1.0,
+              2.0,
+              4.0,
+              6.0,
+              8.0,
+              12.0,
+              20.0
+            ]
+          },
+          "empirical_bootstrap_percentile_95": {
+            "expected_loss": [
+              3.14541015625,
+              3.7666748046875
+            ],
+            "VaR": [
+              12.0,
+              20.0
+            ],
+            "CVaR_expected_shortfall": [
+              19.656249999999993,
+              20.0
+            ]
+          },
+          "bootstrap_samples": 1000,
+          "seed": 20261023,
+          "dkw_95_cdf_epsilon": 0.04244067236689436,
+          "dkw_95_var_range": [
+            12.0,
+            20.0
+          ],
+          "var_boundary_stable": false,
+          "expected_tail_shots": 51.200000000000045,
+          "unseen_loss_states": [],
+          "limitations": "IID sampling only; empirical bootstrap cannot recover unseen tails or hardware/model bias"
+        }
+      },
+      "stress": {
+        "total_variation_distance": 0.2320703125000002,
+        "simultaneous_probability_intervals": {
+          "000": [
+            0.20937464149485158,
+            0.2826158580601649
+          ],
+          "001": [
+            0.23987961500212296,
+            0.31609681399825396
+          ],
+          "010": [
+            0.07341641340448651,
+            0.12385101719008157
+          ],
+          "011": [
+            0.13576908096315482,
+            0.19916504631688586
+          ],
+          "100": [
+            0.024797874997613233,
+            0.05807046961888603
+          ],
+          "101": [
+            0.05060618245197866,
+            0.09430912405093082
+          ],
+          "110": [
+            0.024797874997613233,
+            0.05807046961888603
+          ],
+          "111": [
+            0.05393941469825604,
+            0.09873176204045471
+          ]
+        },
+        "interval_method": "Bonferroni-adjusted Wilson score; approximate, not exact simultaneous coverage",
+        "shots": 1024,
+        "status": "INCONCLUSIVE",
+        "status_reason": "no owner-approved business tolerance; diagnostics are not a certification",
+        "circuit_sha256": "7e84362517c916020d33f1fad25f944a60e11dea452e39b46d4fa9f8dde137c4",
+        "execution_mode": "cloud_hardware",
+        "risk_uncertainty": {
+          "point": {
+            "confidence": 0.95,
+            "expected_loss": 3.8330078125,
+            "VaR": 20.0,
+            "CVaR_expected_shortfall": 20.0,
+            "cdf": [
+              0.244140625,
+              0.5205078125,
+              0.6162109375,
+              0.78125,
+              0.8193359375,
+              0.888671875,
+              0.9267578125,
+              1.0
+            ],
+            "sorted_losses": [
+              0.0,
+              1.0,
+              2.0,
+              4.0,
+              6.0,
+              8.0,
+              12.0,
+              20.0
+            ]
+          },
+          "empirical_bootstrap_percentile_95": {
+            "expected_loss": [
+              3.521484375,
+              4.1797119140625
+            ],
+            "VaR": [
+              20.0,
+              20.0
+            ],
+            "CVaR_expected_shortfall": [
+              20.0,
+              20.0
+            ]
+          },
+          "bootstrap_samples": 1000,
+          "seed": 20261023,
+          "dkw_95_cdf_epsilon": 0.04244067236689436,
+          "dkw_95_var_range": [
+            12.0,
+            20.0
+          ],
+          "var_boundary_stable": false,
+          "expected_tail_shots": 51.200000000000045,
+          "unseen_loss_states": [],
+          "limitations": "IID sampling only; empirical bootstrap cannot recover unseen tails or hardware/model bias"
+        }
+      }
+    },
+    "error_attribution": "model/reference vs ideal circuit vs finite shots vs hardware distribution; no specific noise source inferred"
+  },
+  "scope": "synthetic small research case; not full industry coverage or investment advice"
+}

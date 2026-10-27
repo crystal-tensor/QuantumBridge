@@ -1,0 +1,547 @@
+{
+  "case": "constraints",
+  "title": "金融约束优化",
+  "inputs": {
+    "asset_names": [
+      "Synthetic A",
+      "Synthetic B",
+      "Synthetic C",
+      "Synthetic D"
+    ],
+    "expected_returns": [
+      0.17,
+      0.14,
+      0.11,
+      0.09
+    ],
+    "covariance": [
+      [
+        0.12,
+        0.03,
+        0.02,
+        0.01
+      ],
+      [
+        0.03,
+        0.1,
+        0.01,
+        0.02
+      ],
+      [
+        0.02,
+        0.01,
+        0.08,
+        0.01
+      ],
+      [
+        0.01,
+        0.02,
+        0.01,
+        0.06
+      ]
+    ],
+    "risk_factor": 0.65,
+    "holdings": 2,
+    "penalty": 1.6,
+    "previous_selection": [
+      1,
+      0,
+      1,
+      0
+    ],
+    "transaction_cost_per_changed_bit": 0.03,
+    "data_source": "fixed synthetic annualized inputs, not observed market quotes"
+  },
+  "intermediate": {
+    "candidates": [
+      {
+        "bitstring": "0000",
+        "selection": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "objective": 0.06,
+        "feasible": false,
+        "violations": {
+          "holdings": -2,
+          "sector": -1,
+          "capital": -3
+        },
+        "penalized_cost": 22.46
+      },
+      {
+        "bitstring": "0001",
+        "selection": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "objective": 0.039,
+        "feasible": false,
+        "violations": {
+          "holdings": -1,
+          "sector": -1,
+          "capital": -2
+        },
+        "penalized_cost": 9.639000000000001
+      },
+      {
+        "bitstring": "0010",
+        "selection": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "objective": -0.027999999999999997,
+        "feasible": false,
+        "violations": {
+          "holdings": -1,
+          "sector": -1,
+          "capital": -2
+        },
+        "penalized_cost": 9.572000000000001
+      },
+      {
+        "bitstring": "0011",
+        "selection": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "objective": -0.03600000000000003,
+        "feasible": false,
+        "violations": {
+          "holdings": 0,
+          "sector": -1,
+          "capital": -1
+        },
+        "penalized_cost": 3.164
+      },
+      {
+        "bitstring": "0100",
+        "selection": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "objective": 0.014999999999999986,
+        "feasible": false,
+        "violations": {
+          "holdings": -1,
+          "sector": 0,
+          "capital": -1
+        },
+        "penalized_cost": 3.2150000000000003
+      },
+      {
+        "bitstring": "0101",
+        "selection": [
+          0,
+          1,
+          0,
+          1
+        ],
+        "objective": 0.01999999999999999,
+        "feasible": true,
+        "violations": {
+          "holdings": 0,
+          "sector": 0,
+          "capital": 0
+        },
+        "penalized_cost": 0.01999999999999999
+      },
+      {
+        "bitstring": "0110",
+        "selection": [
+          0,
+          1,
+          1,
+          0
+        ],
+        "objective": -0.06,
+        "feasible": true,
+        "violations": {
+          "holdings": 0,
+          "sector": 0,
+          "capital": 0
+        },
+        "penalized_cost": -0.06
+      },
+      {
+        "bitstring": "0111",
+        "selection": [
+          0,
+          1,
+          1,
+          1
+        ],
+        "objective": -0.04199999999999998,
+        "feasible": false,
+        "violations": {
+          "holdings": 1,
+          "sector": 0,
+          "capital": 1
+        },
+        "penalized_cost": 3.1580000000000004
+      },
+      {
+        "bitstring": "1000",
+        "selection": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "objective": -0.06200000000000001,
+        "feasible": false,
+        "violations": {
+          "holdings": -1,
+          "sector": 0,
+          "capital": -1
+        },
+        "penalized_cost": 3.1380000000000003
+      },
+      {
+        "bitstring": "1001",
+        "selection": [
+          1,
+          0,
+          0,
+          1
+        ],
+        "objective": -0.07,
+        "feasible": true,
+        "violations": {
+          "holdings": 0,
+          "sector": 0,
+          "capital": 0
+        },
+        "penalized_cost": -0.07
+      },
+      {
+        "bitstring": "1010",
+        "selection": [
+          1,
+          0,
+          1,
+          0
+        ],
+        "objective": -0.12400000000000003,
+        "feasible": true,
+        "violations": {
+          "holdings": 0,
+          "sector": 0,
+          "capital": 0
+        },
+        "penalized_cost": -0.12400000000000003
+      },
+      {
+        "bitstring": "1011",
+        "selection": [
+          1,
+          0,
+          1,
+          1
+        ],
+        "objective": -0.11899999999999997,
+        "feasible": false,
+        "violations": {
+          "holdings": 1,
+          "sector": 0,
+          "capital": 1
+        },
+        "penalized_cost": 3.0810000000000004
+      },
+      {
+        "bitstring": "1100",
+        "selection": [
+          1,
+          1,
+          0,
+          0
+        ],
+        "objective": -0.06800000000000003,
+        "feasible": false,
+        "violations": {
+          "holdings": 0,
+          "sector": 1,
+          "capital": 1
+        },
+        "penalized_cost": 3.132
+      },
+      {
+        "bitstring": "1101",
+        "selection": [
+          1,
+          1,
+          0,
+          1
+        ],
+        "objective": -0.04999999999999996,
+        "feasible": false,
+        "violations": {
+          "holdings": 1,
+          "sector": 1,
+          "capital": 2
+        },
+        "penalized_cost": 9.55
+      },
+      {
+        "bitstring": "1110",
+        "selection": [
+          1,
+          1,
+          1,
+          0
+        ],
+        "objective": -0.11700000000000002,
+        "feasible": false,
+        "violations": {
+          "holdings": 1,
+          "sector": 1,
+          "capital": 2
+        },
+        "penalized_cost": 9.483
+      },
+      {
+        "bitstring": "1111",
+        "selection": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "objective": -0.08599999999999997,
+        "feasible": false,
+        "violations": {
+          "holdings": 2,
+          "sector": 1,
+          "capital": 3
+        },
+        "penalized_cost": 22.314000000000004
+      }
+    ],
+    "local_optimizer_trace": [
+      {
+        "evaluation": 0,
+        "expected_cost": 6.354499999999996,
+        "gamma": 0.0,
+        "beta": 0.0,
+        "phase": "local-grid"
+      },
+      {
+        "evaluation": 1,
+        "expected_cost": 6.354499999999994,
+        "gamma": 0.0,
+        "beta": 0.241660973353061,
+        "phase": "local-grid"
+      },
+      {
+        "evaluation": 2,
+        "expected_cost": 6.354499999999991,
+        "gamma": 0.0,
+        "beta": 1.933287786824488,
+        "phase": "local-grid"
+      },
+      {
+        "evaluation": 3,
+        "expected_cost": 5.104363531095495,
+        "gamma": 0.7853981633974483,
+        "beta": 0.966643893412244,
+        "phase": "local-grid"
+      },
+      {
+        "evaluation": 4,
+        "expected_cost": 3.590431454539835,
+        "gamma": 0.7853981633974483,
+        "beta": 1.208304866765305,
+        "phase": "local-grid"
+      },
+      {
+        "evaluation": 5,
+        "expected_cost": 2.3563563517888007,
+        "gamma": 1.5707963267948966,
+        "beta": 1.208304866765305,
+        "phase": "local-grid"
+      },
+      {
+        "evaluation": 6,
+        "expected_cost": 2.3268806614031785,
+        "gamma": 2.356194490192345,
+        "beta": 2.899931680236732,
+        "phase": "local-grid"
+      },
+      {
+        "evaluation": 7,
+        "expected_cost": 2.262383000297889,
+        "gamma": 2.106194490192345,
+        "beta": 2.899931680236732,
+        "phase": "local-refine"
+      },
+      {
+        "evaluation": 8,
+        "expected_cost": 2.262383000297889,
+        "gamma": 2.106194490192345,
+        "beta": 2.899931680236732,
+        "phase": "local-refine"
+      },
+      {
+        "evaluation": 9,
+        "expected_cost": 2.2089857764623497,
+        "gamma": 2.106194490192345,
+        "beta": 2.809931680236732,
+        "phase": "local-refine"
+      },
+      {
+        "evaluation": 10,
+        "expected_cost": 2.1257619350378563,
+        "gamma": 2.052194490192345,
+        "beta": 2.863931680236732,
+        "phase": "local-refine"
+      },
+      {
+        "evaluation": 11,
+        "expected_cost": 2.1173179311377526,
+        "gamma": 2.019794490192345,
+        "beta": 2.831531680236732,
+        "phase": "local-refine"
+      },
+      {
+        "evaluation": 12,
+        "expected_cost": 2.106425177619964,
+        "gamma": 2.000354490192345,
+        "beta": 2.8509716802367318,
+        "phase": "local-refine"
+      },
+      {
+        "evaluation": 13,
+        "expected_cost": 2.1052466829326018,
+        "gamma": 1.9886904901923452,
+        "beta": 2.8393076802367316,
+        "phase": "local-refine"
+      },
+      {
+        "evaluation": 14,
+        "expected_cost": 2.1037607328175136,
+        "gamma": 1.9816920901923452,
+        "beta": 2.8463060802367317,
+        "phase": "local-refine"
+      }
+    ]
+  },
+  "reference": {
+    "best_selection": "1010",
+    "best_objective": -0.12400000000000003,
+    "feasible_count": 4,
+    "penalized_global_minimum_is_feasible": true
+  },
+  "local_results": {
+    "qaoa": {
+      "execution_mode": "local_simulator",
+      "hardware_access": false,
+      "counts": {
+        "0110": 131,
+        "1001": 115,
+        "1100": 106,
+        "0101": 126,
+        "0100": 63,
+        "1011": 66,
+        "1010": 118,
+        "1000": 59,
+        "1101": 18,
+        "0111": 61,
+        "1110": 18,
+        "0011": 97,
+        "0010": 19,
+        "0001": 9,
+        "1111": 10,
+        "0000": 8
+      },
+      "probabilities": [
+        0.0078125,
+        0.0087890625,
+        0.0185546875,
+        0.0947265625,
+        0.0615234375,
+        0.123046875,
+        0.1279296875,
+        0.0595703125,
+        0.0576171875,
+        0.1123046875,
+        0.115234375,
+        0.064453125,
+        0.103515625,
+        0.017578125,
+        0.017578125,
+        0.009765625
+      ],
+      "shots": 1024,
+      "ideal_probabilities": [
+        0.006221230171557422,
+        0.01341864120396096,
+        0.013505093694753298,
+        0.09406884506705722,
+        0.058346568041566974,
+        0.12670543277660476,
+        0.12740487169725506,
+        0.05920813304261763,
+        0.058571642588701074,
+        0.12713242845242892,
+        0.12756624124864263,
+        0.05943482739231789,
+        0.09451413813485535,
+        0.013878952538745638,
+        0.01396787345704922,
+        0.006055080491885196
+      ],
+      "seed": 20261023,
+      "artifact": {
+        "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\nrz(-0.00043873806460156014) q[3];\nrz(0.0054403520010594111) q[2];\ncx q[2],q[3];\nrz(0.28136272082898306) q[3];\ncx q[2],q[3];\nrz(0.00052648567752196012) q[1];\ncx q[1],q[3];\nrz(0.42232926098546569) q[3];\ncx q[1],q[3];\ncx q[1],q[2];\nrz(0.42175890150148371) q[2];\ncx q[1],q[2];\nrz(0.0072830518723859972) q[0];\ncx q[0],q[3];\nrz(0.42175890150148365) q[3];\ncx q[0],q[3];\ncx q[0],q[2];\nrz(0.42232926098546575) q[2];\ncx q[0],q[2];\ncx q[0],q[1];\nrz(0.84408816248694951) q[1];\ncx q[0],q[1];\nrx(5.6926121604734634) q[0];\nrx(5.6926121604734634) q[1];\nrx(5.6926121604734634) q[2];\nrx(5.6926121604734634) q[3];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+        "sha256": "489629650fd6001f014c2011b36fc7e2718af122d7462d2f2fb4efb1329fc45a",
+        "num_qubits": 4,
+        "gates": 30,
+        "two_qubit_gates": 12
+      },
+      "bit_order": "q0-first"
+    }
+  },
+  "local_analysis": {
+    "feasible_probability": 0.478515625,
+    "optimal_probability": 0.115234375,
+    "expected_penalized_cost": 2.3521308593750003,
+    "best_observed_feasible": {
+      "bitstring": "1010",
+      "selection": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "objective": -0.12400000000000003,
+      "feasible": true,
+      "violations": {
+        "holdings": 0,
+        "sector": 0,
+        "capital": 0
+      },
+      "penalized_cost": -0.12400000000000003
+    },
+    "best_observed_gap": 0.0,
+    "decision_rule": "best feasible sampled candidate; not necessarily the most frequent string"
+  },
+  "hardware_status": "not_executed",
+  "hardware_results": null,
+  "hardware_analysis": null,
+  "acceptance": {
+    "case": "constraints",
+    "hardware_status": "NOT_EXECUTED",
+    "hardware_results": null
+  },
+  "scope": "synthetic small research case; not full industry coverage or investment advice"
+}

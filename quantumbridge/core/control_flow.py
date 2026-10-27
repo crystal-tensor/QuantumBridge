@@ -121,6 +121,7 @@ class ControlBlock:
         return result
 
     def bind(self, mapping):
+        from .instruction_parameters import bind_definition
         if self.kind == "for" and self.data["parameter"] is not None:
             parameter = self.data["parameter"]
             mapping = {key: value for key, value in mapping.items() if key != parameter and key != parameter.name}
@@ -128,9 +129,9 @@ class ControlBlock:
         for field in ("body", "alternate", "default"):
             if result.get(field) is not None:
                 local = {key: value for key, value in mapping.items() if key in result[field].parameters or isinstance(key, str) and key in {p.name for p in result[field].parameters}}
-                result[field] = result[field].assign_parameters(local, strict=False)
+                result[field] = bind_definition(result[field],local)
         if "cases" in result:
-            result["cases"] = tuple((values, body.assign_parameters(mapping, strict=False)) for values, body in result["cases"])
+            result["cases"] = tuple((values, bind_definition(body,mapping)) for values, body in result["cases"])
         return ControlBlock(self.kind, result)
 
     def remap(self, qubits, bits, width, num_bits, *, identifiers=None, copy_operation=True):

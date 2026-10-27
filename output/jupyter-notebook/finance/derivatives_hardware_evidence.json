@@ -1,0 +1,368 @@
+{
+  "case": "derivatives",
+  "title": "衍生品定价与对冲",
+  "inputs": {
+    "spot": 100.0,
+    "strike": 100.0,
+    "rate": 0.03,
+    "volatility": 0.2,
+    "maturity": 1.0,
+    "steps": 3,
+    "spot_bump": 1.0,
+    "risk_neutral_up_probability": 0.5145864613275055,
+    "up": 1.1224009024456676,
+    "down": 0.8909472522884107,
+    "probabilities": [
+      0.1143761977991435,
+      0.1212501057274098,
+      0.1212501057274098,
+      0.12853712941853138,
+      0.1212501057274098,
+      0.12853712941853138,
+      0.12853712941853138,
+      0.13626209676303294
+    ],
+    "measure": "risk-neutral Q, not physical P"
+  },
+  "intermediate": {
+    "terminal_prices": [
+      70.72223522189248,
+      89.09472522884107,
+      89.09472522884107,
+      112.24009024456676,
+      89.09472522884107,
+      112.24009024456676,
+      112.24009024456676,
+      141.39824580805166
+    ],
+    "call_payoff": [
+      0.0,
+      0.0,
+      0.0,
+      12.240090244566758,
+      0.0,
+      12.240090244566758,
+      12.240090244566758,
+      41.398245808051655
+    ],
+    "put_payoff": [
+      29.277764778107525,
+      10.905274771158929,
+      10.905274771158929,
+      0.0,
+      10.905274771158929,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "delta_payoff": [
+      0.0,
+      0.0,
+      0.0,
+      1.122400902445662,
+      0.0,
+      1.122400902445662,
+      1.122400902445662,
+      1.4139824580805112
+    ]
+  },
+  "reference": {
+    "call_price": 10.054718210561122,
+    "delta": 0.6069969747193295,
+    "black_scholes_call": 9.413403383853016,
+    "discretization_note": "binomial-vs-Black-Scholes difference is model error, not shot error"
+  },
+  "local_results": {
+    "risk_neutral_paths": {
+      "execution_mode": "local_simulator",
+      "hardware_access": false,
+      "counts": {
+        "010": 127,
+        "100": 120,
+        "111": 160,
+        "001": 118,
+        "110": 130,
+        "011": 126,
+        "000": 126,
+        "101": 117
+      },
+      "probabilities": [
+        0.123046875,
+        0.115234375,
+        0.1240234375,
+        0.123046875,
+        0.1171875,
+        0.1142578125,
+        0.126953125,
+        0.15625
+      ],
+      "shots": 1024,
+      "ideal_probabilities": [
+        0.11437619779914351,
+        0.12125010572740977,
+        0.12125010572740985,
+        0.12853712941853143,
+        0.12125010572740977,
+        0.12853712941853132,
+        0.12853712941853143,
+        0.1362620967630329
+      ],
+      "seed": 20261023,
+      "artifact": {
+        "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncreg c[3];\nry(1.5999733890172156) q[0];\nry(1.5999733890172159) q[1];\nry(1.5999733890172156) q[2];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\n",
+        "sha256": "f004e0cd4408e241cc70bd0ee738b4a0c2cf3f438b618b4ae5e8a3c02b4747a6",
+        "num_qubits": 3,
+        "gates": 3,
+        "two_qubit_gates": 0
+      },
+      "bit_order": "q0-first"
+    }
+  },
+  "local_analysis": {
+    "call_price": 10.604082028610357,
+    "put_price": 7.268318290473128,
+    "delta": 0.6111653021038301,
+    "call_price_standard_error": 0.4322500740840186,
+    "call_approximate_95pct_interval": [
+      9.75687188340568,
+      11.451292173815034
+    ],
+    "delta_standard_error": 0.018571803329481735,
+    "unhedged_terminal_pnl": [
+      10.92702440479655,
+      10.92702440479655,
+      10.92702440479655,
+      -1.3130658397702089,
+      10.92702440479655,
+      -1.3130658397702089,
+      -1.3130658397702089,
+      -30.471221403255107
+    ],
+    "hedged_terminal_pnl": [
+      -8.827804995153656,
+      2.4008234103426815,
+      2.4008234103426815,
+      4.306377167915336,
+      2.4008234103426815,
+      4.306377167915336,
+      4.306377167915336,
+      -7.031325441821842
+    ],
+    "unhedged_pnl_std": 14.246288262071923,
+    "hedged_pnl_std": 5.105514027236635,
+    "put_call_parity_residual": 0.38031709298805083,
+    "model": "3-step risk-neutral binomial; static delta hedge; not a continuous dynamic hedge"
+  },
+  "hardware_status": "completed",
+  "hardware_results": {
+    "risk_neutral_paths": {
+      "execution_mode": "cloud_hardware",
+      "hardware_access": true,
+      "counts": {
+        "000": 162,
+        "010": 148,
+        "111": 108,
+        "100": 154,
+        "001": 106,
+        "011": 67,
+        "110": 201,
+        "101": 78
+      },
+      "raw_counts": {
+        "000": 162,
+        "010": 148,
+        "111": 108,
+        "001": 154,
+        "100": 106,
+        "110": 67,
+        "011": 201,
+        "101": 78
+      },
+      "probabilities": [
+        0.158203125,
+        0.103515625,
+        0.14453125,
+        0.0654296875,
+        0.150390625,
+        0.076171875,
+        0.1962890625,
+        0.10546875
+      ],
+      "shots": 1024,
+      "task_id": "2610231235566974565",
+      "backend": "Dongling",
+      "provider_bit_order": "q0-last",
+      "bit_order": "q0-first",
+      "artifact": {
+        "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncreg c[3];\nry(1.5999733890172156) q[0];\nry(1.5999733890172159) q[1];\nry(1.5999733890172156) q[2];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\n",
+        "sha256": "f004e0cd4408e241cc70bd0ee738b4a0c2cf3f438b618b4ae5e8a3c02b4747a6",
+        "num_qubits": 3,
+        "gates": 3,
+        "two_qubit_gates": 0
+      }
+    }
+  },
+  "hardware_analysis": {
+    "call_price": 8.250759931873455,
+    "put_price": 8.711596680645126,
+    "delta": 0.5127637245443403,
+    "call_price_standard_error": 0.3826992224102921,
+    "call_approximate_95pct_interval": [
+      7.500669455949283,
+      9.000850407797627
+    ],
+    "delta_standard_error": 0.018137683177208628,
+    "unhedged_terminal_pnl": [
+      8.502032980361012,
+      8.502032980361012,
+      8.502032980361012,
+      -3.7380572642057466,
+      8.502032980361012,
+      -3.7380572642057466,
+      -3.7380572642057466,
+      -32.89621282769065
+    ],
+    "hedged_terminal_pnl": [
+      -8.07214075952124,
+      1.3486056455953985,
+      1.3486056455953985,
+      0.9766189724304155,
+      1.3486056455953985,
+      0.9766189724304155,
+      0.9766189724304155,
+      -13.230292143478685
+    ],
+    "unhedged_pnl_std": 12.61316947528864,
+    "hedged_pnl_std": 5.153475215817141,
+    "put_call_parity_residual": -3.4162833939208497,
+    "model": "3-step risk-neutral binomial; static delta hedge; not a continuous dynamic hedge"
+  },
+  "acceptance": {
+    "case": "derivatives",
+    "hardware_status": "INCONCLUSIVE",
+    "hardware_status_reason": "business tolerances not approved; receipt consistency is not independent hardware certification",
+    "reference": {
+      "call_price": 10.054718210561122,
+      "delta": 0.6069969747193295,
+      "black_scholes_call": 9.413403383853016,
+      "discretization_note": "binomial-vs-Black-Scholes difference is model error, not shot error"
+    },
+    "ideal_circuit_analysis": {
+      "call_price": 10.054718210561122,
+      "put_price": 7.0992715654119705,
+      "delta": 0.6069969747193295,
+      "call_price_standard_error": 0.41151420842775266,
+      "call_approximate_95pct_interval": [
+        9.248150362042727,
+        10.861286059079516
+      ],
+      "delta_standard_error": 0.018380717954062584,
+      "unhedged_terminal_pnl": [
+        10.3609299676977,
+        10.3609299676977,
+        10.3609299676977,
+        -1.879160276869058,
+        10.3609299676977,
+        -1.879160276869058,
+        -1.879160276869058,
+        -31.037315840353955
+      ],
+      "hedged_terminal_pnl": [
+        -9.259165676784896,
+        1.8928801754940139,
+        1.8928801754940139,
+        3.7019564742473534,
+        1.8928801754940139,
+        3.7019564742473534,
+        3.7019564742473534,
+        -7.7572868738066205
+      ],
+      "unhedged_pnl_std": 13.562866471737326,
+      "hedged_pnl_std": 4.959160908511085,
+      "put_call_parity_residual": -2.842170943040401e-14,
+      "model": "3-step risk-neutral binomial; static delta hedge; not a continuous dynamic hedge"
+    },
+    "measured_analysis": {
+      "call_price": 8.250759931873455,
+      "put_price": 8.711596680645126,
+      "delta": 0.5127637245443403,
+      "call_price_standard_error": 0.3826992224102921,
+      "call_approximate_95pct_interval": [
+        7.500669455949283,
+        9.000850407797627
+      ],
+      "delta_standard_error": 0.018137683177208628,
+      "unhedged_terminal_pnl": [
+        8.502032980361012,
+        8.502032980361012,
+        8.502032980361012,
+        -3.7380572642057466,
+        8.502032980361012,
+        -3.7380572642057466,
+        -3.7380572642057466,
+        -32.89621282769065
+      ],
+      "hedged_terminal_pnl": [
+        -8.07214075952124,
+        1.3486056455953985,
+        1.3486056455953985,
+        0.9766189724304155,
+        1.3486056455953985,
+        0.9766189724304155,
+        0.9766189724304155,
+        -13.230292143478685
+      ],
+      "unhedged_pnl_std": 12.61316947528864,
+      "hedged_pnl_std": 5.153475215817141,
+      "put_call_parity_residual": -3.4162833939208497,
+      "model": "3-step risk-neutral binomial; static delta hedge; not a continuous dynamic hedge"
+    },
+    "experiment_diagnostics": {
+      "risk_neutral_paths": {
+        "total_variation_distance": 0.16400052382750543,
+        "simultaneous_probability_intervals": {
+          "000": [
+            0.12951224563595629,
+            0.19184910873143216
+          ],
+          "001": [
+            0.08029491830451259,
+            0.13248425276165804
+          ],
+          "010": [
+            0.1170600835733237,
+            0.1771557249687603
+          ],
+          "011": [
+            0.04729203741104786,
+            0.08986739885606033
+          ],
+          "100": [
+            0.12238629412285351,
+            0.1834633197729324
+          ],
+          "101": [
+            0.05645103984903002,
+            0.10203703956653168
+          ],
+          "110": [
+            0.16460271800293083,
+            0.23237837116352003
+          ],
+          "111": [
+            0.08202172433162162,
+            0.13463538185244966
+          ]
+        },
+        "interval_method": "Bonferroni-adjusted Wilson score; approximate, not exact simultaneous coverage",
+        "shots": 1024,
+        "status": "INCONCLUSIVE",
+        "status_reason": "no owner-approved business tolerance; diagnostics are not a certification",
+        "circuit_sha256": "f004e0cd4408e241cc70bd0ee738b4a0c2cf3f438b618b4ae5e8a3c02b4747a6",
+        "execution_mode": "cloud_hardware"
+      }
+    },
+    "error_attribution": "model/reference vs ideal circuit vs finite shots vs hardware distribution; no specific noise source inferred"
+  },
+  "scope": "synthetic small research case; not full industry coverage or investment advice"
+}

@@ -52,7 +52,8 @@ class GateDecompositionPass(TransformationPass):
                 budget["operations"] += 1
                 if budget["operations"] > max_operations:
                     raise MemoryError("Decomposition exceeds max_operations.")
-        out = Circuit(circuit.num_qubits, circuit.num_bits, circuit.name, deepcopy(circuit.metadata))
+        from quantumbridge.core.circuit_metadata import empty_execution_circuit
+        out = empty_execution_circuit(circuit)
         decomposed = []
         def translate(op, depth=0):
             charge()

@@ -1,0 +1,429 @@
+{
+  "diagnostic_only": true,
+  "python": "3.12.6",
+  "tensorflow": "2.21.0",
+  "pennylane": "0.42.3",
+  "tensorflow_origin": "/private/tmp/qb-stage11pb-alternate-tf-env/lib/python3.12/site-packages/tensorflow/__init__.py",
+  "pennylane_origin": "/private/tmp/qb-stage11pb-alternate-tf-env/lib/python3.12/site-packages/pennylane/__init__.py",
+  "jit_compile": false,
+  "records": [
+    {
+      "method": "backprop",
+      "max_diff": 1,
+      "traced": false,
+      "order": 0,
+      "outcome": "match",
+      "actual": 0.9323273456060345,
+      "expected": 0.9323273456060345
+    },
+    {
+      "method": "backprop",
+      "max_diff": 1,
+      "traced": false,
+      "order": 1,
+      "outcome": "match",
+      "actual": -0.361615431964962,
+      "expected": -0.36161543196496204
+    },
+    {
+      "method": "backprop",
+      "max_diff": 1,
+      "traced": false,
+      "order": 2,
+      "outcome": "match",
+      "actual": -0.9323273456060345,
+      "expected": -0.9323273456060345
+    },
+    {
+      "method": "backprop",
+      "max_diff": 1,
+      "traced": false,
+      "order": 3,
+      "outcome": "nonfinite",
+      "actual": "nan",
+      "expected": 0.36161543196496193
+    },
+    {
+      "method": "backprop",
+      "max_diff": 1,
+      "traced": true,
+      "order": 0,
+      "outcome": "match",
+      "actual": 0.9323273456060345,
+      "expected": 0.9323273456060345
+    },
+    {
+      "method": "backprop",
+      "max_diff": 1,
+      "traced": true,
+      "order": 1,
+      "outcome": "match",
+      "actual": -0.361615431964962,
+      "expected": -0.36161543196496204
+    },
+    {
+      "method": "backprop",
+      "max_diff": 1,
+      "traced": true,
+      "order": 2,
+      "outcome": "match",
+      "actual": -0.9323273456060345,
+      "expected": -0.9323273456060345
+    },
+    {
+      "method": "backprop",
+      "max_diff": 1,
+      "traced": true,
+      "order": 3,
+      "outcome": "nonfinite",
+      "actual": "nan",
+      "expected": 0.36161543196496193
+    },
+    {
+      "method": "backprop",
+      "max_diff": 2,
+      "traced": false,
+      "order": 0,
+      "outcome": "match",
+      "actual": 0.9323273456060345,
+      "expected": 0.9323273456060345
+    },
+    {
+      "method": "backprop",
+      "max_diff": 2,
+      "traced": false,
+      "order": 1,
+      "outcome": "match",
+      "actual": -0.361615431964962,
+      "expected": -0.36161543196496204
+    },
+    {
+      "method": "backprop",
+      "max_diff": 2,
+      "traced": false,
+      "order": 2,
+      "outcome": "match",
+      "actual": -0.9323273456060345,
+      "expected": -0.9323273456060345
+    },
+    {
+      "method": "backprop",
+      "max_diff": 2,
+      "traced": false,
+      "order": 3,
+      "outcome": "nonfinite",
+      "actual": "nan",
+      "expected": 0.36161543196496193
+    },
+    {
+      "method": "backprop",
+      "max_diff": 2,
+      "traced": true,
+      "order": 0,
+      "outcome": "match",
+      "actual": 0.9323273456060345,
+      "expected": 0.9323273456060345
+    },
+    {
+      "method": "backprop",
+      "max_diff": 2,
+      "traced": true,
+      "order": 1,
+      "outcome": "match",
+      "actual": -0.361615431964962,
+      "expected": -0.36161543196496204
+    },
+    {
+      "method": "backprop",
+      "max_diff": 2,
+      "traced": true,
+      "order": 2,
+      "outcome": "match",
+      "actual": -0.9323273456060345,
+      "expected": -0.9323273456060345
+    },
+    {
+      "method": "backprop",
+      "max_diff": 2,
+      "traced": true,
+      "order": 3,
+      "outcome": "nonfinite",
+      "actual": "nan",
+      "expected": 0.36161543196496193
+    },
+    {
+      "method": "adjoint",
+      "max_diff": 1,
+      "traced": false,
+      "order": 0,
+      "outcome": "match",
+      "actual": 0.9323273456060345,
+      "expected": 0.9323273456060345
+    },
+    {
+      "method": "adjoint",
+      "max_diff": 1,
+      "traced": false,
+      "order": 1,
+      "outcome": "match",
+      "actual": -0.361615431964962,
+      "expected": -0.36161543196496204
+    },
+    {
+      "method": "adjoint",
+      "max_diff": 1,
+      "traced": false,
+      "order": 2,
+      "outcome": "disconnected",
+      "expected": -0.9323273456060345
+    },
+    {
+      "method": "adjoint",
+      "max_diff": 1,
+      "traced": false,
+      "order": 3,
+      "outcome": "disconnected",
+      "expected": 0.36161543196496193
+    },
+    {
+      "method": "adjoint",
+      "max_diff": 1,
+      "traced": true,
+      "order": 0,
+      "outcome": "match",
+      "actual": 0.9323273456060345,
+      "expected": 0.9323273456060345
+    },
+    {
+      "method": "adjoint",
+      "max_diff": 1,
+      "traced": true,
+      "order": 1,
+      "outcome": "match",
+      "actual": -0.361615431964962,
+      "expected": -0.36161543196496204
+    },
+    {
+      "method": "adjoint",
+      "max_diff": 1,
+      "traced": true,
+      "order": 2,
+      "outcome": "disconnected",
+      "expected": -0.9323273456060345
+    },
+    {
+      "method": "adjoint",
+      "max_diff": 1,
+      "traced": true,
+      "order": 3,
+      "outcome": "disconnected",
+      "expected": 0.36161543196496193
+    },
+    {
+      "method": "adjoint",
+      "max_diff": 2,
+      "traced": false,
+      "order": 0,
+      "outcome": "match",
+      "actual": 0.9323273456060345,
+      "expected": 0.9323273456060345
+    },
+    {
+      "method": "adjoint",
+      "max_diff": 2,
+      "traced": false,
+      "order": 1,
+      "outcome": "match",
+      "actual": -0.361615431964962,
+      "expected": -0.36161543196496204
+    },
+    {
+      "method": "adjoint",
+      "max_diff": 2,
+      "traced": false,
+      "order": 2,
+      "outcome": "disconnected",
+      "expected": -0.9323273456060345
+    },
+    {
+      "method": "adjoint",
+      "max_diff": 2,
+      "traced": false,
+      "order": 3,
+      "outcome": "disconnected",
+      "expected": 0.36161543196496193
+    },
+    {
+      "method": "adjoint",
+      "max_diff": 2,
+      "traced": true,
+      "order": 0,
+      "outcome": "match",
+      "actual": 0.9323273456060345,
+      "expected": 0.9323273456060345
+    },
+    {
+      "method": "adjoint",
+      "max_diff": 2,
+      "traced": true,
+      "order": 1,
+      "outcome": "match",
+      "actual": -0.361615431964962,
+      "expected": -0.36161543196496204
+    },
+    {
+      "method": "adjoint",
+      "max_diff": 2,
+      "traced": true,
+      "order": 2,
+      "outcome": "disconnected",
+      "expected": -0.9323273456060345
+    },
+    {
+      "method": "adjoint",
+      "max_diff": 2,
+      "traced": true,
+      "order": 3,
+      "outcome": "disconnected",
+      "expected": 0.36161543196496193
+    },
+    {
+      "method": "parameter-shift",
+      "max_diff": 1,
+      "traced": false,
+      "order": 0,
+      "outcome": "match",
+      "actual": 0.9323273456060345,
+      "expected": 0.9323273456060345
+    },
+    {
+      "method": "parameter-shift",
+      "max_diff": 1,
+      "traced": false,
+      "order": 1,
+      "outcome": "match",
+      "actual": -0.36161543196496215,
+      "expected": -0.36161543196496204
+    },
+    {
+      "method": "parameter-shift",
+      "max_diff": 1,
+      "traced": false,
+      "order": 2,
+      "outcome": "disconnected",
+      "expected": -0.9323273456060345
+    },
+    {
+      "method": "parameter-shift",
+      "max_diff": 1,
+      "traced": false,
+      "order": 3,
+      "outcome": "disconnected",
+      "expected": 0.36161543196496193
+    },
+    {
+      "method": "parameter-shift",
+      "max_diff": 1,
+      "traced": true,
+      "order": 0,
+      "outcome": "match",
+      "actual": 0.9323273456060345,
+      "expected": 0.9323273456060345
+    },
+    {
+      "method": "parameter-shift",
+      "max_diff": 1,
+      "traced": true,
+      "order": 1,
+      "outcome": "match",
+      "actual": -0.36161543196496215,
+      "expected": -0.36161543196496204
+    },
+    {
+      "method": "parameter-shift",
+      "max_diff": 1,
+      "traced": true,
+      "order": 2,
+      "outcome": "mismatch",
+      "actual": 0,
+      "expected": -0.9323273456060345
+    },
+    {
+      "method": "parameter-shift",
+      "max_diff": 1,
+      "traced": true,
+      "order": 3,
+      "outcome": "disconnected",
+      "expected": 0.36161543196496193
+    },
+    {
+      "method": "parameter-shift",
+      "max_diff": 2,
+      "traced": false,
+      "order": 0,
+      "outcome": "match",
+      "actual": 0.9323273456060345,
+      "expected": 0.9323273456060345
+    },
+    {
+      "method": "parameter-shift",
+      "max_diff": 2,
+      "traced": false,
+      "order": 1,
+      "outcome": "match",
+      "actual": -0.36161543196496215,
+      "expected": -0.36161543196496204
+    },
+    {
+      "method": "parameter-shift",
+      "max_diff": 2,
+      "traced": false,
+      "order": 2,
+      "outcome": "match",
+      "actual": -0.9323273456060349,
+      "expected": -0.9323273456060345
+    },
+    {
+      "method": "parameter-shift",
+      "max_diff": 2,
+      "traced": false,
+      "order": 3,
+      "outcome": "disconnected",
+      "expected": 0.36161543196496193
+    },
+    {
+      "method": "parameter-shift",
+      "max_diff": 2,
+      "traced": true,
+      "order": 0,
+      "outcome": "match",
+      "actual": 0.9323273456060345,
+      "expected": 0.9323273456060345
+    },
+    {
+      "method": "parameter-shift",
+      "max_diff": 2,
+      "traced": true,
+      "order": 1,
+      "outcome": "exception",
+      "error": "OperatorNotAllowedInGraphError: Using a symbolic `tf.Tensor` as a Python `bool` is not allowed. You can attempt the following resolutions to the problem: If you are running in Graph mode, use Eager execution mode or decorate this function with @tf.function. If you are using AutoGraph, you can try decorating this function with @tf.function. If that does not work, then you may be using an unsupported feature or your source code may not be visible to AutoGraph. See https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/autograph/g3doc/reference/limitations.md#access-to-source-code for more information."
+    },
+    {
+      "method": "parameter-shift",
+      "max_diff": 2,
+      "traced": true,
+      "order": 2,
+      "outcome": "exception",
+      "error": "OperatorNotAllowedInGraphError: Using a symbolic `tf.Tensor` as a Python `bool` is not allowed. You can attempt the following resolutions to the problem: If you are running in Graph mode, use Eager execution mode or decorate this function with @tf.function. If you are using AutoGraph, you can try decorating this function with @tf.function. If that does not work, then you may be using an unsupported feature or your source code may not be visible to AutoGraph. See https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/autograph/g3doc/reference/limitations.md#access-to-source-code for more information."
+    },
+    {
+      "method": "parameter-shift",
+      "max_diff": 2,
+      "traced": true,
+      "order": 3,
+      "outcome": "exception",
+      "error": "OperatorNotAllowedInGraphError: Using a symbolic `tf.Tensor` as a Python `bool` is not allowed. You can attempt the following resolutions to the problem: If you are running in Graph mode, use Eager execution mode or decorate this function with @tf.function. If you are using AutoGraph, you can try decorating this function with @tf.function. If that does not work, then you may be using an unsupported feature or your source code may not be visible to AutoGraph. See https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/autograph/g3doc/reference/limitations.md#access-to-source-code for more information."
+    }
+  ],
+  "warnings": []
+}

@@ -1,0 +1,696 @@
+{
+  "case": "correlation",
+  "title": "相关性与市场波动",
+  "inputs": {
+    "asset_a_returns": [
+      0.01,
+      -0.02,
+      0.015,
+      0.005,
+      -0.01,
+      0.025,
+      -0.005,
+      -0.015
+    ],
+    "asset_b_returns": [
+      0.01,
+      -0.013000000000000001,
+      0.005999999999999999,
+      0.005,
+      -0.01,
+      0.016,
+      0.0,
+      -0.011
+    ],
+    "asset_c_returns": [
+      -0.004,
+      0.015,
+      -0.015,
+      -0.002,
+      0.004,
+      -0.019000000000000003,
+      0.007,
+      0.01
+    ],
+    "data_source": "8 synthetic daily returns; no live data"
+  },
+  "intermediate": {
+    "centered_asset_a": [
+      0.009375,
+      -0.020625,
+      0.014374999999999999,
+      0.004375,
+      -0.010625,
+      0.024375,
+      -0.005625,
+      -0.015625
+    ],
+    "normalized_asset_a": [
+      0.22592821242329172,
+      -0.49704206733124184,
+      0.3464232590490473,
+      0.10543316579753616,
+      -0.2560519740797306,
+      0.5874133523005586,
+      -0.13555692745397505,
+      -0.37654702070548624
+    ],
+    "interference_identity": "P(ancilla=0)=(1+Pearson correlation)/2",
+    "sample_size": 8
+  },
+  "reference": {
+    "positive_correlation": 0.9661739219933148,
+    "negative_correlation": -0.9726661195352715,
+    "daily_return_mean": 0.0006250000000000001,
+    "daily_volatility": 0.01467086824288188,
+    "annualized_volatility_252": 0.23289281332836362
+  },
+  "local_results": {
+    "positive_correlation": {
+      "execution_mode": "local_simulator",
+      "hardware_access": false,
+      "counts": {
+        "0010": 79,
+        "0101": 303,
+        "0111": 175,
+        "0001": 232,
+        "0100": 103,
+        "1010": 9,
+        "0000": 91,
+        "0011": 13,
+        "1110": 7,
+        "1000": 6,
+        "1100": 3,
+        "0110": 3
+      },
+      "probabilities": [
+        0.0888671875,
+        0.2265625,
+        0.0771484375,
+        0.0126953125,
+        0.1005859375,
+        0.2958984375,
+        0.0029296875,
+        0.1708984375,
+        0.005859375,
+        0.0,
+        0.0087890625,
+        0.0,
+        0.0029296875,
+        0.0,
+        0.0068359375,
+        0.0
+      ],
+      "shots": 1024,
+      "ideal_probabilities": [
+        0.07980078935091194,
+        0.2343493656008235,
+        0.07413933882309932,
+        0.01800353127129146,
+        0.09657305284162647,
+        0.32366040060907103,
+        0.005532887477668526,
+        0.1510275950221656,
+        0.0031992737068785434,
+        0.00016758920334983182,
+        0.005496422207017352,
+        0.0008262217026293921,
+        0.002993192604629822,
+        0.0003423150985402949,
+        0.0037422026963794272,
+        0.00014582178391794794
+      ],
+      "seed": 20261023,
+      "artifact": {
+        "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nry(1.5707963267948963) q[0];\nry(1.7396937540038238) q[1];\ncx q[0],q[1];\nry(-0.026859513181998751) q[1];\ncx q[0],q[1];\nry(1.052713990075457) q[2];\ncx q[1],q[2];\nry(-0.050967351189937449) q[2];\ncx q[1],q[2];\ncx q[0],q[2];\nry(0.091179168652661291) q[2];\ncx q[0],q[2];\ncx q[0],q[2];\ncx q[1],q[2];\nry(0.07831778700455061) q[2];\ncx q[1],q[2];\ncx q[0],q[2];\nry(-0.12222362598694581) q[3];\ncx q[2],q[3];\nry(1.1460351387611547) q[3];\ncx q[2],q[3];\ncx q[1],q[3];\nry(-0.43157764899249385) q[3];\ncx q[1],q[3];\ncx q[1],q[3];\ncx q[2],q[3];\nry(-2.683422216030197) q[3];\ncx q[2],q[3];\ncx q[1],q[3];\ncx q[0],q[3];\nry(-0.26938588887112846) q[3];\ncx q[0],q[3];\ncx q[0],q[3];\ncx q[2],q[3];\nry(0.083266416613659855) q[3];\ncx q[2],q[3];\ncx q[0],q[3];\ncx q[0],q[3];\ncx q[1],q[3];\nry(-0.025540832673732528) q[3];\ncx q[1],q[3];\ncx q[0],q[3];\ncx q[0],q[3];\ncx q[1],q[3];\ncx q[2],q[3];\nry(0.014510989843641742) q[3];\ncx q[2],q[3];\ncx q[1],q[3];\ncx q[0],q[3];\nh q[0];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+        "sha256": "dfbdce9bd41a8304caaf9ed22b756e643f356552a32b0f9ba80c724d44af0e46",
+        "num_qubits": 4,
+        "gates": 50,
+        "two_qubit_gates": 34
+      },
+      "bit_order": "q0-first"
+    },
+    "negative_correlation": {
+      "execution_mode": "local_simulator",
+      "hardware_access": false,
+      "counts": {
+        "1101": 364,
+        "1100": 38,
+        "1010": 167,
+        "1000": 27,
+        "1111": 135,
+        "1001": 234,
+        "1110": 30,
+        "0100": 3,
+        "1011": 12,
+        "0000": 6,
+        "0110": 6,
+        "0010": 2
+      },
+      "probabilities": [
+        0.005859375,
+        0.0,
+        0.001953125,
+        0.0,
+        0.0029296875,
+        0.0,
+        0.005859375,
+        0.0,
+        0.0263671875,
+        0.228515625,
+        0.1630859375,
+        0.01171875,
+        0.037109375,
+        0.35546875,
+        0.029296875,
+        0.1318359375
+      ],
+      "shots": 1024,
+      "ideal_probabilities": [
+        0.0033013616331305806,
+        7.322221056392718e-06,
+        0.0032199277104735437,
+        0.0008368307698444112,
+        0.003210391927561579,
+        9.890508666114514e-08,
+        0.002617786998021932,
+        0.0004732200671891463,
+        0.028382388782247362,
+        0.24436818673102279,
+        0.16254416683867243,
+        0.00585303619966777,
+        0.039757031487703154,
+        0.3446850720115202,
+        0.0348648219040292,
+        0.12587835581277299
+      ],
+      "seed": 20261024,
+      "artifact": {
+        "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nry(1.5707963267948963) q[0];\nry(1.6740307276756363) q[1];\ncx q[0],q[1];\nry(0.038803513146188462) q[1];\ncx q[0],q[1];\nry(1.2409231387982538) q[2];\ncx q[1],q[2];\nry(0.087032847329602203) q[2];\ncx q[1],q[2];\ncx q[0],q[2];\nry(-0.097029980070135691) q[2];\ncx q[0],q[2];\ncx q[0],q[2];\ncx q[1],q[2];\nry(-0.059682411514989042) q[2];\ncx q[1],q[2];\ncx q[0],q[2];\nry(-0.60262300238937128) q[3];\ncx q[2],q[3];\nry(1.251814634854582) q[3];\ncx q[2],q[3];\ncx q[1],q[3];\nry(-0.44455740405613708) q[3];\ncx q[1],q[3];\ncx q[1],q[3];\ncx q[2],q[3];\nry(0.4440751666232825) q[3];\ncx q[2],q[3];\ncx q[1],q[3];\ncx q[0],q[3];\nry(0.21101348753129703) q[3];\ncx q[0],q[3];\ncx q[0],q[3];\ncx q[2],q[3];\nry(-0.022513079479767467) q[3];\ncx q[2],q[3];\ncx q[0],q[3];\ncx q[0],q[3];\ncx q[1],q[3];\nry(-0.012561077610089316) q[3];\ncx q[1],q[3];\ncx q[0],q[3];\ncx q[0],q[3];\ncx q[1],q[3];\ncx q[2],q[3];\nry(-3.1129863928098378) q[3];\ncx q[2],q[3];\ncx q[1],q[3];\ncx q[0],q[3];\nh q[0];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+        "sha256": "17174decccefbe73a3c4811859b1c21ccebed628d206491eb89d36f5d3e1fd9f",
+        "num_qubits": 4,
+        "gates": 50,
+        "two_qubit_gates": 34
+      },
+      "bit_order": "q0-first"
+    },
+    "time_sampling": {
+      "execution_mode": "local_simulator",
+      "hardware_access": false,
+      "counts": {
+        "001": 142,
+        "010": 120,
+        "101": 115,
+        "000": 123,
+        "100": 121,
+        "110": 132,
+        "111": 127,
+        "011": 144
+      },
+      "probabilities": [
+        0.1201171875,
+        0.138671875,
+        0.1171875,
+        0.140625,
+        0.1181640625,
+        0.1123046875,
+        0.12890625,
+        0.1240234375
+      ],
+      "shots": 1024,
+      "ideal_probabilities": [
+        0.12499999999999994,
+        0.12499999999999994,
+        0.12499999999999994,
+        0.12499999999999994,
+        0.12499999999999994,
+        0.12499999999999994,
+        0.12499999999999994,
+        0.12499999999999994
+      ],
+      "seed": 20261025,
+      "artifact": {
+        "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncreg c[3];\nh q[0];\nh q[1];\nh q[2];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\n",
+        "sha256": "ad0acd4930f37e690fb659d90c78b90b139e68b60220fd19da0cfecb5946a98b",
+        "num_qubits": 3,
+        "gates": 3,
+        "two_qubit_gates": 0
+      },
+      "bit_order": "q0-first"
+    }
+  },
+  "local_analysis": {
+    "positive_correlation": {
+      "correlation": 0.951171875,
+      "sampling_standard_error": 0.00965039235163792
+    },
+    "negative_correlation": {
+      "correlation": -0.966796875,
+      "sampling_standard_error": 0.007989717395310368
+    },
+    "daily_return_mean": 9.765625000000226e-06,
+    "daily_volatility": 0.014508547532663922,
+    "annualized_volatility_252": 0.23031605193713103,
+    "volatility_definition": "population historical volatility, ddof=0; not a forecast"
+  },
+  "hardware_status": "completed",
+  "hardware_results": {
+    "positive_correlation": {
+      "execution_mode": "cloud_hardware",
+      "hardware_access": true,
+      "counts": {
+        "0000": 61,
+        "0010": 66,
+        "0001": 73,
+        "0101": 47,
+        "0111": 44,
+        "1011": 78,
+        "0100": 42,
+        "1101": 70,
+        "0011": 74,
+        "1000": 83,
+        "1110": 43,
+        "1001": 100,
+        "1111": 69,
+        "1100": 56,
+        "0110": 44,
+        "1010": 74
+      },
+      "raw_counts": {
+        "0000": 61,
+        "0100": 66,
+        "1000": 73,
+        "1010": 47,
+        "1110": 44,
+        "1101": 78,
+        "0010": 42,
+        "1011": 70,
+        "1100": 74,
+        "0001": 83,
+        "0111": 43,
+        "1001": 100,
+        "1111": 69,
+        "0011": 56,
+        "0110": 44,
+        "0101": 74
+      },
+      "probabilities": [
+        0.0595703125,
+        0.0712890625,
+        0.064453125,
+        0.072265625,
+        0.041015625,
+        0.0458984375,
+        0.04296875,
+        0.04296875,
+        0.0810546875,
+        0.09765625,
+        0.072265625,
+        0.076171875,
+        0.0546875,
+        0.068359375,
+        0.0419921875,
+        0.0673828125
+      ],
+      "shots": 1024,
+      "task_id": "2610231236118773106",
+      "backend": "Dongling",
+      "provider_bit_order": "q0-last",
+      "bit_order": "q0-first",
+      "artifact": {
+        "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nry(1.5707963267948963) q[0];\nry(1.7396937540038238) q[1];\ncx q[0],q[1];\nry(-0.026859513181998751) q[1];\ncx q[0],q[1];\nry(1.052713990075457) q[2];\ncx q[1],q[2];\nry(-0.050967351189937449) q[2];\ncx q[1],q[2];\ncx q[0],q[2];\nry(0.091179168652661291) q[2];\ncx q[0],q[2];\ncx q[0],q[2];\ncx q[1],q[2];\nry(0.07831778700455061) q[2];\ncx q[1],q[2];\ncx q[0],q[2];\nry(-0.12222362598694581) q[3];\ncx q[2],q[3];\nry(1.1460351387611547) q[3];\ncx q[2],q[3];\ncx q[1],q[3];\nry(-0.43157764899249385) q[3];\ncx q[1],q[3];\ncx q[1],q[3];\ncx q[2],q[3];\nry(-2.683422216030197) q[3];\ncx q[2],q[3];\ncx q[1],q[3];\ncx q[0],q[3];\nry(-0.26938588887112846) q[3];\ncx q[0],q[3];\ncx q[0],q[3];\ncx q[2],q[3];\nry(0.083266416613659855) q[3];\ncx q[2],q[3];\ncx q[0],q[3];\ncx q[0],q[3];\ncx q[1],q[3];\nry(-0.025540832673732528) q[3];\ncx q[1],q[3];\ncx q[0],q[3];\ncx q[0],q[3];\ncx q[1],q[3];\ncx q[2],q[3];\nry(0.014510989843641742) q[3];\ncx q[2],q[3];\ncx q[1],q[3];\ncx q[0],q[3];\nh q[0];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+        "sha256": "dfbdce9bd41a8304caaf9ed22b756e643f356552a32b0f9ba80c724d44af0e46",
+        "num_qubits": 4,
+        "gates": 50,
+        "two_qubit_gates": 34
+      }
+    },
+    "negative_correlation": {
+      "execution_mode": "cloud_hardware",
+      "hardware_access": true,
+      "counts": {
+        "0100": 35,
+        "0110": 37,
+        "0001": 95,
+        "1000": 96,
+        "1011": 77,
+        "1101": 60,
+        "0011": 65,
+        "0000": 85,
+        "1001": 102,
+        "0101": 53,
+        "0111": 33,
+        "1100": 74,
+        "1111": 66,
+        "1010": 52,
+        "0010": 50,
+        "1110": 44
+      },
+      "raw_counts": {
+        "0010": 35,
+        "0110": 37,
+        "1000": 95,
+        "0001": 96,
+        "1101": 77,
+        "1011": 60,
+        "1100": 65,
+        "0000": 85,
+        "1001": 102,
+        "1010": 53,
+        "1110": 33,
+        "0011": 74,
+        "1111": 66,
+        "0101": 52,
+        "0100": 50,
+        "0111": 44
+      },
+      "probabilities": [
+        0.0830078125,
+        0.0927734375,
+        0.048828125,
+        0.0634765625,
+        0.0341796875,
+        0.0517578125,
+        0.0361328125,
+        0.0322265625,
+        0.09375,
+        0.099609375,
+        0.05078125,
+        0.0751953125,
+        0.072265625,
+        0.05859375,
+        0.04296875,
+        0.064453125
+      ],
+      "shots": 1024,
+      "task_id": "2610231236189351427",
+      "backend": "Dongling",
+      "provider_bit_order": "q0-last",
+      "bit_order": "q0-first",
+      "artifact": {
+        "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nry(1.5707963267948963) q[0];\nry(1.6740307276756363) q[1];\ncx q[0],q[1];\nry(0.038803513146188462) q[1];\ncx q[0],q[1];\nry(1.2409231387982538) q[2];\ncx q[1],q[2];\nry(0.087032847329602203) q[2];\ncx q[1],q[2];\ncx q[0],q[2];\nry(-0.097029980070135691) q[2];\ncx q[0],q[2];\ncx q[0],q[2];\ncx q[1],q[2];\nry(-0.059682411514989042) q[2];\ncx q[1],q[2];\ncx q[0],q[2];\nry(-0.60262300238937128) q[3];\ncx q[2],q[3];\nry(1.251814634854582) q[3];\ncx q[2],q[3];\ncx q[1],q[3];\nry(-0.44455740405613708) q[3];\ncx q[1],q[3];\ncx q[1],q[3];\ncx q[2],q[3];\nry(0.4440751666232825) q[3];\ncx q[2],q[3];\ncx q[1],q[3];\ncx q[0],q[3];\nry(0.21101348753129703) q[3];\ncx q[0],q[3];\ncx q[0],q[3];\ncx q[2],q[3];\nry(-0.022513079479767467) q[3];\ncx q[2],q[3];\ncx q[0],q[3];\ncx q[0],q[3];\ncx q[1],q[3];\nry(-0.012561077610089316) q[3];\ncx q[1],q[3];\ncx q[0],q[3];\ncx q[0],q[3];\ncx q[1],q[3];\ncx q[2],q[3];\nry(-3.1129863928098378) q[3];\ncx q[2],q[3];\ncx q[1],q[3];\ncx q[0],q[3];\nh q[0];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+        "sha256": "17174decccefbe73a3c4811859b1c21ccebed628d206491eb89d36f5d3e1fd9f",
+        "num_qubits": 4,
+        "gates": 50,
+        "two_qubit_gates": 34
+      }
+    },
+    "time_sampling": {
+      "execution_mode": "cloud_hardware",
+      "hardware_access": true,
+      "counts": {
+        "101": 75,
+        "010": 163,
+        "110": 185,
+        "000": 159,
+        "100": 147,
+        "001": 88,
+        "011": 86,
+        "111": 121
+      },
+      "raw_counts": {
+        "101": 75,
+        "010": 163,
+        "011": 185,
+        "000": 159,
+        "001": 147,
+        "100": 88,
+        "110": 86,
+        "111": 121
+      },
+      "probabilities": [
+        0.1552734375,
+        0.0859375,
+        0.1591796875,
+        0.083984375,
+        0.1435546875,
+        0.0732421875,
+        0.1806640625,
+        0.1181640625
+      ],
+      "shots": 1024,
+      "task_id": "2610231236333069511",
+      "backend": "Dongling",
+      "provider_bit_order": "q0-last",
+      "bit_order": "q0-first",
+      "artifact": {
+        "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncreg c[3];\nh q[0];\nh q[1];\nh q[2];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\n",
+        "sha256": "ad0acd4930f37e690fb659d90c78b90b139e68b60220fd19da0cfecb5946a98b",
+        "num_qubits": 3,
+        "gates": 3,
+        "two_qubit_gates": 0
+      }
+    }
+  },
+  "hardware_analysis": {
+    "positive_correlation": {
+      "correlation": -0.119140625,
+      "sampling_standard_error": 0.031042579647913873
+    },
+    "negative_correlation": {
+      "correlation": -0.115234375,
+      "sampling_standard_error": 0.031056991078291952
+    },
+    "daily_return_mean": 0.0003613281250000001,
+    "daily_volatility": 0.013376179438131202,
+    "annualized_volatility_252": 0.21234026571282508,
+    "volatility_definition": "population historical volatility, ddof=0; not a forecast"
+  },
+  "acceptance": {
+    "case": "correlation",
+    "hardware_status": "INCONCLUSIVE",
+    "hardware_status_reason": "business tolerances not approved; receipt consistency is not independent hardware certification",
+    "reference": {
+      "positive_correlation": 0.9661739219933148,
+      "negative_correlation": -0.9726661195352715,
+      "daily_return_mean": 0.0006250000000000001,
+      "daily_volatility": 0.01467086824288188,
+      "annualized_volatility_252": 0.23289281332836362
+    },
+    "ideal_circuit_analysis": {
+      "positive_correlation": {
+        "correlation": 0.9661739219933156,
+        "sampling_standard_error": 0.00806304292753518
+      },
+      "negative_correlation": {
+        "correlation": -0.9726661195352715,
+        "sampling_standard_error": 0.007260050162086259
+      },
+      "daily_return_mean": 0.0006250000000000001,
+      "daily_volatility": 0.014670868242881876,
+      "annualized_volatility_252": 0.23289281332836356,
+      "volatility_definition": "population historical volatility, ddof=0; not a forecast"
+    },
+    "measured_analysis": {
+      "positive_correlation": {
+        "correlation": -0.119140625,
+        "sampling_standard_error": 0.031042579647913873
+      },
+      "negative_correlation": {
+        "correlation": -0.115234375,
+        "sampling_standard_error": 0.031056991078291952
+      },
+      "daily_return_mean": 0.0003613281250000001,
+      "daily_volatility": 0.013376179438131202,
+      "annualized_volatility_252": 0.21234026571282508,
+      "volatility_definition": "population historical volatility, ddof=0; not a forecast"
+    },
+    "experiment_diagnostics": {
+      "positive_correlation": {
+        "total_variation_distance": 0.6343552297476975,
+        "simultaneous_probability_intervals": {
+          "0000": [
+            0.04121296133804646,
+            0.0853763988274998
+          ],
+          "0001": [
+            0.050976861905872334,
+            0.09885180574972588
+          ],
+          "0010": [
+            0.04525683155300546,
+            0.09101557340006246
+          ],
+          "0011": [
+            0.051799131529902814,
+            0.09996614508319973
+          ],
+          "0100": [
+            0.02625083864199509,
+            0.06354295133096885
+          ],
+          "0101": [
+            0.030115522044962886,
+            0.06936131271552272
+          ],
+          "0110": [
+            0.02778943829269831,
+            0.0658775695952743
+          ],
+          "0111": [
+            0.02778943829269831,
+            0.0658775695952743
+          ],
+          "1000": [
+            0.05925156508753997,
+            0.10994319214310157
+          ],
+          "1001": [
+            0.07354977318031113,
+            0.12856733632790404
+          ],
+          "1010": [
+            0.051799131529902814,
+            0.09996614508319973
+          ],
+          "1011": [
+            0.05510009990233436,
+            0.10441161254078551
+          ],
+          "1100": [
+            0.03720841298266128,
+            0.0796979023953633
+          ],
+          "1101": [
+            0.04851754101329799,
+            0.09550129976978725
+          ],
+          "1110": [
+            0.027018875602338933,
+            0.06471152332812935
+          ],
+          "1111": [
+            0.047700342792722714,
+            0.0943818890328582
+          ]
+        },
+        "interval_method": "Bonferroni-adjusted Wilson score; approximate, not exact simultaneous coverage",
+        "shots": 1024,
+        "status": "INCONCLUSIVE",
+        "status_reason": "no owner-approved business tolerance; diagnostics are not a certification",
+        "circuit_sha256": "dfbdce9bd41a8304caaf9ed22b756e643f356552a32b0f9ba80c724d44af0e46",
+        "execution_mode": "cloud_hardware"
+      },
+      "negative_correlation": {
+        "total_variation_distance": 0.6040382813939884,
+        "simultaneous_probability_intervals": {
+          "0000": [
+            0.06091954061482113,
+            0.11214843453082907
+          ],
+          "0001": [
+            0.06931743222603205,
+            0.12311663249466147
+          ],
+          "0010": [
+            0.03246176315868701,
+            0.07282489847431159
+          ],
+          "0011": [
+            0.0444451134689173,
+            0.08989068252664628
+          ],
+          "0100": [
+            0.020952864766338782,
+            0.055284662504094834
+          ],
+          "0101": [
+            0.03482653119873728,
+            0.0762699573067743
+          ],
+          "0110": [
+            0.022451594614224222,
+            0.057659150571218065
+          ],
+          "0111": [
+            0.01946751443015694,
+            0.05289679492526801
+          ],
+          "1000": [
+            0.07016220993343482,
+            0.12420846374476303
+          ],
+          "1001": [
+            0.07524847118286297,
+            0.13074185624036086
+          ],
+          "1010": [
+            0.034036307876772656,
+            0.0751235716712346
+          ],
+          "1011": [
+            0.05427311613321496,
+            0.10330198735240058
+          ],
+          "1100": [
+            0.051799131529902814,
+            0.09996614508319973
+          ],
+          "1101": [
+            0.04040876481223035,
+            0.08424398639581156
+          ],
+          "1110": [
+            0.02778943829269831,
+            0.0658775695952743
+          ],
+          "1111": [
+            0.04525683155300546,
+            0.09101557340006246
+          ]
+        },
+        "interval_method": "Bonferroni-adjusted Wilson score; approximate, not exact simultaneous coverage",
+        "shots": 1024,
+        "status": "INCONCLUSIVE",
+        "status_reason": "no owner-approved business tolerance; diagnostics are not a certification",
+        "circuit_sha256": "17174decccefbe73a3c4811859b1c21ccebed628d206491eb89d36f5d3e1fd9f",
+        "execution_mode": "cloud_hardware"
+      },
+      "time_sampling": {
+        "total_variation_distance": 0.138671875,
+        "simultaneous_probability_intervals": {
+          "000": [
+            0.12683684673212225,
+            0.18870760495841526
+          ],
+          "001": [
+            0.06488887024412232,
+            0.11298888476094257
+          ],
+          "010": [
+            0.13040487082607696,
+            0.19289545110026182
+          ],
+          "011": [
+            0.06319368699470762,
+            0.11080613289245664
+          ],
+          "100": [
+            0.11617396459903778,
+            0.17610287638409589
+          ],
+          "101": [
+            0.05393941469825604,
+            0.09873176204045471
+          ],
+          "110": [
+            0.15014086415690084,
+            0.21581674406634496
+          ],
+          "111": [
+            0.09330983482537976,
+            0.14855384962504564
+          ]
+        },
+        "interval_method": "Bonferroni-adjusted Wilson score; approximate, not exact simultaneous coverage",
+        "shots": 1024,
+        "status": "INCONCLUSIVE",
+        "status_reason": "no owner-approved business tolerance; diagnostics are not a certification",
+        "circuit_sha256": "ad0acd4930f37e690fb659d90c78b90b139e68b60220fd19da0cfecb5946a98b",
+        "execution_mode": "cloud_hardware"
+      }
+    },
+    "error_attribution": "model/reference vs ideal circuit vs finite shots vs hardware distribution; no specific noise source inferred"
+  },
+  "scope": "synthetic small research case; not full industry coverage or investment advice"
+}

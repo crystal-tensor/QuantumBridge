@@ -104,25 +104,54 @@ class _FrameworkCallbacks:
             matmul_into(cotangent, matrix, result, scope=current_resources())
             return result
 
-    def second_vjp(self, values, cotangent, direction):
+    def jvp(self, values, direction):
+        from quantumbridge.execution.array_reservations import matmul_into
+        from quantumbridge.execution.resource_context import current_resources
+        with self.scope():
+            matrix, direction = self.selected_jacobian(values), self.real(direction)
+            if direction.shape != (len(self.indices),):
+                raise ValueError("Framework JVP direction has the wrong shape.")
+            result = self.array("framework_jvp_result", (matrix.shape[0],))
+            matmul_into(matrix, direction, result, scope=current_resources())
+            return result
+
+    def _second_direction(self, values, direction):
         from quantumbridge.diff.higher_order_limits import resolve_higher_order_limits
+        limits = resolve_higher_order_limits(self.plan.node.higher_order_limits)
+        count = len(self.indices)
+        limits.check("max_input_parameters", count)
+        limits.check("max_memory_bytes", 16*len(self.fixed)*count)
+        direction = self.real(direction)
+        if direction.shape != (count,): raise ValueError("Framework HVP direction has the wrong shape.")
+        classical = self.array("framework_selected_source_map", (len(self.fixed), count),
+            lambda: np.zeros((len(self.fixed), count)))
+        for column, index in enumerate(self.indices): classical[index, column] = 1.
+        _, matrix, product, _ = self.plan.second_derivatives(self.unpack(values),
+            direction=direction, classical=classical, limits=limits)
+        return direction, matrix, product
+
+    def second_vjp(self, values, cotangent, direction):
         from quantumbridge.execution.array_reservations import matmul_into
         from quantumbridge.execution.resource_context import current_resources
         with self.scope(True):
-            limits = resolve_higher_order_limits(self.plan.node.higher_order_limits)
             count = len(self.indices)
-            limits.check("max_input_parameters", count)
-            limits.check("max_memory_bytes", 16*len(self.fixed)*count)
-            direction, cotangent = self.real(direction), self.real(cotangent)
-            if direction.shape != (count,): raise ValueError("Framework HVP direction has the wrong shape.")
-            classical = self.array("framework_selected_source_map", (len(self.fixed), count),
-                lambda: np.zeros((len(self.fixed), count)))
-            for column, index in enumerate(self.indices): classical[index, column] = 1.
-            _, matrix, product, _ = self.plan.second_derivatives(self.unpack(values),
-                direction=direction, classical=classical, limits=limits)
+            cotangent = self.real(cotangent)
+            direction, matrix, product = self._second_direction(values, direction)
             result = self.array("framework_second_vjp_result", (count+matrix.shape[0],))
             matmul_into(cotangent, product[:, :, 0], result[:count], scope=current_resources())
             matmul_into(matrix, direction, result[count:], scope=current_resources())
+            return result
+
+    def second_jvp(self, values, left, right):
+        from quantumbridge.execution.array_reservations import matmul_into
+        from quantumbridge.execution.resource_context import current_resources
+        with self.scope(True):
+            left = self.real(left)
+            if left.shape != (len(self.indices),):
+                raise ValueError("Framework mixed JVP direction has the wrong shape.")
+            _, matrix, product = self._second_direction(values, right)
+            result = self.array("framework_second_jvp_result", (matrix.shape[0],))
+            matmul_into(product[:, :, 0], left, result, scope=current_resources())
             return result
 
 
@@ -136,13 +165,16 @@ def _torch_execute(plan):
     if any(value.ndim != 0 or not value.is_floating_point() for value in tensors): raise TypeError("Quantum gate angles must be real floating-point scalar tensors.")
     dtype = tensors[0].dtype if tensors else torch.float64
     if any(value.dtype != dtype for value in tensors): raise TypeError("QuantumBridge gate tensors must use one floating dtype.")
-    indices = [index for index, value in enumerate(angles) if isinstance(value, torch.Tensor) and value.requires_grad]
+    def active(value):
+        return isinstance(value, torch.Tensor) and (value.requires_grad
+            or torch.autograd.forward_ad.unpack_dual(value).tangent is not None)
+    indices = [index for index, value in enumerate(angles) if active(value)]
     from .ordinary_resources import managed_framework_plan
     plan = managed_framework_plan(plan)
     callbacks = _FrameworkCallbacks(plan, indices, "torch")
     packed = torch.stack([angles[index] for index in indices]) if indices else torch.empty(0, dtype=dtype)
     for value in inputs:
-        if value.requires_grad: packed = packed + 0 * value.sum()
+        if active(value): packed = packed + 0 * value.sum()
 
     flat = _torch_primitives().apply(packed, callbacks)
     return unflatten_tree(flat, plan.last_spec)
@@ -163,10 +195,29 @@ def _torch_primitives():
         def backward(ctx, *unused):
             raise UnsupportedFeature("higher_order_derivatives", "Torch native third derivatives are not implemented.")
 
+        @staticmethod
+        def jvp(ctx, *unused):
+            raise UnsupportedFeature("higher_order_derivatives", "Torch native third derivatives are not implemented.")
+
+    class NativeSecondJVP(torch.autograd.Function):
+        @staticmethod
+        def forward(ctx, values, left, right, owner):
+            result = owner.second_jvp(values.detach().numpy(), left.detach().numpy(), right.detach().numpy())
+            return torch.tensor(result, dtype=values.dtype)
+
+        @staticmethod
+        def backward(ctx, *unused):
+            raise UnsupportedFeature("higher_order_derivatives", "Torch native third derivatives are not implemented.")
+
+        @staticmethod
+        def jvp(ctx, *unused):
+            raise UnsupportedFeature("higher_order_derivatives", "Torch native third derivatives are not implemented.")
+
     class NativeQuantumVJP(torch.autograd.Function):
         @staticmethod
         def forward(ctx, values, cotangent, owner):
             ctx.save_for_backward(values, cotangent)
+            ctx.save_for_forward(values, cotangent)
             ctx.owner = owner
             result = owner.vjp(values.detach().numpy(), cotangent.detach().numpy())
             return torch.tensor(result, dtype=values.dtype)
@@ -176,10 +227,48 @@ def _torch_primitives():
             first, second = NativeSecondVJP.apply(*ctx.saved_tensors, incoming, ctx.owner)
             return first, second, None
 
+        @staticmethod
+        def jvp(ctx, values_tangent, cotangent_tangent, unused):
+            if ctx.owner.plan.node.max_diff != 2:
+                raise UnsupportedFeature("higher_order_derivatives", "Torch mixed second derivatives require max_diff=2.")
+            values, cotangent = ctx.saved_tensors
+            result = NativeSecondVJP.apply(values, cotangent, values_tangent, ctx.owner)[0]
+            if cotangent_tangent is not None:
+                result = result+NativeQuantumVJP.apply(values, cotangent_tangent, ctx.owner)
+            return result
+
+    class NativeQuantumJVP(torch.autograd.Function):
+        @staticmethod
+        def forward(ctx, values, direction, owner):
+            ctx.save_for_backward(values, direction)
+            ctx.save_for_forward(values, direction)
+            ctx.owner = owner
+            return torch.tensor(owner.jvp(values.detach().numpy(), direction.detach().numpy()), dtype=values.dtype)
+
+        @staticmethod
+        def backward(ctx, cotangent):
+            if ctx.owner.plan.node.max_diff != 2:
+                raise UnsupportedFeature("higher_order_derivatives", "Torch mixed second derivatives require max_diff=2.")
+            values, direction = ctx.saved_tensors
+            first = NativeSecondVJP.apply(values, cotangent, direction, ctx.owner)[0]
+            second = NativeQuantumVJP.apply(values, cotangent, ctx.owner)
+            return first, second, None
+
+        @staticmethod
+        def jvp(ctx, values_tangent, direction_tangent, unused):
+            if ctx.owner.plan.node.max_diff != 2:
+                raise UnsupportedFeature("higher_order_derivatives", "Torch mixed second derivatives require max_diff=2.")
+            values, direction = ctx.saved_tensors
+            result = NativeSecondJVP.apply(values, values_tangent, direction, ctx.owner)
+            if direction_tangent is not None:
+                result = result+NativeQuantumJVP.apply(values, direction_tangent, ctx.owner)
+            return result
+
     class NativeQuantumFunction(torch.autograd.Function):
         @staticmethod
         def forward(ctx, values, owner):
             ctx.save_for_backward(values)
+            ctx.save_for_forward(values)
             ctx.owner = owner
             return torch.tensor(owner.forward(values.detach().numpy()), dtype=values.dtype)
 
@@ -194,6 +283,12 @@ def _torch_primitives():
             result = owner.vjp(ctx.saved_tensors[0].detach().numpy(), cotangent.detach().numpy())
             return torch.tensor(result, dtype=cotangent.dtype), None
 
+        @staticmethod
+        def jvp(ctx, values_tangent, unused):
+            if ctx.owner.plan.node.max_diff not in {1, 2}:
+                raise UnsupportedFeature("higher_order_derivatives")
+            return NativeQuantumJVP.apply(ctx.saved_tensors[0], values_tangent, ctx.owner)
+
     return NativeQuantumFunction
 
 
@@ -201,7 +296,7 @@ def _torch_primitives():
 def _autograd_primitives():
     """Register generic rules once; invocation owners live only in real graphs."""
     try:
-        from autograd.extend import primitive, defvjp, defvjp_argnums
+        from autograd.extend import primitive, defvjp, defvjp_argnums, defjvp
     except ImportError as exc: raise ImportError("QuantumBridge Autograd QNode requires optional autograd.") from exc
 
     @primitive
@@ -211,6 +306,18 @@ def _autograd_primitives():
     def reject_third(*unused):
         raise UnsupportedFeature("higher_order_derivatives", "Autograd native third derivatives are not implemented.")
     defvjp(native_second_vjp, reject_third, reject_third, reject_third, None)
+    defjvp(native_second_vjp, reject_third, reject_third, reject_third, None)
+
+    @primitive
+    def native_second_jvp(values, left, right, owner):
+        return owner.second_jvp(values, left, right)
+
+    defvjp(native_second_jvp, reject_third, reject_third, reject_third, None)
+    defjvp(native_second_jvp, reject_third, reject_third, reject_third, None)
+
+    def require_second(owner):
+        if owner.plan.node.max_diff != 2:
+            raise UnsupportedFeature("higher_order_derivatives", "Autograd second derivatives require max_diff=2.")
 
     @primitive
     def native_vjp(values, cotangent, owner):
@@ -228,6 +335,31 @@ def _autograd_primitives():
         return backward
     defvjp_argnums(native_vjp, second_vjp_rule)
 
+    def vjp_values_jvp(direction, answer, values, cotangent, owner):
+        require_second(owner)
+        return native_second_vjp(values, cotangent, direction, owner)[:len(owner.indices)]
+
+    defjvp(native_vjp, vjp_values_jvp,
+        lambda direction, answer, values, cotangent, owner: native_vjp(values, direction, owner), None)
+
+    @primitive
+    def native_jvp(values, direction, owner):
+        return owner.jvp(values, direction)
+
+    def jvp_values_vjp(answer, values, direction, owner):
+        require_second(owner)
+        return lambda cotangent: native_second_vjp(values, cotangent, direction, owner)[:len(owner.indices)]
+
+    defvjp(native_jvp, jvp_values_vjp,
+        lambda answer, values, direction, owner: lambda cotangent: native_vjp(values, cotangent, owner), None)
+
+    def jvp_values_jvp(tangent, answer, values, direction, owner):
+        require_second(owner)
+        return native_second_jvp(values, direction, tangent, owner)
+
+    defjvp(native_jvp, jvp_values_jvp,
+        lambda tangent, answer, values, direction, owner: native_jvp(values, tangent, owner), None)
+
     @primitive
     def native_quantum(values, owner):
         return owner.forward(values)
@@ -239,6 +371,8 @@ def _autograd_primitives():
         return lambda cotangent: native_vjp(values, cotangent, owner)
 
     defvjp(native_quantum, vjp_rule, None)
+    defjvp(native_quantum,
+        lambda tangent, answer, values, owner: native_jvp(values, tangent, owner), None)
     return native_quantum
 
 

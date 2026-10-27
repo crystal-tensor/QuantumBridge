@@ -25,6 +25,9 @@ class TensorFlowBridgeLimits:
     max_callback_executions: int = 128
     max_total_shots: int = 1000000
     max_transform_tapes: int = 128
+    max_scalar_graph_bytes: int = 1048576
+    max_scalar_rank: int = 8
+    max_scalar_elements: int = 4096
 
     def __post_init__(self):
         if any(isinstance(x, bool) or not isinstance(x, Integral) or x < 1 for x in self.__dict__.values()):
@@ -36,12 +39,16 @@ class TensorFlowBridgeLimits:
 
 
 def execute_tensorflow(node, args, kwargs, *, return_status=False):
-    if getattr(node, "unified_limits", None) is not None:
-        raise UnsupportedFeature("tensorflow_unified_graph_resources", "Ordinary TensorFlow graph callbacks do not yet have a shared request account; use explicit native derivative-status queries for per-request budgets.")
     try:
         import tensorflow as tf
     except ImportError as exc:
         raise MissingOptionalDependency("Native TensorFlow QNode requires optional tensorflow.") from exc
+    managed_limits = getattr(node, "unified_limits", None)
+    if managed_limits is not None:
+        from quantumbridge.execution.resource_limits import resolve_unified_limits
+        resolve_unified_limits(managed_limits)
+        if not tf.executing_eagerly() or return_status:
+            raise UnsupportedFeature("tensorflow_unified_graph_resources", "Cached TensorFlow graph callbacks do not have a shared per-execution request account; only the admitted eager native tensor domain supports unified_limits.")
     if node.max_diff not in {1, 2}:
         raise UnsupportedFeature("higher_order_derivatives", "Native TensorFlow supports derivative orders at most two.")
     if set(node.gradient_kwargs) - {"step"}:
@@ -108,6 +115,31 @@ def execute_tensorflow(node, args, kwargs, *, return_status=False):
     kernels.clear()
     numpy_dtype = dtype.as_numpy_dtype
     graph = not tf.executing_eagerly()
+    from .tensorflow_managed import _configuration
+    owner_configuration = _configuration(node)
+    if not return_status:
+        from .tensorflow_whole_execution import select_tensorflow_statevector
+        specialization = select_tensorflow_statevector(kernel, packed)
+        if specialization is None:
+            from .tensorflow_mps_execution import select_tensorflow_mps
+            specialization = select_tensorflow_mps(kernel, packed)
+        if specialization is not None:
+            function, work, receipt = specialization
+            flat = function(packed)
+            is_mps = work.get("device_path") == "native_mps_exact_index_split"
+            node.last_metadata = {"interface": "tensorflow", "execution": "native TF MPS tensor chain" if is_mps else "native TF whole-plan tensor graph",
+                "native_tensor_execution": True, "requested_gradient_method": node.diff_method,
+                "derivative_strategy": "TF reverse VJP and streamed forward-over-reverse HVP",
+                "max_diff_policy": "native order "+str(node.max_diff)+"; higher-point derivatives refused",
+                "tensor_plan_work": work, "runtime_graph_accounting": "managed eager entries only; direct cached graph calls have no cumulative execution account",
+                "tensor_resource_contract": {"static_plan": "GUARANTEED_STATIC_BOUND", "runtime_parameters": "GRAPH_RUNTIME_VALIDATED",
+                    "controlled_execution": "LEDGER_ACCOUNTED" if receipt else "OUT_OF_SCOPE",
+                    "allocator_memory": "ESTIMATED_ONLY", "external_loss": "OUT_OF_SCOPE"},
+                "tensor_resource_receipt": receipt,
+                "trace_configuration_only": graph}
+            return unflatten_tree(flat, kernel.spec, reshape=tf.reshape)
+    if managed_limits is not None:
+        raise UnsupportedFeature("tensorflow_unified_graph_resources", "This QNode is outside the admitted eager whole-tensor unified budget domain.")
     if graph:
         from .tensorflow_graph import TensorFlowGraphKernel
         node.last_metadata = {"interface": "tensorflow", "execution": "CPU host callback",
@@ -179,12 +211,35 @@ def execute_tensorflow(node, args, kwargs, *, return_status=False):
                 outputs = [tf.identity(value) for value in outputs]
         return outputs
 
+    def traced_rule():
+        if tf.executing_eagerly() or dtype != tf.float64 or return_status:
+            return None
+        if _configuration(node) != owner_configuration:
+            raise UnsupportedFeature("tensorflow_compiled_owner_changed",
+                "QB_UNSUPPORTED[tensorflow_compiled_owner_changed]: The eager forward owner configuration changed before traced differentiation.")
+        from .tensorflow_whole_execution import select_tensorflow_eager_vjp
+        return select_tensorflow_eager_vjp(kernel)
+
+    def note_traced(decision):
+        node.last_metadata = {**node.last_metadata, "traced_eager_vjp": True,
+            "traced_vjp_accounting": "OUT_OF_SCOPE", "traced_vjp_tensor_plan": dict(decision),
+            "gradient_method": decision["gradient_method"],
+            "shifted_evaluation_count": decision["shifted_evaluation_count"],
+            "gradient_physical_shots": 0, "tensor_count_scope": "Structural per VJP, not external graph execution counters"}
+
     @tf.custom_gradient
     def second_order_vjp(values, cotangent, incoming):
-        _, matrix, second, status = evaluate(values, 2, incoming)
-        value_gradient = tf.linalg.matvec(second[:, :, 0], cotangent, transpose_a=True)
-        cotangent_gradient = tf.linalg.matvec(matrix, incoming)
-        if return_status:
+        rule = traced_rule()
+        if rule is None:
+            _, matrix, second, status = evaluate(values, 2, incoming)
+            value_gradient = tf.linalg.matvec(second[:, :, 0], cotangent, transpose_a=True)
+            cotangent_gradient = tf.linalg.matvec(matrix, incoming)
+        else:
+            function, decision = rule
+            value_gradient, cotangent_gradient = function(values, cotangent, incoming)
+            note_traced(decision)
+            status = None
+        if return_status and status is not None:
             ok = tf.equal(status, 0)
             value_gradient = tf.where(ok, value_gradient, tf.fill(tf.shape(value_gradient), tf.cast(float("nan"), dtype)))
             cotangent_gradient = tf.where(ok, cotangent_gradient, tf.fill(tf.shape(cotangent_gradient), tf.cast(float("nan"), dtype)))
@@ -194,9 +249,15 @@ def execute_tensorflow(node, args, kwargs, *, return_status=False):
 
     @tf.custom_gradient
     def first_order_vjp(values, cotangent):
-        _, matrix, status = evaluate(values, True)
-        result = tf.linalg.matvec(matrix, cotangent, transpose_a=True)
-        if return_status:
+        rule = traced_rule()
+        if rule is None:
+            _, matrix, status = evaluate(values, True)
+            result = tf.linalg.matvec(matrix, cotangent, transpose_a=True)
+        else:
+            function, decision = rule
+            result, status = function(values, cotangent), None
+            note_traced(decision)
+        if return_status and status is not None:
             result = tf.where(tf.equal(status, 0), result, tf.fill(tf.shape(result), tf.cast(float("nan"), dtype)))
         def backward(incoming):
             if node.max_diff != 2:
