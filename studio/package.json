@@ -7,7 +7,7 @@
     "build": "node scripts/smoke-check.mjs",
     "test": "node scripts/smoke-check.mjs",
     "smoke": "node scripts/smoke-check.mjs",
-    "test:navigation": "node scripts/framework-check.mjs && node --test scripts/artifact-pages.test.mjs scripts/build-public.test.mjs",
+    "test:navigation": "node scripts/framework-check.mjs && node --test scripts/artifact-pages.test.mjs scripts/build-public.test.mjs scripts/readme.test.mjs",
     "dev": "node scripts/serve.mjs"
   },
   "dependencies": {},

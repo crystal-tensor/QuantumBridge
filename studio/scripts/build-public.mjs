@@ -12,7 +12,7 @@ export async function buildPublic(destination, basePath = "/QuantumBridge/") {
   // Never recursively copy the workspace, private proposals, or temporary receipts.
   await mkdir(output, { recursive: true });
   if ((await readdir(output)).length) throw new Error("Public output directory must be empty");
-  for (const name of ["src", "assets", "framework.html", "ecosystem.html", "index.html"]) {
+  for (const name of ["src", "assets", "downloads", "readme.html", "framework.html", "ecosystem.html", "index.html"]) {
     await cp(path.join(root, name), path.join(output, name), { recursive: true });
   }
   await writeFile(path.join(output, "src/framework/deployment.js"), "export const publicSite = true;\nexport const privateDocuments = false;\n");

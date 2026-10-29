@@ -1,5 +1,9 @@
 # QuantumBridge SDK
 
+[Online user guide / 在线使用文档](https://crystal-tensor.github.io/QuantumBridge/readme.html?lang=zh)
+covers installation, quickstart, API reference and tutorials for all 4 domains / 19 directions,
+with searchable Chinese/English chapters and an interactive 3D Bloch-sphere explanation.
+
 [Application framework / 应用框架](https://crystal-tensor.github.io/QuantumBridge/framework.html)
 organizes four domains and 19 directions with executable research notebooks.
 It is a scope and evidence browser, not a certificate of complete SDK parity.
