@@ -1,6 +1,6 @@
 // Copyright 2026 QuantumBridge Contributors. Apache-2.0.
 // Register every published local page here so the framework remains its entry point.
-import { bi } from "./data.js";
+import { bi, domains, directions } from "./data.js";
 import { publicSite, privateDocuments } from "./deployment.js";
 
 const moduleRoot = new URL("../../", import.meta.url);
@@ -44,9 +44,15 @@ export const privateDocumentResources = ["science", "finance", "industry", "secu
 }));
 export const projectDocuments = !publicSite && privateDocuments ? privateDocumentResources : [];
 
+// Guides share the owner-facing taxonomy; they are not notebook artifacts.
+export const documentationResources = [
+  ...domains.map(domain => ({ domain: domain.id, kind: "guide", href: `/readme.html#${domain.id}`, title: bi(`${domain.name["zh-CN"]} · 安装与使用指南`, `${domain.name.en} · User guide`) })),
+  ...directions.map(direction => ({ domain: direction.domain, direction: direction.id, kind: "guide", href: `/readme.html#${direction.id}`, title: bi(`${direction.name["zh-CN"]} · 使用教程`, `${direction.name.en} · Tutorial`) })),
+];
+
 export const resourceHref = (resource, notebook = false) => resource.href ?
   `${siteBase}${resource.href.replace(/^\//, "")}` :
   `${siteBase}examples/${resource.domain}/${notebook ? resource.file.replace(/\.html$/, ".ipynb") : resource.file}`;
 
-export const domainResources = domain => [...resources, ...projectDocuments].filter(resource => resource.domain === domain && resource.kind !== "case");
-export const directionResources = direction => resources.filter(resource => resource.direction === direction);
+export const domainResources = domain => [...resources, ...projectDocuments, ...documentationResources.filter(resource => !resource.direction)].filter(resource => resource.domain === domain && resource.kind !== "case");
+export const directionResources = direction => [...resources, ...documentationResources].filter(resource => resource.direction === direction);
