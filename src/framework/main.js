@@ -26,7 +26,7 @@ function directionCard(item){
 
 function domainColumn(domain, items){
   const pages=domainResources(domain.id);
-  return `<section class="domain-column ${domain.id}" aria-labelledby="domain-${domain.id}"><header class="domain-heading"><div class="domain-icon">${icon(domain.icon)}</div><div><h2 id="domain-${domain.id}">${tr(domain.name)}</h2><span>${domain.code}</span></div><span class="domain-count">${items.length}</span></header><p class="domain-summary">${tr(domain.summary)}</p>${pages.length?`<div class="domain-resources"><h3>${text("案例与报告","Cases & reports")}</h3>${resourceLinks(pages)}</div>`:""}<div class="direction-list">${items.map(directionCard).join("")}</div></section>`;
+  return `<section class="domain-column ${domain.id}" aria-labelledby="domain-${domain.id}"><header class="domain-heading"><div class="domain-icon">${icon(domain.icon)}</div><div><h2 id="domain-${domain.id}">${tr(domain.name)}</h2><span>${domain.code}</span></div><span class="domain-count">${items.length}</span></header><p class="domain-summary">${tr(domain.summary)}</p><div class="direction-list">${items.map(directionCard).join("")}</div>${pages.length?`<div class="domain-resources"><h3>${text("案例总目录与验证报告","Case directories & validation reports")}</h3>${resourceLinks(pages)}</div>`:""}</section>`;
 }
 
 function renderShell(){

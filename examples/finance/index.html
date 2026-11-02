@@ -16,6 +16,15 @@
         <p>中文原理、实现步骤、完整电路、本地采样、中间图表、最终结果和夸父执行入口。</p>
         <p>这是一组小规模合成研究案例，不代表金融全行业覆盖、量子优势或投资建议。每份案例单独标明硬件状态。</p>
         <div class="scroll"><table><thead><tr><th>编号</th><th>分类</th><th>案例与输出</th><th>代码</th></tr></thead><tbody><tr><td>01</td><td>量化投资与资产配置</td><td><a href="01_allocation_quafu.html">阅读案例</a></td><td><a href="01_allocation_quafu.ipynb" download>Jupyter notebook</a></td></tr><tr><td>02</td><td>风险计量</td><td><a href="02_risk_quafu.html">阅读案例</a></td><td><a href="02_risk_quafu.ipynb" download>Jupyter notebook</a></td></tr><tr><td>03</td><td>衍生品定价与对冲</td><td><a href="03_derivatives_quafu.html">阅读案例</a></td><td><a href="03_derivatives_quafu.ipynb" download>Jupyter notebook</a></td></tr><tr><td>04</td><td>金融约束优化</td><td><a href="04_constraints_quafu.html">阅读案例</a></td><td><a href="04_constraints_quafu.ipynb" download>Jupyter notebook</a></td></tr><tr><td>05</td><td>相关性与市场波动</td><td><a href="05_correlation_quafu.html">阅读案例</a></td><td><a href="05_correlation_quafu.ipynb" download>Jupyter notebook</a></td></tr></tbody></table></div>
-        <h2>执行状态</h2><ul><li>量化投资与资产配置：已取回真机结果 / 精度尚未通过验收</li><li>风险计量：已取回真机结果 / 精度尚未通过验收</li><li>衍生品定价与对冲：已取回真机结果 / 精度尚未通过验收</li><li>金融约束优化：已取回真机结果 / 精度尚未通过验收</li><li>相关性与市场波动：已取回真机结果 / 精度尚未通过验收</li></ul><p>全批次8个业务电路加1个位序校准，计划9个任务、9216 shots，业务电路最多4量子比特。
+        <h2>真实股票 · CQM 与量子蒙特卡洛</h2>
+        <p>新扩展使用真实的 2015 年历史股票序列，保留来源与校验，不是合成股票或当前报价。本批为已执行的本地求解与模拟，真机任务为 0。</p>
+        <ul><li><a href="dwave_portfolio.html">资产配置：D-Wave CQM 真实股票组合</a></li>
+        <li><a href="dwave_constraints.html">金融约束：预算、持仓数与行业限制</a></li>
+        <li><a href="qmc_pricing.html">衍生品定价：IBM 量子蒙特卡洛与 PennyLane 参考</a></li>
+        <li><a href="qmc_risk.html">风险计量：真实历史损失与 CVaR</a></li>
+        <li><a href="qmc_hybrid.html">相关性与波动：可微分混合模型研究</a></li></ul>
+        <p>五个分类入口共享两份已执行应用实验，均含原理、步骤、代码、图表与可下载 Notebook。原有合成案例与夸父回执保持不变。</p>
+        <h2>Cirq 金融方法与案例</h2><p><a href="cirq_finance.html">Cirq 量子金融 · 方法与案例总入口</a>：按同一金融分类补充 QAOA 组合选择、VaR / CVaR、离散期权定价、预算约束和量子游走情景。Google 官方基础方法与 QuantumBridge 自编金融模型分别标注；这批为已执行的 Cirq 本地仿真，不是真机结果。</p>
+        <h2>原有夸父案例执行状态</h2><ul><li>量化投资与资产配置：已取回真机结果 / 精度尚未通过验收</li><li>风险计量：已取回真机结果 / 精度尚未通过验收</li><li>衍生品定价与对冲：已取回真机结果 / 精度尚未通过验收</li><li>金融约束优化：已取回真机结果 / 精度尚未通过验收</li><li>相关性与市场波动：已取回真机结果 / 精度尚未通过验收</li></ul><p>全批次8个业务电路加1个位序校准，计划9个任务、9216 shots，业务电路最多4量子比特。
         授权上限为20任务，每任务1024 shots，最多6量子比特。无硬件结果时不以模拟输出代替。</p>
         <section id="qb-report-directory"><h2>真机诊断与审计报告</h2><ul><li><a href="/QuantumBridge/examples/finance/06_hardware_diagnostics.html">D1 · 真机最小诊断</a> · <a href="/QuantumBridge/examples/finance/06_hardware_diagnostics.ipynb" download>Notebook</a></li><li><a href="/QuantumBridge/examples/finance/finance_quafu_d2_mapping_diagnosis.html">D2 · 位序与映射诊断</a> · <a href="/QuantumBridge/examples/finance/finance_quafu_d2_mapping_diagnosis.ipynb" download>Notebook</a></li><li><a href="/QuantumBridge/examples/finance/finance_quafu_d3_client_contract.html">D3 · 夸父客户端契约审计</a> · <a href="/QuantumBridge/examples/finance/finance_quafu_d3_client_contract.ipynb" download>Notebook</a></li></ul></section></main></html>
