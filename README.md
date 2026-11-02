@@ -10,6 +10,65 @@ It is a scope and evidence browser, not a certificate of complete SDK parity.
 For a local preview run `node studio/scripts/serve.mjs` and open
 `http://127.0.0.1:8765/framework.html`.
 
+### Real-Stock Finance Applications / 真实股票金融应用
+
+[Open Finance / 打开金融分类](https://crystal-tensor.github.io/QuantumBridge/framework.html?category=finance&lang=zh)
+· [中文使用文档](https://crystal-tensor.github.io/QuantumBridge/readme.html?lang=zh#finance)
+
+| 金融方向 / Direction | 已执行案例 / Executed Case |
+| --- | --- |
+| 量化投资与资产配置 / Portfolio | [D-Wave CQM：真实股票组合](https://crystal-tensor.github.io/QuantumBridge/examples/finance/dwave_portfolio.html) |
+| 金融约束优化 / Constraints | [D-Wave CQM：预算、持仓与行业约束](https://crystal-tensor.github.io/QuantumBridge/examples/finance/dwave_constraints.html) |
+| 衍生品定价 / Pricing | [量子蒙特卡洛：IBM 股票校准的期权模型](https://crystal-tensor.github.io/QuantumBridge/examples/finance/qmc_pricing.html) |
+| 风险计量 / Risk | [量子蒙特卡洛：历史损失与 VaR / CVaR](https://crystal-tensor.github.io/QuantumBridge/examples/finance/qmc_risk.html) |
+| 相关性与市场波动 / Market Models | [可微混合模型：IBM 波动研究](https://crystal-tensor.github.io/QuantumBridge/examples/finance/qmc_hybrid.html) |
+
+每页包含原理、实现步骤、代码、中间与最终输出，以及可下载的 Jupyter
+Notebook。股票输入为真实 **2015 年历史数据**，不是实时行情；本批为本地
+经典求解和量子仿真，**没有新增夸父或 D-Wave 云任务**，不代表真机验收。
+[Cirq 金融方法与案例](https://crystal-tensor.github.io/QuantumBridge/examples/finance/cirq_finance.html)
+另保留合成教学模型与 Google 官方通用量子方法之间的边界。
+
+Install `pip install -e '.[finance-apps]'` in a separate environment. The finance
+sections of the local framework now link two executed applications and their
+downloadable notebooks: D-Wave CQM portfolio/budget constraints, and quantum
+Monte Carlo pricing/risk with a separate differentiable hybrid-model example.
+
+```python
+from quantumbridge.finance import (
+    build_portfolio_cqm, solve_portfolio, pricing_case, risk_case,
+    pennylane_qmc, hybrid_volatility_case,
+)
+
+portfolio = solve_portfolio(build_portfolio_cqm(budget=220.))
+pricing = pricing_case(shots=1024)
+risk = risk_case(notional=1000., confidence=.95, shots=1024)
+pl_price = pennylane_qmc(pricing["probabilities"], pricing["call_payoffs"])
+pl_tail = pennylane_qmc(risk["probabilities"], risk["excess_values"])
+pl_cvar = risk["raw_reference"]["VaR"] + pl_tail["estimate"] / (1-risk["confidence"])
+hybrid = hybrid_volatility_case(epochs=15)
+print(portfolio["optimum"], pricing["call"]["estimate"], risk["cvar_estimate"])
+print("PennyLane QMC:", pl_price["estimate"], "CVaR:", pl_cvar)
+```
+
+These use verified real **2015 historical stock prices**, not live quotes or
+synthetic stocks. The pinned Plotly snapshot, hash, price-basis caveats and
+source-published MIT license are included in `quantumbridge/finance/data/`.
+`dimod.ExactCQMSolver` is classical CPU enumeration; native QAOA and MLAE run on
+QuantumBridge simulators. `pennylane_qmc` separately executes installed
+PennyLane's matrix-based simulator template for pricing and historical tail-risk
+expectations, with its phase-grid error shown separately. The hybrid model trains a native
+QNode through PyTorch (Tape-adjoint on the published core, or simulator backprop
+on queued-QNode development builds), records its actual backend and retains its out-of-sample baseline comparison even
+when it does not improve it. Model option prices are not market option quotes.
+
+No D-Wave cloud or Quafu hardware jobs are submitted. Native four-qubit
+measurement-only QASM artifacts are available for review, but existing Quafu
+layout/bit-order/accuracy acceptance gaps remain open. These bounded research
+applications are not production finance, quantum advantage, or completion of
+the full Qiskit/PennyLane core-fusion goal. Original synthetic cases and hardware
+receipts are unchanged.
+
 The 2026-10-27 development snapshot includes native public circuit/bit/register
 contracts, Primitives V2, moving-power differentiation and MPS/TensorFlow work,
 plus standard QPY13 control-flow and scoped-variable transport. This is still

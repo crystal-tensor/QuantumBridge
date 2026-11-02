@@ -10,6 +10,7 @@ const note = (zh,en) => ({type:'note',text:bi(zh,en)});
 const code = (language, text, filename='') => ({type:'code',language,text,filename});
 const list = (zh,en) => ({type:'list',items:bi(zh,en)});
 const table = (zh,en) => ({type:'table',rows:bi(zh,en)});
+export const realStockFinanceResources = ['dwave_portfolio.html','dwave_constraints.html','qmc_pricing.html','qmc_risk.html','qmc_hybrid.html'].map(file=>resources.find(resource=>resource.domain==='finance'&&resource.file===file));
 export const bellCode = `from quantumbridge import Circuit, StatevectorDevice
 
 circuit = Circuit(2).h(0).cx(0, 1)
@@ -180,6 +181,14 @@ export const domainPages = domains.map(domain=>({id:domain.id,group:'domains',do
  p(domain.id==='finance'?'从离散、合成金融模型开始，先建立经典对照，再估计或优化。五个案例保留历史真机记录与独立精度诊断；不会因文档重写而改动原始输出。':domain.id==='science'?'从一个明确的物理模型出发，把输入、哈密顿量、变分或演化过程和经典对照放在同一条链路里。':domain.id==='industry'?'先把业务约束写清楚，再做 QUBO / Ising 编码。采样结束后要回到原业务模型检查可行性。':'区分量子协议教学、经典后量子密码和安全工程。安全结论需要与具体模型、熵源和执行库对应。',domain.id==='finance'?'Start with discrete synthetic models and classical references. Five cases retain historical hardware evidence and independent accuracy diagnostics. Documentation does not alter their outputs.':domain.id==='science'?'Connect a defined physical model, Hamiltonian, variational/evolution process and classical reference.':domain.id==='industry'?'Specify business constraints before QUBO/Ising encoding, then decode and validate in the original model.':'Distinguish quantum protocol tutorials, classical post-quantum cryptography and security engineering. Claims must match models, sources and libraries.'),
  h('domain-preparation','准备与安装','Preparation'),
  p('先完成 [基础安装](#installation) 和 [首个程序](#quickstart)。阅读原始 HTML 无需额外依赖；复做 Notebook 安装 JupyterLab 与 Matplotlib。具体依赖随方向变化，见下方教程。','Complete [Installation](#installation) and [Quickstart](#quickstart). Reading original HTML needs no additional packages; notebook reproduction uses JupyterLab/Matplotlib. Direction guides describe additional requirements.'),
+ ...(domain.id==='finance'?[
+ h('real-stock-applications','真实股票：CQM、量子蒙特卡洛与混合模型','Real stocks: CQM, quantum Monte Carlo and hybrid models'),
+ p('以下五个案例使用 Plotly 数据集中的真实 2015 年历史股票数据，不是实时行情。D-Wave dimod 的 CQM 在本地经典穷举；QAOA 与最大似然振幅估计在 QuantumBridge 模拟器执行；PennyLane QuantumMonteCarlo 是独立的上游模拟参考。可微混合模型保留按时间划分的验证集和经典基线。每页包含原理、代码、中间输出、最终输出与 Notebook 下载。','These five cases use real historical 2015 stock data from Plotly, not live quotes. D-Wave dimod CQM uses local classical enumeration; QAOA and maximum-likelihood amplitude estimation use QuantumBridge simulators. PennyLane QuantumMonteCarlo is a separate upstream simulation reference. The differentiable hybrid model retains a chronological holdout and classical baseline. Each page includes principles, code, intermediate/final outputs and its notebook.'),
+ code('bash','python -m pip install -e ".[finance-apps]"\npython -m pip install jupyterlab matplotlib\npython -m jupyterlab output/jupyter-notebook/finance/dwave_portfolio.ipynb'),
+ p('网页保留已执行的原始输出。混合模型在已发布核心上使用 Native Tape adjoint；具备 queued-QNode 的开发版本使用 backprop，运行结果的 backend 字段标明实际路径。两条路径都是原生计算，不调用上游 PennyLane 执行混合模型。','Pages retain original executed outputs. The hybrid model uses Native Tape adjoint on the published core and backprop on queued-QNode development builds; the result backend field identifies the actual path. Both are native computation, not upstream PennyLane execution of the hybrid model.'),
+ ...realStockFinanceResources.map(resource=>({type:'case-resource',resource})),
+ note('本批没有提交 D-Wave 云或夸父真机任务。期权价格是历史股票校准下的模型价格，不是市场期权报价；数据原始复权口径未明确。仿真结果、相位网格误差和真机精度缺口分别保留，不宣称量子优势或完整行业能力。','This batch submitted no D-Wave cloud or Quafu hardware jobs. Option prices are historically calibrated model values, not market option quotes; the source adjustment basis is undocumented. Simulation, phase-grid error and hardware accuracy gaps remain separate. No quantum advantage or full industry capability is claimed.')
+ ]:[]),
  {type:'direction-grid',domain:domain.id},
  h('domain-resources','原始案例与验证记录','Original cases and evidence'),{type:'resources',domain:domain.id},
  note(domain.id==='finance'?'已有历史夸父硬件执行回执，但硬件结果精度尚未通过验收。可行率、统计区间和业务指标必须单独阅读。':'这些案例保留本地执行证据；本批未提交真机。完整行业能力、量子优势与安全认证均不由案例覆盖数量建立。',domain.id==='finance'?'Historical Quafu hardware receipts exist, but hardware accuracy has not passed acceptance. Read feasibility, intervals and business metrics separately.':'These cases retain local execution evidence; this batch submitted no hardware jobs. Case coverage does not establish complete domain capability, quantum advantage or security certification.')
@@ -198,6 +207,11 @@ export const directionPages = directions.map(direction=>{
  p('原始案例提供输入表、建模代码、中间量、经典对照及结果解释。先在小规模下复核这些环节，再改变输入或扩大问题。','The original case includes input tables, implementation, intermediate quantities, classical references and interpretation. Validate the small problem before changing inputs or scaling up.'),
  h('case-result','4. 如何判断结果','4. Interpret the result'),{type:'p',text:result},
  h('case-open','5. 打开完整案例与下载源码','5. Open the case and download its notebook'),{type:'case-resource',resource:r},
+ ...(direction.domain==='finance'?[
+ h('extended-cases','扩展应用与 Notebook','Extended applications and notebooks'),
+ ...resources.filter(item=>item.kind==='case'&&item.direction===direction.id&&item!==r).map(resource=>({type:'case-resource',resource})),
+ p('D-Wave CQM 与量子蒙特卡洛扩展使用真实 2015 年历史股票数据；Cirq 案例保留其合成教学模型标注。两者都不是本批真机结果。详细输入、运行环境、原理、代码和输出见各案例。','The D-Wave CQM and quantum Monte Carlo extensions use real historical 2015 stock data. Cirq cases retain their synthetic tutorial-model labels. Neither is hardware evidence for this batch. See each case for inputs, environment, principles, code and outputs.')
+ ]:[]),
  h('case-boundary','适用边界','Scope boundaries'),{type:'note',text:direction.boundary},
  p(direction.domain==='finance'?'案例中的硬件回执属于历史实验；硬件精度未通过验收。默认复做只运行本地路径，新增云实验需要独立确认预算与设备配置。':'本案例批次仅在本地执行，未提交真机；没有把模拟结果标成硬件证据。',direction.domain==='finance'?'Hardware receipts belong to historical experiments; accuracy has not passed acceptance. Default reruns use local execution. New cloud runs require separately established budget and device settings.':'This case batch ran locally without hardware submission; simulation is not presented as hardware evidence.'),
  h('case-practice','建议练习','Suggested exercise'),

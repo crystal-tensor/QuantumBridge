@@ -4,7 +4,7 @@ import { test } from 'node:test';
 import { readFile, mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { pages, chapters, directionPages, domainPages, version } from '../src/readme/content.js';
+import { pages, chapters, directionPages, domainPages, version, realStockFinanceResources } from '../src/readme/content.js';
 import { documentationResources, domainResources, directionResources, resources, resourceHref } from '../src/framework/resources.js';
 import { domains, directions } from '../src/framework/data.js';
 import { buildPublic } from './build-public.mjs';
@@ -16,7 +16,7 @@ test('documentation preserves the 4-domain / 19-direction taxonomy and home regi
   assert.equal(directionPages.length, 19);
   assert.equal(new Set(pages.map(p => p.id)).size, pages.length);
   assert.equal(documentationResources.length, 23);
-  assert.equal(resources.length, 26, 'notebook registry must remain unchanged');
+  assert.equal(resources.length, 37, 'registry includes Cirq and five real-stock CQM/QMC finance entries');
   for (const domain of domains) {
     assert.ok(domainResources(domain.id).some(r => r.kind === 'guide' && r.href === `/readme.html#${domain.id}`));
   }
@@ -25,7 +25,7 @@ test('documentation preserves the 4-domain / 19-direction taxonomy and home regi
     assert.equal(page.domain, direction.domain);
     const links = directionResources(direction.id);
     assert.ok(links.some(r => r.kind === 'guide' && r.href === `/readme.html#${direction.id}`));
-    assert.equal(links.filter(r => r.kind === 'case').length, 1);
+    assert.equal(links.filter(r => r.kind === 'case').length, direction.domain === 'finance' ? 3 : 1);
     assert.equal(page.blocks.find(b => b.type === 'case-resource').resource, links.find(r => r.kind === 'case'));
   }
 });
@@ -50,6 +50,19 @@ test('all chapters are bilingual and their internal references resolve', async (
       }
     }
   }
+});
+
+test('finance guide and every direction expose the newly executed cases rather than only the oldest one', () => {
+  assert.equal(realStockFinanceResources.length, 5);
+  const guide = domainPages.find(page=>page.id==='finance');
+  for (const resource of realStockFinanceResources) {
+    assert.ok(resource && resource.kind==='case');
+    assert.ok(guide.blocks.some(block=>block.type==='case-resource'&&block.resource===resource));
+    const page = directionPages.find(page=>page.id===resource.direction);
+    const actual = page.blocks.filter(block=>block.type==='case-resource').map(block=>block.resource);
+    assert.deepEqual(actual, resources.filter(item=>item.kind==='case'&&item.direction===resource.direction));
+  }
+  assert.match(guide.blocks.find(block=>block.type==='note'&&block.text['zh-CN'].includes('本批没有提交')).text.en,/no D-Wave cloud or Quafu hardware/);
 });
 
 test('public export includes runnable documentation and downloads at the project base path', async () => {

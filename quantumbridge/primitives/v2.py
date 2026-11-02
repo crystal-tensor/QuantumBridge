@@ -320,7 +320,7 @@ def _sampler_plans(pubs, shots, ledger):
                 )
 
                 DynamicExecutionEngine(
-                    StatevectorDevice(), bound.remove_final_measurements()
+                    StatevectorDevice(), bound.remove_final_measurements(inplace=False)
                 )
     return plans, layouts, points, total_shots, total_work
 
@@ -367,7 +367,7 @@ def _execute_sampler(plans, layouts, points, shots, work, seed, ledger):
                             from quantumbridge.information import Statevector
 
                             trajectories = DynamicExecutionEngine(
-                                device, bound.remove_final_measurements()
+                                device, bound.remove_final_measurements(inplace=False)
                             ).trajectories(1)
                             try:
                                 state, _, _ = next(trajectories)

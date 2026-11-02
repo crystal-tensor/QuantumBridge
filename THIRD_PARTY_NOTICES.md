@@ -378,6 +378,25 @@ The cases are local-only and do not establish full SDK or industry parity.
 
 ## Finance Research Case Studies
 
+### Real-Stock CQM and Quantum Monte Carlo Extensions
+
+The optional applications call installed D-Wave `dimod` (Apache-2.0), PennyLane
+(Apache-2.0), SciPy and PyTorch public APIs. No SDK implementation or tests are
+vendored. `ExactCQMSolver` performs classical local enumeration; PennyLane's
+matrix-based QuantumMonteCarlo reference is simulator-only. Native gate-model
+QAOA and maximum-likelihood amplitude estimation are separately identified.
+No D-Wave cloud or Quafu hardware submission is performed by these applications.
+
+`quantumbridge/finance/data/plotly_stockdata.csv` is a real historical stock-data
+snapshot from Plotly's public datasets repository, pinned at commit
+`0f7c47868a3393316098a8bf97d548e1ee23d22a`. Its source URL, exact SHA-256, dates,
+limitations and repository-published MIT license are retained in adjacent
+`provenance.json` and `PLOTLY_LICENSE.txt`. Copyright (c) 2019-2024 Plotly
+Technologies Inc. The original upstream price-adjustment methodology is not
+documented; no audited total-return or current-quote claim is made. These
+historical research demonstrations are not trading recommendations, verified
+production risk models, hardware acceptance, or evidence of quantum advantage.
+
 `quantumbridge/finance/` independently implements five small synthetic finance
 workflows with the project's native circuits, simulator and existing Quafu
 transport. Public Qiskit Finance tutorials are application/mathematical

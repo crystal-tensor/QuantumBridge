@@ -10,9 +10,13 @@ from .adapters import QiskitAlgorithmsAdapter
 from .amplitude import AmplitudeEstimationResult, PhaseEstimationResult, estimate_amplitude, estimate_phase
 from .eigensolvers import EigensolverResult, NumPyEigensolver, eigensolver_result
 from .minimum_eigensolvers import ExactDiagonalizationSolver, NumPyMinimumEigensolver
+from .estimation_problem import EstimationProblem
+from .maximum_likelihood_amplitude_estimation import MaximumLikelihoodAmplitudeEstimation, MaximumLikelihoodAmplitudeEstimationResult
+from .phase_estimation import AlgorithmError
 from .optimizers import GradientDescentOptimizer, OptimizerResult
 
 __all__ = [
+    "EstimationProblem", "MaximumLikelihoodAmplitudeEstimation", "MaximumLikelihoodAmplitudeEstimationResult", "AlgorithmError",
     "AmplitudeEstimationResult",
     "EigensolverResult",
     "ExactDiagonalizationSolver",

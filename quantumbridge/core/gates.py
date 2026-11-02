@@ -543,6 +543,8 @@ def decompose(circuit, selected=None, reps=1, *, _work=None, _standard=True, _an
         limits.check("max_total_operations", predicted)
         from .circuit_metadata import empty_execution_circuit
         out = empty_execution_circuit(result)
+        from .bits import copy_bits
+        copy_bits(result, out)
         changed = False
         for item in result.iter_instructions():
             work[0] += 1

@@ -10,8 +10,8 @@ test("public export keeps every case and notebook, project paths, and private-do
   const directory = await mkdtemp(path.join(tmpdir(), "qb-pages-"));
   try {
     const result = await buildPublic(directory, "/QuantumBridge/");
-    assert.equal(result.pages, 26);
-    assert.equal(result.notebooks, 22);
+    assert.equal(result.pages, 37);
+    assert.equal(result.notebooks, 32);
     assert.ok((await readFile(path.join(directory, "framework.html"), "utf8")).includes("framework-app"));
     assert.match(await readFile(path.join(directory, "src/framework/deployment.js"), "utf8"), /publicSite = true/);
     assert.ok(!(await readdir(directory)).includes("reports"));

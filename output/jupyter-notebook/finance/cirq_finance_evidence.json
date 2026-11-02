@@ -1,0 +1,380 @@
+{
+  "generated_at": "2026-11-01T02:23:56.639824+00:00",
+  "hardware_jobs": 0,
+  "sources": {
+    "qaoa": [
+      "Google Cirq · QAOA / Ising",
+      "https://quantumai.google/cirq/experiments/qaoa/qaoa_ising"
+    ],
+    "walk": [
+      "Google Cirq · Quantum walk",
+      "https://quantumai.google/cirq/experiments/quantum_walks"
+    ],
+    "simulation": [
+      "Google Cirq · Simulation",
+      "https://quantumai.google/cirq/simulate/simulation"
+    ],
+    "diagonal": [
+      "Cirq · DiagonalGate API",
+      "https://quantumai.google/reference/python/cirq/DiagonalGate"
+    ],
+    "experiments": [
+      "Google Cirq · Experiments",
+      "https://quantumai.google/cirq/experiments"
+    ]
+  },
+  "cases": {
+    "portfolio": {
+      "qubits": 3,
+      "shots": 4096,
+      "counts": [
+        64,
+        234,
+        199,
+        963,
+        214,
+        1018,
+        975,
+        429
+      ],
+      "gamma": 2.0943951023931953,
+      "beta": 2.748893571891069,
+      "expected_cost": 0.5197524894510139,
+      "exact_feasible_optimum": -0.13,
+      "best_sampled_feasible": "011",
+      "sampled_gap": 0.0,
+      "feasible_probability": 0.7216796875,
+      "optimal_probability": 0.235107421875,
+      "ideal_probability": [
+        0.015291369301618563,
+        0.05378333420617431,
+        0.05393638034988177,
+        0.24208597849307462,
+        0.0535530612225334,
+        0.24197399567350864,
+        0.24191991109559308,
+        0.09745596965761605
+      ],
+      "validation": "Cirq state checked against independent dense QAOA formula",
+      "backend": "local cirq.Simulator",
+      "cirq_version": "1.6.1",
+      "python": "3.12.6",
+      "seed": 20261101,
+      "hardware_jobs": 0
+    },
+    "risk": {
+      "qubits": 2,
+      "shots": 4096,
+      "counts": [
+        2211,
+        1061,
+        585,
+        239
+      ],
+      "exact": {
+        "EL": 1.4500000000000002,
+        "VaR": 4.0,
+        "CVaR_ES": 6.666666666666666
+      },
+      "sampled": {
+        "EL": 1.530517578125,
+        "VaR": 4.0,
+        "CVaR_ES": 7.111979166666666
+      },
+      "var_95pct_DKW_interval": [
+        4.0,
+        4.0
+      ],
+      "dkw_epsilon": 0.02122033618344718,
+      "ideal_probability": [
+        0.55,
+        0.25,
+        0.15000000000000005,
+        0.049999999999999996
+      ],
+      "validation": "Prepared distribution and independent exact EL/VaR/ES checked",
+      "backend": "local cirq.Simulator",
+      "cirq_version": "1.6.1",
+      "python": "3.12.6",
+      "seed": 20261101,
+      "hardware_jobs": 0
+    },
+    "pricing": {
+      "qubits": 3,
+      "shots": 4096,
+      "counts": [
+        3659,
+        437
+      ],
+      "exact_price": 2.9405960199202656,
+      "sampled_price": 3.1373058122684476,
+      "price_95pct_wilson_interval": [
+        2.8700484142704323,
+        3.426236761282813
+      ],
+      "implied_spot": 88.95302960258805,
+      "ancilla_ideal_probability": 0.1,
+      "validation": "Scenario marginal and discounted expected payoff checked",
+      "backend": "local cirq.Simulator",
+      "cirq_version": "1.6.1",
+      "python": "3.12.6",
+      "seed": 20261101,
+      "hardware_jobs": 0
+    },
+    "financial-constraints": {
+      "qubits": 3,
+      "shots": 4096,
+      "counts": [
+        46,
+        87,
+        263,
+        965,
+        359,
+        1003,
+        878,
+        495
+      ],
+      "gamma": 2.0943951023931953,
+      "beta": 2.748893571891069,
+      "expected_cost": 1.8004991812722635,
+      "exact_feasible_optimum": -14.0,
+      "best_sampled_feasible": "101",
+      "sampled_gap": 0.0,
+      "feasible_probability": 0.244873046875,
+      "optimal_probability": 0.244873046875,
+      "ideal_probability": [
+        0.011153064875481726,
+        0.020572323163636188,
+        0.0618533181122566,
+        0.24122157943045228,
+        0.09412183690029897,
+        0.23925701139803837,
+        0.21626322165945341,
+        0.11555764446038258
+      ],
+      "validation": "Cirq state checked against independent dense QAOA formula",
+      "sampled_checks": [
+        {
+          "state": "000",
+          "count": 46,
+          "budget_equals_6": false,
+          "holdings_equal_2": false,
+          "sector_exclusion": true
+        },
+        {
+          "state": "001",
+          "count": 87,
+          "budget_equals_6": false,
+          "holdings_equal_2": false,
+          "sector_exclusion": true
+        },
+        {
+          "state": "010",
+          "count": 263,
+          "budget_equals_6": false,
+          "holdings_equal_2": false,
+          "sector_exclusion": true
+        },
+        {
+          "state": "011",
+          "count": 965,
+          "budget_equals_6": false,
+          "holdings_equal_2": true,
+          "sector_exclusion": true
+        },
+        {
+          "state": "100",
+          "count": 359,
+          "budget_equals_6": false,
+          "holdings_equal_2": false,
+          "sector_exclusion": true
+        },
+        {
+          "state": "101",
+          "count": 1003,
+          "budget_equals_6": true,
+          "holdings_equal_2": true,
+          "sector_exclusion": true
+        },
+        {
+          "state": "110",
+          "count": 878,
+          "budget_equals_6": false,
+          "holdings_equal_2": true,
+          "sector_exclusion": false
+        },
+        {
+          "state": "111",
+          "count": 495,
+          "budget_equals_6": false,
+          "holdings_equal_2": false,
+          "sector_exclusion": false
+        }
+      ],
+      "backend": "local cirq.Simulator",
+      "cirq_version": "1.6.1",
+      "python": "3.12.6",
+      "seed": 20261101,
+      "hardware_jobs": 0
+    },
+    "market-models": {
+      "qubits": 5,
+      "shots": 4096,
+      "counts": [
+        0,
+        0,
+        0,
+        129,
+        0,
+        1377,
+        0,
+        501,
+        0,
+        532,
+        0,
+        1401,
+        0,
+        156,
+        0,
+        0
+      ],
+      "steps": 5,
+      "ideal_probability": [
+        0.0,
+        0.0,
+        0.0,
+        0.03125000000000001,
+        0.0,
+        0.34375000000000006,
+        0.0,
+        0.12500000000000006,
+        0.0,
+        0.125,
+        0.0,
+        0.34375000000000006,
+        0.0,
+        0.03125000000000001,
+        0.0,
+        0.0
+      ],
+      "classical_probability": [
+        0.0,
+        0.0,
+        0.0,
+        0.03125,
+        0.0,
+        0.15625,
+        0.0,
+        0.3125,
+        0.0,
+        0.3125,
+        0.0,
+        0.15625,
+        0.0,
+        0.03125,
+        0.0,
+        0.0
+      ],
+      "intermediate_probability": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.5000000000000001,
+          0.0,
+          0.5000000000000001,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.2500000000000001,
+          0.0,
+          0.5000000000000002,
+          0.0,
+          0.2500000000000001,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.12500000000000003,
+          0.0,
+          0.375,
+          0.0,
+          0.375,
+          0.0,
+          0.12500000000000003,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.06250000000000003,
+          0.0,
+          0.3750000000000002,
+          0.0,
+          0.12500000000000006,
+          0.0,
+          0.3750000000000002,
+          0.0,
+          0.06250000000000003,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.03125000000000001,
+          0.0,
+          0.34375000000000006,
+          0.0,
+          0.12500000000000006,
+          0.0,
+          0.125,
+          0.0,
+          0.34375000000000006,
+          0.0,
+          0.03125000000000001,
+          0.0,
+          0.0
+        ]
+      ],
+      "quantum_variance": 8.000000000000002,
+      "classical_variance": 5.0,
+      "validation": "All five Cirq step states checked against independent amplitude recurrence",
+      "backend": "local cirq.Simulator",
+      "cirq_version": "1.6.1",
+      "python": "3.12.6",
+      "seed": 20261101,
+      "hardware_jobs": 0
+    }
+  }
+}

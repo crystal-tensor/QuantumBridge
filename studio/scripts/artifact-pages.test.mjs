@@ -132,6 +132,51 @@ test("only registered artifacts are exposed, with malformed paths and write requ
   for (const pathname of ["/framework.html", "/src/framework/resources.js", "/src/framework/main.js", "/src/framework/framework.css"]) assert.equal((await fetch(base + pathname)).status, 200, pathname);
 });
 
+test("real-stock CQM and QMC entries retain executed counts, provenance and hardware boundaries", async () => {
+  const mapping = {
+    portfolio: "dwave_portfolio.html", "financial-constraints": "dwave_constraints.html",
+    pricing: "qmc_pricing.html", risk: "qmc_risk.html", "market-models": "qmc_hybrid.html",
+  };
+  for (const [direction, file] of Object.entries(mapping)) {
+    const resource = directionResources(direction).find(item => item.file === file);
+    assert.ok(resource, direction);
+    const response = await fetch(base + resourceHref(resource));
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    assert.match(html, /2015/);
+    assert.match(html, /NO_NEW_SUBMISSION_RECOMMENDED/);
+    assert.match(html, /不是网页实时求解/);
+    assert.match(html, /data:image\/png;base64,/);
+    const notebook = JSON.parse((await readArtifact(resourceHref(resource, true))).body);
+    assert.equal(notebook.metadata.quantumbridge.direction, direction);
+    assert.equal(notebook.metadata.quantumbridge.hardware_jobs, 0);
+    const cells = notebook.cells.filter(cell => cell.cell_type === "code");
+    assert.ok(cells.every(cell => cell.execution_count > 0));
+    assert.ok(cells.every(cell => cell.outputs.every(output => output.output_type !== "error")));
+    const audit = cells.flatMap(cell => cell.outputs).filter(output => output.output_type === "stream")
+      .flatMap(output => (Array.isArray(output.text) ? output.text.join("") : output.text).split("\n"))
+      .find(line => line.startsWith("EVIDENCE_JSON="));
+    assert.ok(audit);
+    const evidence = JSON.parse(audit.slice("EVIDENCE_JSON=".length));
+    assert.equal(evidence.hardware_jobs, 0);
+    const source = file.startsWith("dwave") ? evidence.result.source : evidence.pricing.source;
+    assert.equal(source.sha256, "60bf505fec160ce05ba959382adee32ea6e53ce14fe22886db27c58fe1b0d26b");
+    if (file.startsWith("dwave")) {
+      assert.equal(Object.values(evidence.result.qaoa.counts).reduce((a,b)=>a+b,0), 1024);
+      assert.equal(evidence.result.candidates.length, 16);
+    } else {
+      assert.equal(evidence.pricing.call.counts.length, 4);
+      assert.ok(evidence.pricing.call.counts.every(row=>Object.values(row).reduce((a,b)=>a+b,0)===1024));
+      assert.equal(evidence.pennylane_reference.qubits, 9);
+      assert.equal(evidence.pennylane_risk_reference.qubits, 9);
+      assert.equal(evidence.pennylane_risk_reference.probabilities.length, 32);
+      assert.ok(Math.abs(evidence.pennylane_risk_reference.cvar_discrete_reference
+        - evidence.risk.raw_reference.CVaR_expected_shortfall) < 1e-10);
+      assert.ok(evidence.hybrid.circuit_gradient_norms.some(value=>value>0));
+    }
+  }
+});
+
 test("all three local-only domains have their own bilingual return navigation", async () => {
   for (const domain of ["science", "industry", "security"]) {
     const index = resources.find(item => item.domain === domain && item.kind === "index");
@@ -144,4 +189,48 @@ test("all three local-only domains have their own bilingual return navigation", 
     const directory = artifactPage("<html><body><main>Local cases</main></body></html>", index);
     assert.ok(!directory.includes('id="qb-report-directory"'));
   }
+});
+
+test("Cirq finance cases stay in the five matching finance directions with executed notebooks", async () => {
+  const mapping = {
+    portfolio: "cirq_portfolio.html", risk: "cirq_risk.html", pricing: "cirq_pricing.html",
+    "financial-constraints": "cirq_constraints.html", "market-models": "cirq_market_walk.html",
+  };
+  const hub = domainResources("finance").find(item => item.file === "cirq_finance.html");
+  assert.ok(hub);
+  const html = await (await fetch(base + resourceHref(hub))).text();
+  assert.match(html, /不是 Google 官方金融产品/);
+  assert.match(html, /0.*云端 \/ 真机任务/);
+  const receipt = JSON.parse(await readFile(new URL("../../output/jupyter-notebook/finance/cirq_finance_evidence.json", import.meta.url), "utf8"));
+  assert.equal(receipt.hardware_jobs, 0);
+  assert.deepEqual(Object.keys(receipt.cases).sort(), Object.keys(mapping).sort());
+  for (const [direction, file] of Object.entries(mapping)) {
+    const matches = directionResources(direction).filter(item => item.file === file);
+    assert.equal(matches.length, 1);
+    const item = matches[0];
+    assert.equal(item.domain, "finance");
+    assert.equal(item.kind, "case");
+    assert.ok(html.includes(`href="${file}"`));
+    const artifact = await readArtifact(resourceHref(item, true));
+    const notebook = JSON.parse(artifact.body);
+    assert.equal(notebook.metadata.quantumbridge.domain, "finance");
+    assert.equal(notebook.metadata.quantumbridge.direction, direction);
+    assert.equal(notebook.metadata.quantumbridge.hardware_jobs, 0);
+    const code = notebook.cells.filter(cell => cell.cell_type === "code");
+    assert.ok(code.length >= 4 && code.every(cell => cell.execution_count > 0));
+    assert.ok(code.every(cell => cell.outputs.every(output => output.output_type !== "error")));
+    assert.ok(code.some(cell => cell.outputs.some(output => output.data?.["image/png"])));
+    const streams = code.flatMap(cell => cell.outputs).filter(output => output.output_type === "stream")
+      .map(output => Array.isArray(output.text) ? output.text.join("") : output.text).join("\n");
+    const evidence = JSON.parse(streams.split("\n").find(line => line.startsWith("EVIDENCE_JSON=")).slice(14));
+    assert.deepEqual(evidence, receipt.cases[direction]);
+    assert.equal(evidence.backend, "local cirq.Simulator");
+    assert.equal(evidence.hardware_jobs, 0);
+    assert.equal(evidence.shots, 4096);
+    assert.equal(evidence.counts.reduce((a, b) => a + b, 0), 4096);
+    assert.ok(evidence.qubits >= 2 && evidence.qubits <= 5);
+    const english = await (await fetch(base + resourceHref(item) + "?lang=en")).text();
+    assert.ok(english.includes(`category=finance&lang=en#${direction}`));
+  }
+  assert.ok((await (await fetch(base + "/examples/finance/index.html")).text()).includes('href="cirq_finance.html"'));
 });

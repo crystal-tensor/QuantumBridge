@@ -37,6 +37,7 @@ qiskit-runtime = ["qiskit-ibm-runtime"]
 qiskit-nature = ["qiskit-nature", "qiskit-algorithms", "pyscf"]
 qiskit-algorithms = ["qiskit-algorithms"]
 qiskit-finance = ["qiskit-finance"]
+finance-apps = ["dimod>=0.12.22,<0.13", "scipy>=1.10", "pennylane>=0.42,<0.45", "torch>=2"]
 qiskit-optimization = ["qiskit-optimization"]
 qiskit-machine-learning = ["qiskit-machine-learning"]
 qiskit-dynamics = ["qiskit-dynamics"]
@@ -101,6 +102,9 @@ dev = ["pytest", "numpy", "pytest-cov"]
 
 [tool.setuptools]
 packages = {find = {include = ["quantumbridge*"]}}
+
+[tool.setuptools.package-data]
+"quantumbridge.finance" = ["data/*.csv", "data/*.json", "data/*.txt"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]

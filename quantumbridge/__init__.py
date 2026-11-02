@@ -5,6 +5,7 @@
 # Design source: docs/mvp/api_contract_v0.1.md.
 
 from quantumbridge.algorithms import (
+    EstimationProblem, MaximumLikelihoodAmplitudeEstimation, MaximumLikelihoodAmplitudeEstimationResult, AlgorithmError,
     AmplitudeEstimationResult,
     EigensolverResult,
     GradientDescentOptimizer,
@@ -76,6 +77,7 @@ from quantumbridge.transforms import finite_difference, metric_tensor, qng_step,
 from quantumbridge.utils.math import Hamiltonian, PauliString, PauliX, PauliY, PauliZ
 
 __all__ = [
+    "EstimationProblem", "MaximumLikelihoodAmplitudeEstimation", "MaximumLikelihoodAmplitudeEstimationResult", "AlgorithmError",
     "AmplitudeEstimationResult",
     "Circuit",
     "QuantumCircuit", "CircuitInstruction", "InstructionSet",
