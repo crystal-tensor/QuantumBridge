@@ -1,0 +1,590 @@
+{
+  "schema": 1,
+  "source_fingerprint": "423833c765ff4eacbb179c7f784e72057c4a3ca7071235def96f12f36a666665",
+  "observations": [
+    {
+      "id": "tf_cached_cos-main",
+      "kind": "tf_cached_cos",
+      "profile": "main",
+      "recorded_at": "2026-11-11T09:50:42.118400+00:00",
+      "evidence_hash": "c299978e224590e3f53e4beafb24826fd8a343043cefdfe37b8d441f0abf53e0",
+      "source_file": "studio/downloads/tensorflow_cached_cos_probe.py",
+      "report": {
+        "profile": "main",
+        "tensorflow": "2.21.0",
+        "recorded_at": "2026-11-11T09:50:42.118400+00:00",
+        "quantumbridge_or_sdks_imported": false,
+        "source_sha256": "ef253f06305def5c129db246c3b3c8631b59a84b32ff9a04bf7c9f1a0f1b28fc",
+        "scope": "raw TensorFlow cos second directional derivative; observation only",
+        "native_accepted": false,
+        "rows": [
+          {
+            "cached_value": false,
+            "cached_derivative": false,
+            "mode": "for",
+            "results": [
+              {
+                "point": 0.37,
+                "actual": -0.3729309382424138,
+                "expected": -0.3729309382424138,
+                "matches_formula": true
+              },
+              {
+                "point": 0.0,
+                "actual": -0.4,
+                "expected": -0.4,
+                "matches_formula": true
+              },
+              {
+                "point": -0.25,
+                "actual": -0.38756496868425794,
+                "expected": -0.38756496868425794,
+                "matches_formula": true
+              }
+            ]
+          },
+          {
+            "cached_value": false,
+            "cached_derivative": false,
+            "mode": "rof",
+            "results": [
+              {
+                "point": 0.37,
+                "actual": -0.3729309382424138,
+                "expected": -0.3729309382424138,
+                "matches_formula": true
+              },
+              {
+                "point": 0.0,
+                "actual": -0.4,
+                "expected": -0.4,
+                "matches_formula": true
+              },
+              {
+                "point": -0.25,
+                "actual": -0.38756496868425794,
+                "expected": -0.38756496868425794,
+                "matches_formula": true
+              }
+            ]
+          },
+          {
+            "cached_value": false,
+            "cached_derivative": true,
+            "mode": "for",
+            "results": [
+              {
+                "point": 0.37,
+                "actual": -0.3729309382424138,
+                "expected": -0.3729309382424138,
+                "matches_formula": true
+              },
+              {
+                "point": 0.0,
+                "actual": -0.4,
+                "expected": -0.4,
+                "matches_formula": true
+              },
+              {
+                "point": -0.25,
+                "actual": -0.38756496868425794,
+                "expected": -0.38756496868425794,
+                "matches_formula": true
+              }
+            ]
+          },
+          {
+            "cached_value": false,
+            "cached_derivative": true,
+            "mode": "rof",
+            "results": [
+              {
+                "point": 0.37,
+                "actual": -0.3729309382424138,
+                "expected": -0.3729309382424138,
+                "matches_formula": true
+              },
+              {
+                "point": 0.0,
+                "actual": -0.4,
+                "expected": -0.4,
+                "matches_formula": true
+              },
+              {
+                "point": -0.25,
+                "actual": -0.38756496868425794,
+                "expected": -0.38756496868425794,
+                "matches_formula": true
+              }
+            ]
+          },
+          {
+            "cached_value": true,
+            "cached_derivative": false,
+            "mode": "for",
+            "results": [
+              {
+                "point": 0.37,
+                "actual": -0.3729309382424138,
+                "expected": -0.3729309382424138,
+                "matches_formula": true
+              },
+              {
+                "point": 0.0,
+                "actual": -0.4,
+                "expected": -0.4,
+                "matches_formula": true
+              },
+              {
+                "point": -0.25,
+                "actual": -0.38756496868425794,
+                "expected": -0.38756496868425794,
+                "matches_formula": true
+              }
+            ]
+          },
+          {
+            "cached_value": true,
+            "cached_derivative": false,
+            "mode": "rof",
+            "results": [
+              {
+                "point": 0.37,
+                "actual": null,
+                "expected": -0.3729309382424138,
+                "matches_formula": false
+              },
+              {
+                "point": 0.0,
+                "actual": null,
+                "expected": -0.4,
+                "matches_formula": false
+              },
+              {
+                "point": -0.25,
+                "actual": null,
+                "expected": -0.38756496868425794,
+                "matches_formula": false
+              }
+            ]
+          },
+          {
+            "cached_value": true,
+            "cached_derivative": true,
+            "mode": "for",
+            "results": [
+              {
+                "point": 0.37,
+                "actual": -0.3729309382424138,
+                "expected": -0.3729309382424138,
+                "matches_formula": true
+              },
+              {
+                "point": 0.0,
+                "actual": -0.4,
+                "expected": -0.4,
+                "matches_formula": true
+              },
+              {
+                "point": -0.25,
+                "actual": -0.38756496868425794,
+                "expected": -0.38756496868425794,
+                "matches_formula": true
+              }
+            ]
+          },
+          {
+            "cached_value": true,
+            "cached_derivative": true,
+            "mode": "rof",
+            "results": [
+              {
+                "point": 0.37,
+                "actual": null,
+                "expected": -0.3729309382424138,
+                "matches_formula": false
+              },
+              {
+                "point": 0.0,
+                "actual": null,
+                "expected": -0.4,
+                "matches_formula": false
+              },
+              {
+                "point": -0.25,
+                "actual": null,
+                "expected": -0.38756496868425794,
+                "matches_formula": false
+              }
+            ]
+          }
+        ]
+      },
+      "scope": "diagnostic_observation_not_function_or_test_acceptance"
+    },
+    {
+      "id": "mps_binding_retention-main",
+      "kind": "mps_binding_retention",
+      "profile": "main",
+      "recorded_at": "2026-11-11T09:52:23.371469+00:00",
+      "evidence_hash": "6aeca1c8b469a5412b7278bf26d3c5562b0d78f04cda0b7f2ccb776c9f60522c",
+      "source_file": null,
+      "report": {
+        "profile": "main",
+        "native_accepted": false,
+        "original_constructor_assertion_changed": false,
+        "constructor_before": 31032,
+        "fixed_numeric_bytes": 64,
+        "retained_binding_allowances": [
+          {
+            "bytes": 5656,
+            "remaining": 3,
+            "types": [
+              "ParameterVector",
+              "ParameterVectorElement"
+            ]
+          },
+          {
+            "bytes": 5408,
+            "remaining": 3,
+            "types": [
+              "ParameterVector",
+              "ParameterVectorElement"
+            ]
+          },
+          {
+            "bytes": 5656,
+            "remaining": 6,
+            "types": [
+              "ParameterExpression",
+              "ParameterVector",
+              "ParameterVectorElement"
+            ]
+          },
+          {
+            "bytes": 5408,
+            "remaining": 3,
+            "types": [
+              "ParameterVector",
+              "ParameterVectorElement"
+            ]
+          },
+          {
+            "bytes": 8840,
+            "remaining": 5,
+            "types": [
+              "Parameter"
+            ]
+          }
+        ],
+        "decomposition_exact": true,
+        "hvp_max_errors": [
+          1.3877787807814457e-17,
+          1.3877787807814457e-17,
+          0.0
+        ],
+        "strict_hessian_cap_retained": true,
+        "child_terminal_memory": 0,
+        "constructor_after_disposal": 0,
+        "remaining_allowances": [],
+        "recorded_at": "2026-11-11T09:52:23.371469+00:00",
+        "native_modules_checked": 387,
+        "source_fingerprint": "423833c765ff4eacbb179c7f784e72057c4a3ca7071235def96f12f36a666665",
+        "probe_source_sha256": "84794276a4f2abe811880a6d1a350c664bb6a1b22fbfcbcfeb1dcf48e4e2a0ac"
+      },
+      "scope": "diagnostic_observation_not_function_or_test_acceptance"
+    },
+    {
+      "id": "tf_cached_cos-alternate",
+      "kind": "tf_cached_cos",
+      "profile": "alternate",
+      "recorded_at": "2026-11-11T09:50:44.156948+00:00",
+      "evidence_hash": "48ac1993cec26225ee8e1608f47100458f35608e0ec1225f96d9fd33e822e2aa",
+      "source_file": "studio/downloads/tensorflow_cached_cos_probe.py",
+      "report": {
+        "profile": "alternate",
+        "tensorflow": "2.21.0",
+        "recorded_at": "2026-11-11T09:50:44.156948+00:00",
+        "quantumbridge_or_sdks_imported": false,
+        "source_sha256": "ef253f06305def5c129db246c3b3c8631b59a84b32ff9a04bf7c9f1a0f1b28fc",
+        "scope": "raw TensorFlow cos second directional derivative; observation only",
+        "native_accepted": false,
+        "rows": [
+          {
+            "cached_value": false,
+            "cached_derivative": false,
+            "mode": "for",
+            "results": [
+              {
+                "point": 0.37,
+                "actual": -0.3729309382424138,
+                "expected": -0.3729309382424138,
+                "matches_formula": true
+              },
+              {
+                "point": 0.0,
+                "actual": -0.4,
+                "expected": -0.4,
+                "matches_formula": true
+              },
+              {
+                "point": -0.25,
+                "actual": -0.38756496868425794,
+                "expected": -0.38756496868425794,
+                "matches_formula": true
+              }
+            ]
+          },
+          {
+            "cached_value": false,
+            "cached_derivative": false,
+            "mode": "rof",
+            "results": [
+              {
+                "point": 0.37,
+                "actual": -0.3729309382424138,
+                "expected": -0.3729309382424138,
+                "matches_formula": true
+              },
+              {
+                "point": 0.0,
+                "actual": -0.4,
+                "expected": -0.4,
+                "matches_formula": true
+              },
+              {
+                "point": -0.25,
+                "actual": -0.38756496868425794,
+                "expected": -0.38756496868425794,
+                "matches_formula": true
+              }
+            ]
+          },
+          {
+            "cached_value": false,
+            "cached_derivative": true,
+            "mode": "for",
+            "results": [
+              {
+                "point": 0.37,
+                "actual": -0.3729309382424138,
+                "expected": -0.3729309382424138,
+                "matches_formula": true
+              },
+              {
+                "point": 0.0,
+                "actual": -0.4,
+                "expected": -0.4,
+                "matches_formula": true
+              },
+              {
+                "point": -0.25,
+                "actual": -0.38756496868425794,
+                "expected": -0.38756496868425794,
+                "matches_formula": true
+              }
+            ]
+          },
+          {
+            "cached_value": false,
+            "cached_derivative": true,
+            "mode": "rof",
+            "results": [
+              {
+                "point": 0.37,
+                "actual": -0.3729309382424138,
+                "expected": -0.3729309382424138,
+                "matches_formula": true
+              },
+              {
+                "point": 0.0,
+                "actual": -0.4,
+                "expected": -0.4,
+                "matches_formula": true
+              },
+              {
+                "point": -0.25,
+                "actual": -0.38756496868425794,
+                "expected": -0.38756496868425794,
+                "matches_formula": true
+              }
+            ]
+          },
+          {
+            "cached_value": true,
+            "cached_derivative": false,
+            "mode": "for",
+            "results": [
+              {
+                "point": 0.37,
+                "actual": -0.3729309382424138,
+                "expected": -0.3729309382424138,
+                "matches_formula": true
+              },
+              {
+                "point": 0.0,
+                "actual": -0.4,
+                "expected": -0.4,
+                "matches_formula": true
+              },
+              {
+                "point": -0.25,
+                "actual": -0.38756496868425794,
+                "expected": -0.38756496868425794,
+                "matches_formula": true
+              }
+            ]
+          },
+          {
+            "cached_value": true,
+            "cached_derivative": false,
+            "mode": "rof",
+            "results": [
+              {
+                "point": 0.37,
+                "actual": null,
+                "expected": -0.3729309382424138,
+                "matches_formula": false
+              },
+              {
+                "point": 0.0,
+                "actual": null,
+                "expected": -0.4,
+                "matches_formula": false
+              },
+              {
+                "point": -0.25,
+                "actual": null,
+                "expected": -0.38756496868425794,
+                "matches_formula": false
+              }
+            ]
+          },
+          {
+            "cached_value": true,
+            "cached_derivative": true,
+            "mode": "for",
+            "results": [
+              {
+                "point": 0.37,
+                "actual": -0.3729309382424138,
+                "expected": -0.3729309382424138,
+                "matches_formula": true
+              },
+              {
+                "point": 0.0,
+                "actual": -0.4,
+                "expected": -0.4,
+                "matches_formula": true
+              },
+              {
+                "point": -0.25,
+                "actual": -0.38756496868425794,
+                "expected": -0.38756496868425794,
+                "matches_formula": true
+              }
+            ]
+          },
+          {
+            "cached_value": true,
+            "cached_derivative": true,
+            "mode": "rof",
+            "results": [
+              {
+                "point": 0.37,
+                "actual": null,
+                "expected": -0.3729309382424138,
+                "matches_formula": false
+              },
+              {
+                "point": 0.0,
+                "actual": null,
+                "expected": -0.4,
+                "matches_formula": false
+              },
+              {
+                "point": -0.25,
+                "actual": null,
+                "expected": -0.38756496868425794,
+                "matches_formula": false
+              }
+            ]
+          }
+        ]
+      },
+      "scope": "diagnostic_observation_not_function_or_test_acceptance"
+    },
+    {
+      "id": "mps_binding_retention-alternate",
+      "kind": "mps_binding_retention",
+      "profile": "alternate",
+      "recorded_at": "2026-11-11T09:52:29.722598+00:00",
+      "evidence_hash": "9a3f79fc775882e952eaf02ddcc16ace756d643cdb8d1d858c98424e72dfbe0a",
+      "source_file": null,
+      "report": {
+        "profile": "alternate",
+        "native_accepted": false,
+        "original_constructor_assertion_changed": false,
+        "constructor_before": 31032,
+        "fixed_numeric_bytes": 64,
+        "retained_binding_allowances": [
+          {
+            "bytes": 5656,
+            "remaining": 3,
+            "types": [
+              "ParameterVector",
+              "ParameterVectorElement"
+            ]
+          },
+          {
+            "bytes": 5408,
+            "remaining": 3,
+            "types": [
+              "ParameterVector",
+              "ParameterVectorElement"
+            ]
+          },
+          {
+            "bytes": 5656,
+            "remaining": 6,
+            "types": [
+              "ParameterExpression",
+              "ParameterVector",
+              "ParameterVectorElement"
+            ]
+          },
+          {
+            "bytes": 5408,
+            "remaining": 3,
+            "types": [
+              "ParameterVector",
+              "ParameterVectorElement"
+            ]
+          },
+          {
+            "bytes": 8840,
+            "remaining": 5,
+            "types": [
+              "Parameter"
+            ]
+          }
+        ],
+        "decomposition_exact": true,
+        "hvp_max_errors": [
+          1.3877787807814457e-17,
+          1.3877787807814457e-17,
+          0.0
+        ],
+        "strict_hessian_cap_retained": true,
+        "child_terminal_memory": 0,
+        "constructor_after_disposal": 0,
+        "remaining_allowances": [],
+        "recorded_at": "2026-11-11T09:52:29.722598+00:00",
+        "native_modules_checked": 387,
+        "source_fingerprint": "423833c765ff4eacbb179c7f784e72057c4a3ca7071235def96f12f36a666665",
+        "probe_source_sha256": "84794276a4f2abe811880a6d1a350c664bb6a1b22fbfcbcfeb1dcf48e4e2a0ac"
+      },
+      "scope": "diagnostic_observation_not_function_or_test_acceptance"
+    }
+  ]
+}

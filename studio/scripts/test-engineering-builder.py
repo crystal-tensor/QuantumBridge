@@ -13,6 +13,43 @@ spec.loader.exec_module(builder)
 
 
 class EvidenceTests(unittest.TestCase):
+    def test_diagnostic_is_stale_when_its_control_code_changes_and_cannot_claim_acceptance(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            path = root/"studio/downloads/control.py"
+            path.parent.mkdir(parents=True)
+            path.write_text("original control")
+            row = dict(kind="tf_cached_cos",source_file="studio/downloads/control.py",
+                scope="diagnostic_observation_not_function_or_test_acceptance",
+                report=dict(native_accepted=False,source_sha256=builder.digest(path.read_bytes())))
+            value = dict(source_fingerprint="current",observations=[row])
+            with patch.object(builder,"ROOT",root):
+                self.assertTrue(builder.diagnostic_observations(value,"current")[0]["source_match"])
+                path.write_text("changed control")
+                self.assertFalse(builder.diagnostic_observations(value,"current")[0]["source_match"])
+                row["report"]["native_accepted"] = True
+                with self.assertRaisesRegex(ValueError,"cannot claim acceptance"):
+                    builder.diagnostic_observations(value,"current")
+
+    def test_namespace_discovery_is_not_public_function_acceptance(self):
+        value = dict(profile="main", collected_at="fixture", census_complete=True,
+            modules=[dict(name="fixture",family="fixture",private_path=False,test_path=False,runtime_inspected=True),
+                     dict(name="fixture.other",family="fixture",private_path=False,test_path=False,runtime_inspected=False),
+                     dict(name="fixture._private",family="fixture",private_path=True,test_path=False,runtime_inspected=False)],
+            packages=[dict(name="fixture",candidate_modules=999,available=True)],
+            unresolved=[],closure_pending=["dynamic exports"])
+        with tempfile.TemporaryDirectory() as directory:
+            data = Path(directory)
+            source = data/"namespaces-main.json.gz"
+            source.write_bytes(gzip.compress(json.dumps(value).encode()))
+            with patch.object(builder,"DATA",data):
+                result, = builder.namespace_audits([source])
+        self.assertFalse(result["census_complete"])
+        self.assertEqual(result["candidate_modules"],3)
+        self.assertEqual(result["public_path_candidates"],2)
+        self.assertEqual(result["public_path_runtime_inspected"],1)
+        self.assertEqual(result["packages"][0]["candidate_modules"],3)
+
     def test_changed_benchmark_contract_cannot_keep_same_native_source_green(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

@@ -269,6 +269,45 @@ def test_context_matches(context, cache=None):
     return digest(json.dumps(sorted(rows), separators=(",", ":")).encode()) == context["sha256"]
 
 
+def namespace_audits(paths):
+    audits = []
+    for path in paths:
+        raw = path.read_bytes()
+        value = json.loads(gzip.decompress(raw))
+        profile = value["profile"]
+        if profile not in {"main", "alternate"} or path.name != "namespaces-"+profile+".json.gz":
+            raise ValueError("Unexpected namespace profile")
+        modules = value["modules"]
+        public = [row for row in modules if not row["private_path"] and not row["test_path"]]
+        filename = path.name
+        (DATA / filename).write_bytes(raw)
+        audits.append(dict(profile=profile, collected_at=value["collected_at"], file=filename,
+            artifact_hash=digest(raw), census_complete=False,
+            candidate_modules=len(modules), public_path_candidates=len(public),
+            public_path_runtime_inspected=sum(bool(row["runtime_inspected"]) for row in public),
+            packages=[{**row, "candidate_modules":sum(m["family"] == row["name"] for m in modules)}
+                      for row in value["packages"]],
+            unresolved=value["unresolved"], closure_pending=value["closure_pending"]))
+    return audits
+
+
+def diagnostic_observations(value, fingerprint):
+    observations = []
+    for row in value.get("observations", []):
+        if (row["report"]["native_accepted"] is not False
+                or row["scope"] != "diagnostic_observation_not_function_or_test_acceptance"):
+            raise ValueError("A diagnostic cannot claim acceptance")
+        current = value.get("source_fingerprint") == fingerprint
+        if row.get("source_file"):
+            path = (ROOT / row["source_file"]).resolve()
+            current = (current and path.is_relative_to((ROOT / "studio/downloads").resolve())
+                       and path.is_file() and digest(path.read_bytes()) == row["report"]["source_sha256"])
+        elif row["kind"] == "mps_binding_retention":
+            current = current and row["report"]["source_fingerprint"] == fingerprint
+        observations.append({**row, "source_match": current})
+    return observations
+
+
 def build(args):
     DATA.mkdir(parents=True, exist_ok=True)
     execution_path = ROOT / "docs/engineering/goal_execution.json"
@@ -313,6 +352,7 @@ def build(args):
                                "hardware": "unverified", "origin": "historical_export", "profiles": []}
     target = sorted(merged.values(), key=lambda row: row["id"])
     runtime, runtime_audits = runtime_census(sorted((ROOT / "docs/engineering").glob("runtime-api-*.json.gz")))
+    namespaces = namespace_audits(sorted((ROOT / "docs/engineering").glob("namespaces-*.json.gz")))
     for row in target:
         gate = row["name"].split(".")[-1]
         if row["kind"] == "class" and row["name"].startswith("qiskit.circuit.library.") and gate in GATES:
@@ -344,6 +384,8 @@ def build(args):
     failure_review = load_json(failure_review_path) if failure_review_path.exists() else {}
     notes = failure_review.get("notes", []) if failure_review.get("source_fingerprint") == fingerprint else []
     backlog = strict_backlog(tests, verification, notes)
+    diagnostic_path = ROOT / "docs/engineering/diagnostic_observations.json"
+    diagnostics = diagnostic_observations(load_json(diagnostic_path), fingerprint) if diagnostic_path.exists() else []
     datasets = []
     for name, rows in [("native", native), ("target", target), ("runtime", runtime)]:
         body = json.dumps(rows, ensure_ascii=False, separators=(",", ":")).encode()
@@ -359,12 +401,14 @@ def build(args):
     manifest = {"schema": 1, "generated_at": now, "refresh_hours": 12,
                 "deadline": "2027-05-11T23:59:59+08:00", "start": "2026-11-11T00:00:00+08:00",
                 "source": {"head": head, "dirty": dirty, "fingerprint": fingerprint, "python_files": len(hashes), "parse_errors": errors},
-                "datasets": datasets, "profiles": profiles, "runtime_census": runtime_audits, "census_complete": False,
+                "datasets": datasets, "profiles": profiles, "runtime_census": runtime_audits,
+                "namespace_census": namespaces, "census_complete": False,
                 "census_limits": ["Public source declarations and historical exports are candidates, not a closed API denominator.",
                                   "Inherited methods, dynamic exports, plugins, C-extension signatures and optional packages need contract review.",
                                   "Native helpers and target public APIs are separate populations; never add their counts as a completion percentage.",
                                   "Historical test runs do not certify the current dirty working tree; function acceptance is not yet reviewed."],
                 "tests": tests, "verification": verification, "strict_backlog": backlog,
+                "diagnostic_observations": diagnostics,
                 "hardware": hardware(), "acceptance_scope": scope,
                 "core_execution": execution.get("status", "paused_pending_new_goal"),
                 "goal_execution": execution, "publication": "workspace_snapshot_not_a_release",

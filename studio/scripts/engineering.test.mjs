@@ -51,6 +51,39 @@ test("hardware receipts keep domain acceptance separate and redact sensitive pay
   assert.ok(manifest.hardware.every(x => x.task_id && x.artifact_hash && x.acceptance === "INCONCLUSIVE"));
   for(const r of manifest.hardware){assert.equal(r.shots,r.count_sum);assert.equal(r.domain,"finance");assert.ok(!("openqasm" in r));}
 });
+test("namespace files remain unreviewed metadata, with exact artifacts and no local paths", async () => {
+  assert.equal(manifest.namespace_census.length,2);
+  for(const audit of manifest.namespace_census){
+    const bytes=await readFile(new URL(`../src/progress/data/${audit.file}`,import.meta.url));
+    assert.equal(createHash("sha256").update(bytes).digest("hex"),audit.artifact_hash);
+    const text=gunzipSync(bytes).toString();
+    const value=JSON.parse(text);
+    assert.equal(value.sdk_modules_imported,false);
+    assert.equal(audit.census_complete,false);
+    assert.equal(audit.candidate_modules,value.modules.length);
+    assert.ok(audit.public_path_candidates>audit.public_path_runtime_inspected);
+    assert.ok(value.modules.every(m=>m.contract_reviewed===false));
+    assert.ok(audit.packages.some(p=>p.name==="qiskit_finance"&&!p.available&&p.still_in_scope));
+    assert.ok(!text.includes("/Users/")&&!text.includes("site-packages/")&&!text.includes("QUAFU_TOKEN"));
+  }
+});
+test("framework and lifetime diagnostics are not Native acceptance or test passes",async()=>{
+  assert.equal(manifest.diagnostic_observations.length,4);
+  const script=await readFile(new URL("../downloads/tensorflow_cached_cos_probe.py",import.meta.url));
+  for(const row of manifest.diagnostic_observations){
+    assert.equal(row.report.native_accepted,false);
+    assert.equal(row.scope,"diagnostic_observation_not_function_or_test_acceptance");
+    if(row.kind==="tf_cached_cos"){
+      assert.equal(row.report.quantumbridge_or_sdks_imported,false);
+      assert.equal(row.report.source_sha256,createHash("sha256").update(script).digest("hex"));
+      assert.ok(row.report.rows.some(r=>r.results.some(x=>!x.matches_formula)));
+    }else{
+      assert.equal(row.report.original_constructor_assertion_changed,false);
+      assert.equal(row.report.constructor_after_disposal,0);
+      assert.equal(row.report.constructor_before,row.report.fixed_numeric_bytes+row.report.retained_binding_allowances.reduce((sum,x)=>sum+x.bytes,0));
+    }
+  }
+});
 test("goal and selected verification never masquerade as final acceptance", () => {
   assert.equal(manifest.core_execution,"active");
   assert.equal(manifest.goal_execution.scope_reduced,false);
