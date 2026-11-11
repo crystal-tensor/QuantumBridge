@@ -172,6 +172,20 @@ test("subtle entrances are registered in all four home domains", async () => {
   const eco=await readFile(new URL("../src/ecosystem/main.js",import.meta.url),"utf8");
   assert.ok(eco.includes('class="engineering-dot"')&&eco.includes('./engineering.html'));
 });
+test("scoped contract details never promote stale or incomplete reviews", async () => {
+  for(const dataset of ["target","native"]){
+    const rows=JSON.parse(gunzipSync(await readFile(new URL(`../src/progress/data/${dataset}.json.gz`,import.meta.url))));
+    for(const row of rows.filter(x=>x.review)){
+      assert.equal(row.review.project_fingerprint,manifest.source.fingerprint);
+      assert.equal(row.review.source_hash,row.source_hash);
+      if(!row.review.contract_complete)assert.notEqual(row.status,"implemented");
+      assert.ok(row.review.evidence_hash&&row.review.evidence_scope);
+      assert.ok(row.review.remaining);
+    }
+  }
+  const ui=await readFile(new URL("../src/progress/main.js",import.meta.url),"utf8");
+  assert.ok(ui.includes("row.review.evidence_scope")&&ui.includes("row.review.native_entry")&&ui.includes("row.review.remaining"));
+});
 test("public build includes progress assets, inventory and goal prompt without private paths", async () => {
   const output=await mkdtemp(path.join(tmpdir(),"qb-engineering-build-"));
   try{

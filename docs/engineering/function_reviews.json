@@ -93,5 +93,64 @@
     "reference_public_exposure": "qiskit.qpy.get_qpy_version",
     "native_stricter_magic_validation_retained": true,
     "remaining": "Complete target-to-Native acceptance mapping and full strict gates remain open. Native rejects invalid magic rather than copying the observed upstream omission; the query does not certify the rest of a payload."
+  },
+  {
+    "project_fingerprint": "3f3cb01175af28c9bb0dd53c201877f8353814f94201a307926793c4ca13ffb6",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": true,
+    "strict_tests_pass": true,
+    "evidence_hash": "deed30669af47a212f8a7c43050f095ba3a672fb346e49307baa15af94d1b2aa",
+    "evidence_scope": "Public parameter/string/vector/sequence/flat binding: inplace None and original metadata identity without foreign deepcopy callbacks; copy binding retains independent nested data. Full complex Rx/Rz/global-phase oracle, symbolic QNode first/second derivatives, failed-binding atomicity, existing managed foreign-protocol refusal and conservative memory preflight. Selected contract only, not full function or project acceptance.",
+    "native_cases_each_profile": 31,
+    "actual_sdk_reference_cases_each_profile": 12,
+    "real_qiskit_versions": [
+      "2.4.1",
+      "2.6.0"
+    ],
+    "native_entry": "quantumbridge.core.public_circuit.QuantumCircuit.assign_parameters",
+    "reference_public_exposure": "qiskit.circuit.QuantumCircuit.assign_parameters",
+    "implementation_files": {
+      "quantumbridge/core/public_circuit.py": "0fb84fc4e078cd23e880a4adfd863aa07ff9f4040d7c978ff85046858e0a9a52",
+      "quantumbridge/core/circuit.py": "5a0bda7356bb12ae9a25636dea925814d2e7c0b339c52c287fc9306ec5c094d0"
+    },
+    "legacy_fluent_inplace_copy_policy_retained": true,
+    "managed_preflight_not_weakened": true,
+    "remaining": "All inherited/custom instruction and subclass compositions, input/error/shape/resource/serialization and gradient contracts remain to be audited. Exact23 strict failures persist in broader selections, including one newly observed old QASM3 refusal reproduced on the prior snapshot. No whole-suite or hardware acceptance.",
+    "evidence_scope_zh": "公开参数绑定覆盖 Parameter、名称、ParameterVector、序列和 flat_input。原地调用返回 None，保留 metadata 和嵌套数组身份，不触发用户 deepcopy；复制绑定保持数据隔离。已验证完整复数矩阵与全局相位、符号绑定后一二阶导数、失败原子性和托管资源预检。仅为局部合同。",
+    "remaining_zh": "自定义指令、子类与继承组合，以及完整输入、错误、形状、资源、序列化和梯度合同仍待逐项验收。扩大选中回归仍有 23 个严格失败，其中新增发现的一条 QASM3 旧拒绝断言在旧快照中也失败。尚未通过全量测试或真机验收。",
+    "id": "quantumbridge.core.public_circuit.QuantumCircuit.assign_parameters",
+    "source_hash": "0fb84fc4e078cd23e880a4adfd863aa07ff9f4040d7c978ff85046858e0a9a52"
+  },
+  {
+    "project_fingerprint": "3f3cb01175af28c9bb0dd53c201877f8353814f94201a307926793c4ca13ffb6",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": true,
+    "strict_tests_pass": true,
+    "evidence_hash": "deed30669af47a212f8a7c43050f095ba3a672fb346e49307baa15af94d1b2aa",
+    "evidence_scope": "Public parameter/string/vector/sequence/flat binding: inplace None and original metadata identity without foreign deepcopy callbacks; copy binding retains independent nested data. Full complex Rx/Rz/global-phase oracle, symbolic QNode first/second derivatives, failed-binding atomicity, existing managed foreign-protocol refusal and conservative memory preflight. Selected contract only, not full function or project acceptance.",
+    "native_cases_each_profile": 31,
+    "actual_sdk_reference_cases_each_profile": 12,
+    "real_qiskit_versions": [
+      "2.4.1",
+      "2.6.0"
+    ],
+    "native_entry": "quantumbridge.core.public_circuit.QuantumCircuit.assign_parameters",
+    "reference_public_exposure": "qiskit.circuit.QuantumCircuit.assign_parameters",
+    "implementation_files": {
+      "quantumbridge/core/public_circuit.py": "0fb84fc4e078cd23e880a4adfd863aa07ff9f4040d7c978ff85046858e0a9a52",
+      "quantumbridge/core/circuit.py": "5a0bda7356bb12ae9a25636dea925814d2e7c0b339c52c287fc9306ec5c094d0"
+    },
+    "legacy_fluent_inplace_copy_policy_retained": true,
+    "managed_preflight_not_weakened": true,
+    "remaining": "All inherited/custom instruction and subclass compositions, input/error/shape/resource/serialization and gradient contracts remain to be audited. Exact23 strict failures persist in broader selections, including one newly observed old QASM3 refusal reproduced on the prior snapshot. No whole-suite or hardware acceptance.",
+    "evidence_scope_zh": "公开参数绑定覆盖 Parameter、名称、ParameterVector、序列和 flat_input。原地调用返回 None，保留 metadata 和嵌套数组身份，不触发用户 deepcopy；复制绑定保持数据隔离。已验证完整复数矩阵与全局相位、符号绑定后一二阶导数、失败原子性和托管资源预检。仅为局部合同。",
+    "remaining_zh": "自定义指令、子类与继承组合，以及完整输入、错误、形状、资源、序列化和梯度合同仍待逐项验收。扩大选中回归仍有 23 个严格失败，其中新增发现的一条 QASM3 旧拒绝断言在旧快照中也失败。尚未通过全量测试或真机验收。",
+    "id": "qiskit.circuit.quantumcircuit.QuantumCircuit.assign_parameters",
+    "source_hash": "130fff1c441a17a6d1ea8d134b56a63fab05f78041357dd0e20c349ee5dfde0d",
+    "target_hash_scope": "Current static target declaration; executable reference observations are independently pinned to2.4.1/2.6.0."
   }
 ]
