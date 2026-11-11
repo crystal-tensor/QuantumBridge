@@ -1,0 +1,32 @@
+"""Evidence upgrades must be source-matched and cannot result from name presence."""
+import importlib.util
+from pathlib import Path
+import unittest
+
+spec = importlib.util.spec_from_file_location("engineering_builder", Path(__file__).resolve().parents[2] / "scripts/build_engineering_progress.py")
+builder = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(builder)
+
+
+class EvidenceTests(unittest.TestCase):
+    def test_stale_or_incomplete_review_never_upgrades(self):
+        for review in [{"id":"f","source_hash":"old","status":"implemented"}, {"id":"f","source_hash":"now","status":"implemented"}]:
+            row = {"id":"f","source_hash":"now","status":"unverified"}
+            builder.apply_reviews([row],[review])
+            self.assertEqual(row["status"],"unverified")
+
+    def test_complete_current_review_is_admitted(self):
+        row = {"id":"f","source_hash":"now","status":"unverified"}
+        review = {"id":"f","source_hash":"now","status":"implemented", "contract_complete":True,"native_independent":True,"versions_verified":True,"strict_tests_pass":True,"evidence_hash":"receipt"}
+        builder.apply_reviews([row],[review])
+        self.assertEqual(row["status"],"implemented")
+
+    def test_abstract_refusal_is_not_automatically_missing(self):
+        rows,errors,_ = builder.census(builder.ROOT/"quantumbridge/chemistry","quantumbridge.chemistry",native=True)
+        self.assertFalse(errors)
+        missing = {r["name"] for r in rows if r["status"] == "not_implemented"}
+        self.assertEqual(missing,{"quantumbridge.chemistry.mappings.ParityMapper.map","quantumbridge.chemistry.mappings.BravyiKitaevMapper.map"})
+
+
+if __name__ == "__main__":
+    unittest.main()

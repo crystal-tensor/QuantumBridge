@@ -1,0 +1,83 @@
+[
+  {
+    "generated_at": "2026-11-11T02:31:28.777093+00:00",
+    "fingerprint": "c8f1c554b7b4107d9505fef3dce61b09880989eb330774ac0c0b5890ed2a8828",
+    "datasets": [
+      {
+        "id": "native",
+        "file": "native.json.gz",
+        "sha256": "f3d1feb7214294ab0d04ce5328a069a91db336b0c5aeea780b86dba4798c4e69",
+        "count": 8719,
+        "status_counts": {
+          "unverified": 8693,
+          "not_implemented": 22,
+          "partial": 4
+        }
+      },
+      {
+        "id": "target",
+        "file": "target.json.gz",
+        "sha256": "3a0cf3b84f49f70b2a65e8b6deab28b64d2204bcdc65e0a984ddc8168c9d61f9",
+        "count": 13612,
+        "status_counts": {
+          "unverified": 13606,
+          "partial": 6
+        }
+      }
+    ]
+  },
+  {
+    "generated_at": "2026-11-11T02:36:47.560171+00:00",
+    "fingerprint": "c8f1c554b7b4107d9505fef3dce61b09880989eb330774ac0c0b5890ed2a8828",
+    "datasets": [
+      {
+        "id": "native",
+        "file": "native.json.gz",
+        "sha256": "d3c3566e2151b2667d9272695abbcbbe84a8877245be8f722af0e0b977f8a10a",
+        "count": 8719,
+        "status_counts": {
+          "unverified": 8706,
+          "not_implemented": 3,
+          "partial": 10
+        }
+      },
+      {
+        "id": "target",
+        "file": "target.json.gz",
+        "sha256": "8294ef45757262ba845b7e3c5d1c21825f3ce361a73b693db59d6e00f45ba972",
+        "count": 13612,
+        "status_counts": {
+          "unverified": 13606,
+          "partial": 6
+        }
+      }
+    ]
+  },
+  {
+    "generated_at": "2026-11-11T02:37:40.576368+00:00",
+    "fingerprint": "c8f1c554b7b4107d9505fef3dce61b09880989eb330774ac0c0b5890ed2a8828",
+    "datasets": [
+      {
+        "id": "native",
+        "file": "native.json.gz",
+        "sha256": "d3c3566e2151b2667d9272695abbcbbe84a8877245be8f722af0e0b977f8a10a",
+        "count": 8719,
+        "status_counts": {
+          "unverified": 8706,
+          "not_implemented": 3,
+          "partial": 10
+        }
+      },
+      {
+        "id": "target",
+        "file": "target.json.gz",
+        "sha256": "8294ef45757262ba845b7e3c5d1c21825f3ce361a73b693db59d6e00f45ba972",
+        "count": 13612,
+        "status_counts": {
+          "unverified": 13606,
+          "partial": 6
+        }
+      }
+    ]
+  }
+]

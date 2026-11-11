@@ -1,0 +1,585 @@
+{
+  "schema": 1,
+  "generated_at": "2026-11-11T02:57:13.034287+00:00",
+  "refresh_hours": 12,
+  "deadline": "2027-05-11T23:59:59+08:00",
+  "start": "2026-11-11T00:00:00+08:00",
+  "source": {
+    "head": "2178c1b8d709cb0899a634b21cf5a0c8866e1a5c",
+    "dirty": true,
+    "fingerprint": "c8f1c554b7b4107d9505fef3dce61b09880989eb330774ac0c0b5890ed2a8828",
+    "python_files": 769,
+    "parse_errors": []
+  },
+  "datasets": [
+    {
+      "id": "native",
+      "file": "native.json.gz",
+      "sha256": "d3c3566e2151b2667d9272695abbcbbe84a8877245be8f722af0e0b977f8a10a",
+      "count": 8719,
+      "status_counts": {
+        "unverified": 8706,
+        "not_implemented": 3,
+        "partial": 10
+      }
+    },
+    {
+      "id": "target",
+      "file": "target.json.gz",
+      "sha256": "8294ef45757262ba845b7e3c5d1c21825f3ce361a73b693db59d6e00f45ba972",
+      "count": 13612,
+      "status_counts": {
+        "unverified": 13606,
+        "partial": 6
+      }
+    }
+  ],
+  "profiles": [
+    {
+      "name": "alternate",
+      "collected_at": "2026-11-11T02:30:11.992041+00:00",
+      "packages": [
+        {
+          "name": "qiskit",
+          "version": "2.6.0",
+          "available": true
+        },
+        {
+          "name": "pennylane",
+          "version": "0.42.3",
+          "available": true
+        },
+        {
+          "name": "qiskit_aer",
+          "version": null,
+          "available": false
+        },
+        {
+          "name": "qiskit_algorithms",
+          "version": null,
+          "available": false
+        },
+        {
+          "name": "qiskit_nature",
+          "version": null,
+          "available": false
+        },
+        {
+          "name": "qiskit_finance",
+          "version": null,
+          "available": false
+        },
+        {
+          "name": "qiskit_optimization",
+          "version": null,
+          "available": false
+        },
+        {
+          "name": "qiskit_machine_learning",
+          "version": null,
+          "available": false
+        },
+        {
+          "name": "qiskit_dynamics",
+          "version": null,
+          "available": false
+        },
+        {
+          "name": "qiskit_experiments",
+          "version": null,
+          "available": false
+        },
+        {
+          "name": "qiskit_ibm_runtime",
+          "version": null,
+          "available": false
+        },
+        {
+          "name": "qiskit_metal",
+          "version": null,
+          "available": false
+        },
+        {
+          "name": "qiskit_addon_sqd",
+          "version": null,
+          "available": false
+        },
+        {
+          "name": "qiskit_addon_aqc_tensor",
+          "version": null,
+          "available": false
+        },
+        {
+          "name": "qiskit_addon_mpf",
+          "version": null,
+          "available": false
+        },
+        {
+          "name": "qiskit_addon_obp",
+          "version": null,
+          "available": false
+        }
+      ],
+      "parse_errors": []
+    },
+    {
+      "name": "main",
+      "collected_at": "2026-11-11T02:30:11.212204+00:00",
+      "packages": [
+        {
+          "name": "qiskit",
+          "version": "2.4.1",
+          "available": true
+        },
+        {
+          "name": "pennylane",
+          "version": "0.44.1",
+          "available": true
+        },
+        {
+          "name": "qiskit_aer",
+          "version": "0.17.2",
+          "available": true
+        },
+        {
+          "name": "qiskit_algorithms",
+          "version": "0.4.0",
+          "available": true
+        },
+        {
+          "name": "qiskit_nature",
+          "version": "0.8.0",
+          "available": true
+        },
+        {
+          "name": "qiskit_finance",
+          "version": null,
+          "available": false
+        },
+        {
+          "name": "qiskit_optimization",
+          "version": null,
+          "available": false
+        },
+        {
+          "name": "qiskit_machine_learning",
+          "version": null,
+          "available": false
+        },
+        {
+          "name": "qiskit_dynamics",
+          "version": null,
+          "available": false
+        },
+        {
+          "name": "qiskit_experiments",
+          "version": null,
+          "available": false
+        },
+        {
+          "name": "qiskit_ibm_runtime",
+          "version": "0.46.1",
+          "available": true
+        },
+        {
+          "name": "qiskit_metal",
+          "version": null,
+          "available": false
+        },
+        {
+          "name": "qiskit_addon_sqd",
+          "version": null,
+          "available": false
+        },
+        {
+          "name": "qiskit_addon_aqc_tensor",
+          "version": null,
+          "available": false
+        },
+        {
+          "name": "qiskit_addon_mpf",
+          "version": null,
+          "available": false
+        },
+        {
+          "name": "qiskit_addon_obp",
+          "version": null,
+          "available": false
+        }
+      ],
+      "parse_errors": []
+    }
+  ],
+  "census_complete": false,
+  "census_limits": [
+    "Public source declarations and historical exports are candidates, not a closed API denominator.",
+    "Inherited methods, dynamic exports, plugins, C-extension signatures and optional packages need contract review.",
+    "Native helpers and target public APIs are separate populations; never add their counts as a completion percentage.",
+    "Historical test runs do not certify the current dirty working tree; function acceptance is not yet reviewed."
+  ],
+  "tests": [
+    {
+      "name": "focused-main",
+      "total": 314,
+      "passed": 308,
+      "failed": 6,
+      "skipped": 0,
+      "exit_code": 1,
+      "evidence_hash": "756187d0dc3b7729d64c11f2e18fc9231e91e45596034b2f47f7ad44ad21f27f",
+      "recorded_at": "2026-11-10T09:48:23.295575+00:00",
+      "source_match": false,
+      "freshness": "historical_not_current_source",
+      "failure_ids": [
+        "tests.interfaces.test_native_scalar_zx_owner_frameworks::test_scalar_zx_owners_real_frameworks_keep_classical_curvature[tensorflow-True-mps-tangent-GlobalPhaseGate]",
+        "tests.interfaces.test_native_scalar_zx_owner_frameworks::test_scalar_zx_owners_real_frameworks_keep_classical_curvature[tensorflow-True-mps-tangent-U1Gate]",
+        "tests.interfaces.test_native_scalar_zx_owner_frameworks::test_scalar_zx_owners_real_frameworks_keep_classical_curvature[tensorflow-True-mps-tangent-CU1Gate]",
+        "tests.interfaces.test_native_scalar_zx_owner_frameworks::test_scalar_zx_owners_real_frameworks_keep_classical_curvature[tensorflow-True-mps-tangent-RZXGate]",
+        "tests.interfaces.test_native_scalar_zx_owner_frameworks::test_scalar_zx_owners_real_frameworks_keep_classical_curvature[tensorflow-True-mps-tangent-CSXGate]",
+        "tests.interfaces.test_native_scalar_zx_owner_frameworks::test_scalar_zx_owners_real_frameworks_keep_classical_curvature[tensorflow-True-mps-tangent-ECRGate]"
+      ]
+    },
+    {
+      "name": "focused-alternate",
+      "total": 314,
+      "passed": 308,
+      "failed": 6,
+      "skipped": 0,
+      "exit_code": 1,
+      "evidence_hash": "a33cef7060c34e785715a162b3a0440de799daa739e5065a1cf85a80988cb04b",
+      "recorded_at": "2026-11-10T09:48:19.427568+00:00",
+      "source_match": false,
+      "freshness": "historical_not_current_source",
+      "failure_ids": [
+        "tests.interfaces.test_native_scalar_zx_owner_frameworks::test_scalar_zx_owners_real_frameworks_keep_classical_curvature[tensorflow-True-mps-tangent-GlobalPhaseGate]",
+        "tests.interfaces.test_native_scalar_zx_owner_frameworks::test_scalar_zx_owners_real_frameworks_keep_classical_curvature[tensorflow-True-mps-tangent-U1Gate]",
+        "tests.interfaces.test_native_scalar_zx_owner_frameworks::test_scalar_zx_owners_real_frameworks_keep_classical_curvature[tensorflow-True-mps-tangent-CU1Gate]",
+        "tests.interfaces.test_native_scalar_zx_owner_frameworks::test_scalar_zx_owners_real_frameworks_keep_classical_curvature[tensorflow-True-mps-tangent-RZXGate]",
+        "tests.interfaces.test_native_scalar_zx_owner_frameworks::test_scalar_zx_owners_real_frameworks_keep_classical_curvature[tensorflow-True-mps-tangent-CSXGate]",
+        "tests.interfaces.test_native_scalar_zx_owner_frameworks::test_scalar_zx_owners_real_frameworks_keep_classical_curvature[tensorflow-True-mps-tangent-ECRGate]"
+      ]
+    },
+    {
+      "name": "public-main",
+      "total": 80,
+      "passed": 80,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "evidence_hash": "e730e712fd932c65f13178b34052d5ce0e810a7557052d325ed352758e9c0435",
+      "recorded_at": "2026-11-10T09:47:15.101287+00:00",
+      "source_match": false,
+      "freshness": "historical_not_current_source",
+      "failure_ids": []
+    },
+    {
+      "name": "public-alternate",
+      "total": 80,
+      "passed": 80,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "evidence_hash": "f25bbb683870cd4d6d39088896ee00dc97fae34410a6fb6615081f1c1c044992",
+      "recorded_at": "2026-11-10T09:47:13.990237+00:00",
+      "source_match": false,
+      "freshness": "historical_not_current_source",
+      "failure_ids": []
+    },
+    {
+      "name": "sdkfree-wheel",
+      "total": 1516,
+      "passed": 1516,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "evidence_hash": "2b6e4830843628c2b73091a6716a3a800db72ea6f83022eaaa41f57010307a20",
+      "recorded_at": "2026-11-10T10:18:21.018847+00:00",
+      "source_match": false,
+      "freshness": "historical_not_current_source",
+      "failure_ids": []
+    },
+    {
+      "name": "regression-main",
+      "total": 4626,
+      "passed": 4610,
+      "failed": 15,
+      "skipped": 1,
+      "exit_code": 1,
+      "evidence_hash": "d6965b4ab4c75e26606e2b230b42d0abc836a9306b276b44b353947df6c9a1fe",
+      "recorded_at": "2026-11-10T10:08:33.566631+00:00",
+      "source_match": false,
+      "freshness": "historical_not_current_source",
+      "failure_ids": [
+        "tests.serialization.test_qpy14_reader::test_qpy_v13_writer_contract_and_unknown_reader_version",
+        "tests.serialization.test_qpy14_symbolic_delay::test_native_ir_roundtrip_and_old_writer_boundary[2.4.1]",
+        "tests.serialization.test_qpy14_symbolic_delay::test_native_ir_roundtrip_and_old_writer_boundary[2.6.0]",
+        "tests.serialization.test_qpy14_writer::test_v13_is_still_default_and_byte_identical_to_previous_archive",
+        "tests.serialization.test_qpy15_annotations::test_version_boundaries_and_atomic_output",
+        "tests.serialization.test_qpy16_indexed_reader::test_version_and_type_gates_remain_explicit",
+        "tests.serialization.test_qpy16_indexed_writer::test_legacy_writer_is_still_default_and_future_versions_are_rejected",
+        "tests.serialization.test_qpy16_pauli_evolution::test_loaded_gate_drives_real_estimator_and_sampling",
+        "tests.serialization.test_qpy17_sparse_evolution::test_empty_identity_and_pauli_flag_roundtrip[pauli-2.4.1]",
+        "tests.serialization.test_qpy17_sparse_evolution::test_empty_identity_and_pauli_flag_roundtrip[pauli-2.6.0]",
+        "tests.serialization.test_qpy17_sparse_evolution::test_mixed_blocks_keep_each_type_and_their_noncommuting_order[False]",
+        "tests.serialization.test_qpy17_sparse_evolution::test_mixed_blocks_keep_each_type_and_their_noncommuting_order[True]",
+        "tests.serialization.test_qpy18_reader::test_writer_boundary_and_future_reader_stay_explicit",
+        "tests.serialization.test_qpy_native::test_qpy_format_version_is_not_sdk_version",
+        "tests.interfaces.test_native_special_unitary_frameworks::test_actual_public_tensor_generators_match_native_without_numpy_interface_substitution[tf]"
+      ]
+    },
+    {
+      "name": "regression-alternate",
+      "total": 4627,
+      "passed": 4612,
+      "failed": 15,
+      "skipped": 0,
+      "exit_code": 1,
+      "evidence_hash": "2e677cc5eb97260f61a4ee651c6f536f6d29a3e69777ec0ab4894d250147c1c5",
+      "recorded_at": "2026-11-10T10:09:51.828991+00:00",
+      "source_match": false,
+      "freshness": "historical_not_current_source",
+      "failure_ids": [
+        "tests.serialization.test_qpy14_reader::test_qpy_v13_writer_contract_and_unknown_reader_version",
+        "tests.serialization.test_qpy14_symbolic_delay::test_native_ir_roundtrip_and_old_writer_boundary[2.4.1]",
+        "tests.serialization.test_qpy14_symbolic_delay::test_native_ir_roundtrip_and_old_writer_boundary[2.6.0]",
+        "tests.serialization.test_qpy14_writer::test_v13_is_still_default_and_byte_identical_to_previous_archive",
+        "tests.serialization.test_qpy15_annotations::test_version_boundaries_and_atomic_output",
+        "tests.serialization.test_qpy16_indexed_reader::test_version_and_type_gates_remain_explicit",
+        "tests.serialization.test_qpy16_indexed_writer::test_legacy_writer_is_still_default_and_future_versions_are_rejected",
+        "tests.serialization.test_qpy16_pauli_evolution::test_loaded_gate_drives_real_estimator_and_sampling",
+        "tests.serialization.test_qpy17_sparse_evolution::test_empty_identity_and_pauli_flag_roundtrip[pauli-2.4.1]",
+        "tests.serialization.test_qpy17_sparse_evolution::test_empty_identity_and_pauli_flag_roundtrip[pauli-2.6.0]",
+        "tests.serialization.test_qpy17_sparse_evolution::test_mixed_blocks_keep_each_type_and_their_noncommuting_order[False]",
+        "tests.serialization.test_qpy17_sparse_evolution::test_mixed_blocks_keep_each_type_and_their_noncommuting_order[True]",
+        "tests.serialization.test_qpy18_reader::test_writer_boundary_and_future_reader_stay_explicit",
+        "tests.serialization.test_qpy_native::test_qpy_format_version_is_not_sdk_version",
+        "tests.interfaces.test_native_special_unitary_frameworks::test_actual_public_tensor_generators_match_native_without_numpy_interface_substitution[tf]"
+      ]
+    },
+    {
+      "name": "additional-main",
+      "total": 1958,
+      "passed": 1929,
+      "failed": 26,
+      "skipped": 3,
+      "exit_code": 1,
+      "evidence_hash": "b7d9185912f851c04e7fe0dfeb82fe7dd42eaa3e862dd6c77f80d38d75f2a1f1",
+      "recorded_at": "2026-11-10T10:36:27.899738+00:00",
+      "source_match": false,
+      "freshness": "historical_not_current_source",
+      "failure_ids": [
+        "tests.serialization.test_native_composed_circuit_roundtrip::test_qasm_metadata_loss_permission_cannot_silently_drop_classical_scope[3]",
+        "tests.serialization.test_qasm3_general_two_qubit_power::test_source_admission_does_not_inherit_matrix_synthesis_permission[input float[64] a; qubit[2] q; pow(a) @ mix q[0],q[1];]",
+        "tests.serialization.test_qasm3_general_two_qubit_power::test_source_admission_does_not_inherit_matrix_synthesis_permission[gate param(t) a,b { rx(t) a; cx a,b; } input float[64] a; qubit[2] q; pow(.37) @ param(a) q[0],q[1];]",
+        "tests.serialization.test_qasm3_native::test_qasm3_dynamic_source_roundtrip_execute[if_else-qubit q;bit c;bool flag=false;if(flag){z q;}else{x q;}c=measure q;-expected2]",
+        "tests.serialization.test_qasm3_native::test_qasm3_dynamic_source_roundtrip_execute[nested_if-qubit q;bit c;bool a=true;uint[3] n=2;if(a){if(n==2){x q;}}c=measure q;-expected3]",
+        "tests.serialization.test_qasm3_native::test_qasm3_dynamic_source_roundtrip_execute[runtime_while-qubit q;bit c;uint[3] n=0;while(n<3){x q;n+=1;}c=measure q;-expected4]",
+        "tests.serialization.test_qasm3_native::test_qasm3_dynamic_source_roundtrip_execute[counter_store-qubit q;bit c;uint[4] n=0;for uint i in {1,2,3}{n=n+1;}if(n==3){x q;}c=measure q;-expected11]",
+        "tests.serialization.test_qasm3_native::test_qasm3_dynamic_source_roundtrip_execute[shadowing-qubit q;bit c;uint[3] n=1;if(true){uint[3] n=2;if(n==2){x q;}}if(n==1){z q;}c=measure q;-expected12]",
+        "tests.serialization.test_qasm3_native::test_qasm3_dynamic_source_roundtrip_execute[signed_counter-qubit q;bit c;int[4] n=-2;while(n<0){n+=1;}if(n==0){x q;}c=measure q;-expected13]",
+        "tests.serialization.test_qasm3_native::test_qasm3_switch_case_and_default_standard_31",
+        "tests.serialization.test_qasm3_native::test_qasm3_unsupported_nodes_are_not_dropped",
+        "tests.interfaces.test_native_tf_mps_resource_contract::test_managed_mps_queries_same_parent_cache_tiny_hessian_cap",
+        "tests.interfaces.test_native_tf_whole_qnode_execution::test_restored_public_qnode_hvp_uses_tf_whole_plan[None-requested_reverse]",
+        "tests.interfaces.test_native_tf_whole_qnode_execution::test_restored_public_qnode_hvp_uses_tf_whole_plan[None-full_entangling]",
+        "tests.interfaces.test_native_tf_whole_qnode_execution::test_restored_public_qnode_hvp_uses_tf_whole_plan[None-open_control]",
+        "tests.interfaces.test_native_tf_whole_qnode_execution::test_restored_public_qnode_hvp_uses_tf_whole_plan[None-closed_control]",
+        "tests.interfaces.test_native_tf_whole_qnode_execution::test_restored_public_qnode_hvp_uses_tf_whole_plan[ir-requested_reverse]",
+        "tests.interfaces.test_native_tf_whole_qnode_execution::test_restored_public_qnode_hvp_uses_tf_whole_plan[ir-full_entangling]",
+        "tests.interfaces.test_native_tf_whole_qnode_execution::test_restored_public_qnode_hvp_uses_tf_whole_plan[ir-open_control]",
+        "tests.interfaces.test_native_tf_whole_qnode_execution::test_restored_public_qnode_hvp_uses_tf_whole_plan[ir-closed_control]",
+        "tests.interfaces.test_native_tf_whole_qnode_execution::test_restored_public_qnode_hvp_uses_tf_whole_plan[qpy-requested_reverse]",
+        "tests.interfaces.test_native_tf_whole_qnode_execution::test_restored_public_qnode_hvp_uses_tf_whole_plan[qpy-full_entangling]",
+        "tests.interfaces.test_native_tf_whole_qnode_execution::test_restored_public_qnode_hvp_uses_tf_whole_plan[qpy-open_control]",
+        "tests.interfaces.test_native_tf_whole_qnode_execution::test_restored_public_qnode_hvp_uses_tf_whole_plan[qpy-closed_control]",
+        "tests.interfaces.test_native_tf_whole_qnode_mixed_ad::test_method_selection_is_explicit_for_the_supported_moving_power_domain[parameter-shift]",
+        "tests.interfaces.test_native_tf_eager_jacobian_reentry::test_traced_eager_vjp_does_not_bypass_an_active_shared_scope"
+      ]
+    },
+    {
+      "name": "additional-alternate",
+      "total": 1958,
+      "passed": 1929,
+      "failed": 26,
+      "skipped": 3,
+      "exit_code": 1,
+      "evidence_hash": "75a28d7ee70fe9a8669330d6f3f49210510523bb342b33eea46a3a07900c77a7",
+      "recorded_at": "2026-11-10T10:36:49.059860+00:00",
+      "source_match": false,
+      "freshness": "historical_not_current_source",
+      "failure_ids": [
+        "tests.serialization.test_native_composed_circuit_roundtrip::test_qasm_metadata_loss_permission_cannot_silently_drop_classical_scope[3]",
+        "tests.serialization.test_qasm3_general_two_qubit_power::test_source_admission_does_not_inherit_matrix_synthesis_permission[input float[64] a; qubit[2] q; pow(a) @ mix q[0],q[1];]",
+        "tests.serialization.test_qasm3_general_two_qubit_power::test_source_admission_does_not_inherit_matrix_synthesis_permission[gate param(t) a,b { rx(t) a; cx a,b; } input float[64] a; qubit[2] q; pow(.37) @ param(a) q[0],q[1];]",
+        "tests.serialization.test_qasm3_native::test_qasm3_dynamic_source_roundtrip_execute[if_else-qubit q;bit c;bool flag=false;if(flag){z q;}else{x q;}c=measure q;-expected2]",
+        "tests.serialization.test_qasm3_native::test_qasm3_dynamic_source_roundtrip_execute[nested_if-qubit q;bit c;bool a=true;uint[3] n=2;if(a){if(n==2){x q;}}c=measure q;-expected3]",
+        "tests.serialization.test_qasm3_native::test_qasm3_dynamic_source_roundtrip_execute[runtime_while-qubit q;bit c;uint[3] n=0;while(n<3){x q;n+=1;}c=measure q;-expected4]",
+        "tests.serialization.test_qasm3_native::test_qasm3_dynamic_source_roundtrip_execute[counter_store-qubit q;bit c;uint[4] n=0;for uint i in {1,2,3}{n=n+1;}if(n==3){x q;}c=measure q;-expected11]",
+        "tests.serialization.test_qasm3_native::test_qasm3_dynamic_source_roundtrip_execute[shadowing-qubit q;bit c;uint[3] n=1;if(true){uint[3] n=2;if(n==2){x q;}}if(n==1){z q;}c=measure q;-expected12]",
+        "tests.serialization.test_qasm3_native::test_qasm3_dynamic_source_roundtrip_execute[signed_counter-qubit q;bit c;int[4] n=-2;while(n<0){n+=1;}if(n==0){x q;}c=measure q;-expected13]",
+        "tests.serialization.test_qasm3_native::test_qasm3_switch_case_and_default_standard_31",
+        "tests.serialization.test_qasm3_native::test_qasm3_unsupported_nodes_are_not_dropped",
+        "tests.interfaces.test_native_tf_mps_resource_contract::test_managed_mps_queries_same_parent_cache_tiny_hessian_cap",
+        "tests.interfaces.test_native_tf_whole_qnode_execution::test_restored_public_qnode_hvp_uses_tf_whole_plan[None-requested_reverse]",
+        "tests.interfaces.test_native_tf_whole_qnode_execution::test_restored_public_qnode_hvp_uses_tf_whole_plan[None-full_entangling]",
+        "tests.interfaces.test_native_tf_whole_qnode_execution::test_restored_public_qnode_hvp_uses_tf_whole_plan[None-open_control]",
+        "tests.interfaces.test_native_tf_whole_qnode_execution::test_restored_public_qnode_hvp_uses_tf_whole_plan[None-closed_control]",
+        "tests.interfaces.test_native_tf_whole_qnode_execution::test_restored_public_qnode_hvp_uses_tf_whole_plan[ir-requested_reverse]",
+        "tests.interfaces.test_native_tf_whole_qnode_execution::test_restored_public_qnode_hvp_uses_tf_whole_plan[ir-full_entangling]",
+        "tests.interfaces.test_native_tf_whole_qnode_execution::test_restored_public_qnode_hvp_uses_tf_whole_plan[ir-open_control]",
+        "tests.interfaces.test_native_tf_whole_qnode_execution::test_restored_public_qnode_hvp_uses_tf_whole_plan[ir-closed_control]",
+        "tests.interfaces.test_native_tf_whole_qnode_execution::test_restored_public_qnode_hvp_uses_tf_whole_plan[qpy-requested_reverse]",
+        "tests.interfaces.test_native_tf_whole_qnode_execution::test_restored_public_qnode_hvp_uses_tf_whole_plan[qpy-full_entangling]",
+        "tests.interfaces.test_native_tf_whole_qnode_execution::test_restored_public_qnode_hvp_uses_tf_whole_plan[qpy-open_control]",
+        "tests.interfaces.test_native_tf_whole_qnode_execution::test_restored_public_qnode_hvp_uses_tf_whole_plan[qpy-closed_control]",
+        "tests.interfaces.test_native_tf_whole_qnode_mixed_ad::test_method_selection_is_explicit_for_the_supported_moving_power_domain[parameter-shift]",
+        "tests.interfaces.test_native_tf_eager_jacobian_reentry::test_traced_eager_vjp_does_not_bypass_an_active_shared_scope"
+      ]
+    }
+  ],
+  "hardware": [
+    {
+      "case": "allocation",
+      "direction": "portfolio",
+      "domain": "finance",
+      "method": "qaoa",
+      "task_id": "2610231235383826369",
+      "backend": "Dongling",
+      "shots": 1024,
+      "qubits": 4,
+      "count_sum": 1024,
+      "artifact_hash": "503493d33caa8539ceaa7642045cc416e2ea8a743d80b964c43d1b421e52758c",
+      "receipt_hash": "c15248d352e42a6ec7b3f9615fd33c97fdfd8ef07813662fdf7c7c2c3213cec1",
+      "file": "output/jupyter-notebook/finance/allocation_hardware_evidence.json",
+      "execution": "cloud_hardware",
+      "acceptance": "INCONCLUSIVE",
+      "note": "Existing receipt; not independent hardware certification or function-level acceptance."
+    },
+    {
+      "case": "constraints",
+      "direction": "financial-constraints",
+      "domain": "finance",
+      "method": "qaoa",
+      "task_id": "2610231236018836200",
+      "backend": "Dongling",
+      "shots": 1024,
+      "qubits": 4,
+      "count_sum": 1024,
+      "artifact_hash": "489629650fd6001f014c2011b36fc7e2718af122d7462d2f2fb4efb1329fc45a",
+      "receipt_hash": "3bdeee9d2a2054c427af871fdcb7f7cbcec727432b1e4266431fe06b09eb5ed5",
+      "file": "output/jupyter-notebook/finance/constraints_hardware_evidence.json",
+      "execution": "cloud_hardware",
+      "acceptance": "INCONCLUSIVE",
+      "note": "Existing receipt; not independent hardware certification or function-level acceptance."
+    },
+    {
+      "case": "correlation",
+      "direction": "market-models",
+      "domain": "finance",
+      "method": "positive_correlation",
+      "task_id": "2610231236118773106",
+      "backend": "Dongling",
+      "shots": 1024,
+      "qubits": 4,
+      "count_sum": 1024,
+      "artifact_hash": "dfbdce9bd41a8304caaf9ed22b756e643f356552a32b0f9ba80c724d44af0e46",
+      "receipt_hash": "adf01e448701decf10fe19251503ed424cdb1862a15bf644f18e6a0696c47ea5",
+      "file": "output/jupyter-notebook/finance/correlation_hardware_evidence.json",
+      "execution": "cloud_hardware",
+      "acceptance": "INCONCLUSIVE",
+      "note": "Existing receipt; not independent hardware certification or function-level acceptance."
+    },
+    {
+      "case": "correlation",
+      "direction": "market-models",
+      "domain": "finance",
+      "method": "negative_correlation",
+      "task_id": "2610231236189351427",
+      "backend": "Dongling",
+      "shots": 1024,
+      "qubits": 4,
+      "count_sum": 1024,
+      "artifact_hash": "17174decccefbe73a3c4811859b1c21ccebed628d206491eb89d36f5d3e1fd9f",
+      "receipt_hash": "adf01e448701decf10fe19251503ed424cdb1862a15bf644f18e6a0696c47ea5",
+      "file": "output/jupyter-notebook/finance/correlation_hardware_evidence.json",
+      "execution": "cloud_hardware",
+      "acceptance": "INCONCLUSIVE",
+      "note": "Existing receipt; not independent hardware certification or function-level acceptance."
+    },
+    {
+      "case": "correlation",
+      "direction": "market-models",
+      "domain": "finance",
+      "method": "time_sampling",
+      "task_id": "2610231236333069511",
+      "backend": "Dongling",
+      "shots": 1024,
+      "qubits": 3,
+      "count_sum": 1024,
+      "artifact_hash": "ad0acd4930f37e690fb659d90c78b90b139e68b60220fd19da0cfecb5946a98b",
+      "receipt_hash": "adf01e448701decf10fe19251503ed424cdb1862a15bf644f18e6a0696c47ea5",
+      "file": "output/jupyter-notebook/finance/correlation_hardware_evidence.json",
+      "execution": "cloud_hardware",
+      "acceptance": "INCONCLUSIVE",
+      "note": "Existing receipt; not independent hardware certification or function-level acceptance."
+    },
+    {
+      "case": "derivatives",
+      "direction": "pricing",
+      "domain": "finance",
+      "method": "risk_neutral_paths",
+      "task_id": "2610231235566974565",
+      "backend": "Dongling",
+      "shots": 1024,
+      "qubits": 3,
+      "count_sum": 1024,
+      "artifact_hash": "f004e0cd4408e241cc70bd0ee738b4a0c2cf3f438b618b4ae5e8a3c02b4747a6",
+      "receipt_hash": "768c7d28fd98a2cee19f903442a66ee2e39e17918c212021f4058f620420c09e",
+      "file": "output/jupyter-notebook/finance/derivatives_hardware_evidence.json",
+      "execution": "cloud_hardware",
+      "acceptance": "INCONCLUSIVE",
+      "note": "Existing receipt; not independent hardware certification or function-level acceptance."
+    },
+    {
+      "case": "risk",
+      "direction": "risk",
+      "domain": "finance",
+      "method": "base",
+      "task_id": "2610231235440801552",
+      "backend": "Dongling",
+      "shots": 1024,
+      "qubits": 3,
+      "count_sum": 1024,
+      "artifact_hash": "e6fec722015d95e7e6a25ffc17f24012ba408030fee60b9e5f2a6b20e5f60128",
+      "receipt_hash": "2c4500f7ae7a8e18b8896a53d82d31b561035d500464ccc77f4df4022f2d3a5c",
+      "file": "output/jupyter-notebook/finance/risk_hardware_evidence.json",
+      "execution": "cloud_hardware",
+      "acceptance": "INCONCLUSIVE",
+      "note": "Existing receipt; not independent hardware certification or function-level acceptance."
+    },
+    {
+      "case": "risk",
+      "direction": "risk",
+      "domain": "finance",
+      "method": "stress",
+      "task_id": "2610231235484838251",
+      "backend": "Dongling",
+      "shots": 1024,
+      "qubits": 3,
+      "count_sum": 1024,
+      "artifact_hash": "7e84362517c916020d33f1fad25f944a60e11dea452e39b46d4fa9f8dde137c4",
+      "receipt_hash": "2c4500f7ae7a8e18b8896a53d82d31b561035d500464ccc77f4df4022f2d3a5c",
+      "file": "output/jupyter-notebook/finance/risk_hardware_evidence.json",
+      "execution": "cloud_hardware",
+      "acceptance": "INCONCLUSIVE",
+      "note": "Existing receipt; not independent hardware certification or function-level acceptance."
+    }
+  ],
+  "core_execution": "paused_pending_new_goal",
+  "publication": "workspace_snapshot_not_a_release",
+  "status_policy": {
+    "implemented": "Complete reviewed contract, independent Native execution and strict version-matched tests for this source hash.",
+    "partial": "Explicitly scoped implementation with known functional gaps or strict failures.",
+    "not_implemented": "Reviewed missing implementation or explicit source stub; not inferred from a name mismatch.",
+    "unverified": "Unreviewed mapping, absent evidence or stale source/test identity."
+  }
+}
