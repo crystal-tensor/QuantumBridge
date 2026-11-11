@@ -37,6 +37,14 @@ async function loadDataset(id) {
 function bars(counts, total) {
   return `<div class="stack" role="img" aria-label="${esc(statuses.map(s => `${statusNames[s][state.en ? 1 : 0]} ${counts[s] || 0}`).join(", "))}">${statuses.map(s => `<span class="${s}" style="width:${total ? (counts[s] || 0) / total * 100 : 0}%" title="${statusNames[s][state.en ? 1 : 0]}: ${counts[s] || 0}"></span>`).join("")}</div>`;
 }
+function moduleRows() {
+  const groups = aggregate(datasets.target);
+  const present = new Set(groups.map(g => g.name));
+  const pending = [...new Set(manifest.profiles.flatMap(p => p.packages.map(x => x.name)))].filter(name => !present.has(name)).sort();
+  const registered = groups.map(g => `<button class="module-row" data-family="${esc(g.name)}"><code>${esc(g.name)}</code>${bars(g.counts, g.total)}<span>${fmt(g.total)}</span>${ic("chevron-right")}</button>`);
+  const unresolved = pending.map(name => `<button class="module-row" data-tab="plan" title="${t("函数分母尚待清点，仍在完整目标范围内", "Function census pending; remains in full scope")}"><code>${esc(name)}</code><div class="pending-bar" aria-label="${t("函数分母未知", "Function denominator unknown")}"></div><span>${t("待清点", "TBD")}</span>${ic("chevron-right")}</button>`);
+  return registered.concat(unresolved).join("");
+}
 function shell() {
   document.documentElement.lang = state.en ? "en" : "zh-CN";
   document.title = t("QuantumBridge · 工程进展", "QuantumBridge · Engineering progress");
@@ -53,7 +61,7 @@ function shell() {
 function overview() {
   const target = manifest.datasets.find(x => x.id === "target");
   return `<section class="metrics"><div><small>${t("目标 API 候选项", "Target API candidates")}</small><strong>${fmt(target.count)}</strong><span>${t("含类、方法与历史导出；待审计去重", "Classes, methods & exports; audit pending")}</span></div><div><small>${t("Native 定义项", "Native definitions")}</small><strong>${fmt(manifest.datasets.find(x => x.id === "native").count)}</strong><span>${manifest.source.python_files} ${t("个 Python 文件（含内部帮助函数）", "Python files (includes internal helpers)")}</span></div><div><small>${t("已按完整合同验收", "Full-contract accepted")}</small><strong>${target.status_counts.implemented || 0}</strong><span>${t("不能据此推断已有功能为零", "Not a claim that no functionality exists")}</span></div><div><small>${t("交付硬截止", "Delivery deadline")}</small><strong class="deadline">2027-05-11</strong><span>${t("六个月计划约束，非完成保证", "Six-month constraint, not a guarantee")}</span></div></section>
-  <section class="band"><div class="section-heading"><h2>${t("目标模块验收分布", "Target-module acceptance")}</h2><button data-tab="functions">${t("查看逐函数清单", "Open function register")}${ic("arrow-up-right")}</button></div><div class="legend">${statuses.map(s => badge(s)).join("")}</div><div class="module-bars">${aggregate(datasets.target).map(g => `<button class="module-row" data-family="${esc(g.name)}"><code>${esc(g.name)}</code>${bars(g.counts, g.total)}<span>${fmt(g.total)}</span>${ic("chevron-right")}</button>`).join("")}</div></section>
+  <section class="band"><div class="section-heading"><h2>${t("目标模块验收分布", "Target-module acceptance")}</h2><button data-tab="functions">${t("查看逐函数清单", "Open function register")}${ic("arrow-up-right")}</button></div><div class="legend">${statuses.map(s => badge(s)).join("")}</div><div class="module-bars">${moduleRows()}</div></section>
   <section class="band split"><div><h2>${t("当前阻塞与下一步", "Blockers & next acceptance")}</h2><ol class="blockers"><li>${t("六类门批次：历史 Native 308 通过 / 6 失败；TensorFlow cached-MPS 二阶导数仍待修复。", "Six-gate batch: historical Native 308 pass / 6 fail; TensorFlow cached-MPS second derivatives need repair.")}</li><li>${t("其他严格回归仍有失败；格式化后源码及后续原型未完成同源重跑。", "Other strict regressions remain; formatted source and later prototype lack matched reruns.")}</li><li>${t("公共 API 别名、继承方法、动态扩展与 Native 对应关系尚未完成逐函数审核。", "Public aliases, inherited methods, dynamic extensions and Native mappings need per-function audit.")}</li><li>${t("首先封闭验收清单并修复严格失败，然后按模块推进；Studio 最后。", "Close the acceptance register and fix strict failures first, then advance modules. Studio last.")}</li></ol></div><div><h2>${t("快照身份", "Snapshot identity")}</h2><dl><dt>HEAD</dt><dd><code>${manifest.source.head}</code></dd><dt>${t("源码指纹", "Source fingerprint")}</dt><dd><code>${manifest.source.fingerprint}</code></dd><dt>${t("工作区", "Working tree")}</dt><dd>${t(manifest.source.dirty ? "存在未提交核心修改；不等于远端 main" : "核心源码已提交", manifest.source.dirty ? "Uncommitted core changes; not remote main" : "Core source committed")}</dd><dt>${t("解析错误", "Parse errors")}</dt><dd>${manifest.source.parse_errors.length}</dd><dt>${t("历史快照", "Prior snapshots")}</dt><dd>${history.length}</dd></dl></div></section>`;
 }
 function functionView() {
