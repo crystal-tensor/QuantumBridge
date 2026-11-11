@@ -152,5 +152,74 @@
     "id": "qiskit.circuit.quantumcircuit.QuantumCircuit.assign_parameters",
     "source_hash": "130fff1c441a17a6d1ea8d134b56a63fab05f78041357dd0e20c349ee5dfde0d",
     "target_hash_scope": "Current static target declaration; executable reference observations are independently pinned to2.4.1/2.6.0."
+  },
+  {
+    "project_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": true,
+    "strict_tests_pass": true,
+    "evidence_hash": "7e6742a7d1098b072cdc21c2e03e11aee13dab1649d79de33b46c6c3bee54cd8",
+    "evidence_scope": "Public binding of Python float, NumPy float16/32/64 and exact-real complex/complex64/complex128 scalars through Parameter/name/vector/sequence/flat inputs. Promote before symbolic and nested-gate arithmetic, preserve full complex phase, copy/inplace ownership, exact integer dt, resource refusal and atomicity. Nonzero imaginary values including1e-30 are rejected without tolerance.217Native and82actual SDK selected cases per profile; no full-function acceptance.",
+    "evidence_scope_zh": "公开绑定覆盖 Python float、NumPy float16/32/64，以及虚部严格为零的 complex/complex64/complex128；支持 Parameter、名称、向量、序列和 flat_input。先提升精度再进行符号与嵌套门运算，保留完整复数矩阵、全局相位、复制与原地所有权、整数 dt、资源拒绝和原子性。任何非零虚部（含 1e-30）仍被拒绝。每环境局部原生合同 217 项、实际 Qiskit 参考 82 项通过。",
+    "native_cases_each_profile": 217,
+    "actual_sdk_reference_cases_each_profile": 82,
+    "new_numeric_native_cases_each_profile": 186,
+    "new_numeric_sdk_reference_cases_each_profile": 70,
+    "real_qiskit_versions": [
+      "2.4.1",
+      "2.6.0"
+    ],
+    "native_entry": "quantumbridge.core.public_circuit.QuantumCircuit.assign_parameters",
+    "reference_public_exposure": "qiskit.circuit.QuantumCircuit.assign_parameters",
+    "implementation_files": {
+      "quantumbridge/core/public_circuit.py": "76a3ef42a87a9f2f45c960b7a2f0a5451def849dc66b9cf142bab3d79f1dab0d",
+      "quantumbridge/core/circuit.py": "5a0bda7356bb12ae9a25636dea925814d2e7c0b339c52c287fc9306ec5c094d0"
+    },
+    "legacy_fluent_stored_dtype_retained": true,
+    "legacy_fluent_inplace_copy_policy_retained": true,
+    "managed_preflight_not_weakened": true,
+    "exact_integer_hardware_ticks_preserved": true,
+    "no_imaginary_tolerance": true,
+    "remaining": "Complete inherited/subclass/custom-operation, symbolic-retention, error, shape, resource and serialization contracts remain open. Actual2.4.1/2.6.0 differ on one zero-expression scout; no unsafe silent imaginary truncation is adopted.23unique strict failures persist; TF cached curvature, full suite and hardware gates remain unresolved.",
+    "remaining_zh": "完整继承、子类、自定义指令、符号保留、错误、形状、资源和序列化合同仍待验收。两版 Qiskit 对一个零表达式观察案例行为不同，尚未据此更改 Native 合同，也未照搬上游丢弃微小虚部的行为。仍有 23 个严格失败；TensorFlow 缓存曲率、全量测试与真机门禁尚未完成。",
+    "id": "quantumbridge.core.public_circuit.QuantumCircuit.assign_parameters",
+    "source_hash": "76a3ef42a87a9f2f45c960b7a2f0a5451def849dc66b9cf142bab3d79f1dab0d"
+  },
+  {
+    "project_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": true,
+    "strict_tests_pass": true,
+    "evidence_hash": "7e6742a7d1098b072cdc21c2e03e11aee13dab1649d79de33b46c6c3bee54cd8",
+    "evidence_scope": "Public binding of Python float, NumPy float16/32/64 and exact-real complex/complex64/complex128 scalars through Parameter/name/vector/sequence/flat inputs. Promote before symbolic and nested-gate arithmetic, preserve full complex phase, copy/inplace ownership, exact integer dt, resource refusal and atomicity. Nonzero imaginary values including1e-30 are rejected without tolerance.217Native and82actual SDK selected cases per profile; no full-function acceptance.",
+    "evidence_scope_zh": "公开绑定覆盖 Python float、NumPy float16/32/64，以及虚部严格为零的 complex/complex64/complex128；支持 Parameter、名称、向量、序列和 flat_input。先提升精度再进行符号与嵌套门运算，保留完整复数矩阵、全局相位、复制与原地所有权、整数 dt、资源拒绝和原子性。任何非零虚部（含 1e-30）仍被拒绝。每环境局部原生合同 217 项、实际 Qiskit 参考 82 项通过。",
+    "native_cases_each_profile": 217,
+    "actual_sdk_reference_cases_each_profile": 82,
+    "new_numeric_native_cases_each_profile": 186,
+    "new_numeric_sdk_reference_cases_each_profile": 70,
+    "real_qiskit_versions": [
+      "2.4.1",
+      "2.6.0"
+    ],
+    "native_entry": "quantumbridge.core.public_circuit.QuantumCircuit.assign_parameters",
+    "reference_public_exposure": "qiskit.circuit.QuantumCircuit.assign_parameters",
+    "implementation_files": {
+      "quantumbridge/core/public_circuit.py": "76a3ef42a87a9f2f45c960b7a2f0a5451def849dc66b9cf142bab3d79f1dab0d",
+      "quantumbridge/core/circuit.py": "5a0bda7356bb12ae9a25636dea925814d2e7c0b339c52c287fc9306ec5c094d0"
+    },
+    "legacy_fluent_stored_dtype_retained": true,
+    "legacy_fluent_inplace_copy_policy_retained": true,
+    "managed_preflight_not_weakened": true,
+    "exact_integer_hardware_ticks_preserved": true,
+    "no_imaginary_tolerance": true,
+    "remaining": "Complete inherited/subclass/custom-operation, symbolic-retention, error, shape, resource and serialization contracts remain open. Actual2.4.1/2.6.0 differ on one zero-expression scout; no unsafe silent imaginary truncation is adopted.23unique strict failures persist; TF cached curvature, full suite and hardware gates remain unresolved.",
+    "remaining_zh": "完整继承、子类、自定义指令、符号保留、错误、形状、资源和序列化合同仍待验收。两版 Qiskit 对一个零表达式观察案例行为不同，尚未据此更改 Native 合同，也未照搬上游丢弃微小虚部的行为。仍有 23 个严格失败；TensorFlow 缓存曲率、全量测试与真机门禁尚未完成。",
+    "id": "qiskit.circuit.quantumcircuit.QuantumCircuit.assign_parameters",
+    "source_hash": "130fff1c441a17a6d1ea8d134b56a63fab05f78041357dd0e20c349ee5dfde0d",
+    "target_hash_scope": "Current static declaration; actual2.4.1/2.6.0 references pinned independently."
   }
 ]
