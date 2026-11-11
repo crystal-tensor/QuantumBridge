@@ -8,24 +8,24 @@
   "census_closed": false,
   "first_census_review_due": "2026-11-18T23:59:59+08:00",
   "delivery_forecast": "UNVERIFIED_HIGH_RISK_UNTIL_CENSUS_AND_CRITICAL_PATH_REVIEW",
-  "forecast_reviewed_at": "2026-11-11T13:55:31.189024+00:00",
+  "forecast_reviewed_at": "2026-11-11T15:05:15.068567+00:00",
   "forecast_risks": [
     "The public function denominator, inherited methods, dynamic exports and Native mappings remain open; no whole-project completion percentage is justified.",
     "Original Arrow24/Qiskit2.6 coexistence remains unresolved and no new reference configuration is approved. The archived Arrow25 experiment remains tied to the prior Native fingerprint, not current verification. SDK-only reference processes and current Native-only regressions terminate normally; combined alternate public verification is still open.",
-    "Both current480case selections retain475passes/5failures, source401retains400/1, main public512retains493/19; exact prior case and failure-ID populations match. The public sparse-to-Operator actual conversion fix adds17positive cases and both956case SDK-free related groups pass. Selections overlap and are not a full suite. One unchanged upstream-only Qiskit2.4.1 reference xfail is disclosed separately, never Native acceptance.",
-    "Raw TensorFlow seed-tracking experiments distinguish framework cache edges from Native problems. A two-edge process-local candidate improves eager raw controls but leaves cached outer controls and all four Native failures; a wider candidate times out and is rejected. No framework monkeypatch, guard weakening, dependency change or old-test change is promoted.",
+    "Four original QPY typed-evolution cases now pass with unchanged assertions. Both Native-related209case groups retain207passes and2known existing failures; 21new cases pass per profile. Both actual SDK reference groups pass21cases. Main public512 now497/15. The new unknown-binding old-contract failure existed on original955source and remains open pending owner decision; it is not removed or advisory. Selections overlap, not a full suite.",
+    "Both current strict480groups remain475/5, source401groups400/1. A matrix-free reverse-rule prototype still passes only12/16 original tensor compositions and is rejected. No TensorFlow production/framework/dependency or old-assertion change is promoted.",
     "Runtime/MRO metadata now covers thirty available modules per profile plus an explicitly unavailable Finance package, collected in separate unchanged-version SDK processes. All four collectors exit0; existing public exposures are preserved and every record remains unverified with no Native mapping inferred. The broader combined alternate collector wrote output then SIGSEGV; that artifact is rejected and its receipt retained. Isolated metadata does not certify SDK coexistence, full API closure or implementations.",
     "Static installed-file discovery currently finds2066main/2028alternate namespace candidates, with30public paths inspected per profile. Four optional packages previously recorded unavailable in the alternate metadata are now visible from external user/system locations: Aer0.17.2, Algorithms0.4.0, Nature0.8.0 and Runtime0.46.1. No packages were installed or reference targets changed in this batch; visibility is candidate metadata only, not promotion to the reference execution matrix. Distribution origin and environment-boundary review remain open, along with private re-exports, plugins, absent packages and per-function mappings.",
     "Large inherited uncommitted changes remain; verified local work is not yet a complete remotely published library delivery."
   ],
   "scope_reduced": false,
   "latest_batch": {
-    "checkpoint": "goal-tf-seed-fqgHE2",
-    "source_fingerprint": "955f9b6ca2771c99034c5f584d7b62140ca52f450ec4a63d62cbc15dd5f5d472",
-    "source_manifest_sha256": "c1ed8ec542506b4902baaf580390c3ee17a77b1d4567c42805f8508d2ab87b85",
-    "change": "Repair public SparsePauliOp.to_operator frame, owned source-budget reentry and failure-frame release. Keep Legacy SparsePauliOperator unchanged. No old assertions changed.",
+    "checkpoint": "goal-evolution-types-DJYxZK",
+    "source_fingerprint": "6bba89eea3f9730cdb475dc5c6239db6dc0e2a87c48c6a73b4f82e6fb1832759",
+    "source_manifest_sha256": "f9a52d807d4200587ec4349aaa974774aa5d7d6e53b76e1220f8cbf71691ad83",
+    "change": "Preserve each Native Pauli-evolution operand's exported type separately from its owned q0-first synthesis frame. Copy, parameter binding and typed QPY transport retain SparsePauliOp instead of silently downgrading to Legacy. No old assertion or TensorFlow production change.",
     "native_files_changed": [
-      "quantumbridge/operators/sparse_operator.py"
+      "quantumbridge/circuit_library/pauli_evolution.py"
     ],
     "original_protected_test_helper_files": 1373,
     "protected_test_helper_files_unchanged": 1371,
@@ -33,79 +33,280 @@
     "approved_test_migration_cases": 8,
     "new_approved_migrations_this_batch": 0,
     "approved_migration_record": "docs/engineering/test_contract_migrations.json",
-    "normal_terminal_selections_recorded": 15,
-    "strict_selection_each_profile": {
-      "total": 480,
-      "passed": 475,
-      "failed": 5,
-      "skipped": 0
-    },
-    "compilation_selection_each_profile": {
-      "total": 53,
-      "passed": 53,
-      "failed": 0,
-      "skipped": 0
-    },
-    "source_selection_each_profile": {
-      "total": 401,
-      "passed": 400,
-      "failed": 1,
-      "skipped": 0
-    },
-    "binding_selection_each_profile": {
-      "total": 34,
-      "passed": 34,
-      "failed": 0,
-      "skipped": 0
-    },
-    "ownership_selection_each_profile": {
-      "total": 41,
-      "passed": 41,
-      "failed": 0,
-      "skipped": 0
-    },
-    "qpy_frame_selection_each_profile": {
-      "total": 13,
-      "passed": 13,
-      "failed": 0,
-      "skipped": 0
-    },
-    "sparse_native_selection_each_profile": {
-      "total": 956,
-      "passed": 956,
-      "failed": 0,
-      "skipped": 0
-    },
+    "normal_terminal_selections_recorded": 19,
+    "results": [
+      {
+        "profile": "main",
+        "selection": "evolution-native",
+        "total": 209,
+        "passed": 207,
+        "failed": 2,
+        "skipped": 0,
+        "failed_ids": [
+          "tests.algorithms.test_native_trotter_qrte::test_symbolic_sparse_binding_is_simultaneous_and_complex_and_inplace_is_atomic",
+          "tests.serialization.test_qpy16_pauli_evolution::test_loaded_gate_drives_real_estimator_and_sampling"
+        ],
+        "terminal_exit": 1,
+        "sdk_import_guard": true
+      },
+      {
+        "profile": "main",
+        "selection": "evolution-reference",
+        "total": 21,
+        "passed": 21,
+        "failed": 0,
+        "skipped": 0,
+        "failed_ids": [],
+        "terminal_exit": 0,
+        "sdk_import_guard": false
+      },
+      {
+        "profile": "main",
+        "selection": "strict",
+        "total": 480,
+        "passed": 475,
+        "failed": 5,
+        "skipped": 0,
+        "failed_ids": [
+          "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature[False-True-forward_reverse]",
+          "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature[False-True-reverse_forward]",
+          "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature[True-True-forward_reverse]",
+          "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature[True-True-reverse_forward]",
+          "tests.interfaces.test_native_tf_whole_qnode_mixed_ad::test_method_selection_is_explicit_for_the_supported_moving_power_domain[parameter-shift]"
+        ],
+        "terminal_exit": 1,
+        "sdk_import_guard": true
+      },
+      {
+        "profile": "main",
+        "selection": "compile",
+        "total": 53,
+        "passed": 53,
+        "failed": 0,
+        "skipped": 0,
+        "failed_ids": [],
+        "terminal_exit": 0,
+        "sdk_import_guard": true
+      },
+      {
+        "profile": "main",
+        "selection": "binding",
+        "total": 34,
+        "passed": 34,
+        "failed": 0,
+        "skipped": 0,
+        "failed_ids": [],
+        "terminal_exit": 0,
+        "sdk_import_guard": true
+      },
+      {
+        "profile": "main",
+        "selection": "source",
+        "total": 401,
+        "passed": 400,
+        "failed": 1,
+        "skipped": 0,
+        "failed_ids": [
+          "tests.interfaces.test_native_tensorflow_negative::test_complex_half_and_broadcast_gate_parameters_reject"
+        ],
+        "terminal_exit": 1,
+        "sdk_import_guard": true
+      },
+      {
+        "profile": "main",
+        "selection": "ownership",
+        "total": 41,
+        "passed": 41,
+        "failed": 0,
+        "skipped": 0,
+        "failed_ids": [],
+        "terminal_exit": 0,
+        "sdk_import_guard": true
+      },
+      {
+        "profile": "main",
+        "selection": "frames",
+        "total": 13,
+        "passed": 13,
+        "failed": 0,
+        "skipped": 0,
+        "failed_ids": [],
+        "terminal_exit": 0,
+        "sdk_import_guard": true
+      },
+      {
+        "profile": "main",
+        "selection": "sparse-native",
+        "total": 956,
+        "passed": 956,
+        "failed": 0,
+        "skipped": 0,
+        "failed_ids": [],
+        "terminal_exit": 0,
+        "sdk_import_guard": true
+      },
+      {
+        "profile": "main",
+        "selection": "public",
+        "total": 512,
+        "passed": 497,
+        "failed": 15,
+        "skipped": 0,
+        "failed_ids": [
+          "tests.interfaces.test_native_special_unitary_frameworks::test_actual_public_tensor_generators_match_native_without_numpy_interface_substitution[tf]",
+          "tests.serialization.test_native_composed_circuit_roundtrip::test_qasm_metadata_loss_permission_cannot_silently_drop_classical_scope[3]",
+          "tests.serialization.test_qasm3_general_two_qubit_power::test_source_admission_does_not_inherit_matrix_synthesis_permission[gate param(t) a,b { rx(t) a; cx a,b; } input float[64] a; qubit[2] q; pow(.37) @ param(a) q[0],q[1];]",
+          "tests.serialization.test_qasm3_general_two_qubit_power::test_source_admission_does_not_inherit_matrix_synthesis_permission[input float[64] a; qubit[2] q; pow(a) @ mix q[0],q[1];]",
+          "tests.serialization.test_qasm3_native::test_qasm3_unsupported_nodes_are_not_dropped",
+          "tests.serialization.test_qpy14_reader::test_qpy_v13_writer_contract_and_unknown_reader_version",
+          "tests.serialization.test_qpy14_symbolic_delay::test_native_ir_roundtrip_and_old_writer_boundary[2.4.1]",
+          "tests.serialization.test_qpy14_symbolic_delay::test_native_ir_roundtrip_and_old_writer_boundary[2.6.0]",
+          "tests.serialization.test_qpy14_writer::test_v13_is_still_default_and_byte_identical_to_previous_archive",
+          "tests.serialization.test_qpy15_annotations::test_version_boundaries_and_atomic_output",
+          "tests.serialization.test_qpy16_indexed_reader::test_version_and_type_gates_remain_explicit",
+          "tests.serialization.test_qpy16_indexed_writer::test_legacy_writer_is_still_default_and_future_versions_are_rejected",
+          "tests.serialization.test_qpy16_pauli_evolution::test_loaded_gate_drives_real_estimator_and_sampling",
+          "tests.serialization.test_qpy18_reader::test_writer_boundary_and_future_reader_stay_explicit",
+          "tests.serialization.test_qpy_native::test_qpy_format_version_is_not_sdk_version"
+        ],
+        "terminal_exit": 1,
+        "sdk_import_guard": false
+      },
+      {
+        "profile": "alternate",
+        "selection": "evolution-native",
+        "total": 209,
+        "passed": 207,
+        "failed": 2,
+        "skipped": 0,
+        "failed_ids": [
+          "tests.algorithms.test_native_trotter_qrte::test_symbolic_sparse_binding_is_simultaneous_and_complex_and_inplace_is_atomic",
+          "tests.serialization.test_qpy16_pauli_evolution::test_loaded_gate_drives_real_estimator_and_sampling"
+        ],
+        "terminal_exit": 1,
+        "sdk_import_guard": true
+      },
+      {
+        "profile": "alternate",
+        "selection": "evolution-reference",
+        "total": 21,
+        "passed": 21,
+        "failed": 0,
+        "skipped": 0,
+        "failed_ids": [],
+        "terminal_exit": 0,
+        "sdk_import_guard": false
+      },
+      {
+        "profile": "alternate",
+        "selection": "strict",
+        "total": 480,
+        "passed": 475,
+        "failed": 5,
+        "skipped": 0,
+        "failed_ids": [
+          "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature[False-True-forward_reverse]",
+          "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature[False-True-reverse_forward]",
+          "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature[True-True-forward_reverse]",
+          "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature[True-True-reverse_forward]",
+          "tests.interfaces.test_native_tf_whole_qnode_mixed_ad::test_method_selection_is_explicit_for_the_supported_moving_power_domain[parameter-shift]"
+        ],
+        "terminal_exit": 1,
+        "sdk_import_guard": true
+      },
+      {
+        "profile": "alternate",
+        "selection": "compile",
+        "total": 53,
+        "passed": 53,
+        "failed": 0,
+        "skipped": 0,
+        "failed_ids": [],
+        "terminal_exit": 0,
+        "sdk_import_guard": true
+      },
+      {
+        "profile": "alternate",
+        "selection": "binding",
+        "total": 34,
+        "passed": 34,
+        "failed": 0,
+        "skipped": 0,
+        "failed_ids": [],
+        "terminal_exit": 0,
+        "sdk_import_guard": true
+      },
+      {
+        "profile": "alternate",
+        "selection": "source",
+        "total": 401,
+        "passed": 400,
+        "failed": 1,
+        "skipped": 0,
+        "failed_ids": [
+          "tests.interfaces.test_native_tensorflow_negative::test_complex_half_and_broadcast_gate_parameters_reject"
+        ],
+        "terminal_exit": 1,
+        "sdk_import_guard": true
+      },
+      {
+        "profile": "alternate",
+        "selection": "ownership",
+        "total": 41,
+        "passed": 41,
+        "failed": 0,
+        "skipped": 0,
+        "failed_ids": [],
+        "terminal_exit": 0,
+        "sdk_import_guard": true
+      },
+      {
+        "profile": "alternate",
+        "selection": "frames",
+        "total": 13,
+        "passed": 13,
+        "failed": 0,
+        "skipped": 0,
+        "failed_ids": [],
+        "terminal_exit": 0,
+        "sdk_import_guard": true
+      },
+      {
+        "profile": "alternate",
+        "selection": "sparse-native",
+        "total": 956,
+        "passed": 956,
+        "failed": 0,
+        "skipped": 0,
+        "failed_ids": [],
+        "terminal_exit": 0,
+        "sdk_import_guard": true
+      }
+    ],
     "new_conversion_cases_each_profile": {
-      "total": 17,
-      "passed": 17,
+      "total": 21,
+      "passed": 21,
       "failed": 0,
       "skipped": 0
     },
-    "before_fix_observation": {
-      "total": 17,
-      "passed": 8,
-      "failed": 9,
-      "source_fingerprint": "423833c765ff4eacbb179c7f784e72057c4a3ca7071235def96f12f36a666665",
-      "junit_sha256": "d10452a1852c1d075e0136ac8a98ba692fd500d09b68b4fda6c27ef4c10ea3ee",
-      "origin_guard": false,
-      "accepted_as_current_verification": false
-    },
-    "real_qiskit_conversion_references": {
-      "versions": [
-        "2.4.1",
-        "2.6.0"
-      ],
-      "matrix_cases_each": 6,
-      "terminal_exit_each": 0,
-      "full_complex_matrices": true,
-      "source_mutation_isolated": true,
-      "tensorflow_pyarrow_pennylane_quantumbridge_not_imported": true
+    "fixed_original_case_ids": [
+      "tests.serialization.test_qpy17_sparse_evolution::test_empty_identity_and_pauli_flag_roundtrip[pauli-2.4.1]",
+      "tests.serialization.test_qpy17_sparse_evolution::test_empty_identity_and_pauli_flag_roundtrip[pauli-2.6.0]",
+      "tests.serialization.test_qpy17_sparse_evolution::test_mixed_blocks_keep_each_type_and_their_noncommuting_order[False]",
+      "tests.serialization.test_qpy17_sparse_evolution::test_mixed_blocks_keep_each_type_and_their_noncommuting_order[True]"
+    ],
+    "before_observation": {
+      "total": 31,
+      "failed": 21,
+      "passed": 10,
+      "source_fingerprint": "955f9b6ca2771c99034c5f584d7b62140ca52f450ec4a63d62cbc15dd5f5d472",
+      "junit_sha256": "d9e99a690f88a34c339760faa5064afdb2b9372080add9b58516c5d780fb4aac",
+      "origin_verified": true
     },
     "public_selection_main": {
       "total": 512,
-      "passed": 493,
-      "failed": 19,
+      "passed": 497,
+      "failed": 15,
       "skipped": 0,
       "process_exit": 1,
       "normal_terminal": true
@@ -115,53 +316,6 @@
       "accepted_as_current_verification": false,
       "reason": "Prior original Arrow24/Qiskit2.6 combined runs SIGSEGV. No identical combined rerun or profile promotion; SDK-only references run normally in separate processes."
     },
-    "prior_selected_case_populations_and_failure_ids_unchanged": true,
-    "upstream_reference_observations": [
-      {
-        "profile": "main",
-        "selection": "reference",
-        "terminal": true,
-        "exit": 0,
-        "native_accepted": false,
-        "original_test_assertions_changed": false,
-        "total": 326,
-        "passed": 325,
-        "failed": 0,
-        "skipped": 1,
-        "original_upstream_observations": [
-          {
-            "id": "tests.operators.test_native_sparse_pauli_conjugation::test_symbolic_unary_partial_and_complete_binding_retains_parameter_identity[public-point0-transpose]",
-            "reason": "Observed Qiskit 2.4.1 partial-binding defect drops the nonzero YZ coefficient; Native retains the independent math assertion."
-          }
-        ],
-        "scope": "upstream_reference_observation_not_native_acceptance",
-        "junit_sha256": "0e532470705759771724460d1131496ee2e32ec953c6985283fee53271a60779"
-      },
-      {
-        "profile": "alternate",
-        "selection": "reference",
-        "terminal": true,
-        "exit": 0,
-        "native_accepted": false,
-        "original_test_assertions_changed": false,
-        "total": 326,
-        "passed": 326,
-        "failed": 0,
-        "skipped": 0,
-        "original_upstream_observations": [],
-        "scope": "upstream_reference_observation_not_native_acceptance",
-        "junit_sha256": "9d4d643ac1de45e0116b85ced5843c6db6d7fc67d4e687d479cb7b73a4bfdff5"
-      }
-    ],
-    "upstream_observation_policy": "The main326case reference group has325passes and one original Qiskit2.4.1-only xfail for partial binding; alternate326all pass. The unchanged original test checks the observed wrong matrix before its xfail. No new skip/xfail added; neither reference group counts as Native acceptance. All1282original related IDs are covered by exact Native/reference partitions, not keyword exclusions.",
-    "initial_selection_observation": {
-      "accepted_as_verification": false,
-      "native_implementation_failures_inferred": false,
-      "total": 1282,
-      "guarded_reference_fixture_refusals": 326,
-      "reason": "The first mixed selection incorrectly applied global SDK denial to explicit reference fixtures. Its complete raw output is retained; exact partition executes all original IDs. Only proper Native-only batches enter the verification ledger."
-    },
-    "process_stability_verified": false,
     "abnormal_process_observations": [
       {
         "profile": "alternate",
@@ -203,17 +357,53 @@
         "source_fingerprint": "423833c765ff4eacbb179c7f784e72057c4a3ca7071235def96f12f36a666665"
       }
     ],
-    "diagnostic_observations": "Five original observations retain their original423833source fingerprint, original report/time/hash, and are stale for this new Native source. Shared merge preserves unrelated records and archives replaced ones; do not relabel archived evidence.",
-    "diagnostic_store_validation": {
-      "new_unit_tests": 7,
-      "real_archive_replay_preserved_reports": 5,
-      "timestamps_changed": false,
-      "evidence_hashes_changed": false,
-      "new_experiments_from_replay": 0
+    "process_stability_verified": false,
+    "related_partition": {
+      "total": 230,
+      "native": 209,
+      "reference": 21,
+      "original_id_union_exact": true,
+      "no_keyword_exclusions": true,
+      "reference_cases_are_not_sdk_free_native_acceptance": true
     },
+    "newly_discovered_existing_failure": "tests.algorithms.test_native_trotter_qrte::test_symbolic_sparse_binding_is_simultaneous_and_complex_and_inplace_is_atomic",
+    "unknown_binding_review": {
+      "native_original_swap_and_complex_math_verified": true,
+      "unknown_uuid_ignored_by_both_pinned_sdks": true,
+      "source_unchanged_after_unknown_inplace": true,
+      "upstream_swap_reference_defects_observed_not_copied": true,
+      "old_assertion_unchanged": true,
+      "owner_migration_question": "PENDING_EXPLICIT_REPLY",
+      "native_accepted": false,
+      "evidence": [
+        {
+          "file": "unknown-native-main-final.json",
+          "sha256": "7f54875c318da772639db89d09fb75abe96b109775bc73e840e28800c5f5fd4b"
+        },
+        {
+          "file": "unknown-reference-main-final.json",
+          "sha256": "b7306eb06b0479af6bd9480cbf2b76e58a0444e44b75c0bc7c623a65a38c4dac"
+        },
+        {
+          "file": "unknown-reference-alternate-final.json",
+          "sha256": "e425a8da44a0928004583d97d4f739707bdb32de3c7efa75383b5da2423fdf2c"
+        }
+      ]
+    },
+    "invalid_first_before_attempt": {
+      "accepted_as_verification": false,
+      "reason": "Absolute new-test package path mixed Native roots; the origin guard rejected it. The corrected before-source snapshot retains original955 Native bytes and captures31cases with valid origins."
+    },
+    "orchestration_resume": {
+      "finished_test_receipts_preserved": true,
+      "repeated_completed_selections": false,
+      "reason": "The first parent exited on an obsolete partition dictionary key after six valid main selections; resumption kept all normal existing receipts and ran only remaining selections."
+    },
+    "diagnostic_observations": "All five original423833 observations retain original identity/time/hash and remain historical for6bba source; no archived evidence relabeled.",
     "full_suite_accepted": false,
     "native_change_publication": "local_only_pending_remaining_strict_failures",
-    "observer_publication": "separate_scoped_metadata_and_page_commits"
+    "observer_publication": "separate_scoped_metadata_and_page_commits_not_a_core_release",
+    "previous_published_observer_source_fingerprint": "955f9b6ca2771c99034c5f584d7b62140ca52f450ec4a63d62cbc15dd5f5d472"
   },
   "follow_up_batch": {
     "checkpoint": "goal-tf-transpose-r2Jorl",
@@ -413,33 +603,252 @@
       "full_suite_accepted": false,
       "native_change_publication": "local_only_pending_remaining_strict_failures",
       "observer_publication": "separate_scoped_metadata_and_page_commits"
+    },
+    {
+      "checkpoint": "goal-tf-seed-fqgHE2",
+      "source_fingerprint": "955f9b6ca2771c99034c5f584d7b62140ca52f450ec4a63d62cbc15dd5f5d472",
+      "source_manifest_sha256": "c1ed8ec542506b4902baaf580390c3ee17a77b1d4567c42805f8508d2ab87b85",
+      "change": "Repair public SparsePauliOp.to_operator frame, owned source-budget reentry and failure-frame release. Keep Legacy SparsePauliOperator unchanged. No old assertions changed.",
+      "native_files_changed": [
+        "quantumbridge/operators/sparse_operator.py"
+      ],
+      "original_protected_test_helper_files": 1373,
+      "protected_test_helper_files_unchanged": 1371,
+      "approved_test_migration_files": 2,
+      "approved_test_migration_cases": 8,
+      "new_approved_migrations_this_batch": 0,
+      "approved_migration_record": "docs/engineering/test_contract_migrations.json",
+      "normal_terminal_selections_recorded": 15,
+      "strict_selection_each_profile": {
+        "total": 480,
+        "passed": 475,
+        "failed": 5,
+        "skipped": 0
+      },
+      "compilation_selection_each_profile": {
+        "total": 53,
+        "passed": 53,
+        "failed": 0,
+        "skipped": 0
+      },
+      "source_selection_each_profile": {
+        "total": 401,
+        "passed": 400,
+        "failed": 1,
+        "skipped": 0
+      },
+      "binding_selection_each_profile": {
+        "total": 34,
+        "passed": 34,
+        "failed": 0,
+        "skipped": 0
+      },
+      "ownership_selection_each_profile": {
+        "total": 41,
+        "passed": 41,
+        "failed": 0,
+        "skipped": 0
+      },
+      "qpy_frame_selection_each_profile": {
+        "total": 13,
+        "passed": 13,
+        "failed": 0,
+        "skipped": 0
+      },
+      "sparse_native_selection_each_profile": {
+        "total": 956,
+        "passed": 956,
+        "failed": 0,
+        "skipped": 0
+      },
+      "new_conversion_cases_each_profile": {
+        "total": 17,
+        "passed": 17,
+        "failed": 0,
+        "skipped": 0
+      },
+      "before_fix_observation": {
+        "total": 17,
+        "passed": 8,
+        "failed": 9,
+        "source_fingerprint": "423833c765ff4eacbb179c7f784e72057c4a3ca7071235def96f12f36a666665",
+        "junit_sha256": "d10452a1852c1d075e0136ac8a98ba692fd500d09b68b4fda6c27ef4c10ea3ee",
+        "origin_guard": false,
+        "accepted_as_current_verification": false
+      },
+      "real_qiskit_conversion_references": {
+        "versions": [
+          "2.4.1",
+          "2.6.0"
+        ],
+        "matrix_cases_each": 6,
+        "terminal_exit_each": 0,
+        "full_complex_matrices": true,
+        "source_mutation_isolated": true,
+        "tensorflow_pyarrow_pennylane_quantumbridge_not_imported": true
+      },
+      "public_selection_main": {
+        "total": 512,
+        "passed": 493,
+        "failed": 19,
+        "skipped": 0,
+        "process_exit": 1,
+        "normal_terminal": true
+      },
+      "alternate_public_selection": {
+        "state": "NOT_REPEATED_KNOWN_DEPENDENCY_COEXISTENCE_FAILURE",
+        "accepted_as_current_verification": false,
+        "reason": "Prior original Arrow24/Qiskit2.6 combined runs SIGSEGV. No identical combined rerun or profile promotion; SDK-only references run normally in separate processes."
+      },
+      "prior_selected_case_populations_and_failure_ids_unchanged": true,
+      "upstream_reference_observations": [
+        {
+          "profile": "main",
+          "selection": "reference",
+          "terminal": true,
+          "exit": 0,
+          "native_accepted": false,
+          "original_test_assertions_changed": false,
+          "total": 326,
+          "passed": 325,
+          "failed": 0,
+          "skipped": 1,
+          "original_upstream_observations": [
+            {
+              "id": "tests.operators.test_native_sparse_pauli_conjugation::test_symbolic_unary_partial_and_complete_binding_retains_parameter_identity[public-point0-transpose]",
+              "reason": "Observed Qiskit 2.4.1 partial-binding defect drops the nonzero YZ coefficient; Native retains the independent math assertion."
+            }
+          ],
+          "scope": "upstream_reference_observation_not_native_acceptance",
+          "junit_sha256": "0e532470705759771724460d1131496ee2e32ec953c6985283fee53271a60779"
+        },
+        {
+          "profile": "alternate",
+          "selection": "reference",
+          "terminal": true,
+          "exit": 0,
+          "native_accepted": false,
+          "original_test_assertions_changed": false,
+          "total": 326,
+          "passed": 326,
+          "failed": 0,
+          "skipped": 0,
+          "original_upstream_observations": [],
+          "scope": "upstream_reference_observation_not_native_acceptance",
+          "junit_sha256": "9d4d643ac1de45e0116b85ced5843c6db6d7fc67d4e687d479cb7b73a4bfdff5"
+        }
+      ],
+      "upstream_observation_policy": "The main326case reference group has325passes and one original Qiskit2.4.1-only xfail for partial binding; alternate326all pass. The unchanged original test checks the observed wrong matrix before its xfail. No new skip/xfail added; neither reference group counts as Native acceptance. All1282original related IDs are covered by exact Native/reference partitions, not keyword exclusions.",
+      "initial_selection_observation": {
+        "accepted_as_verification": false,
+        "native_implementation_failures_inferred": false,
+        "total": 1282,
+        "guarded_reference_fixture_refusals": 326,
+        "reason": "The first mixed selection incorrectly applied global SDK denial to explicit reference fixtures. Its complete raw output is retained; exact partition executes all original IDs. Only proper Native-only batches enter the verification ledger."
+      },
+      "process_stability_verified": false,
+      "abnormal_process_observations": [
+        {
+          "profile": "alternate",
+          "selection": "public",
+          "process_exit": -11,
+          "signal": "SIGSEGV",
+          "accepted_as_verification": false,
+          "recorded_at": "2026-11-11T10:53:26.245532+00:00",
+          "junit_sha256": "531dc95121a295f4def6ae3a71ecceb2ff8b781a11c027a7006297832668f2cd",
+          "origin_sha256": "9341a999933608e26066db4bd02865e43fce987a56d7449b04900c608dfc71fc",
+          "crash_report_sha256": "9b358de6d08991ce00f1fa3351194319b4d65134a3b56523f5060292a7be542f",
+          "scope": "Pytest printed 493 passes and 19 existing failures, then SIGSEGV at libarrow.2400.dylib::_mi_theap_collect_retired via mi_process_done / exit. Crash site observed, root cause unconfirmed; not normal verification.",
+          "source_fingerprint": "423833c765ff4eacbb179c7f784e72057c4a3ca7071235def96f12f36a666665"
+        },
+        {
+          "profile": "alternate",
+          "selection": "public-retry1",
+          "process_exit": -11,
+          "signal": "SIGSEGV",
+          "accepted_as_verification": false,
+          "recorded_at": "2026-11-11T10:58:45.192828+00:00",
+          "junit_sha256": "a47ff7135c30cb185802f9b210f02ba7a9a49d8c60edb169916fe9efd8c9b436",
+          "origin_sha256": "9341a999933608e26066db4bd02865e43fce987a56d7449b04900c608dfc71fc",
+          "crash_report_sha256": "f9f77197c034f21c36f455d52e104853c32a7e250cafefecfe0dfa4d80bb694c",
+          "scope": "Same frozen source printed 493 passes and 19 existing failures, then the same libarrow cleanup SIGSEGV. Root cause unconfirmed, no third identical retry. Raw system reports stay private; only hashes and crash-site observations are published.",
+          "source_fingerprint": "423833c765ff4eacbb179c7f784e72057c4a3ca7071235def96f12f36a666665"
+        },
+        {
+          "profile": "alternate",
+          "selection": "runtime-census-combined",
+          "process_exit": -11,
+          "signal": "SIGSEGV",
+          "accepted_as_verification": false,
+          "recorded_at": "2026-11-11T12:18:43.365508+00:00",
+          "artifact_sha256": "32797d7552d238da681901b4d54797bcdffb7cd35ba1cc5e5f141b3343f27a38",
+          "process_receipt_sha256": "dcf4ed339ef25db23e793eb0b73589290397be562aa7c7f53b99736dbde944d4",
+          "crash_report_sha256": "3fb15706bcebf636e30fd53856912df9ef63305e86e2e41afb4c9230f11a7b27",
+          "scope": "Public metadata collector wrote31module records then SIGSEGV during interpreter finalization in Qiskit _accelerate.abi3.so::_mi_arenas_page_free while libarrow24 images were loaded. This is an observed crash site, not a proven root cause. The output is rejected as a normal collection and never counts as Native verification. Separate unchanged-version Qiskit-only and PennyLane-only collectors subsequently exit0 in both profiles; isolation does not certify coexistence. Raw system report stays private.",
+          "source_fingerprint": "423833c765ff4eacbb179c7f784e72057c4a3ca7071235def96f12f36a666665"
+        }
+      ],
+      "diagnostic_observations": "Five original observations retain their original423833source fingerprint, original report/time/hash, and are stale for this new Native source. Shared merge preserves unrelated records and archives replaced ones; do not relabel archived evidence.",
+      "diagnostic_store_validation": {
+        "new_unit_tests": 7,
+        "real_archive_replay_preserved_reports": 5,
+        "timestamps_changed": false,
+        "evidence_hashes_changed": false,
+        "new_experiments_from_replay": 0
+      },
+      "full_suite_accepted": false,
+      "native_change_publication": "local_only_pending_remaining_strict_failures",
+      "observer_publication": "separate_scoped_metadata_and_page_commits"
     }
   ],
   "current_investigation": {
-    "checkpoint": "goal-tf-seed-fqgHE2",
-    "tensorflow_source_sha256": "54e50f5c47912873524d8d664ee0e573f2144f618a773fcaefbe56fd5023c21b",
-    "probe_sha256": "46d7c499359835b83cd31e97b826e788b8f200a0b9dadd89b0faa7d8a6e73cb6",
-    "frozen_native_fingerprint": "423833c765ff4eacbb179c7f784e72057c4a3ca7071235def96f12f36a666665",
-    "scope": "Separate process-local TensorFlow graph-edge experiments against the prior frozen source, not acceptance of current Native source or an environment change",
-    "raw_seed_combinations_each": 32,
-    "mathematical_points_each": 3,
-    "baseline_mismatched_combinations_each": 8,
-    "two_edge_candidate_mismatched_combinations_each": 4,
-    "native_composition_each_variant_each_profile": {
+    "checkpoint": "goal-evolution-types-DJYxZK",
+    "frozen_native_fingerprint": "6bba89eea3f9730cdb475dc5c6239db6dc0e2a87c48c6a73b4f82e6fb1832759",
+    "scope": "Main-profile matrix-free reverse/reverse HVP and transposed JVP prototype versus unchanged production rule; diagnostic only",
+    "baseline": {
       "total": 16,
       "passed": 12,
       "failed": 4
     },
-    "installed_framework_files_changed": false,
-    "global_environment_changed": false,
-    "candidate_promoted": false,
-    "graph_tangent_candidate": {
-      "state": "REJECTED_TIMEOUT",
-      "seconds": 300,
-      "completed_report": false,
-      "alternate_attempted": false,
-      "child_confirmed_not_running": true
+    "candidate": {
+      "total": 16,
+      "passed": 12,
+      "failed": 4
     },
-    "meaning": "Two process-local edge changes restore eager cached reverse-over-forward raw cos but not cached outer graphs or the four Native compositions. Factored row prototypes also fail; no partial curvature, guard removal or framework monkeypatch enters production."
-  }
+    "prototype_sha256": "1436dc6f77a38778322430c4d5a3d5d0b81e6d24c7fdc4501d6e506466bc74f9",
+    "production_tensorflow_changed": false,
+    "installed_framework_changed": false,
+    "old_assertions_changed": false,
+    "candidate_promoted": false,
+    "meaning": "Changing only the inner HVP/JVP construction does not repair cached mixed AD. The same four cases remain; no guard removal, zero-curvature substitution or framework monkeypatch is accepted."
+  },
+  "investigation_history": [
+    {
+      "checkpoint": "goal-tf-seed-fqgHE2",
+      "tensorflow_source_sha256": "54e50f5c47912873524d8d664ee0e573f2144f618a773fcaefbe56fd5023c21b",
+      "probe_sha256": "46d7c499359835b83cd31e97b826e788b8f200a0b9dadd89b0faa7d8a6e73cb6",
+      "frozen_native_fingerprint": "423833c765ff4eacbb179c7f784e72057c4a3ca7071235def96f12f36a666665",
+      "scope": "Separate process-local TensorFlow graph-edge experiments against the prior frozen source, not acceptance of current Native source or an environment change",
+      "raw_seed_combinations_each": 32,
+      "mathematical_points_each": 3,
+      "baseline_mismatched_combinations_each": 8,
+      "two_edge_candidate_mismatched_combinations_each": 4,
+      "native_composition_each_variant_each_profile": {
+        "total": 16,
+        "passed": 12,
+        "failed": 4
+      },
+      "installed_framework_files_changed": false,
+      "global_environment_changed": false,
+      "candidate_promoted": false,
+      "graph_tangent_candidate": {
+        "state": "REJECTED_TIMEOUT",
+        "seconds": 300,
+        "completed_report": false,
+        "alternate_attempted": false,
+        "child_confirmed_not_running": true
+      },
+      "meaning": "Two process-local edge changes restore eager cached reverse-over-forward raw cos but not cached outer graphs or the four Native compositions. Factored row prototypes also fail; no partial curvature, guard removal or framework monkeypatch enters production."
+    }
+  ]
 }
