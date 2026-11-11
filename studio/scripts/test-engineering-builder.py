@@ -21,6 +21,12 @@ class EvidenceTests(unittest.TestCase):
         builder.apply_reviews([row],[review])
         self.assertEqual(row["status"],"implemented")
 
+    def test_change_in_another_core_file_invalidates_old_review(self):
+        row = {"id":"f","source_hash":"now","status":"unverified"}
+        review = {"id":"f","source_hash":"now","status":"partial","project_fingerprint":"old-project"}
+        builder.apply_reviews([row],[review],"new-project")
+        self.assertEqual(row["status"],"unverified")
+
     def test_abstract_refusal_is_not_automatically_missing(self):
         rows,errors,_ = builder.census(builder.ROOT/"quantumbridge/chemistry","quantumbridge.chemistry",native=True)
         self.assertFalse(errors)

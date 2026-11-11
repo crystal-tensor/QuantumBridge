@@ -5,21 +5,22 @@ import { createPreviewServer } from "./serve.mjs";
 
 // A short-lived OS-assigned port is QA-only. Owner-facing delivery stays on Pages.
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE ? pathToFileURL(process.env.PLAYWRIGHT_MODULE).href : "playwright");
-const server=createPreviewServer();
-await new Promise(resolve=>server.listen(0,"127.0.0.1",resolve));
-const base=`http://127.0.0.1:${server.address().port}`;
+const server=process.env.QB_QA_BASE_URL ? null : createPreviewServer();
+if(server) await new Promise(resolve=>server.listen(0,"127.0.0.1",resolve));
+const base=process.env.QB_QA_BASE_URL?.replace(/\/$/,"") || `http://127.0.0.1:${server.address().port}`;
 let browser;
 const output=process.env.QB_QA_OUTPUT || "/tmp/qb-engineering-qa";
 await mkdir(output,{recursive:true});
 const results=[];
 try{
-  browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{})});
+  browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{}),...(process.env.QB_QA_PROXY?{proxy:{server:process.env.QB_QA_PROXY,bypass:"127.0.0.1,localhost"}}:{})});
   for(const viewport of [{width:1440,height:1000},{width:390,height:844}]){
     const page=await browser.newPage({viewport});const errors=[];page.on("pageerror",e=>errors.push(e.message));
     await page.goto(`${base}/framework.html?category=finance&lang=zh`);
     await page.getByRole("link",{name:"工程进展",exact:true}).click();
     await page.getByRole("heading",{name:"工程进展",exact:true}).waitFor();
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+    await page.getByRole("button",{name:"总览",exact:true}).click();
     await page.screenshot({path:`${output}/overview-${viewport.width}.png`,fullPage:true});
     await page.getByRole("button",{name:"函数清单",exact:true}).click();
     await page.getByRole("searchbox",{name:"搜索函数"}).fill("RZXGate");
@@ -30,6 +31,7 @@ try{
     await page.screenshot({path:`${output}/function-${viewport.width}.png`,fullPage:false});
     await page.getByRole("button",{name:"关闭",exact:true}).click();
     await page.getByRole("button",{name:"Native 源码",exact:true}).click();
+    await page.locator('[data-dataset="native"][aria-pressed="true"]').waitFor();
     await page.getByRole("button",{name:"重置筛选",exact:true}).click();
     await page.locator("[data-filter=status]").selectOption("not_implemented");
     assert.ok((await page.locator("tbody").innerText()).includes("ParityMapper.map"));
@@ -59,4 +61,4 @@ try{
     await page.close();
   }
   console.log(JSON.stringify({results,screenshots:output},null,2));
-}finally{await browser?.close();await new Promise(resolve=>server.close(resolve));}
+}finally{await browser?.close();if(server) await new Promise(resolve=>server.close(resolve));}

@@ -162,12 +162,14 @@ def historical_tests(directory):
     return runs
 
 
-def apply_reviews(records, reviews):
+def apply_reviews(records, reviews, project_fingerprint=None):
     """Only exact, current source evidence can upgrade the conservative baseline."""
     by_id = {row["id"]: row for row in records}
     for review in reviews:
         row = by_id.get(review.get("id"))
         if row is None or review.get("source_hash") != row["source_hash"]:
+            continue
+        if project_fingerprint is not None and review.get("project_fingerprint") != project_fingerprint:
             continue
         required = ("contract_complete", "native_independent", "versions_verified", "strict_tests_pass", "evidence_hash")
         if review.get("status") == "implemented" and not all(review.get(k) for k in required):
@@ -182,6 +184,7 @@ def build(args):
     DATA.mkdir(parents=True, exist_ok=True)
     previous = load_json(DATA / "manifest.json") if (DATA / "manifest.json").exists() else None
     native, errors, hashes = census(ROOT / "quantumbridge", "quantumbridge", native=True)
+    fingerprint = digest(json.dumps(hashes, separators=(",", ":")).encode())
     merged, profiles = {}, []
     references = args.reference or sorted((Path.home() / ".cache/quantumbridge/progress").glob("reference-*.json"))
     if not references and previous:
@@ -228,10 +231,9 @@ def build(args):
             row["id"] += f"@{row['line']}"
     review_path = ROOT / "docs/engineering/function_reviews.json"
     reviews = load_json(review_path) if review_path.exists() else []
-    apply_reviews(native, reviews)
-    apply_reviews(target, reviews)
+    apply_reviews(native, reviews, fingerprint)
+    apply_reviews(target, reviews, fingerprint)
     head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
-    fingerprint = digest(json.dumps(hashes, separators=(",", ":")).encode())
     dirty = bool(subprocess.check_output(["git", "status", "--porcelain", "--", "quantumbridge"], cwd=ROOT))
     now = datetime.now(timezone.utc).isoformat()
     datasets = []
