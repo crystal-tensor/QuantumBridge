@@ -120,13 +120,30 @@ class SamplerPubResult(PubResult):
 class PrimitiveResult(Sequence):
     def __init__(self, pub_results, metadata=None):
         self._pub_results = tuple(pub_results)
-        self.metadata = dict(metadata or {})
+        self.metadata = metadata or {}
 
     def __getitem__(self, index):
-        return self._pub_results[index]
+        value = self._pub_results[index]
+        return list(value) if isinstance(index, slice) else value
 
     def __len__(self):
         return len(self._pub_results)
+
+    def tolist(self):
+        """Native extension returning PUB references, not copied payloads."""
+        return list(self)
+
+    def to_dict(self):
+        """Return a structural view retaining native payloads, not JSON encoding.
+
+        Array shapes/dtypes, packed bits and opaque values remain in their
+        original objects. Only the outer result/data/metadata mappings are new;
+        nested values remain shared. Legacy overrides retain their old format.
+        """
+        return {
+            "results": [{"data": dict(pub.data), "metadata": dict(pub.metadata)} for pub in self],
+            "metadata": dict(self.metadata),
+        }
 
 
 class PrimitiveJob(Job):

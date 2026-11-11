@@ -8,6 +8,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Iterator, Mapping, Sequence
 
+from .v2 import PrimitiveResult as PublicPrimitiveResult
+
 __all__ = ["BitArray", "DataBin", "PrimitiveResult", "PubResult"]
 
 
@@ -66,8 +68,8 @@ class DataBin:
 
     def __getattr__(self, name: str) -> Any:
         try:
-            return self._fields[name]
-        except KeyError as exc:
+            return object.__getattribute__(self, "_fields")[name]
+        except (KeyError, AttributeError) as exc:
             raise AttributeError(name) from exc
 
     def __getitem__(self, name: str) -> Any:
@@ -110,7 +112,7 @@ class PubResult:
 
 
 @dataclass(frozen=True)
-class PrimitiveResult:
+class PrimitiveResult(PublicPrimitiveResult):
     """Sequence-like container for primitive pub results."""
 
     pub_results: Sequence[PubResult]

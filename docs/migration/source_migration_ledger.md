@@ -1,5 +1,25 @@
 # Source Migration Ledger
 
+## Main CI Container And Attribution Reconciliation
+
+- `quantumbridge/primitives/v2.py`: Native public V2 result containers and
+  local execution. Sequence and metadata behavior are checked against the
+  declared public profiles; `tolist` and structural `to_dict` are explicit
+  Native extensions, not claims about upstream serialization methods.
+- `quantumbridge/finance/quantum_monte_carlo.py`: independently authored bounded
+  finance expectation-estimation workflows using the existing Native circuit
+  and execution APIs. References to PennyLane describe the comparison scope,
+  not vendored implementation or a claim of full finance parity.
+  `pennylane_qmc` explicitly calls the installed upstream package as a
+  comparison; that path is not a Native implementation or hardware receipt.
+- `quantumbridge/router/core.py`: independently authored fidelity-aware routing
+  and documented QOS-UQCI/Quafu adapter boundaries. Provider availability,
+  local mock execution and real service access remain distinct; upstream
+  project names do not certify hardware execution or whole-SDK support.
+
+This registration preserves existing source notices and does not replace a
+license review, change third-party licenses or authorize source vendoring.
+
 ## Public MPS QNode Derivative Integration
 
 Independent implementation: `quantumbridge/diff/mps_derivatives.py` joins
