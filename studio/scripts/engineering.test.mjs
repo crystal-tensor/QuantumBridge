@@ -46,6 +46,27 @@ test("runtime census is not combined with the target denominator or implementati
   assert.equal(manifest.runtime_census.length,2);
   assert.ok(manifest.runtime_census.every(a=>a.census_complete===false&&a.modules.some(m=>m.name==="qiskit_finance"&&!m.available)));
 });
+test("recursive census retains traversal gaps, loaded identities and accessor provenance", async () => {
+  const descriptor=manifest.datasets.find(x=>x.id==="runtime");
+  const rows=JSON.parse(gunzipSync(await readFile(new URL(`../src/progress/data/${descriptor.file}`,import.meta.url))));
+  assert.ok(rows.some(r=>r.runtime_observations.some(o=>o.accessor==="set")));
+  assert.ok(rows.some(r=>r.runtime_observations.some(o=>o.source_hash_scope==="ancestor_module_file")));
+  assert.ok(rows.some(r=>r.runtime_observations.some(o=>o.declared_in_reference_namespace===false)));
+  for(const audit of manifest.runtime_census){
+    assert.equal(audit.traversal_audits.length,2);
+    assert.ok(audit.environment.distribution_versions.tensorflow);
+    assert.ok(audit.environment.distribution_versions.pyarrow);
+    for(const traversal of audit.traversal_audits){
+      assert.equal(traversal.public_function_denominator_closed,false);
+      assert.equal(traversal.loaded_sdk_identity.import_identity_verified,true);
+      assert.equal(traversal.loaded_sdk_identity.version,audit.environment.distribution_versions[traversal.family]);
+      assert.ok(traversal.namespace_mutation_history.length>0);
+      assert.ok(traversal.deferred_modules.length>0);
+      assert.equal(traversal.coexistence_verified,false);
+    }
+    assert.ok(audit.modules.some(m=>m.available===false&&m.missing_module));
+  }
+});
 test("hardware receipts keep domain acceptance separate and redact sensitive payloads", () => {
   assert.ok(manifest.hardware.length >= 5);
   assert.ok(manifest.hardware.every(x => x.task_id && x.artifact_hash && x.acceptance === "INCONCLUSIVE"));

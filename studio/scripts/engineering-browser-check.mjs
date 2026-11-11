@@ -99,6 +99,9 @@ try{
     assert.ok((await runtimeSection.innerText()).includes("按 SDK 隔离采集"));
     assert.ok((await runtimeSection.innerText()).includes("pennylane.qchem"));
     assert.ok((await runtimeSection.innerText()).includes("qiskit.transpiler.passes"));
+    assert.equal(await runtimeSection.locator(".traversal-summary li").count(),4);
+    assert.ok((await runtimeSection.innerText()).includes("模块已尝试"));
+    assert.ok((await runtimeSection.innerText()).includes("导入未完成，仍在范围内"));
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
     const namespaceSection=page.locator("section.band").filter({has:page.getByRole("heading",{name:"递归命名空间候选",exact:true})});
     assert.equal(await namespaceSection.locator("details").count(),2);

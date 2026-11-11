@@ -745,5 +745,41 @@
         }
       }
     ]
+  },
+  {
+    "generated_at": "2026-11-11T15:07:30.818525+00:00",
+    "fingerprint": "6bba89eea3f9730cdb475dc5c6239db6dc0e2a87c48c6a73b4f82e6fb1832759",
+    "datasets": [
+      {
+        "id": "native",
+        "file": "native.json.gz",
+        "sha256": "1d52c5265b253b85d4f138b25d3eba9e7913ea97117413b118c3d2bf5ffd9591",
+        "count": 8728,
+        "status_counts": {
+          "unverified": 8713,
+          "not_implemented": 3,
+          "partial": 12
+        }
+      },
+      {
+        "id": "target",
+        "file": "target.json.gz",
+        "sha256": "8294ef45757262ba845b7e3c5d1c21825f3ce361a73b693db59d6e00f45ba972",
+        "count": 13612,
+        "status_counts": {
+          "unverified": 13606,
+          "partial": 6
+        }
+      },
+      {
+        "id": "runtime",
+        "file": "runtime.json.gz",
+        "sha256": "80e7bdf78dcf99625e61987c36086b41da64f10b089b185996d43680376ba4bc",
+        "count": 48598,
+        "status_counts": {
+          "unverified": 48598
+        }
+      }
+    ]
   }
 ]

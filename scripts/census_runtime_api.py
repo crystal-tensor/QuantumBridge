@@ -4,6 +4,7 @@ import argparse
 import copy
 from contextlib import contextmanager
 from datetime import datetime, timezone
+from functools import cached_property
 import hashlib
 import importlib
 import importlib.metadata
@@ -56,8 +57,15 @@ def deny_python_network():
         socket.socket.connect, socket.create_connection, socket.getaddrinfo = original
 
 
+class CensusLimitError(RuntimeError):
+    """Metadata cardinality limit; never a claim that the API scope ended."""
+
+
 class RuntimeCensus:
-    def __init__(self, profile):
+    def __init__(self, profile, *, max_records=None):
+        if max_records is not None and (type(max_records) is not int or max_records < 1):
+            raise ValueError("max_records must be a positive integer or None")
+        self.max_records = max_records
         self.profile, self.records, self.identities = profile, {}, {}
         self.canonical_objects = {}
         self.modules, self.unresolved, self.files = [], [], {}
@@ -67,39 +75,66 @@ class RuntimeCensus:
             filename = inspect.getsourcefile(value)
         except TypeError:
             filename = None
-        module = sys.modules.get(getattr(value, "__module__", ""))
-        filename = filename or (vars(module).get("__file__") if module is not None else None)
+        defining = getattr(value, "__module__", None)
+        if not isinstance(defining, str):
+            owner = getattr(value, "__objclass__", None)
+            defining = type.__getattribute__(owner, "__module__") if isinstance(owner, type) else None
         package = sys.modules.get(family)
         package_file = None if package is None else vars(package).get("__file__")
-        if not filename or not package_file:
+        if not package_file:
             return {"file": None, "source_hash": None}
-        path, base = Path(filename).resolve(), Path(package_file).resolve().parent
-        if not path.is_file() or not path.is_relative_to(base):
-            return {"file": None, "source_hash": None}
-        if path not in self.files:
-            self.files[path] = hashlib.sha256(path.read_bytes()).hexdigest()
-        return {"file": str(Path(family) / path.relative_to(base)), "source_hash": self.files[path]}
+        candidates = [(filename, "definition_file")]
+        if isinstance(defining, str) and (defining == family or defining.startswith(family+".")):
+            parts = defining.split(".")
+            for end in range(len(parts), 0, -1):
+                module = sys.modules.get(".".join(parts[:end]))
+                if module is not None:
+                    candidates.append((vars(module).get("__file__"), "module_file" if end == len(parts) else "ancestor_module_file"))
+        base = Path(package_file).resolve().parent
+        for filename, kind in candidates:
+            if not filename:
+                continue
+            path = Path(filename).resolve()
+            if not path.is_file() or not path.is_relative_to(base):
+                continue
+            if path not in self.files:
+                self.files[path] = hashlib.sha256(path.read_bytes()).hexdigest()
+            return {"file": str(Path(family)/path.relative_to(base)), "source_hash": self.files[path],
+                    "source_hash_scope": kind}
+        return {"file": None, "source_hash": None}
 
     def record(self, key, kind, value, exposure, family, **extra):
         canonical = key
         identity = (canonical, id(value))
         if identity in self.canonical_objects:
             key = self.canonical_objects[identity]
-        elif key in self.records and self.identities[key] != id(value):
+        elif key in self.records and self.identities[key] is not value:
             self.unresolved.append({"id": key, "kind": "canonical_identity_collision", "exposure": exposure})
             self.records[key]["canonical_identity_review_required"] = True
             key += "@"+exposure
+            base, observation = key, 2
+            while key in self.records and self.identities[key] is not value:
+                key = base+"@observation-"+str(observation)
+                observation += 1
             extra["canonical_identity_review_required"] = True
         if key in self.records:
             row = self.records[key]
             if exposure not in row["exposures"]:
                 row["exposures"].append(exposure)
             return
-        self.identities[key] = id(value)
-        self.canonical_objects[identity] = key
-        self.records[key] = {"id": key, "canonical_id": canonical, "kind": kind, "family": family, "exposures": [exposure],
+        if self.max_records is not None and len(self.records) >= self.max_records:
+            raise CensusLimitError("max_records")
+        defining = getattr(value, "__module__", None)
+        row = {"id": key, "canonical_id": canonical, "kind": kind, "family": family, "exposures": [exposure],
+            "declaration_module": defining if isinstance(defining, str) else None,
+            "declared_in_reference_namespace": (defining == family or defining.startswith(family+".")) if isinstance(defining, str) else None,
             "signature": signature(value), **self.source(value, family), **extra,
             "status": "unverified", "native_mapping": None, "contract_reviewed": False}
+        # An address alone is not an identity once a lazy export is collected.
+        # Keep each observed object alive until the metadata process finishes.
+        self.identities[key] = value
+        self.canonical_objects[identity] = key
+        self.records[key] = row
 
     def class_members(self, cls, exposure, family):
         owner = type_name(cls)
@@ -113,10 +148,22 @@ class RuntimeCensus:
                 seen.add(name)
                 if name.startswith("_") and not (name.startswith("__") and name.endswith("__")):
                     continue
+                extra = {}
                 if isinstance(descriptor, (staticmethod, classmethod)):
                     value, kind = descriptor.__func__, type(descriptor).__name__
                 elif isinstance(descriptor, property):
-                    value, kind = descriptor.fget, "property"
+                    for accessor, value in (("get", descriptor.fget), ("set", descriptor.fset),
+                                            ("delete", descriptor.fdel)):
+                        if value is None:
+                            continue
+                        suffix = "" if accessor == "get" else "@"+accessor
+                        kind = {"get": "property", "set": "property_setter", "delete": "property_deleter"}[accessor]
+                        self.record(owner+"."+name+suffix, kind, value, exposure+"."+name, family,
+                            owner_class=owner, declared_in=type_name(base), inherited=base is not cls,
+                            accessor=accessor)
+                    continue
+                elif type(descriptor) is cached_property:
+                    value, kind, extra = descriptor.func, "cached_property", {"accessor": "get"}
                 elif inspect.isgetsetdescriptor(descriptor) or inspect.ismemberdescriptor(descriptor):
                     value, kind = descriptor, "property"
                 elif inspect.isroutine(descriptor):
@@ -126,7 +173,7 @@ class RuntimeCensus:
                 if value is None:
                     continue
                 self.record(owner+"."+name, kind, value, exposure+"."+name, family,
-                    owner_class=owner, declared_in=type_name(base), inherited=base is not cls)
+                    owner_class=owner, declared_in=type_name(base), inherited=base is not cls, **extra)
 
     def module(self, name):
         family = name.split(".")[0]
@@ -137,10 +184,15 @@ class RuntimeCensus:
         try:
             module = importlib.import_module(name)
         except Exception as error:
-            self.modules.append({"name": name, "version": version, "available": False,
-                                 "error": type(error).__name__, "still_in_scope": True})
+            row = {"name": name, "version": version, "available": False,
+                   "error": type(error).__name__, "still_in_scope": True}
+            missing = getattr(error, "name", None)
+            if isinstance(missing, str) and all(part.isidentifier() for part in missing.split(".")):
+                row["missing_module"] = missing
+            self.modules.append(row)
             return
         declared = vars(module).get("__all__")
+        dictionary_names = sorted(name for name in vars(module) if not name.startswith("_"))
         if declared is not None:
             names = set(declared)
             policy = "declared_all"
@@ -165,29 +217,43 @@ class RuntimeCensus:
             except Exception as error:
                 self.unresolved.append({"id": exposure, "kind": "export_resolution_failed", "error": type(error).__name__})
                 continue
-            if isinstance(value, types.ModuleType):
-                children.append({"exposure": exposure, "module": vars(value).get("__name__")})
-            elif isinstance(value, type):
-                self.class_members(value, exposure, family)
-            elif callable(value):
-                defining = getattr(value, "__module__", None)
-                qualified = getattr(value, "__qualname__", None)
-                key = defining+"."+qualified if defining and qualified else exposure
-                self.record(key, "function" if inspect.isroutine(value) else "callable", value, exposure, family)
-            else:
-                constants.append(exported)
+            try:
+                if isinstance(value, types.ModuleType):
+                    children.append({"exposure": exposure, "module": vars(value).get("__name__")})
+                elif isinstance(value, type):
+                    self.class_members(value, exposure, family)
+                elif callable(value):
+                    defining = getattr(value, "__module__", None)
+                    qualified = getattr(value, "__qualname__", None)
+                    key = defining+"."+qualified if defining and qualified else exposure
+                    self.record(key, "function" if inspect.isroutine(value) else "callable", value, exposure, family)
+                else:
+                    constants.append(exported)
+            except CensusLimitError:
+                raise
+            except Exception as error:
+                self.unresolved.append({"id": exposure, "kind": "export_introspection_failed", "error": type(error).__name__})
         self.modules.append({"name": name, "version": version, "available": True,
             "export_policy": policy, "export_names": sorted(names), "dynamic_names": sorted(dynamic),
             "submodule_exports": children, "noncallable_exports": constants,
+            "public_dictionary_names": dictionary_names,
             "submodule_traversal_complete": False})
 
     def result(self):
+        dependencies = {}
+        for name in ("qiskit", "pennylane", "numpy", "scipy", "jax", "jaxlib", "torch",
+                     "tensorflow", "pyarrow", "autoray", "autograd", "pennylane-catalyst", "pennylane-lightning"):
+            try:
+                dependencies[name] = importlib.metadata.version(name)
+            except importlib.metadata.PackageNotFoundError:
+                dependencies[name] = None
         return {"schema": 1, "profile": self.profile, "collected_at": datetime.now(timezone.utc).isoformat(),
-            "environment": {"python": platform.python_version()},
+            "environment": {"python": platform.python_version(), "distribution_versions": dependencies},
             "loaded_reference_roots": {name: name in sys.modules for name in
                 ("qiskit", "pennylane", "tensorflow", "pyarrow")},
             "scope": "explicit_modules_public_exports_and_static_mro", "census_complete": False,
-            "policy": "Metadata only, no SDK object instantiation or implementation source copied. Python sockets denied; not an OS network sandbox. No Native mapping inferred.",
+            "policy": "Metadata only. The collector does not call SDK constructors or algorithms; package initialization and lazy export resolution may have side effects. No implementation source copied. Python sockets denied; not an OS network sandbox. No Native mapping inferred.",
+            "import_initialization_side_effects_verified_absent": False,
             "modules": self.modules, "records": sorted(self.records.values(), key=lambda row: row["id"]),
             "unresolved": self.unresolved,
             "closure_pending": ["recursive public module traversal", "optional packages and plugins",
@@ -229,6 +295,9 @@ def merge_isolated_files(profile, pairs):
         raise ValueError("Collection isolations must be nonempty and distinct")
     if len({value["environment"]["python"] for _, value, _ in inputs}) != 1:
         raise ValueError("Isolated Python reference versions differ")
+    if any(value["environment"].get("distribution_versions") != inputs[0][1]["environment"].get("distribution_versions")
+           for _, value, _ in inputs):
+        raise ValueError("Isolated dependency metadata versions differ or are missing")
     modules = [module for _, value, _ in inputs for module in value["modules"]]
     if len({row["name"] for row in modules}) != len(modules):
         raise ValueError("Overlapping module collections require an explicit identity review")
@@ -256,6 +325,8 @@ def merge_isolated_files(profile, pairs):
         policy="Public metadata collected in separate SDK processes with unchanged versions. Python sockets denied during enumeration, not an OS sandbox. Normal terminal receipts required. No cross-process object identity inferred, SDK source copied, Native mapping or implementation acceptance claimed.",
         modules=copy.deepcopy(modules), records=sorted(records, key=lambda row: row["id"]),
         unresolved=unresolved, collection_receipts=[receipt for _, _, receipt in inputs],
+        traversal_audits=[dict(isolation=label, **copy.deepcopy(value["traversal"]))
+                          for label, value, _ in inputs if "traversal" in value],
         closure_pending=sorted({item for _, value, _ in inputs for item in value["closure_pending"]}
             | {"SDK coexistence and cross-process identities are not certified by isolated metadata"}))
 

@@ -231,8 +231,10 @@ def runtime_census(paths):
                 raise ValueError("Isolated runtime census lacks normal terminal receipts")
         audits.append({"profile": reference["profile"], "collected_at": reference["collected_at"],
             "artifact_hash": digest(raw), "modules": reference["modules"],
+            "environment": reference.get("environment", {}),
             "scope": reference.get("scope"), "coexistence_verified": False,
             "collection_receipts": collection_receipts,
+            "traversal_audits": reference.get("traversal_audits", []),
             "records": len(records), "inherited_contexts": sum(bool(r.get("inherited")) for r in records),
             "signature_reviews_pending": sum(not r["signature"]["available"] for r in records),
             "unresolved": reference["unresolved"], "closure_pending": reference["closure_pending"],
@@ -251,7 +253,8 @@ def runtime_census(paths):
             row["exposures"] = sorted(set(row["exposures"]) | set(observed["exposures"]))
             row["runtime_observations"].append({"profile": reference["profile"],
                 **{k: observed[k] for k in ("canonical_id", "signature", "file", "source_hash",
-                    "inherited", "declared_in", "canonical_identity_review_required", "collection_isolation") if k in observed}})
+                    "inherited", "declared_in", "canonical_identity_review_required", "collection_isolation",
+                    "accessor", "source_hash_scope", "declaration_module", "declared_in_reference_namespace") if k in observed}})
             sig = observed["signature"]
             parameters = sig.get("parameters", [])
             names = []

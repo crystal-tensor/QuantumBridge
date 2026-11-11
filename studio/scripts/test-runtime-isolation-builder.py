@@ -14,6 +14,23 @@ spec.loader.exec_module(builder)
 
 
 class IsolationBuilderTests(unittest.TestCase):
+    def test_recursive_gaps_accessors_and_external_declarations_survive_without_acceptance(self):
+        value = self.reference()
+        value["environment"] = dict(distribution_versions=dict(tensorflow="fixture-version"))
+        value["traversal_audits"] = [dict(isolation="fixture", state="MODULE_LIMIT_REACHED",
+            pending_modules=["fixture.pending"], namespace_mutations_after_collection=[dict(module="fixture")],
+            public_function_denominator_closed=False)]
+        value["records"][0].update(accessor="set", kind="property_setter", source_hash_scope="ancestor_module_file",
+            declaration_module="external", declared_in_reference_namespace=False)
+        rows, audits = self.collect(value)
+        self.assertEqual(audits[0]["traversal_audits"], value["traversal_audits"])
+        self.assertEqual(audits[0]["environment"], value["environment"])
+        observation = rows[0]["runtime_observations"][0]
+        self.assertEqual(observation["accessor"], "set")
+        self.assertEqual(observation["source_hash_scope"], "ancestor_module_file")
+        self.assertFalse(observation["declared_in_reference_namespace"])
+        self.assertEqual(rows[0]["status"], "unverified")
+
     def reference(self):
         return dict(profile="fixture", collected_at="now", modules=[],
             scope="isolated_sdk_metadata_union_not_coexistence_or_acceptance", coexistence_verified=True,
