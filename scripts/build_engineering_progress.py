@@ -202,6 +202,52 @@ def strict_backlog(historical, verification, notes=()):
     return sorted(rows.values(), key=lambda row: row["id"])
 
 
+def runtime_census(paths):
+    """Keep runtime/MRO discoveries separate from the unclosed AST register."""
+    merged, audits = {}, []
+    for path in paths:
+        raw = path.read_bytes()
+        reference = json.loads(gzip.decompress(raw) if path.suffix == ".gz" else raw)
+        records = reference["records"]
+        audits.append({"profile": reference["profile"], "collected_at": reference["collected_at"],
+            "artifact_hash": digest(raw), "modules": reference["modules"],
+            "records": len(records), "inherited_contexts": sum(bool(r.get("inherited")) for r in records),
+            "signature_reviews_pending": sum(not r["signature"]["available"] for r in records),
+            "unresolved": reference["unresolved"], "closure_pending": reference["closure_pending"],
+            "census_complete": False})
+        for observed in records:
+            key = observed["id"]
+            row = merged.setdefault(key, {"id": key, "name": key, "family": observed["family"],
+                "module": observed.get("owner_class") or observed["exposures"][0].rsplit(".", 1)[0],
+                "kind": observed["kind"], "file": observed["file"], "source_hash": observed["source_hash"],
+                "signature": "", "signatures": [], "profiles": [], "exposures": [], "runtime_observations": [],
+                "status": "unverified", "reason": "contract_review_pending",
+                "hardware": "unverified", "origin": "runtime_public_mro", "native_mapping": None})
+            versions = sorted({m["version"] for m in reference["modules"]
+                               if m["name"].split(".")[0] == observed["family"] and m.get("version")})
+            row["profiles"].append(reference["profile"]+": "+" / ".join(versions))
+            row["exposures"] = sorted(set(row["exposures"]) | set(observed["exposures"]))
+            row["runtime_observations"].append({"profile": reference["profile"],
+                **{k: observed[k] for k in ("canonical_id", "signature", "file", "source_hash",
+                    "inherited", "declared_in", "canonical_identity_review_required") if k in observed}})
+            sig = observed["signature"]
+            parameters = sig.get("parameters", [])
+            names = []
+            for parameter in parameters:
+                prefix = "**" if parameter["kind"] == "VAR_KEYWORD" else "*" if parameter["kind"] == "VAR_POSITIONAL" else ""
+                name = prefix+parameter["name"]
+                if parameter["default"].get("present"):
+                    default = parameter["default"]
+                    # Values are already reduced to JSON primitives, never SDK
+                    # objects whose repr could execute or expose host state.
+                    name += "="+repr(default["value"]) if default.get("literal") else "=<review>"
+                names.append(name)
+            text = ", ".join(names) if sig["available"] else "<signature review pending>"
+            row["signature"] = row["signature"] or text
+            row["signatures"].append(reference["profile"]+": ("+text+")")
+    return sorted(merged.values(), key=lambda row: row["id"]), audits
+
+
 def build(args):
     DATA.mkdir(parents=True, exist_ok=True)
     execution_path = ROOT / "docs/engineering/goal_execution.json"
@@ -245,6 +291,7 @@ def build(args):
                                "status": "unverified", "reason": "historical_export_inventory",
                                "hardware": "unverified", "origin": "historical_export", "profiles": []}
     target = sorted(merged.values(), key=lambda row: row["id"])
+    runtime, runtime_audits = runtime_census(sorted((ROOT / "docs/engineering").glob("runtime-api-*.json.gz")))
     for row in target:
         gate = row["name"].split(".")[-1]
         if row["kind"] == "class" and row["name"].startswith("qiskit.circuit.library.") and gate in GATES:
@@ -273,7 +320,7 @@ def build(args):
     notes = failure_review.get("notes", []) if failure_review.get("source_fingerprint") == fingerprint else []
     backlog = strict_backlog(tests, verification, notes)
     datasets = []
-    for name, rows in [("native", native), ("target", target)]:
+    for name, rows in [("native", native), ("target", target), ("runtime", runtime)]:
         body = json.dumps(rows, ensure_ascii=False, separators=(",", ":")).encode()
         compressed = gzip.compress(body, mtime=0)
         filename = f"{name}.json.gz"
@@ -287,7 +334,7 @@ def build(args):
     manifest = {"schema": 1, "generated_at": now, "refresh_hours": 12,
                 "deadline": "2027-05-11T23:59:59+08:00", "start": "2026-11-11T00:00:00+08:00",
                 "source": {"head": head, "dirty": dirty, "fingerprint": fingerprint, "python_files": len(hashes), "parse_errors": errors},
-                "datasets": datasets, "profiles": profiles, "census_complete": False,
+                "datasets": datasets, "profiles": profiles, "runtime_census": runtime_audits, "census_complete": False,
                 "census_limits": ["Public source declarations and historical exports are candidates, not a closed API denominator.",
                                   "Inherited methods, dynamic exports, plugins, C-extension signatures and optional packages need contract review.",
                                   "Native helpers and target public APIs are separate populations; never add their counts as a completion percentage.",

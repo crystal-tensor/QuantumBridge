@@ -1,7 +1,47 @@
 {
   "schema": 1,
-  "source_fingerprint": "e7c252153dfc7b90fb9eac17543853f6f3ff195840ce6cd4193456a745047c12",
+  "source_fingerprint": "0728759aa034bafe9374859653a8cb7c9b267173733000a7eea6ad1d2733b6c8",
   "notes": [
+    {
+      "prefix": "tests.interfaces.test_native_tf_symbolic_matrix_compilation::test_symbolic_target_compilation_preserves_nonlinear_runtime_hvp",
+      "classification": "OPEN_IMPLEMENTATION_DEFECT",
+      "diagnosis_zh": "新增独立旋转公式检查发现：非线性角度预处理与 eager 反向套前向组合仍产生错误的二阶值。其余五种组合通过；不放宽数学断言，也不把新增失败藏在旧批次之外。",
+      "next_zh": "追踪外部输入到 packed 参数的二阶链式关系及 TF 首次函数调用的导数图；同时保持符号编译、重复调用、无回调和三阶拒绝门禁。",
+      "diagnosis": "A new independent Bloch-rotation oracle detects an incorrect eager reverse-over-forward result with nonlinear angle preprocessing. The other five combinations pass; the new strict failure is retained.",
+      "next": "Audit external-to-packed second-order chain rules and first-call TF function graphs while preserving symbolic compilation, repeated runtime points, no callbacks and third-order guards."
+    },
+    {
+      "prefix": "tests.interfaces.test_native_special_unitary_frameworks::test_actual_public_tensor_generators_match_native_without_numpy_interface_substitution[tf]",
+      "classification": "REFERENCE_BEHAVIOR_REVIEW_REQUIRED",
+      "diagnosis_zh": "实际 TensorFlow 常量输入的双库比较仍失败；可训练 Variable 是另一个已保留的测试，不能用替换输入掩盖常量路径。失败来源与上游行为仍需单独定位。",
+      "next_zh": "分别记录 Native 和指定版本 PennyLane 的常量与 Variable 原始行为，对照独立生成元公式，不替换接口或输入。",
+      "diagnosis": "The actual constant-TensorFlow-input comparison still fails. The separate trainable Variable case cannot substitute for the constant path; isolate Native versus reference behavior.",
+      "next": "Record each library's original constant and Variable behavior against the independent generator oracle without changing the interface or input."
+    },
+    {
+      "prefix": "tests.serialization.test_qasm3_native::test_qasm3_dynamic_source_roundtrip_execute",
+      "classification": "SOURCE_SCOPE_ROUNDTRIP_DEFECT_INVESTIGATION",
+      "diagnosis_zh": "六个从标准文本加载的动态程序在再次默认导出时被变量 UUID/对象身份保护拒绝。不能移除所有身份保护来绕过问题。",
+      "next_zh": "区分源文本产生的词法身份与调用者显式持有的 Native 变量身份；验证作用域、遮蔽、执行结果和必要的元数据丢失保护。",
+      "diagnosis": "Six dynamic programs loaded from standard source fail default re-export under UUID/object identity protection. Removing all identity protection is not an acceptable repair.",
+      "next": "Distinguish parser-created lexical identity from explicitly owned Native variables; preserve scopes, shadowing, execution and required metadata-loss protections."
+    },
+    {
+      "prefix": "tests.serialization.test_qasm3_native::test_qasm3_switch_case_and_default_standard_31",
+      "classification": "SOURCE_SCOPE_ROUNDTRIP_DEFECT_INVESTIGATION",
+      "diagnosis_zh": "标准 switch/default 源码再次导出也触发变量身份拒绝；实际分支执行和词法引用必须一起验证。",
+      "next_zh": "与动态作用域往返一并修复，保留所有原分支、计数与独立执行断言。",
+      "diagnosis": "Standard switch/default source hits the same variable-identity re-export refusal.",
+      "next": "Repair with dynamic lexical-scope round trips and preserve every branch, count and execution assertion."
+    },
+    {
+      "prefix": "tests.serialization.test_qpy16_pauli_evolution::test_loaded_gate_drives_real_estimator_and_sampling",
+      "classification": "PUBLIC_NATIVE_ENDIANNESS_CONTRACT_REVIEW",
+      "diagnosis_zh": "估计器期望值不同；Public SparsePauliOp 的右端位序与 Native 算子的左端位序必须区分，不能翻转已承诺的 V2 语义来制造通过。",
+      "next_zh": "用完整复数矩阵与两个测量位置分别验证加载、Public/Native 算子和 V2 执行，定位合同迁移或实际映射缺陷。",
+      "diagnosis": "Estimator expectations differ. Public rightmost-first Pauli labels and Native leftmost-first labels must not be conflated or fixed by reversing the approved V2 semantics.",
+      "next": "Verify the full complex matrix and both measurement positions across decoding, Public/Native operators and V2 execution before deciding migration versus mapping defect."
+    },
     {
       "prefix": "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature",
       "classification": "OPEN_IMPLEMENTATION_DEFECT",

@@ -34,6 +34,17 @@ test("filters and snapshot age are explicit, not fabricated completion percentag
   for (const filters of [{query:"absent"},{family:"pennylane"},{status:"implemented"},{module:"other"},{kind:"class"},{hardware:"passed"}]) assert.equal(filterRows(rows,filters).length,0);
   assert.equal(isStale("2026-11-11T00:00:00Z",Date.parse("2026-11-11T12:00:01Z")),true);
   assert.equal(isStale("2026-11-11T00:00:00Z",Date.parse("2026-11-11T11:59:59Z")),false);
+  assert.equal(filterRows([{name:"canonical",exposures:["public.alias"]}],{query:"public.alias"}).length,1);
+});
+test("runtime census is not combined with the target denominator or implementation acceptance", async () => {
+  const descriptor=manifest.datasets.find(x=>x.id==="runtime");
+  assert.ok(descriptor.count>0);
+  const rows=JSON.parse(gunzipSync(await readFile(new URL(`../src/progress/data/${descriptor.file}`,import.meta.url))));
+  assert.ok(rows.every(r=>r.status==="unverified"&&r.native_mapping===null));
+  assert.ok(rows.some(r=>r.runtime_observations.some(o=>o.inherited)));
+  assert.ok(rows.some(r=>r.exposures.includes("pennylane.transforms.expand_multipar")));
+  assert.equal(manifest.runtime_census.length,2);
+  assert.ok(manifest.runtime_census.every(a=>a.census_complete===false&&a.modules.some(m=>m.name==="qiskit_finance"&&!m.available)));
 });
 test("hardware receipts keep domain acceptance separate and redact sensitive payloads", () => {
   assert.ok(manifest.hardware.length >= 5);

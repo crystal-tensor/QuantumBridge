@@ -13,7 +13,7 @@ export function filterRows(rows, filters) {
   return rows.filter(row => (!filters.family || row.family === filters.family) &&
     (!filters.module || row.module === filters.module) && (!filters.status || row.status === filters.status) &&
     (!filters.kind || row.kind === filters.kind) && (!filters.hardware || row.hardware === filters.hardware) &&
-    (!query || `${row.name} ${row.signature || ""} ${row.file || ""}`.toLowerCase().includes(query)));
+    (!query || `${row.name} ${row.signature || ""} ${row.file || ""} ${(row.exposures || []).join(" ")}`.toLowerCase().includes(query)));
 }
 export const isStale = (generatedAt, now = Date.now()) => now - Date.parse(generatedAt) > 12 * 3600000;
 export function aggregate(rows) {

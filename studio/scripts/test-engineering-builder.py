@@ -2,6 +2,9 @@
 import importlib.util
 from pathlib import Path
 import unittest
+import gzip
+import json
+import tempfile
 
 spec = importlib.util.spec_from_file_location("engineering_builder", Path(__file__).resolve().parents[2] / "scripts/build_engineering_progress.py")
 builder = importlib.util.module_from_spec(spec)
@@ -9,6 +12,28 @@ spec.loader.exec_module(builder)
 
 
 class EvidenceTests(unittest.TestCase):
+    def test_runtime_exports_remain_a_separate_unverified_population(self):
+        signature = {"available": True, "parameters": [{"name": "shots", "kind": "KEYWORD_ONLY",
+                     "default": {"present": True, "literal": True, "value": 1024}}]}
+        reference = {"profile": "fixture", "collected_at": "now", "modules": [
+            {"name": "qiskit", "version": "fixture"}, {"name": "qiskit_finance", "available": False}],
+            "unresolved": [], "closure_pending": ["recursive traversal"], "records": [
+            {"id": "qiskit.Child.method", "canonical_id": "qiskit.Child.method", "family": "qiskit",
+             "kind": "method", "file": "qiskit/base.py", "source_hash": "sha", "signature": signature,
+             "owner_class": "qiskit.Child", "declared_in": "qiskit.Base", "inherited": True,
+             "exposures": ["qiskit.Child.method"], "status": "implemented"}]}
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "runtime.json.gz"
+            path.write_bytes(gzip.compress(json.dumps(reference).encode()))
+            rows, audits = builder.runtime_census([path])
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["status"], "unverified")
+        self.assertIsNone(rows[0]["native_mapping"])
+        self.assertTrue(rows[0]["runtime_observations"][0]["inherited"])
+        self.assertEqual(audits[0]["inherited_contexts"], 1)
+        self.assertFalse(audits[0]["census_complete"])
+        self.assertEqual(audits[0]["modules"][1]["name"], "qiskit_finance")
+
     def test_stale_or_incomplete_review_never_upgrades(self):
         for review in [{"id":"f","source_hash":"old","status":"implemented"}, {"id":"f","source_hash":"now","status":"implemented"}]:
             row = {"id":"f","source_hash":"now","status":"unverified"}

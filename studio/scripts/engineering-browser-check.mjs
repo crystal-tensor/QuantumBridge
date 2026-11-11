@@ -35,6 +35,18 @@ try{
     await page.getByRole("button",{name:"重置筛选",exact:true}).click();
     await page.locator("[data-filter=status]").selectOption("not_implemented");
     assert.ok((await page.locator("tbody").innerText()).includes("ParityMapper.map"));
+    await page.getByRole("button",{name:"导出与继承",exact:true}).click();
+    await page.locator('[data-dataset="runtime"][aria-pressed="true"]').waitFor();
+    await page.getByRole("button",{name:"重置筛选",exact:true}).click();
+    await page.getByRole("searchbox",{name:"搜索函数"}).fill("pennylane.RX.matrix");
+    assert.ok(await page.locator("tbody .name-link").count()>0);
+    await page.locator("tbody .name-link").first().click();
+    await page.getByRole("heading",{name:"公共暴露路径与继承合同",exact:true}).waitFor();
+    await page.locator("dialog details").first().locator("summary").click();
+    assert.ok((await page.locator("dialog").innerText()).includes("POSITIONAL_OR_KEYWORD"));
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+    await page.screenshot({path:`${output}/runtime-inheritance-${viewport.width}.png`,fullPage:false});
+    await page.getByRole("button",{name:"关闭",exact:true}).click();
     await page.getByRole("button",{name:"测试与真机",exact:true}).click();
     assert.ok((await page.locator("#view").innerText()).includes("INCONCLUSIVE"));
     await page.getByRole("heading",{name:"本目标冻结源码验证",exact:true}).waitFor();
@@ -63,7 +75,7 @@ try{
     await page.getByRole("link",{name:/返回.*首页/}).first().click();
     await page.getByRole("heading",{name:"QuantumBridge 应用框架",exact:true}).waitFor();
     assert.deepEqual(errors,[]);
-    results.push({viewport,homePageHome:true,ecosystemEntrance:true,functionDetail:true,casePageHome:true,consoleErrors:errors});
+    results.push({viewport,homePageHome:true,ecosystemEntrance:true,functionDetail:true,runtimeInheritanceDetail:true,casePageHome:true,consoleErrors:errors});
     await page.close();
   }
   console.log(JSON.stringify({results,screenshots:output},null,2));

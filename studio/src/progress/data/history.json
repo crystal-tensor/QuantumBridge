@@ -214,5 +214,104 @@
         }
       }
     ]
+  },
+  {
+    "generated_at": "2026-11-11T05:40:20.200665+00:00",
+    "fingerprint": "e7c252153dfc7b90fb9eac17543853f6f3ff195840ce6cd4193456a745047c12",
+    "datasets": [
+      {
+        "id": "native",
+        "file": "native.json.gz",
+        "sha256": "b096997df2ade70865dc7c9931365e062f3dbdfd028a8730882e6423ed76333b",
+        "count": 8720,
+        "status_counts": {
+          "unverified": 8707,
+          "not_implemented": 3,
+          "partial": 10
+        }
+      },
+      {
+        "id": "target",
+        "file": "target.json.gz",
+        "sha256": "8294ef45757262ba845b7e3c5d1c21825f3ce361a73b693db59d6e00f45ba972",
+        "count": 13612,
+        "status_counts": {
+          "unverified": 13606,
+          "partial": 6
+        }
+      }
+    ]
+  },
+  {
+    "generated_at": "2026-11-11T06:53:28.672284+00:00",
+    "fingerprint": "0728759aa034bafe9374859653a8cb7c9b267173733000a7eea6ad1d2733b6c8",
+    "datasets": [
+      {
+        "id": "native",
+        "file": "native.json.gz",
+        "sha256": "ec00e3809a6c7081803de2f00c49ab71cce9ab52a2a3d13e60d89ce950632135",
+        "count": 8720,
+        "status_counts": {
+          "unverified": 8707,
+          "not_implemented": 3,
+          "partial": 10
+        }
+      },
+      {
+        "id": "target",
+        "file": "target.json.gz",
+        "sha256": "8294ef45757262ba845b7e3c5d1c21825f3ce361a73b693db59d6e00f45ba972",
+        "count": 13612,
+        "status_counts": {
+          "unverified": 13606,
+          "partial": 6
+        }
+      },
+      {
+        "id": "runtime",
+        "file": "runtime.json.gz",
+        "sha256": "d28b13dfcd012f16359b21292bf838d3374947fda550b360067f52ea8c27d379",
+        "count": 39339,
+        "status_counts": {
+          "unverified": 39339
+        }
+      }
+    ]
+  },
+  {
+    "generated_at": "2026-11-11T07:06:35.716542+00:00",
+    "fingerprint": "0728759aa034bafe9374859653a8cb7c9b267173733000a7eea6ad1d2733b6c8",
+    "datasets": [
+      {
+        "id": "native",
+        "file": "native.json.gz",
+        "sha256": "ec00e3809a6c7081803de2f00c49ab71cce9ab52a2a3d13e60d89ce950632135",
+        "count": 8720,
+        "status_counts": {
+          "unverified": 8707,
+          "not_implemented": 3,
+          "partial": 10
+        }
+      },
+      {
+        "id": "target",
+        "file": "target.json.gz",
+        "sha256": "8294ef45757262ba845b7e3c5d1c21825f3ce361a73b693db59d6e00f45ba972",
+        "count": 13612,
+        "status_counts": {
+          "unverified": 13606,
+          "partial": 6
+        }
+      },
+      {
+        "id": "runtime",
+        "file": "runtime.json.gz",
+        "sha256": "28fd7287d4fbc5a91e44f617d5e84c6a4c3fbadfffbed8bdc0f3cde7045d804d",
+        "count": 39339,
+        "status_counts": {
+          "unverified": 39339
+        }
+      }
+    ]
   }
 ]
