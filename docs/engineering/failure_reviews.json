@@ -1,38 +1,46 @@
 {
   "schema": 1,
-  "source_fingerprint": "0728759aa034bafe9374859653a8cb7c9b267173733000a7eea6ad1d2733b6c8",
+  "source_fingerprint": "59f55fbe7b61ad0f312bb0d663d94fde52c5e1d18d64b072675f456737e59fa6",
   "notes": [
     {
+      "prefix": "tests.interfaces.test_native_tensorflow_negative::test_complex_half_and_broadcast_gate_parameters_reject",
+      "classification": "BROADCAST_CONTRACT_REVIEW_REQUIRED",
+      "diagnosis_zh": "复数门参数和 float16 输入仍正确拒绝；最后一条旧断言要求拒绝向量参数，但实际广播结果为 float32 的 cos([0.2,0.3])。没有修改这条未获授权的旧断言，也不关闭已实现广播来制造通过。",
+      "next_zh": "核验广播形状、dtype、值及梯度后，仅提出最后两行广播拒绝的合同迁移；保留复数与 float16 拒绝不变。",
+      "diagnosis": "Complex gate parameters and float16 still refuse correctly. The final old assertion requires vector rejection, while actual float32 broadcasting returns cos([0.2,0.3]). This unapproved assertion remains unchanged; working broadcasting is not disabled for green checks.",
+      "next": "Verify broadcast shape, dtype, values and derivatives, then propose migration of only the final broadcast rejection while preserving complex and float16 refusals."
+    },
+    {
       "prefix": "tests.interfaces.test_native_tf_symbolic_matrix_compilation::test_symbolic_target_compilation_preserves_nonlinear_runtime_hvp",
-      "classification": "OPEN_IMPLEMENTATION_DEFECT",
-      "diagnosis_zh": "新增独立旋转公式检查发现：非线性角度预处理与 eager 反向套前向组合仍产生错误的二阶值。其余五种组合通过；不放宽数学断言，也不把新增失败藏在旧批次之外。",
-      "next_zh": "追踪外部输入到 packed 参数的二阶链式关系及 TF 首次函数调用的导数图；同时保持符号编译、重复调用、无回调和三阶拒绝门禁。",
-      "diagnosis": "A new independent Bloch-rotation oracle detects an incorrect eager reverse-over-forward result with nonlinear angle preprocessing. The other five combinations pass; the new strict failure is retained.",
-      "next": "Audit external-to-packed second-order chain rules and first-call TF function graphs while preserving symbolic compilation, repeated runtime points, no callbacks and third-order guards."
+      "classification": "SELECTED_FIX_VERIFIED_NOT_FULL_ACCEPTANCE",
+      "diagnosis_zh": "已定位为经典参数预处理的缓存函数边；纯静态数值来源现在内联到调用方 AD 图，六种组合在两个环境都匹配原独立旋转公式。未改原数学断言，不代表嵌套缓存的其他四个失败已修复。",
+      "next_zh": "继续完整回归和逐函数合同审核；保留符号编译、重复调用、无主机回调、资源上限和真正三阶拒绝门禁。",
+      "diagnosis": "The defect was a cached classical parameter-packing edge. Admitted pure static numeric sources now replay inline into caller AD; all six combinations match the original independent rotation oracle in both profiles. Original mathematics is unchanged; the four other nested-cache failures are not repaired by this result.",
+      "next": "Continue full regression and per-function contract review, retaining symbolic compilation, repeated calls, no host callbacks, resource limits and genuine third-order refusal."
     },
     {
       "prefix": "tests.interfaces.test_native_special_unitary_frameworks::test_actual_public_tensor_generators_match_native_without_numpy_interface_substitution[tf]",
-      "classification": "REFERENCE_BEHAVIOR_REVIEW_REQUIRED",
-      "diagnosis_zh": "实际 TensorFlow 常量输入的双库比较仍失败；可训练 Variable 是另一个已保留的测试，不能用替换输入掩盖常量路径。失败来源与上游行为仍需单独定位。",
-      "next_zh": "分别记录 Native 和指定版本 PennyLane 的常量与 Variable 原始行为，对照独立生成元公式，不替换接口或输入。",
-      "diagnosis": "The actual constant-TensorFlow-input comparison still fails. The separate trainable Variable case cannot substitute for the constant path; isolate Native versus reference behavior.",
-      "next": "Record each library's original constant and Variable behavior against the independent generator oracle without changing the interface or input."
+      "classification": "REFERENCE_IMPLEMENTATION_DEFECT_OBSERVED",
+      "diagnosis_zh": "已分别实测：Native 常量和 Variable 都匹配独立生成元公式，误差小于 1.3e-15；指定两个 PennyLane 版本的常量输入均抛 TypeError，而 Variable 路径通过。原严格测试仍保留失败，不把上游错误复制进 Native。",
+      "next_zh": "仅提出公共参考观察合同的迁移决策，保留常量输入、Native 独立数学和 Variable 比较；不替换接口，不降低容差。",
+      "diagnosis": "Both Native constant and Variable inputs match the independent generator oracle within 1.3e-15. Both pinned PennyLane versions throw TypeError for the constant and pass the Variable path. The original strict failure is retained; Native does not copy the reference defect.",
+      "next": "Propose only a reference-observation contract migration, retaining constant input, independent Native mathematics and Variable comparison without changing interfaces or tolerances."
     },
     {
       "prefix": "tests.serialization.test_qasm3_native::test_qasm3_dynamic_source_roundtrip_execute",
-      "classification": "SOURCE_SCOPE_ROUNDTRIP_DEFECT_INVESTIGATION",
-      "diagnosis_zh": "六个从标准文本加载的动态程序在再次默认导出时被变量 UUID/对象身份保护拒绝。不能移除所有身份保护来绕过问题。",
-      "next_zh": "区分源文本产生的词法身份与调用者显式持有的 Native 变量身份；验证作用域、遮蔽、执行结果和必要的元数据丢失保护。",
-      "diagnosis": "Six dynamic programs loaded from standard source fail default re-export under UUID/object identity protection. Removing all identity protection is not an acceptable repair.",
-      "next": "Distinguish parser-created lexical identity from explicitly owned Native variables; preserve scopes, shadowing, execution and required metadata-loss protections."
+      "classification": "OWNER_APPROVED_CONTRACT_MIGRATION",
+      "diagnosis_zh": "解析后的标识符已是公共 Var；16 条公共身份合同要求默认拒绝丢失 UUID。Owner 已批准迁移这六个旧参数案例：默认拒绝、显式告警、新 UUID 与全部原数学断言已同时通过，未改生产策略。",
+      "next_zh": "继续完整回归；迁移文件不计作旧测试未改，保留前后哈希和精确授权范围。",
+      "diagnosis": "Parsed identifiers are public Vars, and sixteen identity cases require default UUID-loss refusal. Owner approved exactly these six old parameter cases; default refusal, explicit warning, fresh UUIDs and all original mathematics now pass without production-policy changes.",
+      "next": "Continue full regression and exclude the migrated file from unchanged-test counts, preserving before/after hashes and exact approval scope."
     },
     {
       "prefix": "tests.serialization.test_qasm3_native::test_qasm3_switch_case_and_default_standard_31",
-      "classification": "SOURCE_SCOPE_ROUNDTRIP_DEFECT_INVESTIGATION",
-      "diagnosis_zh": "标准 switch/default 源码再次导出也触发变量身份拒绝；实际分支执行和词法引用必须一起验证。",
-      "next_zh": "与动态作用域往返一并修复，保留所有原分支、计数与独立执行断言。",
-      "diagnosis": "Standard switch/default source hits the same variable-identity re-export refusal.",
-      "next": "Repair with dynamic lexical-scope round trips and preserve every branch, count and execution assertion."
+      "classification": "OWNER_APPROVED_CONTRACT_MIGRATION",
+      "diagnosis_zh": "Owner 已批准这一个 switch 案例的 UUID 合同迁移；原概率和版本拒绝保留，并新增显式允许身份丢失后仍拒绝 3.0 switch 的检查。",
+      "next_zh": "继续双环境回归，不更改生产 UUID 保护或其他旧测试。",
+      "diagnosis": "Owner approved exactly this switch UUID-contract migration. Original probability and version refusal remain, with an additional check that explicit identity-loss permission still cannot export switch under 3.0.",
+      "next": "Continue both-profile regression without changing production UUID protection or other inherited assertions."
     },
     {
       "prefix": "tests.serialization.test_qpy16_pauli_evolution::test_loaded_gate_drives_real_estimator_and_sampling",

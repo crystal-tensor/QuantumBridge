@@ -66,6 +66,47 @@ class RecorderTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "terminal test exit"):
             recorder.collect(self.args)
 
+    def migration(self, **changes):
+        old = recorder.sha(b"previous fixture assertion")
+        self.write("protected.json", {"tests/test_unit.py": old})
+        migration = dict(file="tests/test_unit.py", before_sha256=old,
+            after_sha256=self.manifest["tests/test_unit.py"], owner_approved=True,
+            approval_summary="Owner approved only the fixture contract migration.",
+            case_ids=["tests.test_unit::test_value"])
+        migration.update(changes)
+        self.write("migrations.json", {"migrations": [migration]})
+        self.args.approved_migrations = self.root / "migrations.json"
+
+    def test_approved_migration_is_not_counted_as_an_unchanged_old_test(self):
+        self.migration()
+        with redirect_stdout(io.StringIO()):
+            recorder.collect(self.args)
+        run = json.loads(self.args.output.read_text())["runs"][0]
+        self.assertEqual(run["protected_tests"], 0)
+        self.assertEqual(run["original_protected_test_files"], 1)
+        self.assertEqual(len(run["approved_test_migrations"]), 1)
+        self.assertTrue(run["protected_tests_unchanged"])
+
+    def test_migration_cannot_cover_a_different_hash_or_case_module(self):
+        for changes in ({"after_sha256": "wrong"}, {"before_sha256": "wrong"},
+                        {"owner_approved": False}, {"case_ids": []},
+                        {"case_ids": ["tests.unrelated::test_value"]}):
+            with self.subTest(changes=changes):
+                self.migration(**changes)
+                with self.assertRaisesRegex(ValueError, "Invalid approved test migration"):
+                    recorder.collect(self.args)
+
+    def test_missing_example_is_not_certified_as_a_complete_snapshot(self):
+        (self.root / "source/tests/test_unit.py").write_text("from examples.native_demo import main\n")
+        self.manifest["tests/test_unit.py"] = recorder.sha((self.root / "source/tests/test_unit.py").read_bytes())
+        self.write("source-manifest.json", self.manifest)
+        self.write("protected.json", {"tests/test_unit.py": self.manifest["tests/test_unit.py"]})
+        with redirect_stdout(io.StringIO()):
+            recorder.collect(self.args)
+        validation = json.loads(self.args.output.read_text())["runs"][0]["example_input_validation"]
+        self.assertFalse(validation["passed"])
+        self.assertEqual(validation["missing"], ["examples/native_demo.py"])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "migrations": [
+    {
+      "file": "tests/serialization/test_qasm3_native.py",
+      "before_sha256": "d62467a6630bde36720ae6601e27d38b982c08fbe46e86a8d7000d43093dcf2f",
+      "after_sha256": "8a3d3387b6d37f1c31f22d12d1cc390780056fc3e1102bcc52769efee08898e6",
+      "owner_approved": true,
+      "approval_summary": "Owner explicitly approved only these seven QASM3 contracts on 2026-11-11. Preserve all original probabilities, density-matrix and version assertions; add default UUID refusal, explicit loss warnings and fresh identities.",
+      "case_ids": [
+        "tests.serialization.test_qasm3_native::test_qasm3_dynamic_source_roundtrip_execute[if_else-qubit q;bit c;bool flag=false;if(flag){z q;}else{x q;}c=measure q;-expected2]",
+        "tests.serialization.test_qasm3_native::test_qasm3_dynamic_source_roundtrip_execute[nested_if-qubit q;bit c;bool a=true;uint[3] n=2;if(a){if(n==2){x q;}}c=measure q;-expected3]",
+        "tests.serialization.test_qasm3_native::test_qasm3_dynamic_source_roundtrip_execute[runtime_while-qubit q;bit c;uint[3] n=0;while(n<3){x q;n+=1;}c=measure q;-expected4]",
+        "tests.serialization.test_qasm3_native::test_qasm3_dynamic_source_roundtrip_execute[counter_store-qubit q;bit c;uint[4] n=0;for uint i in {1,2,3}{n=n+1;}if(n==3){x q;}c=measure q;-expected11]",
+        "tests.serialization.test_qasm3_native::test_qasm3_dynamic_source_roundtrip_execute[shadowing-qubit q;bit c;uint[3] n=1;if(true){uint[3] n=2;if(n==2){x q;}}if(n==1){z q;}c=measure q;-expected12]",
+        "tests.serialization.test_qasm3_native::test_qasm3_dynamic_source_roundtrip_execute[signed_counter-qubit q;bit c;int[4] n=-2;while(n<0){n+=1;}if(n==0){x q;}c=measure q;-expected13]",
+        "tests.serialization.test_qasm3_native::test_qasm3_switch_case_and_default_standard_31"
+      ],
+      "math_tolerances_changed": false,
+      "production_identity_policy_changed": false
+    }
+  ]
+}

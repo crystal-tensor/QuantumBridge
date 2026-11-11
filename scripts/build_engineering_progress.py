@@ -185,10 +185,16 @@ def strict_backlog(historical, verification, notes=()):
     for run in historical:
         for case in run["failure_ids"]:
             rows.setdefault(case, {"id": case, "historical_batches": [], "observations": []})["historical_batches"].append(run["name"])
+    # Discover failures before attaching observations: re-recording a batch
+    # must not hide passes stored earlier in the input list.
     for run in verification:
         for case in run["cases"]:
-            if case["status"] == "failed" or case["id"] in rows:
-                row = rows.setdefault(case["id"], {"id": case["id"], "historical_batches": [], "observations": []})
+            if case["status"] == "failed":
+                rows.setdefault(case["id"], {"id": case["id"], "historical_batches": [], "observations": []})
+    for run in verification:
+        for case in run["cases"]:
+            if case["id"] in rows:
+                row = rows[case["id"]]
                 row["observations"].append({"batch": run["name"], "profile": run["profile"],
                     "status": case["status"], "source_match": run["source_match"],
                     "recorded_at": run["recorded_at"]})
@@ -246,6 +252,21 @@ def runtime_census(paths):
             row["signature"] = row["signature"] or text
             row["signatures"].append(reference["profile"]+": ("+text+")")
     return sorted(merged.values(), key=lambda row: row["id"]), audits
+
+
+def test_context_matches(context, cache=None):
+    if context is None:
+        return True
+    cache = {} if cache is None else cache
+    rows = []
+    for name in context["files"]:
+        path = (ROOT / name).resolve()
+        if not path.is_relative_to((ROOT / "tests").resolve()) or not path.is_file():
+            return False
+        if name not in cache:
+            cache[name] = digest(path.read_bytes())
+        rows.append([name, cache[name]])
+    return digest(json.dumps(sorted(rows), separators=(",", ":")).encode()) == context["sha256"]
 
 
 def build(args):
@@ -312,8 +333,12 @@ def build(args):
     tests = historical_tests(args.evidence_dir) if args.evidence_dir else (previous or {}).get("tests", [])
     verification_path = ROOT / "docs/engineering/verification_runs.json"
     verification = load_json(verification_path).get("runs", []) if verification_path.exists() else []
+    test_hashes = {}
     for run in verification:
-        run["source_match"] = run.get("source_fingerprint") == fingerprint
+        run["test_context_match"] = test_context_matches(run.get("test_context"), test_hashes)
+        run["source_match"] = (run.get("source_fingerprint") == fingerprint
+                               and run.get("example_input_validation", {}).get("passed", True)
+                               and run["test_context_match"])
         run["freshness"] = "current_selected_source_batch" if run["source_match"] else "different_source_not_current_verification"
     failure_review_path = ROOT / "docs/engineering/failure_reviews.json"
     failure_review = load_json(failure_review_path) if failure_review_path.exists() else {}

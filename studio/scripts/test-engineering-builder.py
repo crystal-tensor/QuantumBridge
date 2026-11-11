@@ -5,6 +5,7 @@ import unittest
 import gzip
 import json
 import tempfile
+from unittest.mock import patch
 
 spec = importlib.util.spec_from_file_location("engineering_builder", Path(__file__).resolve().parents[2] / "scripts/build_engineering_progress.py")
 builder = importlib.util.module_from_spec(spec)
@@ -12,6 +13,18 @@ spec.loader.exec_module(builder)
 
 
 class EvidenceTests(unittest.TestCase):
+    def test_changed_benchmark_contract_cannot_keep_same_native_source_green(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            path = root / "tests/test_contract.py"
+            path.parent.mkdir()
+            path.write_bytes(b"assert True\n")
+            rows = [["tests/test_contract.py", builder.digest(path.read_bytes())]]
+            context = {"files": [rows[0][0]], "sha256": builder.digest(json.dumps(rows, separators=(",", ":")).encode())}
+            with patch.object(builder, "ROOT", root):
+                self.assertTrue(builder.test_context_matches(context))
+                path.write_bytes(b"assert False\n")
+                self.assertFalse(builder.test_context_matches(context))
     def test_runtime_exports_remain_a_separate_unverified_population(self):
         signature = {"available": True, "parameters": [{"name": "shots", "kind": "KEYWORD_ONLY",
                      "default": {"present": True, "literal": True, "value": 1024}}]}
@@ -72,6 +85,16 @@ class EvidenceTests(unittest.TestCase):
                   "recorded_at":"old", "cases":[{"id":"a", "status":"passed"}]}]
         rows = builder.strict_backlog([{"name":"old", "failure_ids":["a"]}], stale)
         self.assertEqual(rows[0]["status"], "reproduction_pending")
+
+    def test_input_order_does_not_hide_current_passes_for_stale_failures(self):
+        current = {"name":"current", "profile":"main", "source_match":True,
+                   "recorded_at":"new", "cases":[{"id":"f", "status":"passed"}]}
+        stale = {"name":"stale", "profile":"main", "source_match":False,
+                 "recorded_at":"old", "cases":[{"id":"f", "status":"failed"}]}
+        for runs in ([current, stale], [stale, current]):
+            rows = builder.strict_backlog([], runs)
+            self.assertEqual(rows[0]["status"], "selected_batch_pass_only")
+            self.assertEqual(len(rows[0]["observations"]), 2)
 
     def test_review_note_never_upgrades_a_failure_or_applies_to_a_pass(self):
         run = {"name":"now", "profile":"main", "source_match":True, "recorded_at":"now",

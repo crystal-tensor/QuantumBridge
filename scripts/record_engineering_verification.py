@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Record a frozen-source JUnit batch, not function-level acceptance."""
 import argparse
+import ast
 from datetime import datetime, timezone
 import hashlib
 import importlib.metadata
@@ -27,6 +28,45 @@ def native_fingerprint(manifest):
     return sha(json.dumps(rows, separators=(",", ":")).encode())
 
 
+def protected_tests(protected, manifest, migrations_path=None):
+    approved = {}
+    for migration in load(migrations_path).get("migrations", []) if migrations_path else []:
+        name = migration["file"]
+        cases = migration.get("case_ids", [])
+        prefix = str(Path(name).with_suffix("")).replace("/", ".")+"::"
+        if (name in approved or name not in protected or migration.get("owner_approved") is not True
+                or not migration.get("approval_summary") or not cases or len(cases) != len(set(cases))
+                or any(not case.startswith(prefix) for case in cases)
+                or migration.get("before_sha256") != protected[name]
+                or migration.get("after_sha256") != manifest.get(name)
+                or manifest.get(name) == protected[name]):
+            raise ValueError("Invalid approved test migration: "+name)
+        approved[name] = migration
+    if any(manifest.get(name) != expected for name, expected in protected.items() if name not in approved):
+        raise ValueError("An inherited protected test changed")
+    return len(protected)-len(approved), list(approved.values())
+
+
+def example_inputs(cases, source, manifest):
+    """Audit explicit example imports in selected tests, not all dependencies."""
+    modules, required = set(), set()
+    for case in cases:
+        parts = case["id"].split("::", 1)[0].split(".")
+        while parts:
+            name = "/".join(parts)+".py"
+            if name in manifest:
+                modules.add(name)
+                break
+            parts.pop()
+    for name in modules:
+        for node in ast.walk(ast.parse((source / name).read_bytes())):
+            if isinstance(node, ast.ImportFrom) and node.module and node.module.startswith("examples."):
+                required.add(node.module.replace(".", "/")+".py")
+    return {"policy": "explicit_example_imports_only_not_full_dependency_audit",
+            "required": {name: manifest.get(name) for name in sorted(required)},
+            "missing": sorted(required-manifest.keys()), "passed": required <= manifest.keys()}
+
+
 def collect(args):
     checkpoint = args.checkpoint.resolve()
     source = checkpoint / "source"
@@ -49,8 +89,7 @@ def collect(args):
     if origin["test_exit"] != (1 if counts["failed"] else 0):
         raise ValueError("JUnit status and terminal test exit do not agree")
     protected = load(args.protected_tests)
-    if any(manifest.get(name) != expected for name, expected in protected.items()):
-        raise ValueError("An inherited protected test changed")
+    unchanged, migrations = protected_tests(protected, manifest, getattr(args, "approved_migrations", None))
     versions = {}
     for name in ("numpy", "scipy", "tensorflow", "jax", "torch", "qiskit", "pennylane"):
         try:
@@ -64,7 +103,12 @@ def collect(args):
            "evidence_hash": sha(args.xml.read_bytes()),
            "origin_receipt_hash": sha(args.origin.read_bytes()),
            "matching_modules": origin["matching_modules"],
-           "protected_tests": len(protected), "protected_tests_unchanged": True,
+           "protected_tests": unchanged, "protected_tests_unchanged": True,
+           "original_protected_test_files": len(protected), "approved_test_migrations": migrations,
+           "example_input_validation": example_inputs(cases, source, manifest),
+           "test_context": {"files": sorted(name for name in manifest if name.startswith("tests/")),
+                "sha256": sha(json.dumps(sorted([name, value] for name, value in manifest.items()
+                    if name.startswith("tests/")), separators=(",", ":")).encode())},
            "environment": {"python": platform.python_version(), **versions},
            "total": len(cases), **counts, "exit_code": origin["test_exit"],
            "scope": "selected_strict_batch_not_full_contract_or_full_suite",
@@ -85,5 +129,6 @@ if __name__ == "__main__":
     parser.add_argument("--xml", required=True, type=Path)
     parser.add_argument("--origin", required=True, type=Path)
     parser.add_argument("--protected-tests", required=True, type=Path)
+    parser.add_argument("--approved-migrations", type=Path)
     parser.add_argument("--output", type=Path)
     collect(parser.parse_args())

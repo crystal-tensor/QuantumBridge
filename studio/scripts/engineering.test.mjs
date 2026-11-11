@@ -62,11 +62,16 @@ test("goal and selected verification never masquerade as final acceptance", () =
     assert.ok(row.review_note.diagnosis&&row.review_note.next);
   }
   for(const run of manifest.verification){
-    assert.equal(run.source_match,run.source_fingerprint===manifest.source.fingerprint);
+    assert.equal(run.source_match,run.source_fingerprint===manifest.source.fingerprint&&run.example_input_validation?.passed!==false&&run.test_context_match!==false);
     assert.equal(run.total,run.passed+run.failed+run.skipped);
     assert.equal(run.cases.length,run.total);
     assert.equal(run.protected_tests_unchanged,true);
     assert.equal(run.scope,"selected_strict_batch_not_full_contract_or_full_suite");
+    if(run.approved_test_migrations?.length){
+      const files=new Set(run.approved_test_migrations.map(m=>m.file));
+      assert.equal(run.protected_tests+files.size,run.original_protected_test_files);
+      assert.ok(run.approved_test_migrations.every(m=>m.owner_approved&&m.before_sha256!==m.after_sha256&&m.case_ids.length));
+    }
   }
   const text=JSON.stringify(manifest);
   assert.ok(!text.includes("/Users/")&&!text.includes("site-packages/"));

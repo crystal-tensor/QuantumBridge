@@ -50,6 +50,12 @@ try{
     await page.getByRole("button",{name:"测试与真机",exact:true}).click();
     assert.ok((await page.locator("#view").innerText()).includes("INCONCLUSIVE"));
     await page.getByRole("heading",{name:"本目标冻结源码验证",exact:true}).waitFor();
+    const migrationSection=page.locator("section.band").filter({has:page.getByRole("heading",{name:"经 owner 明确批准的合同迁移",exact:true})});
+    await migrationSection.locator("details summary").click();
+    assert.equal(await migrationSection.locator("li").count(),7);
+    assert.ok((await migrationSection.innerText()).includes("不计入"));
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+    await page.screenshot({path:`${output}/approved-migrations-${viewport.width}.png`,fullPage:false});
     await page.locator("#view details summary").first().click();
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
     await page.locator("#view details:has(> summary > code):has(> summary > .failure)").first().locator("summary").click();
