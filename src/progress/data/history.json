@@ -187,5 +187,32 @@
         }
       }
     ]
+  },
+  {
+    "generated_at": "2026-11-11T04:52:52.647655+00:00",
+    "fingerprint": "1483d38ff9e4834725be6e5bb9c98323c50a275c5ddf595f40a71e3bab591594",
+    "datasets": [
+      {
+        "id": "native",
+        "file": "native.json.gz",
+        "sha256": "11073e71199877bc3e323e2ab38901d5996d8f7f7452a3b6454c0371443d6466",
+        "count": 8719,
+        "status_counts": {
+          "unverified": 8706,
+          "not_implemented": 3,
+          "partial": 10
+        }
+      },
+      {
+        "id": "target",
+        "file": "target.json.gz",
+        "sha256": "8294ef45757262ba845b7e3c5d1c21825f3ce361a73b693db59d6e00f45ba972",
+        "count": 13612,
+        "status_counts": {
+          "unverified": 13606,
+          "partial": 6
+        }
+      }
+    ]
   }
 ]
