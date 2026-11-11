@@ -8,7 +8,7 @@
   "census_closed": false,
   "first_census_review_due": "2026-11-18T23:59:59+08:00",
   "delivery_forecast": "UNVERIFIED_HIGH_RISK_UNTIL_CENSUS_AND_CRITICAL_PATH_REVIEW",
-  "forecast_reviewed_at": "2026-11-11T17:05:45.713285+00:00",
+  "forecast_reviewed_at": "2026-11-11T18:06:05.060529+00:00",
   "forecast_risks": [
     "The public function denominator, inherited methods, dynamic exports and Native mappings remain open; no whole-project completion percentage is justified.",
     "Original Arrow24/Qiskit2.6 coexistence remains unresolved and no new reference configuration is approved. The archived Arrow25 experiment remains tied to the prior Native fingerprint, not current verification. SDK-only reference processes and current Native-only regressions terminate normally; combined alternate public verification is still open.",
@@ -17,7 +17,8 @@
     "Runtime metadata expands from31explicit modules per profile to1324main/1289alternate attempted modules in separate unchanged-version SDK workers. All four workers terminate0 and actual loaded roots match planned versions and hashes. Bounded rescan handles49observed import-order transitions with no dictionary mutation left pending in these captures; not proof of all conditional exports or SDK coexistence. Existing exposures are retained and every candidate remains unverified with no Native mapping inferred.",
     "Static namespace inventory remains2066main/2028alternate candidates; public-path runtime-inspected counts now1322main/1277alternate. Finance remains absent. Catalyst aliases in the main profile and11alternate compiler modules requiringxdsl cannot import. These gaps remain in scope, no dependency was installed or optional external package promoted. Private/test paths, plugins, identities, foreign-symbol ownership, missing signatures and executable per-function contracts still prevent denominator closure.",
     "Large inherited uncommitted changes remain; verified local work is not yet a complete remotely published library delivery.",
-    "Native QPY header probing is repaired and both pinned reference versions pass the selected new cases. The exact22known failures remain in both final-source rechecks;9obsolete QPY version-rejection cases await explicit owner review. The final-source groups are selected and overlapping, not whole-suite acceptance. Cached mixed TF curvature remains unresolved; no new baseline, global framework patch or old assertion migration was promoted."
+    "Native QPY header probing is repaired and both pinned reference versions pass the selected new cases. The exact22known failures remain in both final-source rechecks;9obsolete QPY version-rejection cases await explicit owner review. The final-source groups are selected and overlapping, not whole-suite acceptance. Cached mixed TF curvature remains unresolved; no new baseline, global framework patch or old assertion migration was promoted.",
+    "Finite nested-class enumeration adds previously omitted canonical contracts while retaining all prior v4 exposures. Both current100case Native selections remain95pass/5fail, with9newreal-shift cases each passing. Public denominator and full strict gates remain open; metadata growth and selected passes are not a completion percentage."
   ],
   "scope_reduced": false,
   "latest_batch": {
@@ -1187,11 +1188,11 @@
     }
   ],
   "latest_metadata_batch": {
-    "checkpoint": "goal-recursive-census-v4-9mBKxY",
-    "kind": "recursive_public_api_metadata",
-    "recorded_at": "2026-11-11T16:22:08.489769+00:00",
+    "checkpoint": "goal-nested-class-graph-YTLG0P",
+    "kind": "finite_nested_public_class_metadata",
+    "recorded_at": "2026-11-11T18:06:05.060529+00:00",
     "collector_source_hashes": {
-      "scripts/census_runtime_api.py": "a00fa6546d8a3e4bfe6ab380a86a48c6602401a67861ce54f46894767b08f49e",
+      "scripts/census_runtime_api.py": "d68b0f4d3b0b6446f23302a4ea4f8654801f84f1e760cc87947d895b4beeb80a",
       "scripts/census_recursive_api.py": "23980d6fd5277082d3e31e555d901b68f40164efd2c8bc632b2b87d6a96f9639",
       "scripts/census_package_namespaces.py": "d2dfad080a10c326e5a9c650d64876a860333b9a1d16bc1ac5fff1f24dd30c91"
     },
@@ -1199,15 +1200,23 @@
       {
         "profile": "main",
         "modules": 1324,
-        "records": 95696,
-        "old_exposures": 62165,
-        "new_exposures": 483736,
+        "records": 96252,
+        "added_record_candidates": 556,
+        "net_record_change": 556,
+        "canonical_exposure_contracts_preserved": true,
+        "old_exposures": 483736,
+        "new_exposures": 488203,
         "old_exposures_lost": 0,
         "families": [
           {
             "family": "qiskit",
             "version": "2.4.1",
             "modules": 685,
+            "records": 46168,
+            "nested_class_exports": 282,
+            "class_alias_reuses": 60,
+            "unresolved": 125,
+            "rescan_passes": 1,
             "unavailable": [
               {
                 "name": "qiskit_finance",
@@ -1216,18 +1225,17 @@
                 "missing_module": "qiskit_finance"
               }
             ],
-            "records": 45723,
-            "setter_records": 1533,
-            "rescan_passes": 1,
-            "import_order_transitions": 16,
-            "deferred": 12,
-            "binary_parent_hashes": 989,
-            "terminal_receipt_sha256": "805e4927ee4d583f51b7b9d36820c02c31b273b7f83587ed06b7e746b1408708"
+            "terminal_receipt_sha256": "0846451cb8f1989a75a0471a4ae9ffcc06591d6e59b16b23673aec3cbcce3ac1"
           },
           {
             "family": "pennylane",
             "version": "0.44.1",
             "modules": 639,
+            "records": 50084,
+            "nested_class_exports": 9,
+            "class_alias_reuses": 3,
+            "unresolved": 739,
+            "rescan_passes": 1,
             "unavailable": [
               {
                 "name": "pennylane.ftqc.catalyst_pass_aliases",
@@ -1236,31 +1244,33 @@
                 "missing_module": "catalyst"
               }
             ],
-            "records": 49973,
-            "setter_records": 322,
-            "rescan_passes": 1,
-            "import_order_transitions": 9,
-            "deferred": 64,
-            "binary_parent_hashes": 0,
-            "terminal_receipt_sha256": "757cea5d13b9ffcf1f2a914f81bc0e94d3d39c72bae30a2e354a4a362c950733"
+            "terminal_receipt_sha256": "6cfcffd1f375742ce159c80637cd9f858ec714bd898599d23fff19cde9f0fff7"
           }
         ],
-        "unit_tests": 41,
-        "unit_junit_sha256": "e65ab871fe7a0e95e45d82bd7ba3d5a5eb03eb51a9b35b1dd5f09b9c0de665e9",
-        "runtime_sha256": "44c832a72147326640b64de1e249a200f73d0f11acfb622026a2ad27f014be7f"
+        "unit_tests": 53,
+        "unit_junit_sha256": "efcbdbc7b50029a511a0226501050f341f2f7c36b3e9f56b8f104d5f9d44f60a",
+        "runtime_sha256": "2ab1a8257ff49efe3cb9cc9b7eef3bf9460dd575dd26a9829d7abdf874972a73"
       },
       {
         "profile": "alternate",
         "modules": 1289,
-        "records": 93230,
-        "old_exposures": 61488,
-        "new_exposures": 440876,
+        "records": 93831,
+        "added_record_candidates": 602,
+        "net_record_change": 601,
+        "canonical_exposure_contracts_preserved": true,
+        "old_exposures": 440876,
+        "new_exposures": 445736,
         "old_exposures_lost": 0,
         "families": [
           {
             "family": "qiskit",
             "version": "2.6.0",
             "modules": 691,
+            "records": 49518,
+            "nested_class_exports": 283,
+            "class_alias_reuses": 60,
+            "unresolved": 126,
+            "rescan_passes": 1,
             "unavailable": [
               {
                 "name": "qiskit_finance",
@@ -1269,18 +1279,17 @@
                 "missing_module": "qiskit_finance"
               }
             ],
-            "records": 49073,
-            "setter_records": 1534,
-            "rescan_passes": 1,
-            "import_order_transitions": 15,
-            "deferred": 12,
-            "binary_parent_hashes": 902,
-            "terminal_receipt_sha256": "1e2ce5441aa22f28bb565af8430bfb429f4e4612fb60e1bc83e0026464c9b9de"
+            "terminal_receipt_sha256": "990e879effd1743db5680c3dc5a62c3ac4f31f1f2558c65edd3d3cb589c18d63"
           },
           {
             "family": "pennylane",
             "version": "0.42.3",
             "modules": 598,
+            "records": 44313,
+            "nested_class_exports": 51,
+            "class_alias_reuses": 39,
+            "unresolved": 746,
+            "rescan_passes": 1,
             "unavailable": [
               {
                 "name": "pennylane.compiler.python_compiler",
@@ -1349,18 +1358,12 @@
                 "missing_module": "xdsl"
               }
             ],
-            "records": 44157,
-            "setter_records": 315,
-            "rescan_passes": 1,
-            "import_order_transitions": 9,
-            "deferred": 61,
-            "binary_parent_hashes": 0,
-            "terminal_receipt_sha256": "dc57df547276ded28014808a29df30335311f6e6e6d1eaa0ddadca122b1d33ca"
+            "terminal_receipt_sha256": "948767893958ea12960d44c894ba12bacd5b4b7bc1a877785224e2b5e07f5506"
           }
         ],
-        "unit_tests": 41,
-        "unit_junit_sha256": "5cb1a1b14a06569ac5a0a026c5d36f880d3396e8f0670d1848ca4f55d82394cf",
-        "runtime_sha256": "d7b8c67b4e31242baab32bdbb1ac3882777641de10db0f3b834422b9954a4d73"
+        "unit_tests": 53,
+        "unit_junit_sha256": "64bbeedda9e1abc3a15c6e0613e2475a6ce920941a2fa09dd9d8c5abb15ef184",
+        "runtime_sha256": "2ca083c7fd90ffcb2df259da1ef050643d71bb8d36c46a4d96950b74d84b91ed"
       }
     ],
     "normal_reference_workers": 4,
@@ -1374,11 +1377,12 @@
     "sdk_targets_changed": false,
     "environment_installations": 0,
     "raw_sdk_implementations_copied": false,
-    "scope": "Expanded installed core module/export/MRO/accessor metadata, not implementation or whole public API acceptance",
-    "core_native_fingerprint": "6bba89eea3f9730cdb475dc5c6239db6dc0e2a87c48c6a73b4f82e6fb1832759",
-    "native_verification_rerun": false,
+    "core_native_fingerprint": "e5ae958bc41e3dfd9ded98611401e6f1e94376b442fde7e39bfea28373aa0fc1",
+    "native_verification_rerun": true,
     "native_evidence_timestamps_preserved": true,
-    "remaining": "Optional/uninstalled ecosystems, plugins, dynamic identities, unavailable signatures, scope of foreign reexports and every target-to-Native executable contract remain open."
+    "class_alias_paths_represented_as_finite_edges": true,
+    "scope": "Static nested public classes, inherited methods and alias graphs; not Native, SDK coexistence or complete denominator acceptance",
+    "remaining": "Optional packages, plugins, dynamic identities/exports, missing signatures, foreign reexport scope and all target-to-Native executable contracts remain open."
   },
   "pending_contract_reviews": [
     {
@@ -1399,6 +1403,253 @@
       "scope": "Only obsolete rejection of supported QPY formats. Preserve default13, original math/UUID/atomic-write and feature/invalid-layout refusals, add actual new-format transport and future19 rejection. No test changed pending reply.",
       "evidence_checkpoint": "goal-qpy-probe-final-CpjTN3",
       "source_fingerprint": "e5ae958bc41e3dfd9ded98611401e6f1e94376b442fde7e39bfea28373aa0fc1"
+    },
+    {
+      "id": "tf_moving_power_parameter_shift_single_case",
+      "state": "PENDING_EXPLICIT_OWNER_REPLY",
+      "case_ids": [
+        "tests.interfaces.test_native_tf_whole_qnode_mixed_ad::test_method_selection_is_explicit_for_the_supported_moving_power_domain[parameter-shift]"
+      ],
+      "question_submitted": true,
+      "evidence_checkpoint": "goal-nested-class-graph-YTLG0P",
+      "source_fingerprint": "e5ae958bc41e3dfd9ded98611401e6f1e94376b442fde7e39bfea28373aa0fc1",
+      "scope": "Only the old moving-power parameter-shift rejection. Validate actual shifted circuits and explicit CPU-host callback boundary; preserve other method cases, original math and all four cached mixed-AD failures. No migration pending reply."
     }
-  ]
+  ],
+  "metadata_batch_history": [
+    {
+      "checkpoint": "goal-recursive-census-v4-9mBKxY",
+      "kind": "recursive_public_api_metadata",
+      "recorded_at": "2026-11-11T16:22:08.489769+00:00",
+      "collector_source_hashes": {
+        "scripts/census_runtime_api.py": "a00fa6546d8a3e4bfe6ab380a86a48c6602401a67861ce54f46894767b08f49e",
+        "scripts/census_recursive_api.py": "23980d6fd5277082d3e31e555d901b68f40164efd2c8bc632b2b87d6a96f9639",
+        "scripts/census_package_namespaces.py": "d2dfad080a10c326e5a9c650d64876a860333b9a1d16bc1ac5fff1f24dd30c91"
+      },
+      "results": [
+        {
+          "profile": "main",
+          "modules": 1324,
+          "records": 95696,
+          "old_exposures": 62165,
+          "new_exposures": 483736,
+          "old_exposures_lost": 0,
+          "families": [
+            {
+              "family": "qiskit",
+              "version": "2.4.1",
+              "modules": 685,
+              "unavailable": [
+                {
+                  "name": "qiskit_finance",
+                  "version": null,
+                  "error": "ModuleNotFoundError",
+                  "missing_module": "qiskit_finance"
+                }
+              ],
+              "records": 45723,
+              "setter_records": 1533,
+              "rescan_passes": 1,
+              "import_order_transitions": 16,
+              "deferred": 12,
+              "binary_parent_hashes": 989,
+              "terminal_receipt_sha256": "805e4927ee4d583f51b7b9d36820c02c31b273b7f83587ed06b7e746b1408708"
+            },
+            {
+              "family": "pennylane",
+              "version": "0.44.1",
+              "modules": 639,
+              "unavailable": [
+                {
+                  "name": "pennylane.ftqc.catalyst_pass_aliases",
+                  "version": "0.44.1",
+                  "error": "ModuleNotFoundError",
+                  "missing_module": "catalyst"
+                }
+              ],
+              "records": 49973,
+              "setter_records": 322,
+              "rescan_passes": 1,
+              "import_order_transitions": 9,
+              "deferred": 64,
+              "binary_parent_hashes": 0,
+              "terminal_receipt_sha256": "757cea5d13b9ffcf1f2a914f81bc0e94d3d39c72bae30a2e354a4a362c950733"
+            }
+          ],
+          "unit_tests": 41,
+          "unit_junit_sha256": "e65ab871fe7a0e95e45d82bd7ba3d5a5eb03eb51a9b35b1dd5f09b9c0de665e9",
+          "runtime_sha256": "44c832a72147326640b64de1e249a200f73d0f11acfb622026a2ad27f014be7f"
+        },
+        {
+          "profile": "alternate",
+          "modules": 1289,
+          "records": 93230,
+          "old_exposures": 61488,
+          "new_exposures": 440876,
+          "old_exposures_lost": 0,
+          "families": [
+            {
+              "family": "qiskit",
+              "version": "2.6.0",
+              "modules": 691,
+              "unavailable": [
+                {
+                  "name": "qiskit_finance",
+                  "version": null,
+                  "error": "ModuleNotFoundError",
+                  "missing_module": "qiskit_finance"
+                }
+              ],
+              "records": 49073,
+              "setter_records": 1534,
+              "rescan_passes": 1,
+              "import_order_transitions": 15,
+              "deferred": 12,
+              "binary_parent_hashes": 902,
+              "terminal_receipt_sha256": "1e2ce5441aa22f28bb565af8430bfb429f4e4612fb60e1bc83e0026464c9b9de"
+            },
+            {
+              "family": "pennylane",
+              "version": "0.42.3",
+              "modules": 598,
+              "unavailable": [
+                {
+                  "name": "pennylane.compiler.python_compiler",
+                  "version": "0.42.3",
+                  "error": "ModuleNotFoundError",
+                  "missing_module": "xdsl"
+                },
+                {
+                  "name": "pennylane.compiler.python_compiler.compiler",
+                  "version": "0.42.3",
+                  "error": "ModuleNotFoundError",
+                  "missing_module": "xdsl"
+                },
+                {
+                  "name": "pennylane.compiler.python_compiler.jax_utils",
+                  "version": "0.42.3",
+                  "error": "ModuleNotFoundError",
+                  "missing_module": "xdsl"
+                },
+                {
+                  "name": "pennylane.compiler.python_compiler.quantum_dialect",
+                  "version": "0.42.3",
+                  "error": "ModuleNotFoundError",
+                  "missing_module": "xdsl"
+                },
+                {
+                  "name": "pennylane.compiler.python_compiler.transforms",
+                  "version": "0.42.3",
+                  "error": "ModuleNotFoundError",
+                  "missing_module": "xdsl"
+                },
+                {
+                  "name": "pennylane.compiler.python_compiler.transforms.api",
+                  "version": "0.42.3",
+                  "error": "ModuleNotFoundError",
+                  "missing_module": "xdsl"
+                },
+                {
+                  "name": "pennylane.compiler.python_compiler.transforms.api.apply_transform_sequence",
+                  "version": "0.42.3",
+                  "error": "ModuleNotFoundError",
+                  "missing_module": "xdsl"
+                },
+                {
+                  "name": "pennylane.compiler.python_compiler.transforms.api.compiler_transform",
+                  "version": "0.42.3",
+                  "error": "ModuleNotFoundError",
+                  "missing_module": "xdsl"
+                },
+                {
+                  "name": "pennylane.compiler.python_compiler.transforms.api.transform_interpreter",
+                  "version": "0.42.3",
+                  "error": "ModuleNotFoundError",
+                  "missing_module": "xdsl"
+                },
+                {
+                  "name": "pennylane.compiler.python_compiler.transforms.cancel_inverses",
+                  "version": "0.42.3",
+                  "error": "ModuleNotFoundError",
+                  "missing_module": "xdsl"
+                },
+                {
+                  "name": "pennylane.compiler.python_compiler.transforms.merge_rotations",
+                  "version": "0.42.3",
+                  "error": "ModuleNotFoundError",
+                  "missing_module": "xdsl"
+                }
+              ],
+              "records": 44157,
+              "setter_records": 315,
+              "rescan_passes": 1,
+              "import_order_transitions": 9,
+              "deferred": 61,
+              "binary_parent_hashes": 0,
+              "terminal_receipt_sha256": "dc57df547276ded28014808a29df30335311f6e6e6d1eaa0ddadca122b1d33ca"
+            }
+          ],
+          "unit_tests": 41,
+          "unit_junit_sha256": "5cb1a1b14a06569ac5a0a026c5d36f880d3396e8f0670d1848ca4f55d82394cf",
+          "runtime_sha256": "d7b8c67b4e31242baab32bdbb1ac3882777641de10db0f3b834422b9954a4d73"
+        }
+      ],
+      "normal_reference_workers": 4,
+      "new_function_acceptances": 0,
+      "native_library_changed": false,
+      "original_protected_files": 1373,
+      "unchanged_original_files": 1371,
+      "approved_migration_files": 2,
+      "approved_migration_cases": 8,
+      "new_old_test_migrations": 0,
+      "sdk_targets_changed": false,
+      "environment_installations": 0,
+      "raw_sdk_implementations_copied": false,
+      "scope": "Expanded installed core module/export/MRO/accessor metadata, not implementation or whole public API acceptance",
+      "core_native_fingerprint": "6bba89eea3f9730cdb475dc5c6239db6dc0e2a87c48c6a73b4f82e6fb1832759",
+      "native_verification_rerun": false,
+      "native_evidence_timestamps_preserved": true,
+      "remaining": "Optional/uninstalled ecosystems, plugins, dynamic identities, unavailable signatures, scope of foreign reexports and every target-to-Native executable contract remain open."
+    }
+  ],
+  "latest_strict_review": {
+    "checkpoint": "goal-nested-class-graph-YTLG0P",
+    "recorded_at": "2026-11-11T18:06:05.060529+00:00",
+    "source_fingerprint": "e5ae958bc41e3dfd9ded98611401e6f1e94376b442fde7e39bfea28373aa0fc1",
+    "source_manifest_sha256": "a3842d547468706004acc8cb6b29d671a0305c3de8130119e00aee162efc2449",
+    "results": [
+      {
+        "profile": "main",
+        "total": 100,
+        "passed": 95,
+        "failed": [
+          "tests.interfaces.test_native_tf_whole_qnode_mixed_ad::test_method_selection_is_explicit_for_the_supported_moving_power_domain[parameter-shift]",
+          "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature[False-True-forward_reverse]",
+          "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature[False-True-reverse_forward]",
+          "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature[True-True-forward_reverse]",
+          "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature[True-True-reverse_forward]"
+        ],
+        "skipped": 0
+      },
+      {
+        "profile": "alternate",
+        "total": 100,
+        "passed": 95,
+        "failed": [
+          "tests.interfaces.test_native_tf_whole_qnode_mixed_ad::test_method_selection_is_explicit_for_the_supported_moving_power_domain[parameter-shift]",
+          "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature[False-True-forward_reverse]",
+          "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature[False-True-reverse_forward]",
+          "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature[True-True-forward_reverse]",
+          "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature[True-True-reverse_forward]"
+        ],
+        "skipped": 0
+      }
+    ],
+    "new_shift_cases_each_profile": 9,
+    "native_library_changed": false,
+    "tf_framework_changed": false,
+    "old_assertions_changed": 0,
+    "full_suite_accepted": false,
+    "interpretation": "Real moving-power shift math/control/cached-callback/resource cases pass without adjoint substitution. Original method refusal and four cached mixed-AD failures remain unchanged."
+  }
 }

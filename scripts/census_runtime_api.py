@@ -62,13 +62,18 @@ class CensusLimitError(RuntimeError):
 
 
 class RuntimeCensus:
-    def __init__(self, profile, *, max_records=None):
+    def __init__(self, profile, *, max_records=None, max_class_depth=64):
         if max_records is not None and (type(max_records) is not int or max_records < 1):
             raise ValueError("max_records must be a positive integer or None")
+        if type(max_class_depth) is not int or max_class_depth < 1:
+            raise ValueError("max_class_depth must be a positive integer")
         self.max_records = max_records
+        self.max_class_depth = max_class_depth
         self.profile, self.records, self.identities = profile, {}, {}
         self.canonical_objects = {}
         self.modules, self.unresolved, self.files = [], [], {}
+        self.class_exports = []
+        self.class_alias_reuses = []
 
     def source(self, value, family):
         try:
@@ -136,10 +141,28 @@ class RuntimeCensus:
         self.canonical_objects[identity] = key
         self.records[key] = row
 
-    def class_members(self, cls, exposure, family):
+    def class_members(self, cls, exposure, family, *, _active=(), _expanded=None):
         owner = type_name(cls)
         mro = type.__getattribute__(cls, "__mro__")
         self.record(owner, "class", cls, exposure, family, mro=[type_name(c) for c in mro])
+        reason = ("cyclic_class_alias" if any(cls is active for active in _active) else
+                  "nested_class_depth_limit" if len(_active) >= self.max_class_depth else None)
+        if reason is not None:
+            row = dict(id=exposure, kind=reason, owner_class=owner, still_in_scope=True)
+            if row not in self.unresolved:
+                self.unresolved.append(row)
+            return
+        if _expanded is None:
+            _expanded = {}
+        if id(cls) in _expanded:
+            # Class graphs can be cyclic or have exponentially many alias
+            # paths. Preserve edges instead of materializing their language.
+            row = dict(exposure=exposure, owner_class=owner, expanded_at=_expanded[id(cls)])
+            if row not in self.class_alias_reuses:
+                self.class_alias_reuses.append(row)
+            return
+        _expanded[id(cls)] = exposure
+        active = (*_active, cls)
         seen = set()
         for base in mro:
             for name, descriptor in type.__getattribute__(base, "__dict__").items():
@@ -147,6 +170,20 @@ class RuntimeCensus:
                     continue
                 seen.add(name)
                 if name.startswith("_") and not (name.startswith("__") and name.endswith("__")):
+                    continue
+                if isinstance(descriptor, type):
+                    edge = dict(owner_class=owner, attribute=name, exposure=exposure+"."+name,
+                        target_class=type_name(descriptor), declared_in=type_name(base), inherited=base is not cls)
+                    if edge not in self.class_exports:
+                        self.class_exports.append(edge)
+                    try:
+                        self.class_members(descriptor, edge["exposure"], family,
+                                           _active=active, _expanded=_expanded)
+                    except CensusLimitError:
+                        raise
+                    except Exception as error:
+                        self.unresolved.append(dict(id=edge["exposure"], kind="export_introspection_failed",
+                            error=type(error).__name__, still_in_scope=True))
                     continue
                 extra = {}
                 if isinstance(descriptor, (staticmethod, classmethod)):
@@ -251,10 +288,13 @@ class RuntimeCensus:
             "environment": {"python": platform.python_version(), "distribution_versions": dependencies},
             "loaded_reference_roots": {name: name in sys.modules for name in
                 ("qiskit", "pennylane", "tensorflow", "pyarrow")},
-            "scope": "explicit_modules_public_exports_and_static_mro", "census_complete": False,
+            "scope": "explicit_modules_public_exports_nested_classes_and_static_mro", "census_complete": False,
             "policy": "Metadata only. The collector does not call SDK constructors or algorithms; package initialization and lazy export resolution may have side effects. No implementation source copied. Python sockets denied; not an OS network sandbox. No Native mapping inferred.",
             "import_initialization_side_effects_verified_absent": False,
             "modules": self.modules, "records": sorted(self.records.values(), key=lambda row: row["id"]),
+            "class_exports": self.class_exports,
+            "class_alias_reuses": self.class_alias_reuses,
+            "class_alias_policy": "Finite static class graph; each class expands once per module export root. Reused and cyclic aliases remain edges, not an exhaustive list of arbitrarily long member paths.",
             "unresolved": self.unresolved,
             "closure_pending": ["recursive public module traversal", "optional packages and plugins",
                 "canonical identity collisions", "signatures/defaults unavailable to introspection",
@@ -324,6 +364,11 @@ def merge_isolated_files(profile, pairs):
         coexistence_verified=False,
         policy="Public metadata collected in separate SDK processes with unchanged versions. Python sockets denied during enumeration, not an OS sandbox. Normal terminal receipts required. No cross-process object identity inferred, SDK source copied, Native mapping or implementation acceptance claimed.",
         modules=copy.deepcopy(modules), records=sorted(records, key=lambda row: row["id"]),
+        class_exports=[dict(collection_isolation=label, **copy.deepcopy(edge))
+                       for label, value, _ in inputs for edge in value.get("class_exports", [])],
+        class_alias_reuses=[dict(collection_isolation=label, **copy.deepcopy(row))
+                            for label, value, _ in inputs for row in value.get("class_alias_reuses", [])],
+        class_alias_policy="Finite per-process static class graphs; no cross-process object identity or exhaustive expansion of arbitrary alias paths is inferred.",
         unresolved=unresolved, collection_receipts=[receipt for _, _, receipt in inputs],
         traversal_audits=[dict(isolation=label, **copy.deepcopy(value["traversal"]))
                           for label, value, _ in inputs if "traversal" in value],
