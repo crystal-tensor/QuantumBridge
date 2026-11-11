@@ -8,6 +8,13 @@
   "census_closed": false,
   "first_census_review_due": "2026-11-18T23:59:59+08:00",
   "delivery_forecast": "UNVERIFIED_HIGH_RISK_UNTIL_CENSUS_AND_CRITICAL_PATH_REVIEW",
+  "forecast_reviewed_at": "2026-11-11T13:39:59+08:00",
+  "forecast_risks": [
+    "The public function denominator, inherited methods, dynamic exports and Native mappings remain open; no whole-project completion percentage is justified.",
+    "A frozen 477-case selection improved from 26 to 7 failures; this is not the full strict suite, and other tracked cases still need current-source reproduction.",
+    "Nested cached mixed derivatives remain incorrect; method and retained-binding ownership contracts also require review before acceptance.",
+    "Large inherited uncommitted changes remain; verified local work is not yet a complete remotely published library delivery."
+  ],
   "scope_reduced": false,
   "baseline": {
     "frozen_at": "2026-11-11T03:59:55.009Z",

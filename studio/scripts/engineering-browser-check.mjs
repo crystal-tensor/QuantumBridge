@@ -40,6 +40,9 @@ try{
     await page.getByRole("heading",{name:"本目标冻结源码验证",exact:true}).waitFor();
     await page.locator("#view details summary").first().click();
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+    await page.locator("#view details:has(> summary > code):has(> summary > .failure)").first().locator("summary").click();
+    await page.getByRole("heading",{name:/诊断记录/}).first().waitFor();
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
     await page.getByRole("button",{name:"六个月验收计划",exact:true}).click();
     assert.equal(await page.locator(".timeline li").count(),6);
     const downloadPromise=page.waitForEvent("download");

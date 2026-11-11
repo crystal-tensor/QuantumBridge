@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "source_fingerprint": "e7c252153dfc7b90fb9eac17543853f6f3ff195840ce6cd4193456a745047c12",
+  "notes": [
+    {
+      "prefix": "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature",
+      "classification": "OPEN_IMPLEMENTATION_DEFECT",
+      "diagnosis_zh": "内外两层缓存时仍会误报三阶拒绝或给出错误的零混合导数。四个失败案例及其独立解析公式均保留，未改断言。",
+      "next_zh": "修复嵌套缓存下参数与余切量的图入口；不使用主机量子回调，不移除导数阶数保护。",
+      "diagnosis": "Nested cached primal/derivative functions still produce a false third-order refusal or an incorrect zero mixed derivative. The independent analytic formulas and all four failing cases remain unchanged.",
+      "next": "Repair Native graph point/cotangent edges for nested cached forward-over-reverse and reverse-over-forward; do not use host quantum callbacks or remove derivative-order guards."
+    },
+    {
+      "prefix": "tests.interfaces.test_native_tf_whole_qnode_mixed_ad::test_method_selection_is_explicit_for_the_supported_moving_power_domain[parameter-shift]",
+      "classification": "CONTRACT_REVIEW_REQUIRED",
+      "diagnosis_zh": "旧断言要求 parameter-shift 在取值阶段拒绝执行；独立探针已在两个环境中验证分数幂及两种受控线路的数值、Jacobian 和 Hessian。此结果只证明 Native 参数移位路径，不代表纯张量特化或完整方法合同已验收。",
+      "next_zh": "补齐方法、来源和资源合同的双环境验收后，仅就这一条拒绝断言提出迁移决策。获准前保留失败，不关闭已正确工作的功能来制造全绿。",
+      "diagnosis": "The old assertion demands rejection of parameter-shift at value execution. A separate strict probe now matches the independent stored values, Jacobians and Hessians for the fractional-power and both controlled cases. This is Native parameter-shift execution, not acceptance of a pure tensor specialization or of the complete method contract.",
+      "next": "Finish both-profile method, provenance and resource acceptance, then propose an explicit migration of only this rejection case. Keep the old assertion failing until approved; do not disable working functionality to obtain green checks."
+    },
+    {
+      "prefix": "tests.interfaces.test_native_tf_mps_resource_contract::test_managed_mps_queries_same_parent_cache_tiny_hessian_cap",
+      "classification": "OWNERSHIP_CONTRACT_INVESTIGATION",
+      "diagnosis_zh": "旧断言只计固定矩阵的数值存储，实际存活占用还包括 native_binding_object_storage。探针已拆分两种占用，垃圾回收没有消除绑定对象余额；实际持有者及其释放行为仍需审计。",
+      "next_zh": "将每笔绑定对象预算追溯到数学快照和别名，验证终止释放与父预算竞争，再判断是生命周期缺陷还是旧计数合同冲突；不删有效预算，也不放松断言。",
+      "diagnosis": "The old assertion counts fixed numeric matrix storage only. The actual retained balance also includes native_binding_object_storage allowances. A probe separated the two categories and garbage collection did not remove the binding balance; actual ownership and release must still be audited.",
+      "next": "Trace each retained binding allowance to the mathematical snapshot and its aliases; verify terminal release and parent-budget competition before deciding whether this is a lifetime defect or an old counting-contract conflict. Do not remove valid reservations or loosen the assertion."
+    },
+    {
+      "prefix": "tests.interfaces.test_native_tf_eager_jacobian_reentry::test_traced_eager_vjp_does_not_bypass_an_active_shared_scope",
+      "classification": "OWNERSHIP_CONTRACT_INVESTIGATION",
+      "diagnosis_zh": "共享账本的拒绝策略仍正确触发，但最终零存储断言失败。这不是绕过共享资源范围或清零实际占用计数器的理由。",
+      "next_zh": "追踪 Jacobian 拒绝后仍存活的 Native 绑定持有者，核实预期生命周期和确定性释放；保留精确的策略错误与不消费额外工作量检查。",
+      "diagnosis": "The required shared-ledger refusal still occurs, but the final zero-live-storage assertion fails. This is not permission to bypass the shared scope or to zero the retained-storage counter.",
+      "next": "Determine which Native binding owners survive the failed Jacobian entry, verify their intended lifetime and deterministic release, and preserve the exact policy-error and non-consumption checks."
+    }
+  ]
+}

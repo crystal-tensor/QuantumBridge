@@ -180,7 +180,7 @@ def apply_reviews(records, reviews, project_fingerprint=None):
             row["review"] = review
 
 
-def strict_backlog(historical, verification):
+def strict_backlog(historical, verification, notes=()):
     rows = {}
     for run in historical:
         for case in run["failure_ids"]:
@@ -195,6 +195,10 @@ def strict_backlog(historical, verification):
     for row in rows.values():
         current = [o for o in row["observations"] if o["source_match"]]
         row["status"] = "current_failure" if any(o["status"] == "failed" for o in current) else "selected_batch_pass_only" if current and all(o["status"] == "passed" for o in current) else "reproduction_pending"
+        if row["status"] == "current_failure":
+            for note in notes:
+                if row["id"].startswith(note["prefix"]):
+                    row["review_note"] = {key: note[key] for key in ("classification", "diagnosis", "next", "diagnosis_zh", "next_zh") if key in note}
     return sorted(rows.values(), key=lambda row: row["id"])
 
 
@@ -264,7 +268,10 @@ def build(args):
     for run in verification:
         run["source_match"] = run.get("source_fingerprint") == fingerprint
         run["freshness"] = "current_selected_source_batch" if run["source_match"] else "different_source_not_current_verification"
-    backlog = strict_backlog(tests, verification)
+    failure_review_path = ROOT / "docs/engineering/failure_reviews.json"
+    failure_review = load_json(failure_review_path) if failure_review_path.exists() else {}
+    notes = failure_review.get("notes", []) if failure_review.get("source_fingerprint") == fingerprint else []
+    backlog = strict_backlog(tests, verification, notes)
     datasets = []
     for name, rows in [("native", native), ("target", target)]:
         body = json.dumps(rows, ensure_ascii=False, separators=(",", ":")).encode()

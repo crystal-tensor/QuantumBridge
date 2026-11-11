@@ -48,6 +48,15 @@ class EvidenceTests(unittest.TestCase):
         rows = builder.strict_backlog([{"name":"old", "failure_ids":["a"]}], stale)
         self.assertEqual(rows[0]["status"], "reproduction_pending")
 
+    def test_review_note_never_upgrades_a_failure_or_applies_to_a_pass(self):
+        run = {"name":"now", "profile":"main", "source_match":True, "recorded_at":"now",
+               "cases":[{"id":"f[bad]", "status":"failed"}, {"id":"f[good]", "status":"passed"}]}
+        note = {"prefix":"f", "classification":"CONTRACT_REVIEW_REQUIRED", "diagnosis":"pending", "next":"audit"}
+        rows = {r["id"]:r for r in builder.strict_backlog([{"name":"old", "failure_ids":["f[good]"]}], [run], [note])}
+        self.assertEqual(rows["f[bad]"]["status"], "current_failure")
+        self.assertIn("review_note", rows["f[bad]"])
+        self.assertNotIn("review_note", rows["f[good]"])
+
 
 if __name__ == "__main__":
     unittest.main()
