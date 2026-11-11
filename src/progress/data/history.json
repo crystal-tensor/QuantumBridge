@@ -385,5 +385,113 @@
         }
       }
     ]
+  },
+  {
+    "generated_at": "2026-11-11T08:55:44.680621+00:00",
+    "fingerprint": "59f55fbe7b61ad0f312bb0d663d94fde52c5e1d18d64b072675f456737e59fa6",
+    "datasets": [
+      {
+        "id": "native",
+        "file": "native.json.gz",
+        "sha256": "80919391a4b2f3ec9034aa419731703b112aa0777068251d743dee6be5f6fe71",
+        "count": 8727,
+        "status_counts": {
+          "unverified": 8714,
+          "not_implemented": 3,
+          "partial": 10
+        }
+      },
+      {
+        "id": "target",
+        "file": "target.json.gz",
+        "sha256": "8294ef45757262ba845b7e3c5d1c21825f3ce361a73b693db59d6e00f45ba972",
+        "count": 13612,
+        "status_counts": {
+          "unverified": 13606,
+          "partial": 6
+        }
+      },
+      {
+        "id": "runtime",
+        "file": "runtime.json.gz",
+        "sha256": "28fd7287d4fbc5a91e44f617d5e84c6a4c3fbadfffbed8bdc0f3cde7045d804d",
+        "count": 39339,
+        "status_counts": {
+          "unverified": 39339
+        }
+      }
+    ]
+  },
+  {
+    "generated_at": "2026-11-11T09:37:06.435807+00:00",
+    "fingerprint": "423833c765ff4eacbb179c7f784e72057c4a3ca7071235def96f12f36a666665",
+    "datasets": [
+      {
+        "id": "native",
+        "file": "native.json.gz",
+        "sha256": "4a54442d53fee80d4af679676f37b2efdf84e0e9819430f5ceff7b54d15cddaa",
+        "count": 8727,
+        "status_counts": {
+          "unverified": 8714,
+          "not_implemented": 3,
+          "partial": 10
+        }
+      },
+      {
+        "id": "target",
+        "file": "target.json.gz",
+        "sha256": "8294ef45757262ba845b7e3c5d1c21825f3ce361a73b693db59d6e00f45ba972",
+        "count": 13612,
+        "status_counts": {
+          "unverified": 13606,
+          "partial": 6
+        }
+      },
+      {
+        "id": "runtime",
+        "file": "runtime.json.gz",
+        "sha256": "28fd7287d4fbc5a91e44f617d5e84c6a4c3fbadfffbed8bdc0f3cde7045d804d",
+        "count": 39339,
+        "status_counts": {
+          "unverified": 39339
+        }
+      }
+    ]
+  },
+  {
+    "generated_at": "2026-11-11T09:55:03.655833+00:00",
+    "fingerprint": "423833c765ff4eacbb179c7f784e72057c4a3ca7071235def96f12f36a666665",
+    "datasets": [
+      {
+        "id": "native",
+        "file": "native.json.gz",
+        "sha256": "4a54442d53fee80d4af679676f37b2efdf84e0e9819430f5ceff7b54d15cddaa",
+        "count": 8727,
+        "status_counts": {
+          "unverified": 8714,
+          "not_implemented": 3,
+          "partial": 10
+        }
+      },
+      {
+        "id": "target",
+        "file": "target.json.gz",
+        "sha256": "8294ef45757262ba845b7e3c5d1c21825f3ce361a73b693db59d6e00f45ba972",
+        "count": 13612,
+        "status_counts": {
+          "unverified": 13606,
+          "partial": 6
+        }
+      },
+      {
+        "id": "runtime",
+        "file": "runtime.json.gz",
+        "sha256": "28fd7287d4fbc5a91e44f617d5e84c6a4c3fbadfffbed8bdc0f3cde7045d804d",
+        "count": 39339,
+        "status_counts": {
+          "unverified": 39339
+        }
+      }
+    ]
   }
 ]
