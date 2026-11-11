@@ -8,10 +8,10 @@
   "census_closed": false,
   "first_census_review_due": "2026-11-18T23:59:59+08:00",
   "delivery_forecast": "UNVERIFIED_HIGH_RISK_UNTIL_CENSUS_AND_CRITICAL_PATH_REVIEW",
-  "forecast_reviewed_at": "2026-11-11T19:01:33+08:00",
+  "forecast_reviewed_at": "2026-11-11T19:34:27+08:00",
   "forecast_risks": [
     "The public function denominator, inherited methods, dynamic exports and Native mappings remain open; no whole-project completion percentage is justified.",
-    "The main-profile 512-case public/serialization selection normally exits with 493 passes and 19 failures. The alternate profile prints the same results but twice terminates with SIGSEGV during process shutdown; neither attempt is accepted as normal verification. The crash stacks point to libarrow.2400.dylib memory-pool cleanup, not a confirmed root cause. Process stability remains unresolved.",
+    "The original alternate profile retains two rejected shutdown SIGSEGV runs. Independent imports reproduce Qiskit2.6/PyArrow24 coexistence crashes without QuantumBridge, in both orders; the system allocator does not prevent them. An isolated PyArrow25.0.1 overlay passes twelve import controls and both unchanged 512-case public selections exit normally with493passes/19existingfailures. This reviewed experiment does not replace either original profile or close the remaining failures; reference-profile promotion is pending owner decision.",
     "The 480-case selection now has 475 passes and five failures in both profiles. The one new pass is exactly the owner-approved constructor-memory contract migration, not a production repair. All 53 compilation/source-replay, 34 binding and 41 ownership cases pass per profile; the 401-case source selection retains one unchanged broadcast-rejection conflict. These overlapping selections are not a full suite.",
     "A no-quantum-library raw TensorFlow cos control independently loses cached reverse-over-forward curvature in both TF 2.21.0 environments. Native also has its own false third-order refusal and all-zero composition failures; the framework observation does not waive them or justify copying the defect.",
     "The first runtime/MRO census covers eight available modules plus an explicitly unavailable Finance package, not the full API. Its 39,339 cross-profile candidates overlap the declaration register and cannot be used as a completed denominator.",
@@ -65,13 +65,34 @@
         "scope": "Same frozen source printed 493 passes and 19 existing failures, then the same libarrow cleanup SIGSEGV. Root cause unconfirmed, no third identical retry. Raw system reports stay private; only hashes and crash-site observations are published."
       }
     ],
-    "diagnostic_observations": "docs/engineering/diagnostic_observations.json; four controls, never counted as acceptance passes",
+    "diagnostic_observations": "docs/engineering/diagnostic_observations.json; five diagnostic groups, including twenty-four Arrow import observations and two unchanged candidate public selections, never counted as function acceptance passes",
     "constructor_contract_decision": "Owner approved exactly one constructor-memory assertion. Both profiles pass dynamic numeric/object decomposition, real weak-owner accounting, surviving aliases and final disposal, retaining all original mathematical and resource checks. Prior diagnostic probes remain unchanged as pre-migration observations, not new test acceptance.",
     "incomplete_input_batch": "Retained as a failed observation, not current verification: four own example modules were absent. Complete input closure and a metadata-query-safe SDK execution guard now reproduce 400 passes and one unchanged broadcast contract failure in each profile.",
     "full_suite_accepted": false,
     "native_change_publication": "local_only_pending_remaining_strict_failures",
     "observer_publication": "separate_scoped_metadata_and_page_commits"
   },
+  "dependency_reviews": [
+    {
+      "id": "arrow_macos_coexistence",
+      "state": "PENDING_OWNER_REFERENCE_PROFILE_DECISION",
+      "checkpoint": "goal-arrow-shutdown-P6kkAu",
+      "frozen_source_checkpoint": "goal-mps-memory-contract-p0pMul",
+      "source_fingerprint": "423833c765ff4eacbb179c7f784e72057c4a3ca7071235def96f12f36a666665",
+      "evidence_record": "docs/engineering/diagnostic_observations.json#arrow_coexistence_dependency_review",
+      "evidence_hash": "46b6f0e3c0dc557163e03f9b631a6af72b5a484c7b9a69c380850b54bcc3c3ae",
+      "original_pyarrow": "24.0.0",
+      "candidate_pyarrow": "25.0.1",
+      "sdk_target_versions_changed": false,
+      "original_environments_modified": false,
+      "old_tests_changed": false,
+      "native_production_code_changed": false,
+      "tls_verification_disabled": false,
+      "original_crashes_erased": false,
+      "native_functions_accepted_from_this_review": 0,
+      "recommendation": "Append an explicit macOS PyArrow25.0.1 verification configuration with unchanged Qiskit/PennyLane targets and scientific toolchain versions. Keep original PyArrow24 profiles and rejected receipts; do not silently rewrite either baseline. Both candidate public selections retain the exact512cases and19failureIDs. A complete new profile matrix still needs verification after the profile decision."
+    }
+  ],
   "baseline": {
     "frozen_at": "2026-11-11T03:59:55.009Z",
     "source_files": 2215,

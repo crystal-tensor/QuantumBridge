@@ -585,6 +585,811 @@
         "probe_source_sha256": "84794276a4f2abe811880a6d1a350c664bb6a1b22fbfcbcfeb1dcf48e4e2a0ac"
       },
       "scope": "diagnostic_observation_not_function_or_test_acceptance"
+    },
+    {
+      "id": "arrow_coexistence_dependency_review",
+      "kind": "arrow_coexistence_review",
+      "profile": "main_and_alternate",
+      "recorded_at": "2026-11-11T11:29:04.688836+00:00",
+      "evidence_hash": "46b6f0e3c0dc557163e03f9b631a6af72b5a484c7b9a69c380850b54bcc3c3ae",
+      "source_file": "studio/downloads/arrow_qiskit_import_probe.py",
+      "report": {
+        "native_accepted": false,
+        "source_sha256": "d367b956f3125a59e5354f4f7af8c6221dc5d8c698c5a1b2149a23c7ca7659aa",
+        "observed_host": {
+          "system": "Darwin",
+          "machine": "arm64"
+        },
+        "review_state": "EXPERIMENTALLY_VERIFIED_NOT_PROMOTED_TO_REFERENCE_BASELINE",
+        "baseline_environments_modified": false,
+        "sdk_target_versions_changed": false,
+        "scope": "Import-only coexistence and unchanged selected public cases, not function acceptance or a full suite",
+        "summary": "Qiskit2.6/PyArrow24 crashes without QuantumBridge, in both import orders. System pool does not prevent it. Isolated PyArrow25.0.1 controls and both 512-case public selections exit normally, retaining all 19 existing assertion failures. Original profiles and crash receipts remain unchanged.",
+        "baseline_imports": [
+          {
+            "profile": "main",
+            "case": "arrow_only",
+            "process_exit": 0,
+            "terminal": true,
+            "elapsed_seconds": 0.098,
+            "recorded_at": "2026-11-11T11:12:20.225158+00:00",
+            "observations": {
+              "modules": [
+                {
+                  "requested": "pyarrow",
+                  "version": "24.0.0",
+                  "arrow_already_loaded": false
+                }
+              ],
+              "quantumbridge_imported": false,
+              "arrow_pool_setting": null,
+              "native_accepted": false
+            },
+            "stdout_sha256": "82ff449973965bc6d8f6a26321b02e60f730feeb50be729ae003029aef5ccb46",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "probe_source_sha256": "d367b956f3125a59e5354f4f7af8c6221dc5d8c698c5a1b2149a23c7ca7659aa",
+            "native_accepted": false
+          },
+          {
+            "profile": "main",
+            "case": "qiskit_arrow",
+            "process_exit": 0,
+            "terminal": true,
+            "elapsed_seconds": 0.286,
+            "recorded_at": "2026-11-11T11:12:20.511744+00:00",
+            "observations": {
+              "modules": [
+                {
+                  "requested": "qiskit",
+                  "version": "2.4.1",
+                  "arrow_already_loaded": false
+                },
+                {
+                  "requested": "pyarrow",
+                  "version": "24.0.0",
+                  "arrow_already_loaded": false
+                }
+              ],
+              "quantumbridge_imported": false,
+              "arrow_pool_setting": null,
+              "native_accepted": false
+            },
+            "stdout_sha256": "710968cf42359d31db0e969bc9273db84dcbba86567dc754e5875bc5197d6841",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "probe_source_sha256": "d367b956f3125a59e5354f4f7af8c6221dc5d8c698c5a1b2149a23c7ca7659aa",
+            "native_accepted": false
+          },
+          {
+            "profile": "main",
+            "case": "arrow_qiskit",
+            "process_exit": 0,
+            "terminal": true,
+            "elapsed_seconds": 0.209,
+            "recorded_at": "2026-11-11T11:12:20.720571+00:00",
+            "observations": {
+              "modules": [
+                {
+                  "requested": "pyarrow",
+                  "version": "24.0.0",
+                  "arrow_already_loaded": false
+                },
+                {
+                  "requested": "qiskit",
+                  "version": "2.4.1",
+                  "arrow_already_loaded": true
+                }
+              ],
+              "quantumbridge_imported": false,
+              "arrow_pool_setting": null,
+              "native_accepted": false
+            },
+            "stdout_sha256": "1bd4ef8e1a2696c679290157f8f4128161b89577cfa6a39cc04e289a0059df5c",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "probe_source_sha256": "d367b956f3125a59e5354f4f7af8c6221dc5d8c698c5a1b2149a23c7ca7659aa",
+            "native_accepted": false
+          },
+          {
+            "profile": "main",
+            "case": "tf_arrow",
+            "process_exit": 0,
+            "terminal": true,
+            "elapsed_seconds": 3.918,
+            "recorded_at": "2026-11-11T11:12:24.639123+00:00",
+            "observations": {
+              "modules": [
+                {
+                  "requested": "tensorflow",
+                  "version": "2.21.0",
+                  "arrow_already_loaded": false
+                },
+                {
+                  "requested": "pyarrow",
+                  "version": "24.0.0",
+                  "arrow_already_loaded": true
+                }
+              ],
+              "quantumbridge_imported": false,
+              "arrow_pool_setting": null,
+              "native_accepted": false
+            },
+            "stdout_sha256": "9f5ab9aabfc0fad60bd05237cb184e34b02d7d7b2540d80cc0fb4bb2f9da1c56",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "probe_source_sha256": "d367b956f3125a59e5354f4f7af8c6221dc5d8c698c5a1b2149a23c7ca7659aa",
+            "native_accepted": false
+          },
+          {
+            "profile": "main",
+            "case": "tf_qiskit_arrow",
+            "process_exit": 0,
+            "terminal": true,
+            "elapsed_seconds": 3.087,
+            "recorded_at": "2026-11-11T11:12:27.726299+00:00",
+            "observations": {
+              "modules": [
+                {
+                  "requested": "tensorflow",
+                  "version": "2.21.0",
+                  "arrow_already_loaded": false
+                },
+                {
+                  "requested": "qiskit",
+                  "version": "2.4.1",
+                  "arrow_already_loaded": true
+                },
+                {
+                  "requested": "pyarrow",
+                  "version": "24.0.0",
+                  "arrow_already_loaded": true
+                }
+              ],
+              "quantumbridge_imported": false,
+              "arrow_pool_setting": null,
+              "native_accepted": false
+            },
+            "stdout_sha256": "6cb01535f6db6da39a0369a807ac20878e24f6d7ae14ed357430c30439b3aa39",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "probe_source_sha256": "d367b956f3125a59e5354f4f7af8c6221dc5d8c698c5a1b2149a23c7ca7659aa",
+            "native_accepted": false
+          },
+          {
+            "profile": "main",
+            "case": "tf_qiskit_arrow_system_pool",
+            "process_exit": 0,
+            "terminal": true,
+            "elapsed_seconds": 3.097,
+            "recorded_at": "2026-11-11T11:12:30.823441+00:00",
+            "observations": {
+              "modules": [
+                {
+                  "requested": "tensorflow",
+                  "version": "2.21.0",
+                  "arrow_already_loaded": false
+                },
+                {
+                  "requested": "qiskit",
+                  "version": "2.4.1",
+                  "arrow_already_loaded": true
+                },
+                {
+                  "requested": "pyarrow",
+                  "version": "24.0.0",
+                  "arrow_already_loaded": true
+                }
+              ],
+              "quantumbridge_imported": false,
+              "arrow_pool_setting": "system",
+              "native_accepted": false
+            },
+            "stdout_sha256": "67aa2d3c48eeb78b1e3b15564e7daf9f12018cf45e87e55ebaa9367268317fa8",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "probe_source_sha256": "d367b956f3125a59e5354f4f7af8c6221dc5d8c698c5a1b2149a23c7ca7659aa",
+            "native_accepted": false
+          },
+          {
+            "profile": "alternate",
+            "case": "arrow_only",
+            "process_exit": 0,
+            "terminal": true,
+            "elapsed_seconds": 0.089,
+            "recorded_at": "2026-11-11T11:12:30.913194+00:00",
+            "observations": {
+              "modules": [
+                {
+                  "requested": "pyarrow",
+                  "version": "24.0.0",
+                  "arrow_already_loaded": false
+                }
+              ],
+              "quantumbridge_imported": false,
+              "arrow_pool_setting": null,
+              "native_accepted": false
+            },
+            "stdout_sha256": "82ff449973965bc6d8f6a26321b02e60f730feeb50be729ae003029aef5ccb46",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "probe_source_sha256": "d367b956f3125a59e5354f4f7af8c6221dc5d8c698c5a1b2149a23c7ca7659aa",
+            "native_accepted": false
+          },
+          {
+            "profile": "alternate",
+            "case": "qiskit_arrow",
+            "process_exit": -11,
+            "terminal": true,
+            "elapsed_seconds": 0.302,
+            "recorded_at": "2026-11-11T11:12:31.215130+00:00",
+            "observations": {
+              "modules": [
+                {
+                  "requested": "qiskit",
+                  "version": "2.6.0",
+                  "arrow_already_loaded": false
+                },
+                {
+                  "requested": "pyarrow",
+                  "version": "24.0.0",
+                  "arrow_already_loaded": false
+                }
+              ],
+              "quantumbridge_imported": false,
+              "arrow_pool_setting": null,
+              "native_accepted": false
+            },
+            "stdout_sha256": "002cd445dd0e44d405bda4245d8313591c7270855d6348a1108cad73b8674e83",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "probe_source_sha256": "d367b956f3125a59e5354f4f7af8c6221dc5d8c698c5a1b2149a23c7ca7659aa",
+            "native_accepted": false
+          },
+          {
+            "profile": "alternate",
+            "case": "arrow_qiskit",
+            "process_exit": -11,
+            "terminal": true,
+            "elapsed_seconds": 0.322,
+            "recorded_at": "2026-11-11T11:12:31.537559+00:00",
+            "observations": {
+              "modules": [
+                {
+                  "requested": "pyarrow",
+                  "version": "24.0.0",
+                  "arrow_already_loaded": false
+                },
+                {
+                  "requested": "qiskit",
+                  "version": "2.6.0",
+                  "arrow_already_loaded": true
+                }
+              ],
+              "quantumbridge_imported": false,
+              "arrow_pool_setting": null,
+              "native_accepted": false
+            },
+            "stdout_sha256": "b7cbe6cfbab7c16a63967400c163bf57bb519d0ab8b68b993c3c76740457d738",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "probe_source_sha256": "d367b956f3125a59e5354f4f7af8c6221dc5d8c698c5a1b2149a23c7ca7659aa",
+            "native_accepted": false
+          },
+          {
+            "profile": "alternate",
+            "case": "tf_arrow",
+            "process_exit": 0,
+            "terminal": true,
+            "elapsed_seconds": 3.149,
+            "recorded_at": "2026-11-11T11:12:34.686686+00:00",
+            "observations": {
+              "modules": [
+                {
+                  "requested": "tensorflow",
+                  "version": "2.21.0",
+                  "arrow_already_loaded": false
+                },
+                {
+                  "requested": "pyarrow",
+                  "version": "24.0.0",
+                  "arrow_already_loaded": true
+                }
+              ],
+              "quantumbridge_imported": false,
+              "arrow_pool_setting": null,
+              "native_accepted": false
+            },
+            "stdout_sha256": "9f5ab9aabfc0fad60bd05237cb184e34b02d7d7b2540d80cc0fb4bb2f9da1c56",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "probe_source_sha256": "d367b956f3125a59e5354f4f7af8c6221dc5d8c698c5a1b2149a23c7ca7659aa",
+            "native_accepted": false
+          },
+          {
+            "profile": "alternate",
+            "case": "tf_qiskit_arrow",
+            "process_exit": -11,
+            "terminal": true,
+            "elapsed_seconds": 3.345,
+            "recorded_at": "2026-11-11T11:12:38.031576+00:00",
+            "observations": {
+              "modules": [
+                {
+                  "requested": "tensorflow",
+                  "version": "2.21.0",
+                  "arrow_already_loaded": false
+                },
+                {
+                  "requested": "qiskit",
+                  "version": "2.6.0",
+                  "arrow_already_loaded": true
+                },
+                {
+                  "requested": "pyarrow",
+                  "version": "24.0.0",
+                  "arrow_already_loaded": true
+                }
+              ],
+              "quantumbridge_imported": false,
+              "arrow_pool_setting": null,
+              "native_accepted": false
+            },
+            "stdout_sha256": "9a09de0978d95824f6baf30ddb6818c21892392ddf90bde15997ce76b8df3f40",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "probe_source_sha256": "d367b956f3125a59e5354f4f7af8c6221dc5d8c698c5a1b2149a23c7ca7659aa",
+            "native_accepted": false
+          },
+          {
+            "profile": "alternate",
+            "case": "tf_qiskit_arrow_system_pool",
+            "process_exit": -11,
+            "terminal": true,
+            "elapsed_seconds": 3.359,
+            "recorded_at": "2026-11-11T11:12:41.391225+00:00",
+            "observations": {
+              "modules": [
+                {
+                  "requested": "tensorflow",
+                  "version": "2.21.0",
+                  "arrow_already_loaded": false
+                },
+                {
+                  "requested": "qiskit",
+                  "version": "2.6.0",
+                  "arrow_already_loaded": true
+                },
+                {
+                  "requested": "pyarrow",
+                  "version": "24.0.0",
+                  "arrow_already_loaded": true
+                }
+              ],
+              "quantumbridge_imported": false,
+              "arrow_pool_setting": "system",
+              "native_accepted": false
+            },
+            "stdout_sha256": "2ca6aad6e763162aaad549152b824e8c220d8bcd13154600fa3889fbccdb4b66",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "probe_source_sha256": "d367b956f3125a59e5354f4f7af8c6221dc5d8c698c5a1b2149a23c7ca7659aa",
+            "native_accepted": false
+          }
+        ],
+        "candidate_imports": [
+          {
+            "profile": "main",
+            "case": "arrow_only",
+            "process_exit": 0,
+            "terminal": true,
+            "elapsed_seconds": 1.903,
+            "recorded_at": "2026-11-11T11:20:04.019225+00:00",
+            "observations": {
+              "modules": [
+                {
+                  "requested": "pyarrow",
+                  "version": "25.0.1",
+                  "arrow_already_loaded": false
+                }
+              ],
+              "quantumbridge_imported": false,
+              "arrow_pool_setting": null,
+              "native_accepted": false
+            },
+            "stdout_sha256": "7d2597ff9969fd180f1b980e767d69ccaa9ac7364f0080e977e02c3c003ccb89",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "probe_source_sha256": "d367b956f3125a59e5354f4f7af8c6221dc5d8c698c5a1b2149a23c7ca7659aa",
+            "native_accepted": false
+          },
+          {
+            "profile": "main",
+            "case": "qiskit_arrow",
+            "process_exit": 0,
+            "terminal": true,
+            "elapsed_seconds": 0.223,
+            "recorded_at": "2026-11-11T11:20:04.242773+00:00",
+            "observations": {
+              "modules": [
+                {
+                  "requested": "qiskit",
+                  "version": "2.4.1",
+                  "arrow_already_loaded": false
+                },
+                {
+                  "requested": "pyarrow",
+                  "version": "25.0.1",
+                  "arrow_already_loaded": false
+                }
+              ],
+              "quantumbridge_imported": false,
+              "arrow_pool_setting": null,
+              "native_accepted": false
+            },
+            "stdout_sha256": "2505b6e4ce6660b8996e7234ddf934ab381de1626b85e057f1e4ba683419282e",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "probe_source_sha256": "d367b956f3125a59e5354f4f7af8c6221dc5d8c698c5a1b2149a23c7ca7659aa",
+            "native_accepted": false
+          },
+          {
+            "profile": "main",
+            "case": "arrow_qiskit",
+            "process_exit": 0,
+            "terminal": true,
+            "elapsed_seconds": 0.216,
+            "recorded_at": "2026-11-11T11:20:04.459324+00:00",
+            "observations": {
+              "modules": [
+                {
+                  "requested": "pyarrow",
+                  "version": "25.0.1",
+                  "arrow_already_loaded": false
+                },
+                {
+                  "requested": "qiskit",
+                  "version": "2.4.1",
+                  "arrow_already_loaded": true
+                }
+              ],
+              "quantumbridge_imported": false,
+              "arrow_pool_setting": null,
+              "native_accepted": false
+            },
+            "stdout_sha256": "b87c3ee076b299492e93b4d4b909099fe48019f5c0a9096775e86f4da60bde73",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "probe_source_sha256": "d367b956f3125a59e5354f4f7af8c6221dc5d8c698c5a1b2149a23c7ca7659aa",
+            "native_accepted": false
+          },
+          {
+            "profile": "main",
+            "case": "tf_arrow",
+            "process_exit": 0,
+            "terminal": true,
+            "elapsed_seconds": 3.254,
+            "recorded_at": "2026-11-11T11:20:07.713520+00:00",
+            "observations": {
+              "modules": [
+                {
+                  "requested": "tensorflow",
+                  "version": "2.21.0",
+                  "arrow_already_loaded": false
+                },
+                {
+                  "requested": "pyarrow",
+                  "version": "25.0.1",
+                  "arrow_already_loaded": true
+                }
+              ],
+              "quantumbridge_imported": false,
+              "arrow_pool_setting": null,
+              "native_accepted": false
+            },
+            "stdout_sha256": "9f782352465938fee9ab40092f47400b889ef211563af36c4c24b7612946684e",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "probe_source_sha256": "d367b956f3125a59e5354f4f7af8c6221dc5d8c698c5a1b2149a23c7ca7659aa",
+            "native_accepted": false
+          },
+          {
+            "profile": "main",
+            "case": "tf_qiskit_arrow",
+            "process_exit": 0,
+            "terminal": true,
+            "elapsed_seconds": 3.046,
+            "recorded_at": "2026-11-11T11:20:10.759940+00:00",
+            "observations": {
+              "modules": [
+                {
+                  "requested": "tensorflow",
+                  "version": "2.21.0",
+                  "arrow_already_loaded": false
+                },
+                {
+                  "requested": "qiskit",
+                  "version": "2.4.1",
+                  "arrow_already_loaded": true
+                },
+                {
+                  "requested": "pyarrow",
+                  "version": "25.0.1",
+                  "arrow_already_loaded": true
+                }
+              ],
+              "quantumbridge_imported": false,
+              "arrow_pool_setting": null,
+              "native_accepted": false
+            },
+            "stdout_sha256": "1ccadeff3df50ac74135ed198c6e9c2eaf9a7d6f2d8efee214b9733175120dd0",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "probe_source_sha256": "d367b956f3125a59e5354f4f7af8c6221dc5d8c698c5a1b2149a23c7ca7659aa",
+            "native_accepted": false
+          },
+          {
+            "profile": "main",
+            "case": "tf_qiskit_arrow_system_pool",
+            "process_exit": 0,
+            "terminal": true,
+            "elapsed_seconds": 3.057,
+            "recorded_at": "2026-11-11T11:20:13.818274+00:00",
+            "observations": {
+              "modules": [
+                {
+                  "requested": "tensorflow",
+                  "version": "2.21.0",
+                  "arrow_already_loaded": false
+                },
+                {
+                  "requested": "qiskit",
+                  "version": "2.4.1",
+                  "arrow_already_loaded": true
+                },
+                {
+                  "requested": "pyarrow",
+                  "version": "25.0.1",
+                  "arrow_already_loaded": true
+                }
+              ],
+              "quantumbridge_imported": false,
+              "arrow_pool_setting": "system",
+              "native_accepted": false
+            },
+            "stdout_sha256": "6bda03d3b84b60c570813505bff38a4e2e1f903c8597a4801d4af9c88a1dccb4",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "probe_source_sha256": "d367b956f3125a59e5354f4f7af8c6221dc5d8c698c5a1b2149a23c7ca7659aa",
+            "native_accepted": false
+          },
+          {
+            "profile": "alternate",
+            "case": "arrow_only",
+            "process_exit": 0,
+            "terminal": true,
+            "elapsed_seconds": 0.09,
+            "recorded_at": "2026-11-11T11:20:13.908720+00:00",
+            "observations": {
+              "modules": [
+                {
+                  "requested": "pyarrow",
+                  "version": "25.0.1",
+                  "arrow_already_loaded": false
+                }
+              ],
+              "quantumbridge_imported": false,
+              "arrow_pool_setting": null,
+              "native_accepted": false
+            },
+            "stdout_sha256": "7d2597ff9969fd180f1b980e767d69ccaa9ac7364f0080e977e02c3c003ccb89",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "probe_source_sha256": "d367b956f3125a59e5354f4f7af8c6221dc5d8c698c5a1b2149a23c7ca7659aa",
+            "native_accepted": false
+          },
+          {
+            "profile": "alternate",
+            "case": "qiskit_arrow",
+            "process_exit": 0,
+            "terminal": true,
+            "elapsed_seconds": 0.234,
+            "recorded_at": "2026-11-11T11:20:14.143506+00:00",
+            "observations": {
+              "modules": [
+                {
+                  "requested": "qiskit",
+                  "version": "2.6.0",
+                  "arrow_already_loaded": false
+                },
+                {
+                  "requested": "pyarrow",
+                  "version": "25.0.1",
+                  "arrow_already_loaded": false
+                }
+              ],
+              "quantumbridge_imported": false,
+              "arrow_pool_setting": null,
+              "native_accepted": false
+            },
+            "stdout_sha256": "28b89cfd3a9461d30ce6cbb6485808a02d847e23674db3c165c5109839d25be3",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "probe_source_sha256": "d367b956f3125a59e5354f4f7af8c6221dc5d8c698c5a1b2149a23c7ca7659aa",
+            "native_accepted": false
+          },
+          {
+            "profile": "alternate",
+            "case": "arrow_qiskit",
+            "process_exit": 0,
+            "terminal": true,
+            "elapsed_seconds": 0.23,
+            "recorded_at": "2026-11-11T11:20:14.374178+00:00",
+            "observations": {
+              "modules": [
+                {
+                  "requested": "pyarrow",
+                  "version": "25.0.1",
+                  "arrow_already_loaded": false
+                },
+                {
+                  "requested": "qiskit",
+                  "version": "2.6.0",
+                  "arrow_already_loaded": true
+                }
+              ],
+              "quantumbridge_imported": false,
+              "arrow_pool_setting": null,
+              "native_accepted": false
+            },
+            "stdout_sha256": "60af527c1f20b428df90e3663248e60ed63ef64086330a0452af533886f6b354",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "probe_source_sha256": "d367b956f3125a59e5354f4f7af8c6221dc5d8c698c5a1b2149a23c7ca7659aa",
+            "native_accepted": false
+          },
+          {
+            "profile": "alternate",
+            "case": "tf_arrow",
+            "process_exit": 0,
+            "terminal": true,
+            "elapsed_seconds": 2.986,
+            "recorded_at": "2026-11-11T11:20:17.360787+00:00",
+            "observations": {
+              "modules": [
+                {
+                  "requested": "tensorflow",
+                  "version": "2.21.0",
+                  "arrow_already_loaded": false
+                },
+                {
+                  "requested": "pyarrow",
+                  "version": "25.0.1",
+                  "arrow_already_loaded": true
+                }
+              ],
+              "quantumbridge_imported": false,
+              "arrow_pool_setting": null,
+              "native_accepted": false
+            },
+            "stdout_sha256": "9f782352465938fee9ab40092f47400b889ef211563af36c4c24b7612946684e",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "probe_source_sha256": "d367b956f3125a59e5354f4f7af8c6221dc5d8c698c5a1b2149a23c7ca7659aa",
+            "native_accepted": false
+          },
+          {
+            "profile": "alternate",
+            "case": "tf_qiskit_arrow",
+            "process_exit": 0,
+            "terminal": true,
+            "elapsed_seconds": 3.164,
+            "recorded_at": "2026-11-11T11:20:20.525166+00:00",
+            "observations": {
+              "modules": [
+                {
+                  "requested": "tensorflow",
+                  "version": "2.21.0",
+                  "arrow_already_loaded": false
+                },
+                {
+                  "requested": "qiskit",
+                  "version": "2.6.0",
+                  "arrow_already_loaded": true
+                },
+                {
+                  "requested": "pyarrow",
+                  "version": "25.0.1",
+                  "arrow_already_loaded": true
+                }
+              ],
+              "quantumbridge_imported": false,
+              "arrow_pool_setting": null,
+              "native_accepted": false
+            },
+            "stdout_sha256": "667861f61f05b67afda33ce945e28ed5d94a7371a007ee276390f625f0b1c902",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "probe_source_sha256": "d367b956f3125a59e5354f4f7af8c6221dc5d8c698c5a1b2149a23c7ca7659aa",
+            "native_accepted": false
+          },
+          {
+            "profile": "alternate",
+            "case": "tf_qiskit_arrow_system_pool",
+            "process_exit": 0,
+            "terminal": true,
+            "elapsed_seconds": 3.095,
+            "recorded_at": "2026-11-11T11:20:23.620669+00:00",
+            "observations": {
+              "modules": [
+                {
+                  "requested": "tensorflow",
+                  "version": "2.21.0",
+                  "arrow_already_loaded": false
+                },
+                {
+                  "requested": "qiskit",
+                  "version": "2.6.0",
+                  "arrow_already_loaded": true
+                },
+                {
+                  "requested": "pyarrow",
+                  "version": "25.0.1",
+                  "arrow_already_loaded": true
+                }
+              ],
+              "quantumbridge_imported": false,
+              "arrow_pool_setting": "system",
+              "native_accepted": false
+            },
+            "stdout_sha256": "5cc0af2c572c2fcbfea147d420648c452ee93fbe8fbc11ddbd13b346b29127a6",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "probe_source_sha256": "d367b956f3125a59e5354f4f7af8c6221dc5d8c698c5a1b2149a23c7ca7659aa",
+            "native_accepted": false
+          }
+        ],
+        "candidate_public": [
+          {
+            "profile": "main",
+            "total": 512,
+            "passed": 493,
+            "failed": 19,
+            "skipped": 0,
+            "process_exit": 1,
+            "recorded_at": "2026-11-11T11:25:09.905871+00:00",
+            "junit_sha256": "fa7c1780b743a14a840cf03e798865d4d30a6e388313f2a57c379ed6179ac1f6",
+            "dependency_receipt_sha256": "346aa106608884c3c47c3952a18b894fdce38699f8dedee4f6e0a91c52dd93f6",
+            "environment": {
+              "python": "3.12.6",
+              "numpy": "2.4.6",
+              "scipy": "1.18.1",
+              "tensorflow": "2.21.0",
+              "jax": "0.7.1",
+              "torch": "2.12.0",
+              "qiskit": "2.4.1",
+              "pennylane": "0.44.1",
+              "pyarrow": "25.0.1"
+            },
+            "original_case_population_and_failure_ids_unchanged": true,
+            "native_accepted": false
+          },
+          {
+            "profile": "alternate",
+            "total": 512,
+            "passed": 493,
+            "failed": 19,
+            "skipped": 0,
+            "process_exit": 1,
+            "recorded_at": "2026-11-11T11:29:04.688836+00:00",
+            "junit_sha256": "e30873219db0c4cc6fcb7beb3cf0e1ea3fdf7353427067e7b9390b96ef8936a2",
+            "dependency_receipt_sha256": "fe649d0708067c2af523b132707968197064fb0b08c109ad66ddb80234cb5b08",
+            "environment": {
+              "python": "3.12.6",
+              "numpy": "2.4.6",
+              "scipy": "1.18.1",
+              "tensorflow": "2.21.0",
+              "jax": "0.6.2",
+              "torch": "2.12.0",
+              "qiskit": "2.6.0",
+              "pennylane": "0.42.3",
+              "pyarrow": "25.0.1"
+            },
+            "original_case_population_and_failure_ids_unchanged": true,
+            "native_accepted": false
+          }
+        ],
+        "wheel": {
+          "version": "25.0.1",
+          "filename": "pyarrow-25.0.1-cp312-cp312-macosx_12_0_arm64.whl",
+          "url": "https://files.pythonhosted.org/packages/a6/e2/9ab15b88cbfac28e16419ce5439ec29234c5172cb8259301b4ba639bdec0/pyarrow-25.0.1-cp312-cp312-macosx_12_0_arm64.whl",
+          "sha256": "df961f2e7ae9cf496459259d798652c70625f6c080650d6952f8c04053c58ee9",
+          "size": 35861559,
+          "official_digest_matched": true,
+          "tls_verification_disabled": false
+        },
+        "primary_sources": [
+          "https://github.com/apache/arrow/issues/50428",
+          "https://arrow.apache.org/release/25.0.1.html"
+        ]
+      },
+      "scope": "diagnostic_observation_not_function_or_test_acceptance"
     }
   ]
 }

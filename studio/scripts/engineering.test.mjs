@@ -68,7 +68,7 @@ test("namespace files remain unreviewed metadata, with exact artifacts and no lo
   }
 });
 test("framework and lifetime diagnostics are not Native acceptance or test passes",async()=>{
-  assert.equal(manifest.diagnostic_observations.length,4);
+  assert.equal(manifest.diagnostic_observations.length,5);
   const script=await readFile(new URL("../downloads/tensorflow_cached_cos_probe.py",import.meta.url));
   for(const row of manifest.diagnostic_observations){
     assert.equal(row.report.native_accepted,false);
@@ -77,10 +77,24 @@ test("framework and lifetime diagnostics are not Native acceptance or test passe
       assert.equal(row.report.quantumbridge_or_sdks_imported,false);
       assert.equal(row.report.source_sha256,createHash("sha256").update(script).digest("hex"));
       assert.ok(row.report.rows.some(r=>r.results.some(x=>!x.matches_formula)));
-    }else{
+    }else if(row.kind==="mps_binding_retention"){
       assert.equal(row.report.original_constructor_assertion_changed,false);
       assert.equal(row.report.constructor_after_disposal,0);
       assert.equal(row.report.constructor_before,row.report.fixed_numeric_bytes+row.report.retained_binding_allowances.reduce((sum,x)=>sum+x.bytes,0));
+    }else{
+      assert.equal(row.kind,"arrow_coexistence_review");
+      const code=await readFile(new URL("../downloads/arrow_qiskit_import_probe.py",import.meta.url));
+      assert.equal(row.report.source_sha256,createHash("sha256").update(code).digest("hex"));
+      assert.equal(row.report.review_state,"EXPERIMENTALLY_VERIFIED_NOT_PROMOTED_TO_REFERENCE_BASELINE");
+      assert.equal(row.report.baseline_environments_modified,false);
+      assert.equal(row.report.sdk_target_versions_changed,false);
+      assert.equal(row.report.baseline_imports.length,12);
+      assert.equal(row.report.candidate_imports.length,12);
+      assert.equal(row.report.baseline_imports.filter(r=>r.process_exit===-11).length,4);
+      assert.ok(row.report.candidate_imports.every(r=>r.process_exit===0&&r.native_accepted===false));
+      assert.ok([...row.report.baseline_imports,...row.report.candidate_imports].every(r=>r.observations.quantumbridge_imported===false));
+      assert.equal(row.report.candidate_public.length,2);
+      assert.ok(row.report.candidate_public.every(r=>r.process_exit===1&&r.total===512&&r.passed===493&&r.failed===19&&r.skipped===0&&r.original_case_population_and_failure_ids_unchanged&&r.native_accepted===false));
     }
   }
 });
