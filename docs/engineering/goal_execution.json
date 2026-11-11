@@ -8,7 +8,7 @@
   "census_closed": false,
   "first_census_review_due": "2026-11-18T23:59:59+08:00",
   "delivery_forecast": "UNVERIFIED_HIGH_RISK_UNTIL_CENSUS_AND_CRITICAL_PATH_REVIEW",
-  "forecast_reviewed_at": "2026-11-11T20:54:15.608627+00:00",
+  "forecast_reviewed_at": "2026-11-11T22:03:12.029953+00:00",
   "forecast_risks": [
     "The public function denominator, inherited methods, dynamic exports and Native mappings remain open; no whole-project completion percentage is justified.",
     "Original Arrow24/Qiskit2.6 coexistence remains unresolved and no new reference configuration is approved. The archived Arrow25 experiment remains tied to the prior Native fingerprint, not current verification. SDK-only reference processes and current Native-only regressions terminate normally; combined alternate public verification is still open.",
@@ -23,7 +23,8 @@
     "The3f3c binding snapshot fixes a real inplace userdata-ownership incompatibility, with31Native and12actual SDK cases per profile. Broader selected tests retain23unique strict failures; the additional old QASM3 assertion fails identically on prior e5ae source. No new full-suite acceptance, denominator closure, TF cache fix or hardware certification; the six-month deadline is unchanged and high risk pending the November18 critical-path review.",
     "Theab2c snapshot repairs real public scalar-binding precision/acceptance defects, not TF cache curvature. All23prior strict failure IDs remain current. Full denominator, optional-package and final gates are still open;217selected Native test cases and82actual reference cases per profile are not a completion rate. The first critical-path review remains due November18 and the six-month deadline is unchanged, high risk and unverified.",
     "Actual offline collection now accounts for all1307repository test modules,35955main/35956alternate parameterized items. This closes only the test-module collection scope, not the public API denominator or full execution. Broader execution is underway; earlier23strict failures were selected, not an authoritative whole-suite total. Deadline remains unchanged and high risk pending November18 review.",
-    "Broader execution discovers one previously uncounted Legacy/public backend alias conflict; the verified selected failure union is24perprofile, not a full-suite total. A300second compiler group timeout is incomplete verification, not a pass or a proven algorithm defect. Current-context743case primitives and13case approved memory groups pass in both profiles. Full strict execution, API denominator and six-month critical-path forecast remain open; no deadline or scope change."
+    "Broader execution discovers one previously uncounted Legacy/public backend alias conflict; the verified selected failure union is24perprofile, not a full-suite total. A300second compiler group timeout is incomplete verification, not a pass or a proven algorithm defect. Current-context743case primitives and13case approved memory groups pass in both profiles. Full strict execution, API denominator and six-month critical-path forecast remain open; no deadline or scope change.",
+    "compiler_module_timeout: one nested two-wire MPS best-method case remains unaccepted after both600second module caps; profiling identifies extensive shifted evaluations, not a repaired performance path."
   ],
   "scope_reduced": false,
   "latest_batch": {
@@ -1912,21 +1913,40 @@
     }
   ],
   "current_investigation": {
-    "checkpoint": "goal-tf-edge-proof-tR1d73",
-    "source_fingerprint": "3f3cb01175af28c9bb0dd53c201877f8353814f94201a307926793c4ca13ffb6",
-    "profile": "main",
+    "checkpoint": "goal-tf-runtime-edge-iQV9pU",
+    "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
     "tensorflow": "2.21.0",
-    "scope": "Read-only boundary edge provenance; not Native acceptance or a TF repair",
-    "node_count": 119,
-    "placeholder_nodes": 53,
-    "graph_complete": true,
-    "source_sha256": "0b220dbb5f4c97821458e66978fa0ee40603f48f1d6a8793e5cfcf91a4221adb",
-    "evidence_hash": "9a7ea6e579eb86a133cb7bf97344c765b9933a4cc82e9f329bbafa48879e634c",
-    "zero_edge_exemption_promoted": false,
+    "scope": "runtime_zero_exception_diagnostic_not_native_acceptance",
+    "state": "REJECTED_NOT_PROMOTED",
+    "profiles": [
+      {
+        "profile": "main",
+        "passed": 12,
+        "failed": 4,
+        "third_rejected": 2,
+        "third_total": 4
+      },
+      {
+        "profile": "alternate",
+        "passed": 12,
+        "failed": 4,
+        "third_rejected": 2,
+        "third_total": 4
+      }
+    ],
+    "nonzero_boundary_observed": [
+      -0.02096358416554003,
+      -0.04129570981267524
+    ],
+    "zero_curvature_is_not_a_valid_repair": true,
+    "third_order_policy_weakened_at_origin": true,
+    "prototype_promoted": false,
     "production_tensorflow_changed": false,
     "installed_framework_changed": false,
     "original_assertions_changed": false,
-    "meaning": "The boundary input depends on runtime placeholders, not a certified static zero. Do not weaken third-order refusal or replace disconnected curvature by zero. The four strict cache failures remain; source identity is the prior3f snapshot."
+    "strict_cached_failures_remaining_each_profile": 4,
+    "evidence_hash": "043bf102c51f57c314f2bdb64c142801d0f9ae99c781026d268372bd7b616f72",
+    "meaning": "A runtime-zero exemption neither repairs the four cached mixed-AD failures nor preserves third-order refusal at the origin. Keep the original policy and independent mathematical assertions; no production patch promoted."
   },
   "investigation_history": [
     {
@@ -2022,6 +2042,23 @@
         "passed": 12
       },
       "evidence_hash": "deed30669af47a212f8a7c43050f095ba3a672fb346e49307baa15af94d1b2aa"
+    },
+    {
+      "checkpoint": "goal-tf-edge-proof-tR1d73",
+      "source_fingerprint": "3f3cb01175af28c9bb0dd53c201877f8353814f94201a307926793c4ca13ffb6",
+      "profile": "main",
+      "tensorflow": "2.21.0",
+      "scope": "Read-only boundary edge provenance; not Native acceptance or a TF repair",
+      "node_count": 119,
+      "placeholder_nodes": 53,
+      "graph_complete": true,
+      "source_sha256": "0b220dbb5f4c97821458e66978fa0ee40603f48f1d6a8793e5cfcf91a4221adb",
+      "evidence_hash": "9a7ea6e579eb86a133cb7bf97344c765b9933a4cc82e9f329bbafa48879e634c",
+      "zero_edge_exemption_promoted": false,
+      "production_tensorflow_changed": false,
+      "installed_framework_changed": false,
+      "original_assertions_changed": false,
+      "meaning": "The boundary input depends on runtime placeholders, not a certified static zero. Do not weaken third-order refusal or replace disconnected curvature by zero. The four strict cache failures remain; source identity is the prior3f snapshot."
     }
   ],
   "latest_metadata_batch": {
@@ -2255,8 +2292,8 @@
     },
     {
       "id": "dynamic_backend_alias_single_case",
-      "state": "OWNER_DECISION_REQUIRED_NOT_SUBMITTED",
-      "question_submitted": false,
+      "state": "PENDING_EXPLICIT_OWNER_REPLY",
+      "question_submitted": true,
       "case_ids": [
         "tests.circuit.test_control_flow_native::test_backend_jobs_v2_dynamic_registers_and_exact_estimators"
       ],
@@ -2750,210 +2787,426 @@
     "earlier_collection_timestamps_preserved": true
   },
   "latest_verification_batch": {
-    "checkpoint": "goal-full-test-census-LTQ5ZI",
+    "checkpoint": "goal-compiler-module-matrix-F36Qfx",
+    "recorded_at": "2026-11-11T22:03:12.029953+00:00",
     "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
-    "recorded_at": "2026-11-11T20:54:15.608326+00:00",
+    "source_manifest_sha256": "9409fdcb1cc16c3e9a4fe52a816afe385181395fc12fad7babe288f39d554543",
+    "scope": "compiler_directory_and_explicit_companion_references_not_full_api_acceptance",
+    "normal_recorded_workers": 152,
+    "profiles": [
+      {
+        "profile": "main",
+        "expected_compiler_cases": 1301,
+        "passed_compiler_cases": 1300,
+        "passed_reference_cases": 140,
+        "normal_recorded_workers": 76,
+        "duplicate_cases": 0,
+        "unexpected_cases": 0
+      },
+      {
+        "profile": "alternate",
+        "expected_compiler_cases": 1301,
+        "passed_compiler_cases": 1300,
+        "passed_reference_cases": 140,
+        "normal_recorded_workers": 76,
+        "duplicate_cases": 0,
+        "unexpected_cases": 0
+      }
+    ],
+    "outstanding_cases": [
+      "tests/compiler/test_native_source_batch_final_compilation.py::test_nested_source_branches_keep_native_multiqubit_curvature[quantumbridge.mps-2-best]"
+    ],
+    "incomplete_module_attempts": [
+      {
+        "name": "compiler-main-27",
+        "profile": "main",
+        "module": "tests/compiler/test_native_source_batch_final_compilation.py",
+        "terminal": true,
+        "exit": -9,
+        "timed_out": true,
+        "started_unix": 1794432235.8301241,
+        "finished_unix": 1794432835.845093,
+        "tests": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "junit_sha256": null,
+        "origin_sha256": null,
+        "guard_events": null,
+        "native_source_match": false,
+        "sdk_imported": null
+      },
+      {
+        "name": "compiler-alternate-27",
+        "profile": "alternate",
+        "module": "tests/compiler/test_native_source_batch_final_compilation.py",
+        "terminal": true,
+        "exit": -9,
+        "timed_out": true,
+        "started_unix": 1794433400.690426,
+        "finished_unix": 1794434000.704441,
+        "tests": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "junit_sha256": null,
+        "origin_sha256": null,
+        "guard_events": null,
+        "native_source_match": false,
+        "sdk_imported": null
+      }
+    ],
+    "strict_selected_failure_count_still": 24,
+    "full_compiler_accepted": false,
+    "full_suite_accepted": false,
+    "public_api_denominator_closed": false,
+    "complete_function_acceptances": 0,
     "native_library_changed": false,
     "original_tests_changed_this_batch": false,
+    "additional_migrations": 0,
     "original_protected_files": 1373,
     "unchanged_original_files": 1371,
     "previously_approved_files": 2,
     "previously_approved_cases": 8,
-    "additional_migrations": 0,
-    "normal_selected_workers_recorded": 14,
-    "current_context_workers": 6,
-    "current_context_manifest_sha256": "9409fdcb1cc16c3e9a4fe52a816afe385181395fc12fad7babe288f39d554543",
-    "current_context_each_profile": {
-      "total": 757,
-      "passed": 756,
-      "failed": 1,
-      "skipped": 0,
-      "primitives": {
-        "passed": 743
-      },
-      "approved_mps_memory": {
-        "passed": 13
-      }
-    },
-    "same_native_earlier_tool_context": {
-      "workers": 8,
-      "scope": "Broad core/circuit/serialization/memory frozen results retained; the tooling test file later grew5to7cases, so full test-context validation must not be relabeled as current."
-    },
-    "current_unique_selected_strict_failures_each_profile": 24,
-    "original_23_failure_ids_preserved": true,
-    "newly_observed_case": "tests.circuit.test_control_flow_native::test_backend_jobs_v2_dynamic_registers_and_exact_estimators",
-    "current_case_reproduction_each_profile": {
-      "total": 1,
-      "failed": 1
-    },
-    "new_case_diagnosis": "Legacy positional BackendSamplerV2/BackendEstimatorV2 alias usage conflicts with the existing keyword-only public V2 contract. Preserve both assertions pending a scoped migration decision; do not add an implicit positional path or silently change exact Legacy semantics.",
-    "excluded_attempts": [
+    "new_hardware_or_paid_jobs": 0,
+    "core_native_publication": "local_only_pending_strict_integration",
+    "evidence_hash": "8ee3e9459812b86015b7610149bb3b8e107f3eb19891693a374fcf7946f07b0b",
+    "evidence_hash_scope": "concatenated_main_then_alternate_reconciled_json_bytes",
+    "limits": [
+      "All38compiler modules are represented, but one exact collected case remains unaccepted after two600second module timeouts.",
+      "Printed partial passes from timed-out processes are not recorded. The other29cases have separate normal process,JUnit,origin and guard receipts.",
+      "The19inline discovery cases are Native executions even though collection requires a PennyLane helper. They are not counted as SDK numerical reference tests.",
+      "The140SDK references include137Qiskit and3PennyLane cases per profile, in separate offline processes; this does not certify coexistence or full public contracts.",
+      "Initial reconciliation treated a3case parametrized function selector as a single case; exact collected-prefix expansion corrected the harness only. Existing real worker timestamps and receipts are preserved."
+    ],
+    "performance_diagnosis": {
+      "scope": "profiled_forward_and_jacobian_only_not_original_hessian_hvp_case",
+      "profiled_jacobian_seconds": 196.74867258401355,
+      "unprofiled_forward_seconds": 1.1652725000167266,
+      "array_layout_calls": 5147606,
+      "actual_plan_evaluations": 524,
+      "shifted_evaluations": 516,
+      "selected_method": "parameter-shift_after_final_basis_lowering_not_mps_tangent",
+      "profiling_overhead_and_concurrent_processes_not_a_fair_wall_time_benchmark": true,
+      "evidence_hash": "fe97aa569b6168b264838284685b0bbdb2e8996c22e43d722478620a033f9574",
+      "naive_explicit_public_mps_tangent_probe": "Refused by the existing public PennyLane method vocabulary before numerical execution; not a strict test failure or an alternative algorithm acceptance.",
+      "no_dense_fallback_no_method_contract_change": true
+    }
+  },
+  "compiler_execution": {
+    "checkpoint": "goal-compiler-module-matrix-F36Qfx",
+    "recorded_at": "2026-11-11T22:03:12.029953+00:00",
+    "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+    "source_manifest_sha256": "9409fdcb1cc16c3e9a4fe52a816afe385181395fc12fad7babe288f39d554543",
+    "scope": "compiler_directory_and_explicit_companion_references_not_full_api_acceptance",
+    "normal_recorded_workers": 152,
+    "profiles": [
       {
-        "name": "execute-main-compiler",
-        "reason": "timeout",
-        "terminal_sha256": "baf10879b6fe27c5d1c5f7b743528b07735bd77dad61eb59f358a4ed1e52a5a6"
+        "profile": "main",
+        "expected_compiler_cases": 1301,
+        "passed_compiler_cases": 1300,
+        "passed_reference_cases": 140,
+        "normal_recorded_workers": 76,
+        "duplicate_cases": 0,
+        "unexpected_cases": 0
       },
       {
-        "name": "execute-main-primitives",
-        "reason": "execution_guard_denied_child",
-        "terminal_sha256": "cdeb82358546f9014277de822ae977eeb459a1a9617325b49334ed8552b6e1a9"
-      },
-      {
-        "name": "execute-alternate-primitives",
-        "reason": "execution_guard_denied_child",
-        "terminal_sha256": "824fb466562a51e2e351df5411f832a0a0f1edcc351a43f8c99c957383bfee25"
+        "profile": "alternate",
+        "expected_compiler_cases": 1301,
+        "passed_compiler_cases": 1300,
+        "passed_reference_cases": 140,
+        "normal_recorded_workers": 76,
+        "duplicate_cases": 0,
+        "unexpected_cases": 0
       }
     ],
-    "exclusions_are_not_native_passes_or_native_regressions": true,
-    "timeout": {
-      "selection": "main compiler",
-      "cap_seconds": 300,
-      "process_exit": -9,
-      "completed": false,
-      "junit_available": false,
-      "identical_retry": false,
-      "next": "Partition compiler execution into per-module/per-case workers, with an explicit appropriate resource/time plan; do not accept printed progress."
-    },
-    "guarded_child": {
-      "scope": "A thread-reentry test was blocked by a collection-only process policy. Exact existing inline test code was admitted in v3, with inherited offline/SDK guards and separate actual Native origin receipts in both children.",
-      "production_changed": false,
-      "installed_framework_changed": false,
-      "original_test_changed": false,
-      "main_child_origin_sha256": "da266252ce99623da1e14d9f26622ea1cbca58a0960312cb0fd1163015529999",
-      "alternate_child_origin_sha256": "bacedce81e9e610218e1cd8aef67d87615964c7e8e3d4326f1aabee373df1558"
-    },
+    "outstanding_cases": [
+      "tests/compiler/test_native_source_batch_final_compilation.py::test_nested_source_branches_keep_native_multiqubit_curvature[quantumbridge.mps-2-best]"
+    ],
+    "incomplete_module_attempts": [
+      {
+        "name": "compiler-main-27",
+        "profile": "main",
+        "module": "tests/compiler/test_native_source_batch_final_compilation.py",
+        "terminal": true,
+        "exit": -9,
+        "timed_out": true,
+        "started_unix": 1794432235.8301241,
+        "finished_unix": 1794432835.845093,
+        "tests": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "junit_sha256": null,
+        "origin_sha256": null,
+        "guard_events": null,
+        "native_source_match": false,
+        "sdk_imported": null
+      },
+      {
+        "name": "compiler-alternate-27",
+        "profile": "alternate",
+        "module": "tests/compiler/test_native_source_batch_final_compilation.py",
+        "terminal": true,
+        "exit": -9,
+        "timed_out": true,
+        "started_unix": 1794433400.690426,
+        "finished_unix": 1794434000.704441,
+        "tests": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "junit_sha256": null,
+        "origin_sha256": null,
+        "guard_events": null,
+        "native_source_match": false,
+        "sdk_imported": null
+      }
+    ],
+    "strict_selected_failure_count_still": 24,
+    "full_compiler_accepted": false,
     "full_suite_accepted": false,
     "public_api_denominator_closed": false,
     "complete_function_acceptances": 0,
-    "core_native_publication": "local_only_pending_strict_integration",
+    "native_library_changed": false,
+    "original_tests_changed_this_batch": false,
+    "additional_migrations": 0,
+    "original_protected_files": 1373,
+    "unchanged_original_files": 1371,
+    "previously_approved_files": 2,
+    "previously_approved_cases": 8,
     "new_hardware_or_paid_jobs": 0,
-    "results": [
-      {
-        "name": "test-census-execute-main-core",
-        "profile": "main",
-        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
-        "total": 812,
-        "passed": 812,
-        "failed": 0,
-        "skipped": 0
-      },
-      {
-        "name": "test-census-execute-main-circuit",
-        "profile": "main",
-        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
-        "total": 1288,
-        "passed": 1287,
+    "core_native_publication": "local_only_pending_strict_integration",
+    "evidence_hash": "8ee3e9459812b86015b7610149bb3b8e107f3eb19891693a374fcf7946f07b0b",
+    "evidence_hash_scope": "concatenated_main_then_alternate_reconciled_json_bytes",
+    "limits": [
+      "All38compiler modules are represented, but one exact collected case remains unaccepted after two600second module timeouts.",
+      "Printed partial passes from timed-out processes are not recorded. The other29cases have separate normal process,JUnit,origin and guard receipts.",
+      "The19inline discovery cases are Native executions even though collection requires a PennyLane helper. They are not counted as SDK numerical reference tests.",
+      "The140SDK references include137Qiskit and3PennyLane cases per profile, in separate offline processes; this does not certify coexistence or full public contracts.",
+      "Initial reconciliation treated a3case parametrized function selector as a single case; exact collected-prefix expansion corrected the harness only. Existing real worker timestamps and receipts are preserved."
+    ],
+    "performance_diagnosis": {
+      "scope": "profiled_forward_and_jacobian_only_not_original_hessian_hvp_case",
+      "profiled_jacobian_seconds": 196.74867258401355,
+      "unprofiled_forward_seconds": 1.1652725000167266,
+      "array_layout_calls": 5147606,
+      "actual_plan_evaluations": 524,
+      "shifted_evaluations": 516,
+      "selected_method": "parameter-shift_after_final_basis_lowering_not_mps_tangent",
+      "profiling_overhead_and_concurrent_processes_not_a_fair_wall_time_benchmark": true,
+      "evidence_hash": "fe97aa569b6168b264838284685b0bbdb2e8996c22e43d722478620a033f9574",
+      "naive_explicit_public_mps_tangent_probe": "Refused by the existing public PennyLane method vocabulary before numerical execution; not a strict test failure or an alternative algorithm acceptance.",
+      "no_dense_fallback_no_method_contract_change": true
+    }
+  },
+  "verification_batch_history": [
+    {
+      "checkpoint": "goal-full-test-census-LTQ5ZI",
+      "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+      "recorded_at": "2026-11-11T20:54:15.608326+00:00",
+      "native_library_changed": false,
+      "original_tests_changed_this_batch": false,
+      "original_protected_files": 1373,
+      "unchanged_original_files": 1371,
+      "previously_approved_files": 2,
+      "previously_approved_cases": 8,
+      "additional_migrations": 0,
+      "normal_selected_workers_recorded": 14,
+      "current_context_workers": 6,
+      "current_context_manifest_sha256": "9409fdcb1cc16c3e9a4fe52a816afe385181395fc12fad7babe288f39d554543",
+      "current_context_each_profile": {
+        "total": 757,
+        "passed": 756,
         "failed": 1,
-        "skipped": 0
+        "skipped": 0,
+        "primitives": {
+          "passed": 743
+        },
+        "approved_mps_memory": {
+          "passed": 13
+        }
       },
-      {
-        "name": "test-census-execute-main-serialization",
-        "profile": "main",
-        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
-        "total": 1966,
-        "passed": 1961,
-        "failed": 5,
-        "skipped": 0
+      "same_native_earlier_tool_context": {
+        "workers": 8,
+        "scope": "Broad core/circuit/serialization/memory frozen results retained; the tooling test file later grew5to7cases, so full test-context validation must not be relabeled as current."
       },
-      {
-        "name": "test-census-execute-main-approved-mps-memory",
-        "profile": "main",
-        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
-        "total": 13,
-        "passed": 13,
-        "failed": 0,
-        "skipped": 0
-      },
-      {
-        "name": "test-census-execute-alternate-core",
-        "profile": "alternate",
-        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
-        "total": 812,
-        "passed": 812,
-        "failed": 0,
-        "skipped": 0
-      },
-      {
-        "name": "test-census-execute-alternate-circuit",
-        "profile": "alternate",
-        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
-        "total": 1288,
-        "passed": 1287,
-        "failed": 1,
-        "skipped": 0
-      },
-      {
-        "name": "test-census-execute-alternate-serialization",
-        "profile": "alternate",
-        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
-        "total": 1966,
-        "passed": 1961,
-        "failed": 5,
-        "skipped": 0
-      },
-      {
-        "name": "test-census-execute-alternate-approved-mps-memory",
-        "profile": "alternate",
-        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
-        "total": 13,
-        "passed": 13,
-        "failed": 0,
-        "skipped": 0
-      },
-      {
-        "name": "test-census-execute-v3-main-primitives",
-        "profile": "main",
-        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
-        "total": 743,
-        "passed": 743,
-        "failed": 0,
-        "skipped": 0
-      },
-      {
-        "name": "test-census-execute-v3-main-approved-mps-memory",
-        "profile": "main",
-        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
-        "total": 13,
-        "passed": 13,
-        "failed": 0,
-        "skipped": 0
-      },
-      {
-        "name": "test-census-execute-v3-main-dynamic-alias-conflict",
-        "profile": "main",
-        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+      "current_unique_selected_strict_failures_each_profile": 24,
+      "original_23_failure_ids_preserved": true,
+      "newly_observed_case": "tests.circuit.test_control_flow_native::test_backend_jobs_v2_dynamic_registers_and_exact_estimators",
+      "current_case_reproduction_each_profile": {
         "total": 1,
-        "passed": 0,
-        "failed": 1,
-        "skipped": 0
+        "failed": 1
       },
-      {
-        "name": "test-census-execute-v3-alternate-primitives",
-        "profile": "alternate",
-        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
-        "total": 743,
-        "passed": 743,
-        "failed": 0,
-        "skipped": 0
+      "new_case_diagnosis": "Legacy positional BackendSamplerV2/BackendEstimatorV2 alias usage conflicts with the existing keyword-only public V2 contract. Preserve both assertions pending a scoped migration decision; do not add an implicit positional path or silently change exact Legacy semantics.",
+      "excluded_attempts": [
+        {
+          "name": "execute-main-compiler",
+          "reason": "timeout",
+          "terminal_sha256": "baf10879b6fe27c5d1c5f7b743528b07735bd77dad61eb59f358a4ed1e52a5a6"
+        },
+        {
+          "name": "execute-main-primitives",
+          "reason": "execution_guard_denied_child",
+          "terminal_sha256": "cdeb82358546f9014277de822ae977eeb459a1a9617325b49334ed8552b6e1a9"
+        },
+        {
+          "name": "execute-alternate-primitives",
+          "reason": "execution_guard_denied_child",
+          "terminal_sha256": "824fb466562a51e2e351df5411f832a0a0f1edcc351a43f8c99c957383bfee25"
+        }
+      ],
+      "exclusions_are_not_native_passes_or_native_regressions": true,
+      "timeout": {
+        "selection": "main compiler",
+        "cap_seconds": 300,
+        "process_exit": -9,
+        "completed": false,
+        "junit_available": false,
+        "identical_retry": false,
+        "next": "Partition compiler execution into per-module/per-case workers, with an explicit appropriate resource/time plan; do not accept printed progress."
       },
-      {
-        "name": "test-census-execute-v3-alternate-approved-mps-memory",
-        "profile": "alternate",
-        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
-        "total": 13,
-        "passed": 13,
-        "failed": 0,
-        "skipped": 0
+      "guarded_child": {
+        "scope": "A thread-reentry test was blocked by a collection-only process policy. Exact existing inline test code was admitted in v3, with inherited offline/SDK guards and separate actual Native origin receipts in both children.",
+        "production_changed": false,
+        "installed_framework_changed": false,
+        "original_test_changed": false,
+        "main_child_origin_sha256": "da266252ce99623da1e14d9f26622ea1cbca58a0960312cb0fd1163015529999",
+        "alternate_child_origin_sha256": "bacedce81e9e610218e1cd8aef67d87615964c7e8e3d4326f1aabee373df1558"
       },
-      {
-        "name": "test-census-execute-v3-alternate-dynamic-alias-conflict",
-        "profile": "alternate",
-        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
-        "total": 1,
-        "passed": 0,
-        "failed": 1,
-        "skipped": 0
-      }
-    ]
-  }
+      "full_suite_accepted": false,
+      "public_api_denominator_closed": false,
+      "complete_function_acceptances": 0,
+      "core_native_publication": "local_only_pending_strict_integration",
+      "new_hardware_or_paid_jobs": 0,
+      "results": [
+        {
+          "name": "test-census-execute-main-core",
+          "profile": "main",
+          "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+          "total": 812,
+          "passed": 812,
+          "failed": 0,
+          "skipped": 0
+        },
+        {
+          "name": "test-census-execute-main-circuit",
+          "profile": "main",
+          "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+          "total": 1288,
+          "passed": 1287,
+          "failed": 1,
+          "skipped": 0
+        },
+        {
+          "name": "test-census-execute-main-serialization",
+          "profile": "main",
+          "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+          "total": 1966,
+          "passed": 1961,
+          "failed": 5,
+          "skipped": 0
+        },
+        {
+          "name": "test-census-execute-main-approved-mps-memory",
+          "profile": "main",
+          "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+          "total": 13,
+          "passed": 13,
+          "failed": 0,
+          "skipped": 0
+        },
+        {
+          "name": "test-census-execute-alternate-core",
+          "profile": "alternate",
+          "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+          "total": 812,
+          "passed": 812,
+          "failed": 0,
+          "skipped": 0
+        },
+        {
+          "name": "test-census-execute-alternate-circuit",
+          "profile": "alternate",
+          "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+          "total": 1288,
+          "passed": 1287,
+          "failed": 1,
+          "skipped": 0
+        },
+        {
+          "name": "test-census-execute-alternate-serialization",
+          "profile": "alternate",
+          "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+          "total": 1966,
+          "passed": 1961,
+          "failed": 5,
+          "skipped": 0
+        },
+        {
+          "name": "test-census-execute-alternate-approved-mps-memory",
+          "profile": "alternate",
+          "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+          "total": 13,
+          "passed": 13,
+          "failed": 0,
+          "skipped": 0
+        },
+        {
+          "name": "test-census-execute-v3-main-primitives",
+          "profile": "main",
+          "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+          "total": 743,
+          "passed": 743,
+          "failed": 0,
+          "skipped": 0
+        },
+        {
+          "name": "test-census-execute-v3-main-approved-mps-memory",
+          "profile": "main",
+          "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+          "total": 13,
+          "passed": 13,
+          "failed": 0,
+          "skipped": 0
+        },
+        {
+          "name": "test-census-execute-v3-main-dynamic-alias-conflict",
+          "profile": "main",
+          "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+          "total": 1,
+          "passed": 0,
+          "failed": 1,
+          "skipped": 0
+        },
+        {
+          "name": "test-census-execute-v3-alternate-primitives",
+          "profile": "alternate",
+          "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+          "total": 743,
+          "passed": 743,
+          "failed": 0,
+          "skipped": 0
+        },
+        {
+          "name": "test-census-execute-v3-alternate-approved-mps-memory",
+          "profile": "alternate",
+          "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+          "total": 13,
+          "passed": 13,
+          "failed": 0,
+          "skipped": 0
+        },
+        {
+          "name": "test-census-execute-v3-alternate-dynamic-alias-conflict",
+          "profile": "alternate",
+          "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+          "total": 1,
+          "passed": 0,
+          "failed": 1,
+          "skipped": 0
+        }
+      ]
+    }
+  ]
 }

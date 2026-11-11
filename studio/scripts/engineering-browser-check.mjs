@@ -54,6 +54,13 @@ try{
     assert.ok((await collectionSection.innerText()).includes("35,955"));
     assert.ok((await collectionSection.innerText()).includes("35,956"));
     assert.ok((await collectionSection.innerText()).includes("完整执行仍未完成"));
+    const compilerSection=collectionSection.locator("#compiler-execution");
+    await compilerSection.getByRole("heading",{name:"编译目录：仍有未验收案例",exact:true}).waitFor();
+    assert.equal(await compilerSection.locator("li").count(),2);
+    assert.ok((await compilerSection.innerText()).includes("1,300 / 1,301"));
+    assert.ok((await compilerSection.innerText()).includes("140"));
+    await compilerSection.locator("summary").click();
+    assert.ok((await compilerSection.innerText()).includes("quantumbridge.mps-2-best"));
     await collectionSection.scrollIntoViewIfNeeded();
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
     await page.screenshot({path:`${output}/test-collection-${viewport.width}.png`,fullPage:false});

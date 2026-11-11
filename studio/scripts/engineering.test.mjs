@@ -60,6 +60,35 @@ test("repository collection stays separate from executed tests and the public AP
   assert.ok(script.includes("Test collection is not a passing test run"));
   assert.ok(script.includes("Full execution remains incomplete"));
 });
+test("compiler execution reconciles exact cases while preserving timeouts and strict failures", () => {
+  const compiler = manifest.goal_execution.compiler_execution;
+  assert.equal(compiler.full_compiler_accepted, false);
+  assert.equal(compiler.full_suite_accepted, false);
+  assert.equal(compiler.strict_selected_failure_count_still, 24);
+  assert.equal(compiler.normal_recorded_workers, 152);
+  assert.equal(compiler.incomplete_module_attempts.length, 2);
+  assert.ok(compiler.incomplete_module_attempts.every(row => row.timed_out && row.exit === -9 && row.tests === 0 && !row.junit_sha256));
+  assert.equal(compiler.outstanding_cases.length, 1);
+  assert.ok(compiler.outstanding_cases[0].endsWith("[quantumbridge.mps-2-best]"));
+  const runs = manifest.verification.filter(row => row.name.startsWith("compiler-matrix-"));
+  assert.equal(runs.length, 152);
+  assert.ok(runs.every(row => row.source_match && row.process_terminal_match && row.test_context_match));
+  for (const profile of ["main", "alternate"]) {
+    const summary = compiler.profiles.find(row => row.profile === profile);
+    assert.equal(summary.expected_compiler_cases, 1301);
+    assert.equal(summary.passed_compiler_cases, 1300);
+    assert.equal(summary.passed_reference_cases, 140);
+    const current = runs.filter(row => row.profile === profile);
+    assert.equal(current.reduce((sum, row) => sum + row.passed, 0), 1440);
+    assert.ok(current.every(row => !row.failed && !row.skipped));
+    const cases = current.flatMap(row => row.cases.map(item => item.id));
+    assert.equal(new Set(cases).size, 1440);
+    assert.ok(!cases.includes(compiler.outstanding_cases[0].replace(/\.py::/, "::").replaceAll("/", ".")));
+  }
+  const investigation = manifest.goal_execution.current_investigation;
+  assert.equal(investigation.prototype_promoted, false);
+  assert.ok(investigation.profiles.every(row => row.passed === 12 && row.failed === 4 && row.third_rejected === 2 && row.third_total === 4));
+});
 test("runtime census is not combined with the target denominator or implementation acceptance", async () => {
   const descriptor=manifest.datasets.find(x=>x.id==="runtime");
   assert.ok(descriptor.count>0);
