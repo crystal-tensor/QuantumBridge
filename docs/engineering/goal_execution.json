@@ -8,7 +8,7 @@
   "census_closed": false,
   "first_census_review_due": "2026-11-18T23:59:59+08:00",
   "delivery_forecast": "UNVERIFIED_HIGH_RISK_UNTIL_CENSUS_AND_CRITICAL_PATH_REVIEW",
-  "forecast_reviewed_at": "2026-11-11T20:04:49.193596+00:00",
+  "forecast_reviewed_at": "2026-11-11T20:54:15.608627+00:00",
   "forecast_risks": [
     "The public function denominator, inherited methods, dynamic exports and Native mappings remain open; no whole-project completion percentage is justified.",
     "Original Arrow24/Qiskit2.6 coexistence remains unresolved and no new reference configuration is approved. The archived Arrow25 experiment remains tied to the prior Native fingerprint, not current verification. SDK-only reference processes and current Native-only regressions terminate normally; combined alternate public verification is still open.",
@@ -21,7 +21,9 @@
     "Finite nested-class enumeration adds previously omitted canonical contracts while retaining all prior v4 exposures. Both current100case Native selections remain95pass/5fail, with9newreal-shift cases each passing. Public denominator and full strict gates remain open; metadata growth and selected passes are not a completion percentage.",
     "Declared overload observations were missing from the candidate register. Current metadata now preserves them and structured non-evaluated annotations, while opaque extension signatures and lazy type bounds remain unresolved. Counts are inherited/alias contexts, not unique implemented functions. The known22strict failures and all final gates remain open; deadline is unchanged and still high risk until critical-path review.",
     "The3f3c binding snapshot fixes a real inplace userdata-ownership incompatibility, with31Native and12actual SDK cases per profile. Broader selected tests retain23unique strict failures; the additional old QASM3 assertion fails identically on prior e5ae source. No new full-suite acceptance, denominator closure, TF cache fix or hardware certification; the six-month deadline is unchanged and high risk pending the November18 critical-path review.",
-    "Theab2c snapshot repairs real public scalar-binding precision/acceptance defects, not TF cache curvature. All23prior strict failure IDs remain current. Full denominator, optional-package and final gates are still open;217selected Native test cases and82actual reference cases per profile are not a completion rate. The first critical-path review remains due November18 and the six-month deadline is unchanged, high risk and unverified."
+    "Theab2c snapshot repairs real public scalar-binding precision/acceptance defects, not TF cache curvature. All23prior strict failure IDs remain current. Full denominator, optional-package and final gates are still open;217selected Native test cases and82actual reference cases per profile are not a completion rate. The first critical-path review remains due November18 and the six-month deadline is unchanged, high risk and unverified.",
+    "Actual offline collection now accounts for all1307repository test modules,35955main/35956alternate parameterized items. This closes only the test-module collection scope, not the public API denominator or full execution. Broader execution is underway; earlier23strict failures were selected, not an authoritative whole-suite total. Deadline remains unchanged and high risk pending November18 review.",
+    "Broader execution discovers one previously uncounted Legacy/public backend alias conflict; the verified selected failure union is24perprofile, not a full-suite total. A300second compiler group timeout is incomplete verification, not a pass or a proven algorithm defect. Current-context743case primitives and13case approved memory groups pass in both profiles. Full strict execution, API denominator and six-month critical-path forecast remain open; no deadline or scope change."
   ],
   "scope_reduced": false,
   "latest_batch": {
@@ -2250,6 +2252,17 @@
       "evidence_checkpoint": "goal-public-binding-JZeeWg",
       "source_fingerprint": "3f3cb01175af28c9bb0dd53c201877f8353814f94201a307926793c4ca13ffb6",
       "scope": "Only the QASM3 allow_metadata_loss=True refusal branch for a supported input Var. Preserve QPY rejection of non-JSON opaque metadata, original source/IR assertions, default loss rejection, warning and new-identity semantics, and all other cases. Prior and current snapshots fail the same branch; no test changed."
+    },
+    {
+      "id": "dynamic_backend_alias_single_case",
+      "state": "OWNER_DECISION_REQUIRED_NOT_SUBMITTED",
+      "question_submitted": false,
+      "case_ids": [
+        "tests.circuit.test_control_flow_native::test_backend_jobs_v2_dynamic_registers_and_exact_estimators"
+      ],
+      "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+      "evidence_checkpoint": "goal-full-test-census-LTQ5ZI",
+      "scope": "Only the old dynamic backend alias scenario: preserve original three-backend sampling, exact estimator math, shots and dynamic metadata via retained Legacy entry points; keep the separate public keyword-only/default/options/finite-precision/result ABI tests. No old test changed and no migration is approved by this record."
     }
   ],
   "metadata_batch_history": [
@@ -2646,16 +2659,17 @@
     }
   ],
   "latest_strict_review": {
-    "checkpoint": "goal-numeric-binding-3W8Cv3",
+    "checkpoint": "goal-full-test-census-LTQ5ZI",
     "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
-    "current_selected_unique_failures_each_profile": 23,
+    "current_selected_unique_failures_each_profile": 24,
     "original_23_failure_ids_preserved": true,
     "full_suite_accepted": false,
     "protected_test_files": 1373,
     "unchanged": 1371,
     "approved_files": 2,
     "approved_cases": 8,
-    "additional_migrations": 0
+    "additional_migrations": 0,
+    "full_repository_failure_count_known": false
   },
   "latest_rejected_prototype": {
     "checkpoint": "goal-tf-zero-boundary-HTIPw3",
@@ -2675,5 +2689,271 @@
     "framework_changed": false,
     "hypothesis": "Permit only provably zero third-point cotangents; actual problematic cached-forward cotangent is a nonconstant Pack and cannot be proven zero.",
     "conclusion": "No improvement; do not promote or repeat without a new hypothesis. Original four cached mixed-AD failures remain."
+  },
+  "test_execution_census": {
+    "checkpoint": "goal-full-test-census-LTQ5ZI",
+    "recorded_at": "2026-11-11T20:37:11.603305+00:00",
+    "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+    "scope": "actual_collection_not_test_execution_or_public_api_acceptance",
+    "evidence_hash": "4d427b446747e1c7c980aa1f75102d9deacfb871af7b11886cb3cf007967bf9a",
+    "source_manifest_sha256": "c0b5de813d66dc8d197e04b5cff5b5be655937c1945e7611c9c0a7b97722aef8",
+    "collection_complete": true,
+    "execution_complete": false,
+    "public_api_denominator_closed": false,
+    "complete_function_acceptances": 0,
+    "profiles": [
+      {
+        "profile": "main",
+        "module_count": 1307,
+        "collected_modules": 1307,
+        "item_count": 35955
+      },
+      {
+        "profile": "alternate",
+        "module_count": 1307,
+        "collected_modules": 1307,
+        "item_count": 35956
+      }
+    ],
+    "initial_groups": 176,
+    "initial_errors_each_profile": 47,
+    "initial_skipped_modules_each_profile": 2,
+    "initial_diagnostics_retained": true,
+    "corrected_modules_each_profile": 49,
+    "correction_workers": 22,
+    "correction_summary": [
+      "Exact read-only system font query",
+      "Explicit two cross-directory helper paths",
+      "SDK isolation is not ImportError",
+      "Single SDK per mixed-module collection, not SDK coexistence"
+    ],
+    "guard_smoke_tests_each_profile": 4,
+    "static_plan_unit_tests_each_profile": 7,
+    "guard_smoke_reporting_failure_retained": true,
+    "guard_smoke_reporting_failure": "Initial external smoke path was outside the receipt root; four test bodies completed but session-finish failed. Corrected root runs terminate0; the failed attempt is not accepted.",
+    "plugin_autoload_disabled": true,
+    "external_network_allowed": false,
+    "new_hardware_or_paid_jobs": 0,
+    "production_changed": false,
+    "sdk_versions_changed": false,
+    "inherited_test_assertions_changed": false,
+    "limits": [
+      "Full repository module collection, not full execution, public-function denominator closure or a completion percentage.",
+      "SDK references are collected in separate processes; combined alternate SDK coexistence remains unresolved.",
+      "Two cross-directory helper paths and the exact read-only font query are explicit harness corrections, not production repairs.",
+      "Third-party pytest plugin autoload is disabled; this is not the unmodified default pytest command.",
+      "Static plan tooling has7currentunitcases per profile; the frozen module snapshot retains its earlier5case tooling version."
+    ],
+    "full_execution_complete": false,
+    "snapshot_tooling_cases": 5,
+    "current_tooling_cases": 7,
+    "earlier_collection_timestamps_preserved": true
+  },
+  "latest_verification_batch": {
+    "checkpoint": "goal-full-test-census-LTQ5ZI",
+    "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+    "recorded_at": "2026-11-11T20:54:15.608326+00:00",
+    "native_library_changed": false,
+    "original_tests_changed_this_batch": false,
+    "original_protected_files": 1373,
+    "unchanged_original_files": 1371,
+    "previously_approved_files": 2,
+    "previously_approved_cases": 8,
+    "additional_migrations": 0,
+    "normal_selected_workers_recorded": 14,
+    "current_context_workers": 6,
+    "current_context_manifest_sha256": "9409fdcb1cc16c3e9a4fe52a816afe385181395fc12fad7babe288f39d554543",
+    "current_context_each_profile": {
+      "total": 757,
+      "passed": 756,
+      "failed": 1,
+      "skipped": 0,
+      "primitives": {
+        "passed": 743
+      },
+      "approved_mps_memory": {
+        "passed": 13
+      }
+    },
+    "same_native_earlier_tool_context": {
+      "workers": 8,
+      "scope": "Broad core/circuit/serialization/memory frozen results retained; the tooling test file later grew5to7cases, so full test-context validation must not be relabeled as current."
+    },
+    "current_unique_selected_strict_failures_each_profile": 24,
+    "original_23_failure_ids_preserved": true,
+    "newly_observed_case": "tests.circuit.test_control_flow_native::test_backend_jobs_v2_dynamic_registers_and_exact_estimators",
+    "current_case_reproduction_each_profile": {
+      "total": 1,
+      "failed": 1
+    },
+    "new_case_diagnosis": "Legacy positional BackendSamplerV2/BackendEstimatorV2 alias usage conflicts with the existing keyword-only public V2 contract. Preserve both assertions pending a scoped migration decision; do not add an implicit positional path or silently change exact Legacy semantics.",
+    "excluded_attempts": [
+      {
+        "name": "execute-main-compiler",
+        "reason": "timeout",
+        "terminal_sha256": "baf10879b6fe27c5d1c5f7b743528b07735bd77dad61eb59f358a4ed1e52a5a6"
+      },
+      {
+        "name": "execute-main-primitives",
+        "reason": "execution_guard_denied_child",
+        "terminal_sha256": "cdeb82358546f9014277de822ae977eeb459a1a9617325b49334ed8552b6e1a9"
+      },
+      {
+        "name": "execute-alternate-primitives",
+        "reason": "execution_guard_denied_child",
+        "terminal_sha256": "824fb466562a51e2e351df5411f832a0a0f1edcc351a43f8c99c957383bfee25"
+      }
+    ],
+    "exclusions_are_not_native_passes_or_native_regressions": true,
+    "timeout": {
+      "selection": "main compiler",
+      "cap_seconds": 300,
+      "process_exit": -9,
+      "completed": false,
+      "junit_available": false,
+      "identical_retry": false,
+      "next": "Partition compiler execution into per-module/per-case workers, with an explicit appropriate resource/time plan; do not accept printed progress."
+    },
+    "guarded_child": {
+      "scope": "A thread-reentry test was blocked by a collection-only process policy. Exact existing inline test code was admitted in v3, with inherited offline/SDK guards and separate actual Native origin receipts in both children.",
+      "production_changed": false,
+      "installed_framework_changed": false,
+      "original_test_changed": false,
+      "main_child_origin_sha256": "da266252ce99623da1e14d9f26622ea1cbca58a0960312cb0fd1163015529999",
+      "alternate_child_origin_sha256": "bacedce81e9e610218e1cd8aef67d87615964c7e8e3d4326f1aabee373df1558"
+    },
+    "full_suite_accepted": false,
+    "public_api_denominator_closed": false,
+    "complete_function_acceptances": 0,
+    "core_native_publication": "local_only_pending_strict_integration",
+    "new_hardware_or_paid_jobs": 0,
+    "results": [
+      {
+        "name": "test-census-execute-main-core",
+        "profile": "main",
+        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+        "total": 812,
+        "passed": 812,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "test-census-execute-main-circuit",
+        "profile": "main",
+        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+        "total": 1288,
+        "passed": 1287,
+        "failed": 1,
+        "skipped": 0
+      },
+      {
+        "name": "test-census-execute-main-serialization",
+        "profile": "main",
+        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+        "total": 1966,
+        "passed": 1961,
+        "failed": 5,
+        "skipped": 0
+      },
+      {
+        "name": "test-census-execute-main-approved-mps-memory",
+        "profile": "main",
+        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+        "total": 13,
+        "passed": 13,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "test-census-execute-alternate-core",
+        "profile": "alternate",
+        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+        "total": 812,
+        "passed": 812,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "test-census-execute-alternate-circuit",
+        "profile": "alternate",
+        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+        "total": 1288,
+        "passed": 1287,
+        "failed": 1,
+        "skipped": 0
+      },
+      {
+        "name": "test-census-execute-alternate-serialization",
+        "profile": "alternate",
+        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+        "total": 1966,
+        "passed": 1961,
+        "failed": 5,
+        "skipped": 0
+      },
+      {
+        "name": "test-census-execute-alternate-approved-mps-memory",
+        "profile": "alternate",
+        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+        "total": 13,
+        "passed": 13,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "test-census-execute-v3-main-primitives",
+        "profile": "main",
+        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+        "total": 743,
+        "passed": 743,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "test-census-execute-v3-main-approved-mps-memory",
+        "profile": "main",
+        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+        "total": 13,
+        "passed": 13,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "test-census-execute-v3-main-dynamic-alias-conflict",
+        "profile": "main",
+        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+        "total": 1,
+        "passed": 0,
+        "failed": 1,
+        "skipped": 0
+      },
+      {
+        "name": "test-census-execute-v3-alternate-primitives",
+        "profile": "alternate",
+        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+        "total": 743,
+        "passed": 743,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "test-census-execute-v3-alternate-approved-mps-memory",
+        "profile": "alternate",
+        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+        "total": 13,
+        "passed": 13,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "test-census-execute-v3-alternate-dynamic-alias-conflict",
+        "profile": "alternate",
+        "source_fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+        "total": 1,
+        "passed": 0,
+        "failed": 1,
+        "skipped": 0
+      }
+    ]
   }
 }

@@ -36,6 +36,30 @@ test("filters and snapshot age are explicit, not fabricated completion percentag
   assert.equal(isStale("2026-11-11T00:00:00Z",Date.parse("2026-11-11T11:59:59Z")),false);
   assert.equal(filterRows([{name:"canonical",exposures:["public.alias"]}],{query:"public.alias"}).length,1);
 });
+test("repository collection stays separate from executed tests and the public API denominator", async () => {
+  const census = manifest.goal_execution.test_execution_census;
+  assert.equal(census.public_api_denominator_closed, false);
+  assert.equal(census.execution_complete, false);
+  assert.equal(census.complete_function_acceptances, 0);
+  assert.equal(census.profiles.length, 2);
+  for (const row of census.profiles) {
+    assert.equal(row.module_count, 1307);
+    assert.equal(row.collected_modules, row.module_count);
+    assert.ok(row.item_count > 35000);
+  }
+  const runs = manifest.verification.filter(row => row.name.startsWith("test-census-"));
+  assert.equal(runs.length, 14);
+  assert.equal(runs.filter(row => row.source_match).length, 6);
+  for (const profile of ["main", "alternate"]) {
+    const current = runs.filter(row => row.profile === profile && row.source_match);
+    assert.equal(current.reduce((sum, row) => sum + row.passed, 0), 756);
+    assert.equal(current.reduce((sum, row) => sum + row.failed, 0), 1);
+    assert.equal(current.find(row => row.name.includes("approved-mps-memory")).passed, 13);
+  }
+  const script = await readFile(new URL("../src/progress/main.js", import.meta.url), "utf8");
+  assert.ok(script.includes("Test collection is not a passing test run"));
+  assert.ok(script.includes("Full execution remains incomplete"));
+});
 test("runtime census is not combined with the target denominator or implementation acceptance", async () => {
   const descriptor=manifest.datasets.find(x=>x.id==="runtime");
   assert.ok(descriptor.count>0);

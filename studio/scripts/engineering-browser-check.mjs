@@ -48,6 +48,15 @@ try{
     await page.screenshot({path:`${output}/runtime-inheritance-${viewport.width}.png`,fullPage:false});
     await page.getByRole("button",{name:"关闭",exact:true}).click();
     await page.getByRole("button",{name:"测试与真机",exact:true}).click();
+    const collectionSection=page.locator("#test-collection");
+    await collectionSection.getByRole("heading",{name:"测试收集：不是测试通过",exact:true}).waitFor();
+    assert.equal(await collectionSection.locator("tbody tr").count(),2);
+    assert.ok((await collectionSection.innerText()).includes("35,955"));
+    assert.ok((await collectionSection.innerText()).includes("35,956"));
+    assert.ok((await collectionSection.innerText()).includes("完整执行仍未完成"));
+    await collectionSection.scrollIntoViewIfNeeded();
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+    await page.screenshot({path:`${output}/test-collection-${viewport.width}.png`,fullPage:false});
     const processSection=page.locator("section.band").filter({has:page.getByRole("heading",{name:"异常进程：不计入验证",exact:true})});
     assert.equal(await processSection.locator("details").count(),3);
     for(const summary of await processSection.locator("summary").all()) await summary.click();
