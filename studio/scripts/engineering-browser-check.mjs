@@ -87,7 +87,7 @@ try{
     await page.locator("#view details summary").first().click();
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
     await page.locator("#view details:has(> summary > code):has(> summary > .failure)").first().locator("summary").click();
-    await page.getByRole("heading",{name:/诊断记录/}).first().waitFor();
+    await page.getByRole("heading",{name:/诊断记录|历史诊断（未按当前源码复核）/}).first().waitFor();
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
     await page.getByRole("button",{name:"六个月验收计划",exact:true}).click();
     assert.equal(await page.locator(".timeline li").count(),6);

@@ -7,6 +7,7 @@ import platform
 import xml.etree.ElementTree as ET
 
 from record_engineering_verification import ROOT, load, native_fingerprint, sha
+from engineering_diagnostic_store import merge_observations
 
 SDK = {"main": ("2.4.1", "0.44.1"), "alternate": ("2.6.0", "0.42.3")}
 ORDERS = {
@@ -124,9 +125,7 @@ def record(checkpoint, frozen):
         source_file=SCRIPT, report=report, scope="diagnostic_observation_not_function_or_test_acceptance")
     output=ROOT/"docs/engineering/diagnostic_observations.json"
     value=load(output)
-    if value["source_fingerprint"] != fingerprint:
-        raise ValueError("Do not relabel prior diagnostics with another Native fingerprint")
-    value["observations"]=[r for r in value["observations"] if r["id"] != observation["id"]]+[observation]
+    value=merge_observations(value, fingerprint, [observation])
     output.write_text(json.dumps(value,indent=2)+"\n")
     print(json.dumps(dict(observations=len(value["observations"]),source_fingerprint=fingerprint,
         review_state=report["review_state"],native_accepted=False)))

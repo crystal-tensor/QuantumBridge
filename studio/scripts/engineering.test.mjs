@@ -108,6 +108,13 @@ test("goal and selected verification never masquerade as final acceptance", () =
     assert.equal(row.status,"current_failure");
     assert.ok(row.review_note.diagnosis&&row.review_note.next);
   }
+  for(const row of manifest.strict_backlog.filter(x=>x.historical_review_note)) {
+    assert.equal(row.status,"current_failure");
+    assert.equal(row.historical_review_note.source_match,false);
+    assert.notEqual(row.historical_review_note.source_fingerprint,manifest.source.fingerprint);
+    assert.ok(row.historical_review_note.diagnosis&&row.historical_review_note.next);
+    assert.equal(row.review_note,undefined);
+  }
   for(const run of manifest.verification){
     assert.equal(run.source_match,run.source_fingerprint===manifest.source.fingerprint&&run.example_input_validation?.passed!==false&&run.test_context_match!==false&&run.process_terminal_match===true);
     assert.equal(run.total,run.passed+run.failed+run.skipped);

@@ -220,7 +220,8 @@
           }
         ]
       },
-      "scope": "diagnostic_observation_not_function_or_test_acceptance"
+      "scope": "diagnostic_observation_not_function_or_test_acceptance",
+      "source_fingerprint": "423833c765ff4eacbb179c7f784e72057c4a3ca7071235def96f12f36a666665"
     },
     {
       "id": "mps_binding_retention-main",
@@ -292,7 +293,8 @@
         "source_fingerprint": "423833c765ff4eacbb179c7f784e72057c4a3ca7071235def96f12f36a666665",
         "probe_source_sha256": "84794276a4f2abe811880a6d1a350c664bb6a1b22fbfcbcfeb1dcf48e4e2a0ac"
       },
-      "scope": "diagnostic_observation_not_function_or_test_acceptance"
+      "scope": "diagnostic_observation_not_function_or_test_acceptance",
+      "source_fingerprint": "423833c765ff4eacbb179c7f784e72057c4a3ca7071235def96f12f36a666665"
     },
     {
       "id": "tf_cached_cos-alternate",
@@ -512,7 +514,8 @@
           }
         ]
       },
-      "scope": "diagnostic_observation_not_function_or_test_acceptance"
+      "scope": "diagnostic_observation_not_function_or_test_acceptance",
+      "source_fingerprint": "423833c765ff4eacbb179c7f784e72057c4a3ca7071235def96f12f36a666665"
     },
     {
       "id": "mps_binding_retention-alternate",
@@ -584,7 +587,8 @@
         "source_fingerprint": "423833c765ff4eacbb179c7f784e72057c4a3ca7071235def96f12f36a666665",
         "probe_source_sha256": "84794276a4f2abe811880a6d1a350c664bb6a1b22fbfcbcfeb1dcf48e4e2a0ac"
       },
-      "scope": "diagnostic_observation_not_function_or_test_acceptance"
+      "scope": "diagnostic_observation_not_function_or_test_acceptance",
+      "source_fingerprint": "423833c765ff4eacbb179c7f784e72057c4a3ca7071235def96f12f36a666665"
     },
     {
       "id": "arrow_coexistence_dependency_review",
@@ -1389,7 +1393,9 @@
           "https://arrow.apache.org/release/25.0.1.html"
         ]
       },
-      "scope": "diagnostic_observation_not_function_or_test_acceptance"
+      "scope": "diagnostic_observation_not_function_or_test_acceptance",
+      "source_fingerprint": "423833c765ff4eacbb179c7f784e72057c4a3ca7071235def96f12f36a666665"
     }
-  ]
+  ],
+  "historical_observations": []
 }

@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "id": "quantumbridge.operators.sparse_operator.SparsePauliOp.to_operator",
+    "source_hash": "7e0ec88b905ed6490b5a6f96e47389c7fd4d07c33c4adc44943ee4c14ef27315",
+    "project_fingerprint": "955f9b6ca2771c99034c5f584d7b62140ca52f450ec4a63d62cbc15dd5f5d472",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": true,
+    "strict_tests_pass": false,
+    "evidence_hash": "07b82a563f616ec0e000ca748481c722ca048e1c6b26277988a22c6fa4f94ffb",
+    "evidence_scope": "Selected conversion/composition/resource cases only; not the whole method or library contract",
+    "new_cases_each_profile": 17,
+    "native_regression_each_profile": 956,
+    "real_qiskit_versions": [
+      "2.4.1",
+      "2.6.0"
+    ],
+    "real_reference_matrix_cases_each_profile": 6,
+    "remaining": "Complete per-function input/error/subclass/serialization/combination review and remaining full strict gates are still open."
+  }
+]

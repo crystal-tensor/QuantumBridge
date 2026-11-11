@@ -180,7 +180,7 @@ def apply_reviews(records, reviews, project_fingerprint=None):
             row["review"] = review
 
 
-def strict_backlog(historical, verification, notes=()):
+def strict_backlog(historical, verification, notes=(), *, historical_notes=(), historical_source_fingerprint=None):
     rows = {}
     for run in historical:
         for case in run["failure_ids"]:
@@ -205,6 +205,14 @@ def strict_backlog(historical, verification, notes=()):
             for note in notes:
                 if row["id"].startswith(note["prefix"]):
                     row["review_note"] = {key: note[key] for key in ("classification", "diagnosis", "next", "diagnosis_zh", "next_zh") if key in note}
+            if "review_note" not in row and historical_source_fingerprint:
+                for note in historical_notes:
+                    if row["id"].startswith(note["prefix"]):
+                        row["historical_review_note"] = {
+                            **{key: note[key] for key in ("classification", "diagnosis", "next", "diagnosis_zh", "next_zh") if key in note},
+                            "source_fingerprint": historical_source_fingerprint,
+                            "source_match": False,
+                        }
     return sorted(rows.values(), key=lambda row: row["id"])
 
 
@@ -305,14 +313,22 @@ def diagnostic_observations(value, fingerprint):
         if (row["report"]["native_accepted"] is not False
                 or row["scope"] != "diagnostic_observation_not_function_or_test_acceptance"):
             raise ValueError("A diagnostic cannot claim acceptance")
-        current = value.get("source_fingerprint") == fingerprint
+        explicit = row.get("source_fingerprint")
+        reported = row["report"].get("source_fingerprint")
+        identity = explicit or reported or value.get("source_fingerprint")
+        conflict = bool(explicit and reported and explicit != reported)
+        conflict = conflict or ("source_fingerprint" in row and not isinstance(explicit, str))
+        conflict = conflict or ("source_fingerprint" in row and not explicit)
+        conflict = conflict or ("source_fingerprint" in row["report"] and not isinstance(reported, str))
+        conflict = conflict or ("source_fingerprint" in row["report"] and not reported)
+        current = identity == fingerprint and not conflict
         if row.get("source_file"):
             path = (ROOT / row["source_file"]).resolve()
             current = (current and path.is_relative_to((ROOT / "studio/downloads").resolve())
                        and path.is_file() and digest(path.read_bytes()) == row["report"]["source_sha256"])
         elif row["kind"] == "mps_binding_retention":
             current = current and row["report"]["source_fingerprint"] == fingerprint
-        observations.append({**row, "source_match": current})
+        observations.append({**row, "source_fingerprint": identity, "source_match": current})
     return observations
 
 
@@ -402,8 +418,11 @@ def build(args):
         run["freshness"] = "current_selected_source_batch" if run["source_match"] else "different_source_not_current_verification"
     failure_review_path = ROOT / "docs/engineering/failure_reviews.json"
     failure_review = load_json(failure_review_path) if failure_review_path.exists() else {}
-    notes = failure_review.get("notes", []) if failure_review.get("source_fingerprint") == fingerprint else []
-    backlog = strict_backlog(tests, verification, notes)
+    review_current = failure_review.get("source_fingerprint") == fingerprint
+    backlog = strict_backlog(tests, verification,
+        failure_review.get("notes", []) if review_current else [],
+        historical_notes=[] if review_current else failure_review.get("notes", []),
+        historical_source_fingerprint=None if review_current else failure_review.get("source_fingerprint"))
     diagnostic_path = ROOT / "docs/engineering/diagnostic_observations.json"
     diagnostics = diagnostic_observations(load_json(diagnostic_path), fingerprint) if diagnostic_path.exists() else []
     datasets = []

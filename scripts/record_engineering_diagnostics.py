@@ -4,6 +4,7 @@ import argparse
 from pathlib import Path
 
 from record_engineering_verification import ROOT, load, native_fingerprint, sha
+from engineering_diagnostic_store import merge_observations
 import json
 
 
@@ -30,10 +31,10 @@ def record(checkpoint):
                 recorded_at=report["recorded_at"], evidence_hash=sha(path.read_bytes()),
                 source_file=script if kind == "tf_cached_cos" else None, report=report,
                 scope="diagnostic_observation_not_function_or_test_acceptance"))
-    value = dict(schema=1, source_fingerprint=fingerprint, observations=observations)
     output = ROOT/"docs/engineering/diagnostic_observations.json"
+    value = merge_observations(load(output) if output.exists() else {}, fingerprint, observations)
     output.write_text(json.dumps(value, indent=2)+"\n")
-    print(json.dumps(dict(source_fingerprint=fingerprint, observations=len(observations), native_accepted=False)))
+    print(json.dumps(dict(source_fingerprint=fingerprint, observations=len(value["observations"]), native_accepted=False)))
 
 
 if __name__ == "__main__":

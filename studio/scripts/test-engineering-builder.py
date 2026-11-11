@@ -13,6 +13,24 @@ spec.loader.exec_module(builder)
 
 
 class EvidenceTests(unittest.TestCase):
+    def test_historical_diagnosis_keeps_original_source_and_cannot_be_current_review(self):
+        run = dict(name="now", profile="main", source_match=True, recorded_at="now",
+            cases=[dict(id="f[bad]", status="failed"), dict(id="f[good]", status="passed")])
+        note = dict(prefix="f", classification="OPEN", diagnosis="old diagnosis", next="recheck")
+        rows = {row["id"]: row for row in builder.strict_backlog(
+            [dict(name="old", failure_ids=["f[bad]", "f[good]"])], [run],
+            historical_notes=[note], historical_source_fingerprint="old-source")}
+        self.assertEqual(rows["f[bad]"]["status"], "current_failure")
+        self.assertNotIn("review_note", rows["f[bad]"])
+        self.assertEqual(rows["f[bad]"]["historical_review_note"]["source_fingerprint"], "old-source")
+        self.assertFalse(rows["f[bad]"]["historical_review_note"]["source_match"])
+        self.assertNotIn("historical_review_note", rows["f[good]"])
+        current = dict(note, diagnosis="new diagnosis")
+        row, = builder.strict_backlog([], [dict(run, cases=[run["cases"][0]])], [current],
+            historical_notes=[note], historical_source_fingerprint="old-source")
+        self.assertEqual(row["review_note"]["diagnosis"], "new diagnosis")
+        self.assertNotIn("historical_review_note", row)
+
     def test_diagnostic_is_stale_when_its_control_code_changes_and_cannot_claim_acceptance(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
