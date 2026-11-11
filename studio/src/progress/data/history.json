@@ -889,5 +889,77 @@
         }
       }
     ]
+  },
+  {
+    "generated_at": "2026-11-11T18:07:49.432997+00:00",
+    "fingerprint": "e5ae958bc41e3dfd9ded98611401e6f1e94376b442fde7e39bfea28373aa0fc1",
+    "datasets": [
+      {
+        "id": "native",
+        "file": "native.json.gz",
+        "sha256": "4497953ed80ffb87204e3379e972ba6fe253a79305045eb4567343ec83ac586d",
+        "count": 8729,
+        "status_counts": {
+          "unverified": 8714,
+          "not_implemented": 3,
+          "partial": 12
+        }
+      },
+      {
+        "id": "target",
+        "file": "target.json.gz",
+        "sha256": "8294ef45757262ba845b7e3c5d1c21825f3ce361a73b693db59d6e00f45ba972",
+        "count": 13612,
+        "status_counts": {
+          "unverified": 13606,
+          "partial": 6
+        }
+      },
+      {
+        "id": "runtime",
+        "file": "runtime.json.gz",
+        "sha256": "b595230166b59b3e37236ebf70f5809d81d9ecd11d2c105c4ab2c38dd4f0b9cd",
+        "count": 104234,
+        "status_counts": {
+          "unverified": 104234
+        }
+      }
+    ]
+  },
+  {
+    "generated_at": "2026-11-11T18:41:45.864060+00:00",
+    "fingerprint": "e5ae958bc41e3dfd9ded98611401e6f1e94376b442fde7e39bfea28373aa0fc1",
+    "datasets": [
+      {
+        "id": "native",
+        "file": "native.json.gz",
+        "sha256": "4497953ed80ffb87204e3379e972ba6fe253a79305045eb4567343ec83ac586d",
+        "count": 8729,
+        "status_counts": {
+          "unverified": 8714,
+          "not_implemented": 3,
+          "partial": 12
+        }
+      },
+      {
+        "id": "target",
+        "file": "target.json.gz",
+        "sha256": "8294ef45757262ba845b7e3c5d1c21825f3ce361a73b693db59d6e00f45ba972",
+        "count": 13612,
+        "status_counts": {
+          "unverified": 13606,
+          "partial": 6
+        }
+      },
+      {
+        "id": "runtime",
+        "file": "runtime.json.gz",
+        "sha256": "1bdb2d302d5c7ae9f8342a6d1e4c1c61da6ea1223b697a7d80e17051136983fb",
+        "count": 104234,
+        "status_counts": {
+          "unverified": 104234
+        }
+      }
+    ]
   }
 ]

@@ -17,6 +17,7 @@ import platform
 import socket
 import sys
 import types
+import typing
 
 
 def type_name(value):
@@ -27,22 +28,89 @@ def type_name(value):
 def literal(value, parameter=""):
     if value is inspect.Parameter.empty:
         return {"present": False}
+    secret = any(word in parameter.lower() for word in ("token", "password", "secret", "credential", "api_key"))
+    if value is not None and secret:
+        return {"present": True, "literal": False, "type": type_name(value), "review_required": True}
     if value is None or type(value) in (bool, int) or type(value) is float and math.isfinite(value):
         return {"present": True, "literal": True, "value": value}
-    secret = any(word in parameter.lower() for word in ("token", "password", "secret", "credential", "api_key"))
     if type(value) is str and not secret and len(value) <= 200 and not value.startswith(("/", "~")):
         return {"present": True, "literal": True, "value": value}
     return {"present": True, "literal": False, "type": type_name(value), "review_required": True}
 
 
-def signature(value):
+def annotation_schema(value, parameter="", *, _active=(), _budget=None):
+    budget = [128] if _budget is None else _budget
+    budget[0] -= 1
+    if budget[0] < 0 or len(_active) >= 12:
+        return dict(kind="unresolved", reason="depth_limit" if len(_active) >= 12 else "node_limit", review_required=True)
+    if any(value is parent for parent in _active):
+        return dict(kind="unresolved", reason="cycle", review_required=True)
+    if value is inspect.Parameter.empty:
+        return dict(kind="empty")
+    if value is None:
+        return dict(kind="none")
+    if value is Ellipsis:
+        return dict(kind="ellipsis")
+    if type(value) is str:
+        return dict(kind="string", value=literal(value, parameter), review_required=True)
+    if isinstance(value, typing.ForwardRef):
+        return dict(kind="forward_reference", value=literal(value.__forward_arg__, parameter), review_required=True)
+    for name in ("TypeVar", "ParamSpec", "TypeVarTuple", "TypeAliasType"):
+        cls = getattr(typing, name, None)
+        if isinstance(cls, type) and isinstance(value, cls):
+            # PEP 695 bounds, constraints and alias values can execute code
+            # when read. Names/variance are metadata, not resolved bounds.
+            return dict(kind="type_variable" if name != "TypeAliasType" else "type_alias",
+                name=value.__name__, covariant=bool(getattr(value, "__covariant__", False)),
+                contravariant=bool(getattr(value, "__contravariant__", False)),
+                bounds_review_required=True, review_required=True)
+    for name in ("Union", "Literal", "Annotated", "ClassVar", "Final", "Required", "NotRequired",
+                 "Unpack", "Concatenate", "TypeGuard", "Self", "NoReturn", "Never", "Any", "LiteralString"):
+        if value is getattr(typing, name, None):
+            return dict(kind="typing", id="typing."+name)
+    if isinstance(value, type):
+        return dict(kind="class", id=type_name(value))
+    active = (*_active, value)
+    describe = lambda child: annotation_schema(child, parameter, _active=active, _budget=budget)
+    if type(value) in (list, tuple):
+        return dict(kind="parameter_list", arguments=[describe(child) for child in value[:64]],
+                    **({"review_required": True, "reason": "argument_limit"} if len(value) > 64 else {}))
+    origin, args = typing.get_origin(value), typing.get_args(value)
+    if origin is not None:
+        arguments = []
+        for index, child in enumerate(args[:64]):
+            if origin is typing.Literal or origin is typing.Annotated and index > 0:
+                arguments.append(dict(kind="literal", value=literal(child, parameter)))
+            else:
+                arguments.append(describe(child))
+        return dict(kind="generic", origin=describe(origin), arguments=arguments,
+                    **({"review_required": True, "reason": "argument_limit"} if len(args) > 64 else {}))
+    return dict(kind="opaque", type=type_name(value), review_required=True)
+
+
+def signature(value, *, _overloads=True):
     try:
         sig = inspect.signature(value, eval_str=False)
         parameters = [{"name": p.name, "kind": p.kind.name, "default": literal(p.default, p.name),
-                       "annotation": literal(p.annotation)} for p in sig.parameters.values()]
-        return {"available": True, "parameters": parameters, "return_annotation": literal(sig.return_annotation)}
+                       "annotation": literal(p.annotation),
+                       **({"annotation_schema": annotation_schema(p.annotation, p.name)}
+                          if p.annotation is not inspect.Parameter.empty else {})} for p in sig.parameters.values()]
+        result = {"available": True, "parameters": parameters, "return_annotation": literal(sig.return_annotation)}
+        if sig.return_annotation is not inspect.Signature.empty:
+            result["return_annotation_schema"] = annotation_schema(sig.return_annotation)
     except (TypeError, ValueError) as error:
-        return {"available": False, "reason": type(error).__name__, "review_required": True}
+        result = {"available": False, "reason": type(error).__name__, "review_required": True}
+    if _overloads:
+        try:
+            overloads = typing.get_overloads(value)
+            if overloads:
+                result.update(overloads=[signature(function, _overloads=False) for function in overloads[:64]],
+                    overload_observed_count=len(overloads), overload_limit_reached=len(overloads) > 64,
+                    overload_registry_identity_verified=False, overload_review_required=True,
+                    overload_source="typing_runtime_registry_not_executed_contract")
+        except Exception as error:
+            result.update(overload_review_required=True, overload_error=type(error).__name__)
+    return result
 
 
 @contextmanager
