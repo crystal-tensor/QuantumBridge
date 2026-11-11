@@ -68,11 +68,11 @@
     },
     {
       "prefix": "tests.interfaces.test_native_tf_mps_resource_contract::test_managed_mps_queries_same_parent_cache_tiny_hessian_cap",
-      "classification": "RETAINED_BINDING_CONTRACT_REVIEW_REQUIRED",
-      "diagnosis_zh": "双环境已核实 31,032 字节恰好是 64 字节固定矩阵加 30,968 字节仍存活的 Parameter/ParameterVector/Expression 保守预算；全部持有者销毁后归零。原三方向 HVP/VJP、精确工作量、父子预算和 Hessian 上限均通过，HVP 误差不超过 1.4e-17。旧构造断言仍保留失败，未清零有效预算。",
-      "next_zh": "已仅就这一条构造内存断言请求 owner 决策；获准前不改。后续应验证数值存储与真实对象预算分开、持有者存活保留以及最终释放，其余数学与资源断言不变。",
-      "diagnosis": "Both profiles verify 31,032 bytes equals 64 fixed numeric bytes plus 30,968 conservative bytes held by live Parameter/ParameterVector/Expression objects. All allowances release when the final owners die. Original three-direction HVP/VJP, exact work, parent/child budgets and Hessian cap pass; HVP error is at most 1.4e-17. The old constructor assertion still fails; valid reservations were not zeroed.",
-      "next": "Owner decision requested only for this constructor-memory assertion; no change before approval. Verify separate numeric/object accounting, retained aliases and final release while preserving all remaining mathematical/resource assertions."
+      "classification": "OWNER_APPROVED_CONTRACT_MIGRATION",
+      "diagnosis_zh": "Owner 仅批准迁移这一条构造内存断言，现已在双参考环境通过。新断言按真实弱引用持有者核对固定矩阵与参数图保守预算：关闭句柄并销毁原对象后，存活别名仍保留预算；最后别名销毁后账本归零。原断言之后的 15 条语句（含 HVP/VJP、工作量、父子预算和 Hessian 上限）按原序保留，另外 10 个函数的 AST 未改。未改生产记账，也未将保守预算冒充实际分配器内存。",
+      "next_zh": "继续完整回归及逐函数资源合同验收；这是一条获准合同迁移，不是生产内存泄漏修复。该文件不计入旧测试未改数量，其他案例没有获得额外迁移授权。",
+      "diagnosis": "Owner approved only this constructor-memory assertion, now passing in both reference profiles. Real weak owners account for fixed matrices plus conservative parameter-graph allowances. Aliases preserve their budgets after handle/source/node disposal; final alias disposal releases the constructor ledger to zero. All fifteen original statements after the constructor assertion, including HVP/VJP, exact work, parent/child budgets and Hessian cap, remain in order; ten other definitions are AST-identical. Production accounting is unchanged and conservative allowances are not allocator measurements.",
+      "next": "Continue full regression and per-function resource acceptance. This is one approved contract migration, not a production memory-leak repair. Exclude the file from unchanged-test counts and do not extend approval to other cases."
     },
     {
       "prefix": "tests.interfaces.test_native_tf_eager_jacobian_reentry::test_traced_eager_vjp_does_not_bypass_an_active_shared_scope",

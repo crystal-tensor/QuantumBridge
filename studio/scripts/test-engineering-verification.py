@@ -66,6 +66,23 @@ class RecorderTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "terminal test exit"):
             recorder.collect(self.args)
 
+    def test_abnormal_process_cannot_be_certified_from_a_complete_junit(self):
+        self.write("terminal.json", {"terminal": True, "exit": -11})
+        self.args.terminal = self.root / "terminal.json"
+        with self.assertRaisesRegex(ValueError, "Process terminal exit"):
+            recorder.collect(self.args)
+        self.assertFalse(self.args.output.exists())
+
+    def test_normal_process_receipt_is_hashed_without_local_paths(self):
+        self.write("terminal.json", {"terminal": True, "exit": 1})
+        self.args.terminal = self.root / "terminal.json"
+        with redirect_stdout(io.StringIO()):
+            recorder.collect(self.args)
+        process = json.loads(self.args.output.read_text())["runs"][0]["process_terminal_validation"]
+        self.assertTrue(process["provided"])
+        self.assertEqual(process["exit"], 1)
+        self.assertEqual(process["receipt_hash"], recorder.sha(self.args.terminal.read_bytes()))
+
     def migration(self, **changes):
         old = recorder.sha(b"previous fixture assertion")
         self.write("protected.json", {"tests/test_unit.py": old})

@@ -123,6 +123,17 @@ class EvidenceTests(unittest.TestCase):
         rows = builder.strict_backlog([{"name":"old", "failure_ids":["a"]}], stale)
         self.assertEqual(rows[0]["status"], "reproduction_pending")
 
+    def test_real_process_exit_receipt_is_required_for_current_verification(self):
+        self.assertFalse(builder.process_terminal_matches({"exit_code":1}))
+        good = {"provided":True, "exit":1, "receipt_hash":"a"*64}
+        self.assertTrue(builder.process_terminal_matches({"exit_code":1,"process_terminal_validation":good}))
+        for process in (None, {}, {**good,"exit":-11}, {**good,"exit":True},
+                        {**good,"provided":False}, {**good,"receipt_hash":None},
+                        {**good,"receipt_hash":"g"*64}):
+            with self.subTest(process=process):
+                self.assertFalse(builder.process_terminal_matches({"exit_code":1,"process_terminal_validation":process}))
+        self.assertFalse(builder.process_terminal_matches({"exit_code":0,"process_terminal_validation":good}))
+
     def test_input_order_does_not_hide_current_passes_for_stale_failures(self):
         current = {"name":"current", "profile":"main", "source_match":True,
                    "recorded_at":"new", "cases":[{"id":"f", "status":"passed"}]}

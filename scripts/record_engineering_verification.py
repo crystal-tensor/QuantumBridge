@@ -88,6 +88,14 @@ def collect(args):
     counts = {status: sum(c["status"] == status for c in cases) for status in ("passed", "failed", "skipped")}
     if origin["test_exit"] != (1 if counts["failed"] else 0):
         raise ValueError("JUnit status and terminal test exit do not agree")
+    terminal_path = getattr(args, "terminal", None)
+    process = {"provided": False}
+    if terminal_path:
+        terminal = load(terminal_path)
+        if (terminal.get("terminal") is not True or type(terminal.get("exit")) is not int
+                or terminal["exit"] != origin["test_exit"]):
+            raise ValueError("Process terminal exit and JUnit status do not agree")
+        process = {"provided": True, "exit": terminal["exit"], "receipt_hash": sha(terminal_path.read_bytes())}
     protected = load(args.protected_tests)
     unchanged, migrations = protected_tests(protected, manifest, getattr(args, "approved_migrations", None))
     versions = {}
@@ -102,6 +110,7 @@ def collect(args):
            "source_manifest_sha256": sha(manifest_path.read_bytes()),
            "evidence_hash": sha(args.xml.read_bytes()),
            "origin_receipt_hash": sha(args.origin.read_bytes()),
+           "process_terminal_validation": process,
            "matching_modules": origin["matching_modules"],
            "protected_tests": unchanged, "protected_tests_unchanged": True,
            "original_protected_test_files": len(protected), "approved_test_migrations": migrations,
@@ -130,5 +139,6 @@ if __name__ == "__main__":
     parser.add_argument("--origin", required=True, type=Path)
     parser.add_argument("--protected-tests", required=True, type=Path)
     parser.add_argument("--approved-migrations", type=Path)
+    parser.add_argument("--terminal", type=Path, help="Subprocess terminal receipt; rejects abnormal process exits despite a complete JUnit file")
     parser.add_argument("--output", type=Path)
     collect(parser.parse_args())

@@ -95,7 +95,7 @@ test("goal and selected verification never masquerade as final acceptance", () =
     assert.ok(row.review_note.diagnosis&&row.review_note.next);
   }
   for(const run of manifest.verification){
-    assert.equal(run.source_match,run.source_fingerprint===manifest.source.fingerprint&&run.example_input_validation?.passed!==false&&run.test_context_match!==false);
+    assert.equal(run.source_match,run.source_fingerprint===manifest.source.fingerprint&&run.example_input_validation?.passed!==false&&run.test_context_match!==false&&run.process_terminal_match===true);
     assert.equal(run.total,run.passed+run.failed+run.skipped);
     assert.equal(run.cases.length,run.total);
     assert.equal(run.protected_tests_unchanged,true);
@@ -104,10 +104,25 @@ test("goal and selected verification never masquerade as final acceptance", () =
       const files=new Set(run.approved_test_migrations.map(m=>m.file));
       assert.equal(run.protected_tests+files.size,run.original_protected_test_files);
       assert.ok(run.approved_test_migrations.every(m=>m.owner_approved&&m.before_sha256!==m.after_sha256&&m.case_ids.length));
+      if(run.source_match){
+        assert.equal(files.size,manifest.goal_execution.latest_batch.approved_test_migration_files);
+        assert.equal(run.approved_test_migrations.flatMap(m=>m.case_ids).length,manifest.goal_execution.latest_batch.approved_test_migration_cases);
+        const memory=run.approved_test_migrations.find(m=>m.file==="tests/interfaces/test_native_tf_mps_resource_contract.py");
+        if(memory){
+          assert.deepEqual(memory.case_ids,["tests.interfaces.test_native_tf_mps_resource_contract::test_managed_mps_queries_same_parent_cache_tiny_hessian_cap"]);
+          assert.equal(memory.production_resource_accounting_changed,false);
+          assert.equal(memory.math_tolerances_changed,false);
+        }
+      }
     }
   }
   const text=JSON.stringify(manifest);
   assert.ok(!text.includes("/Users/")&&!text.includes("site-packages/"));
+  for(const observation of manifest.goal_execution.latest_batch.abnormal_process_observations || []){
+    assert.equal(observation.accepted_as_verification,false);
+    assert.equal(observation.process_exit,-11);
+    assert.ok(!manifest.verification.some(run=>run.evidence_hash===observation.junit_sha256));
+  }
 });
 test("subtle entrances are registered in all four home domains", async () => {
   assert.equal(engineeringResources.length,4);

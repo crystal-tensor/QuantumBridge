@@ -308,6 +308,17 @@ def diagnostic_observations(value, fingerprint):
     return observations
 
 
+def process_terminal_matches(run):
+    process = run.get("process_terminal_validation", {})
+    if not isinstance(process, dict):
+        return False
+    evidence = process.get("receipt_hash", "")
+    return (process.get("provided") is True and type(process.get("exit")) is int
+            and type(run.get("exit_code")) is int and process["exit"] in (0, 1)
+            and process["exit"] == run["exit_code"] and isinstance(evidence, str)
+            and len(evidence) == 64 and all(c in "0123456789abcdef" for c in evidence))
+
+
 def build(args):
     DATA.mkdir(parents=True, exist_ok=True)
     execution_path = ROOT / "docs/engineering/goal_execution.json"
@@ -376,9 +387,10 @@ def build(args):
     test_hashes = {}
     for run in verification:
         run["test_context_match"] = test_context_matches(run.get("test_context"), test_hashes)
+        run["process_terminal_match"] = process_terminal_matches(run)
         run["source_match"] = (run.get("source_fingerprint") == fingerprint
                                and run.get("example_input_validation", {}).get("passed", True)
-                               and run["test_context_match"])
+                               and run["test_context_match"] and run["process_terminal_match"])
         run["freshness"] = "current_selected_source_batch" if run["source_match"] else "different_source_not_current_verification"
     failure_review_path = ROOT / "docs/engineering/failure_reviews.json"
     failure_review = load_json(failure_review_path) if failure_review_path.exists() else {}

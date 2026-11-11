@@ -18,6 +18,19 @@
       ],
       "math_tolerances_changed": false,
       "production_identity_policy_changed": false
+    },
+    {
+      "file": "tests/interfaces/test_native_tf_mps_resource_contract.py",
+      "before_sha256": "3a6d2692a53138cc34921c3d9a9cf5ac5e2d0e0cd0e5e456a5fed4a46d47b5ed",
+      "after_sha256": "dad783c048748d0d72e3ee02ecc6ce24ac63ddba8f877aebb98c99b97a416f1f",
+      "owner_approved": true,
+      "approval_summary": "Owner explicitly approved only this constructor-memory contract on 2026-11-11. Include conservative storage held by real parameter-graph owners, test retained aliases and exact final release, and preserve every original HVP/VJP mathematical input, tolerance, work count, parent/child budget and Hessian cap. No other case in this file is migrated.",
+      "case_ids": [
+        "tests.interfaces.test_native_tf_mps_resource_contract::test_managed_mps_queries_same_parent_cache_tiny_hessian_cap"
+      ],
+      "math_tolerances_changed": false,
+      "production_identity_policy_changed": false,
+      "production_resource_accounting_changed": false
     }
   ]
 }

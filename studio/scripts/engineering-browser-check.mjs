@@ -48,6 +48,12 @@ try{
     await page.screenshot({path:`${output}/runtime-inheritance-${viewport.width}.png`,fullPage:false});
     await page.getByRole("button",{name:"关闭",exact:true}).click();
     await page.getByRole("button",{name:"测试与真机",exact:true}).click();
+    const processSection=page.locator("section.band").filter({has:page.getByRole("heading",{name:"异常进程：不计入验证",exact:true})});
+    assert.equal(await processSection.locator("details").count(),2);
+    for(const summary of await processSection.locator("summary").all()) await summary.click();
+    assert.ok((await processSection.innerText()).includes("SIGSEGV (-11)"));
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+    await page.screenshot({path:`${output}/abnormal-process-${viewport.width}.png`,fullPage:false});
     assert.ok((await page.locator("#view").innerText()).includes("INCONCLUSIVE"));
     await page.getByRole("heading",{name:"本目标冻结源码验证",exact:true}).waitFor();
     const diagnostics=page.locator("section.band").filter({has:page.getByRole("heading",{name:"诊断对照：不计入验收通过",exact:true})});
@@ -58,8 +64,10 @@ try{
     await diagnostics.locator("details").first().locator("summary").click();
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
     const migrationSection=page.locator("section.band").filter({has:page.getByRole("heading",{name:"经 owner 明确批准的合同迁移",exact:true})});
-    await migrationSection.locator("details summary").click();
-    assert.equal(await migrationSection.locator("li").count(),7);
+    assert.equal(await migrationSection.locator("details").count(),2);
+    for(const summary of await migrationSection.locator("details summary").all()) await summary.click();
+    assert.equal(await migrationSection.locator("li").count(),8);
+    assert.ok((await migrationSection.innerText()).includes("test_managed_mps_queries_same_parent_cache_tiny_hessian_cap"));
     assert.ok((await migrationSection.innerText()).includes("不计入"));
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
     await page.screenshot({path:`${output}/approved-migrations-${viewport.width}.png`,fullPage:false});
