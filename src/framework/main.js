@@ -16,7 +16,7 @@ function icons(){window.lucide?.createIcons({attrs:{"stroke-width":1.6}});}
 
 function resourceLinks(items, compact=false){
   if(!items.length)return "";
-  return `<nav class="resource-links ${compact?"compact-resources":""}" aria-label="${text("案例与报告","Cases & reports")}">${items.map(item=>`<a href="${resourceHref(item)}${state.locale==="en"?(resourceHref(item).includes("?")?"&lang=en":"?lang=en"):""}">${icon(item.kind==="diagnostic"?"file-search":item.kind==="index"?"folder-open":"book-open")}<span>${esc(tr(item.title))}</span>${icon("arrow-up-right")}</a>`).join("")}</nav>`;
+  return `<nav class="resource-links ${compact?"compact-resources":""}" aria-label="${text("案例与报告","Cases & reports")}">${items.map(item=>item.subtle?`<a class="engineering-dot" href="${resourceHref(item)}${state.locale==="en"?"&lang=en":""}" aria-label="${esc(tr(item.title))}" title="${esc(tr(item.title))}">·</a>`:`<a href="${resourceHref(item)}${state.locale==="en"?(resourceHref(item).includes("?")?"&lang=en":"?lang=en"):""}">${icon(item.kind==="diagnostic"?"file-search":item.kind==="index"?"folder-open":"book-open")}<span>${esc(tr(item.title))}</span>${icon("arrow-up-right")}</a>`).join("")}</nav>`;
 }
 
 function directionCard(item){

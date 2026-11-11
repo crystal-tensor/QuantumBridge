@@ -61,9 +61,16 @@ export const documentationResources = [
   ...directions.map(direction => ({ domain: direction.domain, direction: direction.id, kind: "guide", href: `/readme.html#${direction.id}`, title: bi(`${direction.name["zh-CN"]} · 使用教程`, `${direction.name.en} · Tutorial`) })),
 ];
 
+// The owner wants a subtle entrance; keep it registered in every relevant domain.
+export const engineeringResources = domains.map(domain => ({
+  domain: domain.id, kind: "engineering", subtle: true,
+  href: `/engineering.html?domain=${domain.id}`,
+  title: bi("工程进展", "Engineering progress"),
+}));
+
 export const resourceHref = (resource, notebook = false) => resource.href ?
   `${siteBase}${resource.href.replace(/^\//, "")}` :
   `${siteBase}examples/${resource.domain}/${notebook ? resource.file.replace(/\.html$/, ".ipynb") : resource.file}`;
 
-export const domainResources = domain => [...resources, ...projectDocuments, ...documentationResources.filter(resource => !resource.direction)].filter(resource => resource.domain === domain && resource.kind !== "case");
+export const domainResources = domain => [...resources, ...projectDocuments, ...engineeringResources, ...documentationResources.filter(resource => !resource.direction)].filter(resource => resource.domain === domain && resource.kind !== "case");
 export const directionResources = direction => [...resources, ...documentationResources].filter(resource => resource.direction === direction);
