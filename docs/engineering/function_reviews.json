@@ -49,5 +49,49 @@
     ],
     "preserved_native_tensor_frame": true,
     "remaining": "Complete per-function resource/input/error/composition acceptance and remaining strict gates are open."
+  },
+  {
+    "id": "quantumbridge.serialization.qpy.qpy_get_version",
+    "source_hash": "7683ba0d2278b0ba986a2b6332f041b8807ebac66b8700594f2e8aa4f1053511",
+    "project_fingerprint": "e5ae958bc41e3dfd9ded98611401e6f1e94376b442fde7e39bfea28373aa0fc1",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": true,
+    "strict_tests_pass": true,
+    "evidence_hash": "39636a8e3217463582bee955635a34e8de04954a84d24994754088aa39379922",
+    "evidence_scope": "Bounded seven-byte prefix inspection, stream cursor restoration, path IO, explicit public file_obj keyword, Native UUID/full-matrix/phase transport and actual pinned SDK boundary references. Not a whole serialization or project gate.",
+    "native_cases_each_profile": 35,
+    "actual_sdk_reference_cases_each_profile": 28,
+    "real_qiskit_versions": [
+      "2.4.1",
+      "2.6.0"
+    ],
+    "native_entry": "quantumbridge.serialization.qpy.qpy_get_version",
+    "reference_public_exposure": "qiskit.qpy.get_qpy_version",
+    "native_stricter_magic_validation_retained": true,
+    "remaining": "Complete target-to-Native acceptance mapping and full strict gates remain open. Native rejects invalid magic rather than copying the observed upstream omission; the query does not certify the rest of a payload."
+  },
+  {
+    "id": "quantumbridge.serialization.qpy.get_qpy_version",
+    "source_hash": "7683ba0d2278b0ba986a2b6332f041b8807ebac66b8700594f2e8aa4f1053511",
+    "project_fingerprint": "e5ae958bc41e3dfd9ded98611401e6f1e94376b442fde7e39bfea28373aa0fc1",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": true,
+    "strict_tests_pass": true,
+    "evidence_hash": "39636a8e3217463582bee955635a34e8de04954a84d24994754088aa39379922",
+    "evidence_scope": "Bounded seven-byte prefix inspection, stream cursor restoration, path IO, explicit public file_obj keyword, Native UUID/full-matrix/phase transport and actual pinned SDK boundary references. Not a whole serialization or project gate.",
+    "native_cases_each_profile": 35,
+    "actual_sdk_reference_cases_each_profile": 28,
+    "real_qiskit_versions": [
+      "2.4.1",
+      "2.6.0"
+    ],
+    "native_entry": "quantumbridge.serialization.qpy.get_qpy_version",
+    "reference_public_exposure": "qiskit.qpy.get_qpy_version",
+    "native_stricter_magic_validation_retained": true,
+    "remaining": "Complete target-to-Native acceptance mapping and full strict gates remain open. Native rejects invalid magic rather than copying the observed upstream omission; the query does not certify the rest of a payload."
   }
 ]
