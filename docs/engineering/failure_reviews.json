@@ -45,10 +45,10 @@
     {
       "prefix": "tests.serialization.test_qpy16_pauli_evolution::test_loaded_gate_drives_real_estimator_and_sampling",
       "classification": "PUBLIC_NATIVE_ENDIANNESS_CONTRACT_REVIEW",
-      "diagnosis_zh": "估计器期望值不同；Public SparsePauliOp 的右端位序与 Native 算子的左端位序必须区分，不能翻转已承诺的 V2 语义来制造通过。",
-      "next_zh": "用完整复数矩阵与两个测量位置分别验证加载、Public/Native 算子和 V2 执行，定位合同迁移或实际映射缺陷。",
-      "diagnosis": "Estimator expectations differ. Public rightmost-first Pauli labels and Native leftmost-first labels must not be conflated or fixed by reversing the approved V2 semantics.",
-      "next": "Verify the full complex matrix and both measurement positions across decoding, Public/Native operators and V2 execution before deciding migration versus mapping defect."
+      "diagnosis_zh": "双环境各13项 Native 检查已通过，禁止导入上游 SDK；完整复数矩阵、两根线、三类观测量入口均验证。真实 Qiskit2.4.1/2.6.0 的隔离参考也确认：在原保存的 Trotter 分解中，公共 IZ 对应原 Native 第0根线，期望值0.9544276637486706；公共 ZI 对应另一根线，期望值1。精确门与分解电路分别核对，未混用。旧案例仍失败，未反转 V2 位序或改其断言。",
+      "next_zh": "已仅就这一条旧案例异步请求迁移：明确 Native 算子保留原物理公式，增加公共 IZ 等价与 ZI 不等价检查，原4096 shots、seed54和采样容差全部保留。尚未收到批准；其他旧测试不在授权内。",
+      "diagnosis": "Thirteen Native checks pass per profile under an upstream-import guard, covering full complex matrices, both wires and three observable entry types. Isolated real Qiskit2.4.1/2.6.0 references confirm public IZ matches original Native wire0 with expectation0.9544276637486706 under the stored Trotter synthesis; public ZI measures the other wire and yields1. Exact gates and synthesized circuits are separately checked. The original failure remains; V2 ordering and old assertions are unchanged.",
+      "next": "An asynchronous request covers only this one old case: preserve the original physical formula with an explicit Native operator, add public IZ equivalence and ZI distinction, and retain4096shots, seed54 and all sampling tolerances. Approval has not arrived; no other old tests are authorized."
     },
     {
       "prefix": "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature",

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Public export/MRO metadata only; never an implementation acceptance claim."""
 import argparse
+import copy
 from contextlib import contextmanager
 from datetime import datetime, timezone
 import hashlib
@@ -183,6 +184,8 @@ class RuntimeCensus:
     def result(self):
         return {"schema": 1, "profile": self.profile, "collected_at": datetime.now(timezone.utc).isoformat(),
             "environment": {"python": platform.python_version()},
+            "loaded_reference_roots": {name: name in sys.modules for name in
+                ("qiskit", "pennylane", "tensorflow", "pyarrow")},
             "scope": "explicit_modules_public_exports_and_static_mro", "census_complete": False,
             "policy": "Metadata only, no SDK object instantiation or implementation source copied. Python sockets denied; not an OS network sandbox. No Native mapping inferred.",
             "modules": self.modules, "records": sorted(self.records.values(), key=lambda row: row["id"]),
@@ -192,17 +195,89 @@ class RuntimeCensus:
                 "per-function Native contracts and both-profile execution evidence"]}
 
 
+def merge_isolated_files(profile, pairs):
+    """Union metadata, retaining process boundaries and ambiguous identities."""
+    inputs = []
+    for source, terminal in pairs:
+        raw = source.read_bytes()
+        receipt_raw = terminal.read_bytes()
+        receipt = json.loads(receipt_raw)
+        if (receipt.get("terminal") is not True or type(receipt.get("exit")) is not int
+                or receipt["exit"] != 0 or receipt.get("profile") != profile
+                or receipt.get("artifact_sha256") != hashlib.sha256(raw).hexdigest()):
+            raise ValueError("Isolated census requires matching normal process receipts")
+        reference = json.loads(gzip.decompress(raw) if source.suffix == ".gz" else raw)
+        if reference.get("profile") != profile:
+            raise ValueError("Isolated census requires matching normal process receipts")
+        label = receipt.get("isolation", "")
+        if not isinstance(label, str) or not label.isidentifier():
+            raise ValueError("Invalid collection isolation identity")
+        names = [row["name"] for row in reference["modules"]]
+        if len(names) != len(set(names)) or sorted(names) != sorted(receipt.get("modules", [])):
+            raise ValueError("Isolated module selections differ")
+        records = reference["records"]
+        if (len({row["id"] for row in records}) != len(records)
+                or any(row["status"] != "unverified" or row["native_mapping"] is not None
+                       or row["contract_reviewed"] is not False for row in records)):
+            raise ValueError("A census cannot claim Native acceptance or duplicate record identity")
+        inputs.append((label, reference, dict(isolation=label, terminal=True, exit=0,
+            artifact_sha256=hashlib.sha256(raw).hexdigest(),
+            source_sha256=receipt.get("source_sha256"),
+            loaded_reference_roots=reference.get("loaded_reference_roots", {}),
+            receipt_sha256=hashlib.sha256(receipt_raw).hexdigest())))
+    if not inputs or len({label for label, _, _ in inputs}) != len(inputs):
+        raise ValueError("Collection isolations must be nonempty and distinct")
+    if len({value["environment"]["python"] for _, value, _ in inputs}) != 1:
+        raise ValueError("Isolated Python reference versions differ")
+    modules = [module for _, value, _ in inputs for module in value["modules"]]
+    if len({row["name"] for row in modules}) != len(modules):
+        raise ValueError("Overlapping module collections require an explicit identity review")
+    observed = {}
+    for label, value, _ in inputs:
+        for row in value["records"]:
+            observed.setdefault(row["id"], []).append(label)
+    records, unresolved = [], [copy.deepcopy(row) for _, value, _ in inputs for row in value["unresolved"]]
+    for label, value, _ in inputs:
+        for original in value["records"]:
+            row = copy.deepcopy(original)
+            row["collection_isolation"] = label
+            if len(observed[row["id"]]) > 1:
+                row["id"] += "@isolated-"+label
+                row["canonical_identity_review_required"] = True
+            records.append(row)
+    unresolved += [dict(id=key, kind="cross_process_identity_uncompared", isolations=labels)
+                   for key, labels in observed.items() if len(labels) > 1]
+    if len({row["id"] for row in records}) != len(records):
+        raise ValueError("Isolated identity suffix collision")
+    return dict(schema=1, profile=profile, collected_at=datetime.now(timezone.utc).isoformat(),
+        environment=copy.deepcopy(inputs[0][1]["environment"]),
+        scope="isolated_sdk_metadata_union_not_coexistence_or_acceptance", census_complete=False,
+        coexistence_verified=False,
+        policy="Public metadata collected in separate SDK processes with unchanged versions. Python sockets denied during enumeration, not an OS sandbox. Normal terminal receipts required. No cross-process object identity inferred, SDK source copied, Native mapping or implementation acceptance claimed.",
+        modules=copy.deepcopy(modules), records=sorted(records, key=lambda row: row["id"]),
+        unresolved=unresolved, collection_receipts=[receipt for _, _, receipt in inputs],
+        closure_pending=sorted({item for _, value, _ in inputs for item in value["closure_pending"]}
+            | {"SDK coexistence and cross-process identities are not certified by isolated metadata"}))
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--module", action="append", required=True)
+    parser.add_argument("--module", action="append")
+    parser.add_argument("--isolated", nargs=2, action="append", type=Path,
+                        metavar=("CENSUS", "TERMINAL"))
     parser.add_argument("--profile", required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    census = RuntimeCensus(args.profile)
-    with deny_python_network():
-        for name in args.module:
-            census.module(name)
-    result = census.result()
+    if bool(args.module) == bool(args.isolated):
+        parser.error("Choose either explicit modules or isolated census/terminal pairs")
+    if args.isolated:
+        result = merge_isolated_files(args.profile, args.isolated)
+    else:
+        census = RuntimeCensus(args.profile)
+        with deny_python_network():
+            for name in args.module:
+                census.module(name)
+        result = census.result()
     args.output.parent.mkdir(parents=True, exist_ok=True)
     body = (json.dumps(result, ensure_ascii=False, indent=2)+"\n").encode("utf-8")
     args.output.write_bytes(gzip.compress(body, mtime=0) if args.output.suffix == ".gz" else body)

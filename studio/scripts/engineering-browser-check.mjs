@@ -49,9 +49,12 @@ try{
     await page.getByRole("button",{name:"关闭",exact:true}).click();
     await page.getByRole("button",{name:"测试与真机",exact:true}).click();
     const processSection=page.locator("section.band").filter({has:page.getByRole("heading",{name:"异常进程：不计入验证",exact:true})});
-    assert.equal(await processSection.locator("details").count(),2);
+    assert.equal(await processSection.locator("details").count(),3);
     for(const summary of await processSection.locator("summary").all()) await summary.click();
     assert.ok((await processSection.innerText()).includes("SIGSEGV (-11)"));
+    assert.ok((await processSection.innerText()).includes("runtime-census-combined"));
+    assert.ok((await processSection.innerText()).includes("采集输出 SHA-256"));
+    assert.equal((await processSection.innerText()).includes("undefined"),false);
     await processSection.getByRole("link",{name:"Arrow 版本对照：24.0.0 / 25.0.1",exact:true}).click();
     await page.locator("#diag-arrow_coexistence_dependency_review").waitFor();
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
@@ -88,6 +91,13 @@ try{
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
     await page.getByRole("button",{name:"六个月验收计划",exact:true}).click();
     assert.equal(await page.locator(".timeline li").count(),6);
+    const runtimeSection=page.locator("section.band").filter({has:page.getByRole("heading",{name:"公共导出与继承清点",exact:true})});
+    assert.equal(await runtimeSection.locator("details").count(),2);
+    for(const summary of await runtimeSection.locator("details > summary").all()) await summary.click();
+    assert.ok((await runtimeSection.innerText()).includes("按 SDK 隔离采集"));
+    assert.ok((await runtimeSection.innerText()).includes("pennylane.qchem"));
+    assert.ok((await runtimeSection.innerText()).includes("qiskit.transpiler.passes"));
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
     const namespaceSection=page.locator("section.band").filter({has:page.getByRole("heading",{name:"递归命名空间候选",exact:true})});
     assert.equal(await namespaceSection.locator("details").count(),2);
     await namespaceSection.locator("details").first().locator("summary").click();

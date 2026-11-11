@@ -215,8 +215,16 @@ def runtime_census(paths):
         raw = path.read_bytes()
         reference = json.loads(gzip.decompress(raw) if path.suffix == ".gz" else raw)
         records = reference["records"]
+        collection_receipts = reference.get("collection_receipts", [])
+        if reference.get("scope") == "isolated_sdk_metadata_union_not_coexistence_or_acceptance":
+            if not collection_receipts or any(receipt.get("terminal") is not True
+                    or type(receipt.get("exit")) is not int or receipt["exit"] != 0
+                    for receipt in collection_receipts):
+                raise ValueError("Isolated runtime census lacks normal terminal receipts")
         audits.append({"profile": reference["profile"], "collected_at": reference["collected_at"],
             "artifact_hash": digest(raw), "modules": reference["modules"],
+            "scope": reference.get("scope"), "coexistence_verified": False,
+            "collection_receipts": collection_receipts,
             "records": len(records), "inherited_contexts": sum(bool(r.get("inherited")) for r in records),
             "signature_reviews_pending": sum(not r["signature"]["available"] for r in records),
             "unresolved": reference["unresolved"], "closure_pending": reference["closure_pending"],
@@ -235,7 +243,7 @@ def runtime_census(paths):
             row["exposures"] = sorted(set(row["exposures"]) | set(observed["exposures"]))
             row["runtime_observations"].append({"profile": reference["profile"],
                 **{k: observed[k] for k in ("canonical_id", "signature", "file", "source_hash",
-                    "inherited", "declared_in", "canonical_identity_review_required") if k in observed}})
+                    "inherited", "declared_in", "canonical_identity_review_required", "collection_isolation") if k in observed}})
             sig = observed["signature"]
             parameters = sig.get("parameters", [])
             names = []

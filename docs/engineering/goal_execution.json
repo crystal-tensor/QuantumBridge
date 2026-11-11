@@ -8,14 +8,14 @@
   "census_closed": false,
   "first_census_review_due": "2026-11-18T23:59:59+08:00",
   "delivery_forecast": "UNVERIFIED_HIGH_RISK_UNTIL_CENSUS_AND_CRITICAL_PATH_REVIEW",
-  "forecast_reviewed_at": "2026-11-11T19:34:27+08:00",
+  "forecast_reviewed_at": "2026-11-11T20:35:41+08:00",
   "forecast_risks": [
     "The public function denominator, inherited methods, dynamic exports and Native mappings remain open; no whole-project completion percentage is justified.",
     "The original alternate profile retains two rejected shutdown SIGSEGV runs. Independent imports reproduce Qiskit2.6/PyArrow24 coexistence crashes without QuantumBridge, in both orders; the system allocator does not prevent them. An isolated PyArrow25.0.1 overlay passes twelve import controls and both unchanged 512-case public selections exit normally with493passes/19existingfailures. This reviewed experiment does not replace either original profile or close the remaining failures; reference-profile promotion is pending owner decision.",
     "The 480-case selection now has 475 passes and five failures in both profiles. The one new pass is exactly the owner-approved constructor-memory contract migration, not a production repair. All 53 compilation/source-replay, 34 binding and 41 ownership cases pass per profile; the 401-case source selection retains one unchanged broadcast-rejection conflict. These overlapping selections are not a full suite.",
     "A no-quantum-library raw TensorFlow cos control independently loses cached reverse-over-forward curvature in both TF 2.21.0 environments. Native also has its own false third-order refusal and all-zero composition failures; the framework observation does not waive them or justify copying the defect.",
-    "The first runtime/MRO census covers eight available modules plus an explicitly unavailable Finance package, not the full API. Its 39,339 cross-profile candidates overlap the declaration register and cannot be used as a completed denominator.",
-    "Static installed-file discovery finds 2,066 main-profile and 1,361 alternate-profile namespace candidates. Only eight public-path modules per profile have runtime inspection so far; private re-exports, absent optional packages and per-function mappings remain open. Module counts are not a function denominator.",
+    "Runtime/MRO metadata now covers thirty available modules per profile plus an explicitly unavailable Finance package, collected in separate unchanged-version SDK processes. All four collectors exit0; existing public exposures are preserved and every record remains unverified with no Native mapping inferred. The broader combined alternate collector wrote output then SIGSEGV; that artifact is rejected and its receipt retained. Isolated metadata does not certify SDK coexistence, full API closure or implementations.",
+    "Static installed-file discovery currently finds2066main/2028alternate namespace candidates, with30public paths inspected per profile. Four optional packages previously recorded unavailable in the alternate metadata are now visible from external user/system locations: Aer0.17.2, Algorithms0.4.0, Nature0.8.0 and Runtime0.46.1. No packages were installed or reference targets changed in this batch; visibility is candidate metadata only, not promotion to the reference execution matrix. Distribution origin and environment-boundary review remain open, along with private re-exports, plugins, absent packages and per-function mappings.",
     "Large inherited uncommitted changes remain; verified local work is not yet a complete remotely published library delivery."
   ],
   "scope_reduced": false,
@@ -36,7 +36,7 @@
     "approved_test_migration_cases": 8,
     "approved_migration_record": "docs/engineering/test_contract_migrations.json",
     "new_approved_migrations_this_batch": 1,
-    "normal_terminal_selections_recorded": 11,
+    "normal_terminal_selections_recorded": 15,
     "process_stability_verified": false,
     "process_terminal_policy": "Current verification now requires the real subprocess exit receipt to match JUnit. Historical records lacking that receipt are not promoted. Both abnormal alternate-public attempts are retained separately, never counted as normal verification; no os._exit, dependency change or allocator override was used.",
     "abnormal_process_observations": [
@@ -63,6 +63,18 @@
         "origin_sha256": "9341a999933608e26066db4bd02865e43fce987a56d7449b04900c608dfc71fc",
         "crash_report_sha256": "f9f77197c034f21c36f455d52e104853c32a7e250cafefecfe0dfa4d80bb694c",
         "scope": "Same frozen source printed 493 passes and 19 existing failures, then the same libarrow cleanup SIGSEGV. Root cause unconfirmed, no third identical retry. Raw system reports stay private; only hashes and crash-site observations are published."
+      },
+      {
+        "profile": "alternate",
+        "selection": "runtime-census-combined",
+        "process_exit": -11,
+        "signal": "SIGSEGV",
+        "accepted_as_verification": false,
+        "recorded_at": "2026-11-11T12:18:43.365508+00:00",
+        "artifact_sha256": "32797d7552d238da681901b4d54797bcdffb7cd35ba1cc5e5f141b3343f27a38",
+        "process_receipt_sha256": "dcf4ed339ef25db23e793eb0b73589290397be562aa7c7f53b99736dbde944d4",
+        "crash_report_sha256": "3fb15706bcebf636e30fd53856912df9ef63305e86e2e41afb4c9230f11a7b27",
+        "scope": "Public metadata collector wrote31module records then SIGSEGV during interpreter finalization in Qiskit _accelerate.abi3.so::_mi_arenas_page_free while libarrow24 images were loaded. This is an observed crash site, not a proven root cause. The output is rejected as a normal collection and never counts as Native verification. Separate unchanged-version Qiskit-only and PennyLane-only collectors subsequently exit0 in both profiles; isolation does not certify coexistence. Raw system report stays private."
       }
     ],
     "diagnostic_observations": "docs/engineering/diagnostic_observations.json; five diagnostic groups, including twenty-four Arrow import observations and two unchanged candidate public selections, never counted as function acceptance passes",
@@ -71,6 +83,30 @@
     "full_suite_accepted": false,
     "native_change_publication": "local_only_pending_remaining_strict_failures",
     "observer_publication": "separate_scoped_metadata_and_page_commits"
+  },
+  "follow_up_batch": {
+    "checkpoint": "goal-tf-transpose-r2Jorl",
+    "source_fingerprint": "423833c765ff4eacbb179c7f784e72057c4a3ca7071235def96f12f36a666665",
+    "source_manifest_sha256": "2534f337195919d0b44e22d93ad7ab66aecf7eaebceac5bca1b04f16c09e8862",
+    "native_production_code_changed": false,
+    "old_test_assertions_changed": false,
+    "new_native_frame_tests_each_profile": {"total": 13, "passed": 13, "failed": 0, "skipped": 0, "process_exit": 0, "upstream_imports_forbidden": true},
+    "real_sdk_frame_references": {
+      "qiskit_versions": ["2.4.1", "2.6.0"],
+      "observations_each_profile": 4,
+      "process_exit_each_profile": 0,
+      "quantumbridge_tensorflow_pyarrow_pennylane_not_imported": true,
+      "main_result_sha256": "0ba047eb85939e56084d1a7851edf2409eb9cea9f8a8f59e7dacc10c46090237",
+      "alternate_result_sha256": "7b874f10fc7b9d7a04e271b05f93dd4fba932359e3c949106815773558b514b3",
+      "meaning": "Public rightmost-qubit0 labels and Native leftmost-wire0 labels agree under explicit basis conversion. Exact PauliEvolutionGate matrices and stored Trotter synthesis are independently distinguished; the estimator comparison uses the original synthesized circuit, not the exact gate as a substitute."
+    },
+    "cached_tf_tests_each_profile": {"total": 22, "passed": 18, "failed": 4, "skipped": 0, "process_exit": 1},
+    "cached_tf_scratch_variants": {"profile": "main", "variants": 4, "each_passed": 12, "each_failed": 4, "native_accepted": false, "production_promoted": false, "meaning": "Reverse-over-reverse HVP, transposed JVP and precomputed VJP attachment variants still fail the same cached mixed-AD compositions; no partial curvature is accepted as a complete HVP."},
+    "runtime_census": {"requested_modules_each_profile": 31, "available_modules_each_profile": 30, "main_candidates": 45624, "alternate_candidates": 45660, "isolated_collectors": 4, "normal_terminal_collectors": 4, "existing_public_exposures_preserved": true, "coexistence_verified": false, "function_acceptances": 0},
+    "pending_old_case_migration": "Only tests/serialization/test_qpy16_pauli_evolution.py::test_loaded_gate_drives_real_estimator_and_sampling was proposed. No approval received; no additional old assertions changed.",
+    "full_suite_accepted": false,
+    "full_goal_complete": false,
+    "new_hardware_or_paid_jobs": 0
   },
   "dependency_reviews": [
     {
