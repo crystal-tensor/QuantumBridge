@@ -33,6 +33,21 @@ class EvidenceTests(unittest.TestCase):
         missing = {r["name"] for r in rows if r["status"] == "not_implemented"}
         self.assertEqual(missing,{"quantumbridge.chemistry.mappings.ParityMapper.map","quantumbridge.chemistry.mappings.BravyiKitaevMapper.map"})
 
+    def test_selected_pass_is_never_complete_failure_resolution(self):
+        historical = [{"name":"old-main", "failure_ids":["a", "b"]}]
+        current = [{"name":"new-main", "profile":"main", "source_match":True,
+                    "recorded_at":"now", "cases":[{"id":"a", "status":"passed"}, {"id":"c", "status":"failed"}]}]
+        rows = {r["id"]:r for r in builder.strict_backlog(historical, current)}
+        self.assertEqual(rows["a"]["status"], "selected_batch_pass_only")
+        self.assertEqual(rows["b"]["status"], "reproduction_pending")
+        self.assertEqual(rows["c"]["status"], "current_failure")
+
+    def test_stale_failure_observation_cannot_be_current_verification(self):
+        stale = [{"name":"stale", "profile":"main", "source_match":False,
+                  "recorded_at":"old", "cases":[{"id":"a", "status":"passed"}]}]
+        rows = builder.strict_backlog([{"name":"old", "failure_ids":["a"]}], stale)
+        self.assertEqual(rows[0]["status"], "reproduction_pending")
+
 
 if __name__ == "__main__":
     unittest.main()

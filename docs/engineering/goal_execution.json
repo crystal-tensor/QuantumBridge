@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "status": "active",
+  "started_at": "2026-11-11T11:57:17+08:00",
+  "deadline": "2027-05-11T23:59:59+08:00",
+  "contract": "studio/downloads/quantumbridge-six-month-goal.txt",
+  "phase": "baseline_census_and_strict_failure_repair",
+  "census_closed": false,
+  "first_census_review_due": "2026-11-18T23:59:59+08:00",
+  "delivery_forecast": "UNVERIFIED_HIGH_RISK_UNTIL_CENSUS_AND_CRITICAL_PATH_REVIEW",
+  "scope_reduced": false,
+  "baseline": {
+    "frozen_at": "2026-11-11T03:59:55.009Z",
+    "source_files": 2215,
+    "native_files": 772,
+    "protected_tests": 1372,
+    "source_manifest_sha256": "c8ebd5f96ce6f2e2283d5539987e01c5c18a51a987728f0c9df22ddfccaca5a6",
+    "goal_contract_sha256": "7ba6b23fd6229b485b88697c6be8564a4fc75e73a3bfc97357b936778ec246e7"
+  },
+  "first_batch": [
+    "Freeze current Native source, protected tests, goal contract and environment identities.",
+    "Reproduce and repair all six cached TensorFlow MPS scalar/ZX second-derivative failures without changing old assertions or using host quantum fallback.",
+    "Enumerate and classify the remaining strict failures; historical equality is not acceptance.",
+    "Close versioned module/export/class/inherited-method/function census before deriving a completion denominator."
+  ]
+}

@@ -40,6 +40,22 @@ test("hardware receipts keep domain acceptance separate and redact sensitive pay
   assert.ok(manifest.hardware.every(x => x.task_id && x.artifact_hash && x.acceptance === "INCONCLUSIVE"));
   for(const r of manifest.hardware){assert.equal(r.shots,r.count_sum);assert.equal(r.domain,"finance");assert.ok(!("openqasm" in r));}
 });
+test("goal and selected verification never masquerade as final acceptance", () => {
+  assert.equal(manifest.core_execution,"active");
+  assert.equal(manifest.goal_execution.scope_reduced,false);
+  assert.equal(manifest.acceptance_scope.final_gates.length,9);
+  assert.ok(manifest.acceptance_scope.final_gates.every(g=>g.state!=="COMPLETE"));
+  assert.ok(manifest.strict_backlog.length>=47);
+  for(const run of manifest.verification){
+    assert.equal(run.source_match,run.source_fingerprint===manifest.source.fingerprint);
+    assert.equal(run.total,run.passed+run.failed+run.skipped);
+    assert.equal(run.cases.length,run.total);
+    assert.equal(run.protected_tests_unchanged,true);
+    assert.equal(run.scope,"selected_strict_batch_not_full_contract_or_full_suite");
+  }
+  const text=JSON.stringify(manifest);
+  assert.ok(!text.includes("/Users/")&&!text.includes("site-packages/"));
+});
 test("subtle entrances are registered in all four home domains", async () => {
   assert.equal(engineeringResources.length,4);
   for(const item of engineeringResources) {assert.ok(domainResources(item.domain).includes(item));assert.equal(item.subtle,true);}

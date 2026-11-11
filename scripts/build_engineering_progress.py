@@ -180,8 +180,30 @@ def apply_reviews(records, reviews, project_fingerprint=None):
             row["review"] = review
 
 
+def strict_backlog(historical, verification):
+    rows = {}
+    for run in historical:
+        for case in run["failure_ids"]:
+            rows.setdefault(case, {"id": case, "historical_batches": [], "observations": []})["historical_batches"].append(run["name"])
+    for run in verification:
+        for case in run["cases"]:
+            if case["status"] == "failed" or case["id"] in rows:
+                row = rows.setdefault(case["id"], {"id": case["id"], "historical_batches": [], "observations": []})
+                row["observations"].append({"batch": run["name"], "profile": run["profile"],
+                    "status": case["status"], "source_match": run["source_match"],
+                    "recorded_at": run["recorded_at"]})
+    for row in rows.values():
+        current = [o for o in row["observations"] if o["source_match"]]
+        row["status"] = "current_failure" if any(o["status"] == "failed" for o in current) else "selected_batch_pass_only" if current and all(o["status"] == "passed" for o in current) else "reproduction_pending"
+    return sorted(rows.values(), key=lambda row: row["id"])
+
+
 def build(args):
     DATA.mkdir(parents=True, exist_ok=True)
+    execution_path = ROOT / "docs/engineering/goal_execution.json"
+    execution = load_json(execution_path) if execution_path.exists() else {}
+    scope_path = ROOT / "docs/engineering/acceptance_scope.json"
+    scope = load_json(scope_path) if scope_path.exists() else {}
     previous = load_json(DATA / "manifest.json") if (DATA / "manifest.json").exists() else None
     native, errors, hashes = census(ROOT / "quantumbridge", "quantumbridge", native=True)
     fingerprint = digest(json.dumps(hashes, separators=(",", ":")).encode())
@@ -236,6 +258,13 @@ def build(args):
     head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     dirty = bool(subprocess.check_output(["git", "status", "--porcelain", "--", "quantumbridge"], cwd=ROOT))
     now = datetime.now(timezone.utc).isoformat()
+    tests = historical_tests(args.evidence_dir) if args.evidence_dir else (previous or {}).get("tests", [])
+    verification_path = ROOT / "docs/engineering/verification_runs.json"
+    verification = load_json(verification_path).get("runs", []) if verification_path.exists() else []
+    for run in verification:
+        run["source_match"] = run.get("source_fingerprint") == fingerprint
+        run["freshness"] = "current_selected_source_batch" if run["source_match"] else "different_source_not_current_verification"
+    backlog = strict_backlog(tests, verification)
     datasets = []
     for name, rows in [("native", native), ("target", target)]:
         body = json.dumps(rows, ensure_ascii=False, separators=(",", ":")).encode()
@@ -256,8 +285,10 @@ def build(args):
                                   "Inherited methods, dynamic exports, plugins, C-extension signatures and optional packages need contract review.",
                                   "Native helpers and target public APIs are separate populations; never add their counts as a completion percentage.",
                                   "Historical test runs do not certify the current dirty working tree; function acceptance is not yet reviewed."],
-                "tests": historical_tests(args.evidence_dir) if args.evidence_dir else (previous or {}).get("tests", []), "hardware": hardware(),
-                "core_execution": "paused_pending_new_goal", "publication": "workspace_snapshot_not_a_release",
+                "tests": tests, "verification": verification, "strict_backlog": backlog,
+                "hardware": hardware(), "acceptance_scope": scope,
+                "core_execution": execution.get("status", "paused_pending_new_goal"),
+                "goal_execution": execution, "publication": "workspace_snapshot_not_a_release",
                 "status_policy": {"implemented": "Complete reviewed contract, independent Native execution and strict version-matched tests for this source hash.",
                                   "partial": "Explicitly scoped implementation with known functional gaps or strict failures.",
                                   "not_implemented": "Reviewed missing implementation or explicit source stub; not inferred from a name mismatch.",

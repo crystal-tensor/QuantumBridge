@@ -37,6 +37,9 @@ try{
     assert.ok((await page.locator("tbody").innerText()).includes("ParityMapper.map"));
     await page.getByRole("button",{name:"测试与真机",exact:true}).click();
     assert.ok((await page.locator("#view").innerText()).includes("INCONCLUSIVE"));
+    await page.getByRole("heading",{name:"本目标冻结源码验证",exact:true}).waitFor();
+    await page.locator("#view details summary").first().click();
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
     await page.getByRole("button",{name:"六个月验收计划",exact:true}).click();
     assert.equal(await page.locator(".timeline li").count(),6);
     const downloadPromise=page.waitForEvent("download");

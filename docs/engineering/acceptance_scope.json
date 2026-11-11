@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "contract": "studio/downloads/quantumbridge-six-month-goal.txt",
+  "status": "OPEN",
+  "deadline": "2027-05-11T23:59:59+08:00",
+  "reference_profiles": [
+    {"id": "main", "qiskit": "2.4.1", "pennylane": "0.44.1"},
+    {"id": "alternate", "qiskit": "2.6.0", "pennylane": "0.42.3"}
+  ],
+  "target_scope": {
+    "qiskit": [
+      "circuit, registers, bits, parameters and public object ABI",
+      "gate and circuit library, composition and coherent phase",
+      "quantum_info, operators, states and channels",
+      "transpiler, target, layout, routing and scheduling",
+      "Primitives V2, providers, backend, job and results",
+      "OpenQASM2, OpenQASM3 and QPY serialization",
+      "Aer simulators and noise",
+      "Algorithms and optimizers",
+      "Nature, Finance, Optimization and Machine Learning",
+      "Dynamics, Experiments, Runtime, Addons and Metal"
+    ],
+    "pennylane": [
+      "operations, observables, measurements and tapes",
+      "QNode and public Device execution/derivative protocols",
+      "simulators, channels, noise, broadcasting and shots",
+      "transforms, gradients, adjoint, parameter-shift and backprop",
+      "templates and qchem",
+      "NumPy, Autograd, JAX, Torch and TensorFlow interfaces",
+      "qnn, kernels, resource, qcut and shadows",
+      "plugins, dynamic exports and inherited public methods"
+    ],
+    "shared_core": ["execution", "compilation", "differentiation", "results", "Legacy migration contracts"],
+    "industries": {
+      "science": ["chemistry", "biomedicine", "materials", "physics"],
+      "finance": ["portfolio", "risk", "pricing", "financial-constraints", "market-models"],
+      "industry": ["routing-scheduling", "supply-chain", "energy", "combinatorial", "integer-multiobjective"],
+      "security": ["pqc", "qkd", "threat", "qrng", "privacy"]
+    },
+    "hardware": ["real Quafu backend constraints", "compilation", "submission", "task ID", "polling", "results", "bit order", "shots", "reproducible receipts", "error and domain acceptance"]
+  },
+  "census": {
+    "status": "OPEN",
+    "candidate_index": "studio/src/progress/data/target.json.gz",
+    "native_index": "studio/src/progress/data/native.json.gz",
+    "closure_requirements": ["versioned public modules", "re-exports and aliases", "classes and inherited methods", "dynamic exports", "extension methods and signatures", "plugins", "optional packages absent from current environments", "per-function Native entry mapping"],
+    "per_function_contract": ["signature", "defaults", "shape", "dtype", "broadcasting", "complex phase", "error behavior", "resource boundary", "serialization", "derivatives where applicable", "current-source independent execution evidence"]
+  },
+  "final_gates": [
+    {"id": "F01", "requirement": "Closed function denominator with no unexplained omissions", "state": "UNVERIFIED"},
+    {"id": "F02", "requirement": "Complete per-function contracts and both real reference profiles", "state": "UNVERIFIED"},
+    {"id": "F03", "requirement": "All strict tests and original matrix gates pass for the same frozen source", "state": "FAILURES_EXIST"},
+    {"id": "F04", "requirement": "SDK-free installation and actual Native execution", "state": "PARTIAL_HISTORICAL_EVIDENCE"},
+    {"id": "F05", "requirement": "Real Quafu receipts and independent applicable domain acceptance", "state": "INCONCLUSIVE"},
+    {"id": "F06", "requirement": "All four domains and nineteen directions have rerunnable documented notebooks", "state": "UNVERIFIED"},
+    {"id": "F07", "requirement": "GitHub, README, published site and delivery source identity agree", "state": "UNCOMMITTED_CORE_WORK_REMAINS"},
+    {"id": "F08", "requirement": "Installable library, API/migration documentation, acceptance records and risk disclosure", "state": "PARTIAL"},
+    {"id": "F09", "requirement": "No passthrough masquerading as Native, manufactured green checks, fake hardware, secrets or vendored SDK source", "state": "CONTINUOUS_AUDIT_REQUIRED"}
+  ]
+}
