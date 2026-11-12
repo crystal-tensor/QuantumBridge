@@ -65,8 +65,10 @@ try{
     assert.ok((await compilerSection.innerText()).includes("140"));
     assert.ok((await compilerSection.innerText()).includes("保留旧快照的指纹和测试时间"));
     const currentValidation=page.locator("#current-validation");
-    assert.ok((await currentValidation.innerText()).includes("7e4ba25e"));
-    assert.match(await currentValidation.innerText(), /23\s+FAIL/);
+    assert.ok((await currentValidation.innerText()).includes("428ec50f"));
+    assert.ok((await currentValidation.innerText()).includes("25 项已知严格失败"));
+    assert.ok((await currentValidation.innerText()).includes("安装声明与清单回归"));
+    assert.ok((await currentValidation.innerText()).includes("实际 Qiskit 参考"));
     assert.ok((await currentValidation.innerText()).includes("当前冻结源码"));
     await currentValidation.locator("#historical-validation summary").click();
     assert.ok((await currentValidation.locator("#historical-validation").innerText()).includes("85fe4e23"));
@@ -99,7 +101,7 @@ try{
     assert.ok((await page.locator("#view").innerText()).includes("INCONCLUSIVE"));
     await page.getByRole("heading",{name:"本目标冻结源码验证",exact:true}).waitFor();
     const diagnostics=page.locator("section.band").filter({has:page.getByRole("heading",{name:"诊断对照：不计入验收通过",exact:true})});
-    assert.equal(await diagnostics.locator("details").count(),7);
+    assert.equal(await diagnostics.locator("details").count(),13);
     const diagnosticDownload=page.waitForEvent("download");
     await diagnostics.getByRole("link",{name:"最小 TensorFlow 对照代码",exact:true}).click();
     assert.equal((await diagnosticDownload).suggestedFilename(),"tensorflow_cached_cos_probe.py");

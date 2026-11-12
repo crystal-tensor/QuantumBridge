@@ -243,5 +243,538 @@
     "evidence_scope": "Legacy independent-copy coefficient snapshots: complete output buffer preflight, numeric/object root ownership, views, expiry, independent/concurrent accounts, symbolic object identity and complex/nonfinite/signed-zero math. Actual reference checks cover numeric coefficients only, not Public mutable storage parity or symbolic SDK implementation.",
     "evidence_scope_zh": "Legacy 系数快照已补齐输出缓冲区预留、数值/对象指针内存租约、视图与释放、独立及并发账户、符号对象身份，以及复数/非有限值/有符号零验证。实际 Qiskit 参考只核对数值系数；不声称复刻 Public 可变底层存储或符号实现。",
     "remaining": "Full inherited/subclass/composition/serialization and public-target mapping contracts remain open, as do23selected strict gates. Counts are not full-function acceptance."
+  },
+  {
+    "id": "quantumbridge.operators.pauli.Pauli.commutes",
+    "source_hash": "e8f20219a8ebec58dc7b51798b03a28e824dfd677c5e9ff866b856596b396b11",
+    "project_fingerprint": "3279e1caded3509592d78f4e524485c75106367af30cc9daf8bc4ab4407d4866",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": true,
+    "strict_tests_pass": false,
+    "evidence_hash": "3f05cc9c5e200fc13bba0327e6cf486132ffeba9bdfb3cda81047a617bd7f486",
+    "native_cases_each_profile": 25,
+    "actual_sdk_reference_cases_each_profile": 6,
+    "real_qiskit_versions": [
+      "2.4.1",
+      "2.6.0"
+    ],
+    "native_entry": "quantumbridge.operators.Pauli.commutes",
+    "reference_public_exposure": "qiskit.quantum_info.Pauli.commutes",
+    "evidence_scope": "Owned output preflight, actual buffer/view lifetime, failure release, streaming indices, independent accounts, all two-wire full-complex products, qargs/phases/broadcasts and inherited custom commutes dispatch. The Native all-pairs matrix is independently checked, not claimed as an identically named Qiskit API.",
+    "evidence_scope_zh": "输出预留、实际缓冲区及视图生命周期、失败释放、逐行索引、独立账户、全二比特复数矩阵对照，以及线映射、相位、广播和继承重写已局部验证。Native 全配对矩阵用独立数学核对，不冒充同名 Qiskit API。",
+    "remaining": "Full public/subclass/custom-callback, input/error/composition/serialization and unique target mapping contracts remain open, along with23strict failures. No full-function, SDK or hardware acceptance.",
+    "evidence_history": [
+      {
+        "source_hash": "47ec6e3af36d3c883c701ee0274085ea57e93d2a703ef4cc84c34317d80f862d",
+        "project_fingerprint": "994435f9e2e95fdc7f1b9326ad9c768f7d6eb7ff952c05f2e0607103a4eef49a",
+        "evidence_hash": "ecade0c209eb03c24f3b3f960c27250d596d91ded45f4e282d4e8cbd5c28786a",
+        "native_cases_each_profile": 25,
+        "actual_sdk_reference_cases_each_profile": 6
+      },
+      {
+        "source_hash": "e8f20219a8ebec58dc7b51798b03a28e824dfd677c5e9ff866b856596b396b11",
+        "project_fingerprint": "0f163fa93affd80b4369560c0a3280ded89516bb894ae590433a299e4a673621",
+        "evidence_hash": "a124637af77a179d4934ac284143653e86b3ed369e8bd4523d4aa1caf5afa036"
+      }
+    ],
+    "later_shared_helper_recheck": "goal-pauli-query-0wdIxL",
+    "later_operator_recheck": "goal-hellinger-contract-yVIdOY"
+  },
+  {
+    "id": "quantumbridge.operators.pauli.Pauli.anticommutes",
+    "source_hash": "e8f20219a8ebec58dc7b51798b03a28e824dfd677c5e9ff866b856596b396b11",
+    "project_fingerprint": "3279e1caded3509592d78f4e524485c75106367af30cc9daf8bc4ab4407d4866",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": true,
+    "strict_tests_pass": false,
+    "evidence_hash": "3f05cc9c5e200fc13bba0327e6cf486132ffeba9bdfb3cda81047a617bd7f486",
+    "native_cases_each_profile": 25,
+    "actual_sdk_reference_cases_each_profile": 6,
+    "real_qiskit_versions": [
+      "2.4.1",
+      "2.6.0"
+    ],
+    "native_entry": "quantumbridge.operators.Pauli.anticommutes",
+    "reference_public_exposure": "qiskit.quantum_info.Pauli.anticommutes",
+    "evidence_scope": "Owned output preflight, actual buffer/view lifetime, failure release, streaming indices, independent accounts, all two-wire full-complex products, qargs/phases/broadcasts and inherited custom commutes dispatch. The Native all-pairs matrix is independently checked, not claimed as an identically named Qiskit API.",
+    "evidence_scope_zh": "输出预留、实际缓冲区及视图生命周期、失败释放、逐行索引、独立账户、全二比特复数矩阵对照，以及线映射、相位、广播和继承重写已局部验证。Native 全配对矩阵用独立数学核对，不冒充同名 Qiskit API。",
+    "remaining": "Full public/subclass/custom-callback, input/error/composition/serialization and unique target mapping contracts remain open, along with23strict failures. No full-function, SDK or hardware acceptance.",
+    "evidence_history": [
+      {
+        "source_hash": "47ec6e3af36d3c883c701ee0274085ea57e93d2a703ef4cc84c34317d80f862d",
+        "project_fingerprint": "994435f9e2e95fdc7f1b9326ad9c768f7d6eb7ff952c05f2e0607103a4eef49a",
+        "evidence_hash": "ecade0c209eb03c24f3b3f960c27250d596d91ded45f4e282d4e8cbd5c28786a",
+        "native_cases_each_profile": 25,
+        "actual_sdk_reference_cases_each_profile": 6
+      },
+      {
+        "source_hash": "e8f20219a8ebec58dc7b51798b03a28e824dfd677c5e9ff866b856596b396b11",
+        "project_fingerprint": "0f163fa93affd80b4369560c0a3280ded89516bb894ae590433a299e4a673621",
+        "evidence_hash": "a124637af77a179d4934ac284143653e86b3ed369e8bd4523d4aa1caf5afa036"
+      }
+    ],
+    "later_shared_helper_recheck": "goal-pauli-query-0wdIxL",
+    "later_operator_recheck": "goal-hellinger-contract-yVIdOY"
+  },
+  {
+    "id": "quantumbridge.operators.pauli_list.PauliList.commutes",
+    "source_hash": "119876fd9adbffa6e14320c28192188862b351d0a36079efe5657f19313962a0",
+    "project_fingerprint": "3279e1caded3509592d78f4e524485c75106367af30cc9daf8bc4ab4407d4866",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": true,
+    "strict_tests_pass": false,
+    "evidence_hash": "3f05cc9c5e200fc13bba0327e6cf486132ffeba9bdfb3cda81047a617bd7f486",
+    "native_cases_each_profile": 25,
+    "actual_sdk_reference_cases_each_profile": 6,
+    "real_qiskit_versions": [
+      "2.4.1",
+      "2.6.0"
+    ],
+    "native_entry": "quantumbridge.operators.PauliList.commutes",
+    "reference_public_exposure": "qiskit.quantum_info.PauliList.commutes",
+    "evidence_scope": "Owned output preflight, actual buffer/view lifetime, failure release, streaming indices, independent accounts, all two-wire full-complex products, qargs/phases/broadcasts and inherited custom commutes dispatch. The Native all-pairs matrix is independently checked, not claimed as an identically named Qiskit API.",
+    "evidence_scope_zh": "输出预留、实际缓冲区及视图生命周期、失败释放、逐行索引、独立账户、全二比特复数矩阵对照，以及线映射、相位、广播和继承重写已局部验证。Native 全配对矩阵用独立数学核对，不冒充同名 Qiskit API。",
+    "remaining": "Full public/subclass/custom-callback, input/error/composition/serialization and unique target mapping contracts remain open, along with23strict failures. No full-function, SDK or hardware acceptance.",
+    "evidence_history": [
+      {
+        "source_hash": "352d52ead3804b3daa9512d66046d0ac62324ab4a1f02901261d30ebb9499024",
+        "project_fingerprint": "994435f9e2e95fdc7f1b9326ad9c768f7d6eb7ff952c05f2e0607103a4eef49a",
+        "evidence_hash": "ecade0c209eb03c24f3b3f960c27250d596d91ded45f4e282d4e8cbd5c28786a",
+        "native_cases_each_profile": 25,
+        "actual_sdk_reference_cases_each_profile": 6
+      },
+      {
+        "source_hash": "119876fd9adbffa6e14320c28192188862b351d0a36079efe5657f19313962a0",
+        "project_fingerprint": "0f163fa93affd80b4369560c0a3280ded89516bb894ae590433a299e4a673621",
+        "evidence_hash": "a124637af77a179d4934ac284143653e86b3ed369e8bd4523d4aa1caf5afa036"
+      }
+    ],
+    "later_shared_helper_recheck": "goal-pauli-query-0wdIxL",
+    "later_operator_recheck": "goal-hellinger-contract-yVIdOY"
+  },
+  {
+    "id": "quantumbridge.operators.pauli_list.PauliList.anticommutes",
+    "source_hash": "119876fd9adbffa6e14320c28192188862b351d0a36079efe5657f19313962a0",
+    "project_fingerprint": "3279e1caded3509592d78f4e524485c75106367af30cc9daf8bc4ab4407d4866",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": true,
+    "strict_tests_pass": false,
+    "evidence_hash": "3f05cc9c5e200fc13bba0327e6cf486132ffeba9bdfb3cda81047a617bd7f486",
+    "native_cases_each_profile": 25,
+    "actual_sdk_reference_cases_each_profile": 6,
+    "real_qiskit_versions": [
+      "2.4.1",
+      "2.6.0"
+    ],
+    "native_entry": "quantumbridge.operators.PauliList.anticommutes",
+    "reference_public_exposure": "qiskit.quantum_info.PauliList.anticommutes",
+    "evidence_scope": "Owned output preflight, actual buffer/view lifetime, failure release, streaming indices, independent accounts, all two-wire full-complex products, qargs/phases/broadcasts and inherited custom commutes dispatch. The Native all-pairs matrix is independently checked, not claimed as an identically named Qiskit API.",
+    "evidence_scope_zh": "输出预留、实际缓冲区及视图生命周期、失败释放、逐行索引、独立账户、全二比特复数矩阵对照，以及线映射、相位、广播和继承重写已局部验证。Native 全配对矩阵用独立数学核对，不冒充同名 Qiskit API。",
+    "remaining": "Full public/subclass/custom-callback, input/error/composition/serialization and unique target mapping contracts remain open, along with23strict failures. No full-function, SDK or hardware acceptance.",
+    "evidence_history": [
+      {
+        "source_hash": "352d52ead3804b3daa9512d66046d0ac62324ab4a1f02901261d30ebb9499024",
+        "project_fingerprint": "994435f9e2e95fdc7f1b9326ad9c768f7d6eb7ff952c05f2e0607103a4eef49a",
+        "evidence_hash": "ecade0c209eb03c24f3b3f960c27250d596d91ded45f4e282d4e8cbd5c28786a",
+        "native_cases_each_profile": 25,
+        "actual_sdk_reference_cases_each_profile": 6
+      },
+      {
+        "source_hash": "119876fd9adbffa6e14320c28192188862b351d0a36079efe5657f19313962a0",
+        "project_fingerprint": "0f163fa93affd80b4369560c0a3280ded89516bb894ae590433a299e4a673621",
+        "evidence_hash": "a124637af77a179d4934ac284143653e86b3ed369e8bd4523d4aa1caf5afa036"
+      }
+    ],
+    "later_shared_helper_recheck": "goal-pauli-query-0wdIxL",
+    "later_operator_recheck": "goal-hellinger-contract-yVIdOY"
+  },
+  {
+    "id": "quantumbridge.operators.pauli_list.PauliList.commutation_matrix",
+    "source_hash": "119876fd9adbffa6e14320c28192188862b351d0a36079efe5657f19313962a0",
+    "project_fingerprint": "3279e1caded3509592d78f4e524485c75106367af30cc9daf8bc4ab4407d4866",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": true,
+    "strict_tests_pass": false,
+    "evidence_hash": "3f05cc9c5e200fc13bba0327e6cf486132ffeba9bdfb3cda81047a617bd7f486",
+    "native_cases_each_profile": 25,
+    "actual_sdk_reference_cases_each_profile": 6,
+    "real_qiskit_versions": [
+      "2.4.1",
+      "2.6.0"
+    ],
+    "native_entry": "quantumbridge.operators.PauliList.commutation_matrix",
+    "reference_public_exposure": null,
+    "evidence_scope": "Owned output preflight, actual buffer/view lifetime, failure release, streaming indices, independent accounts, all two-wire full-complex products, qargs/phases/broadcasts and inherited custom commutes dispatch. The Native all-pairs matrix is independently checked, not claimed as an identically named Qiskit API.",
+    "evidence_scope_zh": "输出预留、实际缓冲区及视图生命周期、失败释放、逐行索引、独立账户、全二比特复数矩阵对照，以及线映射、相位、广播和继承重写已局部验证。Native 全配对矩阵用独立数学核对，不冒充同名 Qiskit API。",
+    "remaining": "Full public/subclass/custom-callback, input/error/composition/serialization and unique target mapping contracts remain open, along with23strict failures. No full-function, SDK or hardware acceptance.",
+    "evidence_history": [
+      {
+        "source_hash": "352d52ead3804b3daa9512d66046d0ac62324ab4a1f02901261d30ebb9499024",
+        "project_fingerprint": "994435f9e2e95fdc7f1b9326ad9c768f7d6eb7ff952c05f2e0607103a4eef49a",
+        "evidence_hash": "ecade0c209eb03c24f3b3f960c27250d596d91ded45f4e282d4e8cbd5c28786a",
+        "native_cases_each_profile": 25,
+        "actual_sdk_reference_cases_each_profile": 6
+      },
+      {
+        "source_hash": "119876fd9adbffa6e14320c28192188862b351d0a36079efe5657f19313962a0",
+        "project_fingerprint": "0f163fa93affd80b4369560c0a3280ded89516bb894ae590433a299e4a673621",
+        "evidence_hash": "a124637af77a179d4934ac284143653e86b3ed369e8bd4523d4aa1caf5afa036"
+      }
+    ],
+    "later_shared_helper_recheck": "goal-pauli-query-0wdIxL",
+    "later_operator_recheck": "goal-hellinger-contract-yVIdOY"
+  },
+  {
+    "id": "quantumbridge.operators.pauli_list.PauliList.commutes_with_all",
+    "source_hash": "119876fd9adbffa6e14320c28192188862b351d0a36079efe5657f19313962a0",
+    "project_fingerprint": "3279e1caded3509592d78f4e524485c75106367af30cc9daf8bc4ab4407d4866",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": true,
+    "strict_tests_pass": false,
+    "evidence_hash": "3f05cc9c5e200fc13bba0327e6cf486132ffeba9bdfb3cda81047a617bd7f486",
+    "native_cases_each_profile": 25,
+    "actual_sdk_reference_cases_each_profile": 6,
+    "real_qiskit_versions": [
+      "2.4.1",
+      "2.6.0"
+    ],
+    "native_entry": "quantumbridge.operators.PauliList.commutes_with_all",
+    "reference_public_exposure": "qiskit.quantum_info.PauliList.commutes_with_all",
+    "evidence_scope": "Owned output preflight, actual buffer/view lifetime, failure release, streaming indices, independent accounts, all two-wire full-complex products, qargs/phases/broadcasts and inherited custom commutes dispatch. The Native all-pairs matrix is independently checked, not claimed as an identically named Qiskit API.",
+    "evidence_scope_zh": "输出预留、实际缓冲区及视图生命周期、失败释放、逐行索引、独立账户、全二比特复数矩阵对照，以及线映射、相位、广播和继承重写已局部验证。Native 全配对矩阵用独立数学核对，不冒充同名 Qiskit API。",
+    "remaining": "Full public/subclass/custom-callback, input/error/composition/serialization and unique target mapping contracts remain open, along with23strict failures. No full-function, SDK or hardware acceptance.",
+    "evidence_history": [
+      {
+        "source_hash": "352d52ead3804b3daa9512d66046d0ac62324ab4a1f02901261d30ebb9499024",
+        "project_fingerprint": "994435f9e2e95fdc7f1b9326ad9c768f7d6eb7ff952c05f2e0607103a4eef49a",
+        "evidence_hash": "ecade0c209eb03c24f3b3f960c27250d596d91ded45f4e282d4e8cbd5c28786a",
+        "native_cases_each_profile": 25,
+        "actual_sdk_reference_cases_each_profile": 6
+      },
+      {
+        "source_hash": "119876fd9adbffa6e14320c28192188862b351d0a36079efe5657f19313962a0",
+        "project_fingerprint": "0f163fa93affd80b4369560c0a3280ded89516bb894ae590433a299e4a673621",
+        "evidence_hash": "a124637af77a179d4934ac284143653e86b3ed369e8bd4523d4aa1caf5afa036"
+      }
+    ],
+    "later_shared_helper_recheck": "goal-pauli-query-0wdIxL",
+    "later_operator_recheck": "goal-hellinger-contract-yVIdOY"
+  },
+  {
+    "id": "quantumbridge.operators.pauli_list.PauliList.anticommutes_with_all",
+    "source_hash": "119876fd9adbffa6e14320c28192188862b351d0a36079efe5657f19313962a0",
+    "project_fingerprint": "3279e1caded3509592d78f4e524485c75106367af30cc9daf8bc4ab4407d4866",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": true,
+    "strict_tests_pass": false,
+    "evidence_hash": "3f05cc9c5e200fc13bba0327e6cf486132ffeba9bdfb3cda81047a617bd7f486",
+    "native_cases_each_profile": 25,
+    "actual_sdk_reference_cases_each_profile": 6,
+    "real_qiskit_versions": [
+      "2.4.1",
+      "2.6.0"
+    ],
+    "native_entry": "quantumbridge.operators.PauliList.anticommutes_with_all",
+    "reference_public_exposure": "qiskit.quantum_info.PauliList.anticommutes_with_all",
+    "evidence_scope": "Owned output preflight, actual buffer/view lifetime, failure release, streaming indices, independent accounts, all two-wire full-complex products, qargs/phases/broadcasts and inherited custom commutes dispatch. The Native all-pairs matrix is independently checked, not claimed as an identically named Qiskit API.",
+    "evidence_scope_zh": "输出预留、实际缓冲区及视图生命周期、失败释放、逐行索引、独立账户、全二比特复数矩阵对照，以及线映射、相位、广播和继承重写已局部验证。Native 全配对矩阵用独立数学核对，不冒充同名 Qiskit API。",
+    "remaining": "Full public/subclass/custom-callback, input/error/composition/serialization and unique target mapping contracts remain open, along with23strict failures. No full-function, SDK or hardware acceptance.",
+    "evidence_history": [
+      {
+        "source_hash": "352d52ead3804b3daa9512d66046d0ac62324ab4a1f02901261d30ebb9499024",
+        "project_fingerprint": "994435f9e2e95fdc7f1b9326ad9c768f7d6eb7ff952c05f2e0607103a4eef49a",
+        "evidence_hash": "ecade0c209eb03c24f3b3f960c27250d596d91ded45f4e282d4e8cbd5c28786a",
+        "native_cases_each_profile": 25,
+        "actual_sdk_reference_cases_each_profile": 6
+      },
+      {
+        "source_hash": "119876fd9adbffa6e14320c28192188862b351d0a36079efe5657f19313962a0",
+        "project_fingerprint": "0f163fa93affd80b4369560c0a3280ded89516bb894ae590433a299e4a673621",
+        "evidence_hash": "a124637af77a179d4934ac284143653e86b3ed369e8bd4523d4aa1caf5afa036"
+      }
+    ],
+    "later_shared_helper_recheck": "goal-pauli-query-0wdIxL",
+    "later_operator_recheck": "goal-hellinger-contract-yVIdOY"
+  },
+  {
+    "id": "quantumbridge.operators.pauli_list.PauliList.equiv",
+    "source_hash": "119876fd9adbffa6e14320c28192188862b351d0a36079efe5657f19313962a0",
+    "project_fingerprint": "3279e1caded3509592d78f4e524485c75106367af30cc9daf8bc4ab4407d4866",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": true,
+    "strict_tests_pass": false,
+    "evidence_hash": "3f05cc9c5e200fc13bba0327e6cf486132ffeba9bdfb3cda81047a617bd7f486",
+    "native_cases_each_profile": 34,
+    "actual_sdk_reference_cases_each_profile": 6,
+    "real_qiskit_versions": [
+      "2.4.1",
+      "2.6.0"
+    ],
+    "native_entry": "quantumbridge.operators.PauliList.equiv",
+    "reference_public_exposure": "qiskit.quantum_info.PauliList.equiv",
+    "evidence_scope": "Typed output preflight, actual root/view lifetime, callback failure release, phase-insensitive comparison, all two-wire phases/stable sorting, zero rows/wires, mutable backing, separate scopes and inherited sort override. Equivalence converted operands release under retained memory/work/width exceptions. Weight is an independently checked Native extension.",
+    "evidence_scope_zh": "输出预留、根缓冲区及视图生命周期、错误释放、忽略全局相位的等价比较、全二比特相位与稳定排序、空行和零比特、可变底层、独立账户及排序重写均已局部验证。等价查询在内存、工作量和宽度异常下释放临时操作数。weight 为独立核对的 Native 扩展。",
+    "remaining": "Complete public/subclass/foreign input, error, composition/selection, serialization, mapping and resource contracts remain open, with23strict gates. No full-function, SDK-free installation, SDK coexistence or hardware acceptance.",
+    "evidence_history": [
+      {
+        "source_hash": "119876fd9adbffa6e14320c28192188862b351d0a36079efe5657f19313962a0",
+        "project_fingerprint": "0f163fa93affd80b4369560c0a3280ded89516bb894ae590433a299e4a673621",
+        "evidence_hash": "a124637af77a179d4934ac284143653e86b3ed369e8bd4523d4aa1caf5afa036"
+      }
+    ],
+    "later_operator_recheck": "goal-hellinger-contract-yVIdOY"
+  },
+  {
+    "id": "quantumbridge.operators.pauli_list.PauliList.weight",
+    "source_hash": "119876fd9adbffa6e14320c28192188862b351d0a36079efe5657f19313962a0",
+    "project_fingerprint": "3279e1caded3509592d78f4e524485c75106367af30cc9daf8bc4ab4407d4866",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": true,
+    "strict_tests_pass": false,
+    "evidence_hash": "3f05cc9c5e200fc13bba0327e6cf486132ffeba9bdfb3cda81047a617bd7f486",
+    "native_cases_each_profile": 34,
+    "actual_sdk_reference_cases_each_profile": 0,
+    "real_qiskit_versions": [],
+    "native_entry": "quantumbridge.operators.PauliList.weight",
+    "reference_public_exposure": null,
+    "evidence_scope": "Typed output preflight, actual root/view lifetime, callback failure release, phase-insensitive comparison, all two-wire phases/stable sorting, zero rows/wires, mutable backing, separate scopes and inherited sort override. Equivalence converted operands release under retained memory/work/width exceptions. Weight is an independently checked Native extension.",
+    "evidence_scope_zh": "输出预留、根缓冲区及视图生命周期、错误释放、忽略全局相位的等价比较、全二比特相位与稳定排序、空行和零比特、可变底层、独立账户及排序重写均已局部验证。等价查询在内存、工作量和宽度异常下释放临时操作数。weight 为独立核对的 Native 扩展。",
+    "remaining": "Complete public/subclass/foreign input, error, composition/selection, serialization, mapping and resource contracts remain open, with23strict gates. No full-function, SDK-free installation, SDK coexistence or hardware acceptance.",
+    "evidence_history": [
+      {
+        "source_hash": "119876fd9adbffa6e14320c28192188862b351d0a36079efe5657f19313962a0",
+        "project_fingerprint": "0f163fa93affd80b4369560c0a3280ded89516bb894ae590433a299e4a673621",
+        "evidence_hash": "a124637af77a179d4934ac284143653e86b3ed369e8bd4523d4aa1caf5afa036"
+      }
+    ],
+    "later_operator_recheck": "goal-hellinger-contract-yVIdOY"
+  },
+  {
+    "id": "quantumbridge.operators.pauli_list.PauliList.argsort",
+    "source_hash": "119876fd9adbffa6e14320c28192188862b351d0a36079efe5657f19313962a0",
+    "project_fingerprint": "3279e1caded3509592d78f4e524485c75106367af30cc9daf8bc4ab4407d4866",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": true,
+    "strict_tests_pass": false,
+    "evidence_hash": "3f05cc9c5e200fc13bba0327e6cf486132ffeba9bdfb3cda81047a617bd7f486",
+    "native_cases_each_profile": 34,
+    "actual_sdk_reference_cases_each_profile": 6,
+    "real_qiskit_versions": [
+      "2.4.1",
+      "2.6.0"
+    ],
+    "native_entry": "quantumbridge.operators.PauliList.argsort",
+    "reference_public_exposure": "qiskit.quantum_info.PauliList.argsort",
+    "evidence_scope": "Typed output preflight, actual root/view lifetime, callback failure release, phase-insensitive comparison, all two-wire phases/stable sorting, zero rows/wires, mutable backing, separate scopes and inherited sort override. Equivalence converted operands release under retained memory/work/width exceptions. Weight is an independently checked Native extension.",
+    "evidence_scope_zh": "输出预留、根缓冲区及视图生命周期、错误释放、忽略全局相位的等价比较、全二比特相位与稳定排序、空行和零比特、可变底层、独立账户及排序重写均已局部验证。等价查询在内存、工作量和宽度异常下释放临时操作数。weight 为独立核对的 Native 扩展。",
+    "remaining": "Complete public/subclass/foreign input, error, composition/selection, serialization, mapping and resource contracts remain open, with23strict gates. No full-function, SDK-free installation, SDK coexistence or hardware acceptance.",
+    "evidence_history": [
+      {
+        "source_hash": "119876fd9adbffa6e14320c28192188862b351d0a36079efe5657f19313962a0",
+        "project_fingerprint": "0f163fa93affd80b4369560c0a3280ded89516bb894ae590433a299e4a673621",
+        "evidence_hash": "a124637af77a179d4934ac284143653e86b3ed369e8bd4523d4aa1caf5afa036"
+      }
+    ],
+    "later_operator_recheck": "goal-hellinger-contract-yVIdOY"
+  },
+  {
+    "id": "quantumbridge.information.metrics.hellinger_distance",
+    "source_hash": "b97f49685e7dc151d9037b7c21d5978475645d3b65b59bfcafc3a5d48dd3d607",
+    "project_fingerprint": "3279e1caded3509592d78f4e524485c75106367af30cc9daf8bc4ab4407d4866",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": true,
+    "strict_tests_pass": false,
+    "evidence_hash": "3f05cc9c5e200fc13bba0327e6cf486132ffeba9bdfb3cda81047a617bd7f486",
+    "native_entry": "quantumbridge.information.metrics.hellinger_distance",
+    "native_cases_each_profile": 34,
+    "actual_sdk_reference_cases_each_profile": 15,
+    "real_qiskit_versions": [
+      "2.4.1",
+      "2.6.0"
+    ],
+    "reference_public_exposure": null,
+    "evidence_scope": "Counts/probability normalization, exact integer totals, finite-overflow scaling, rationalized roots/hypot, full public keywords/signatures, explicit Legacy empty policy, readonly/key identity/error cases, no numeric tables and work preflight. Independent high-precision math and actual dual-Qiskit calls; not whole-function acceptance.",
+    "evidence_scope_zh": "计数和概率归一化、整数总量、有限溢出缩放、稳定平方根差与 hypot、完整公共关键字及签名、Legacy 空分布策略、只读与键身份、错误和无数值表的工作量检查，已用独立高精度数学及双版本实际调用局部验证。",
+    "remaining": "Full Mapping/foreign numeric and mutation protocols, nonfinite/mixed-dtype error contracts, complete resource/serialization policy and whole-suite acceptance remain open. Classical scalar metrics are not quantum-hardware computations."
+  },
+  {
+    "id": "quantumbridge.information.metrics.hellinger_fidelity",
+    "source_hash": "b97f49685e7dc151d9037b7c21d5978475645d3b65b59bfcafc3a5d48dd3d607",
+    "project_fingerprint": "3279e1caded3509592d78f4e524485c75106367af30cc9daf8bc4ab4407d4866",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": true,
+    "strict_tests_pass": false,
+    "evidence_hash": "3f05cc9c5e200fc13bba0327e6cf486132ffeba9bdfb3cda81047a617bd7f486",
+    "native_entry": "quantumbridge.information.metrics.hellinger_fidelity",
+    "native_cases_each_profile": 34,
+    "actual_sdk_reference_cases_each_profile": 15,
+    "real_qiskit_versions": [
+      "2.4.1",
+      "2.6.0"
+    ],
+    "reference_public_exposure": null,
+    "evidence_scope": "Counts/probability normalization, exact integer totals, finite-overflow scaling, rationalized roots/hypot, full public keywords/signatures, explicit Legacy empty policy, readonly/key identity/error cases, no numeric tables and work preflight. Independent high-precision math and actual dual-Qiskit calls; not whole-function acceptance.",
+    "evidence_scope_zh": "计数和概率归一化、整数总量、有限溢出缩放、稳定平方根差与 hypot、完整公共关键字及签名、Legacy 空分布策略、只读与键身份、错误和无数值表的工作量检查，已用独立高精度数学及双版本实际调用局部验证。",
+    "remaining": "Full Mapping/foreign numeric and mutation protocols, nonfinite/mixed-dtype error contracts, complete resource/serialization policy and whole-suite acceptance remain open. Classical scalar metrics are not quantum-hardware computations."
+  },
+  {
+    "id": "quantumbridge.information.qiskit_metrics.hellinger_distance",
+    "source_hash": "15ef37051420e82f795bf47233c452f31e67f589388cdf250aed70a18ad12313",
+    "project_fingerprint": "3279e1caded3509592d78f4e524485c75106367af30cc9daf8bc4ab4407d4866",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": true,
+    "strict_tests_pass": false,
+    "evidence_hash": "3f05cc9c5e200fc13bba0327e6cf486132ffeba9bdfb3cda81047a617bd7f486",
+    "native_entry": "quantumbridge.information.qiskit_metrics.hellinger_distance",
+    "native_cases_each_profile": 34,
+    "actual_sdk_reference_cases_each_profile": 15,
+    "real_qiskit_versions": [
+      "2.4.1",
+      "2.6.0"
+    ],
+    "reference_public_exposure": "qiskit.quantum_info.hellinger_distance",
+    "evidence_scope": "Counts/probability normalization, exact integer totals, finite-overflow scaling, rationalized roots/hypot, full public keywords/signatures, explicit Legacy empty policy, readonly/key identity/error cases, no numeric tables and work preflight. Independent high-precision math and actual dual-Qiskit calls; not whole-function acceptance.",
+    "evidence_scope_zh": "计数和概率归一化、整数总量、有限溢出缩放、稳定平方根差与 hypot、完整公共关键字及签名、Legacy 空分布策略、只读与键身份、错误和无数值表的工作量检查，已用独立高精度数学及双版本实际调用局部验证。",
+    "remaining": "Full Mapping/foreign numeric and mutation protocols, nonfinite/mixed-dtype error contracts, complete resource/serialization policy and whole-suite acceptance remain open. Classical scalar metrics are not quantum-hardware computations."
+  },
+  {
+    "id": "quantumbridge.information.qiskit_metrics.hellinger_fidelity",
+    "source_hash": "15ef37051420e82f795bf47233c452f31e67f589388cdf250aed70a18ad12313",
+    "project_fingerprint": "3279e1caded3509592d78f4e524485c75106367af30cc9daf8bc4ab4407d4866",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": true,
+    "strict_tests_pass": false,
+    "evidence_hash": "3f05cc9c5e200fc13bba0327e6cf486132ffeba9bdfb3cda81047a617bd7f486",
+    "native_entry": "quantumbridge.information.qiskit_metrics.hellinger_fidelity",
+    "native_cases_each_profile": 34,
+    "actual_sdk_reference_cases_each_profile": 15,
+    "real_qiskit_versions": [
+      "2.4.1",
+      "2.6.0"
+    ],
+    "reference_public_exposure": "qiskit.quantum_info.hellinger_fidelity",
+    "evidence_scope": "Counts/probability normalization, exact integer totals, finite-overflow scaling, rationalized roots/hypot, full public keywords/signatures, explicit Legacy empty policy, readonly/key identity/error cases, no numeric tables and work preflight. Independent high-precision math and actual dual-Qiskit calls; not whole-function acceptance.",
+    "evidence_scope_zh": "计数和概率归一化、整数总量、有限溢出缩放、稳定平方根差与 hypot、完整公共关键字及签名、Legacy 空分布策略、只读与键身份、错误和无数值表的工作量检查，已用独立高精度数学及双版本实际调用局部验证。",
+    "remaining": "Full Mapping/foreign numeric and mutation protocols, nonfinite/mixed-dtype error contracts, complete resource/serialization policy and whole-suite acceptance remain open. Classical scalar metrics are not quantum-hardware computations."
+  },
+  {
+    "id": "quantumbridge.information.operator.Operator.power",
+    "status": "partial",
+    "source_hash": "563d85c9acfcb18ade8e65b6ba6a8a44cbbe07a6c389255e2b49028bcf756060",
+    "project_fingerprint": "428ec50fa4716c567ec27e85ad79b0405672a61d13a832c1b8fb2a2cf6452055",
+    "evidence_hash": "70805c4cc32f9561aa0ec4445ecb38474a994936657f49e7ff0543c846d2e5b3",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": true,
+    "strict_tests_pass": false,
+    "dependency_hashes": {
+      "quantumbridge/information/matrix_functions.py": "a0402a601779164b452344fc0aecdba1e2531e1478741cc6f5cea7a1c2b786fa"
+    },
+    "independent_cases_each_profile": 80,
+    "actual_sdk_reference_cases_each_profile": 60,
+    "actual_sdk_reference_passed_each_profile": 59,
+    "actual_sdk_reference_failed_each_profile": 1,
+    "evidence_scope": "Exact self-adjoint branch selection, full complex Pauli-polynomial/dyadic spectral frames, rotated cuts, original near-zero refusal, no approximate symmetrization, eigensolver admission and owned numeric storage. Original information folder also rechecked. One actual SDK precision comparison remains failed; no complete API or hardware acceptance. Latest428ecadds exact X-permutation blocks/TwoSumcertificates, parameterized source/gate value calls and current47module resource recheck. OriginalHermitianactualreference still59/1; no full contract acceptance.",
+    "evidence_scope_zh": "严格厄米输入的分数幂分支、完整复数矩阵和相位、旋转分支切线、近零特征值拒绝、极小非厄米输入不被对称化、分解前预算与结果存储持有已局部验证；一个上游精度对照仍失败，不是完整函数或真机验收。",
+    "remaining": "Same25selectedstrictfailures,4cachedTFfailures, prior actualSDKprecisioncomparison and pending owner reviews remain. Full arbitrary matrix/cut/singularity, exact-sum fallback, foreign-protocol/resource/serialization and derivative contracts remain open. In particular unrestricted Frechet derivatives at the cut are still rejected; restricted-source derivative support is not inferred.",
+    "evidence_history": [
+      {
+        "source_hash": "563d85c9acfcb18ade8e65b6ba6a8a44cbbe07a6c389255e2b49028bcf756060",
+        "project_fingerprint": "8be1d6d8484770156f236ae1e6b35fbee19dea3dba21b13aaca82a46ea8426dc",
+        "evidence_hash": "fc4fcee971a1186d56daf7e26c8b44765f83e0b763a0d0adfe55e48d7e543799"
+      }
+    ],
+    "native_cases_each_profile": 104,
+    "actual_explicit_cut_reference_cases_each_profile": 72,
+    "actual_reference_scope": "The72newactualSDKcases compare literal Operator.power with explicit rotated cuts+/-0.4 and independent projector formulas. They do not certify actual Gate.power default-zero-cut numerics, a Qiskit source importer, gradients, SDK coexistence or whole-function completeness.",
+    "resource_recheck": {
+      "checkpoint": "goal-source-power-cut-09QTzD",
+      "recorded_at": "2026-11-12T16:28:55.971946+00:00",
+      "source_fingerprint": "428ec50fa4716c567ec27e85ad79b0405672a61d13a832c1b8fb2a2cf6452055",
+      "source_manifest_sha256": "47d173db89268662915f6727799119f4a3342635c78b72e04c97dd7f78a717e4",
+      "all_47_modules_rechecked": true,
+      "exact_disjoint_items_each_profile": 969,
+      "passed_each_profile": 967,
+      "failed_each_profile": 2,
+      "same_previous_two_failure_ids": true,
+      "actual_qiskit_cases_each_profile": 18,
+      "actual_pennylane_cases_each_profile": 5,
+      "isolated_sdk_lanes": true,
+      "audited_finalizer_children": 2,
+      "no_old_assertions_changed": true,
+      "full_function_accepted": false,
+      "sdk_coexistence_verified": false
+    }
+  },
+  {
+    "id": "quantumbridge.core.gates.Gate.power",
+    "source_hash": "cb0dca76447d4559f46697c49672dc14a1fea0c0170442473d6a96b6c3e9c874",
+    "project_fingerprint": "428ec50fa4716c567ec27e85ad79b0405672a61d13a832c1b8fb2a2cf6452055",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": true,
+    "strict_tests_pass": false,
+    "evidence_hash": "70805c4cc32f9561aa0ec4445ecb38474a994936657f49e7ff0543c846d2e5b3",
+    "dependency_hashes": {
+      "quantumbridge/information/matrix_functions.py": "a0402a601779164b452344fc0aecdba1e2531e1478741cc6f5cea7a1c2b786fa"
+    },
+    "native_entry": "quantumbridge.core.gates.Gate.power",
+    "independent_cases_each_profile": 104,
+    "evidence_scope": "BoundNativeGate/source values across4angles,3exponents,3globalphases andbothwireorders; fullcomplexmatrices,statevectors,QPYandexplicit/warnedmathematicalQASMtransport.72actualQiskitOperatorreferences useexplicitrotatedcuts,notpublicGate.powerdefault-zero-cutconformance. Arbitrary symbolic/foreign/resource/ADcontractsnotcomplete.",
+    "evidence_scope_zh": "已绑定门和参数化源在多角度、分数幂、全局相位和双线路顺序下的完整复数矩阵、态及 QPY/显式 QASM 数学往返已局部验证。实际 Qiskit 对照使用 Operator 的显式旋转分支，不是 Gate 默认分支或导数的完整验收。",
+    "remaining": "Same25selectedstrictfailures,4cachedTFfailures, prior actualSDKprecisioncomparison and pending owner reviews remain. Full arbitrary matrix/cut/singularity, exact-sum fallback, foreign-protocol/resource/serialization and derivative contracts remain open. In particular unrestricted Frechet derivatives at the cut are still rejected; restricted-source derivative support is not inferred."
+  },
+  {
+    "id": "quantumbridge.qml.frontend.qnode",
+    "source_hash": "0e5d1294fde86073f20073c8c8154843079663d77b17f9a138cb1513a4e7467f",
+    "project_fingerprint": "428ec50fa4716c567ec27e85ad79b0405672a61d13a832c1b8fb2a2cf6452055",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": true,
+    "strict_tests_pass": false,
+    "native_entry": "quantumbridge.qml.frontend.qnode",
+    "evidence_hash": "b196be10387783ffa724a14a1dced92ec1a0b533f469ef571be49fa8351efac8",
+    "dependency_hashes": {
+      "quantumbridge/qml/frontend.py": "0e5d1294fde86073f20073c8c8154843079663d77b17f9a138cb1513a4e7467f"
+    },
+    "evidence_scope": "Actual isolated PennyLane0.44.1/0.42.3 and SDK-free Native each execute positional/keyword-device decorators across3scalar angles with RY/Z analytic controls. DirectPythonbindingmatches after preserving the distinction between advertised __signature__ and actual function args. Advertised metadata, full options, resource/error/shape/gradient/serialization and composed contracts remain open; no new Native implementation.",
+    "evidence_scope_zh": "双版本真实 PennyLane 与 SDK-free Native 分别通过位置/关键字设备装饰器和三个标量角度的 RY/Z 解析对照。仅证明这些实际调用与词法绑定；展示签名、全部选项及资源、梯度等完整合同仍待验收。",
+    "hardware": "unverified",
+    "remaining": [
+      "Advertised signature compatibility remains distinct from lexical binding and body validation",
+      "Only two device-binding forms and three scalar RY/Z inputs were executed; no full QNode/Device/derivative contract accepted",
+      "Full recursive/optional/plugin denominator and class-graph provenance remain open; historical full inventories were not replaced by this subset",
+      "Different-name Native mappings, all functional axes, strict failures, installation/coexistence and hardware acceptance remain open"
+    ]
   }
 ]

@@ -31,6 +31,83 @@
       "math_tolerances_changed": false,
       "production_identity_policy_changed": false,
       "production_resource_accounting_changed": false
+    },
+    {
+      "file": "tests/transforms/test_native_projector_target_closure.py",
+      "before_sha256": "2b2229079c766a441a079168aa1a1b1eac3df131c90cb80adb5bf882ba384f92",
+      "after_sha256": "5ed62dde8d9bf555a8d816a7ffe2e7a40fe9d51458497a111e9c49a0e1793ef8",
+      "owner_approved": true,
+      "approval_summary": "Owner explicitly approved only these four Target contracts on 2026-11-12. Verify actual gates/qargs against the original frozen Target, full complex states, mass and independent outputs. Preserve gate/outcome refusal before state allocation and all other cases.",
+      "case_ids": [
+        "tests.transforms.test_native_projector_target_closure::test_late_second_child_failure_initializes_no_state[coupling]",
+        "tests.transforms.test_native_projector_target_closure::test_target_snapshot_is_not_changed_by_a_later_user_stage",
+        "tests.transforms.test_native_projector_target_closure::test_directed_target_uses_real_qargs_or_refuses[coupling1]",
+        "tests.transforms.test_native_projector_target_closure::test_inline_compile_cannot_lose_its_target_when_wrapped_as_a_source_processor"
+      ],
+      "math_tolerances_changed": false,
+      "production_identity_policy_changed": false,
+      "production_resource_accounting_changed": false
+    },
+    {
+      "file": "tests/serialization/test_qpy16_pauli_evolution.py",
+      "before_sha256": "e90a6c9dd5f583d0bfa35839b5aac14f56f28b3ef2bbb686524a660af1c35c53",
+      "after_sha256": "6e6c25a91017efb68422de03e7efe8024b0a20ff9128d2ed2cc1ebbc602677ec",
+      "owner_approved": true,
+      "approval_summary": "Owner explicitly approved only this observable input on 2026-11-12. Use explicit Native SparsePauliOperator for the original q0-first expectation; add public little-endian checks while retaining the original product-formula mathematical expectation, tolerance, shots and sampling checks.",
+      "case_ids": [
+        "tests.serialization.test_qpy16_pauli_evolution::test_loaded_gate_drives_real_estimator_and_sampling"
+      ],
+      "math_tolerances_changed": false,
+      "production_identity_policy_changed": false,
+      "production_resource_accounting_changed": false
+    },
+    {
+      "file": "tests/algorithms/test_native_trotter_qrte.py",
+      "before_sha256": "2518005c3e3a5c09e05d02a93e272c9b1e98431e16f3bd3f2dcbda6b5f65fc42",
+      "after_sha256": "51d7ac4846c2bbc1097ba91d38d599744f42f528086ba6ea9df0b4257c860343",
+      "owner_approved": true,
+      "approval_summary": "Owner explicitly approved only this single assertion on 2026-11-12. Only unknown public binding refusal; measured no-op plus explicit Native strict atomic refusal; original complex inputs, coefficients and tolerances retained.",
+      "case_ids": [
+        "tests.algorithms.test_native_trotter_qrte::test_symbolic_sparse_binding_is_simultaneous_and_complex_and_inplace_is_atomic"
+      ],
+      "math_tolerances_changed": false,
+      "production_identity_policy_changed": false,
+      "production_resource_accounting_changed": false
+    },
+    {
+      "file": "tests/interfaces/test_native_tensorflow_negative.py",
+      "before_sha256": "1887386f2f4a19cb2e98cda96c3bee592c0b642e24ba447a13b359dc4887c96d",
+      "after_sha256": "859d6d2cd88530b4be79bf97d7488411e889eaf59b9a8b294689b29d43babac1",
+      "owner_approved": true,
+      "approval_summary": "Owner explicitly approved only this single assertion on 2026-11-12. Only final broadcast refusal; original float32[.2,.3]shape/value/Jacobian verification, retain complex/half and all other negative assertions.",
+      "case_ids": [
+        "tests.interfaces.test_native_tensorflow_negative::test_complex_half_and_broadcast_gate_parameters_reject"
+      ],
+      "math_tolerances_changed": false,
+      "production_identity_policy_changed": false,
+      "production_resource_accounting_changed": false,
+      "new_broadcast_numeric_tolerance": "2 * float32 epsilon, rtol=0; no preexisting numerical tolerance changed"
+    },
+    {
+      "file": "tests/serialization/test_native_mutable_sparse_consumers.py",
+      "before_sha256": "d92e59bd3ace1969489122d299f4775898f61df44728e85544207246873134a4",
+      "after_sha256": "03b4b2172c20a74025583c25390340cca5d8c715efd972fcbeebdf28537984b1",
+      "owner_approved": true,
+      "approval_summary": "Owner explicitly approved the explicit Legacy QPY loading entry on 2026-11-12. Change only the loader import in these eight cases; retain every original type, complex matrix, tensor frame, mutation/caching input, QPY flag and tolerance assertion. Existing default typed loading behavior is unchanged.",
+      "case_ids": [
+        "tests.serialization.test_native_mutable_sparse_consumers::test_mutated_public_operator_bilateral_qpy_retains_type_flags_and_full_math[False-16-native]",
+        "tests.serialization.test_native_mutable_sparse_consumers::test_mutated_public_operator_bilateral_qpy_retains_type_flags_and_full_math[False-16-public]",
+        "tests.serialization.test_native_mutable_sparse_consumers::test_mutated_public_operator_bilateral_qpy_retains_type_flags_and_full_math[False-17-native]",
+        "tests.serialization.test_native_mutable_sparse_consumers::test_mutated_public_operator_bilateral_qpy_retains_type_flags_and_full_math[False-17-public]",
+        "tests.serialization.test_native_mutable_sparse_consumers::test_mutated_public_operator_bilateral_qpy_retains_type_flags_and_full_math[True-16-native]",
+        "tests.serialization.test_native_mutable_sparse_consumers::test_mutated_public_operator_bilateral_qpy_retains_type_flags_and_full_math[True-16-public]",
+        "tests.serialization.test_native_mutable_sparse_consumers::test_mutated_public_operator_bilateral_qpy_retains_type_flags_and_full_math[True-17-native]",
+        "tests.serialization.test_native_mutable_sparse_consumers::test_mutated_public_operator_bilateral_qpy_retains_type_flags_and_full_math[True-17-public]"
+      ],
+      "math_tolerances_changed": false,
+      "default_qpy_behavior_changed": false,
+      "production_resource_caps_changed": false,
+      "migration_scope": "Only qpy_loads as legacy_loads becomes legacy_qpy_loads as legacy_loads in the one parameterized test body."
     }
   ]
 }

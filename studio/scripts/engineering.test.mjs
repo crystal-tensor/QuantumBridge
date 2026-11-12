@@ -116,8 +116,8 @@ test("compiler execution reconciles exact cases while preserving timeouts and st
   }
   const investigation = manifest.goal_execution.current_investigation;
   assert.equal(investigation.accepted, false);
-  assert.equal(investigation.production_changed, false);
-  assert.equal(investigation.strict_cached_failures_remaining_each_profile, 4);
+  assert.equal(investigation.native_source_framework_or_installed_dependencies_changed, false);
+  assert.equal(investigation.cached_tf_failures_remain, 4);
 });
 test("CI census repair retains real child results, original bodies and frozen-context boundaries", () => {
   const repair=manifest.goal_execution.ci_workflow_repair;
@@ -235,7 +235,7 @@ test("namespace files remain unreviewed metadata, with exact artifacts and no lo
   }
 });
 test("framework and lifetime diagnostics are not Native acceptance or test passes",async()=>{
-  assert.equal(manifest.diagnostic_observations.length,7);
+  assert.equal(manifest.diagnostic_observations.length,13);
   const script=await readFile(new URL("../downloads/tensorflow_cached_cos_probe.py",import.meta.url));
   for(const row of manifest.diagnostic_observations){
     assert.equal(row.report.native_accepted,false);
@@ -252,8 +252,23 @@ test("framework and lifetime diagnostics are not Native acceptance or test passe
       assert.equal(row.report.production_changed,false);
       assert.equal(row.report.prototype_promoted,false);
       assert.equal(row.report.cached_mixed_failures_remaining,4);
-    }else{
-      assert.equal(row.kind,"arrow_coexistence_review");
+    }else if(row.kind==="native_hellinger_counts"){
+      assert.equal(row.report.native_accepted,false);
+      assert.ok(row.report.rows.length>0);
+      if(row.report.resolved_scope){
+        assert.equal(row.report.production_changed,true);
+        assert.ok(row.report.actual_current_reference_cases>0&&row.report.new_independent_native_cases>0);
+      }else{
+        assert.equal(row.report.old_assertions_or_tolerances_changed,false);
+        assert.ok(row.report.observed_cases_with_mismatch>0);
+      }
+    }else if(row.kind==="matrix_power_reference_roundoff"){
+      assert.equal(row.report.threshold_changed,false);
+      assert.equal(row.report.threshold,2e-14);
+      assert.equal(row.report.observations.native.strict_2e14_pass,true);
+      assert.equal(row.report.observations.actual_qiskit.strict_2e14_pass,false);
+      assert.ok(row.report.observations.actual_qiskit.absolute_error>row.report.threshold);
+    }else if(row.kind==="arrow_coexistence_review"){
       const code=await readFile(new URL("../downloads/arrow_qiskit_import_probe.py",import.meta.url));
       assert.equal(row.report.source_sha256,createHash("sha256").update(code).digest("hex"));
       assert.equal(row.report.review_state,"EXPERIMENTALLY_VERIFIED_NOT_PROMOTED_TO_REFERENCE_BASELINE");
@@ -266,7 +281,7 @@ test("framework and lifetime diagnostics are not Native acceptance or test passe
       assert.ok([...row.report.baseline_imports,...row.report.candidate_imports].every(r=>r.observations.quantumbridge_imported===false));
       assert.equal(row.report.candidate_public.length,2);
       assert.ok(row.report.candidate_public.every(r=>r.process_exit===1&&r.total===512&&r.passed===493&&r.failed===19&&r.skipped===0&&r.original_case_population_and_failure_ids_unchanged&&r.native_accepted===false));
-    }
+    }else assert.fail("Unreviewed diagnostic kind: "+row.kind);
   }
 });
 test("goal and selected verification never masquerade as final acceptance", () => {
@@ -297,8 +312,8 @@ test("goal and selected verification never masquerade as final acceptance", () =
       assert.equal(run.protected_tests+files.size,run.original_protected_test_files);
       assert.ok(run.approved_test_migrations.every(m=>m.owner_approved&&m.before_sha256!==m.after_sha256&&m.case_ids.length));
       if(run.source_match){
-        assert.equal(files.size,manifest.goal_execution.latest_verification_batch.approved_test_migration_files);
-        assert.equal(run.approved_test_migrations.flatMap(m=>m.case_ids).length,manifest.goal_execution.latest_verification_batch.approved_test_migration_cases);
+        assert.equal(files.size,manifest.goal_execution.latest_strict_review.approved_files);
+        assert.equal(run.approved_test_migrations.flatMap(m=>m.case_ids).length,manifest.goal_execution.latest_strict_review.approved_cases);
         const memory=run.approved_test_migrations.find(m=>m.file==="tests/interfaces/test_native_tf_mps_resource_contract.py");
         if(memory){
           assert.deepEqual(memory.case_ids,["tests.interfaces.test_native_tf_mps_resource_contract::test_managed_mps_queries_same_parent_cache_tiny_hessian_cap"]);
@@ -340,9 +355,13 @@ test("current worker receipts and bounded windows preserve all evidence", () => 
   const current=currentVerification(manifest);
   assert.equal(current.batchMatches,true);
   assert.equal(current.reviewMatches,true);
-  assert.equal(current.rows.length,60);
-  assert.equal(current.failures.main.length,23);
-  assert.equal(current.failures.alternate.length,23);
+  assert.equal(current.rows.length,98);
+  assert.equal(current.failures.main.length,25);
+  assert.equal(current.failures.alternate.length,25);
+  assert.deepEqual(current.failures,current.reviewedFailures);
+  assert.ok(current.reports.some(row=>row.scope==="inventory"));
+  assert.ok(current.reports.some(row=>row.scope==="reference"));
+  assert.ok(current.reports.every(row=>current.rows.some(run=>run.evidence_hash===row.report.evidence_hash&&run.recorded_at===row.recordedAt)));
   const first=verificationWindow(manifest.verification,0);
   const second=verificationWindow(manifest.verification,1);
   assert.equal(first.rows.length,20);
@@ -352,13 +371,24 @@ test("current worker receipts and bounded windows preserve all evidence", () => 
   assert.equal(verificationWindow(manifest.verification,999999).index,first.pages-1);
   assert.equal(currentVerification({...manifest,source:{fingerprint:"other"}}).batchMatches,false);
   assert.equal(currentVerification({...manifest,verification:manifest.verification.map(row=>({...row,environment_validation:{verified:false}}))}).reviewMatches,false);
-  assert.equal(manifest.verification_projection.redacted_parameter_ids,8);
+  const redacted=manifest.verification.flatMap(row=>row.cases).filter(row=>row.parameter_identity_redacted);
+  assert.equal(manifest.verification_projection.redacted_parameter_ids,redacted.length);
+  assert.equal(redacted.length,30);
+  assert.ok(redacted.every(row=>row.id.endsWith(row.original_id_sha256+"]")));
   assert.equal(manifest.verification_projection.private_ledger_modified,false);
   for(const run of manifest.verification){
     if(!run.test_context){assert.equal(run.source_match,false);continue;}
     assert.equal(manifest.test_contexts[run.test_context.files_ref].files.length,run.test_context.file_count);
     assert.equal(manifest.test_contexts[run.test_context.files_ref].sha256,run.test_context.sha256);
   }
+});
+test("equal failure counts with different case identities cannot match a strict review",()=>{
+  const changed={...manifest,verification:manifest.verification.map(run=>({...run,cases:run.cases.map(item=>
+    item.status==="failed"?{...item,id:"different-case:"+item.id}:item)}))};
+  const actual=currentVerification(changed);
+  assert.equal(actual.failures.main.length,25);
+  assert.equal(actual.failures.alternate.length,25);
+  assert.equal(actual.reviewMatches,false);
 });
 test("runtime wire pooling preserves every signature and owner context", async () => {
   const descriptor=manifest.datasets.find(row=>row.id==="runtime");

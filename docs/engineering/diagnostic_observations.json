@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "source_fingerprint": "423833c765ff4eacbb179c7f784e72057c4a3ca7071235def96f12f36a666665",
+  "source_fingerprint": "73c51f7a960ef7cffe60293f473f64e64a18bd2fddee494e2a34ac35ec39fd45",
   "observations": [
     {
       "id": "tf_cached_cos-main",
@@ -1395,6 +1395,1082 @@
       },
       "scope": "diagnostic_observation_not_function_or_test_acceptance",
       "source_fingerprint": "423833c765ff4eacbb179c7f784e72057c4a3ca7071235def96f12f36a666665"
+    },
+    {
+      "id": "tensor_edge_curvature_decomposition_main",
+      "kind": "tensor_edge_curvature_decomposition",
+      "profile": "main",
+      "recorded_at": "2026-11-12T03:32:16.190333+00:00",
+      "evidence_hash": "b8573f3f2ce29e6984f1c76c791c06ac3dcae1391718a848fe0d851a9068168f",
+      "report": {
+        "native_accepted": false,
+        "source_fingerprint": "73c51f7a960ef7cffe60293f473f64e64a18bd2fddee494e2a34ac35ec39fd45",
+        "scope": "unpromoted_tensor_jacobian_prototype_with_independent_classical_quantum_split",
+        "tensorflow": "2.21.0",
+        "rows": [
+          {
+            "point": [
+              0.37,
+              -0.61
+            ],
+            "actual": [
+              0.03340328420709168,
+              -0.1585529225986379
+            ],
+            "classical_curvature": [
+              0.03340328420709169,
+              -0.1585529225986379
+            ],
+            "quantum_curvature": [
+              -0.20936224169014905,
+              0.17065456889375963
+            ],
+            "complete_hvp": [
+              -0.17595895748305737,
+              0.012101646295121726
+            ],
+            "missing_quantum_term": true
+          },
+          {
+            "point": [
+              0.0,
+              0.0
+            ],
+            "actual": [
+              0.0,
+              0.0
+            ],
+            "classical_curvature": [
+              0.0,
+              0.0
+            ],
+            "quantum_curvature": [
+              -0.42799999999999994,
+              0.3419999999999999
+            ],
+            "complete_hvp": [
+              -0.42799999999999994,
+              0.3419999999999999
+            ],
+            "missing_quantum_term": true
+          },
+          {
+            "point": [
+              -0.25,
+              0.4
+            ],
+            "actual": [
+              0.02796513391432557,
+              -0.08467596428058832
+            ],
+            "classical_curvature": [
+              0.02796513391432557,
+              -0.08467596428058832
+            ],
+            "quantum_curvature": [
+              -0.31833842253744893,
+              0.25280616877592554
+            ],
+            "complete_hvp": [
+              -0.29037328862312334,
+              0.16813020449533722
+            ],
+            "missing_quantum_term": true
+          }
+        ],
+        "production_changed": false,
+        "prototype_promoted": false,
+        "cached_mixed_failures_remaining": 4
+      },
+      "scope": "diagnostic_observation_not_function_or_test_acceptance",
+      "source_fingerprint": "73c51f7a960ef7cffe60293f473f64e64a18bd2fddee494e2a34ac35ec39fd45"
+    },
+    {
+      "id": "tensor_edge_curvature_decomposition_alternate",
+      "kind": "tensor_edge_curvature_decomposition",
+      "profile": "alternate",
+      "recorded_at": "2026-11-12T03:32:16.190333+00:00",
+      "evidence_hash": "db2a2d92fb75a1423cc4c8d0fc77cebfcf9863051c70426ce87c18464a91cd9b",
+      "report": {
+        "native_accepted": false,
+        "source_fingerprint": "73c51f7a960ef7cffe60293f473f64e64a18bd2fddee494e2a34ac35ec39fd45",
+        "scope": "unpromoted_tensor_jacobian_prototype_with_independent_classical_quantum_split",
+        "tensorflow": "2.21.0",
+        "rows": [
+          {
+            "point": [
+              0.37,
+              -0.61
+            ],
+            "actual": [
+              0.03340328420709168,
+              -0.1585529225986379
+            ],
+            "classical_curvature": [
+              0.03340328420709169,
+              -0.1585529225986379
+            ],
+            "quantum_curvature": [
+              -0.20936224169014905,
+              0.17065456889375963
+            ],
+            "complete_hvp": [
+              -0.17595895748305737,
+              0.012101646295121726
+            ],
+            "missing_quantum_term": true
+          },
+          {
+            "point": [
+              0.0,
+              0.0
+            ],
+            "actual": [
+              0.0,
+              0.0
+            ],
+            "classical_curvature": [
+              0.0,
+              0.0
+            ],
+            "quantum_curvature": [
+              -0.42799999999999994,
+              0.3419999999999999
+            ],
+            "complete_hvp": [
+              -0.42799999999999994,
+              0.3419999999999999
+            ],
+            "missing_quantum_term": true
+          },
+          {
+            "point": [
+              -0.25,
+              0.4
+            ],
+            "actual": [
+              0.02796513391432557,
+              -0.08467596428058832
+            ],
+            "classical_curvature": [
+              0.02796513391432557,
+              -0.08467596428058832
+            ],
+            "quantum_curvature": [
+              -0.31833842253744893,
+              0.25280616877592554
+            ],
+            "complete_hvp": [
+              -0.29037328862312334,
+              0.16813020449533722
+            ],
+            "missing_quantum_term": true
+          }
+        ],
+        "production_changed": false,
+        "prototype_promoted": false,
+        "cached_mixed_failures_remaining": 4
+      },
+      "scope": "diagnostic_observation_not_function_or_test_acceptance",
+      "source_fingerprint": "73c51f7a960ef7cffe60293f473f64e64a18bd2fddee494e2a34ac35ec39fd45"
+    },
+    {
+      "id": "native_hellinger_counts-main",
+      "kind": "native_hellinger_counts",
+      "profile": "main",
+      "recorded_at": "2026-11-12T13:39:40.850179+00:00",
+      "evidence_hash": "62472c9644332c6a4d07a0e4479235390bf4c8f0c9fa6d199868cb3fc19dd1de",
+      "source_fingerprint": "0f163fa93affd80b4369560c0a3280ded89516bb894ae590433a299e4a673621",
+      "scope": "diagnostic_observation_not_function_or_test_acceptance",
+      "report": {
+        "profile": "main",
+        "qiskit": "2.4.1",
+        "recorded_at": "2026-11-12T13:39:40.850179+00:00",
+        "source_fingerprint": "0f163fa93affd80b4369560c0a3280ded89516bb894ae590433a299e4a673621",
+        "native_accepted": false,
+        "production_changed": false,
+        "rows": [
+          {
+            "name": "probabilities",
+            "left": {
+              "0": 0.5,
+              "1": 0.5
+            },
+            "right": {
+              "0": 0.5,
+              "1": 0.5
+            },
+            "native": {
+              "distance": 0.0,
+              "fidelity": 1.0
+            },
+            "qiskit": {
+              "distance": 0.0,
+              "fidelity": 1.0
+            },
+            "independent_oracle": {
+              "distance": 0.0,
+              "fidelity": 1.0000000000000004
+            },
+            "mismatched_outputs": []
+          },
+          {
+            "name": "different_shot_counts",
+            "left": {
+              "0": 5,
+              "1": 5
+            },
+            "right": {
+              "0": 20,
+              "1": 20
+            },
+            "native": {
+              "distance": 0.0,
+              "fidelity": 400.0
+            },
+            "qiskit": {
+              "distance": 0.0,
+              "fidelity": 1.0
+            },
+            "independent_oracle": {
+              "distance": 0.0,
+              "fidelity": 1.0000000000000004
+            },
+            "mismatched_outputs": [
+              "fidelity"
+            ]
+          },
+          {
+            "name": "different_distributions",
+            "left": {
+              "0": 9,
+              "1": 1
+            },
+            "right": {
+              "0": 2,
+              "1": 8
+            },
+            "native": {
+              "distance": 0.0,
+              "fidelity": 50.00000000000001
+            },
+            "qiskit": {
+              "distance": 0.541196100146197,
+              "fidelity": 0.4999999999999999
+            },
+            "independent_oracle": {
+              "distance": 0.541196100146197,
+              "fidelity": 0.4999999999999999
+            },
+            "mismatched_outputs": [
+              "distance",
+              "fidelity"
+            ]
+          },
+          {
+            "name": "disjoint",
+            "left": {
+              "0": 12
+            },
+            "right": {
+              "1": 37
+            },
+            "native": {
+              "distance": 1.0,
+              "fidelity": 0.0
+            },
+            "qiskit": {
+              "distance": 1.0,
+              "fidelity": 0.0
+            },
+            "independent_oracle": {
+              "distance": 1.0,
+              "fidelity": 0.0
+            },
+            "mismatched_outputs": []
+          },
+          {
+            "name": "nearby_probabilities",
+            "left": {
+              "0": 0.5000000001,
+              "1": 0.4999999999
+            },
+            "right": {
+              "0": 0.4999999999,
+              "1": 0.5000000001
+            },
+            "native": {
+              "distance": 0.0,
+              "fidelity": 1.0
+            },
+            "qiskit": {
+              "distance": 1.4142143012207953e-10,
+              "fidelity": 1.0
+            },
+            "independent_oracle": {
+              "distance": 1.4142143012207953e-10,
+              "fidelity": 1.0
+            },
+            "mismatched_outputs": [
+              "distance"
+            ]
+          }
+        ],
+        "native_capture_sha256": "1a77ca3ff8f0746d0a54c32b7e9c4903e3f577e2973259c8a3521492d0ef1975",
+        "qiskit_capture_sha256": "92d7f203555f5b8707cf3474e0d93ad8cf6f6c04123c98f13c0336f44c08aba7",
+        "native_worker_pid": 74232,
+        "qiskit_worker_pid": 74236,
+        "actual_reference_root": {
+          "version": "2.4.1",
+          "source_sha256": "96349691e282c6a55d3db72f71e2603801d8242344e65df9a28b88a73d2fdebe"
+        },
+        "no_sdk_or_native_coexistence": true,
+        "old_assertions_or_tolerances_changed": false,
+        "observed_cases_with_mismatch": 3,
+        "observed_mismatched_outputs": 4,
+        "diagnosis": "Native Hellinger functions do not normalize counts; distance clips the raw fidelity and loses nearby-distribution precision through subtraction. Qiskit and an independent normalized square-root oracle agree. The normalization/fidelity-range and distance cases are real functional gaps, not an upstream-framework-only failure.",
+        "scope": "Isolated diagnostic calls, not a passing full-function contract or a new pytest failure-count claim."
+      }
+    },
+    {
+      "id": "native_hellinger_counts-alternate",
+      "kind": "native_hellinger_counts",
+      "profile": "alternate",
+      "recorded_at": "2026-11-12T13:39:40.850179+00:00",
+      "evidence_hash": "672a673c3a97e693df1d3acbb525a79a9ac86a60a330f0459fb1215dc0b19ef8",
+      "source_fingerprint": "0f163fa93affd80b4369560c0a3280ded89516bb894ae590433a299e4a673621",
+      "scope": "diagnostic_observation_not_function_or_test_acceptance",
+      "report": {
+        "profile": "alternate",
+        "qiskit": "2.6.0",
+        "recorded_at": "2026-11-12T13:39:40.850179+00:00",
+        "source_fingerprint": "0f163fa93affd80b4369560c0a3280ded89516bb894ae590433a299e4a673621",
+        "native_accepted": false,
+        "production_changed": false,
+        "rows": [
+          {
+            "name": "probabilities",
+            "left": {
+              "0": 0.5,
+              "1": 0.5
+            },
+            "right": {
+              "0": 0.5,
+              "1": 0.5
+            },
+            "native": {
+              "distance": 0.0,
+              "fidelity": 1.0
+            },
+            "qiskit": {
+              "distance": 0.0,
+              "fidelity": 1.0
+            },
+            "independent_oracle": {
+              "distance": 0.0,
+              "fidelity": 1.0000000000000004
+            },
+            "mismatched_outputs": []
+          },
+          {
+            "name": "different_shot_counts",
+            "left": {
+              "0": 5,
+              "1": 5
+            },
+            "right": {
+              "0": 20,
+              "1": 20
+            },
+            "native": {
+              "distance": 0.0,
+              "fidelity": 400.0
+            },
+            "qiskit": {
+              "distance": 0.0,
+              "fidelity": 1.0
+            },
+            "independent_oracle": {
+              "distance": 0.0,
+              "fidelity": 1.0000000000000004
+            },
+            "mismatched_outputs": [
+              "fidelity"
+            ]
+          },
+          {
+            "name": "different_distributions",
+            "left": {
+              "0": 9,
+              "1": 1
+            },
+            "right": {
+              "0": 2,
+              "1": 8
+            },
+            "native": {
+              "distance": 0.0,
+              "fidelity": 50.00000000000001
+            },
+            "qiskit": {
+              "distance": 0.541196100146197,
+              "fidelity": 0.4999999999999999
+            },
+            "independent_oracle": {
+              "distance": 0.541196100146197,
+              "fidelity": 0.4999999999999999
+            },
+            "mismatched_outputs": [
+              "distance",
+              "fidelity"
+            ]
+          },
+          {
+            "name": "disjoint",
+            "left": {
+              "0": 12
+            },
+            "right": {
+              "1": 37
+            },
+            "native": {
+              "distance": 1.0,
+              "fidelity": 0.0
+            },
+            "qiskit": {
+              "distance": 1.0,
+              "fidelity": 0.0
+            },
+            "independent_oracle": {
+              "distance": 1.0,
+              "fidelity": 0.0
+            },
+            "mismatched_outputs": []
+          },
+          {
+            "name": "nearby_probabilities",
+            "left": {
+              "0": 0.5000000001,
+              "1": 0.4999999999
+            },
+            "right": {
+              "0": 0.4999999999,
+              "1": 0.5000000001
+            },
+            "native": {
+              "distance": 0.0,
+              "fidelity": 1.0
+            },
+            "qiskit": {
+              "distance": 1.4142143012207953e-10,
+              "fidelity": 1.0
+            },
+            "independent_oracle": {
+              "distance": 1.4142143012207953e-10,
+              "fidelity": 1.0
+            },
+            "mismatched_outputs": [
+              "distance"
+            ]
+          }
+        ],
+        "native_capture_sha256": "774cc4d2d11bc21c20a24c86f4124f575914242a207fa5c5a4c3769677653b3c",
+        "qiskit_capture_sha256": "0259de92277291bb5f33ca427a66c22045f944d2fbebcf567350e7b4809f82fb",
+        "native_worker_pid": 74239,
+        "qiskit_worker_pid": 74242,
+        "actual_reference_root": {
+          "version": "2.6.0",
+          "source_sha256": "5ef94be56c84e4f0f7e20a339b760873d6166f45b29b0b79f9b930b696164833"
+        },
+        "no_sdk_or_native_coexistence": true,
+        "old_assertions_or_tolerances_changed": false,
+        "observed_cases_with_mismatch": 3,
+        "observed_mismatched_outputs": 4,
+        "diagnosis": "Native Hellinger functions do not normalize counts; distance clips the raw fidelity and loses nearby-distribution precision through subtraction. Qiskit and an independent normalized square-root oracle agree. The normalization/fidelity-range and distance cases are real functional gaps, not an upstream-framework-only failure.",
+        "scope": "Isolated diagnostic calls, not a passing full-function contract or a new pytest failure-count claim."
+      }
+    },
+    {
+      "id": "native_hellinger_counts_fixed-main",
+      "kind": "native_hellinger_counts",
+      "profile": "main",
+      "recorded_at": "2026-11-12T14:11:59.242356+00:00",
+      "evidence_hash": "968eaf2bb3fb6cb15ce6179d7be61c693bfb3e665d409baf48d52d93d2d9199b",
+      "source_fingerprint": "3279e1caded3509592d78f4e524485c75106367af30cc9daf8bc4ab4407d4866",
+      "scope": "diagnostic_observation_not_function_or_test_acceptance",
+      "report": {
+        "profile": "main",
+        "recorded_at": "2026-11-12T14:11:59.242356+00:00",
+        "source_fingerprint": "3279e1caded3509592d78f4e524485c75106367af30cc9daf8bc4ab4407d4866",
+        "native_accepted": false,
+        "production_changed": true,
+        "rows": [
+          {
+            "name": "probabilities",
+            "left": {
+              "0": 0.5,
+              "1": 0.5
+            },
+            "right": {
+              "0": 0.5,
+              "1": 0.5
+            },
+            "distance": 0.0,
+            "fidelity": 1.0
+          },
+          {
+            "name": "different_shot_counts",
+            "left": {
+              "0": 5,
+              "1": 5
+            },
+            "right": {
+              "0": 20,
+              "1": 20
+            },
+            "distance": 0.0,
+            "fidelity": 1.0
+          },
+          {
+            "name": "different_distributions",
+            "left": {
+              "0": 9,
+              "1": 1
+            },
+            "right": {
+              "0": 2,
+              "1": 8
+            },
+            "distance": 0.541196100146197,
+            "fidelity": 0.4999999999999999
+          },
+          {
+            "name": "disjoint",
+            "left": {
+              "0": 12
+            },
+            "right": {
+              "1": 37
+            },
+            "distance": 1.0,
+            "fidelity": 0.0
+          },
+          {
+            "name": "nearby_probabilities",
+            "left": {
+              "0": 0.5000000001,
+              "1": 0.4999999999
+            },
+            "right": {
+              "0": 0.4999999999,
+              "1": 0.5000000001
+            },
+            "distance": 1.41421367938565e-10,
+            "fidelity": 1.0
+          }
+        ],
+        "previous_rows": [
+          {
+            "name": "probabilities",
+            "left": {
+              "0": 0.5,
+              "1": 0.5
+            },
+            "right": {
+              "0": 0.5,
+              "1": 0.5
+            },
+            "distance": 0.0,
+            "fidelity": 1.0
+          },
+          {
+            "name": "different_shot_counts",
+            "left": {
+              "0": 5,
+              "1": 5
+            },
+            "right": {
+              "0": 20,
+              "1": 20
+            },
+            "distance": 0.0,
+            "fidelity": 400.0
+          },
+          {
+            "name": "different_distributions",
+            "left": {
+              "0": 9,
+              "1": 1
+            },
+            "right": {
+              "0": 2,
+              "1": 8
+            },
+            "distance": 0.0,
+            "fidelity": 50.00000000000001
+          },
+          {
+            "name": "disjoint",
+            "left": {
+              "0": 12
+            },
+            "right": {
+              "1": 37
+            },
+            "distance": 1.0,
+            "fidelity": 0.0
+          },
+          {
+            "name": "nearby_probabilities",
+            "left": {
+              "0": 0.5000000001,
+              "1": 0.4999999999
+            },
+            "right": {
+              "0": 0.4999999999,
+              "1": 0.5000000001
+            },
+            "distance": 0.0,
+            "fidelity": 1.0
+          }
+        ],
+        "native_capture_sha256": "aed7be4eacb5a0ce553b08976132bcf0ffb52734ff1839288cdca70fd56495c0",
+        "actual_qiskit": "2.4.1",
+        "actual_current_reference_cases": 15,
+        "new_independent_native_cases": 34,
+        "nearby_distance_caveat": "Native uses rationalized roots and matches a high-precision oracle relatively; actual Qiskit root subtraction retains an approximately6.2e-17absolute bias in this example. No upstream bias was copied or independent relative assertion weakened.",
+        "resolved_scope": "Original counts normalization, fidelity-range and nearby-distance counterexamples. Not complete function, SDK-free installation, SDK coexistence or hardware acceptance."
+      }
+    },
+    {
+      "id": "native_hellinger_counts_fixed-alternate",
+      "kind": "native_hellinger_counts",
+      "profile": "alternate",
+      "recorded_at": "2026-11-12T14:11:59.242356+00:00",
+      "evidence_hash": "4b39880a4cf66055cb3904c445a5367c7ed53516d076df93e1d174b30a9b5b64",
+      "source_fingerprint": "3279e1caded3509592d78f4e524485c75106367af30cc9daf8bc4ab4407d4866",
+      "scope": "diagnostic_observation_not_function_or_test_acceptance",
+      "report": {
+        "profile": "alternate",
+        "recorded_at": "2026-11-12T14:11:59.242356+00:00",
+        "source_fingerprint": "3279e1caded3509592d78f4e524485c75106367af30cc9daf8bc4ab4407d4866",
+        "native_accepted": false,
+        "production_changed": true,
+        "rows": [
+          {
+            "name": "probabilities",
+            "left": {
+              "0": 0.5,
+              "1": 0.5
+            },
+            "right": {
+              "0": 0.5,
+              "1": 0.5
+            },
+            "distance": 0.0,
+            "fidelity": 1.0
+          },
+          {
+            "name": "different_shot_counts",
+            "left": {
+              "0": 5,
+              "1": 5
+            },
+            "right": {
+              "0": 20,
+              "1": 20
+            },
+            "distance": 0.0,
+            "fidelity": 1.0
+          },
+          {
+            "name": "different_distributions",
+            "left": {
+              "0": 9,
+              "1": 1
+            },
+            "right": {
+              "0": 2,
+              "1": 8
+            },
+            "distance": 0.541196100146197,
+            "fidelity": 0.4999999999999999
+          },
+          {
+            "name": "disjoint",
+            "left": {
+              "0": 12
+            },
+            "right": {
+              "1": 37
+            },
+            "distance": 1.0,
+            "fidelity": 0.0
+          },
+          {
+            "name": "nearby_probabilities",
+            "left": {
+              "0": 0.5000000001,
+              "1": 0.4999999999
+            },
+            "right": {
+              "0": 0.4999999999,
+              "1": 0.5000000001
+            },
+            "distance": 1.41421367938565e-10,
+            "fidelity": 1.0
+          }
+        ],
+        "previous_rows": [
+          {
+            "name": "probabilities",
+            "left": {
+              "0": 0.5,
+              "1": 0.5
+            },
+            "right": {
+              "0": 0.5,
+              "1": 0.5
+            },
+            "distance": 0.0,
+            "fidelity": 1.0
+          },
+          {
+            "name": "different_shot_counts",
+            "left": {
+              "0": 5,
+              "1": 5
+            },
+            "right": {
+              "0": 20,
+              "1": 20
+            },
+            "distance": 0.0,
+            "fidelity": 400.0
+          },
+          {
+            "name": "different_distributions",
+            "left": {
+              "0": 9,
+              "1": 1
+            },
+            "right": {
+              "0": 2,
+              "1": 8
+            },
+            "distance": 0.0,
+            "fidelity": 50.00000000000001
+          },
+          {
+            "name": "disjoint",
+            "left": {
+              "0": 12
+            },
+            "right": {
+              "1": 37
+            },
+            "distance": 1.0,
+            "fidelity": 0.0
+          },
+          {
+            "name": "nearby_probabilities",
+            "left": {
+              "0": 0.5000000001,
+              "1": 0.4999999999
+            },
+            "right": {
+              "0": 0.4999999999,
+              "1": 0.5000000001
+            },
+            "distance": 0.0,
+            "fidelity": 1.0
+          }
+        ],
+        "native_capture_sha256": "8be2e7743035c5f6bbae872e1d02b8ade089c9f365732b35afc0806fe71a00ca",
+        "actual_qiskit": "2.6.0",
+        "actual_current_reference_cases": 15,
+        "new_independent_native_cases": 34,
+        "nearby_distance_caveat": "Native uses rationalized roots and matches a high-precision oracle relatively; actual Qiskit root subtraction retains an approximately6.2e-17absolute bias in this example. No upstream bias was copied or independent relative assertion weakened.",
+        "resolved_scope": "Original counts normalization, fidelity-range and nearby-distance counterexamples. Not complete function, SDK-free installation, SDK coexistence or hardware acceptance."
+      }
+    },
+    {
+      "id": "hermitian_power_reference_roundoff-main",
+      "kind": "matrix_power_reference_roundoff",
+      "profile": "main",
+      "source_fingerprint": "8be1d6d8484770156f236ae1e6b35fbee19dea3dba21b13aaca82a46ea8426dc",
+      "recorded_at": "2026-11-12T15:30:54.212234+00:00",
+      "evidence_hash": "bfd437e56f2991441ce810680e13085e003a262dee1da5b42daa15ae2ab9a9ea",
+      "scope": "diagnostic_observation_not_function_or_test_acceptance",
+      "report": {
+        "profile": "main",
+        "source_fingerprint": "8be1d6d8484770156f236ae1e6b35fbee19dea3dba21b13aaca82a46ea8426dc",
+        "recorded_at": "2026-11-12T15:30:54.212234+00:00",
+        "evidence_hash": "bfd437e56f2991441ce810680e13085e003a262dee1da5b42daa15ae2ab9a9ea",
+        "native_accepted": false,
+        "observations": {
+          "native": {
+            "real": [
+              [
+                6.999999999999996,
+                -1.7499999999999978,
+                6.999999999999998,
+                1.7499999999999976
+              ],
+              [
+                1.7499999999999978,
+                6.999999999999997,
+                -1.7499999999999976,
+                7.0
+              ],
+              [
+                6.999999999999998,
+                1.7499999999999996,
+                6.999999999999999,
+                -1.749999999999997
+              ],
+              [
+                -1.7499999999999976,
+                7.0,
+                1.749999999999999,
+                7.0
+              ]
+            ],
+            "imag": [
+              [
+                -2.249999999999997,
+                6.499999999999996,
+                2.249999999999998,
+                6.4999999999999964
+              ],
+              [
+                -6.499999999999997,
+                -2.2499999999999987,
+                -6.499999999999998,
+                2.2499999999999982
+              ],
+              [
+                2.2499999999999964,
+                6.5,
+                -2.2499999999999987,
+                6.500000000000001
+              ],
+              [
+                -6.499999999999997,
+                2.2499999999999982,
+                -6.5,
+                -2.249999999999998
+              ]
+            ],
+            "absolute_error": 5.420799638382024e-15,
+            "strict_2e14_pass": true
+          },
+          "actual_qiskit": {
+            "real": [
+              [
+                7.000000000000019,
+                -1.750000000000011,
+                7.000000000000025,
+                1.7500000000000087
+              ],
+              [
+                1.7500000000000058,
+                7.000000000000018,
+                -1.750000000000007,
+                7.000000000000021
+              ],
+              [
+                7.00000000000002,
+                1.7500000000000093,
+                7.000000000000023,
+                -1.7500000000000062
+              ],
+              [
+                -1.7500000000000084,
+                7.000000000000018,
+                1.7500000000000107,
+                7.000000000000019
+              ]
+            ],
+            "imag": [
+              [
+                -2.2500000000000093,
+                6.500000000000017,
+                2.2500000000000107,
+                6.5000000000000195
+              ],
+              [
+                -6.50000000000002,
+                -2.25000000000001,
+                -6.500000000000022,
+                2.2500000000000067
+              ],
+              [
+                2.2500000000000058,
+                6.500000000000018,
+                -2.2500000000000075,
+                6.500000000000022
+              ],
+              [
+                -6.500000000000019,
+                2.2500000000000107,
+                -6.500000000000025,
+                -2.2500000000000093
+              ]
+            ],
+            "absolute_error": 2.7056661287843684e-14,
+            "strict_2e14_pass": false
+          }
+        },
+        "environment": {
+          "numpy": "2.4.6",
+          "scipy": "1.18.1",
+          "qiskit": "2.4.1",
+          "pennylane": "0.44.1"
+        },
+        "threshold": 2e-14,
+        "threshold_changed": false,
+        "scope": "Exact dyadic frame/algebraic eigenvalue powers. Actual SDK exceeds the new strict threshold; this remains a strict failure, not an accepted reference or Native regression."
+      }
+    },
+    {
+      "id": "hermitian_power_reference_roundoff-alternate",
+      "kind": "matrix_power_reference_roundoff",
+      "profile": "alternate",
+      "source_fingerprint": "8be1d6d8484770156f236ae1e6b35fbee19dea3dba21b13aaca82a46ea8426dc",
+      "recorded_at": "2026-11-12T15:30:54.212234+00:00",
+      "evidence_hash": "f459ee1513c9b4085257fcd70c5e60848055513016006ea4144cca7bff835880",
+      "scope": "diagnostic_observation_not_function_or_test_acceptance",
+      "report": {
+        "profile": "alternate",
+        "source_fingerprint": "8be1d6d8484770156f236ae1e6b35fbee19dea3dba21b13aaca82a46ea8426dc",
+        "recorded_at": "2026-11-12T15:30:54.212234+00:00",
+        "evidence_hash": "f459ee1513c9b4085257fcd70c5e60848055513016006ea4144cca7bff835880",
+        "native_accepted": false,
+        "observations": {
+          "native": {
+            "real": [
+              [
+                6.999999999999996,
+                -1.7499999999999978,
+                6.999999999999998,
+                1.7499999999999976
+              ],
+              [
+                1.7499999999999978,
+                6.999999999999997,
+                -1.7499999999999976,
+                7.0
+              ],
+              [
+                6.999999999999998,
+                1.7499999999999996,
+                6.999999999999999,
+                -1.749999999999997
+              ],
+              [
+                -1.7499999999999976,
+                7.0,
+                1.749999999999999,
+                7.0
+              ]
+            ],
+            "imag": [
+              [
+                -2.249999999999997,
+                6.499999999999996,
+                2.249999999999998,
+                6.4999999999999964
+              ],
+              [
+                -6.499999999999997,
+                -2.2499999999999987,
+                -6.499999999999998,
+                2.2499999999999982
+              ],
+              [
+                2.2499999999999964,
+                6.5,
+                -2.2499999999999987,
+                6.500000000000001
+              ],
+              [
+                -6.499999999999997,
+                2.2499999999999982,
+                -6.5,
+                -2.249999999999998
+              ]
+            ],
+            "absolute_error": 5.420799638382024e-15,
+            "strict_2e14_pass": true
+          },
+          "actual_qiskit": {
+            "real": [
+              [
+                7.000000000000019,
+                -1.750000000000011,
+                7.000000000000025,
+                1.7500000000000087
+              ],
+              [
+                1.7500000000000058,
+                7.000000000000018,
+                -1.750000000000007,
+                7.000000000000021
+              ],
+              [
+                7.00000000000002,
+                1.7500000000000093,
+                7.000000000000023,
+                -1.7500000000000062
+              ],
+              [
+                -1.7500000000000084,
+                7.000000000000018,
+                1.7500000000000107,
+                7.000000000000019
+              ]
+            ],
+            "imag": [
+              [
+                -2.2500000000000093,
+                6.500000000000017,
+                2.2500000000000107,
+                6.5000000000000195
+              ],
+              [
+                -6.50000000000002,
+                -2.25000000000001,
+                -6.500000000000022,
+                2.2500000000000067
+              ],
+              [
+                2.2500000000000058,
+                6.500000000000018,
+                -2.2500000000000075,
+                6.500000000000022
+              ],
+              [
+                -6.500000000000019,
+                2.2500000000000107,
+                -6.500000000000025,
+                -2.2500000000000093
+              ]
+            ],
+            "absolute_error": 2.7056661287843684e-14,
+            "strict_2e14_pass": false
+          }
+        },
+        "environment": {
+          "numpy": "2.4.6",
+          "scipy": "1.18.1",
+          "qiskit": "2.6.0",
+          "pennylane": "0.42.3"
+        },
+        "threshold": 2e-14,
+        "threshold_changed": false,
+        "scope": "Exact dyadic frame/algebraic eigenvalue powers. Actual SDK exceeds the new strict threshold; this remains a strict failure, not an accepted reference or Native regression."
+      }
     }
   ],
   "historical_observations": []

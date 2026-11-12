@@ -328,6 +328,8 @@ def runtime_census(paths):
             "object_identity_groups": reference.get("object_identity_groups", []),
             "object_identity_audits": reference.get("object_identity_audits", []),
             "object_identity_policy": reference.get("object_identity_policy"),
+            "class_graph": reference.get("class_graph"),
+            "class_graph_audits": reference.get("class_graph_audits", []),
             "records": len(records), "inherited_contexts": sum(bool(r.get("inherited")) for r in records),
             "signature_reviews_pending": sum(not r["signature"]["available"] for r in records),
             "unresolved": reference["unresolved"], "closure_pending": reference["closure_pending"],
@@ -353,7 +355,9 @@ def runtime_census(paths):
                     "accessor", "source_hash_scope", "declaration_module", "declared_in_reference_namespace",
                     "lookup_plane", "metaclass", "metaclass_mro", "implicit_class_protocol", "descriptor_type",
                     "descriptor_protocol", "descriptor_semantics_review_required", "wrapped_accessor_binding",
-                    "signature_semantics", "object_identity_group") if k in observed}})
+                    "signature_semantics", "object_identity_group", "class_identity", "owner_class_identity",
+                    "declaring_class_identity", "metaclass_identity", "mro_identities", "direct_base_identities",
+                    "metaclass_mro_identities") if k in observed}})
             sig = observed["signature"]
             parameters = sig.get("parameters", [])
             names = []
