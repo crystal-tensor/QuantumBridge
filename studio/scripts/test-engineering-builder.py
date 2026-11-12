@@ -13,6 +13,29 @@ spec.loader.exec_module(builder)
 
 
 class EvidenceTests(unittest.TestCase):
+    def test_browser_buckets_keep_search_fields_and_exact_observations(self):
+        rows = [dict(id=name, name=name, signature="point", exposures=["public."+name],
+            runtime_observations=[dict(profile="main", signature=dict(available=True), lookup_plane=plane)])
+            for name, plane in (("one", "instance"), ("two", "metaclass"))]
+        before = json.dumps(rows)
+        with tempfile.TemporaryDirectory() as directory:
+            destination = Path(directory)
+            descriptor = builder.runtime_browser_assets(rows, destination)
+            def read(item):
+                data = (destination/item["file"]).read_bytes()
+                self.assertEqual(builder.digest(data), item["sha256"])
+                return json.loads(gzip.decompress(data))
+            index = read(descriptor)
+            for original, row in zip(rows, index):
+                bucket = row.pop("detail_bucket")
+                self.assertEqual(row, {key: value for key, value in original.items() if key != "runtime_observations"})
+                detail = read(descriptor["details"][bucket])
+                full = next(item for item in detail["rows"] if item["id"] == original["id"])
+                observation = dict(full["runtime_observations"][0])
+                observation["signature"] = detail["signatures"][observation.pop("signature_ref")]
+                self.assertEqual(observation, original["runtime_observations"][0])
+        self.assertEqual(json.dumps(rows), before)
+
     def test_runtime_signature_pool_preserves_every_observation_without_merging_contexts(self):
         signature = dict(available=True, parameters=[dict(name="point", kind="POSITIONAL_ONLY")])
         rows = [dict(id=name, exposures=[name], runtime_observations=[dict(profile="main", signature=signature,

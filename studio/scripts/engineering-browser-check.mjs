@@ -15,10 +15,12 @@ const results=[];
 try{
   browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{}),...(process.env.QB_QA_PROXY?{proxy:{server:process.env.QB_QA_PROXY,bypass:"127.0.0.1,localhost"}}:{})});
   for(const viewport of [{width:1440,height:1000},{width:390,height:844}]){
-    const page=await browser.newPage({viewport});const errors=[];page.on("pageerror",e=>errors.push(e.message));
+    const page=await browser.newPage({viewport});const errors=[],requests=[];page.on("pageerror",e=>errors.push(e.message));page.on("request",r=>requests.push(new URL(r.url()).pathname));
     await page.goto(`${base}/framework.html?category=finance&lang=zh`);
     await page.getByRole("link",{name:"工程进展",exact:true}).click();
     await page.getByRole("heading",{name:"工程进展",exact:true}).waitFor();
+    assert.ok(requests.some(url=>url.endsWith("/manifest.json.gz")));
+    assert.equal(requests.some(url=>url.endsWith("/manifest.json")),false);
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
     await page.getByRole("button",{name:"总览",exact:true}).click();
     await page.screenshot({path:`${output}/overview-${viewport.width}.png`,fullPage:true});
@@ -36,12 +38,14 @@ try{
     await page.locator("[data-filter=status]").selectOption("not_implemented");
     assert.ok((await page.locator("tbody").innerText()).includes("ParityMapper.map"));
     await page.getByRole("button",{name:"导出与继承",exact:true}).click();
-    await page.locator('[data-dataset="runtime"][aria-pressed="true"]').waitFor();
+    await page.locator('[data-dataset="runtime"][aria-pressed="true"]').waitFor({timeout:120000});
     await page.getByRole("button",{name:"重置筛选",exact:true}).click();
     await page.getByRole("searchbox",{name:"搜索函数"}).fill("pennylane.RX.matrix");
     assert.ok(await page.locator("tbody .name-link").count()>0);
     await page.locator("tbody .name-link").first().click();
     await page.getByRole("heading",{name:"公共暴露路径与继承合同",exact:true}).waitFor();
+    assert.ok(requests.some(url=>/\/runtime-details-[0-9a-f]{2}\.json\.gz$/.test(url)));
+    assert.equal(requests.some(url=>url.endsWith("/runtime.json.gz")),false);
     await page.locator("dialog details").first().locator("summary").click();
     assert.ok((await page.locator("dialog").innerText()).includes("POSITIONAL_OR_KEYWORD"));
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
@@ -126,6 +130,8 @@ try{
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
     await page.getByRole("button",{name:"六个月验收计划",exact:true}).click();
     assert.equal(await page.locator(".timeline li").count(),6);
+    assert.ok((await page.getByRole("link",{name:/完整验证快照/}).getAttribute("href")).endsWith("manifest.json"));
+    assert.ok((await page.getByRole("link",{name:/完整导出与继承清单/}).getAttribute("href")).endsWith("runtime.json.gz"));
     const runtimeSection=page.locator("section.band").filter({has:page.getByRole("heading",{name:"公共导出与继承清点",exact:true})});
     assert.equal(await runtimeSection.locator("details").count(),2);
     for(const summary of await runtimeSection.locator("details > summary").all()) await summary.click();

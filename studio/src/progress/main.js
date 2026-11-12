@@ -6,6 +6,7 @@ const root = document.querySelector("#engineering-app");
 const params = new URLSearchParams(location.search);
 const state = { en: params.get("lang") === "en", tab: params.has("domain") ? "domains" : "overview", dataset: "target", query: "", family: "", module: "", status: "", kind: "", hardware: "", page: 0, evidencePage: 0, domain: params.get("domain") || "" };
 let manifest, history, datasets = {};
+const runtimeDetails = new Map();
 const t = (zh, en) => state.en ? en : zh;
 const tr = value => value[state.en ? "en" : "zh-CN"];
 const esc = value => String(value ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -20,18 +21,21 @@ const reason = row => ({ explicit_stub: t("源码中存在明确的空实现或�
 async function json(url) {
   const response = await fetch(url, { cache: "no-cache" });
   if (!response.ok) throw new Error(`${response.status}: ${url}`);
-  return response.json();
+  return String(url).endsWith(".gz") ? new Response(response.body.pipeThrough(new DecompressionStream("gzip"))).json() : response.json();
 }
-async function loadDataset(id) {
-  if (datasets[id]) return datasets[id];
-  const descriptor = manifest.datasets.find(x => x.id === id);
+async function verifiedDataset(descriptor) {
   const response = await fetch(new URL(`./data/${descriptor.file}`, import.meta.url), { cache: "no-cache" });
   if (!response.ok) throw new Error(`Inventory HTTP ${response.status}`);
   const bytes = await response.arrayBuffer();
   const hash = [...new Uint8Array(await crypto.subtle.digest("SHA-256", bytes))].map(x => x.toString(16).padStart(2, "0")).join("");
-    if (hash !== descriptor.sha256) throw new Error(t("清单完整性校验失败。", "Inventory integrity mismatch."));
+  if (hash !== descriptor.sha256) throw new Error(t("清单完整性校验失败。", "Inventory integrity mismatch."));
   const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"));
-  datasets[id] = decodeDataset(await new Response(stream).json());
+  return decodeDataset(await new Response(stream).json());
+}
+async function loadDataset(id) {
+  if (datasets[id]) return datasets[id];
+  const descriptor = manifest.datasets.find(x => x.id === id);
+  datasets[id] = await verifiedDataset(descriptor.browser || descriptor);
   return datasets[id];
 }
 function bars(counts, total) {
@@ -143,6 +147,7 @@ function planView() {
   return `<section class="band"><h2>${t("完整目标验收门禁", "Full-goal acceptance gates")}</h2><p class="muted">${t("新目标已启动。首次完整分母与关键路径审查截止：2026-11-18；当前仍属高风险、未验证预测，不承诺未经验收的全兼容。", "Goal active. First census and critical-path review due 2026-11-18; forecast remains high-risk and unverified, not a promise of unaudited parity.")}</p><dl>${gates.map(g => `<dt>${esc(g.id)}</dt><dd>${esc(g.requirement)}<br><strong>${esc(g.state)}</strong></dd>`).join("")}</dl></section>${milestoneView()}`;
 }
 function runtimeAuditView() {
+  const fullRuntime = manifest.datasets.find(row => row.id === "runtime");
   const audits=(manifest.runtime_census || []).map(audit=>{
     const receipts=audit.collection_receipts?.length ? `<p>${t("按 SDK 隔离采集，原版本未改；不证明两套 SDK 共存稳定，也不是函数实现验收。", "Collected in separate SDK processes with unchanged versions; not SDK coexistence or function acceptance.")}</p><ul>${audit.collection_receipts.map(receipt=>`<li><code>${esc(receipt.isolation)}</code> · exit ${receipt.exit}<br><code>${esc(receipt.receipt_sha256)}</code></li>`).join("")}</ul>` : "";
     const traversal=(audit.traversal_audits || []).map(scope=>`<li><code>${esc(scope.family)}</code> · ${esc(scope.state)}<br>${fmt(scope.attempted_modules.length)} ${t("模块已尝试", "modules attempted")} · ${fmt(scope.pending_modules.length)} ${t("模块待处理", "modules pending")} · ${fmt(scope.deferred_modules.length)} ${t("私有或测试路径待审", "private/test paths pending review")} · ${fmt((scope.namespace_mutations_after_collection || []).length)} ${t("模块需复查导入顺序变化", "modules need import-order rescan")}</li>`).join("");
@@ -150,7 +155,7 @@ function runtimeAuditView() {
     const modules=(groups ? `<li><a href="./src/progress/data/${esc(groups.file)}" download>${t("完整进程内对象分组", "Complete worker-local object groups")} · ${fmt(audit.object_identity_group_count)}</a><br>${t("对象组不是独立函数分母或实现验收。", "Object groups are not unique-function denominators or implementation acceptance.")}</li>` : "")+audit.modules.map(module=>`<li><code>${esc(module.name)}</code> · ${esc(module.version || t("未安装，仍在范围内", "Not installed; remains in scope"))}${module.available===false ? `<br><span class="failure">${t("导入未完成，仍在范围内", "Import incomplete; remains in scope")}: ${esc(module.error || "unverified")}</span>` : ""}</li>`).join("");
     return `<details><summary>${esc(audit.profile)} · ${fmt(audit.records)} ${t("候选", "candidates")} · ${fmt(audit.inherited_contexts)} ${t("继承上下文", "inherited contexts")}</summary><p>${date(audit.collected_at)} · ${audit.signature_reviews_pending} ${t("项签名待核实", "signatures pending review")}</p>${receipts}${traversal ? `<ul class="traversal-summary">${traversal}</ul>` : ""}<ul>${modules}</ul><p>${audit.unresolved.length} ${t("项身份问题待审；清单未封闭。", "identity issues pending review; census open.")}</p></details>`;
   }).join("");
-  return `<section class="band"><h2>${t("公共导出与继承清点", "Public-export and inheritance census")}</h2><p class="muted">${t("当前覆盖列出的模块；可选包、导入顺序、借用符号、闭包身份和缺失签名仍待审核，尚不能作为全量分母。", "Listed modules are covered; optional packages, import order, foreign exports, closure identities and missing signatures remain open. Not a full denominator.")}</p>${audits}</section>`;
+  return `<section class="band"><h2>${t("公共导出与继承清点", "Public-export and inheritance census")}</h2><p class="muted">${t("当前覆盖列出的模块；可选包、导入顺序、借用符号、闭包身份和缺失签名仍待审核，尚不能作为全量分母。", "Listed modules are covered; optional packages, import order, foreign exports, closure identities and missing signatures remain open. Not a full denominator.")}</p><div class="case-links"><a href="./src/progress/data/manifest.json" download>${t("完整验证快照", "Complete verification snapshot")} (JSON)</a><a href="./src/progress/data/${esc(fullRuntime.file)}" download>${t("完整导出与继承清单", "Complete export and inheritance inventory")} (JSON.gz)</a></div>${audits}</section>`;
 }
 function runtimeDetail(row) {
   if (!row.runtime_observations) return "";
@@ -190,10 +195,23 @@ function renderView() {
   }
   icons();
 }
-function detail(id) {
-  const row = datasets[state.dataset].find(r => r.id === id);
+async function detail(id) {
+  let row = datasets[state.dataset].find(r => r.id === id);
   if (!row) return;
   const dialog = root.querySelector("#detail");
+  dialog.dataset.detailId = id;
+  if (row.detail_bucket) {
+    dialog.innerHTML = `<header><h2 id="detail-title">${esc(row.name)}</h2><button class="icon-button" data-close aria-label="${t("关闭", "Close")}">${ic("x")}</button></header><div class="detail-body" role="status">${t("正在加载…", "Loading…")}</div>`;
+    icons(); dialog.showModal();
+    try {
+      const key = row.detail_bucket;
+      if (!runtimeDetails.has(key)) runtimeDetails.set(key, await verifiedDataset(manifest.datasets.find(x => x.id === "runtime").browser.details[key]));
+      const full = runtimeDetails.get(key).find(item => item.id === id);
+      if (!full) throw new Error("Missing runtime observation");
+      row = { ...row, ...full };
+    } catch (error) { dialog.querySelector(".detail-body").textContent = error.message; return; }
+    if (!dialog.open || dialog.dataset.detailId !== id) return;
+  }
   dialog.innerHTML = `<header><h2 id="detail-title">${esc(row.name)}</h2><button class="icon-button" data-close title="${t("关闭", "Close")}" aria-label="${t("关闭", "Close")}">${ic("x")}</button></header><div class="detail-body">${badge(row.status)}<p>${esc(reason(row))}</p><h3>${t("签名 / 来源", "Signature / origin")}</h3><pre>${esc(row.signatures?.join("\n") || row.signature || t("签名待审核", "Signature review pending"))}</pre><dl><dt>${t("模块", "Module")}</dt><dd><code>${esc(row.module)}</code></dd><dt>${t("声明位置", "Declaration")}</dt><dd><code>${esc(row.file || "historical export")}${row.line ? `:${row.line}` : ""}</code></dd><dt>SHA-256</dt><dd><code>${esc(row.source_hash || t("未记录", "Not recorded"))}</code></dd><dt>${t("Native 对应", "Native mapping")}</dt><dd>${row.origin === "native" ? esc(row.name) : t("待逐合同确认，不能按同名推定", "Contract review pending; not inferred by name")}</dd><dt>${t("当前严格测试", "Current strict tests")}</dt><dd>${t("尚无本函数当前源码的完整审计证据", "No audited full-contract evidence for this function's current source")}</dd><dt>${t("夸父真机", "Quafu hardware")}</dt><dd>${t("未逐函数验证；经典函数的适用性另审", "Not function-verified; classical applicability reviewed separately")}</dd></dl><h3>${t("下一步验收", "Next acceptance")}</h3><p>${t("确认目标版本与公共暴露路径；映射 Native 入口；核验参数、形状、数值、错误、资源、序列化和梯度合同；在相同源码指纹下登记独立测试。", "Review target version and public exposure; map Native entry; validate arguments, shapes, numerics, errors, resources, serialization and derivative contracts; attach independent tests for the same source hash.")}</p></div>`;
   if (row.review) {
     const scope=t(row.review.evidence_scope_zh || row.review.evidence_scope || "", row.review.evidence_scope || "");
@@ -201,7 +219,7 @@ function detail(id) {
     dialog.querySelector(".detail-body").insertAdjacentHTML("beforeend", `<h3>${t("已登记的局部合同", "Recorded scoped contract")}</h3><p>${t("以下为当前源码的局部审查，不代表完整函数、SDK 或真机验收通过。", "This is a scoped review for the current source, not full function, SDK or hardware acceptance.")}</p><dl><dt>${t("Native 对应入口", "Native entry")}</dt><dd><code>${esc(row.review.native_entry || row.name)}</code></dd><dt>${t("验证范围", "Evidence scope")}</dt><dd>${esc(scope)}</dd><dt>${t("仍待验收", "Remaining acceptance")}</dt><dd>${esc(remaining)}</dd></dl><details><summary>${t("合同与证据身份", "Contract and evidence identity")}</summary><pre>${esc(JSON.stringify(row.review, null, 2))}</pre></details>`);
   }
   dialog.querySelector(".detail-body").insertAdjacentHTML("beforeend", runtimeDetail(row));
-  icons(); dialog.showModal();
+  icons(); if (!dialog.open) dialog.showModal();
 }
 root.addEventListener("click", async event => {
   const button = event.target.closest("button");
@@ -209,7 +227,7 @@ root.addEventListener("click", async event => {
   if (button.hasAttribute("data-lang")) { state.en = !state.en; const u = new URL(location); u.searchParams.set("lang", state.en ? "en" : "zh"); historyReplace(u); shell(); }
   else if (button.dataset.tab) { state.tab = button.dataset.tab; renderView(); }
   else if (button.dataset.family) { state.family = button.dataset.family; state.module = ""; state.tab = "functions"; state.page = 0; state.dataset = "target"; renderView(); }
-  else if (button.dataset.dataset) { try { await loadDataset(button.dataset.dataset); state.dataset = button.dataset.dataset; state.family = ""; state.module = ""; state.page = 0; renderView(); } catch (e) { alert(e.message); } }
+  else if (button.dataset.dataset) { button.disabled = true; root.setAttribute("aria-busy", "true"); try { await loadDataset(button.dataset.dataset); state.dataset = button.dataset.dataset; state.family = ""; state.module = ""; state.page = 0; renderView(); } catch (e) { alert(e.message); } finally { button.disabled = false; root.setAttribute("aria-busy", "false"); } }
   else if (button.dataset.detail) detail(button.dataset.detail);
   else if (button.dataset.page) { state.page += Number(button.dataset.page); renderView(); }
   else if (button.dataset.evidencePage) { state.evidencePage += Number(button.dataset.evidencePage); renderView(); }
@@ -222,7 +240,7 @@ function historyReplace(url) { window.history.replaceState(null, "", url); }
 root.addEventListener("change", event => { const field = event.target.dataset.filter; if (field) { state[field] = event.target.value; if (field === "family") state.module = ""; state.page = 0; renderView(); } if (event.target.id === "domain") { state.domain = event.target.value; renderView(); } });
 root.addEventListener("input", event => { if (event.target.id !== "query") return; const selection = event.target.selectionStart; state.query = event.target.value; state.page = 0; renderView(); const input = root.querySelector("#query"); input.focus(); input.setSelectionRange(selection, selection); });
 try {
-  manifest = await json(new URL("./data/manifest.json", import.meta.url));
+  manifest = await json(new URL("./data/manifest.json.gz", import.meta.url));
   history = await json(new URL("./data/history.json", import.meta.url));
   await loadDataset("target"); shell();
   setInterval(() => { const stale = isStale(manifest.generated_at); if (stale && !root.querySelector(".snapshot .stale")) shell(); }, 60000);

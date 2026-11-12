@@ -110,6 +110,24 @@ def runtime_projection(rows):
     return dict(schema=2, encoding="signature-pool-v1", rows=result, signatures=signatures)
 
 
+def runtime_browser_assets(rows, destination):
+    """Keep every searchable field; fetch exact observation metadata by hash bucket."""
+    buckets, index = {}, []
+    for row in rows:
+        bucket = digest(row["id"].encode())[:2]
+        buckets.setdefault(bucket, []).append(dict(id=row["id"], runtime_observations=row["runtime_observations"]))
+        index.append(dict((key, value) for key, value in row.items() if key != "runtime_observations"))
+        index[-1]["detail_bucket"] = bucket
+    def write(name, value):
+        body = json.dumps(value, ensure_ascii=False, separators=(",", ":")).encode()
+        compressed = gzip.compress(body, mtime=0)
+        (destination / name).write_bytes(compressed)
+        return dict(file=name, sha256=digest(compressed))
+    details = {key: dict(write("runtime-details-"+key+".json.gz", runtime_projection(items)), count=len(items))
+               for key, items in sorted(buckets.items())}
+    return dict(write("runtime-browser.json.gz", index), details=details)
+
+
 def census(base, package, native=False):
     records, errors, hashes = [], [], []
     paths = sorted(base.rglob("*.py"))
@@ -530,6 +548,8 @@ def build(args):
         (DATA / filename).write_bytes(compressed)
         datasets.append({"id": name, "file": filename, "sha256": digest(compressed), "count": len(rows),
                          "status_counts": dict(Counter(row["status"] for row in rows))})
+        if name == "runtime":
+            datasets[-1]["browser"] = runtime_browser_assets(rows, DATA)
     history = load_json(DATA / "history.json") if (DATA / "history.json").exists() else []
     if previous and (not history or history[-1]["generated_at"] != previous["generated_at"]):
         history.append({"generated_at": previous["generated_at"], "fingerprint": previous["source"]["fingerprint"], "datasets": previous["datasets"]})
@@ -555,6 +575,7 @@ def build(args):
                                   "not_implemented": "Reviewed missing implementation or explicit source stub; not inferred from a name mismatch.",
                                   "unverified": "Unreviewed mapping, absent evidence or stale source/test identity."}}
     dump(DATA / "manifest.json", manifest)
+    (DATA / "manifest.json.gz").write_bytes(gzip.compress((DATA / "manifest.json").read_bytes(), mtime=0))
     print(json.dumps({"generated_at": now, "datasets": datasets, "hardware_receipts": len(manifest["hardware"]), "historical_test_runs": len(manifest["tests"])}, indent=2))
 
 

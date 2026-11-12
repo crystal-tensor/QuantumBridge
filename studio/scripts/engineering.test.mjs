@@ -10,6 +10,34 @@ import { engineeringResources, domainResources } from "../src/framework/resource
 import { buildPublic } from "./build-public.mjs";
 
 const manifest = JSON.parse(await readFile(new URL("../src/progress/data/manifest.json", import.meta.url)));
+test("compressed manifest and lazy runtime details preserve the complete snapshot", async () => {
+  const base=new URL("../src/progress/data/",import.meta.url);
+  const raw=await readFile(new URL("manifest.json",base));
+  const compressed=await readFile(new URL("manifest.json.gz",base));
+  assert.deepEqual(gunzipSync(compressed),raw);
+  assert.ok(compressed.length<raw.length/3);
+  const descriptor=manifest.datasets.find(row=>row.id==="runtime");
+  async function load(item){
+    const bytes=await readFile(new URL(item.file,base));
+    assert.equal(createHash("sha256").update(bytes).digest("hex"),item.sha256);
+    return decodeDataset(JSON.parse(gunzipSync(bytes)));
+  }
+  const full=await load(descriptor),index=await load(descriptor.browser);
+  assert.equal(index.length,full.length);
+  const buckets=new Map();
+  for(const [key,item] of Object.entries(descriptor.browser.details)){
+    const rows=await load(item);
+    assert.equal(rows.length,item.count);
+    buckets.set(key,new Map(rows.map(row=>[row.id,row.runtime_observations])));
+  }
+  for(let i=0;i<full.length;i++){
+    const {runtime_observations,...searchable}=full[i];
+    const {detail_bucket,...projected}=index[i];
+    assert.deepEqual(projected,searchable);
+    assert.deepEqual(buckets.get(detail_bucket).get(projected.id),runtime_observations);
+  }
+  assert.equal([...buckets.values()].reduce((sum,rows)=>sum+rows.size,0),full.length);
+});
 test("inventory integrity, conservative states, unique IDs, no local paths or credentials", async () => {
   for (const descriptor of manifest.datasets) {
     const bytes = await readFile(new URL(`../src/progress/data/${descriptor.file}`, import.meta.url));
