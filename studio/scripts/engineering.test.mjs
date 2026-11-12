@@ -5,11 +5,39 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { gunzipSync } from "node:zlib";
 import { createHash } from "node:crypto";
-import { countStatuses, filterRows, aggregate, isStale, statuses, decodeDataset, verificationWindow, currentVerification } from "../src/progress/model.js";
+import { countStatuses, filterRows, aggregate, isStale, statuses, decodeDataset, verificationWindow, currentVerification, restoreManifest, deferredManifestFields } from "../src/progress/model.js";
 import { engineeringResources, domainResources } from "../src/framework/resources.js";
 import { buildPublic } from "./build-public.mjs";
 
 const manifest = JSON.parse(await readFile(new URL("../src/progress/data/manifest.json", import.meta.url)));
+test("the small initial manifest losslessly restores every evidence field without refreshing dates", async () => {
+  const base = new URL("../src/progress/data/", import.meta.url);
+  const bytes = await readFile(new URL("manifest-browser.json.gz", base));
+  assert.ok(bytes.length < 100 * 1024);
+  const bootstrap = JSON.parse(gunzipSync(bytes));
+  assert.ok(deferredManifestFields.every(name => !Object.hasOwn(bootstrap, name)));
+  assert.equal(bootstrap.strict_backlog_count, manifest.strict_backlog.length);
+  const descriptor = bootstrap.deferred_evidence;
+  const raw = await readFile(new URL(descriptor.file, base));
+  assert.equal(raw.length, descriptor.bytes);
+  assert.equal(createHash("sha256").update(raw).digest("hex"), descriptor.sha256);
+  const payload = JSON.parse(gunzipSync(raw));
+  assert.deepEqual(restoreManifest(bootstrap, payload), manifest);
+  assert.equal(bootstrap.generated_at, manifest.generated_at);
+  assert.deepEqual(descriptor.fields, deferredManifestFields);
+  const before = JSON.stringify(bootstrap);
+  const mutate = change => { const value = structuredClone(payload); change(value); return value; };
+  for (const changed of [mutate(value => { value.generated_at = "new time"; }),
+    mutate(value => { value.source_fingerprint = "0".repeat(64); }),
+    mutate(value => { delete value.fields.verification; }),
+    mutate(value => { value.fields.source = {}; }),
+    mutate(value => { value.fields.strict_backlog = []; }),
+    mutate(value => { value.schema = 2; })]) {
+    assert.throws(() => restoreManifest(bootstrap, changed), /does not match/);
+  }
+  assert.throws(() => restoreManifest({ ...bootstrap, verification: [] }, payload), /does not match/);
+  assert.equal(JSON.stringify(bootstrap), before);
+});
 test("compressed manifest and lazy runtime details preserve the complete snapshot", async () => {
   const base=new URL("../src/progress/data/",import.meta.url);
   const raw=await readFile(new URL("manifest.json",base));
@@ -418,7 +446,11 @@ test("public build includes progress assets, inventory and goal prompt without p
   const output=await mkdtemp(path.join(tmpdir(),"qb-engineering-build-"));
   try{
     await buildPublic(output);
-    for(const file of ["engineering.html","src/progress/main.js","src/progress/data/manifest.json","src/progress/data/native.json.gz","src/progress/data/target.json.gz","downloads/quantumbridge-six-month-goal.txt"]){assert.ok((await readFile(path.join(output,file))).length>0);}
+    for(const file of ["engineering.html","src/progress/main.js","src/progress/transport.js","src/progress/data/manifest.json","src/progress/data/manifest-browser.json.gz","src/progress/data/manifest-evidence.json.gz","src/progress/data/native.json.gz","src/progress/data/target.json.gz","downloads/quantumbridge-six-month-goal.txt"]){assert.ok((await readFile(path.join(output,file))).length>0);}
+    const boot=JSON.parse(gunzipSync(await readFile(path.join(output,"src/progress/data/manifest-browser.json.gz"))));
+    const evidence=await readFile(path.join(output,"src/progress/data",boot.deferred_evidence.file));
+    assert.equal(createHash("sha256").update(evidence).digest("hex"),boot.deferred_evidence.sha256);
+    assert.deepEqual(restoreManifest(boot,JSON.parse(gunzipSync(evidence))),manifest);
     const html=await readFile(path.join(output,"engineering.html"),"utf8");assert.ok(html.includes('./src/progress/main.js'));
     const goal=await readFile(path.join(output,"downloads/quantumbridge-six-month-goal.txt"),"utf8");assert.ok(goal.startsWith('/goal\n'));assert.ok(goal.includes("2027-05-11"));
   }finally{await rm(output,{recursive:true,force:true});}

@@ -16,6 +16,23 @@ export function filterRows(rows, filters) {
     (!query || `${row.name} ${row.signature || ""} ${row.file || ""} ${(row.exposures || []).join(" ")}`.toLowerCase().includes(query)));
 }
 export const isStale = (generatedAt, now = Date.now()) => now - Date.parse(generatedAt) > 12 * 3600000;
+export const deferredManifestFields = ["verification", "test_contexts", "runtime_census", "goal_execution", "strict_backlog", "diagnostic_observations", "tests"];
+export function restoreManifest(bootstrap, payload) {
+  const descriptor = bootstrap.deferred_evidence;
+  const sameFields = fields => Array.isArray(fields) && fields.length === deferredManifestFields.length &&
+    deferredManifestFields.every(name => fields.includes(name));
+  if (!sameFields(descriptor?.fields) || payload?.schema !== 1 || payload.encoding !== "deferred-manifest-v1" ||
+    typeof bootstrap.generated_at !== "string" || !/^[0-9a-f]{64}$/.test(bootstrap.source?.fingerprint || "") ||
+    payload.generated_at !== bootstrap.generated_at || payload.source_fingerprint !== bootstrap.source.fingerprint ||
+    !payload.fields || !sameFields(Object.keys(payload.fields)) || deferredManifestFields.some(name => Object.hasOwn(bootstrap, name)) ||
+    !Array.isArray(payload.fields.strict_backlog) || payload.fields.strict_backlog.length !== bootstrap.strict_backlog_count) {
+    throw new Error("Deferred evidence does not match the snapshot");
+  }
+  const result = { ...bootstrap, ...payload.fields };
+  delete result.deferred_evidence;
+  delete result.strict_backlog_count;
+  return result;
+}
 export function decodeDataset(value) {
   if (Array.isArray(value)) return value;
   if (value?.schema !== 2 || value.encoding !== "signature-pool-v1" || !Array.isArray(value.rows)) throw Error("Unknown inventory encoding");

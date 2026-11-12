@@ -13,6 +13,44 @@ spec.loader.exec_module(builder)
 
 
 class EvidenceTests(unittest.TestCase):
+    def test_browser_manifest_transport_preserves_every_field_without_restamping(self):
+        original = dict(schema=1, generated_at="2026-11-12T20:50:00Z",
+            source=dict(fingerprint="a"*64, dirty=True), census_complete=False,
+            future_metadata=dict(untouched=["中文", False, 1]))
+        original.update({name: [] for name in builder.DEFERRED_MANIFEST_FIELDS})
+        original["verification"] = [dict(cases=[dict(id="case", status="failed")], evidence_hash="proof")]
+        original["strict_backlog"] = [dict(id="case", status="current_failure")]
+        original["test_contexts"] = dict(proof=dict(files=["tests/test_contract.py"]))
+        before = json.dumps(original)
+        with tempfile.TemporaryDirectory() as directory:
+            destination = Path(directory)
+            bootstrap = builder.browser_manifest_assets(original, destination)
+            encoded = (destination/"manifest-browser.json.gz").read_bytes()
+            self.assertEqual(json.loads(gzip.decompress(encoded)), bootstrap)
+            descriptor = bootstrap["deferred_evidence"]
+            self.assertEqual(descriptor["fields"], list(builder.DEFERRED_MANIFEST_FIELDS))
+            evidence = (destination/descriptor["file"]).read_bytes()
+            self.assertEqual(len(evidence), descriptor["bytes"])
+            self.assertEqual(builder.digest(evidence), descriptor["sha256"])
+            payload = json.loads(gzip.decompress(evidence))
+            self.assertEqual(payload["generated_at"], original["generated_at"])
+            self.assertEqual(payload["source_fingerprint"], original["source"]["fingerprint"])
+            restored = dict(bootstrap, **payload["fields"])
+            del restored["deferred_evidence"], restored["strict_backlog_count"]
+            self.assertEqual(restored, original)
+            self.assertEqual(bootstrap["strict_backlog_count"], 1)
+            builder.browser_manifest_assets(original, destination)
+            self.assertEqual((destination/"manifest-browser.json.gz").read_bytes(), encoded)
+            self.assertEqual((destination/descriptor["file"]).read_bytes(), evidence)
+            with self.assertRaises(ValueError):
+                builder.browser_manifest_assets(bootstrap, destination)
+        self.assertEqual(json.dumps(original), before)
+
+    def test_browser_manifest_cannot_silently_omit_evidence_fields(self):
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaises(KeyError):
+                builder.browser_manifest_assets(dict(generated_at="original", source=dict(fingerprint="a"*64)), Path(directory))
+
     def test_browser_buckets_keep_search_fields_and_exact_observations(self):
         rows = [dict(id=name, name=name, signature="point", exposures=["public."+name],
             runtime_observations=[dict(profile="main", signature=dict(available=True), lookup_plane=plane)])

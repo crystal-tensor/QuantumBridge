@@ -19,7 +19,9 @@ try{
     await page.goto(`${base}/framework.html?category=finance&lang=zh`);
     await page.getByRole("link",{name:"工程进展",exact:true}).click();
     await page.getByRole("heading",{name:"工程进展",exact:true}).waitFor();
-    assert.ok(requests.some(url=>url.endsWith("/manifest.json.gz")));
+    assert.ok(requests.some(url=>url.endsWith("/manifest-browser.json.gz")));
+    assert.equal(requests.some(url=>url.endsWith("/manifest-evidence.json.gz")),false);
+    assert.equal(requests.some(url=>url.endsWith("/manifest.json.gz")),false);
     assert.equal(requests.some(url=>url.endsWith("/manifest.json")),false);
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
     await page.getByRole("button",{name:"总览",exact:true}).click();
@@ -54,6 +56,8 @@ try{
     await page.getByRole("button",{name:"测试与真机",exact:true}).click();
     const collectionSection=page.locator("#test-collection");
     await collectionSection.getByRole("heading",{name:"测试收集：不是测试通过",exact:true}).waitFor();
+    assert.ok(requests.some(url=>url.endsWith("/manifest-evidence.json.gz")));
+    assert.equal(requests.some(url=>url.endsWith("/manifest.json.gz")),false);
     assert.equal(await collectionSection.locator("tbody tr").count(),2);
     assert.ok((await collectionSection.innerText()).includes("35,955"));
     assert.ok((await collectionSection.innerText()).includes("35,956"));

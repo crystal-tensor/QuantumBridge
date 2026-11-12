@@ -40,6 +40,30 @@ def dump(path, value):
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+DEFERRED_MANIFEST_FIELDS = ("verification", "test_contexts", "runtime_census",
+                            "goal_execution", "strict_backlog", "diagnostic_observations", "tests")
+
+
+def browser_manifest_assets(manifest, destination):
+    """Split transport only; retain the complete snapshot and its collection identity."""
+    if "deferred_evidence" in manifest or "strict_backlog_count" in manifest:
+        raise ValueError("Expected the complete manifest, not a browser projection")
+    fields = {name: manifest[name] for name in DEFERRED_MANIFEST_FIELDS}
+    payload = dict(schema=1, encoding="deferred-manifest-v1", generated_at=manifest["generated_at"],
+                   source_fingerprint=manifest["source"]["fingerprint"], fields=fields)
+    body = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode()
+    compressed = gzip.compress(body, mtime=0)
+    destination.mkdir(parents=True, exist_ok=True)
+    (destination / "manifest-evidence.json.gz").write_bytes(compressed)
+    bootstrap = {name: value for name, value in manifest.items() if name not in fields}
+    bootstrap["strict_backlog_count"] = len(manifest["strict_backlog"])
+    bootstrap["deferred_evidence"] = dict(file="manifest-evidence.json.gz", sha256=digest(compressed),
+        bytes=len(compressed), fields=list(DEFERRED_MANIFEST_FIELDS))
+    body = json.dumps(bootstrap, ensure_ascii=False, separators=(",", ":")).encode()
+    (destination / "manifest-browser.json.gz").write_bytes(gzip.compress(body, mtime=0))
+    return bootstrap
+
+
 def verification_rows(value):
     """Restore pooled test contexts without mutating private or public evidence."""
     contexts = value.get("test_contexts", {})
@@ -580,6 +604,7 @@ def build(args):
                                   "unverified": "Unreviewed mapping, absent evidence or stale source/test identity."}}
     dump(DATA / "manifest.json", manifest)
     (DATA / "manifest.json.gz").write_bytes(gzip.compress((DATA / "manifest.json").read_bytes(), mtime=0))
+    browser_manifest_assets(manifest, DATA)
     print(json.dumps({"generated_at": now, "datasets": datasets, "hardware_receipts": len(manifest["hardware"]), "historical_test_runs": len(manifest["tests"])}, indent=2))
 
 
@@ -590,12 +615,16 @@ if __name__ == "__main__":
     parser.add_argument("--reference", type=Path, action="append", default=[])
     parser.add_argument("--evidence-dir", type=Path)
     parser.add_argument("--project-verification", type=Path)
+    parser.add_argument("--project-browser-manifest", action="store_true")
     args = parser.parse_args()
     if args.project_verification:
         source = ROOT / "docs/engineering/verification_runs.json"
         result = verification_projection(load_json(source))
         result["public_projection"]["private_ledger_sha256"] = digest(source.read_bytes())
         dump(args.project_verification, result)
+    elif args.project_browser_manifest:
+        bootstrap = browser_manifest_assets(load_json(DATA / "manifest.json"), DATA)
+        print(json.dumps(dict(generated_at=bootstrap["generated_at"], deferred=bootstrap["deferred_evidence"])))
     elif args.enumerate_reference:
         reference(args.profile, args.enumerate_reference)
     else:
