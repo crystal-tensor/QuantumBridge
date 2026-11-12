@@ -1,10 +1,10 @@
 import { domains, directions } from "../framework/data.js";
 import { resources } from "../framework/resources.js";
-import { statuses, statusNames, countStatuses, filterRows, aggregate, isStale } from "./model.js";
+import { statuses, statusNames, countStatuses, filterRows, aggregate, isStale, verificationWindow, currentVerification, decodeDataset } from "./model.js";
 
 const root = document.querySelector("#engineering-app");
 const params = new URLSearchParams(location.search);
-const state = { en: params.get("lang") === "en", tab: params.has("domain") ? "domains" : "overview", dataset: "target", query: "", family: "", module: "", status: "", kind: "", hardware: "", page: 0, domain: params.get("domain") || "" };
+const state = { en: params.get("lang") === "en", tab: params.has("domain") ? "domains" : "overview", dataset: "target", query: "", family: "", module: "", status: "", kind: "", hardware: "", page: 0, evidencePage: 0, domain: params.get("domain") || "" };
 let manifest, history, datasets = {};
 const t = (zh, en) => state.en ? en : zh;
 const tr = value => value[state.en ? "en" : "zh-CN"];
@@ -31,7 +31,7 @@ async function loadDataset(id) {
   const hash = [...new Uint8Array(await crypto.subtle.digest("SHA-256", bytes))].map(x => x.toString(16).padStart(2, "0")).join("");
     if (hash !== descriptor.sha256) throw new Error(t("清单完整性校验失败。", "Inventory integrity mismatch."));
   const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"));
-  datasets[id] = await new Response(stream).json();
+  datasets[id] = decodeDataset(await new Response(stream).json());
   return datasets[id];
 }
 function bars(counts, total) {
@@ -84,11 +84,30 @@ function domainView() {
 }
 function evidenceView() {
   const verification = manifest.verification || [];
+  const window = verificationWindow(verification, state.evidencePage);
+  state.evidencePage = window.index;
   const backlog = manifest.strict_backlog || [];
   const labels = { current_failure: t("当前批次失败", "Current batch failure"), selected_batch_pass_only: t("仅选定批次通过，未结项", "Selected batch pass only"), reproduction_pending: t("当前源码待复现", "Current-source reproduction pending") };
-  const batches = verification.map(run => `<details><summary><strong>${esc(run.name)}</strong> · ${run.passed} PASS / <span class="${run.failed ? "failure" : ""}">${run.failed} FAIL</span> / ${run.skipped} SKIP · ${run.source_match ? t("当前源码匹配", "Current source matched") : t("验证身份不匹配或不完整", "Verification identity mismatched or incomplete")}</summary><dl><dt>${t("证据时间", "Evidence time")}</dt><dd>${date(run.recorded_at)}</dd><dt>${t("环境", "Environment")}</dt><dd><code>${esc(JSON.stringify(run.environment))}</code></dd><dt>${t("源码指纹", "Source fingerprint")}</dt><dd><code>${esc(run.source_fingerprint)}</code></dd><dt>JUnit SHA-256</dt><dd><code>${esc(run.evidence_hash)}</code></dd><dt>${t("导入校验", "Import origin check")}</dt><dd>${run.matching_modules} ${t("个模块", "modules")} · ${run.protected_tests} ${t("个旧测试/帮助文件未改", "inherited test/helper files unchanged")}</dd></dl><ul>${run.cases.filter(x => x.status !== "passed").map(x => `<li><code>${esc(x.id)}</code> · ${esc(x.status)}</li>`).join("")}</ul></details>`).join("");
+  const batches = window.rows.map(run => `<details data-verification-run><summary><strong>${esc(run.name)}</strong> · ${run.passed} PASS / <span class="${run.failed ? "failure" : ""}">${run.failed} FAIL</span> / ${run.skipped} SKIP · ${run.source_match ? t("当前源码匹配", "Current source matched") : t("验证身份不匹配或不完整", "Verification identity mismatched or incomplete")}</summary><dl><dt>${t("证据时间", "Evidence time")}</dt><dd>${date(run.recorded_at)}</dd><dt>${t("环境", "Environment")}</dt><dd><code>${esc(JSON.stringify(run.environment))}</code><br>${run.environment_validation?.verified ? t("工作进程环境回执已核验", "Worker environment receipt verified") : t("历史环境归属未核验", "Historical worker environment unverified")}</dd><dt>${t("源码指纹", "Source fingerprint")}</dt><dd><code>${esc(run.source_fingerprint)}</code></dd><dt>JUnit SHA-256</dt><dd><code>${esc(run.evidence_hash)}</code></dd><dt>${t("导入校验", "Import origin check")}</dt><dd>${run.matching_modules} ${t("个模块", "modules")} · ${run.protected_tests} ${t("个旧测试/帮助文件未改", "inherited test/helper files unchanged")}</dd></dl><ul>${run.cases.filter(x => x.status !== "passed").map(x => `<li><code>${esc(x.id)}</code> · ${esc(x.status)}</li>`).join("")}</ul></details>`).join("");
+  const paging = `<div class="pagination"><a href="./src/progress/data/manifest.json" download>${ic("download")}${t("完整证据清单", "Complete evidence register")}</a><div><button class="icon-button" data-evidence-page="-1" ${window.index === 0 ? "disabled" : ""} aria-label="${t("上一批记录", "Previous records")}" title="${t("上一批记录", "Previous records")}">${ic("chevron-left")}</button><span>${window.index + 1} / ${window.pages} · ${fmt(window.total)}</span><button class="icon-button" data-evidence-page="1" ${window.index + 1 >= window.pages ? "disabled" : ""} aria-label="${t("下一批记录", "Next records")}" title="${t("下一批记录", "Next records")}">${ic("chevron-right")}</button></div></div>`;
   const failures = backlog.map(row => `<details><summary><code>${esc(row.id)}</code><br><span class="${row.status === "current_failure" ? "failure" : "muted"}">${labels[row.status]}</span></summary><p>${t("历史批次", "Historical batches")}: ${esc(row.historical_batches.join(", ") || "none")}</p><ul>${row.observations.map(o => `<li>${esc(o.batch)} / ${esc(o.profile)} · ${esc(o.status)} · ${o.source_match ? t("同源", "Matched") : t("身份未匹配", "Identity unmatched")}</li>`).join("")}</ul>${row.review_note ? `<h3>${t("诊断记录", "Diagnosis")} · <code>${esc(row.review_note.classification)}</code></h3><p>${esc(t(row.review_note.diagnosis_zh || row.review_note.diagnosis, row.review_note.diagnosis))}</p><h3>${t("下一步验证", "Next verification")}</h3><p>${esc(t(row.review_note.next_zh || row.review_note.next, row.review_note.next))}</p>` : ""}${historicalDiagnosisView(row)}</details>`).join("");
-  return `${testCollectionView()}${processObservationView()}<section class="band"><h2>${t("本目标冻结源码验证", "Frozen-source verification for this goal")}</h2><p class="muted">${t("仅验证列出的选定测试，不代表完整函数合同或全套门禁通过。核对源码、导入位置、原测试指纹及真实进程退出码；缺少退出回执的历史批次不算当前验证。", "Selected tests only, not full-contract or full-suite acceptance. Source, imports, test hashes and real process exits are checked; historical batches without exit receipts are not current verification.")}</p>${batches || t("尚无已登记的同源批次。", "No matched batches recorded yet.")}</section><section class="band"><h2>${t("逐项严格失败台账", "Case-level strict failure backlog")} · ${backlog.length}</h2><p class="muted">${t("历史失败不删除、不算通过；局部通过仍需双环境及完整回归验收。", "Historical failures are retained, not counted as passes; selected passes still require both environments and full regression.")}</p>${failures}</section>${historicalEvidenceView()}`;
+  return `${currentValidationView()}${testCollectionView()}${processObservationView()}<section class="band" id="verification-batches"><h2>${t("本目标冻结源码验证", "Frozen-source verification for this goal")}</h2><p class="muted">${t("仅验证列出的选定测试，不代表完整函数合同或全套门禁通过。核对源码、导入位置、原测试指纹及真实进程退出码；缺少退出回执的历史批次不算当前验证。", "Selected tests only, not full-contract or full-suite acceptance. Source, imports, test hashes and real process exits are checked; historical batches without exit receipts are not current verification.")}</p>${batches || t("尚无已登记的同源批次。", "No matched batches recorded yet.")}${paging}</section><section class="band"><h2>${t("逐项严格失败台账", "Case-level strict failure backlog")} · ${backlog.length}</h2><p class="muted">${t("历史失败不删除、不算通过；局部通过仍需双环境及完整回归验收。", "Historical failures are retained, not counted as passes; selected passes still require both environments and full regression.")}</p>${failures}</section>${historicalEvidenceView()}`;
+}
+function currentValidationView() {
+  const current = currentVerification(manifest);
+  const historical = manifest.goal_execution?.resource_validation;
+  const repair = manifest.goal_execution?.ci_primitive_repair;
+  if (!current.batchMatches || !repair) return "";
+  const ci = repair.remote_ci;
+  const labels = { new: t("新增 Native 回归", "New Native regressions"), reference: t("实际 Qiskit 参考", "Actual Qiskit references"), operators: t("算子目录", "Operator directory"), algorithms: t("算法目录", "Algorithm directory"), strict: t("严格与获批案例", "Strict and approved cases") };
+  const rows = (current.batch.profiles || []).flatMap(profile => Object.entries(profile.reports || {}).flatMap(([key, report]) => {
+    if (!labels[key]) return [];
+    const proof = current.rows.find(run => run.profile === profile.profile && run.evidence_hash === report.evidence_hash);
+    if (key !== "strict" && !proof || key === "strict" && !current.reviewMatches) return [];
+    return [`<tr><td><code>${esc(profile.profile)}</code></td><td>${labels[key]}</td><td>${report.passed} PASS / <span class="${report.failed ? "failure" : ""}">${report.failed} FAIL</span> / ${report.skipped || 0} SKIP</td></tr>`];
+  })).join("");
+  const old = historical ? `<details id="historical-validation"><summary>${t("早期资源批次：历史源码", "Earlier resource batch: historical source")}</summary><code>${esc(historical.source_fingerprint)}</code><ul>${historical.profiles.map(row => `<li>${esc(row.profile)}: ${row.passed} PASS / ${row.failed} FAIL / ${row.skipped} SKIP</li>`).join("")}</ul></details>` : "";
+  return `<section class="band" id="current-validation"><h2>${t("本地融合验证与远端 CI 分开验收", "Local fusion and remote CI have separate acceptance")}</h2><h3>${t("当前冻结源码的选定验证", "Selected verification of the current frozen source")}</h3><p>${date(current.batch.recorded_at)} · <code>${esc(manifest.source.fingerprint)}</code></p><p><code>${esc(current.batch.changed_entry || current.batch.checkpoint)}</code> · ${current.rows.length} ${t("条同源且环境回执已核验的进程记录", "source-matched worker records with verified environments")}</p><div class="table-wrap"><table><thead><tr><th>${t("环境", "Profile")}</th><th>${t("范围", "Scope")}</th><th>${t("实际结果", "Observed result")}</th></tr></thead><tbody>${rows}</tbody></table></div><p class="failure">${current.reviewMatches ? t(`每个环境仍有 ${current.review.current_selected_unique_failures_each_profile} 项已知严格失败，其中 4 项为 TensorFlow 缓存混合求导；不是全库失败总数。`, `${current.review.current_selected_unique_failures_each_profile} known strict failures remain per profile, including 4 cached mixed-TensorFlow cases; not a whole-library failure total.`) : t("严格失败身份待重新核验。", "Strict-failure identity requires revalidation.")}</p><p>${t("各组存在重叠，不能相加为函数完成数。完整函数合同、全套门禁及真机验收仍未完成；核心修复尚未发布。", "Groups overlap: never add them as completed functions. Full contracts, full-suite and hardware gates remain open; core repairs are not yet published.")}</p>${old}<details id="historical-ci"><summary>${t("历史远端 CI：不认证本地融合代码", "Historical remote CI: not local-fusion acceptance")}</summary><p>${date(ci.observed_at)} · <a href="https://github.com/crystal-tensor/QuantumBridge/actions/runs/${ci.run_id}">GitHub Actions</a> · ${esc(ci.status)} / ${esc(ci.conclusion || "pending")}</p><p><a href="https://github.com/crystal-tensor/QuantumBridge/commit/${esc(repair.published_fix_commit)}"><code>${esc(repair.published_fix_commit)}</code></a></p><p>${t("该次 core-only：8276 通过、2550 跳过。保留原观测时间，不表示当前本地源码已通过。", "That core-only run: 8276 passed, 2550 skipped. Original observation time retained; not a pass for current local source.")}</p></details></section>`;
 }
 function testCollectionView() {
   const census = manifest.goal_execution?.test_execution_census;
@@ -127,7 +146,8 @@ function runtimeAuditView() {
   const audits=(manifest.runtime_census || []).map(audit=>{
     const receipts=audit.collection_receipts?.length ? `<p>${t("按 SDK 隔离采集，原版本未改；不证明两套 SDK 共存稳定，也不是函数实现验收。", "Collected in separate SDK processes with unchanged versions; not SDK coexistence or function acceptance.")}</p><ul>${audit.collection_receipts.map(receipt=>`<li><code>${esc(receipt.isolation)}</code> · exit ${receipt.exit}<br><code>${esc(receipt.receipt_sha256)}</code></li>`).join("")}</ul>` : "";
     const traversal=(audit.traversal_audits || []).map(scope=>`<li><code>${esc(scope.family)}</code> · ${esc(scope.state)}<br>${fmt(scope.attempted_modules.length)} ${t("模块已尝试", "modules attempted")} · ${fmt(scope.pending_modules.length)} ${t("模块待处理", "modules pending")} · ${fmt(scope.deferred_modules.length)} ${t("私有或测试路径待审", "private/test paths pending review")} · ${fmt((scope.namespace_mutations_after_collection || []).length)} ${t("模块需复查导入顺序变化", "modules need import-order rescan")}</li>`).join("");
-    const modules=audit.modules.map(module=>`<li><code>${esc(module.name)}</code> · ${esc(module.version || t("未安装，仍在范围内", "Not installed; remains in scope"))}${module.available===false ? `<br><span class="failure">${t("导入未完成，仍在范围内", "Import incomplete; remains in scope")}: ${esc(module.error || "unverified")}</span>` : ""}</li>`).join("");
+    const groups = audit.object_identity_groups_artifact;
+    const modules=(groups ? `<li><a href="./src/progress/data/${esc(groups.file)}" download>${t("完整进程内对象分组", "Complete worker-local object groups")} · ${fmt(audit.object_identity_group_count)}</a><br>${t("对象组不是独立函数分母或实现验收。", "Object groups are not unique-function denominators or implementation acceptance.")}</li>` : "")+audit.modules.map(module=>`<li><code>${esc(module.name)}</code> · ${esc(module.version || t("未安装，仍在范围内", "Not installed; remains in scope"))}${module.available===false ? `<br><span class="failure">${t("导入未完成，仍在范围内", "Import incomplete; remains in scope")}: ${esc(module.error || "unverified")}</span>` : ""}</li>`).join("");
     return `<details><summary>${esc(audit.profile)} · ${fmt(audit.records)} ${t("候选", "candidates")} · ${fmt(audit.inherited_contexts)} ${t("继承上下文", "inherited contexts")}</summary><p>${date(audit.collected_at)} · ${audit.signature_reviews_pending} ${t("项签名待核实", "signatures pending review")}</p>${receipts}${traversal ? `<ul class="traversal-summary">${traversal}</ul>` : ""}<ul>${modules}</ul><p>${audit.unresolved.length} ${t("项身份问题待审；清单未封闭。", "identity issues pending review; census open.")}</p></details>`;
   }).join("");
   return `<section class="band"><h2>${t("公共导出与继承清点", "Public-export and inheritance census")}</h2><p class="muted">${t("当前覆盖列出的模块；可选包、导入顺序、借用符号、闭包身份和缺失签名仍待审核，尚不能作为全量分母。", "Listed modules are covered; optional packages, import order, foreign exports, closure identities and missing signatures remain open. Not a full denominator.")}</p>${audits}</section>`;
@@ -160,6 +180,14 @@ function milestoneView() {
 function renderView() {
   root.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.tab === state.tab)));
   root.querySelector("#view").innerHTML = ({ overview, functions: functionView, domains: domainView, evidence: evidenceView, plan: planView }[state.tab])()+ (state.tab === "plan" ? runtimeAuditView()+namespaceAuditView() : state.tab === "evidence" ? diagnosticView()+contractMigrationView() : "");
+  const compiler = root.querySelector("#compiler-execution");
+  const compilerRuns = (manifest.verification || []).filter(row => row.name.startsWith("compiler-matrix-"));
+  if (compiler && compilerRuns.some(row => !row.source_match)) {
+    compiler.querySelector("h3").insertAdjacentHTML("afterend", `<p class="muted">${t("以下编译结果保留旧快照的指纹和测试时间，不代表当前源码的完整编译回归。", "Compiler results retain their earlier source fingerprints and test times, not current-source full regression.")}</p>`);
+  }
+  if (compiler && compilerRuns.length && compilerRuns.every(row => row.source_fingerprint !== manifest.source.fingerprint)) {
+    compiler.querySelector("h3").insertAdjacentHTML("afterend", `<p class="muted">${t("核心源码已变化。此处编译结果保留旧快照的指纹和测试时间，不是当前源码的完整编译验收。", "Core source has changed. These compiler results retain the earlier fingerprint and test times, not current-source compiler acceptance.")}</p>`);
+  }
   icons();
 }
 function detail(id) {
@@ -184,6 +212,7 @@ root.addEventListener("click", async event => {
   else if (button.dataset.dataset) { try { await loadDataset(button.dataset.dataset); state.dataset = button.dataset.dataset; state.family = ""; state.module = ""; state.page = 0; renderView(); } catch (e) { alert(e.message); } }
   else if (button.dataset.detail) detail(button.dataset.detail);
   else if (button.dataset.page) { state.page += Number(button.dataset.page); renderView(); }
+  else if (button.dataset.evidencePage) { state.evidencePage += Number(button.dataset.evidencePage); renderView(); }
   else if (button.hasAttribute("data-reset")) { Object.assign(state, { query: "", family: "", module: "", status: "", kind: "", hardware: "", page: 0 }); renderView(); }
   else if (button.hasAttribute("data-close")) root.querySelector("#detail").close();
   else if (button.dataset.run) { const run = manifest.tests.find(x => x.name === button.dataset.run); const dialog = root.querySelector("#detail"); dialog.innerHTML = `<header><h2 id="detail-title">${esc(run.name)}</h2><button class="icon-button" data-close aria-label="${t("关闭", "Close")}">${ic("x")}</button></header><div class="detail-body"><p>${t("历史证据，当前源码未匹配。", "Historical evidence; current source unmatched.")}</p><code>${run.evidence_hash}</code><h3>${t("失败测试 ID", "Failure IDs")}</h3><ul>${run.failure_ids.map(id => `<li><code>${esc(id)}</code></li>`).join("") || `<li>${t("本批历史记录无失败", "No failures in this historical batch")}</li>`}</ul></div>`; icons(); dialog.showModal(); }

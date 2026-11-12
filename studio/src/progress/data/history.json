@@ -1177,5 +1177,221 @@
         }
       }
     ]
+  },
+  {
+    "generated_at": "2026-11-11T22:03:46.328166+00:00",
+    "fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+    "datasets": [
+      {
+        "id": "native",
+        "file": "native.json.gz",
+        "sha256": "a8575505eb8cb2b2bc1695f76bd98e4ee2e00d9e98ccc4835b3b5fc514b98bee",
+        "count": 8730,
+        "status_counts": {
+          "unverified": 8716,
+          "not_implemented": 3,
+          "partial": 11
+        }
+      },
+      {
+        "id": "target",
+        "file": "target.json.gz",
+        "sha256": "2ceae40304f825fec029922400d87b98c327002586655a33e6a4f66c2ead1e77",
+        "count": 13612,
+        "status_counts": {
+          "unverified": 13605,
+          "partial": 7
+        }
+      },
+      {
+        "id": "runtime",
+        "file": "runtime.json.gz",
+        "sha256": "1bdb2d302d5c7ae9f8342a6d1e4c1c61da6ea1223b697a7d80e17051136983fb",
+        "count": 104234,
+        "status_counts": {
+          "unverified": 104234
+        }
+      }
+    ]
+  },
+  {
+    "generated_at": "2026-11-11T22:36:26.413110+00:00",
+    "fingerprint": "ab2cc5f5cd6ec737be68a415598fcb144381f57560592cd2eeb879293b2bf7fa",
+    "datasets": [
+      {
+        "id": "native",
+        "file": "native.json.gz",
+        "sha256": "a8575505eb8cb2b2bc1695f76bd98e4ee2e00d9e98ccc4835b3b5fc514b98bee",
+        "count": 8730,
+        "status_counts": {
+          "unverified": 8716,
+          "not_implemented": 3,
+          "partial": 11
+        }
+      },
+      {
+        "id": "target",
+        "file": "target.json.gz",
+        "sha256": "2ceae40304f825fec029922400d87b98c327002586655a33e6a4f66c2ead1e77",
+        "count": 13612,
+        "status_counts": {
+          "unverified": 13605,
+          "partial": 7
+        }
+      },
+      {
+        "id": "runtime",
+        "file": "runtime.json.gz",
+        "sha256": "1bdb2d302d5c7ae9f8342a6d1e4c1c61da6ea1223b697a7d80e17051136983fb",
+        "count": 104234,
+        "status_counts": {
+          "unverified": 104234
+        }
+      }
+    ]
+  },
+  {
+    "generated_at": "2026-11-11T23:38:41.068447+00:00",
+    "fingerprint": "85fe4e232c57589d691aaa4fb81a93bedf9d9af00faf1b320d9ff30db602e014",
+    "datasets": [
+      {
+        "id": "native",
+        "file": "native.json.gz",
+        "sha256": "88319dea9a110126c7e812081481baa8919becf595edbb7078cd7b1ece0222ce",
+        "count": 8730,
+        "status_counts": {
+          "unverified": 8717,
+          "not_implemented": 3,
+          "partial": 10
+        }
+      },
+      {
+        "id": "target",
+        "file": "target.json.gz",
+        "sha256": "8294ef45757262ba845b7e3c5d1c21825f3ce361a73b693db59d6e00f45ba972",
+        "count": 13612,
+        "status_counts": {
+          "unverified": 13606,
+          "partial": 6
+        }
+      },
+      {
+        "id": "runtime",
+        "file": "runtime.json.gz",
+        "sha256": "1bdb2d302d5c7ae9f8342a6d1e4c1c61da6ea1223b697a7d80e17051136983fb",
+        "count": 104234,
+        "status_counts": {
+          "unverified": 104234
+        }
+      }
+    ]
+  },
+  {
+    "generated_at": "2026-11-11T23:45:59.061814+00:00",
+    "fingerprint": "85fe4e232c57589d691aaa4fb81a93bedf9d9af00faf1b320d9ff30db602e014",
+    "datasets": [
+      {
+        "id": "native",
+        "file": "native.json.gz",
+        "sha256": "88319dea9a110126c7e812081481baa8919becf595edbb7078cd7b1ece0222ce",
+        "count": 8730,
+        "status_counts": {
+          "unverified": 8717,
+          "not_implemented": 3,
+          "partial": 10
+        }
+      },
+      {
+        "id": "target",
+        "file": "target.json.gz",
+        "sha256": "8294ef45757262ba845b7e3c5d1c21825f3ce361a73b693db59d6e00f45ba972",
+        "count": 13612,
+        "status_counts": {
+          "unverified": 13606,
+          "partial": 6
+        }
+      },
+      {
+        "id": "runtime",
+        "file": "runtime.json.gz",
+        "sha256": "1bdb2d302d5c7ae9f8342a6d1e4c1c61da6ea1223b697a7d80e17051136983fb",
+        "count": 104234,
+        "status_counts": {
+          "unverified": 104234
+        }
+      }
+    ]
+  },
+  {
+    "generated_at": "2026-11-12T09:28:57.831019+00:00",
+    "fingerprint": "7e4ba25ecdafd1c101b12e1aafe64d10766a783fb4694cbbc0c263e50f2e12da",
+    "datasets": [
+      {
+        "id": "native",
+        "file": "native.json.gz",
+        "sha256": "e02fabcb2963b91fecef1ccf70e1c57014182811582a8689e7c4e67f6d3ee0bd",
+        "count": 8745,
+        "status_counts": {
+          "unverified": 8731,
+          "not_implemented": 3,
+          "partial": 11
+        }
+      },
+      {
+        "id": "target",
+        "file": "target.json.gz",
+        "sha256": "8294ef45757262ba845b7e3c5d1c21825f3ce361a73b693db59d6e00f45ba972",
+        "count": 13612,
+        "status_counts": {
+          "unverified": 13606,
+          "partial": 6
+        }
+      },
+      {
+        "id": "runtime",
+        "file": "runtime.json.gz",
+        "sha256": "f875c30cb69e8773e486a6ad25533e4cb47279e6b7b34400ee6042c275bb8517",
+        "count": 206929,
+        "status_counts": {
+          "unverified": 206929
+        }
+      }
+    ]
+  },
+  {
+    "generated_at": "2026-11-12T09:33:32.889812+00:00",
+    "fingerprint": "7e4ba25ecdafd1c101b12e1aafe64d10766a783fb4694cbbc0c263e50f2e12da",
+    "datasets": [
+      {
+        "id": "native",
+        "file": "native.json.gz",
+        "sha256": "e02fabcb2963b91fecef1ccf70e1c57014182811582a8689e7c4e67f6d3ee0bd",
+        "count": 8745,
+        "status_counts": {
+          "unverified": 8731,
+          "not_implemented": 3,
+          "partial": 11
+        }
+      },
+      {
+        "id": "target",
+        "file": "target.json.gz",
+        "sha256": "8294ef45757262ba845b7e3c5d1c21825f3ce361a73b693db59d6e00f45ba972",
+        "count": 13612,
+        "status_counts": {
+          "unverified": 13606,
+          "partial": 6
+        }
+      },
+      {
+        "id": "runtime",
+        "file": "runtime.json.gz",
+        "sha256": "f875c30cb69e8773e486a6ad25533e4cb47279e6b7b34400ee6042c275bb8517",
+        "count": 206929,
+        "status_counts": {
+          "unverified": 206929
+        }
+      }
+    ]
   }
 ]

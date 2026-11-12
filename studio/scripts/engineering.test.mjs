@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { gunzipSync } from "node:zlib";
 import { createHash } from "node:crypto";
-import { countStatuses, filterRows, aggregate, isStale, statuses } from "../src/progress/model.js";
+import { countStatuses, filterRows, aggregate, isStale, statuses, decodeDataset, verificationWindow, currentVerification } from "../src/progress/model.js";
 import { engineeringResources, domainResources } from "../src/framework/resources.js";
 import { buildPublic } from "./build-public.mjs";
 
@@ -15,7 +15,7 @@ test("inventory integrity, conservative states, unique IDs, no local paths or cr
     const bytes = await readFile(new URL(`../src/progress/data/${descriptor.file}`, import.meta.url));
     assert.equal(createHash("sha256").update(bytes).digest("hex"), descriptor.sha256);
     const text = gunzipSync(bytes).toString();
-    const rows = JSON.parse(text);
+    const rows = decodeDataset(JSON.parse(text));
     assert.equal(rows.length, descriptor.count);
     assert.equal(new Set(rows.map(r => r.id)).size, rows.length);
     assert.ok(rows.every(r => statuses.includes(r.status)));
@@ -49,12 +49,13 @@ test("repository collection stays separate from executed tests and the public AP
   }
   const runs = manifest.verification.filter(row => row.name.startsWith("test-census-"));
   assert.equal(runs.length, 14);
-  assert.equal(runs.filter(row => row.source_match).length, 6);
+  assert.equal(runs.filter(row => row.source_match).length, 0);
   for (const profile of ["main", "alternate"]) {
-    const current = runs.filter(row => row.profile === profile && row.source_match);
-    assert.equal(current.reduce((sum, row) => sum + row.passed, 0), 756);
-    assert.equal(current.reduce((sum, row) => sum + row.failed, 0), 1);
-    assert.equal(current.find(row => row.name.includes("approved-mps-memory")).passed, 13);
+    const frozen = runs.filter(row => row.profile === profile && row.name.includes("execute-v3-"));
+    assert.equal(frozen.reduce((sum, row) => sum + row.passed, 0), 756);
+    assert.equal(frozen.reduce((sum, row) => sum + row.failed, 0), 1);
+    assert.equal(frozen.find(row => row.name.includes("approved-mps-memory")).passed, 13);
+    assert.ok(frozen.every(row => row.source_fingerprint !== manifest.source.fingerprint && !row.source_match && !row.test_context_match && row.process_terminal_match));
   }
   const script = await readFile(new URL("../src/progress/main.js", import.meta.url), "utf8");
   assert.ok(script.includes("Test collection is not a passing test run"));
@@ -64,7 +65,7 @@ test("compiler execution reconciles exact cases while preserving timeouts and st
   const compiler = manifest.goal_execution.compiler_execution;
   assert.equal(compiler.full_compiler_accepted, false);
   assert.equal(compiler.full_suite_accepted, false);
-  assert.equal(compiler.strict_selected_failure_count_still, 24);
+  assert.equal(compiler.strict_selected_failure_count_still, 23);
   assert.equal(compiler.normal_recorded_workers, 152);
   assert.equal(compiler.incomplete_module_attempts.length, 2);
   assert.ok(compiler.incomplete_module_attempts.every(row => row.timed_out && row.exit === -9 && row.tests === 0 && !row.junit_sha256));
@@ -72,7 +73,7 @@ test("compiler execution reconciles exact cases while preserving timeouts and st
   assert.ok(compiler.outstanding_cases[0].endsWith("[quantumbridge.mps-2-best]"));
   const runs = manifest.verification.filter(row => row.name.startsWith("compiler-matrix-"));
   assert.equal(runs.length, 152);
-  assert.ok(runs.every(row => row.source_match && row.process_terminal_match && row.test_context_match));
+  assert.ok(runs.every(row => row.source_fingerprint !== manifest.source.fingerprint && !row.source_match && row.process_terminal_match && !row.test_context_match));
   for (const profile of ["main", "alternate"]) {
     const summary = compiler.profiles.find(row => row.profile === profile);
     assert.equal(summary.expected_compiler_cases, 1301);
@@ -86,13 +87,77 @@ test("compiler execution reconciles exact cases while preserving timeouts and st
     assert.ok(!cases.includes(compiler.outstanding_cases[0].replace(/\.py::/, "::").replaceAll("/", ".")));
   }
   const investigation = manifest.goal_execution.current_investigation;
-  assert.equal(investigation.prototype_promoted, false);
-  assert.ok(investigation.profiles.every(row => row.passed === 12 && row.failed === 4 && row.third_rejected === 2 && row.third_total === 4));
+  assert.equal(investigation.accepted, false);
+  assert.equal(investigation.production_changed, false);
+  assert.equal(investigation.strict_cached_failures_remaining_each_profile, 4);
+});
+test("CI census repair retains real child results, original bodies and frozen-context boundaries", () => {
+  const repair=manifest.goal_execution.ci_workflow_repair;
+  assert.equal(repair.published_fix_commit,"b8abde9a0059cf808321744ed371c4d61f664147");
+  assert.equal(repair.native_changed,false);
+  assert.equal(repair.production_isolation_changed,false);
+  assert.equal(repair.additional_contract_migrations,0);
+  assert.equal(repair.original_function_bodies_preserved.length,11);
+  assert.equal(repair.final_context_normal_workers,44);
+  assert.equal(repair.real_clean_children,24);
+  assert.equal(repair.core_function_acceptances,0);
+  assert.equal(repair.full_suite_accepted,false);
+  const runs=manifest.verification.filter(row=>row.name.startsWith("ci-reference-unit-"));
+  assert.equal(runs.length,44);
+  assert.ok(runs.every(row=>!row.source_match&&row.source_fingerprint!==manifest.source.fingerprint&&!row.test_context_match&&row.process_terminal_match));
+  for(const profile of ["main","alternate"]){
+    const current=runs.filter(row=>row.profile===profile);
+    assert.equal(current.reduce((sum,row)=>sum+row.passed,0),87);
+    assert.equal(current.reduce((sum,row)=>sum+row.failed,0),24);
+    assert.ok(current.every(row=>row.skipped===0));
+  }
+  assert.equal(repair.remote_snapshot_selection.main.passed,115);
+  assert.equal(repair.remote_snapshot_selection.alternate.exit,-11);
+  assert.equal(repair.remote_snapshot_selection.alternate.accepted,false);
+});
+test("resource verification retains all failures and separates published-main repair", () => {
+  const batch=manifest.goal_execution.resource_validation;
+  assert.notEqual(batch.source_fingerprint,manifest.source.fingerprint);
+  assert.equal(batch.normal_final_source_workers,132);
+  assert.equal(batch.additional_migrations,0);
+  assert.equal(batch.resource_caps_changed,false);
+  assert.equal(batch.algorithm_selection_changed,false);
+  assert.equal(batch.full_suite_accepted,false);
+  const runs=manifest.verification.filter(row=>row.name.startsWith("resource-validation-"));
+  assert.equal(runs.length,134);
+  for(const profile of ["main","alternate"]){
+    const current=runs.filter(row=>row.profile===profile&&row.source_fingerprint===batch.source_fingerprint);
+    assert.equal(current.length,66);
+    assert.equal(current.reduce((sum,row)=>sum+row.passed,0),966);
+    assert.equal(current.reduce((sum,row)=>sum+row.failed,0),27);
+    assert.ok(current.every(row=>!row.skipped&&!row.source_match&&row.process_terminal_match));
+    const earlier=runs.find(row=>row.profile===profile&&row.name.includes("fastpath-control-"));
+    assert.equal(earlier.failed,3);
+    assert.equal(earlier.source_match,false);
+    const failureIds=new Set(current.flatMap(row=>row.cases.filter(c=>c.status==="failed").map(c=>c.id)));
+    assert.equal(failureIds.size,27);
+    assert.ok(earlier.cases.every(c=>failureIds.has(c.id)));
+  }
+  const repair=manifest.goal_execution.ci_primitive_repair;
+  assert.equal(repair.published_fix_commit,"12b8781bccc7db622d7a54952b1d8c5f57188c97");
+  assert.equal(repair.published_files.length,5);
+  assert.equal(repair.inherited_published_test_files_unchanged,716);
+  assert.equal(repair.original_assertions_changed,false);
+  assert.equal(repair.full_local_fusion_accepted,false);
+  assert.equal(repair.full_goal_accepted,false);
+  assert.equal(repair.remote_ci.core_only_result.passed,8276);
+  assert.equal(repair.remote_ci.core_only_result.skipped,2550);
+  assert.equal(repair.remote_ci.jobs.find(row=>row.name==="core-only").conclusion,"success");
+  assert.equal(batch.approved_memory_recheck.length,2);
+  assert.ok(batch.approved_memory_recheck.every(row=>row.terminal&&row.exit===0&&row.tests===13&&!row.failures&&!row.errors&&!row.skipped));
+  const approved=manifest.verification.filter(row=>row.name.startsWith("approved-memory-current-"));
+  assert.equal(approved.length,2);
+  assert.ok(approved.every(row=>!row.source_match&&row.passed===13&&!row.failed&&!row.skipped));
 });
 test("runtime census is not combined with the target denominator or implementation acceptance", async () => {
   const descriptor=manifest.datasets.find(x=>x.id==="runtime");
   assert.ok(descriptor.count>0);
-  const rows=JSON.parse(gunzipSync(await readFile(new URL(`../src/progress/data/${descriptor.file}`,import.meta.url))));
+  const rows=decodeDataset(JSON.parse(gunzipSync(await readFile(new URL(`../src/progress/data/${descriptor.file}`,import.meta.url)))));
   assert.ok(rows.every(r=>r.status==="unverified"&&r.native_mapping===null));
   assert.ok(rows.some(r=>r.runtime_observations.some(o=>o.inherited)));
   assert.ok(rows.some(r=>r.exposures.includes("pennylane.transforms.expand_multipar")));
@@ -101,7 +166,7 @@ test("runtime census is not combined with the target denominator or implementati
 });
 test("recursive census retains traversal gaps, loaded identities and accessor provenance", async () => {
   const descriptor=manifest.datasets.find(x=>x.id==="runtime");
-  const rows=JSON.parse(gunzipSync(await readFile(new URL(`../src/progress/data/${descriptor.file}`,import.meta.url))));
+  const rows=decodeDataset(JSON.parse(gunzipSync(await readFile(new URL(`../src/progress/data/${descriptor.file}`,import.meta.url)))));
   assert.ok(rows.some(r=>r.runtime_observations.some(o=>o.accessor==="set")));
   assert.ok(rows.some(r=>r.runtime_observations.some(o=>o.source_hash_scope==="ancestor_module_file")));
   assert.ok(rows.some(r=>r.runtime_observations.some(o=>o.declared_in_reference_namespace===false)));
@@ -142,7 +207,7 @@ test("namespace files remain unreviewed metadata, with exact artifacts and no lo
   }
 });
 test("framework and lifetime diagnostics are not Native acceptance or test passes",async()=>{
-  assert.equal(manifest.diagnostic_observations.length,5);
+  assert.equal(manifest.diagnostic_observations.length,7);
   const script=await readFile(new URL("../downloads/tensorflow_cached_cos_probe.py",import.meta.url));
   for(const row of manifest.diagnostic_observations){
     assert.equal(row.report.native_accepted,false);
@@ -155,6 +220,10 @@ test("framework and lifetime diagnostics are not Native acceptance or test passe
       assert.equal(row.report.original_constructor_assertion_changed,false);
       assert.equal(row.report.constructor_after_disposal,0);
       assert.equal(row.report.constructor_before,row.report.fixed_numeric_bytes+row.report.retained_binding_allowances.reduce((sum,x)=>sum+x.bytes,0));
+    }else if(row.kind==="tensor_edge_curvature_decomposition"){
+      assert.equal(row.report.production_changed,false);
+      assert.equal(row.report.prototype_promoted,false);
+      assert.equal(row.report.cached_mixed_failures_remaining,4);
     }else{
       assert.equal(row.kind,"arrow_coexistence_review");
       const code=await readFile(new URL("../downloads/arrow_qiskit_import_probe.py",import.meta.url));
@@ -200,8 +269,8 @@ test("goal and selected verification never masquerade as final acceptance", () =
       assert.equal(run.protected_tests+files.size,run.original_protected_test_files);
       assert.ok(run.approved_test_migrations.every(m=>m.owner_approved&&m.before_sha256!==m.after_sha256&&m.case_ids.length));
       if(run.source_match){
-        assert.equal(files.size,manifest.goal_execution.latest_batch.approved_test_migration_files);
-        assert.equal(run.approved_test_migrations.flatMap(m=>m.case_ids).length,manifest.goal_execution.latest_batch.approved_test_migration_cases);
+        assert.equal(files.size,manifest.goal_execution.latest_verification_batch.approved_test_migration_files);
+        assert.equal(run.approved_test_migrations.flatMap(m=>m.case_ids).length,manifest.goal_execution.latest_verification_batch.approved_test_migration_cases);
         const memory=run.approved_test_migrations.find(m=>m.file==="tests/interfaces/test_native_tf_mps_resource_contract.py");
         if(memory){
           assert.deepEqual(memory.case_ids,["tests.interfaces.test_native_tf_mps_resource_contract::test_managed_mps_queries_same_parent_cache_tiny_hessian_cap"]);
@@ -238,6 +307,54 @@ test("scoped contract details never promote stale or incomplete reviews", async 
   }
   const ui=await readFile(new URL("../src/progress/main.js",import.meta.url),"utf8");
   assert.ok(ui.includes("row.review.evidence_scope")&&ui.includes("row.review.native_entry")&&ui.includes("row.review.remaining"));
+});
+test("current worker receipts and bounded windows preserve all evidence", () => {
+  const current=currentVerification(manifest);
+  assert.equal(current.batchMatches,true);
+  assert.equal(current.reviewMatches,true);
+  assert.equal(current.rows.length,60);
+  assert.equal(current.failures.main.length,23);
+  assert.equal(current.failures.alternate.length,23);
+  const first=verificationWindow(manifest.verification,0);
+  const second=verificationWindow(manifest.verification,1);
+  assert.equal(first.rows.length,20);
+  assert.equal(second.rows.length,20);
+  assert.notEqual(first.rows[0].name,second.rows[0].name);
+  assert.equal(first.total,manifest.verification.length);
+  assert.equal(verificationWindow(manifest.verification,999999).index,first.pages-1);
+  assert.equal(currentVerification({...manifest,source:{fingerprint:"other"}}).batchMatches,false);
+  assert.equal(currentVerification({...manifest,verification:manifest.verification.map(row=>({...row,environment_validation:{verified:false}}))}).reviewMatches,false);
+  assert.equal(manifest.verification_projection.redacted_parameter_ids,8);
+  assert.equal(manifest.verification_projection.private_ledger_modified,false);
+  for(const run of manifest.verification){
+    if(!run.test_context){assert.equal(run.source_match,false);continue;}
+    assert.equal(manifest.test_contexts[run.test_context.files_ref].files.length,run.test_context.file_count);
+    assert.equal(manifest.test_contexts[run.test_context.files_ref].sha256,run.test_context.sha256);
+  }
+});
+test("runtime wire pooling preserves every signature and owner context", async () => {
+  const descriptor=manifest.datasets.find(row=>row.id==="runtime");
+  const wire=JSON.parse(gunzipSync(await readFile(new URL(`../src/progress/data/${descriptor.file}`,import.meta.url))));
+  assert.equal(wire.encoding,"signature-pool-v1");
+  const rows=decodeDataset(wire);
+  assert.equal(rows.length,descriptor.count);
+  assert.ok(Object.keys(wire.signatures).length<rows.length);
+  for(let i=0;i<rows.length;i++) for(let j=0;j<rows[i].runtime_observations.length;j++){
+    const before=wire.rows[i].runtime_observations[j],after=rows[i].runtime_observations[j];
+    if(before.signature_ref) assert.deepEqual(after.signature,wire.signatures[before.signature_ref]);
+    assert.equal(after.canonical_id,before.canonical_id);
+    assert.equal(after.lookup_plane,before.lookup_plane);
+  }
+  assert.throws(()=>decodeDataset({schema:2,encoding:"signature-pool-v1",signatures:{},rows:[{runtime_observations:[{signature_ref:"absent"}]}]}));
+  for(const audit of manifest.runtime_census){
+    const descriptor=audit.object_identity_groups_artifact;
+    const raw=await readFile(new URL(`../src/progress/data/${descriptor.file}`,import.meta.url));
+    assert.equal(createHash("sha256").update(raw).digest("hex"),descriptor.sha256);
+    const value=JSON.parse(gunzipSync(raw));
+    assert.equal(value.groups.length,audit.object_identity_group_count);
+    assert.equal(value.groups.reduce((sum,group)=>sum+group.record_ids.length,0),audit.records);
+    assert.equal(value.native_functions_accepted,0);
+  }
 });
 test("public build includes progress assets, inventory and goal prompt without private paths", async () => {
   const output=await mkdtemp(path.join(tmpdir(),"qb-engineering-build-"));

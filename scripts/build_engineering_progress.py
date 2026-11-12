@@ -40,6 +40,76 @@ def dump(path, value):
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def verification_rows(value):
+    """Restore pooled test contexts without mutating private or public evidence."""
+    contexts = value.get("test_contexts", {})
+    result = []
+    for original in value.get("runs", []):
+        row = dict(original)
+        context = row.get("test_context")
+        if context and "files_ref" in context:
+            full = contexts[context["files_ref"]]
+            if (full["sha256"] != context["sha256"] or len(full["files"]) != context["file_count"]
+                    or "files" in context):
+                raise ValueError("Public test-context reference differs")
+            row["test_context"] = full
+        result.append(row)
+    return result
+
+
+def verification_projection(value):
+    """Pool repeated context lists and hash private pytest parameter identities."""
+    runs, contexts, redacted = [], {}, 0
+    forbidden = ("/Users/", "site-packages/", "QUAFU_TOKEN")
+    for original in verification_rows(value):
+        row = dict(original)
+        cases = []
+        for original_case in row.get("cases", []):
+            case = dict(original_case)
+            identity = case["id"]
+            if any(part in identity for part in forbidden):
+                hashed = digest(identity.encode())
+                prefix = identity.partition("[")[0]
+                if any(part in prefix for part in forbidden):
+                    prefix = "redacted-test"
+                case.update(id=prefix+"[private-parameter-sha256="+hashed+"]",
+                    original_id_sha256=hashed, parameter_identity_redacted=True)
+            redacted += bool(case.get("parameter_identity_redacted"))
+            cases.append(case)
+        row["cases"] = cases
+        context = row.get("test_context")
+        if context:
+            key = context["sha256"]
+            if key in contexts and contexts[key] != context:
+                raise ValueError("Different test contexts share an identity")
+            contexts[key] = context
+            row["test_context"] = dict(sha256=key, files_ref=key, file_count=len(context["files"]))
+        runs.append(row)
+    result = dict(runs=runs, test_contexts=contexts,
+        public_projection=dict(redacted_parameter_ids=redacted,
+            original_status_counts_and_evidence_hashes_preserved=True, private_ledger_modified=False))
+    if any(part in json.dumps(result, ensure_ascii=False) for part in forbidden):
+        raise ValueError("Unexpected private field in public verification projection")
+    return result
+
+
+def runtime_projection(rows):
+    """Intern equal JSON signature metadata, never callable or behavior identity."""
+    signatures, result = {}, []
+    for row in rows:
+        observations = []
+        for original in row["runtime_observations"]:
+            observation = dict(original)
+            signature = observation.pop("signature", None)
+            if signature is not None:
+                key = digest(json.dumps(signature, sort_keys=True, separators=(",", ":")).encode())
+                signatures[key] = signature
+                observation["signature_ref"] = key
+            observations.append(observation)
+        result.append(dict(row, runtime_observations=observations))
+    return dict(schema=2, encoding="signature-pool-v1", rows=result, signatures=signatures)
+
+
 def census(base, package, native=False):
     records, errors, hashes = [], [], []
     paths = sorted(base.rglob("*.py"))
@@ -235,10 +305,19 @@ def runtime_census(paths):
             "scope": reference.get("scope"), "coexistence_verified": False,
             "collection_receipts": collection_receipts,
             "traversal_audits": reference.get("traversal_audits", []),
+            "descriptor_reclassifications": reference.get("descriptor_reclassifications", []),
+            "class_protocol_audits": reference.get("class_protocol_audits", []),
+            "object_identity_groups": reference.get("object_identity_groups", []),
+            "object_identity_audits": reference.get("object_identity_audits", []),
+            "object_identity_policy": reference.get("object_identity_policy"),
             "records": len(records), "inherited_contexts": sum(bool(r.get("inherited")) for r in records),
             "signature_reviews_pending": sum(not r["signature"]["available"] for r in records),
             "unresolved": reference["unresolved"], "closure_pending": reference["closure_pending"],
             "census_complete": False})
+        versions_by_family = {}
+        for module in reference["modules"]:
+            if module.get("version"):
+                versions_by_family.setdefault(module["name"].split(".")[0], set()).add(module["version"])
         for observed in records:
             key = observed["id"]
             row = merged.setdefault(key, {"id": key, "name": key, "family": observed["family"],
@@ -247,14 +326,16 @@ def runtime_census(paths):
                 "signature": "", "signatures": [], "profiles": [], "exposures": [], "runtime_observations": [],
                 "status": "unverified", "reason": "contract_review_pending",
                 "hardware": "unverified", "origin": "runtime_public_mro", "native_mapping": None})
-            versions = sorted({m["version"] for m in reference["modules"]
-                               if m["name"].split(".")[0] == observed["family"] and m.get("version")})
+            versions = sorted(versions_by_family.get(observed["family"], ()))
             row["profiles"].append(reference["profile"]+": "+" / ".join(versions))
             row["exposures"] = sorted(set(row["exposures"]) | set(observed["exposures"]))
             row["runtime_observations"].append({"profile": reference["profile"],
                 **{k: observed[k] for k in ("canonical_id", "signature", "file", "source_hash",
                     "inherited", "declared_in", "canonical_identity_review_required", "collection_isolation",
-                    "accessor", "source_hash_scope", "declaration_module", "declared_in_reference_namespace") if k in observed}})
+                    "accessor", "source_hash_scope", "declaration_module", "declared_in_reference_namespace",
+                    "lookup_plane", "metaclass", "metaclass_mro", "implicit_class_protocol", "descriptor_type",
+                    "descriptor_protocol", "descriptor_semantics_review_required", "wrapped_accessor_binding",
+                    "signature_semantics", "object_identity_group") if k in observed}})
             sig = observed["signature"]
             parameters = sig.get("parameters", [])
             names = []
@@ -390,6 +471,17 @@ def build(args):
                                "hardware": "unverified", "origin": "historical_export", "profiles": []}
     target = sorted(merged.values(), key=lambda row: row["id"])
     runtime, runtime_audits = runtime_census(sorted((ROOT / "docs/engineering").glob("runtime-api-*.json.gz")))
+    for audit in runtime_audits:
+        groups = audit.pop("object_identity_groups", None)
+        if groups is not None:
+            filename = "identity-groups-"+audit["profile"]+".json.gz"
+            body = json.dumps(dict(profile=audit["profile"], collected_at=audit["collected_at"],
+                groups=groups, policy=audit.get("object_identity_policy"),
+                native_functions_accepted=0), separators=(",", ":")).encode()
+            compressed = gzip.compress(body, mtime=0)
+            (DATA / filename).write_bytes(compressed)
+            audit["object_identity_group_count"] = len(groups)
+            audit["object_identity_groups_artifact"] = dict(file=filename, sha256=digest(compressed))
     namespaces = namespace_audits(sorted((ROOT / "docs/engineering").glob("namespaces-*.json.gz")))
     for row in target:
         gate = row["name"].split(".")[-1]
@@ -410,7 +502,7 @@ def build(args):
     now = datetime.now(timezone.utc).isoformat()
     tests = historical_tests(args.evidence_dir) if args.evidence_dir else (previous or {}).get("tests", [])
     verification_path = ROOT / "docs/engineering/verification_runs.json"
-    verification = load_json(verification_path).get("runs", []) if verification_path.exists() else []
+    verification = verification_rows(load_json(verification_path)) if verification_path.exists() else []
     test_hashes = {}
     for run in verification:
         run["test_context_match"] = test_context_matches(run.get("test_context"), test_hashes)
@@ -422,7 +514,8 @@ def build(args):
     failure_review_path = ROOT / "docs/engineering/failure_reviews.json"
     failure_review = load_json(failure_review_path) if failure_review_path.exists() else {}
     review_current = failure_review.get("source_fingerprint") == fingerprint
-    backlog = strict_backlog(tests, verification,
+    projected = verification_projection(dict(runs=verification))
+    backlog = strict_backlog(tests, projected["runs"],
         failure_review.get("notes", []) if review_current else [],
         historical_notes=[] if review_current else failure_review.get("notes", []),
         historical_source_fingerprint=None if review_current else failure_review.get("source_fingerprint"))
@@ -430,7 +523,8 @@ def build(args):
     diagnostics = diagnostic_observations(load_json(diagnostic_path), fingerprint) if diagnostic_path.exists() else []
     datasets = []
     for name, rows in [("native", native), ("target", target), ("runtime", runtime)]:
-        body = json.dumps(rows, ensure_ascii=False, separators=(",", ":")).encode()
+        payload = runtime_projection(rows) if name == "runtime" else rows
+        body = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode()
         compressed = gzip.compress(body, mtime=0)
         filename = f"{name}.json.gz"
         (DATA / filename).write_bytes(compressed)
@@ -449,7 +543,9 @@ def build(args):
                                   "Inherited methods, dynamic exports, plugins, C-extension signatures and optional packages need contract review.",
                                   "Native helpers and target public APIs are separate populations; never add their counts as a completion percentage.",
                                   "Historical test runs do not certify the current dirty working tree; function acceptance is not yet reviewed."],
-                "tests": tests, "verification": verification, "strict_backlog": backlog,
+                "tests": tests, "verification": projected["runs"],
+                "test_contexts": projected["test_contexts"],
+                "verification_projection": projected["public_projection"], "strict_backlog": backlog,
                 "diagnostic_observations": diagnostics,
                 "hardware": hardware(), "acceptance_scope": scope,
                 "core_execution": execution.get("status", "paused_pending_new_goal"),
@@ -468,8 +564,14 @@ if __name__ == "__main__":
     parser.add_argument("--profile", default="main")
     parser.add_argument("--reference", type=Path, action="append", default=[])
     parser.add_argument("--evidence-dir", type=Path)
+    parser.add_argument("--project-verification", type=Path)
     args = parser.parse_args()
-    if args.enumerate_reference:
+    if args.project_verification:
+        source = ROOT / "docs/engineering/verification_runs.json"
+        result = verification_projection(load_json(source))
+        result["public_projection"]["private_ledger_sha256"] = digest(source.read_bytes())
+        dump(args.project_verification, result)
+    elif args.enumerate_reference:
         reference(args.profile, args.enumerate_reference)
     else:
         build(args)

@@ -221,5 +221,27 @@
     "id": "qiskit.circuit.quantumcircuit.QuantumCircuit.assign_parameters",
     "source_hash": "130fff1c441a17a6d1ea8d134b56a63fab05f78041357dd0e20c349ee5dfde0d",
     "target_hash_scope": "Current static declaration; actual2.4.1/2.6.0 references pinned independently."
+  },
+  {
+    "id": "quantumbridge.operators.sparse_operator._SparsePauliBase.coeffs",
+    "source_hash": "ed8fbf345ec0b64a30d9258d8016d4ab201674e0ff532d673019df65d4027713",
+    "project_fingerprint": "7e4ba25ecdafd1c101b12e1aafe64d10766a783fb4694cbbc0c263e50f2e12da",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": true,
+    "strict_tests_pass": false,
+    "evidence_hash": "cea46d744dfbb620657af3902526615ad9dde6a7d7fa054883bb01210adf9a3d",
+    "native_cases_each_profile": 18,
+    "actual_sdk_reference_cases_each_profile": 4,
+    "real_qiskit_versions": [
+      "2.4.1",
+      "2.6.0"
+    ],
+    "native_entry": "quantumbridge.operators.SparsePauliOperator.coeffs",
+    "reference_public_exposure": "qiskit.quantum_info.SparsePauliOp.coeffs",
+    "evidence_scope": "Legacy independent-copy coefficient snapshots: complete output buffer preflight, numeric/object root ownership, views, expiry, independent/concurrent accounts, symbolic object identity and complex/nonfinite/signed-zero math. Actual reference checks cover numeric coefficients only, not Public mutable storage parity or symbolic SDK implementation.",
+    "evidence_scope_zh": "Legacy 系数快照已补齐输出缓冲区预留、数值/对象指针内存租约、视图与释放、独立及并发账户、符号对象身份，以及复数/非有限值/有符号零验证。实际 Qiskit 参考只核对数值系数；不声称复刻 Public 可变底层存储或符号实现。",
+    "remaining": "Full inherited/subclass/composition/serialization and public-target mapping contracts remain open, as do23selected strict gates. Counts are not full-function acceptance."
   }
 ]

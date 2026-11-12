@@ -13,6 +13,52 @@ spec.loader.exec_module(builder)
 
 
 class EvidenceTests(unittest.TestCase):
+    def test_runtime_signature_pool_preserves_every_observation_without_merging_contexts(self):
+        signature = dict(available=True, parameters=[dict(name="point", kind="POSITIONAL_ONLY")])
+        rows = [dict(id=name, exposures=[name], runtime_observations=[dict(profile="main", signature=signature,
+            lookup_plane=plane)]) for name, plane in (("owner.one", "instance"), ("owner.two", "metaclass"))]
+        before = json.dumps(rows)
+        projected = builder.runtime_projection(rows)
+        self.assertEqual(json.dumps(rows), before)
+        self.assertEqual(len(projected["rows"]), 2)
+        self.assertEqual(len(projected["signatures"]), 1)
+        for original, row in zip(rows, projected["rows"]):
+            observation = dict(row["runtime_observations"][0])
+            observation["signature"] = projected["signatures"][observation.pop("signature_ref")]
+            self.assertEqual(observation, original["runtime_observations"][0])
+            self.assertEqual(row["exposures"], original["exposures"])
+
+    def test_public_projection_pools_contexts_and_preserves_private_evidence(self):
+        context = dict(files=["tests/test_contract.py"], sha256="same")
+        value = dict(runs=[dict(name=name, test_context=context, passed=1, evidence_hash="junit",
+            cases=[dict(id="tests.test_contract::test_path[/Users/private/item]", status="passed")])
+            for name in ("one", "two")])
+        original = json.dumps(value)
+        projected = builder.verification_projection(value)
+        self.assertEqual(json.dumps(value), original)
+        self.assertEqual(len(projected["test_contexts"]), 1)
+        self.assertEqual(projected["public_projection"]["redacted_parameter_ids"], 2)
+        restored = builder.verification_rows(projected)
+        for row in restored:
+            self.assertEqual(row["test_context"], context)
+            self.assertEqual(row["passed"], 1)
+            self.assertEqual(row["evidence_hash"], "junit")
+            self.assertEqual(row["cases"][0]["status"], "passed")
+            self.assertTrue(row["cases"][0]["parameter_identity_redacted"])
+        self.assertEqual(restored[0]["cases"][0]["id"], restored[1]["cases"][0]["id"])
+        self.assertNotIn("/Users/", json.dumps(projected))
+        self.assertEqual(builder.verification_projection(projected), projected)
+
+    def test_public_projection_refuses_unknown_private_fields_and_context_collisions(self):
+        with self.assertRaisesRegex(ValueError, "Unexpected private field"):
+            builder.verification_projection(dict(runs=[dict(note="/Users/private/item", cases=[])]))
+        with self.assertRaisesRegex(ValueError, "share an identity"):
+            builder.verification_projection(dict(runs=[dict(cases=[], test_context=dict(sha256="same", files=files))
+                for files in (["a"], ["b"])]))
+        with self.assertRaisesRegex(ValueError, "reference differs"):
+            builder.verification_rows(dict(runs=[dict(test_context=dict(sha256="same", files_ref="same", file_count=2))],
+                test_contexts=dict(same=dict(sha256="same", files=["a"]))))
+
     def test_historical_diagnosis_keeps_original_source_and_cannot_be_current_review(self):
         run = dict(name="now", profile="main", source_match=True, recorded_at="now",
             cases=[dict(id="f[bad]", status="failed"), dict(id="f[good]", status="passed")])

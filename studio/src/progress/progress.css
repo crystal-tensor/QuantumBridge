@@ -7,5 +7,6 @@
 .band pre{max-width:100%;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font-size:12px;background:#eff3f5;padding:14px}
 .namespace-census th:last-child,.namespace-census td:last-child{display:table-cell}
 .namespace-census th:first-child{width:48%}.namespace-census th:nth-child(2){width:32%}.namespace-census th:nth-child(3){width:20%}
+@media(max-width:640px){#current-validation th:last-child,#current-validation td:last-child{display:table-cell}#current-validation th:first-child{width:20%}#current-validation th:nth-child(2){width:36%}#current-validation th:nth-child(3){width:44%}#current-validation td{overflow-wrap:anywhere;font-size:11px}}
 #test-collection th,#test-collection td{width:25%}
 #test-collection th:last-child,#test-collection td:last-child{display:table-cell}
