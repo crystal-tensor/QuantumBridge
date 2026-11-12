@@ -1,11 +1,13 @@
 import { domains, directions } from "../framework/data.js";
 import { resources } from "../framework/resources.js";
-import { statuses, statusNames, countStatuses, filterRows, aggregate, isStale, verificationWindow, currentVerification, decodeDataset } from "./model.js";
+import { statuses, statusNames, countStatuses, filterRows, aggregate, isStale, verificationWindow, currentVerification, decodeDataset, restoreManifest } from "./model.js?manifest=deferred-v1";
+import { verifiedJSON } from "./transport.js";
 
 const root = document.querySelector("#engineering-app");
 const params = new URLSearchParams(location.search);
 const state = { en: params.get("lang") === "en", tab: params.has("domain") ? "domains" : "overview", dataset: "target", query: "", family: "", module: "", status: "", kind: "", hardware: "", page: 0, evidencePage: 0, domain: params.get("domain") || "" };
 let manifest, history, datasets = {};
+let evidencePromise, viewGeneration = 0;
 const runtimeDetails = new Map();
 const t = (zh, en) => state.en ? en : zh;
 const tr = value => value[state.en ? "en" : "zh-CN"];
@@ -24,13 +26,17 @@ async function json(url) {
   return String(url).endsWith(".gz") ? new Response(response.body.pipeThrough(new DecompressionStream("gzip"))).json() : response.json();
 }
 async function verifiedDataset(descriptor) {
-  const response = await fetch(new URL(`./data/${descriptor.file}`, import.meta.url), { cache: "no-cache" });
-  if (!response.ok) throw new Error(`Inventory HTTP ${response.status}`);
-  const bytes = await response.arrayBuffer();
-  const hash = [...new Uint8Array(await crypto.subtle.digest("SHA-256", bytes))].map(x => x.toString(16).padStart(2, "0")).join("");
-  if (hash !== descriptor.sha256) throw new Error(t("清单完整性校验失败。", "Inventory integrity mismatch."));
-  const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"));
-  return decodeDataset(await new Response(stream).json());
+  return decodeDataset(await verifiedJSON(new URL(`./data/${descriptor.file}`, import.meta.url), descriptor));
+}
+async function loadEvidence() {
+  if (!manifest.deferred_evidence) return;
+  if (!evidencePromise) {
+    const bootstrap = manifest, descriptor = bootstrap.deferred_evidence;
+    evidencePromise = verifiedJSON(new URL(`./data/${descriptor.file}`, import.meta.url), descriptor)
+      .then(payload => { manifest = restoreManifest(bootstrap, payload); })
+      .catch(error => { evidencePromise = undefined; throw error; });
+  }
+  return evidencePromise;
 }
 async function loadDataset(id) {
   if (datasets[id]) return datasets[id];
@@ -64,9 +70,10 @@ function shell() {
 }
 function overview() {
   const target = manifest.datasets.find(x => x.id === "target");
+  const backlogCount = manifest.strict_backlog?.length ?? manifest.strict_backlog_count;
   return `<section class="metrics"><div><small>${t("目标 API 候选项", "Target API candidates")}</small><strong>${fmt(target.count)}</strong><span>${t("含类、方法与历史导出；待审计去重", "Classes, methods & exports; audit pending")}</span></div><div><small>${t("Native 定义项", "Native definitions")}</small><strong>${fmt(manifest.datasets.find(x => x.id === "native").count)}</strong><span>${manifest.source.python_files} ${t("个 Python 文件（含内部帮助函数）", "Python files (includes internal helpers)")}</span></div><div><small>${t("已按完整合同验收", "Full-contract accepted")}</small><strong>${target.status_counts.implemented || 0}</strong><span>${t("不能据此推断已有功能为零", "Not a claim that no functionality exists")}</span></div><div><small>${t("交付硬截止", "Delivery deadline")}</small><strong class="deadline">2027-05-11</strong><span>${t("六个月计划约束，非完成保证", "Six-month constraint, not a guarantee")}</span></div></section>
   <section class="band"><div class="section-heading"><h2>${t("目标模块验收分布", "Target-module acceptance")}</h2><button data-tab="functions">${t("查看逐函数清单", "Open function register")}${ic("arrow-up-right")}</button></div><div class="legend">${statuses.map(s => badge(s)).join("")}</div><div class="module-bars">${moduleRows()}</div></section>
-  <section class="band split"><div><h2>${t("当前阻塞与下一步", "Blockers & next acceptance")}</h2><ol class="blockers"><li>${t(`严格失败台账已登记 ${(manifest.strict_backlog || []).length} 项；局部通过不是最终修复验收，详见“测试与真机”。`, `Strict backlog: ${(manifest.strict_backlog || []).length} cases; a selected pass is not final resolution. See Tests & hardware.`)}</li><li>${t("TensorFlow 缓存图导数边界正在修复；原始失败、混合求导与资源门禁分别保留，不掩盖失败。", "TensorFlow cached derivative boundaries are under repair; original failures, mixed AD and resource gates remain separately visible.")}</li><li>${t("公共 API 别名、继承方法、动态扩展与 Native 对应关系尚未完成逐函数审核。", "Public aliases, inherited methods, dynamic extensions and Native mappings need per-function audit.")}</li><li>${t("首先封闭验收清单并修复严格失败，然后按模块推进；Studio 最后。", "Close the acceptance register and fix strict failures first, then advance modules. Studio last.")}</li></ol></div><div><h2>${t("快照身份", "Snapshot identity")}</h2><dl><dt>HEAD</dt><dd><code>${manifest.source.head}</code></dd><dt>${t("源码指纹", "Source fingerprint")}</dt><dd><code>${manifest.source.fingerprint}</code></dd><dt>${t("工作区", "Working tree")}</dt><dd>${t(manifest.source.dirty ? "存在未提交核心修改；不等于远端 main" : "核心源码已提交", manifest.source.dirty ? "Uncommitted core changes; not remote main" : "Core source committed")}</dd><dt>${t("解析错误", "Parse errors")}</dt><dd>${manifest.source.parse_errors.length}</dd><dt>${t("历史快照", "Prior snapshots")}</dt><dd>${history.length}</dd></dl></div></section>`;
+  <section class="band split"><div><h2>${t("当前阻塞与下一步", "Blockers & next acceptance")}</h2><ol class="blockers"><li>${t(`严格失败台账已登记 ${backlogCount} 项；局部通过不是最终修复验收，详见“测试与真机”。`, `Strict backlog: ${backlogCount} cases; a selected pass is not final resolution. See Tests & hardware.`)}</li><li>${t("TensorFlow 缓存图导数边界正在修复；原始失败、混合求导与资源门禁分别保留，不掩盖失败。", "TensorFlow cached derivative boundaries are under repair; original failures, mixed AD and resource gates remain separately visible.")}</li><li>${t("公共 API 别名、继承方法、动态扩展与 Native 对应关系尚未完成逐函数审核。", "Public aliases, inherited methods, dynamic extensions and Native mappings need per-function audit.")}</li><li>${t("首先封闭验收清单并修复严格失败，然后按模块推进；Studio 最后。", "Close the acceptance register and fix strict failures first, then advance modules. Studio last.")}</li></ol></div><div><h2>${t("快照身份", "Snapshot identity")}</h2><dl><dt>HEAD</dt><dd><code>${manifest.source.head}</code></dd><dt>${t("源码指纹", "Source fingerprint")}</dt><dd><code>${manifest.source.fingerprint}</code></dd><dt>${t("工作区", "Working tree")}</dt><dd>${t(manifest.source.dirty ? "存在未提交核心修改；不等于远端 main" : "核心源码已提交", manifest.source.dirty ? "Uncommitted core changes; not remote main" : "Core source committed")}</dd><dt>${t("解析错误", "Parse errors")}</dt><dd>${manifest.source.parse_errors.length}</dd><dt>${t("历史快照", "Prior snapshots")}</dt><dd>${history.length}</dd></dl></div></section>`;
 }
 function functionView() {
   const rows = datasets[state.dataset];
@@ -180,8 +187,22 @@ function milestoneView() {
   const milestones = [["2026-12-11", "封闭验收分母与稳定基线", "Close the census & stabilize baseline", "函数、继承方法、版本矩阵；修复全部严格失败；共享协议。", "Functions, inherited methods, version matrix; strict failures; shared protocols."], ["2027-01-11", "Qiskit 核心能力", "Qiskit core", "线路、算子、编译、序列化与 Primitives V2 完整合同。", "Circuit, operators, compilation, serialization and Primitives V2 contracts."], ["2027-02-11", "PennyLane 核心融合", "PennyLane core fusion", "QNode、Device、变换、噪声、多框架一二阶微分。", "QNode, Device, transforms, noise, multi-framework first/second derivatives."], ["2027-03-11", "生态与十九方向", "Ecosystem & 19 directions", "算法、化学、金融、优化、机器学习及承诺生态。", "Algorithms, chemistry, finance, optimization, ML and committed ecosystem."], ["2027-04-11", "夸父与组合验证", "Quafu & composition", "真机协议、任务收据、组合工作流、差分和压力测试。", "Hardware protocol, receipts, composed workflows, differential and stress tests."], ["2027-05-11", "交付与完整验收", "Delivery & full acceptance", "完整双版本与 SDK-free 门禁、文档、Notebook、线上一致性；Studio 最后。", "Dual-version and SDK-free gates, docs, notebooks, published identity. Studio last."]];
   return `<div class="notice">${ic("calendar-clock")}<p>${t("2026-11-11 → 2027-05-11。这是拟定里程碑，不代表工作已启动或六个月完成已得到保证。首周必须核算关键路径和资源；预测超期立即披露，不自行延期或缩小目标。", "2026-11-11 → 2027-05-11. Proposed milestones, not proof of execution or a six-month guarantee. Audit the critical path and resources in week one; surface delays without silently extending or shrinking scope.")}</p></div><ol class="timeline">${milestones.map(([due, zh, en, detail, detailEn], i) => `<li><div class="milestone">${i + 1}</div><div><time>${due}</time><h2>${t(zh, en)}</h2><p>${t(detail, detailEn)}</p></div><span class="planned">${t("待验收", "Pending acceptance")}</span></li>`).join("")}</ol><section class="band"><h2>${t("每个函数的验收门槛", "Per-function acceptance gates")}</h2><div class="policy-list">${statuses.map(s => `<div>${badge(s)}<p>${esc(manifest.status_policy[s])}</p></div>`).join("")}</div><h2>${t("清单尚未封闭的原因", "Open census boundaries")}</h2><ul>${manifest.census_limits.map(x => `<li>${esc(x)}</li>`).join("")}</ul><p><a href="./downloads/quantumbridge-six-month-goal.txt" download>${t("下载完整 /goal 提示词", "Download the full /goal prompt")}</a></p></section><section class="band"><h2>${t("参考版本与可选包", "Reference profiles & optional packages")}</h2>${manifest.profiles.map(p => `<details><summary>${esc(p.name)} · ${p.packages.filter(x => x.available).length}/${p.packages.length} ${t("可用包", "available packages")}</summary><ul>${p.packages.map(x => `<li><code>${esc(x.name)}</code> ${esc(x.version || t("未安装，仍保留在验收范围", "Not installed; remains in scope"))}</li>`).join("")}</ul></details>`).join("")}</section>`;
 }
-function renderView() {
+async function renderView() {
+  const generation = ++viewGeneration, tab = state.tab;
   root.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.tab === state.tab)));
+  if (["evidence", "plan"].includes(tab) && manifest.deferred_evidence) {
+    root.setAttribute("aria-busy", "true");
+    root.querySelector("#view").innerHTML = `<p role="status">${t("正在读取完整证据…", "Loading complete evidence…")}</p>`;
+    try { await loadEvidence(); }
+    catch (error) {
+      if (generation !== viewGeneration) return;
+      root.setAttribute("aria-busy", "false");
+      root.querySelector("#view").innerHTML = `<p role="alert">${t("完整证据加载失败。", "Unable to load complete evidence.")} ${esc(error.message)}</p><button class="icon-button" data-retry title="${t("重试加载", "Retry loading")}" aria-label="${t("重试加载", "Retry loading")}">${ic("rotate-cw")}</button>`;
+      icons(); return;
+    }
+    if (generation !== viewGeneration) return;
+  }
+  root.setAttribute("aria-busy", "false");
   root.querySelector("#view").innerHTML = ({ overview, functions: functionView, domains: domainView, evidence: evidenceView, plan: planView }[state.tab])()+ (state.tab === "plan" ? runtimeAuditView()+namespaceAuditView() : state.tab === "evidence" ? diagnosticView()+contractMigrationView() : "");
   const compiler = root.querySelector("#compiler-execution");
   const compilerRuns = (manifest.verification || []).filter(row => row.name.startsWith("compiler-matrix-"));
@@ -224,6 +245,7 @@ root.addEventListener("click", async event => {
   if (!button) return;
   if (button.hasAttribute("data-lang")) { state.en = !state.en; const u = new URL(location); u.searchParams.set("lang", state.en ? "en" : "zh"); historyReplace(u); shell(); }
   else if (button.dataset.tab) { state.tab = button.dataset.tab; renderView(); }
+  else if (button.hasAttribute("data-retry")) renderView();
   else if (button.dataset.family) { state.family = button.dataset.family; state.module = ""; state.tab = "functions"; state.page = 0; state.dataset = "target"; renderView(); }
   else if (button.dataset.dataset) { button.disabled = true; root.setAttribute("aria-busy", "true"); try { await loadDataset(button.dataset.dataset); state.dataset = button.dataset.dataset; state.family = ""; state.module = ""; state.page = 0; renderView(); } catch (e) { alert(e.message); } finally { button.disabled = false; root.setAttribute("aria-busy", "false"); } }
   else if (button.dataset.detail) detail(button.dataset.detail);
@@ -238,7 +260,7 @@ function historyReplace(url) { window.history.replaceState(null, "", url); }
 root.addEventListener("change", event => { const field = event.target.dataset.filter; if (field) { state[field] = event.target.value; if (field === "family") state.module = ""; state.page = 0; renderView(); } if (event.target.id === "domain") { state.domain = event.target.value; renderView(); } });
 root.addEventListener("input", event => { if (event.target.id !== "query") return; const selection = event.target.selectionStart; state.query = event.target.value; state.page = 0; renderView(); const input = root.querySelector("#query"); input.focus(); input.setSelectionRange(selection, selection); });
 try {
-  manifest = await json(new URL("./data/manifest.json.gz", import.meta.url));
+  manifest = await json(new URL("./data/manifest-browser.json.gz", import.meta.url));
   history = await json(new URL("./data/history.json", import.meta.url));
   await loadDataset("target"); shell();
   setInterval(() => { const stale = isStale(manifest.generated_at); if (stale && !root.querySelector(".snapshot .stale")) shell(); }, 60000);
