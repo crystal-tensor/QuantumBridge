@@ -16,7 +16,7 @@ export async function verifiedBytes(url, descriptor, { fetcher = globalThis.fetc
   let ranged = false;
   try {
     const head = await fetcher(target, { ...options, method: "HEAD" });
-    if (head.ok) {
+    if (head.ok && (!head.headers.get("content-encoding") || head.headers.get("content-encoding").toLowerCase() === "identity")) {
       const observed = byteLength(head.headers.get("content-length"));
       if (size !== null && observed !== null && size !== observed) throw new Error("Artifact size mismatch");
       size ??= observed;
