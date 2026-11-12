@@ -39,11 +39,29 @@ export function currentVerification(manifest) {
   const failures = Object.fromEntries(["main", "alternate"].map(profile => [profile,
     [...new Set(rows.filter(row => row.profile === profile).flatMap(row => row.cases.filter(item => item.status === "failed").map(item => item.id)))].sort()]));
   const review = manifest.goal_execution?.latest_strict_review;
+  const reviewBatch = Object.values(manifest.goal_execution || {}).find(value =>
+    value?.checkpoint === review?.checkpoint && value?.source_fingerprint === manifest.source.fingerprint &&
+    Array.isArray(value.profiles) && ["main", "alternate"].every(profile =>
+      Array.isArray(value.profiles.find(row => row.profile === profile)?.current_selected_unique_failure_ids)));
+  const reviewedFailures = Object.fromEntries(["main", "alternate"].map(profile => [profile,
+    [...new Set(reviewBatch?.profiles.find(row => row.profile === profile)?.current_selected_unique_failure_ids || [])].sort()]));
   const reviewMatches = review?.source_fingerprint === manifest.source.fingerprint &&
-    Object.values(failures).every(ids => ids.length === review.current_selected_unique_failures_each_profile);
+    Object.entries(failures).every(([profile, ids]) => ids.length === review.current_selected_unique_failures_each_profile &&
+      ids.length === reviewedFailures[profile].length && ids.every((id, index) => id === reviewedFailures[profile][index]));
   const batch = manifest.goal_execution?.latest_verification_batch;
   const batchMatches = (batch?.source_fingerprint || batch?.native_fingerprint) === manifest.source.fingerprint;
-  return { rows, failures, review, reviewMatches, batch, batchMatches };
+  const batches = [batch, reviewBatch].filter((value, index, all) => value &&
+    all.findIndex(other => other?.checkpoint === value.checkpoint) === index);
+  const reports = batches.flatMap(value => [
+    ...(value.profiles || []).flatMap(profile => Object.entries(profile.reports || {}).map(([scope, report]) =>
+      ({profile:profile.profile,scope,report,checkpoint:value.checkpoint}))),
+    ...(value.source_bound_regressions || []).map(report =>
+      ({profile:report.profile,scope:report.stage,report,checkpoint:value.checkpoint})),
+  ]).flatMap(item => {
+    const proof = rows.find(row => row.profile === item.profile && row.evidence_hash === item.report.evidence_hash);
+    return proof ? [{...item,recordedAt:proof.recorded_at}] : [];
+  });
+  return { rows, failures, review, reviewMatches, reviewedFailures, reviewBatch, reports, batch, batchMatches };
 }
 export function aggregate(rows) {
   const groups = new Map();
