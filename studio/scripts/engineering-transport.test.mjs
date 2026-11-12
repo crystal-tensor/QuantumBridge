@@ -7,13 +7,13 @@ import { verifiedBytes, verifiedJSON } from "../src/progress/transport.js";
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const source = Buffer.from("0123456789abcdefghijklmnopqrstuvwxyz");
 const descriptor = { sha256: sha(source), bytes: source.length };
-function fixture({ bytes = source, headStatus = 200, range = true, headSize = bytes.length, headThrows = false, corrupt = false, status = 200, delay = false, badHeader = false, short = false, rangeStatus = 206 } = {}) {
+function fixture({ bytes = source, headStatus = 200, range = true, headSize = bytes.length, headEncoding, headThrows = false, corrupt = false, status = 200, delay = false, badHeader = false, short = false, rangeStatus = 206 } = {}) {
   const calls = [], state = { active: 0, maximum: 0, aborted: 0 };
   const fetcher = async (url, options) => {
     calls.push({ url: String(url), ...options });
     if (options.method === "HEAD") {
       if (headThrows) throw new Error("HEAD unavailable");
-      return new Response(null, { status: headStatus, headers: { ...(headSize == null ? {} : { "content-length": String(headSize) }), ...(range ? { "accept-ranges": "bytes" } : {}) } });
+      return new Response(null, { status: headStatus, headers: { ...(headSize == null ? {} : { "content-length": String(headSize) }), ...(range ? { "accept-ranges": "bytes" } : {}), ...(headEncoding ? { "content-encoding": headEncoding } : {}) } });
     }
     if (!options.headers?.Range) return new Response(bytes, { status });
     const [, begin, finish] = options.headers.Range.match(/^bytes=(\d+)-(\d+)$/);
@@ -58,6 +58,13 @@ test("small artifacts use one body request even when ranges are supported", asyn
   await verifiedBytes("https://example.test/data", descriptor, { ...env, chunkBytes: source.length });
   assert.equal(env.calls.length, 2);
   assert.equal(env.calls.filter(row => row.headers?.Range).length, 0);
+});
+test("HTTP content encoding lengths do not masquerade as decoded artifact lengths", async () => {
+  const env = fixture({ headEncoding: "gzip", headSize: 12 });
+  assert.deepEqual(Buffer.from(await verifiedBytes("https://example.test/data", descriptor, { ...env, chunkBytes: 3 })), source);
+  assert.equal(env.calls.filter(row => row.headers?.Range).length, 0);
+  assert.equal(env.calls.length, 2);
+  await assert.rejects(verifiedBytes("https://example.test/data", { ...descriptor, sha256: "0".repeat(64) }, { ...fixture({ headEncoding: "gzip", headSize: 12 }), chunkBytes: 3 }), /integrity mismatch/);
 });
 for (const [options, message] of [
   [{ headSize: 1 }, /size mismatch/], [{ corrupt: true }, /integrity mismatch/],

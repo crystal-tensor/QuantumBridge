@@ -1,7 +1,7 @@
 import { domains, directions } from "../framework/data.js";
 import { resources } from "../framework/resources.js";
 import { statuses, statusNames, countStatuses, filterRows, aggregate, isStale, verificationWindow, currentVerification, decodeDataset, restoreManifest } from "./model.js?manifest=deferred-v1";
-import { verifiedJSON } from "./transport.js";
+import { verifiedJSON } from "./transport.js?http=identity-aware-v1";
 
 const root = document.querySelector("#engineering-app");
 const params = new URLSearchParams(location.search);
