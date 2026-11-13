@@ -1,14 +1,20 @@
 import assert from "node:assert/strict";
-import { mkdir } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 import { createPreviewServer } from "./serve.mjs";
+import { abnormalObservations, currentVerification } from "../src/progress/model.js";
+
+const snapshot=JSON.parse(await readFile(new URL("../src/progress/data/manifest.json",import.meta.url),"utf8"));
+const core=currentVerification(snapshot);
+const expectedMigrations=new Map(snapshot.verification.filter(run=>run.source_match)
+  .flatMap(run=>run.approved_test_migrations||[]).map(row=>[row.file+":"+row.after_sha256,row]));
 
 // A short-lived OS-assigned port is QA-only. Owner-facing delivery stays on Pages.
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE ? pathToFileURL(process.env.PLAYWRIGHT_MODULE).href : "playwright");
 const server=process.env.QB_QA_BASE_URL ? null : createPreviewServer();
 if(server) await new Promise(resolve=>server.listen(0,"127.0.0.1",resolve));
 const base=process.env.QB_QA_BASE_URL?.replace(/\/$/,"") || `http://127.0.0.1:${server.address().port}`;
-let browser;
+let browser, activePage, activeViewport, activeNetwork, activeTimings;
 const output=process.env.QB_QA_OUTPUT || "/tmp/qb-engineering-qa";
 await mkdir(output,{recursive:true});
 const results=[];
@@ -16,14 +22,30 @@ try{
   browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{}),...(process.env.QB_QA_PROXY?{proxy:{server:process.env.QB_QA_PROXY,bypass:"127.0.0.1,localhost"}}:{})});
   for(const viewport of [{width:1440,height:1000},{width:390,height:844}]){
     const page=await browser.newPage({viewport});const errors=[],requests=[];page.on("pageerror",e=>errors.push(e.message));page.on("request",r=>requests.push(new URL(r.url()).pathname));
+    activePage=page;activeViewport=viewport;activeNetwork=[];
+    const network=activeNetwork,timings=activeTimings={};
+    page.on("response",response=>{
+      if(!new URL(response.url()).pathname.startsWith("/QuantumBridge/src/progress/")&&!new URL(response.url()).pathname.startsWith("/src/progress/"))return;
+      const headers=response.headers();
+      network.push({at:Date.now(),url:response.url(),method:response.request().method(),range:response.request().headers().range,
+        status:response.status(),headers:Object.fromEntries(["content-length","content-range","content-encoding","accept-ranges","etag","age"].filter(key=>headers[key]!==undefined).map(key=>[key,headers[key]]))});
+    });
     await page.goto(`${base}/framework.html?category=finance&lang=zh`);
+    let started=Date.now();
     await page.getByRole("link",{name:"工程进展",exact:true}).click();
     await page.getByRole("heading",{name:"工程进展",exact:true}).waitFor();
+    timings.initialHeadingMs=Date.now()-started;
     assert.ok(requests.some(url=>url.endsWith("/manifest-browser.json.gz")));
     assert.equal(requests.some(url=>url.endsWith("/manifest-evidence.json.gz")),false);
     assert.equal(requests.some(url=>url.endsWith("/manifest.json.gz")),false);
     assert.equal(requests.some(url=>url.endsWith("/manifest.json")),false);
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+    const skip=page.getByRole("link",{name:"跳到工程清单",exact:true});
+    await page.locator(".identity").focus();
+    await page.keyboard.press("Shift+Tab");
+    assert.equal(await skip.evaluate(element=>element.matches(":focus-visible")),true);
+    assert.ok(await skip.evaluate(element=>element.getBoundingClientRect().top>=0));
+    await page.getByRole("heading",{name:"工程进展",exact:true}).click();
     await page.getByRole("button",{name:"总览",exact:true}).click();
     await page.screenshot({path:`${output}/overview-${viewport.width}.png`,fullPage:true});
     await page.getByRole("button",{name:"函数清单",exact:true}).click();
@@ -34,13 +56,16 @@ try{
     assert.equal(await page.locator("dialog[open]").count(),1);
     await page.screenshot({path:`${output}/function-${viewport.width}.png`,fullPage:false});
     await page.getByRole("button",{name:"关闭",exact:true}).click();
+    assert.equal(await page.locator("tbody .name-link").first().evaluate(element=>element===document.activeElement),true);
     await page.getByRole("button",{name:"Native 源码",exact:true}).click();
     await page.locator('[data-dataset="native"][aria-pressed="true"]').waitFor();
     await page.getByRole("button",{name:"重置筛选",exact:true}).click();
     await page.locator("[data-filter=status]").selectOption("not_implemented");
     assert.ok((await page.locator("tbody").innerText()).includes("ParityMapper.map"));
+    started=Date.now();
     await page.getByRole("button",{name:"导出与继承",exact:true}).click();
     await page.locator('[data-dataset="runtime"][aria-pressed="true"]').waitFor({timeout:120000});
+    timings.runtimeInventoryMs=Date.now()-started;
     await page.getByRole("button",{name:"重置筛选",exact:true}).click();
     await page.getByRole("searchbox",{name:"搜索函数"}).fill("pennylane.RX.matrix");
     assert.ok(await page.locator("tbody .name-link").count()>0);
@@ -53,9 +78,12 @@ try{
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
     await page.screenshot({path:`${output}/runtime-inheritance-${viewport.width}.png`,fullPage:false});
     await page.getByRole("button",{name:"关闭",exact:true}).click();
+    assert.equal(await page.locator("tbody .name-link").first().evaluate(element=>element===document.activeElement),true);
+    started=Date.now();
     await page.getByRole("button",{name:"测试与真机",exact:true}).click();
     const collectionSection=page.locator("#test-collection");
     await collectionSection.getByRole("heading",{name:"测试收集：不是测试通过",exact:true}).waitFor();
+    timings.completeEvidenceMs=Date.now()-started;
     assert.ok(requests.some(url=>url.endsWith("/manifest-evidence.json.gz")));
     assert.equal(requests.some(url=>url.endsWith("/manifest.json.gz")),false);
     assert.equal(await collectionSection.locator("tbody tr").count(),2);
@@ -69,10 +97,10 @@ try{
     assert.ok((await compilerSection.innerText()).includes("140"));
     assert.ok((await compilerSection.innerText()).includes("保留旧快照的指纹和测试时间"));
     const currentValidation=page.locator("#current-validation");
-    assert.ok((await currentValidation.innerText()).includes("428ec50f"));
-    assert.ok((await currentValidation.innerText()).includes("25 项已知严格失败"));
-    assert.ok((await currentValidation.innerText()).includes("安装声明与清单回归"));
-    assert.ok((await currentValidation.innerText()).includes("实际 Qiskit 参考"));
+    assert.ok((await currentValidation.innerText()).includes(snapshot.source.fingerprint));
+    assert.ok((await currentValidation.innerText()).includes(core.batch.checkpoint));
+    if(core.reviewMatches) assert.ok((await currentValidation.innerText()).includes(`${core.review.current_selected_unique_failures_each_profile} 项已知严格失败`));
+    else assert.ok((await currentValidation.innerText()).includes("严格失败身份待重新核验"));
     assert.ok((await currentValidation.innerText()).includes("当前冻结源码"));
     await currentValidation.locator("#historical-validation summary").click();
     assert.ok((await currentValidation.locator("#historical-validation").innerText()).includes("85fe4e23"));
@@ -86,18 +114,27 @@ try{
     await page.getByRole("button",{name:"上一批记录",exact:true}).click();
     await currentValidation.scrollIntoViewIfNeeded();
     await page.screenshot({path:`${output}/current-validation-${viewport.width}.png`,fullPage:false});
+    await currentValidation.getByRole("heading",{name:"本地融合验证与远端 CI 分开验收",exact:true}).scrollIntoViewIfNeeded();
+    await page.screenshot({path:`${output}/current-source-header-${viewport.width}.png`,fullPage:false});
     await compilerSection.locator("summary").click();
     assert.ok((await compilerSection.innerText()).includes("quantumbridge.mps-2-best"));
     await collectionSection.scrollIntoViewIfNeeded();
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
     await page.screenshot({path:`${output}/test-collection-${viewport.width}.png`,fullPage:false});
     const processSection=page.locator("section.band").filter({has:page.getByRole("heading",{name:"异常进程：不计入验证",exact:true})});
-    assert.equal(await processSection.locator("details").count(),3);
+    assert.equal(await processSection.locator("details").count(),abnormalObservations(snapshot.goal_execution).length);
     for(const summary of await processSection.locator("summary").all()) await summary.click();
     assert.ok((await processSection.innerText()).includes("SIGSEGV (-11)"));
     assert.ok((await processSection.innerText()).includes("runtime-census-combined"));
     assert.ok((await processSection.innerText()).includes("采集输出 SHA-256"));
+    for(const row of abnormalObservations(snapshot.goal_execution)) {
+      if(row.crash_report_sha256) assert.ok((await processSection.innerText()).includes(row.crash_report_sha256));
+    }
     assert.equal((await processSection.innerText()).includes("undefined"),false);
+    await processSection.screenshot({path:`${output}/abnormal-long-hashes-${viewport.width}.png`});
+    await processSection.locator("details").last().locator("summary").scrollIntoViewIfNeeded();
+    assert.equal(await skip.evaluate(element=>element===document.activeElement),false);
+    await page.screenshot({path:`${output}/abnormal-viewport-${viewport.width}.png`,fullPage:false});
     await processSection.getByRole("link",{name:"Arrow 版本对照：24.0.0 / 25.0.1",exact:true}).click();
     await page.locator("#diag-arrow_coexistence_dependency_review").waitFor();
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
@@ -105,7 +142,7 @@ try{
     assert.ok((await page.locator("#view").innerText()).includes("INCONCLUSIVE"));
     await page.getByRole("heading",{name:"本目标冻结源码验证",exact:true}).waitFor();
     const diagnostics=page.locator("section.band").filter({has:page.getByRole("heading",{name:"诊断对照：不计入验收通过",exact:true})});
-    assert.equal(await diagnostics.locator("details").count(),13);
+    assert.equal(await diagnostics.locator("details").count(),snapshot.diagnostic_observations.length);
     const diagnosticDownload=page.waitForEvent("download");
     await diagnostics.getByRole("link",{name:"最小 TensorFlow 对照代码",exact:true}).click();
     assert.equal((await diagnosticDownload).suggestedFilename(),"tensorflow_cached_cos_probe.py");
@@ -120,9 +157,9 @@ try{
     await diagnostics.locator("details").first().locator("summary").click();
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
     const migrationSection=page.locator("section.band").filter({has:page.getByRole("heading",{name:"经 owner 明确批准的合同迁移",exact:true})});
-    assert.equal(await migrationSection.locator("details").count(),7);
+    assert.equal(await migrationSection.locator("details").count(),expectedMigrations.size);
     for(const summary of await migrationSection.locator("details summary").all()) await summary.click();
-    assert.equal(await migrationSection.locator("li").count(),23);
+    assert.equal(await migrationSection.locator("li").count(),[...expectedMigrations.values()].reduce((sum,row)=>sum+row.case_ids.length,0));
     assert.ok((await migrationSection.innerText()).includes("test_managed_mps_queries_same_parent_cache_tiny_hessian_cap"));
     assert.ok((await migrationSection.innerText()).includes("不计入"));
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
@@ -176,8 +213,16 @@ try{
     await page.getByRole("link",{name:/返回.*首页/}).first().click();
     await page.getByRole("heading",{name:"QuantumBridge 应用框架",exact:true}).waitFor();
     assert.deepEqual(errors,[]);
-    results.push({viewport,homePageHome:true,ecosystemEntrance:true,functionDetail:true,runtimeInheritanceDetail:true,casePageHome:true,consoleErrors:errors});
+    results.push({viewport,homePageHome:true,ecosystemEntrance:true,functionDetail:true,runtimeInheritanceDetail:true,casePageHome:true,consoleErrors:errors,timings});
+    await writeFile(`${output}/network-${viewport.width}.json`,JSON.stringify(network,null,2)+"\n");
     await page.close();
   }
   console.log(JSON.stringify({results,screenshots:output},null,2));
+}catch(error){
+  if(activePage&&!activePage.isClosed()){
+    await activePage.screenshot({path:`${output}/failure-${activeViewport.width}.png`,fullPage:false}).catch(()=>{});
+    const body=await activePage.locator("body").innerText({timeout:5000}).catch(()=>"Unavailable");
+    await writeFile(`${output}/failure.json`,JSON.stringify({error:error.message,viewport:activeViewport,url:activePage.url(),body,network:activeNetwork,timings:activeTimings},null,2)+"\n");
+  }
+  throw error;
 }finally{await browser?.close();if(server) await new Promise(resolve=>server.close(resolve));}

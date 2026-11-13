@@ -53,8 +53,16 @@ export function verificationWindow(rows, page = 0, size = 20) {
 }
 export function currentVerification(manifest) {
   const rows = (manifest.verification || []).filter(row => row.source_match && row.environment_validation?.verified);
+  const latest = new Map();
+  for (const row of rows) for (const item of row.cases) {
+    const key = JSON.stringify([row.profile, item.id]);
+    const prior = latest.get(key);
+    if (!prior || Date.parse(row.recorded_at) >= Date.parse(prior.recorded_at)) {
+      latest.set(key, { ...item, profile: row.profile, recorded_at: row.recorded_at });
+    }
+  }
   const failures = Object.fromEntries(["main", "alternate"].map(profile => [profile,
-    [...new Set(rows.filter(row => row.profile === profile).flatMap(row => row.cases.filter(item => item.status === "failed").map(item => item.id)))].sort()]));
+    [...latest.values()].filter(item => item.profile === profile && item.status === "failed").map(item => item.id).sort()]));
   const review = manifest.goal_execution?.latest_strict_review;
   const reviewBatch = Object.values(manifest.goal_execution || {}).find(value =>
     value?.checkpoint === review?.checkpoint && value?.source_fingerprint === manifest.source.fingerprint &&
@@ -65,11 +73,12 @@ export function currentVerification(manifest) {
   const reviewMatches = review?.source_fingerprint === manifest.source.fingerprint &&
     Object.entries(failures).every(([profile, ids]) => ids.length === review.current_selected_unique_failures_each_profile &&
       ids.length === reviewedFailures[profile].length && ids.every((id, index) => id === reviewedFailures[profile][index]));
-  const batch = manifest.goal_execution?.latest_verification_batch;
+  const coreKey = manifest.goal_execution?.latest_core_validation_key;
+  const batch = coreKey ? manifest.goal_execution[coreKey] : manifest.goal_execution?.latest_verification_batch;
   const batchMatches = (batch?.source_fingerprint || batch?.native_fingerprint) === manifest.source.fingerprint;
   const batches = [batch, reviewBatch].filter((value, index, all) => value &&
     all.findIndex(other => other?.checkpoint === value.checkpoint) === index);
-  const reports = batches.flatMap(value => [
+  let reports = batches.flatMap(value => [
     ...(value.profiles || []).flatMap(profile => Object.entries(profile.reports || {}).map(([scope, report]) =>
       ({profile:profile.profile,scope,report,checkpoint:value.checkpoint}))),
     ...(value.source_bound_regressions || []).map(report =>
@@ -78,7 +87,19 @@ export function currentVerification(manifest) {
     const proof = rows.find(row => row.profile === item.profile && row.evidence_hash === item.report.evidence_hash);
     return proof ? [{...item,recordedAt:proof.recorded_at}] : [];
   });
+  if (batchMatches && coreKey && !reports.length && batch.source_manifest_sha256) {
+    reports = rows.filter(row => row.source_manifest_sha256 === batch.source_manifest_sha256).map(row =>
+      ({ profile: row.profile, scope: row.name, report: row, checkpoint: batch.checkpoint, recordedAt: row.recorded_at }));
+  }
   return { rows, failures, review, reviewMatches, reviewedFailures, reviewBatch, reports, batch, batchMatches };
+}
+export function abnormalObservations(goal = {}) {
+  const observations = new Map();
+  for (const value of Object.values(goal)) for (const row of value?.abnormal_process_observations || []) {
+    const key = row.crash_report_sha256 || JSON.stringify([row.profile, row.selection, row.recorded_at]);
+    if (!observations.has(key)) observations.set(key, row);
+  }
+  return [...observations.values()];
 }
 export function aggregate(rows) {
   const groups = new Map();

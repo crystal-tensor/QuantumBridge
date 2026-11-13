@@ -108,6 +108,49 @@
       "default_qpy_behavior_changed": false,
       "production_resource_caps_changed": false,
       "migration_scope": "Only qpy_loads as legacy_loads becomes legacy_qpy_loads as legacy_loads in the one parameterized test body."
+    },
+    {
+      "file": "tests/interfaces/test_native_tf_lowered_query_sequences.py",
+      "before_sha256": "839d6eb25b22b4d192249b2d9be09f631b8fc82056ed79f7af788aa60329c8fc",
+      "after_sha256": "3490572afc28be5ba4ebe6983cdfa6c7ddecf8d94ad7ca5db7befd2dd83fe415",
+      "owner_approved": true,
+      "approval_summary": "Owner explicitly approved exactly these five constructor-memory cases on 2026-11-13. Verify real parameter-owner leases and final alias release; preserve every existing mathematical input/tolerance, work count, parent cap and Hessian refusal. Direct TensorFlow cases retain their zero-byte assertion. No production code or resource policy changes.",
+      "case_ids": [
+        "tests.interfaces.test_native_tf_lowered_query_sequences::test_actual_lowered_query_chain_charges_constructor_and_runtime_separately[False-remapped_native]",
+        "tests.interfaces.test_native_tf_lowered_query_sequences::test_actual_lowered_query_chain_charges_constructor_and_runtime_separately[False-mixed_native]",
+        "tests.interfaces.test_native_tf_lowered_query_sequences::test_actual_lowered_query_chain_charges_constructor_and_runtime_separately[True-remapped_native]",
+        "tests.interfaces.test_native_tf_lowered_query_sequences::test_actual_lowered_query_chain_charges_constructor_and_runtime_separately[True-mixed_native]"
+      ],
+      "math_tolerances_changed": false,
+      "production_identity_policy_changed": false,
+      "production_resource_accounting_changed": false
+    },
+    {
+      "file": "tests/interfaces/test_native_tf_managed_scope_lifecycle.py",
+      "before_sha256": "b0f482be4d625b6b916841cc79d302ac2e306d30c6fd111237e9fb948a161c8e",
+      "after_sha256": "481d2fa12b5a6408e6e07d592d900c6e2b3318b98e1cdad531d16d2d3bf01050",
+      "owner_approved": true,
+      "approval_summary": "Owner explicitly approved exactly these five constructor-memory cases on 2026-11-13. Verify real parameter-owner leases and final alias release; preserve every existing mathematical input/tolerance, work count, parent cap and Hessian refusal. Direct TensorFlow cases retain their zero-byte assertion. No production code or resource policy changes.",
+      "case_ids": [
+        "tests.interfaces.test_native_tf_managed_scope_lifecycle::test_handle_does_not_capture_an_exited_scope_for_future_calls"
+      ],
+      "math_tolerances_changed": false,
+      "production_identity_policy_changed": false,
+      "production_resource_accounting_changed": false
+    },
+    {
+      "file": "tests/derivative_execution/test_jax_compiled_status.py",
+      "before_sha256": "71f243ae506ceff37b35294f360997b2e3b7abe73882ba414e7a821cb5bc6ebb",
+      "after_sha256": "7cacebbb46cd885d1524457cb48aed1c353d633165a24bb62dfe206df6df9df0",
+      "owner_approved": true,
+      "approval_summary": "Owner explicitly approved only this JAX shared-budget contract on 2026-11-13: one-byte budget must produce resource status 3 before Native state allocation or sampling, and a fresh normally budgeted invocation must recover. Keep the original [.3] input, all other test bodies, existing mathematical tolerances, work limits and higher-order boundaries unchanged.",
+      "case_ids": [
+        "tests.derivative_execution.test_jax_compiled_status::test_ordinary_jit_rejects_unimplemented_shared_account_instead_of_ignoring_limit"
+      ],
+      "math_tolerances_changed": false,
+      "production_resource_caps_changed": false,
+      "migration_scope": "Only the owner-authorized shared-account refusal body; no broadcast refusal or other pending assertion migrated.",
+      "new_recovery_tolerance": "2e-6 absolute, rtol=0; this old refusal case had no numerical tolerance to relax"
     }
   ]
 }

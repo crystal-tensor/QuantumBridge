@@ -26,13 +26,18 @@ REVIEWED_MISSING = {"quantumbridge.chemistry.mappings.ParityMapper.map",
                     "quantumbridge.chemistry.mappings.BravyiKitaevMapper.map",
                     "quantumbridge.visualization.mpl_drawer.draw_mpl"}
 
+_archive_spec = importlib.util.spec_from_file_location("qb_verification_archive",
+    Path(__file__).with_name("verification_archive.py"))
+_archive = importlib.util.module_from_spec(_archive_spec)
+_archive_spec.loader.exec_module(_archive)
+
 
 def digest(data):
     return hashlib.sha256(data).hexdigest()
 
 
 def load_json(path):
-    return json.loads(path.read_text(encoding="utf-8"))
+    return _archive.load(path)
 
 
 def dump(path, value):
@@ -621,6 +626,7 @@ if __name__ == "__main__":
         source = ROOT / "docs/engineering/verification_runs.json"
         result = verification_projection(load_json(source))
         result["public_projection"]["private_ledger_sha256"] = digest(source.read_bytes())
+        result["public_projection"]["private_ledger_original_sha256"] = digest(_archive.read_bytes(source))
         dump(args.project_verification, result)
     elif args.project_browser_manifest:
         bootstrap = browser_manifest_assets(load_json(DATA / "manifest.json"), DATA)

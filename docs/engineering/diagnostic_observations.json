@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "source_fingerprint": "73c51f7a960ef7cffe60293f473f64e64a18bd2fddee494e2a34ac35ec39fd45",
+  "source_fingerprint": "428ec50fa4716c567ec27e85ad79b0405672a61d13a832c1b8fb2a2cf6452055",
   "observations": [
     {
       "id": "tf_cached_cos-main",
@@ -2470,6 +2470,44 @@
         "threshold": 2e-14,
         "threshold_changed": false,
         "scope": "Exact dyadic frame/algebraic eigenvalue powers. Actual SDK exceeds the new strict threshold; this remains a strict failure, not an accepted reference or Native regression."
+      }
+    },
+    {
+      "id": "symbolic-tensor-jvp-selection-main",
+      "kind": "tf_symbolic_jvp_causal_diagnostic",
+      "profile": "main",
+      "source_fingerprint": "428ec50fa4716c567ec27e85ad79b0405672a61d13a832c1b8fb2a2cf6452055",
+      "recorded_at": "2026-11-12T23:15:54.070113+00:00",
+      "evidence_hash": "987a8482f116276f866db1c28b28ba73e1e11934f0a8ea250bf65ae7a3137dd2",
+      "scope": "diagnostic_observation_not_function_or_test_acceptance",
+      "report": {
+        "checkpoint": "goal-tf-symbolic-jvp-90kXot",
+        "source_fingerprint": "428ec50fa4716c567ec27e85ad79b0405672a61d13a832c1b8fb2a2cf6452055",
+        "classification": "REJECTED_INCOMPLETE_CAUSAL_DIAGNOSTIC_NOT_NATIVE_ACCEPTANCE",
+        "baseline_report_sha256": "6ece5e97ad0b7963d167b5a2c4e3179d5cf62898134e3755fb14d5264025b5ba",
+        "baseline_passed_combinations": 14,
+        "baseline_failed_combinations": 2,
+        "invalid_initial_harness": {
+          "reason": "The temporary function name shadowed its record-module global.",
+          "report_sha256": "00ac50f681e8baf72bf4f52063e6ea14f84498d3c4b021f8c13fe53e180d1f44",
+          "mathematical_or_framework_conclusion": false
+        },
+        "corrected_candidate": {
+          "terminal_sha256": "5b4a6cc3ef3bdb64df3d6f619b19e607dfc840f1c30afd17c287475a59324c62",
+          "elapsed_seconds": 180.1533260345459,
+          "timed_out": true,
+          "complete_report": false,
+          "mathematical_or_framework_conclusion": false
+        },
+        "recorded_at": "2026-11-12T23:15:54.070113+00:00",
+        "installed_framework_bytes_unchanged": true,
+        "framework_sha256": "54e50f5c47912873524d8d664ee0e573f2144f618a773fcaefbe56fd5023c21b",
+        "fresh_process_terminated": true,
+        "production_patch_promoted": false,
+        "old_tests_changed": false,
+        "native_accepted": false,
+        "full_function_accepted": false,
+        "next": "Do not repeat symbolic graph packing or promote a global TensorFlow intervention."
       }
     }
   ],

@@ -10,3 +10,4 @@
 @media(max-width:640px){#current-validation th:last-child,#current-validation td:last-child{display:table-cell}#current-validation th:first-child{width:20%}#current-validation th:nth-child(2){width:36%}#current-validation th:nth-child(3){width:44%}#current-validation td{overflow-wrap:anywhere;font-size:11px}}
 #test-collection th,#test-collection td{width:25%}
 #test-collection th:last-child,#test-collection td:last-child{display:table-cell}
+.band details{overflow-wrap:anywhere}

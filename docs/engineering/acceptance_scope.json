@@ -37,7 +37,16 @@
       "industry": ["routing-scheduling", "supply-chain", "energy", "combinatorial", "integer-multiobjective"],
       "security": ["pqc", "qkd", "threat", "qrng", "privacy"]
     },
-    "hardware": ["real Quafu backend constraints", "compilation", "submission", "task ID", "polling", "results", "bit order", "shots", "reproducible receipts", "error and domain acceptance"]
+    "hardware": [
+      "latest official Quafu SDK reviewed against https://quafu.com.cn/docs/sdk/install without silently upgrading reference profiles",
+      "baihua chip for all newly accepted real Quafu hardware runs; historical receipts retain their original backend identity",
+      "real Quafu backend constraints", "compilation", "submission", "task ID", "polling", "results", "bit order", "shots", "reproducible receipts", "error and domain acceptance",
+      "first-class cloud queue, quota and reservation-window lifecycle with no fabricated service or account privileges",
+      "Qiskit provider and PennyLane Device plugins using the same real Quafu backend and receipts",
+      "MCP/Skills application submission and receipt-query boundary with explicit authorization and unchanged task budget",
+      "native-gate compilation, layout and routing for the actual chip topology",
+      "simulator and mock outputs never presented as real hardware receipts"
+    ]
   },
   "census": {
     "status": "OPEN",

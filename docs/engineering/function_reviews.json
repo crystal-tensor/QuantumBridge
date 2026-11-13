@@ -776,5 +776,92 @@
       "Full recursive/optional/plugin denominator and class-graph provenance remain open; historical full inventories were not replaced by this subset",
       "Different-name Native mappings, all functional axes, strict failures, installation/coexistence and hardware acceptance remain open"
     ]
+  },
+  {
+    "id": "quantumbridge.qml.qnode.QNode.compile_tensorflow_inline",
+    "source_hash": "2d2a44cd18f758db29bcdb7bf9bbb3a69446457abc0b930e1a3a5f6a3dcf229e",
+    "project_fingerprint": "380f1c7051c84c2d230efc1a43be6be7dd55266e56d6a044b08a2152b8cc77ff",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": false,
+    "strict_tests_pass": false,
+    "evidence_hash": "9f4f8efebe2bf2f0c968fee1314e930ddd12deb218083425e2f40527192d4df5",
+    "recorded_at": "2026-11-13T06:13:36.585172+00:00",
+    "evidence_scope": "Selected Native bridge-extension contracts, not a one-to-one accepted SDK function mapping.13modules/379cases per profile retain5strict failures; the original inline18and new9pass. Full complex state/phase/serialization lineage, matrix-free directional work and genuine third-order refusal are checked without quantum SDK imports.",
+    "evidence_scope_zh": "仅验收 Native 桥接扩展的局部合同，不冒充一对一 SDK 函数覆盖。每环境13模块379例仍有5个严格失败；原inline18例及新增9例通过。完整复数态、全局相位、格式来源、方向求导和三阶拒绝已验证，未导入两套量子SDK。",
+    "native_entry": "quantumbridge.qml.qnode.QNode.compile_tensorflow_inline",
+    "reference_public_exposure": null,
+    "reference_mapping_closed": false,
+    "tested_profiles": [
+      "main",
+      "alternate"
+    ],
+    "actual_target_sdk_reference_executed": false,
+    "remaining": "Full public signature/error/broadcast/dtype/shot/noise/resource/combination audit, accepted target mapping, full strict suite, fresh SDK-free installation, performance and hardware remain open."
+  },
+  {
+    "id": "quantumbridge.interfaces.tensorflow_inline.TraceInlineTensorFlowQNode.state",
+    "source_hash": "dd022186593fd331521b394573a4dbba3cc66eab6f4369290c65c51a6b1cf14e",
+    "project_fingerprint": "380f1c7051c84c2d230efc1a43be6be7dd55266e56d6a044b08a2152b8cc77ff",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": false,
+    "strict_tests_pass": false,
+    "evidence_hash": "9f4f8efebe2bf2f0c968fee1314e930ddd12deb218083425e2f40527192d4df5",
+    "recorded_at": "2026-11-13T06:13:36.585172+00:00",
+    "evidence_scope": "Selected Native bridge-extension contracts, not a one-to-one accepted SDK function mapping.13modules/379cases per profile retain5strict failures; the original inline18and new9pass. Full complex state/phase/serialization lineage, matrix-free directional work and genuine third-order refusal are checked without quantum SDK imports.",
+    "evidence_scope_zh": "仅验收 Native 桥接扩展的局部合同，不冒充一对一 SDK 函数覆盖。每环境13模块379例仍有5个严格失败；原inline18例及新增9例通过。完整复数态、全局相位、格式来源、方向求导和三阶拒绝已验证，未导入两套量子SDK。",
+    "native_entry": "quantumbridge.interfaces.tensorflow_inline.TraceInlineTensorFlowQNode.state",
+    "reference_public_exposure": null,
+    "reference_mapping_closed": false,
+    "tested_profiles": [
+      "main",
+      "alternate"
+    ],
+    "actual_target_sdk_reference_executed": false,
+    "remaining": "Full public signature/error/broadcast/dtype/shot/noise/resource/combination audit, accepted target mapping, full strict suite, fresh SDK-free installation, performance and hardware remain open."
+  },
+  {
+    "id": "quantumbridge.interfaces.jax_autodiff.execute_jax",
+    "source_hash": "774a47d2ba6532d783332df76aefa7230ba1bf2cb41aeba21ad1f0ff9e012a33",
+    "project_fingerprint": "21ef0d200578eab2fd9eb8be5dc8cbc6a71e782c1ef5e478b5aaa3e67f9e7fe8",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": false,
+    "strict_tests_pass": false,
+    "evidence_hash": "63e937e241d3b70e3ff1fbf23af40d29376dd135d9508deba2be00f55134c462",
+    "recorded_at": "2026-11-13T11:38:55.500486+00:00",
+    "evidence_scope": "Selected259cases perprofile:253pass/6strictfail;25newatomiccontracts pass. No reference SDK or complete one-to-one public function mapping accepted. Atomic full-jet forward cost, unchanged caps, tensor-only repeated pullbacks, real sampling and final output owners are explicit.",
+    "evidence_scope_zh": "每环境局部259例中253通过、6个严格失败；新增25例通过。未验收量子SDK参考或逐函数完整映射。原子式完整导数预计算有前向成本，保留资源上限、真实采样、重复求导无新增量子执行及最终持有者释放验证。",
+    "tested_profiles": [
+      "main",
+      "alternate"
+    ],
+    "actual_target_sdk_reference_executed": false,
+    "reference_mapping_closed": false,
+    "remaining": "Complete public ABI, broadcast/error/noise/dtype combinations, streamed managed graph HVP, full strict suite, SDK-free installation, performance and hardware remain open."
+  },
+  {
+    "id": "quantumbridge.interfaces.best_execution.try_execute_best",
+    "source_hash": "9a22d9aeb906fe074952f5510c88274958151f5bd923149206ba965f737de6e1",
+    "project_fingerprint": "21ef0d200578eab2fd9eb8be5dc8cbc6a71e782c1ef5e478b5aaa3e67f9e7fe8",
+    "status": "partial",
+    "contract_complete": false,
+    "native_independent": true,
+    "versions_verified": false,
+    "strict_tests_pass": false,
+    "evidence_hash": "af2ce71de41a727f7e4aac1b8c4abb637d5123de3dc99e8690ddf172a786d8de",
+    "recorded_at": "2026-11-13T12:33:17.061051+00:00",
+    "evidence_scope": "Independent closed-form sparse tensor route in six real framework/eager/JIT modes. Original45case best module retains six old metadata failures; no full public ABI or SDK reference acceptance.",
+    "tested_profiles": [
+      "main",
+      "alternate"
+    ],
+    "actual_target_sdk_reference_executed": false,
+    "reference_mapping_closed": false,
+    "remaining": "Explicit owner metadata decision, complete sparse/operator/gradient contracts, all strict failures, true reference and full library integration remain open."
   }
 ]

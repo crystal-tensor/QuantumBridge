@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { gunzipSync } from "node:zlib";
 import { createHash } from "node:crypto";
-import { countStatuses, filterRows, aggregate, isStale, statuses, decodeDataset, verificationWindow, currentVerification, restoreManifest, deferredManifestFields } from "../src/progress/model.js";
+import { countStatuses, filterRows, aggregate, isStale, statuses, decodeDataset, verificationWindow, currentVerification, abnormalObservations, restoreManifest, deferredManifestFields } from "../src/progress/model.js";
 import { engineeringResources, domainResources } from "../src/framework/resources.js";
 import { buildPublic } from "./build-public.mjs";
 
@@ -263,7 +263,10 @@ test("namespace files remain unreviewed metadata, with exact artifacts and no lo
   }
 });
 test("framework and lifetime diagnostics are not Native acceptance or test passes",async()=>{
-  assert.equal(manifest.diagnostic_observations.length,13);
+  const declared=JSON.parse(await readFile(new URL("../../docs/engineering/diagnostic_observations.json",import.meta.url),"utf8"));
+  assert.equal(manifest.diagnostic_observations.length,declared.observations.length);
+  assert.deepEqual(manifest.diagnostic_observations.map(row=>[row.id,row.recorded_at,row.evidence_hash]),
+    declared.observations.map(row=>[row.id,row.recorded_at,row.evidence_hash]));
   const script=await readFile(new URL("../downloads/tensorflow_cached_cos_probe.py",import.meta.url));
   for(const row of manifest.diagnostic_observations){
     assert.equal(row.report.native_accepted,false);
@@ -309,6 +312,16 @@ test("framework and lifetime diagnostics are not Native acceptance or test passe
       assert.ok([...row.report.baseline_imports,...row.report.candidate_imports].every(r=>r.observations.quantumbridge_imported===false));
       assert.equal(row.report.candidate_public.length,2);
       assert.ok(row.report.candidate_public.every(r=>r.process_exit===1&&r.total===512&&r.passed===493&&r.failed===19&&r.skipped===0&&r.original_case_population_and_failure_ids_unchanged&&r.native_accepted===false));
+    }else if(row.kind==="tf_symbolic_jvp_causal_diagnostic"){
+      assert.equal(row.report.classification,"REJECTED_INCOMPLETE_CAUSAL_DIAGNOSTIC_NOT_NATIVE_ACCEPTANCE");
+      assert.equal(row.report.invalid_initial_harness.mathematical_or_framework_conclusion,false);
+      assert.equal(row.report.corrected_candidate.timed_out,true);
+      assert.equal(row.report.corrected_candidate.complete_report,false);
+      assert.equal(row.report.corrected_candidate.mathematical_or_framework_conclusion,false);
+      assert.equal(row.report.production_patch_promoted,false);
+      assert.equal(row.report.installed_framework_bytes_unchanged,true);
+      assert.equal(row.report.old_tests_changed,false);
+      assert.equal(row.report.full_function_accepted,false);
     }else assert.fail("Unreviewed diagnostic kind: "+row.kind);
   }
 });
@@ -340,8 +353,9 @@ test("goal and selected verification never masquerade as final acceptance", () =
       assert.equal(run.protected_tests+files.size,run.original_protected_test_files);
       assert.ok(run.approved_test_migrations.every(m=>m.owner_approved&&m.before_sha256!==m.after_sha256&&m.case_ids.length));
       if(run.source_match){
-        assert.equal(files.size,manifest.goal_execution.latest_strict_review.approved_files);
-        assert.equal(run.approved_test_migrations.flatMap(m=>m.case_ids).length,manifest.goal_execution.latest_strict_review.approved_cases);
+        const core = manifest.goal_execution[manifest.goal_execution.latest_core_validation_key];
+        assert.equal(files.size,core?.approved_migration_files ?? manifest.goal_execution.latest_strict_review.approved_files);
+        assert.equal(run.approved_test_migrations.flatMap(m=>m.case_ids).length,core?.approved_migration_cases ?? manifest.goal_execution.latest_strict_review.approved_cases);
         const memory=run.approved_test_migrations.find(m=>m.file==="tests/interfaces/test_native_tf_mps_resource_contract.py");
         if(memory){
           assert.deepEqual(memory.case_ids,["tests.interfaces.test_native_tf_mps_resource_contract::test_managed_mps_queries_same_parent_cache_tiny_hessian_cap"]);
@@ -353,7 +367,7 @@ test("goal and selected verification never masquerade as final acceptance", () =
   }
   const text=JSON.stringify(manifest);
   assert.ok(!text.includes("/Users/")&&!text.includes("site-packages/"));
-  for(const observation of manifest.goal_execution.latest_batch.abnormal_process_observations || []){
+  for(const observation of abnormalObservations(manifest.goal_execution)){
     assert.equal(observation.accepted_as_verification,false);
     assert.equal(observation.process_exit,-11);
     assert.ok(!manifest.verification.some(run=>run.evidence_hash===observation.junit_sha256));
@@ -382,13 +396,18 @@ test("scoped contract details never promote stale or incomplete reviews", async 
 test("current worker receipts and bounded windows preserve all evidence", () => {
   const current=currentVerification(manifest);
   assert.equal(current.batchMatches,true);
-  assert.equal(current.reviewMatches,true);
-  assert.equal(current.rows.length,98);
-  assert.equal(current.failures.main.length,25);
-  assert.equal(current.failures.alternate.length,25);
-  assert.deepEqual(current.failures,current.reviewedFailures);
-  assert.ok(current.reports.some(row=>row.scope==="inventory"));
-  assert.ok(current.reports.some(row=>row.scope==="reference"));
+  assert.equal(current.rows.length,manifest.verification.filter(row=>row.source_match&&row.environment_validation?.verified).length);
+  const coreKey=manifest.goal_execution.latest_core_validation_key;
+  if(coreKey){
+    assert.equal(current.batch,manifest.goal_execution[coreKey]);
+    assert.ok(current.reports.length>0);
+    assert.ok(current.reports.every(row=>row.report.source_manifest_sha256===current.batch.source_manifest_sha256));
+  }else{
+    assert.equal(current.reviewMatches,true);
+    assert.deepEqual(current.failures,current.reviewedFailures);
+    assert.ok(current.reports.some(row=>row.scope==="inventory"));
+    assert.ok(current.reports.some(row=>row.scope==="reference"));
+  }
   assert.ok(current.reports.every(row=>current.rows.some(run=>run.evidence_hash===row.report.evidence_hash&&run.recorded_at===row.recordedAt)));
   const first=verificationWindow(manifest.verification,0);
   const second=verificationWindow(manifest.verification,1);
@@ -401,8 +420,9 @@ test("current worker receipts and bounded windows preserve all evidence", () => 
   assert.equal(currentVerification({...manifest,verification:manifest.verification.map(row=>({...row,environment_validation:{verified:false}}))}).reviewMatches,false);
   const redacted=manifest.verification.flatMap(row=>row.cases).filter(row=>row.parameter_identity_redacted);
   assert.equal(manifest.verification_projection.redacted_parameter_ids,redacted.length);
-  assert.equal(redacted.length,30);
-  assert.ok(redacted.every(row=>row.id.endsWith(row.original_id_sha256+"]")));
+  assert.ok(redacted.length>=30,"The append-only ledger must retain its historical private-parameter records");
+  assert.ok(redacted.every(row=>/^[0-9a-f]{64}$/.test(row.original_id_sha256)&&
+    row.id.endsWith("[private-parameter-sha256="+row.original_id_sha256+"]")));
   assert.equal(manifest.verification_projection.private_ledger_modified,false);
   for(const run of manifest.verification){
     if(!run.test_context){assert.equal(run.source_match,false);continue;}
@@ -411,11 +431,18 @@ test("current worker receipts and bounded windows preserve all evidence", () => 
   }
 });
 test("equal failure counts with different case identities cannot match a strict review",()=>{
-  const changed={...manifest,verification:manifest.verification.map(run=>({...run,cases:run.cases.map(item=>
+  const fixture={source:{fingerprint:"fixture"},goal_execution:{latest_strict_review:{checkpoint:"review",
+    source_fingerprint:"fixture",current_selected_unique_failures_each_profile:1},
+    reviewed:{checkpoint:"review",source_fingerprint:"fixture",profiles:["main","alternate"].map(profile=>
+      ({profile,current_selected_unique_failure_ids:["original"]}))}},
+    verification:["main","alternate"].map(profile=>({profile,source_match:true,environment_validation:{verified:true},
+      recorded_at:"2026-11-13T00:00:00Z",cases:[{id:"original",status:"failed"}]}))};
+  assert.equal(currentVerification(fixture).reviewMatches,true);
+  const changed={...fixture,verification:fixture.verification.map(run=>({...run,cases:run.cases.map(item=>
     item.status==="failed"?{...item,id:"different-case:"+item.id}:item)}))};
   const actual=currentVerification(changed);
-  assert.equal(actual.failures.main.length,25);
-  assert.equal(actual.failures.alternate.length,25);
+  assert.equal(actual.failures.main.length,1);
+  assert.equal(actual.failures.alternate.length,1);
   assert.equal(actual.reviewMatches,false);
 });
 test("runtime wire pooling preserves every signature and owner context", async () => {

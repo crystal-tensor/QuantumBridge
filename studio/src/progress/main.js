@@ -1,6 +1,6 @@
 import { domains, directions } from "../framework/data.js";
 import { resources } from "../framework/resources.js";
-import { statuses, statusNames, countStatuses, filterRows, aggregate, isStale, verificationWindow, currentVerification, decodeDataset, restoreManifest } from "./model.js?manifest=deferred-v1";
+import { statuses, statusNames, countStatuses, filterRows, aggregate, isStale, verificationWindow, currentVerification, abnormalObservations, decodeDataset, restoreManifest } from "./model.js?manifest=current-core-v2";
 import { verifiedJSON } from "./transport.js?http=identity-aware-v1";
 
 const root = document.querySelector("#engineering-app");
@@ -132,13 +132,15 @@ function historicalDiagnosisView(row) {
   return `<h3>${t("历史诊断（未按当前源码复核）", "Historical diagnosis (not rechecked for current source)")}</h3><p><code>${esc(note.source_fingerprint)}</code> · ${esc(note.classification)}</p><p>${esc(t(note.diagnosis_zh || note.diagnosis, note.diagnosis))}</p><p>${esc(t(note.next_zh || note.next, note.next))}</p>`;
 }
 function processObservationView() {
-  const observations=manifest.goal_execution?.latest_batch?.abnormal_process_observations || [];
+  const observations=abnormalObservations(manifest.goal_execution);
   if(!observations.length) return "";
   const receiptRows = row => [
     ["JUnit SHA-256", row.junit_sha256],
     [t("导入回执 SHA-256", "Import receipt SHA-256"), row.origin_sha256],
     [t("采集输出 SHA-256", "Collection artifact SHA-256"), row.artifact_sha256],
-    [t("进程回执 SHA-256", "Process receipt SHA-256"), row.process_receipt_sha256],
+    [t("进程回执 SHA-256", "Process receipt SHA-256"), row.process_receipt_sha256 || row.terminal_sha256],
+    [t("原始源码指纹", "Original source fingerprint"), row.source_fingerprint],
+    [t("环境回执 SHA-256", "Environment receipt SHA-256"), row.environment_sha256],
     [t("私有崩溃报告 SHA-256", "Private crash report SHA-256"), row.crash_report_sha256],
   ].filter(([, value])=>value).map(([label,value])=>`<dt>${label}</dt><dd><code>${esc(value)}</code></dd>`).join("");
   return `<section class="band"><h2>${t("异常进程：不计入验证", "Abnormal processes: not verification")}</h2><p class="failure">${t("退出异常原因尚未完全确认。同源复跑或隔离采集不会抹去异常，也不能证明环境共存稳定性已修复。", "Abnormal exit causes are not fully confirmed. Same-source reruns or isolated collection neither erase observations nor prove environment coexistence repaired.")}</p>${manifest.diagnostic_observations?.some(row=>row.kind==="arrow_coexistence_review") ? `<p><a href="#diag-arrow_coexistence_dependency_review">${ic("arrow-down")}${t("Arrow 版本对照：24.0.0 / 25.0.1", "Arrow version controls: 24.0.0 / 25.0.1")}</a></p>` : ""}${observations.map(row=>`<details><summary><code>${esc(row.selection)} / ${esc(row.profile)}</code> · ${esc(row.signal)} (${row.process_exit})</summary><p>${date(row.recorded_at)}</p><p>${esc(row.scope)}</p><dl>${receiptRows(row)}</dl></details>`).join("")}</section>`;
