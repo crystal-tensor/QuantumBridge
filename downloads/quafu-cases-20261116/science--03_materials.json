@@ -1,0 +1,115 @@
+{
+  "case": {
+    "id": "science/03_materials",
+    "domain": "science",
+    "kind": "case",
+    "direction": "materials",
+    "file": "03_materials.html",
+    "title": {
+      "zh-CN": "量子材料 · Hubbard 有限簇",
+      "en": "Materials · Finite Hubbard cluster"
+    },
+    "original_cells_sha256": "658dca1e06aab323d1d81e5936e17be3efe5f0df31a5539a6e9b3dd054c97ba7",
+    "provenance": {
+      "path": "output/jupyter-notebook/science/03_materials_evidence.json",
+      "sha256": "c44f5ad885ba6db3f5e8c6bb153dc5b0c184431cf87b4bc2edbca26e729e00e7",
+      "original_summary": {}
+    },
+    "experiments": [
+      {
+        "name": "occupation",
+        "kernel_id": "2f8714b44854e16b15fa1280e2220e041253d2caf66bfe969172d01c2817174a",
+        "postprocessing": null
+      }
+    ],
+    "update_status": "NOT_SUBMITTED_NEW_SDK_CREDENTIALS_REQUIRED"
+  },
+  "updated_at": "2026-11-16T07:11:01.697257+00:00",
+  "local_source": {
+    "kind": "Python source files only",
+    "files": 777,
+    "sha256": "dd1809f029afabd6773ba8ffb396558d6d55d2707f55653c12760646a055734f",
+    "files_manifest": "source-files.json"
+  },
+  "local_verification_at": "2026-11-16T07:11:01.697257+00:00",
+  "backend_snapshot_sha256": "70b47bdc0d5ef6013b1ccbe3d1dc22b312d56f8508c6689ce012ad7c96a8d085",
+  "experiments": [
+    {
+      "name": "occupation",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nry(1.5707963267948968) q[0];\nry(1.5707963267948966) q[1];\ncx q[0],q[1];\nry(0.78539816339744828) q[1];\ncx q[0],q[1];\nry(1.5707963267948966) q[2];\ncx q[0],q[2];\nry(1.5707963267948966) q[2];\ncx q[0],q[2];\nry(-0.39269908169872414) q[3];\ncx q[2],q[3];\nry(0.39269908169872414) q[3];\ncx q[2],q[3];\ncx q[1],q[3];\nry(-1.1780972450961724) q[3];\ncx q[1],q[3];\ncx q[1],q[3];\ncx q[2],q[3];\nry(-0.39269908169872414) q[3];\ncx q[2],q[3];\ncx q[1],q[3];\ncx q[0],q[3];\nry(-1.1780972450961724) q[3];\ncx q[0],q[3];\ncx q[0],q[3];\ncx q[2],q[3];\nry(-0.39269908169872414) q[3];\ncx q[2],q[3];\ncx q[0],q[3];\ncx q[0],q[3];\ncx q[1],q[3];\nry(1.1780972450961724) q[3];\ncx q[1],q[3];\ncx q[0],q[3];\ncx q[0],q[3];\ncx q[1],q[3];\ncx q[2],q[3];\nry(1.9634954084936207) q[3];\ncx q[2],q[3];\ncx q[1],q[3];\ncx q[0],q[3];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+      "qasm_sha256": "2f8714b44854e16b15fa1280e2220e041253d2caf66bfe969172d01c2817174a",
+      "num_qubits": 4,
+      "logical_depth": 38,
+      "gate_count": 41,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "0110": 450,
+          "1001": 430,
+          "1100": 65,
+          "0011": 79
+        },
+        "ideal_probabilities": [
+          3.0814879110195774e-33,
+          9.495567745759799e-66,
+          3.0814879110195774e-33,
+          0.07322330470336316,
+          6.077163357286271e-64,
+          1.2325951644078304e-32,
+          0.42677669529663664,
+          1.232595164407831e-32,
+          1.232595164407831e-32,
+          0.42677669529663664,
+          0.0,
+          0.0,
+          0.07322330470336304,
+          1.7333369499485123e-33,
+          0.0,
+          0.0
+        ],
+        "labels_q0_first": [
+          "0000",
+          "0001",
+          "0010",
+          "0011",
+          "0100",
+          "0101",
+          "0110",
+          "0111",
+          "1000",
+          "1001",
+          "1010",
+          "1011",
+          "1100",
+          "1101",
+          "1110",
+          "1111"
+        ]
+      },
+      "receipt": null
+    }
+  ]
+}

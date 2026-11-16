@@ -1,0 +1,133 @@
+{
+  "case": {
+    "id": "finance/04_constraints_quafu",
+    "domain": "finance",
+    "kind": "case",
+    "direction": "financial-constraints",
+    "file": "04_constraints_quafu.html",
+    "title": {
+      "zh-CN": "金融约束 · QUBO 求解",
+      "en": "Financial constraints · QUBO solving"
+    },
+    "original_cells_sha256": "3ff49fd4f5cf4b5b614a9db0d3e3f728e89b2918e197dd8c696ebab593f84497",
+    "provenance": {
+      "path": "output/jupyter-notebook/finance/constraints_evidence.json",
+      "sha256": "6e744dd11f4a9f3937bb381bcf3e51ada7c8e8ec24762f9a7b3c350caba24340",
+      "historical_hardware_status": "not_executed",
+      "historical_acceptance": {
+        "case": "constraints",
+        "hardware_status": "NOT_EXECUTED",
+        "hardware_results": null
+      },
+      "scope": "Historical Dongling receipts retained; not relabelled as current Baihua results"
+    },
+    "experiments": [
+      {
+        "name": "qaoa",
+        "kernel_id": "489629650fd6001f014c2011b36fc7e2718af122d7462d2f2fb4efb1329fc45a",
+        "postprocessing": null
+      }
+    ],
+    "update_status": "NOT_SUBMITTED_NEW_SDK_CREDENTIALS_REQUIRED"
+  },
+  "updated_at": "2026-11-16T07:11:01.697257+00:00",
+  "local_source": {
+    "kind": "Python source files only",
+    "files": 777,
+    "sha256": "dd1809f029afabd6773ba8ffb396558d6d55d2707f55653c12760646a055734f",
+    "files_manifest": "source-files.json"
+  },
+  "local_verification_at": "2026-11-16T07:11:01.697257+00:00",
+  "backend_snapshot_sha256": "70b47bdc0d5ef6013b1ccbe3d1dc22b312d56f8508c6689ce012ad7c96a8d085",
+  "experiments": [
+    {
+      "name": "qaoa",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\nrz(-0.00043873806460156014) q[3];\nrz(0.0054403520010594111) q[2];\ncx q[2],q[3];\nrz(0.28136272082898306) q[3];\ncx q[2],q[3];\nrz(0.00052648567752196012) q[1];\ncx q[1],q[3];\nrz(0.42232926098546569) q[3];\ncx q[1],q[3];\ncx q[1],q[2];\nrz(0.42175890150148371) q[2];\ncx q[1],q[2];\nrz(0.0072830518723859972) q[0];\ncx q[0],q[3];\nrz(0.42175890150148365) q[3];\ncx q[0],q[3];\ncx q[0],q[2];\nrz(0.42232926098546575) q[2];\ncx q[0],q[2];\ncx q[0],q[1];\nrz(0.84408816248694951) q[1];\ncx q[0],q[1];\nrx(5.6926121604734634) q[0];\nrx(5.6926121604734634) q[1];\nrx(5.6926121604734634) q[2];\nrx(5.6926121604734634) q[3];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+      "qasm_sha256": "489629650fd6001f014c2011b36fc7e2718af122d7462d2f2fb4efb1329fc45a",
+      "num_qubits": 4,
+      "logical_depth": 18,
+      "gate_count": 30,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "0101": 132,
+          "0110": 132,
+          "0100": 65,
+          "1011": 49,
+          "0111": 60,
+          "0011": 108,
+          "1010": 141,
+          "1100": 103,
+          "1101": 10,
+          "1001": 121,
+          "0000": 8,
+          "0001": 11,
+          "1000": 56,
+          "1110": 11,
+          "0010": 13,
+          "1111": 4
+        },
+        "ideal_probabilities": [
+          0.006221230171557422,
+          0.01341864120396096,
+          0.013505093694753298,
+          0.09406884506705722,
+          0.058346568041566974,
+          0.12670543277660476,
+          0.12740487169725506,
+          0.05920813304261763,
+          0.058571642588701074,
+          0.12713242845242892,
+          0.12756624124864263,
+          0.05943482739231789,
+          0.09451413813485535,
+          0.013878952538745638,
+          0.01396787345704922,
+          0.006055080491885196
+        ],
+        "labels_q0_first": [
+          "0000",
+          "0001",
+          "0010",
+          "0011",
+          "0100",
+          "0101",
+          "0110",
+          "0111",
+          "1000",
+          "1001",
+          "1010",
+          "1011",
+          "1100",
+          "1101",
+          "1110",
+          "1111"
+        ]
+      },
+      "receipt": null
+    }
+  ]
+}

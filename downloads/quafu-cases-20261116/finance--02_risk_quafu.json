@@ -1,0 +1,171 @@
+{
+  "case": {
+    "id": "finance/02_risk_quafu",
+    "domain": "finance",
+    "kind": "case",
+    "direction": "risk",
+    "file": "02_risk_quafu.html",
+    "title": {
+      "zh-CN": "风险计量 · VaR / CVaR",
+      "en": "Risk measurement · VaR / CVaR"
+    },
+    "original_cells_sha256": "5412c7d7054e8b6e1226c78058c8eaaa7fd906d7f43ae937b841f5cf1211d58b",
+    "provenance": {
+      "path": "output/jupyter-notebook/finance/risk_evidence.json",
+      "sha256": "8731e41dd6b8383fe9f68734065a816dde3f9fd8b7dcf920c03714c5babd2f6f",
+      "historical_hardware_status": "not_executed",
+      "historical_acceptance": {
+        "case": "risk",
+        "hardware_status": "NOT_EXECUTED",
+        "hardware_results": null
+      },
+      "scope": "Historical Dongling receipts retained; not relabelled as current Baihua results"
+    },
+    "experiments": [
+      {
+        "name": "base",
+        "kernel_id": "e6fec722015d95e7e6a25ffc17f24012ba408030fee60b9e5f2a6b20e5f60128",
+        "postprocessing": null
+      },
+      {
+        "name": "stress",
+        "kernel_id": "7e84362517c916020d33f1fad25f944a60e11dea452e39b46d4fa9f8dde137c4",
+        "postprocessing": null
+      }
+    ],
+    "update_status": "NOT_SUBMITTED_NEW_SDK_CREDENTIALS_REQUIRED"
+  },
+  "updated_at": "2026-11-16T07:11:01.697257+00:00",
+  "local_source": {
+    "kind": "Python source files only",
+    "files": 777,
+    "sha256": "dd1809f029afabd6773ba8ffb396558d6d55d2707f55653c12760646a055734f",
+    "files_manifest": "source-files.json"
+  },
+  "local_verification_at": "2026-11-16T07:11:01.697257+00:00",
+  "backend_snapshot_sha256": "70b47bdc0d5ef6013b1ccbe3d1dc22b312d56f8508c6689ce012ad7c96a8d085",
+  "experiments": [
+    {
+      "name": "base",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncreg c[3];\nry(0.60938530803079505) q[0];\nry(1.0296695346928471) q[1];\ncx q[0],q[1];\nry(-0.08057280042072712) q[1];\ncx q[0],q[1];\nry(1.280527799832917) q[2];\ncx q[1],q[2];\nry(-0.056442558007722965) q[2];\ncx q[1],q[2];\ncx q[0],q[2];\nry(-0.07315547743777312) q[2];\ncx q[0],q[2];\ncx q[0],q[2];\ncx q[1],q[2];\nry(-0.040687429273846998) q[2];\ncx q[1],q[2];\ncx q[0],q[2];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\n",
+      "qasm_sha256": "e6fec722015d95e7e6a25ffc17f24012ba408030fee60b9e5f2a6b20e5f60128",
+      "num_qubits": 3,
+      "logical_depth": 15,
+      "gate_count": 17,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "000": 546,
+          "011": 70,
+          "010": 125,
+          "101": 23,
+          "001": 200,
+          "100": 39,
+          "110": 16,
+          "111": 5
+        },
+        "ideal_probabilities": [
+          0.5200000000000001,
+          0.1999999999999999,
+          0.12,
+          0.07,
+          0.03999999999999998,
+          0.025,
+          0.014999999999999993,
+          0.010000000000000004
+        ],
+        "labels_q0_first": [
+          "000",
+          "001",
+          "010",
+          "011",
+          "100",
+          "101",
+          "110",
+          "111"
+        ]
+      },
+      "receipt": null
+    },
+    {
+      "name": "stress",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncreg c[3];\nry(0.87629806116834041) q[0];\nry(1.1871075101026491) q[1];\ncx q[0],q[1];\nry(-0.043851907238125487) q[1];\ncx q[0],q[1];\nry(1.3479475607541149) q[2];\ncx q[1],q[2];\nry(-0.055400686821092282) q[2];\ncx q[1],q[2];\ncx q[0],q[2];\nry(-0.055400686821092282) q[2];\ncx q[0],q[2];\ncx q[0],q[2];\ncx q[1],q[2];\nry(-0.055400686821092282) q[2];\ncx q[1],q[2];\ncx q[0],q[2];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\n",
+      "qasm_sha256": "7e84362517c916020d33f1fad25f944a60e11dea452e39b46d4fa9f8dde137c4",
+      "num_qubits": 3,
+      "logical_depth": 15,
+      "gate_count": 17,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "000": 425,
+          "001": 183,
+          "100": 59,
+          "011": 111,
+          "110": 32,
+          "101": 55,
+          "010": 138,
+          "111": 21
+        },
+        "ideal_probabilities": [
+          0.4000000000000003,
+          0.18000000000000005,
+          0.14000000000000015,
+          0.1,
+          0.06999999999999995,
+          0.04999999999999996,
+          0.034999999999999996,
+          0.024999999999999984
+        ],
+        "labels_q0_first": [
+          "000",
+          "001",
+          "010",
+          "011",
+          "100",
+          "101",
+          "110",
+          "111"
+        ]
+      },
+      "receipt": null
+    }
+  ]
+}

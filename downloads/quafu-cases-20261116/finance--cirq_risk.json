@@ -1,0 +1,126 @@
+{
+  "case": {
+    "id": "finance/cirq_risk",
+    "domain": "finance",
+    "kind": "case",
+    "direction": "risk",
+    "file": "cirq_risk.html",
+    "title": {
+      "zh-CN": "Cirq · 损失分布与 VaR / CVaR",
+      "en": "Cirq · Loss distribution & VaR / CVaR"
+    },
+    "original_cells_sha256": "28e21d11adc001857093350f5492d4057cc0fdda782b372c8ae7bde073f23cf8",
+    "provenance": {
+      "original_evidence": {
+        "qubits": 2,
+        "shots": 4096,
+        "counts": [
+          2211,
+          1061,
+          585,
+          239
+        ],
+        "exact": {
+          "EL": 1.4500000000000002,
+          "VaR": 4.0,
+          "CVaR_ES": 6.666666666666666
+        },
+        "sampled": {
+          "EL": 1.530517578125,
+          "VaR": 4.0,
+          "CVaR_ES": 7.111979166666666
+        },
+        "var_95pct_DKW_interval": [
+          4.0,
+          4.0
+        ],
+        "dkw_epsilon": 0.02122033618344718,
+        "ideal_probability": [
+          0.55,
+          0.25,
+          0.15000000000000005,
+          0.049999999999999996
+        ],
+        "validation": "Prepared distribution and independent exact EL/VaR/ES checked",
+        "backend": "local cirq.Simulator",
+        "cirq_version": "1.6.1",
+        "python": "3.12.6",
+        "seed": 20261101,
+        "hardware_jobs": 0
+      }
+    },
+    "experiments": [
+      {
+        "name": "cirq_risk",
+        "kernel_id": "4bb0e58cb81a6b8ef527d2651f912b5311739cc6b2db53dbc47ae465003da330",
+        "postprocessing": null
+      }
+    ],
+    "update_status": "NOT_SUBMITTED_NEW_SDK_CREDENTIALS_REQUIRED"
+  },
+  "updated_at": "2026-11-16T07:11:01.697257+00:00",
+  "local_source": {
+    "kind": "Python source files only",
+    "files": 777,
+    "sha256": "dd1809f029afabd6773ba8ffb396558d6d55d2707f55653c12760646a055734f",
+    "files_manifest": "source-files.json"
+  },
+  "local_verification_at": "2026-11-16T07:11:01.697257+00:00",
+  "backend_snapshot_sha256": "70b47bdc0d5ef6013b1ccbe3d1dc22b312d56f8508c6689ce012ad7c96a8d085",
+  "experiments": [
+    {
+      "name": "cirq_risk",
+      "openqasm": "// Generated from Cirq v1.6.1\n\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\ngate sx a { h a; s a; h a; }\ngate sxdg a { h a; sdg a; h a; }\n\n\n// Qubits: [q(0), q(1)]\nqreg q[2];\ncreg m_qb[2];\n\n\nry(pi*0.2951672353) q[0];\nz q[1];\nx q[0];\nry(pi*-0.5) q[1];\nrz(pi*0.1888213532) q[0];\ncz q[0],q[1];\nry(pi*0.5) q[1];\nry(pi*0.1888213532) q[1];\nry(pi*-0.5) q[1];\ncz q[0],q[1];\nry(pi*0.5) q[1];\nx q[0];\nry(pi*-0.1888213532) q[1];\nrz(pi*0.1888213532) q[0];\nz q[1];\nrz(pi*0.1666666667) q[0];\nz q[1];\nry(pi*-0.5) q[1];\ncz q[0],q[1];\nry(pi*0.5) q[1];\nry(pi*0.1666666667) q[1];\nry(pi*-0.5) q[1];\ncz q[0],q[1];\nry(pi*0.5) q[1];\nrz(pi*-0.1666666667) q[0];\nry(pi*-0.1666666667) q[1];\nz q[1];\n\n// Gate: cirq.MeasurementGate(2, cirq.MeasurementKey(name='qb'), ())\nmeasure q[0] -> m_qb[0];\nmeasure q[1] -> m_qb[1];\n",
+      "qasm_sha256": "4bb0e58cb81a6b8ef527d2651f912b5311739cc6b2db53dbc47ae465003da330",
+      "num_qubits": 2,
+      "logical_depth": 21,
+      "gate_count": 27,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 571,
+          "10": 143,
+          "11": 44,
+          "01": 266
+        },
+        "ideal_probabilities": [
+          0.5500000000716667,
+          0.24999999992942262,
+          0.14999999998104538,
+          0.05000000001786577
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "source_sdk": {
+        "name": "cirq-core",
+        "version": "1.6.1"
+      },
+      "local_lowering": "Cirq public decomposition",
+      "qubit_order": [
+        "q(0)",
+        "q(1)"
+      ],
+      "receipt": null
+    }
+  ]
+}

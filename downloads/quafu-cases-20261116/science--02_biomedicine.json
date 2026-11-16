@@ -1,0 +1,156 @@
+{
+  "case": {
+    "id": "science/02_biomedicine",
+    "domain": "science",
+    "kind": "case",
+    "direction": "biomedicine",
+    "file": "02_biomedicine.html",
+    "title": {
+      "zh-CN": "量子生物 · 格点构象",
+      "en": "Biomedicine · Lattice conformation"
+    },
+    "original_cells_sha256": "9148ab895e269bbe7c6fdc8a111e5e49d1cdb4d83e176562015c0f05410e3496",
+    "provenance": {
+      "path": "output/jupyter-notebook/science/02_biomedicine_evidence.json",
+      "sha256": "4ed17af1d989023dd2a18a5c17130b6cf963b72190763c21ff42754fdfa66756",
+      "original_summary": {
+        "best_observed_feasible": {
+          "bitstring": "0000",
+          "turn_codes": [
+            0,
+            0
+          ],
+          "coordinates": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "contact_0_3": 1,
+          "violations": 0,
+          "feasible": true,
+          "objective": -1,
+          "penalized_cost": -1
+        },
+        "observed_objective_gap": 0,
+        "feasible_probability": 0.99609375,
+        "optimal_probability": 0.3076171875,
+        "decision_rule": "best feasible actually sampled candidate; not the most frequent string"
+      }
+    },
+    "experiments": [
+      {
+        "name": "qaoa",
+        "kernel_id": "4ed237fc873733229e2e169276c343d4690d4e10f1e56f4b37d31efc0b97e28e",
+        "postprocessing": null
+      }
+    ],
+    "update_status": "NOT_SUBMITTED_NEW_SDK_CREDENTIALS_REQUIRED"
+  },
+  "updated_at": "2026-11-16T07:11:01.697257+00:00",
+  "local_source": {
+    "kind": "Python source files only",
+    "files": 777,
+    "sha256": "dd1809f029afabd6773ba8ffb396558d6d55d2707f55653c12760646a055734f",
+    "files_manifest": "source-files.json"
+  },
+  "local_verification_at": "2026-11-16T07:11:01.697257+00:00",
+  "backend_snapshot_sha256": "70b47bdc0d5ef6013b1ccbe3d1dc22b312d56f8508c6689ce012ad7c96a8d085",
+  "experiments": [
+    {
+      "name": "qaoa",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.065149833036131602) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\ncx q[0],q[1];\ncx q[1],q[2];\nrz(-0.065149833036131671) q[2];\ncx q[1],q[2];\ncx q[0],q[1];\ncx q[0],q[1];\nrz(0.65149833036131655) q[1];\ncx q[0],q[1];\ncx q[0],q[2];\ncx q[2],q[3];\nrz(-0.065149833036131713) q[3];\ncx q[2],q[3];\ncx q[0],q[2];\ncx q[0],q[2];\nrz(-0.065149833036131602) q[2];\ncx q[0],q[2];\nrz(-0.65149833036131644) q[0];\ncx q[1],q[3];\nrz(-0.065149833036131602) q[3];\ncx q[1],q[3];\nrz(-0.71664816339744819) q[1];\ncx q[2],q[3];\nrz(0.65149833036131644) q[3];\ncx q[2],q[3];\nrz(-0.65149833036131644) q[2];\nrz(-0.71664816339744819) q[3];\nrz(1.7590454919755543) q[0];\nu1(-1.7590454919755543) q[0];\nrx(5.366541413767342) q[0];\nrx(5.366541413767342) q[1];\nrx(5.366541413767342) q[2];\nrx(5.366541413767342) q[3];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+      "qasm_sha256": "4ed237fc873733229e2e169276c343d4690d4e10f1e56f4b37d31efc0b97e28e",
+      "num_qubits": 4,
+      "logical_depth": 29,
+      "gate_count": 43,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "0001": 129,
+          "0100": 119,
+          "0010": 100,
+          "0000": 192,
+          "1001": 77,
+          "1010": 108,
+          "1000": 125,
+          "0110": 85,
+          "0101": 88,
+          "1110": 1
+        },
+        "ideal_probabilities": [
+          0.17166492013976434,
+          0.11500478208042483,
+          0.11098386248069887,
+          0.0001636549199224152,
+          0.11500478208042483,
+          0.09180019313501885,
+          0.08649128366962751,
+          0.00020595281140013645,
+          0.11098386248069887,
+          0.08649128366962754,
+          0.1103677392740488,
+          0.00020526963003386455,
+          0.0001636549199224164,
+          0.00020595281140013585,
+          0.0002052696300338643,
+          5.7536266951765997e-05
+        ],
+        "labels_q0_first": [
+          "0000",
+          "0001",
+          "0010",
+          "0011",
+          "0100",
+          "0101",
+          "0110",
+          "0111",
+          "1000",
+          "1001",
+          "1010",
+          "1011",
+          "1100",
+          "1101",
+          "1110",
+          "1111"
+        ]
+      },
+      "receipt": null
+    }
+  ]
+}

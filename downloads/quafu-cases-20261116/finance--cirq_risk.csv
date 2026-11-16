@@ -1,0 +1,5 @@
+﻿实验,q0-first,预期 provider c0-rightmost,本地 counts,本地 P,理想 P,新云 counts
+cirq_risk,00,00,571,0.557617,0.55,—
+cirq_risk,01,10,266,0.259766,0.25,—
+cirq_risk,10,01,143,0.139648,0.15,—
+cirq_risk,11,11,44,0.042969,0.05,—

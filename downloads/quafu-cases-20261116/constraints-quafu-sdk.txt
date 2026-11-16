@@ -1,0 +1,3 @@
+# Separate environment only: quafu-sdk and pyquafu share the quafu namespace.
+# Official install guide checked 2026-11-16; do not alter the SDK reference profiles.
+quafu-sdk==0.2.7

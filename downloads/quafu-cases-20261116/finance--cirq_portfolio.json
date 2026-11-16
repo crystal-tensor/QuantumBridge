@@ -1,0 +1,144 @@
+{
+  "case": {
+    "id": "finance/cirq_portfolio",
+    "domain": "finance",
+    "kind": "case",
+    "direction": "portfolio",
+    "file": "cirq_portfolio.html",
+    "title": {
+      "zh-CN": "Cirq · QAOA 资产组合选择",
+      "en": "Cirq · QAOA portfolio selection"
+    },
+    "original_cells_sha256": "eb4bc2556eaf8c28e60c4d4b4f9ddf2ddcf67514ce72be3f0770beca003c2a4d",
+    "provenance": {
+      "original_evidence": {
+        "qubits": 3,
+        "shots": 4096,
+        "counts": [
+          64,
+          234,
+          199,
+          963,
+          214,
+          1018,
+          975,
+          429
+        ],
+        "gamma": 2.0943951023931953,
+        "beta": 2.748893571891069,
+        "expected_cost": 0.5197524894510139,
+        "exact_feasible_optimum": -0.13,
+        "best_sampled_feasible": "011",
+        "sampled_gap": 0.0,
+        "feasible_probability": 0.7216796875,
+        "optimal_probability": 0.235107421875,
+        "ideal_probability": [
+          0.015291369301618563,
+          0.05378333420617431,
+          0.05393638034988177,
+          0.24208597849307462,
+          0.0535530612225334,
+          0.24197399567350864,
+          0.24191991109559308,
+          0.09745596965761605
+        ],
+        "validation": "Cirq state checked against independent dense QAOA formula",
+        "backend": "local cirq.Simulator",
+        "cirq_version": "1.6.1",
+        "python": "3.12.6",
+        "seed": 20261101,
+        "hardware_jobs": 0
+      }
+    },
+    "experiments": [
+      {
+        "name": "cirq_portfolio",
+        "kernel_id": "a44cab68a600fae7b409c93b0ce57d3796104fb3b954d5ad76f5931f837cc1d4",
+        "postprocessing": null
+      }
+    ],
+    "update_status": "NOT_SUBMITTED_NEW_SDK_CREDENTIALS_REQUIRED"
+  },
+  "updated_at": "2026-11-16T07:11:01.697257+00:00",
+  "local_source": {
+    "kind": "Python source files only",
+    "files": 777,
+    "sha256": "dd1809f029afabd6773ba8ffb396558d6d55d2707f55653c12760646a055734f",
+    "files_manifest": "source-files.json"
+  },
+  "local_verification_at": "2026-11-16T07:11:01.697257+00:00",
+  "backend_snapshot_sha256": "70b47bdc0d5ef6013b1ccbe3d1dc22b312d56f8508c6689ce012ad7c96a8d085",
+  "experiments": [
+    {
+      "name": "cirq_portfolio",
+      "openqasm": "// Generated from Cirq v1.6.1\n\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\ngate sx a { h a; s a; h a; }\ngate sxdg a { h a; sdg a; h a; }\n\n\n// Qubits: [q(0), q(1), q(2)]\nqreg q[3];\ncreg m_qb[3];\n\n\nry(pi*0.5) q[0];\nry(pi*0.5) q[1];\nry(pi*0.5) q[2];\nrx(pi*1.0) q[0];\nrx(pi*1.0) q[1];\nrx(pi*1.0) q[2];\nrz(pi*0.1689216892) q[2];\nry(pi*-0.5) q[1];\nry(pi*-0.5) q[0];\ncz q[2],q[1];\nry(pi*0.5) q[1];\nrz(pi*0.1646166462) q[1];\nry(pi*-0.5) q[1];\ncz q[2],q[1];\nry(pi*0.5) q[1];\nrz(pi*0.1691266913) q[1];\ncz q[1],q[0];\nry(pi*0.5) q[0];\nrz(pi*0.1644116441) q[0];\nry(pi*-0.5) q[0];\ncz q[2],q[0];\nry(pi*0.5) q[0];\nrz(0) q[0];\nry(pi*-0.5) q[0];\ncz q[1],q[0];\nry(pi*0.5) q[0];\nrx(pi*1.75) q[1];\nrz(pi*0.1642066421) q[0];\nry(pi*-0.5) q[0];\ncz q[2],q[0];\nry(pi*0.5) q[0];\nrx(pi*1.75) q[2];\nrz(pi*0.1683066831) q[0];\nrx(pi*1.75) q[0];\n\n// Gate: cirq.MeasurementGate(3, cirq.MeasurementKey(name='qb'), ())\nmeasure q[0] -> m_qb[0];\nmeasure q[1] -> m_qb[1];\nmeasure q[2] -> m_qb[2];\n",
+      "qasm_sha256": "a44cab68a600fae7b409c93b0ce57d3796104fb3b954d5ad76f5931f837cc1d4",
+      "num_qubits": 3,
+      "logical_depth": 26,
+      "gate_count": 34,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "011": 248,
+          "100": 62,
+          "110": 246,
+          "101": 243,
+          "010": 63,
+          "111": 91,
+          "000": 16,
+          "001": 55
+        },
+        "ideal_probabilities": [
+          0.015291369311719845,
+          0.05378333420716099,
+          0.05393638033245563,
+          0.2420859784794644,
+          0.05355306120520987,
+          0.24197399565993866,
+          0.2419199111486795,
+          0.09745596965537102
+        ],
+        "labels_q0_first": [
+          "000",
+          "001",
+          "010",
+          "011",
+          "100",
+          "101",
+          "110",
+          "111"
+        ]
+      },
+      "source_sdk": {
+        "name": "cirq-core",
+        "version": "1.6.1"
+      },
+      "local_lowering": "Cirq public decomposition",
+      "qubit_order": [
+        "q(0)",
+        "q(1)",
+        "q(2)"
+      ],
+      "receipt": null
+    }
+  ]
+}

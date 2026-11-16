@@ -1,0 +1,9 @@
+﻿实验,q0-first,预期 provider c0-rightmost,本地 counts,本地 P,理想 P,新云 counts
+cirq_pricing,000,000,571,0.557617,0.55,—
+cirq_pricing,001,100,0,0.0,0.0,—
+cirq_pricing,010,010,266,0.259766,0.25,—
+cirq_pricing,011,110,0,0.0,0.0,—
+cirq_pricing,100,001,93,0.09082,0.1,—
+cirq_pricing,101,101,50,0.048828,0.05,—
+cirq_pricing,110,011,0,0.0,0.0,—
+cirq_pricing,111,111,44,0.042969,0.05,—

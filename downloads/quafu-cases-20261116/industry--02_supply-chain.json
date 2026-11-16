@@ -1,0 +1,153 @@
+{
+  "case": {
+    "id": "industry/02_supply-chain",
+    "domain": "industry",
+    "kind": "case",
+    "direction": "supply-chain",
+    "file": "02_supply-chain.html",
+    "title": {
+      "zh-CN": "供应链 · 运输配置",
+      "en": "Supply chain · Shipment allocation"
+    },
+    "original_cells_sha256": "72477f15c98bfaa3d68e7f38f44e00305ebc867ba3bddd842605f17828d4a1a2",
+    "provenance": {
+      "path": "output/jupyter-notebook/industry/02_supply-chain_evidence.json",
+      "sha256": "270191d52b6e77074b7f27ca6f2e7017d2aad0cd610420dc273865f77ce2de2c",
+      "original_summary": {
+        "best_observed_feasible": {
+          "bitstring": "1001",
+          "shipping_matrix": [
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "supplier_load": [
+            1,
+            1
+          ],
+          "customer_received": [
+            1,
+            1
+          ],
+          "violations": 0,
+          "feasible": true,
+          "objective": 3,
+          "penalized_cost": 3
+        },
+        "observed_objective_gap": 0,
+        "feasible_probability": 0.349609375,
+        "optimal_probability": 0.1875,
+        "decision_rule": "best feasible actually sampled candidate; not the most frequent string"
+      }
+    },
+    "experiments": [
+      {
+        "name": "qaoa",
+        "kernel_id": "6c2244dfbb0f461c78bf28b2d5e375f4f49685901dbf7033dab067d2ae8fa423",
+        "postprocessing": null
+      }
+    ],
+    "update_status": "NOT_SUBMITTED_NEW_SDK_CREDENTIALS_REQUIRED"
+  },
+  "updated_at": "2026-11-16T07:11:01.697257+00:00",
+  "local_source": {
+    "kind": "Python source files only",
+    "files": 777,
+    "sha256": "dd1809f029afabd6773ba8ffb396558d6d55d2707f55653c12760646a055734f",
+    "files_manifest": "source-files.json"
+  },
+  "local_verification_at": "2026-11-16T07:11:01.697257+00:00",
+  "backend_snapshot_sha256": "70b47bdc0d5ef6013b1ccbe3d1dc22b312d56f8508c6689ce012ad7c96a8d085",
+  "experiments": [
+    {
+      "name": "qaoa",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\nrz(0.38388681501008914) q[1];\ncx q[0],q[1];\ncx q[0],q[2];\nrz(0.76777363002017818) q[2];\ncx q[0],q[2];\nrz(-0.46066417801210691) q[0];\ncx q[1],q[3];\nrz(0.76777363002017818) q[3];\ncx q[1],q[3];\nrz(-0.57583022251513349) q[1];\ncx q[2],q[3];\nrz(0.38388681501008903) q[3];\ncx q[2],q[3];\nrz(-0.53744154101412478) q[2];\nrz(-0.42227549651109803) q[3];\nrz(2.5336529790665874) q[0];\nu1(-2.5336529790665874) q[0];\nrx(5.4665414137673425) q[0];\nrx(5.4665414137673425) q[1];\nrx(5.4665414137673425) q[2];\nrx(5.4665414137673425) q[3];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+      "qasm_sha256": "6c2244dfbb0f461c78bf28b2d5e375f4f49685901dbf7033dab067d2ae8fa423",
+      "num_qubits": 4,
+      "logical_depth": 12,
+      "gate_count": 26,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "0010": 114,
+          "0100": 102,
+          "0011": 80,
+          "0001": 116,
+          "1001": 196,
+          "0110": 160,
+          "1100": 79,
+          "0101": 18,
+          "1010": 17,
+          "1000": 99,
+          "0000": 39,
+          "1111": 4
+        },
+        "ideal_probabilities": [
+          0.039048954718764205,
+          0.10182940935872163,
+          0.09960201990300116,
+          0.08807775526618528,
+          0.09630352309393003,
+          0.014085615813276846,
+          0.16896232855420695,
+          0.00016162878348985143,
+          0.09813380924695878,
+          0.1915937641003132,
+          0.014033815246362772,
+          5.946127044825011e-05,
+          0.08344115587934914,
+          1.957752510173202e-05,
+          0.00010837681079286814,
+          0.0045388044290971446
+        ],
+        "labels_q0_first": [
+          "0000",
+          "0001",
+          "0010",
+          "0011",
+          "0100",
+          "0101",
+          "0110",
+          "0111",
+          "1000",
+          "1001",
+          "1010",
+          "1011",
+          "1100",
+          "1101",
+          "1110",
+          "1111"
+        ]
+      },
+      "receipt": null
+    }
+  ]
+}

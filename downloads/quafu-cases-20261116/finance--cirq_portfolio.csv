@@ -1,0 +1,9 @@
+﻿实验,q0-first,预期 provider c0-rightmost,本地 counts,本地 P,理想 P,新云 counts
+cirq_portfolio,000,000,16,0.015625,0.015291,—
+cirq_portfolio,001,100,55,0.053711,0.053783,—
+cirq_portfolio,010,010,63,0.061523,0.053936,—
+cirq_portfolio,011,110,248,0.242188,0.242086,—
+cirq_portfolio,100,001,62,0.060547,0.053553,—
+cirq_portfolio,101,101,243,0.237305,0.241974,—
+cirq_portfolio,110,011,246,0.240234,0.24192,—
+cirq_portfolio,111,111,91,0.088867,0.097456,—

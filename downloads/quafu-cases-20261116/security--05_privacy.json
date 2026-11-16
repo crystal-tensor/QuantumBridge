@@ -1,0 +1,171 @@
+{
+  "case": {
+    "id": "security/05_privacy",
+    "domain": "security",
+    "kind": "case",
+    "direction": "privacy",
+    "file": "05_privacy.html",
+    "title": {
+      "zh-CN": "数据安全 · 加密与审计",
+      "en": "Data security · Encryption & audit"
+    },
+    "original_cells_sha256": "463d88f3dcc92b5dda94c74ad835d8076998df10c1bbb333105e4bb0c40ceccd",
+    "provenance": {
+      "path": "output/jupyter-notebook/security/05_privacy_evidence.json",
+      "sha256": "44c82261d30e8ce3a038c28ea0558ba57ec914c48592dd8fd4d812b5146898c2",
+      "original_summary": {
+        "roundtrip_ok": true,
+        "ciphertext_bytes": 75,
+        "plaintext_bytes": 59,
+        "altered_ciphertext_rejected": true,
+        "altered_aad_rejected": true,
+        "valid_audit_accepted": true,
+        "audit_tamper_rejected": true,
+        "truncation_rejected_with_anchor": true,
+        "secret_material_exported": false,
+        "identity_authentication": "not implemented; roles are explicit teaching inputs",
+        "homomorphic_or_mpc_implemented": false
+      },
+      "fresh_classical": {
+        "evidence": {
+          "execution_mode": "local_classical",
+          "hardware_access": false,
+          "new_cloud_tasks": 0,
+          "experiments": {},
+          "estimates": {},
+          "summary": {
+            "roundtrip_ok": true,
+            "ciphertext_bytes": 75,
+            "plaintext_bytes": 59,
+            "altered_ciphertext_rejected": true,
+            "altered_aad_rejected": true,
+            "valid_audit_accepted": true,
+            "audit_tamper_rejected": true,
+            "truncation_rejected_with_anchor": true,
+            "secret_material_exported": false,
+            "identity_authentication": "not implemented; roles are explicit teaching inputs",
+            "homomorphic_or_mpc_implemented": false
+          }
+        },
+        "intermediate": {
+          "access_decisions": [
+            {
+              "role": "viewer",
+              "action": "read",
+              "allowed": true
+            },
+            {
+              "role": "viewer",
+              "action": "prepare_local",
+              "allowed": false
+            },
+            {
+              "role": "operator",
+              "action": "prepare_local",
+              "allowed": true
+            },
+            {
+              "role": "unknown",
+              "action": "read",
+              "allowed": false
+            }
+          ],
+          "integrity_checks": [
+            {
+              "attack": "ciphertext",
+              "rejected": true
+            },
+            {
+              "attack": "metadata",
+              "rejected": true
+            }
+          ],
+          "public_audit_records": [
+            {
+              "index": 0,
+              "previous": "0000000000000000000000000000000000000000000000000000000000000000",
+              "payload": {
+                "role": "viewer",
+                "action": "read",
+                "allowed": true
+              },
+              "tag": "379e06760face5f7e9d817217ba0ee046e85976c2cd2302a817e6798cd0c874c"
+            },
+            {
+              "index": 1,
+              "previous": "379e06760face5f7e9d817217ba0ee046e85976c2cd2302a817e6798cd0c874c",
+              "payload": {
+                "role": "viewer",
+                "action": "prepare_local",
+                "allowed": false
+              },
+              "tag": "ddbd4074515fe0296c4b13d7184e94034e6c201323462feec2c295d9d08a2c39"
+            },
+            {
+              "index": 2,
+              "previous": "ddbd4074515fe0296c4b13d7184e94034e6c201323462feec2c295d9d08a2c39",
+              "payload": {
+                "role": "operator",
+                "action": "prepare_local",
+                "allowed": true
+              },
+              "tag": "4bf64f0f00e5809f9751bed8ffadda58bf233d3d372ce7d694acfd938dc6ff80"
+            },
+            {
+              "index": 3,
+              "previous": "4bf64f0f00e5809f9751bed8ffadda58bf233d3d372ce7d694acfd938dc6ff80",
+              "payload": {
+                "role": "unknown",
+                "action": "read",
+                "allowed": false
+              },
+              "tag": "09f80e4117f4a844507bf175340bff0250730ddf6b7677771ffd5463def412f2"
+            }
+          ],
+          "chart_rows": [
+            {
+              "label": "Round trip",
+              "value": 1
+            },
+            {
+              "label": "Ciphertext rejected",
+              "value": 1
+            },
+            {
+              "label": "Metadata rejected",
+              "value": 1
+            },
+            {
+              "label": "Audit tamper rejected",
+              "value": 1
+            }
+          ],
+          "chart_units": "Check passed (1/0)",
+          "chart_title": "Actual classical cryptography checks"
+        },
+        "inputs": {
+          "encryption": "cryptography AES-256-GCM",
+          "nonce_bytes": 12,
+          "nonce_policy": "fresh OS randomness with fresh key per example",
+          "data": "synthetic quantum-job counts only",
+          "audit": "HMAC-SHA256 chain; expected length and tail retained by verifier"
+        },
+        "reference": {
+          "tag_overhead_bytes": 16
+        }
+      }
+    },
+    "experiments": [],
+    "update_status": "CLASSICAL_NOT_APPLICABLE"
+  },
+  "updated_at": "2026-11-16T07:11:01.697257+00:00",
+  "local_source": {
+    "kind": "Python source files only",
+    "files": 777,
+    "sha256": "dd1809f029afabd6773ba8ffb396558d6d55d2707f55653c12760646a055734f",
+    "files_manifest": "source-files.json"
+  },
+  "local_verification_at": "2026-11-16T07:11:01.697257+00:00",
+  "backend_snapshot_sha256": "70b47bdc0d5ef6013b1ccbe3d1dc22b312d56f8508c6689ce012ad7c96a8d085",
+  "experiments": []
+}

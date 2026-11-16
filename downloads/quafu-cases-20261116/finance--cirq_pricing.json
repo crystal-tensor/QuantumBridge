@@ -1,0 +1,125 @@
+{
+  "case": {
+    "id": "finance/cirq_pricing",
+    "domain": "finance",
+    "kind": "case",
+    "direction": "pricing",
+    "file": "cirq_pricing.html",
+    "title": {
+      "zh-CN": "Cirq · 离散欧式期权定价",
+      "en": "Cirq · Discrete European option pricing"
+    },
+    "original_cells_sha256": "307ce748a2c82421a325bfa71ac594bd6c797af7f0aa6d3b8a41f096092e4524",
+    "provenance": {
+      "original_evidence": {
+        "qubits": 3,
+        "shots": 4096,
+        "counts": [
+          3659,
+          437
+        ],
+        "exact_price": 2.9405960199202656,
+        "sampled_price": 3.1373058122684476,
+        "price_95pct_wilson_interval": [
+          2.8700484142704323,
+          3.426236761282813
+        ],
+        "implied_spot": 88.95302960258805,
+        "ancilla_ideal_probability": 0.1,
+        "validation": "Scenario marginal and discounted expected payoff checked",
+        "backend": "local cirq.Simulator",
+        "cirq_version": "1.6.1",
+        "python": "3.12.6",
+        "seed": 20261101,
+        "hardware_jobs": 0
+      }
+    },
+    "experiments": [
+      {
+        "name": "cirq_pricing",
+        "kernel_id": "396b79339c65ca327cfd3fff0c659d8e5439aaae856db165b2027ca5bf1a4de6",
+        "postprocessing": null
+      }
+    ],
+    "update_status": "NOT_SUBMITTED_NEW_SDK_CREDENTIALS_REQUIRED"
+  },
+  "updated_at": "2026-11-16T07:11:01.697257+00:00",
+  "local_source": {
+    "kind": "Python source files only",
+    "files": 777,
+    "sha256": "dd1809f029afabd6773ba8ffb396558d6d55d2707f55653c12760646a055734f",
+    "files_manifest": "source-files.json"
+  },
+  "local_verification_at": "2026-11-16T07:11:01.697257+00:00",
+  "backend_snapshot_sha256": "70b47bdc0d5ef6013b1ccbe3d1dc22b312d56f8508c6689ce012ad7c96a8d085",
+  "experiments": [
+    {
+      "name": "cirq_pricing",
+      "openqasm": "// Generated from Cirq v1.6.1\n\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\ngate sx a { h a; s a; h a; }\ngate sxdg a { h a; sdg a; h a; }\n\n\n// Qubits: [q(0), q(1), q(2)]\nqreg q[3];\ncreg m_qb[3];\n\n\nry(pi*0.2951672353) q[0];\nz q[1];\nry(pi*-0.5) q[2];\nx q[0];\nry(pi*-0.5) q[1];\nrz(pi*0.1888213532) q[0];\ncz q[0],q[1];\nry(pi*0.5) q[1];\nry(pi*0.1888213532) q[1];\nry(pi*-0.5) q[1];\ncz q[0],q[1];\nry(pi*0.5) q[1];\nx q[0];\nry(pi*-0.1888213532) q[1];\nrz(pi*0.1888213532) q[0];\nz q[1];\nrz(pi*0.1666666667) q[0];\nz q[1];\nry(pi*-0.5) q[1];\ncz q[0],q[1];\nry(pi*0.5) q[1];\nry(pi*0.1666666667) q[1];\nry(pi*-0.5) q[1];\ncz q[0],q[1];\nry(pi*0.5) q[1];\nrz(pi*-0.1666666667) q[0];\nry(pi*-0.1666666667) q[1];\nx q[0];\nz q[1];\nx q[1];\ncz q[1],q[2];\nry(pi*0.5) q[2];\nry(pi*-0.5) q[2];\ncz q[1],q[2];\nry(pi*0.5) q[2];\nry(pi*-0.5) q[2];\ncz q[0],q[2];\nry(pi*0.5) q[2];\nry(pi*-0.5) q[2];\ncz q[1],q[2];\nry(pi*0.5) q[2];\nry(pi*-0.5) q[2];\ncz q[1],q[2];\nry(pi*0.5) q[2];\nry(pi*-0.5) q[2];\ncz q[0],q[2];\nry(pi*0.5) q[2];\nx q[0];\nry(pi*-0.5) q[2];\nx q[0];\ncz q[1],q[2];\nry(pi*0.5) q[2];\nry(pi*-0.5) q[2];\ncz q[1],q[2];\nry(pi*0.5) q[2];\nx q[1];\nry(pi*-0.5) q[2];\ncz q[1],q[2];\nry(pi*0.5) q[2];\nry(pi*-0.5) q[2];\ncz q[1],q[2];\nry(pi*0.5) q[2];\nry(pi*-0.5) q[2];\ncz q[0],q[2];\nry(pi*0.5) q[2];\nry(pi*-0.5) q[2];\ncz q[1],q[2];\nry(pi*0.5) q[2];\nry(pi*-0.5) q[2];\ncz q[1],q[2];\nry(pi*0.5) q[2];\nry(pi*-0.5) q[2];\ncz q[0],q[2];\nry(pi*0.5) q[2];\nx q[0];\nry(pi*-0.5) q[2];\ncz q[1],q[2];\nry(pi*0.5) q[2];\nry(pi*-0.5) q[2];\ncz q[1],q[2];\nry(pi*0.5) q[2];\nx q[1];\nrz(pi*0.097956638) q[1];\nrz(pi*1.0) q[2];\nry(pi*-0.5) q[2];\ncz q[1],q[2];\nry(pi*0.5) q[2];\nry(pi*0.097956638) q[2];\nry(pi*-0.5) q[2];\ncz q[1],q[2];\nry(pi*0.5) q[2];\nry(pi*-0.5) q[1];\nry(pi*-0.097956638) q[2];\ncz q[0],q[1];\nrz(pi*1.0) q[2];\nry(pi*0.5) q[1];\nrz(pi*-0.097956638) q[1];\nry(pi*-0.5) q[2];\ncz q[1],q[2];\nry(pi*0.5) q[2];\nry(pi*0.097956638) q[2];\nry(pi*-0.5) q[2];\ncz q[1],q[2];\nry(pi*0.5) q[2];\nry(pi*-0.5) q[1];\nry(pi*-0.097956638) q[2];\ncz q[0],q[1];\nrz(0) q[2];\nry(pi*0.5) q[1];\nrz(pi*0.097956638) q[0];\nrz(pi*1.0) q[2];\nx q[1];\nry(pi*-0.5) q[2];\nrz(pi*0.097956638) q[1];\ncz q[0],q[2];\nry(pi*0.5) q[2];\nry(pi*0.097956638) q[2];\nry(pi*-0.5) q[2];\ncz q[0],q[2];\nry(pi*0.5) q[2];\nry(pi*-0.5) q[0];\nry(pi*-0.097956638) q[2];\ncz q[1],q[0];\nrz(pi*1.0) q[2];\nry(pi*0.5) q[0];\nrz(pi*-0.097956638) q[0];\nry(pi*-0.5) q[2];\nry(pi*-0.5) q[0];\ncz q[1],q[0];\nry(pi*0.5) q[0];\ntdg q[1];\nrz(pi*-0.097956638) q[0];\ncz q[1],q[2];\nry(pi*0.5) q[2];\nry(pi*0.25) q[2];\nry(pi*-0.5) q[2];\ncz q[1],q[2];\nry(pi*0.5) q[2];\nry(pi*-0.5) q[1];\nry(pi*-0.25) q[2];\ncz q[0],q[1];\nry(pi*0.5) q[1];\nrz(pi*1.0) q[2];\nt q[1];\nry(pi*-0.5) q[2];\ncz q[1],q[2];\nry(pi*0.5) q[2];\nrz(pi*-0.5) q[2];\nrx(pi*0.25) q[2];\ns q[2];\nry(pi*-0.5) q[2];\ncz q[1],q[2];\nry(pi*0.5) q[2];\nry(pi*-0.5) q[1];\nry(pi*-0.25) q[2];\ncz q[0],q[1];\nz q[2];\nry(pi*0.5) q[1];\ntdg q[0];\nry(pi*-0.5) q[2];\ncz q[0],q[2];\nry(pi*0.5) q[2];\nry(pi*0.25) q[2];\nry(pi*-0.5) q[2];\ncz q[0],q[2];\nry(pi*0.5) q[2];\n\n// Gate: CZ**-0.5\nu3(pi*0.5,0,pi*1.25) q[0];\nu3(pi*0.5,pi*1.0,pi*1.75) q[1];\nsx q[0];\ncx q[0],q[1];\nrx(pi*0.25) q[0];\nry(pi*0.5) q[1];\ncx q[1],q[0];\nsxdg q[1];\ns q[1];\ncx q[0],q[1];\nu3(pi*0.5,pi*1.5,pi*1.0) q[0];\nu3(pi*0.5,pi*1.0,0) q[1];\n\nry(pi*-0.25) q[2];\n\n// Gate: cirq.MeasurementGate(3, cirq.MeasurementKey(name='qb'), ())\nmeasure q[0] -> m_qb[0];\nmeasure q[1] -> m_qb[1];\nmeasure q[2] -> m_qb[2];\n",
+      "qasm_sha256": "396b79339c65ca327cfd3fff0c659d8e5439aaae856db165b2027ca5bf1a4de6",
+      "num_qubits": 3,
+      "logical_depth": 136,
+      "gate_count": 179,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "000": 571,
+          "100": 93,
+          "111": 44,
+          "010": 266,
+          "101": 50
+        },
+        "ideal_probabilities": [
+          0.5500000000716643,
+          2.0665228303275036e-31,
+          0.24999999992942207,
+          3.8518598887744724e-33,
+          0.09999999999416272,
+          0.049999999986882544,
+          4.699269064304855e-32,
+          0.050000000017865705
+        ],
+        "labels_q0_first": [
+          "000",
+          "001",
+          "010",
+          "011",
+          "100",
+          "101",
+          "110",
+          "111"
+        ]
+      },
+      "source_sdk": {
+        "name": "cirq-core",
+        "version": "1.6.1"
+      },
+      "local_lowering": "Cirq public decomposition",
+      "qubit_order": [
+        "q(0)",
+        "q(1)",
+        "q(2)"
+      ],
+      "receipt": null
+    }
+  ]
+}

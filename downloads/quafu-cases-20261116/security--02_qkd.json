@@ -1,0 +1,157 @@
+{
+  "case": {
+    "id": "security/02_qkd",
+    "domain": "security",
+    "kind": "case",
+    "direction": "qkd",
+    "file": "02_qkd.html",
+    "title": {
+      "zh-CN": "QKD · BB84 与窃听实验",
+      "en": "QKD · BB84 & interception experiment"
+    },
+    "original_cells_sha256": "fb01f5023a88d53dbb1ed58501bf5da3ad12b6e2463ec1b1d004e8555076af80",
+    "provenance": {
+      "path": "output/jupyter-notebook/security/02_qkd_evidence.json",
+      "sha256": "efbb25150f52ca75f108301c992195624436defdce43872ee5b160f3bd9b5879",
+      "original_summary": {
+        "clean_qber": 0.0,
+        "eve_qber": 0.2583826429980276,
+        "eve_scenario_aborted": true,
+        "production_key_emitted": false,
+        "authentication_and_finite_key_proof": "not implemented; all bits are public seeded teaching data"
+      }
+    },
+    "experiments": [
+      {
+        "name": "z_basis_bit1",
+        "kernel_id": "c845c4d643aeccb8a0c3e8c8cc6e192eca8c9c5c869510d9e2087ebae713bbb2",
+        "postprocessing": null
+      },
+      {
+        "name": "x_basis_bit1",
+        "kernel_id": "5a4d41122ebc4751af98e6871045a214b230e922b9070e65814f127faca7d95b",
+        "postprocessing": null
+      },
+      {
+        "name": "mismatched_bases",
+        "kernel_id": "811bd590fd9809255ac7a2018b0cd062ecaedf239273e5731c1bd467ca7933d4",
+        "postprocessing": null
+      }
+    ],
+    "update_status": "NOT_SUBMITTED_NEW_SDK_CREDENTIALS_REQUIRED"
+  },
+  "updated_at": "2026-11-16T07:11:01.697257+00:00",
+  "local_source": {
+    "kind": "Python source files only",
+    "files": 777,
+    "sha256": "dd1809f029afabd6773ba8ffb396558d6d55d2707f55653c12760646a055734f",
+    "files_manifest": "source-files.json"
+  },
+  "local_verification_at": "2026-11-16T07:11:01.697257+00:00",
+  "backend_snapshot_sha256": "70b47bdc0d5ef6013b1ccbe3d1dc22b312d56f8508c6689ce012ad7c96a8d085",
+  "experiments": [
+    {
+      "name": "z_basis_bit1",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\ncreg c[1];\nx q[0];\nmeasure q[0] -> c[0];\n",
+      "qasm_sha256": "c845c4d643aeccb8a0c3e8c8cc6e192eca8c9c5c869510d9e2087ebae713bbb2",
+      "num_qubits": 1,
+      "logical_depth": 1,
+      "gate_count": 1,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "1": 1024
+        },
+        "ideal_probabilities": [
+          0.0,
+          1.0
+        ],
+        "labels_q0_first": [
+          "0",
+          "1"
+        ]
+      },
+      "receipt": null
+    },
+    {
+      "name": "x_basis_bit1",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\ncreg c[1];\nx q[0];\nh q[0];\nh q[0];\nmeasure q[0] -> c[0];\n",
+      "qasm_sha256": "5a4d41122ebc4751af98e6871045a214b230e922b9070e65814f127faca7d95b",
+      "num_qubits": 1,
+      "logical_depth": 3,
+      "gate_count": 3,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "1": 1024
+        },
+        "ideal_probabilities": [
+          0.0,
+          0.9999999999999996
+        ],
+        "labels_q0_first": [
+          "0",
+          "1"
+        ]
+      },
+      "receipt": null
+    },
+    {
+      "name": "mismatched_bases",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\ncreg c[1];\nx q[0];\nh q[0];\nmeasure q[0] -> c[0];\n",
+      "qasm_sha256": "811bd590fd9809255ac7a2018b0cd062ecaedf239273e5731c1bd467ca7933d4",
+      "num_qubits": 1,
+      "logical_depth": 2,
+      "gate_count": 2,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "0": 529,
+          "1": 495
+        },
+        "ideal_probabilities": [
+          0.4999999999999999,
+          0.4999999999999999
+        ],
+        "labels_q0_first": [
+          "0",
+          "1"
+        ]
+      },
+      "receipt": null
+    }
+  ]
+}

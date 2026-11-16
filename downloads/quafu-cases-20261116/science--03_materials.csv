@@ -1,0 +1,17 @@
+﻿实验,q0-first,预期 provider c0-rightmost,本地 counts,本地 P,理想 P,新云 counts
+occupation,0000,0000,0,0.0,0.0,—
+occupation,0001,1000,0,0.0,0.0,—
+occupation,0010,0100,0,0.0,0.0,—
+occupation,0011,1100,79,0.077148,0.073223,—
+occupation,0100,0010,0,0.0,0.0,—
+occupation,0101,1010,0,0.0,0.0,—
+occupation,0110,0110,450,0.439453,0.426777,—
+occupation,0111,1110,0,0.0,0.0,—
+occupation,1000,0001,0,0.0,0.0,—
+occupation,1001,1001,430,0.419922,0.426777,—
+occupation,1010,0101,0,0.0,0.0,—
+occupation,1011,1101,0,0.0,0.0,—
+occupation,1100,0011,65,0.063477,0.073223,—
+occupation,1101,1011,0,0.0,0.0,—
+occupation,1110,0111,0,0.0,0.0,—
+occupation,1111,1111,0,0.0,0.0,—

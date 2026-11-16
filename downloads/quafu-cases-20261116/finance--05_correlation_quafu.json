@@ -1,0 +1,287 @@
+{
+  "case": {
+    "id": "finance/05_correlation_quafu",
+    "domain": "finance",
+    "kind": "case",
+    "direction": "market-models",
+    "file": "05_correlation_quafu.html",
+    "title": {
+      "zh-CN": "相关性与波动 · 量子重叠估计",
+      "en": "Correlation & volatility · Quantum overlap estimation"
+    },
+    "original_cells_sha256": "5ea6ea5a66e979b52275f7101700a6278879ee983969cfe27da6da6ca6e02573",
+    "provenance": {
+      "path": "output/jupyter-notebook/finance/correlation_evidence.json",
+      "sha256": "2dd3b008b12892acb99a8a5924cfa092571eafa4c5897880e21ffe6767a876aa",
+      "historical_hardware_status": "not_executed",
+      "historical_acceptance": {
+        "case": "correlation",
+        "hardware_status": "NOT_EXECUTED",
+        "hardware_results": null
+      },
+      "scope": "Historical Dongling receipts retained; not relabelled as current Baihua results"
+    },
+    "experiments": [
+      {
+        "name": "positive_correlation",
+        "kernel_id": "dfbdce9bd41a8304caaf9ed22b756e643f356552a32b0f9ba80c724d44af0e46",
+        "postprocessing": null
+      },
+      {
+        "name": "negative_correlation",
+        "kernel_id": "17174decccefbe73a3c4811859b1c21ccebed628d206491eb89d36f5d3e1fd9f",
+        "postprocessing": null
+      },
+      {
+        "name": "time_sampling",
+        "kernel_id": "ad0acd4930f37e690fb659d90c78b90b139e68b60220fd19da0cfecb5946a98b",
+        "postprocessing": null
+      }
+    ],
+    "update_status": "NOT_SUBMITTED_NEW_SDK_CREDENTIALS_REQUIRED"
+  },
+  "updated_at": "2026-11-16T07:11:01.697257+00:00",
+  "local_source": {
+    "kind": "Python source files only",
+    "files": 777,
+    "sha256": "dd1809f029afabd6773ba8ffb396558d6d55d2707f55653c12760646a055734f",
+    "files_manifest": "source-files.json"
+  },
+  "local_verification_at": "2026-11-16T07:11:01.697257+00:00",
+  "backend_snapshot_sha256": "70b47bdc0d5ef6013b1ccbe3d1dc22b312d56f8508c6689ce012ad7c96a8d085",
+  "experiments": [
+    {
+      "name": "positive_correlation",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nry(1.5707963267948963) q[0];\nry(1.7396937540038238) q[1];\ncx q[0],q[1];\nry(-0.026859513181998751) q[1];\ncx q[0],q[1];\nry(1.052713990075457) q[2];\ncx q[1],q[2];\nry(-0.050967351189937449) q[2];\ncx q[1],q[2];\ncx q[0],q[2];\nry(0.091179168652661291) q[2];\ncx q[0],q[2];\ncx q[0],q[2];\ncx q[1],q[2];\nry(0.07831778700455061) q[2];\ncx q[1],q[2];\ncx q[0],q[2];\nry(-0.12222362598694581) q[3];\ncx q[2],q[3];\nry(1.1460351387611547) q[3];\ncx q[2],q[3];\ncx q[1],q[3];\nry(-0.43157764899249385) q[3];\ncx q[1],q[3];\ncx q[1],q[3];\ncx q[2],q[3];\nry(-2.683422216030197) q[3];\ncx q[2],q[3];\ncx q[1],q[3];\ncx q[0],q[3];\nry(-0.26938588887112846) q[3];\ncx q[0],q[3];\ncx q[0],q[3];\ncx q[2],q[3];\nry(0.083266416613659855) q[3];\ncx q[2],q[3];\ncx q[0],q[3];\ncx q[0],q[3];\ncx q[1],q[3];\nry(-0.025540832673732528) q[3];\ncx q[1],q[3];\ncx q[0],q[3];\ncx q[0],q[3];\ncx q[1],q[3];\ncx q[2],q[3];\nry(0.014510989843641742) q[3];\ncx q[2],q[3];\ncx q[1],q[3];\ncx q[0],q[3];\nh q[0];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+      "qasm_sha256": "dfbdce9bd41a8304caaf9ed22b756e643f356552a32b0f9ba80c724d44af0e46",
+      "num_qubits": 4,
+      "logical_depth": 47,
+      "gate_count": 50,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "0001": 252,
+          "0100": 98,
+          "0011": 22,
+          "0111": 149,
+          "0101": 331,
+          "0000": 87,
+          "0010": 71,
+          "0110": 4,
+          "1100": 1,
+          "1101": 1,
+          "1110": 3,
+          "1010": 2,
+          "1000": 3
+        },
+        "ideal_probabilities": [
+          0.07980078935091194,
+          0.2343493656008235,
+          0.07413933882309932,
+          0.01800353127129146,
+          0.09657305284162647,
+          0.32366040060907103,
+          0.005532887477668526,
+          0.1510275950221656,
+          0.0031992737068785434,
+          0.00016758920334983182,
+          0.005496422207017352,
+          0.0008262217026293921,
+          0.002993192604629822,
+          0.0003423150985402949,
+          0.0037422026963794272,
+          0.00014582178391794794
+        ],
+        "labels_q0_first": [
+          "0000",
+          "0001",
+          "0010",
+          "0011",
+          "0100",
+          "0101",
+          "0110",
+          "0111",
+          "1000",
+          "1001",
+          "1010",
+          "1011",
+          "1100",
+          "1101",
+          "1110",
+          "1111"
+        ]
+      },
+      "receipt": null
+    },
+    {
+      "name": "negative_correlation",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nry(1.5707963267948963) q[0];\nry(1.6740307276756363) q[1];\ncx q[0],q[1];\nry(0.038803513146188462) q[1];\ncx q[0],q[1];\nry(1.2409231387982538) q[2];\ncx q[1],q[2];\nry(0.087032847329602203) q[2];\ncx q[1],q[2];\ncx q[0],q[2];\nry(-0.097029980070135691) q[2];\ncx q[0],q[2];\ncx q[0],q[2];\ncx q[1],q[2];\nry(-0.059682411514989042) q[2];\ncx q[1],q[2];\ncx q[0],q[2];\nry(-0.60262300238937128) q[3];\ncx q[2],q[3];\nry(1.251814634854582) q[3];\ncx q[2],q[3];\ncx q[1],q[3];\nry(-0.44455740405613708) q[3];\ncx q[1],q[3];\ncx q[1],q[3];\ncx q[2],q[3];\nry(0.4440751666232825) q[3];\ncx q[2],q[3];\ncx q[1],q[3];\ncx q[0],q[3];\nry(0.21101348753129703) q[3];\ncx q[0],q[3];\ncx q[0],q[3];\ncx q[2],q[3];\nry(-0.022513079479767467) q[3];\ncx q[2],q[3];\ncx q[0],q[3];\ncx q[0],q[3];\ncx q[1],q[3];\nry(-0.012561077610089316) q[3];\ncx q[1],q[3];\ncx q[0],q[3];\ncx q[0],q[3];\ncx q[1],q[3];\ncx q[2],q[3];\nry(-3.1129863928098378) q[3];\ncx q[2],q[3];\ncx q[1],q[3];\ncx q[0],q[3];\nh q[0];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+      "qasm_sha256": "17174decccefbe73a3c4811859b1c21ccebed628d206491eb89d36f5d3e1fd9f",
+      "num_qubits": 4,
+      "logical_depth": 47,
+      "gate_count": 50,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "1001": 278,
+          "1010": 159,
+          "1110": 30,
+          "1011": 7,
+          "1101": 345,
+          "1111": 124,
+          "0000": 5,
+          "1000": 28,
+          "1100": 38,
+          "0100": 4,
+          "0110": 2,
+          "0010": 3,
+          "0111": 1
+        },
+        "ideal_probabilities": [
+          0.0033013616331305806,
+          7.322221056392718e-06,
+          0.0032199277104735437,
+          0.0008368307698444112,
+          0.003210391927561579,
+          9.890508666114514e-08,
+          0.002617786998021932,
+          0.0004732200671891463,
+          0.028382388782247362,
+          0.24436818673102279,
+          0.16254416683867243,
+          0.00585303619966777,
+          0.039757031487703154,
+          0.3446850720115202,
+          0.0348648219040292,
+          0.12587835581277299
+        ],
+        "labels_q0_first": [
+          "0000",
+          "0001",
+          "0010",
+          "0011",
+          "0100",
+          "0101",
+          "0110",
+          "0111",
+          "1000",
+          "1001",
+          "1010",
+          "1011",
+          "1100",
+          "1101",
+          "1110",
+          "1111"
+        ]
+      },
+      "receipt": null
+    },
+    {
+      "name": "time_sampling",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncreg c[3];\nh q[0];\nh q[1];\nh q[2];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\n",
+      "qasm_sha256": "ad0acd4930f37e690fb659d90c78b90b139e68b60220fd19da0cfecb5946a98b",
+      "num_qubits": 3,
+      "logical_depth": 1,
+      "gate_count": 3,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "001": 141,
+          "011": 135,
+          "110": 118,
+          "000": 139,
+          "111": 123,
+          "101": 139,
+          "010": 114,
+          "100": 115
+        },
+        "ideal_probabilities": [
+          0.12499999999999994,
+          0.12499999999999994,
+          0.12499999999999994,
+          0.12499999999999994,
+          0.12499999999999994,
+          0.12499999999999994,
+          0.12499999999999994,
+          0.12499999999999994
+        ],
+        "labels_q0_first": [
+          "000",
+          "001",
+          "010",
+          "011",
+          "100",
+          "101",
+          "110",
+          "111"
+        ]
+      },
+      "receipt": null
+    }
+  ]
+}

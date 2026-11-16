@@ -1,0 +1,202 @@
+{
+  "case": {
+    "id": "finance/cirq_constraints",
+    "domain": "finance",
+    "kind": "case",
+    "direction": "financial-constraints",
+    "file": "cirq_constraints.html",
+    "title": {
+      "zh-CN": "Cirq · 预算与持仓约束",
+      "en": "Cirq · Budget & position constraints"
+    },
+    "original_cells_sha256": "9583bd144cb6766455d2aadd02373d4f355ff52c078bbbea23c7d128a45119f9",
+    "provenance": {
+      "original_evidence": {
+        "qubits": 3,
+        "shots": 4096,
+        "counts": [
+          46,
+          87,
+          263,
+          965,
+          359,
+          1003,
+          878,
+          495
+        ],
+        "gamma": 2.0943951023931953,
+        "beta": 2.748893571891069,
+        "expected_cost": 1.8004991812722635,
+        "exact_feasible_optimum": -14.0,
+        "best_sampled_feasible": "101",
+        "sampled_gap": 0.0,
+        "feasible_probability": 0.244873046875,
+        "optimal_probability": 0.244873046875,
+        "ideal_probability": [
+          0.011153064875481726,
+          0.020572323163636188,
+          0.0618533181122566,
+          0.24122157943045228,
+          0.09412183690029897,
+          0.23925701139803837,
+          0.21626322165945341,
+          0.11555764446038258
+        ],
+        "validation": "Cirq state checked against independent dense QAOA formula",
+        "sampled_checks": [
+          {
+            "state": "000",
+            "count": 46,
+            "budget_equals_6": false,
+            "holdings_equal_2": false,
+            "sector_exclusion": true
+          },
+          {
+            "state": "001",
+            "count": 87,
+            "budget_equals_6": false,
+            "holdings_equal_2": false,
+            "sector_exclusion": true
+          },
+          {
+            "state": "010",
+            "count": 263,
+            "budget_equals_6": false,
+            "holdings_equal_2": false,
+            "sector_exclusion": true
+          },
+          {
+            "state": "011",
+            "count": 965,
+            "budget_equals_6": false,
+            "holdings_equal_2": true,
+            "sector_exclusion": true
+          },
+          {
+            "state": "100",
+            "count": 359,
+            "budget_equals_6": false,
+            "holdings_equal_2": false,
+            "sector_exclusion": true
+          },
+          {
+            "state": "101",
+            "count": 1003,
+            "budget_equals_6": true,
+            "holdings_equal_2": true,
+            "sector_exclusion": true
+          },
+          {
+            "state": "110",
+            "count": 878,
+            "budget_equals_6": false,
+            "holdings_equal_2": true,
+            "sector_exclusion": false
+          },
+          {
+            "state": "111",
+            "count": 495,
+            "budget_equals_6": false,
+            "holdings_equal_2": false,
+            "sector_exclusion": false
+          }
+        ],
+        "backend": "local cirq.Simulator",
+        "cirq_version": "1.6.1",
+        "python": "3.12.6",
+        "seed": 20261101,
+        "hardware_jobs": 0
+      }
+    },
+    "experiments": [
+      {
+        "name": "cirq_constraints",
+        "kernel_id": "1d36cc28c40e11286b780e2b13c48870d9931de9e2d228c3df682f6a7703e1cd",
+        "postprocessing": null
+      }
+    ],
+    "update_status": "NOT_SUBMITTED_NEW_SDK_CREDENTIALS_REQUIRED"
+  },
+  "updated_at": "2026-11-16T07:11:01.697257+00:00",
+  "local_source": {
+    "kind": "Python source files only",
+    "files": 777,
+    "sha256": "dd1809f029afabd6773ba8ffb396558d6d55d2707f55653c12760646a055734f",
+    "files_manifest": "source-files.json"
+  },
+  "local_verification_at": "2026-11-16T07:11:01.697257+00:00",
+  "backend_snapshot_sha256": "70b47bdc0d5ef6013b1ccbe3d1dc22b312d56f8508c6689ce012ad7c96a8d085",
+  "experiments": [
+    {
+      "name": "cirq_constraints",
+      "openqasm": "// Generated from Cirq v1.6.1\n\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\ngate sx a { h a; s a; h a; }\ngate sxdg a { h a; sdg a; h a; }\n\n\n// Qubits: [q(0), q(1), q(2)]\nqreg q[3];\ncreg m_qb[3];\n\n\nry(pi*0.5) q[0];\nry(pi*0.5) q[1];\nry(pi*0.5) q[2];\nrx(pi*1.0) q[0];\nrx(pi*1.0) q[1];\nrx(pi*1.0) q[2];\nrz(pi*0.1254901961) q[2];\nry(pi*-0.5) q[1];\nry(pi*-0.5) q[0];\ncz q[2],q[1];\nry(pi*0.5) q[1];\nrz(pi*0.1058823529) q[1];\nry(pi*-0.5) q[1];\ncz q[2],q[1];\nry(pi*0.5) q[1];\nrz(pi*0.1705882353) q[1];\ncz q[1],q[0];\nry(pi*0.5) q[0];\nrz(pi*0.2098039216) q[0];\nry(pi*-0.5) q[0];\ncz q[2],q[0];\nry(pi*0.5) q[0];\nrz(0) q[0];\nry(pi*-0.5) q[0];\ncz q[1],q[0];\nry(pi*0.5) q[0];\nrx(pi*1.75) q[1];\nrz(pi*0.137254902) q[0];\nry(pi*-0.5) q[0];\ncz q[2],q[0];\nry(pi*0.5) q[0];\nrx(pi*1.75) q[2];\nrz(pi*0.2254901961) q[0];\nrx(pi*1.75) q[0];\n\n// Gate: cirq.MeasurementGate(3, cirq.MeasurementKey(name='qb'), ())\nmeasure q[0] -> m_qb[0];\nmeasure q[1] -> m_qb[1];\nmeasure q[2] -> m_qb[2];\n",
+      "qasm_sha256": "1d36cc28c40e11286b780e2b13c48870d9931de9e2d228c3df682f6a7703e1cd",
+      "num_qubits": 3,
+      "logical_depth": 26,
+      "gate_count": 34,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "011": 257,
+          "100": 101,
+          "110": 220,
+          "101": 233,
+          "111": 114,
+          "010": 69,
+          "000": 13,
+          "001": 17
+        },
+        "ideal_probabilities": [
+          0.011153064881893842,
+          0.020572323152590024,
+          0.06185331808342254,
+          0.24122157947283196,
+          0.09412183692377428,
+          0.23925701137927088,
+          0.21626322164080533,
+          0.11555764446541116
+        ],
+        "labels_q0_first": [
+          "000",
+          "001",
+          "010",
+          "011",
+          "100",
+          "101",
+          "110",
+          "111"
+        ]
+      },
+      "source_sdk": {
+        "name": "cirq-core",
+        "version": "1.6.1"
+      },
+      "local_lowering": "Cirq public decomposition",
+      "qubit_order": [
+        "q(0)",
+        "q(1)",
+        "q(2)"
+      ],
+      "receipt": null
+    }
+  ]
+}
