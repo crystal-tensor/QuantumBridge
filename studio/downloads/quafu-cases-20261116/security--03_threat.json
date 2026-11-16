@@ -1,0 +1,173 @@
+{
+  "case": {
+    "id": "security/03_threat",
+    "domain": "security",
+    "kind": "case",
+    "direction": "threat",
+    "file": "03_threat.html",
+    "title": {
+      "zh-CN": "量子威胁 · Grover 搜索",
+      "en": "Threat assessment · Grover search"
+    },
+    "original_cells_sha256": "7fb4535ca6735dcd7e76a00943ebcee25a23a011e48cab964c6ab6dd61dba7d7",
+    "provenance": {
+      "path": "output/jupyter-notebook/security/03_threat_evidence.json",
+      "sha256": "7cd4f6c31517710f4da449cea39e98fd5cce3a626f25809d1bd8d484b6f801f3",
+      "original_summary": {
+        "search_space": 16,
+        "oracle_calls_per_run": 3,
+        "rsa_or_aes_broken": false,
+        "excluded_costs": [
+          "real reversible cipher oracle",
+          "fault tolerance",
+          "routing",
+          "physical error correction",
+          "hardware runtime"
+        ],
+        "toy_oracle_contains_known_marked_value": true
+      }
+    },
+    "experiments": [
+      {
+        "name": "grover3",
+        "kernel_id": "ba30fb2911c038f1de4648f1a3f0d75c3fda600f371da5dff394409cc342507c",
+        "postprocessing": null
+      }
+    ],
+    "update_status": "NOT_SUBMITTED_NEW_SDK_CREDENTIALS_REQUIRED"
+  },
+  "updated_at": "2026-11-16T07:11:01.697257+00:00",
+  "local_source": {
+    "kind": "Python source files only",
+    "files": 777,
+    "sha256": "dd1809f029afabd6773ba8ffb396558d6d55d2707f55653c12760646a055734f",
+    "files_manifest": "source-files.json"
+  },
+  "local_verification_at": "2026-11-16T07:11:01.697257+00:00",
+  "backend_snapshot_sha256": "70b47bdc0d5ef6013b1ccbe3d1dc22b312d56f8508c6689ce012ad7c96a8d085",
+  "experiments": [
+    {
+      "name": "grover3",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[5];\ncreg c[5];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\nx q[1];\nccx q[0],q[1],q[4];\nh q[3];\nccx q[2],q[4],q[3];\nh q[3];\nccx q[0],q[1],q[4];\nx q[1];\nh q[0];\nx q[0];\nh q[1];\nx q[1];\nh q[2];\nx q[2];\nh q[3];\nx q[3];\nccx q[0],q[1],q[4];\nh q[3];\nccx q[2],q[4],q[3];\nh q[3];\nccx q[0],q[1],q[4];\nx q[0];\nh q[0];\nx q[1];\nh q[1];\nx q[2];\nh q[2];\nx q[3];\nh q[3];\nx q[1];\nccx q[0],q[1],q[4];\nh q[3];\nccx q[2],q[4],q[3];\nh q[3];\nccx q[0],q[1],q[4];\nx q[1];\nh q[0];\nx q[0];\nh q[1];\nx q[1];\nh q[2];\nx q[2];\nh q[3];\nx q[3];\nccx q[0],q[1],q[4];\nh q[3];\nccx q[2],q[4],q[3];\nh q[3];\nccx q[0],q[1],q[4];\nx q[0];\nh q[0];\nx q[1];\nh q[1];\nx q[2];\nh q[2];\nx q[3];\nh q[3];\nx q[1];\nccx q[0],q[1],q[4];\nh q[3];\nccx q[2],q[4],q[3];\nh q[3];\nccx q[0],q[1],q[4];\nx q[1];\nh q[0];\nx q[0];\nh q[1];\nx q[1];\nh q[2];\nx q[2];\nh q[3];\nx q[3];\nccx q[0],q[1],q[4];\nh q[3];\nccx q[2],q[4],q[3];\nh q[3];\nccx q[0],q[1],q[4];\nx q[0];\nh q[0];\nx q[1];\nh q[1];\nx q[2];\nh q[2];\nx q[3];\nh q[3];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\n",
+      "qasm_sha256": "ba30fb2911c038f1de4648f1a3f0d75c3fda600f371da5dff394409cc342507c",
+      "num_qubits": 5,
+      "logical_depth": 37,
+      "gate_count": 88,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        },
+        {
+          "virtual_qubit": 4,
+          "cbit": 4
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "10110": 992,
+          "00000": 4,
+          "01100": 1,
+          "10010": 3,
+          "00110": 4,
+          "01000": 1,
+          "10100": 3,
+          "00010": 4,
+          "11010": 1,
+          "11100": 2,
+          "11110": 2,
+          "01110": 2,
+          "11000": 1,
+          "01010": 4
+        },
+        "ideal_probabilities": [
+          0.0025787353515624787,
+          0.0,
+          0.0025787353515624675,
+          0.0,
+          0.0025787353515624853,
+          0.0,
+          0.0025787353515624853,
+          0.0,
+          0.0025787353515624796,
+          0.0,
+          0.002578735351562491,
+          0.0,
+          0.0025787353515624853,
+          0.0,
+          0.0025787353515624853,
+          0.0,
+          0.0025787353515624696,
+          0.0,
+          0.0025787353515624696,
+          0.0,
+          0.002578735351562466,
+          0.0,
+          0.9613189697265562,
+          0.0,
+          0.0025787353515624896,
+          0.0,
+          0.0025787353515624896,
+          0.0,
+          0.0025787353515624896,
+          0.0,
+          0.0025787353515624896,
+          0.0
+        ],
+        "labels_q0_first": [
+          "00000",
+          "00001",
+          "00010",
+          "00011",
+          "00100",
+          "00101",
+          "00110",
+          "00111",
+          "01000",
+          "01001",
+          "01010",
+          "01011",
+          "01100",
+          "01101",
+          "01110",
+          "01111",
+          "10000",
+          "10001",
+          "10010",
+          "10011",
+          "10100",
+          "10101",
+          "10110",
+          "10111",
+          "11000",
+          "11001",
+          "11010",
+          "11011",
+          "11100",
+          "11101",
+          "11110",
+          "11111"
+        ]
+      },
+      "receipt": null
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "case": {
+    "id": "finance/01_allocation_quafu",
+    "domain": "finance",
+    "kind": "case",
+    "direction": "portfolio",
+    "file": "01_allocation_quafu.html",
+    "title": {
+      "zh-CN": "资产配置 · QAOA 组合选择",
+      "en": "Asset allocation · QAOA portfolio selection"
+    },
+    "original_cells_sha256": "097225d28c8297d343c5fede1e6bfabb0fb8d0f014f8f163bab3773c05094d6e",
+    "provenance": {
+      "path": "output/jupyter-notebook/finance/allocation_evidence.json",
+      "sha256": "13bc40e0dd20d00e588e724373b2ffe0aaf2172c9b222b25f35b4c0ae203e956",
+      "historical_hardware_status": "not_executed",
+      "historical_acceptance": {
+        "case": "allocation",
+        "hardware_status": "NOT_EXECUTED",
+        "hardware_results": null
+      },
+      "scope": "Historical Dongling receipts retained; not relabelled as current Baihua results"
+    },
+    "experiments": [
+      {
+        "name": "qaoa",
+        "kernel_id": "503493d33caa8539ceaa7642045cc416e2ea8a743d80b964c43d1b421e52758c",
+        "postprocessing": null
+      }
+    ],
+    "update_status": "NOT_SUBMITTED_NEW_SDK_CREDENTIALS_REQUIRED"
+  },
+  "updated_at": "2026-11-16T07:11:01.697257+00:00",
+  "local_source": {
+    "kind": "Python source files only",
+    "files": 777,
+    "sha256": "dd1809f029afabd6773ba8ffb396558d6d55d2707f55653c12760646a055734f",
+    "files_manifest": "source-files.json"
+  },
+  "local_verification_at": "2026-11-16T07:11:01.697257+00:00",
+  "backend_snapshot_sha256": "70b47bdc0d5ef6013b1ccbe3d1dc22b312d56f8508c6689ce012ad7c96a8d085",
+  "experiments": [
+    {
+      "name": "qaoa",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\nrz(0.0077936144341207514) q[3];\nrz(0.0099758264756745086) q[2];\ncx q[2],q[3];\nrz(0.50081766353660062) q[3];\ncx q[2],q[3];\nrz(0.01122280478513393) q[1];\ncx q[1],q[3];\nrz(0.50284400328947199) q[3];\ncx q[1],q[3];\ncx q[1],q[2];\nrz(0.50081766353660062) q[2];\ncx q[1],q[2];\nrz(0.016522462600336012) q[0];\ncx q[0],q[3];\nrz(0.50081766353660062) q[3];\ncx q[0],q[3];\ncx q[0],q[2];\nrz(0.50284400328947199) q[2];\ncx q[0],q[2];\ncx q[0],q[1];\nrz(0.50487034304234357) q[1];\ncx q[0],q[1];\nrx(5.7177833604734642) q[0];\nrx(5.7177833604734642) q[1];\nrx(5.7177833604734642) q[2];\nrx(5.7177833604734642) q[3];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+      "qasm_sha256": "503493d33caa8539ceaa7642045cc416e2ea8a743d80b964c43d1b421e52758c",
+      "num_qubits": 4,
+      "logical_depth": 18,
+      "gate_count": 30,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "0100": 36,
+          "0110": 139,
+          "0101": 114,
+          "0011": 141,
+          "1100": 120,
+          "1101": 30,
+          "1110": 27,
+          "1010": 136,
+          "1001": 128,
+          "0000": 9,
+          "0001": 27,
+          "0010": 32,
+          "1011": 31,
+          "1000": 20,
+          "0111": 29,
+          "1111": 5
+        },
+        "ideal_probabilities": [
+          0.008345694480299712,
+          0.028400342449932135,
+          0.028454527088108424,
+          0.12374531456715437,
+          0.02878772588987704,
+          0.12382992888481455,
+          0.12443832984082193,
+          0.031020841094608193,
+          0.02892041493736302,
+          0.12463859444534102,
+          0.12431248060123098,
+          0.03116026780562963,
+          0.12439762219338944,
+          0.030878000812865455,
+          0.03093563657042896,
+          0.0077342783381341125
+        ],
+        "labels_q0_first": [
+          "0000",
+          "0001",
+          "0010",
+          "0011",
+          "0100",
+          "0101",
+          "0110",
+          "0111",
+          "1000",
+          "1001",
+          "1010",
+          "1011",
+          "1100",
+          "1101",
+          "1110",
+          "1111"
+        ]
+      },
+      "receipt": null
+    }
+  ]
+}

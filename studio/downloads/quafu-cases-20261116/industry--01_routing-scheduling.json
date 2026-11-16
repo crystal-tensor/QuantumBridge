@@ -1,0 +1,165 @@
+{
+  "case": {
+    "id": "industry/01_routing-scheduling",
+    "domain": "industry",
+    "kind": "case",
+    "direction": "routing-scheduling",
+    "file": "01_routing-scheduling.html",
+    "title": {
+      "zh-CN": "生产调度 · 两作业排程",
+      "en": "Scheduling · Two-job schedule"
+    },
+    "original_cells_sha256": "b09f949026800a241dc2169a87ad416208d089c5fa3128f2f11915d6e97ed1c6",
+    "provenance": {
+      "path": "output/jupyter-notebook/industry/01_routing-scheduling_evidence.json",
+      "sha256": "415e1b51144c4df068f43a45a1cba649946571261ca357f3935a343f9b569abc",
+      "original_summary": {
+        "best_observed_feasible": {
+          "bitstring": "0101",
+          "operations": [
+            {
+              "name": "A1",
+              "machine": 0,
+              "start": 0,
+              "duration": 1
+            },
+            {
+              "name": "A2",
+              "machine": 1,
+              "start": 1,
+              "duration": 1
+            },
+            {
+              "name": "B1",
+              "machine": 0,
+              "start": 1,
+              "duration": 1
+            },
+            {
+              "name": "B2",
+              "machine": 1,
+              "start": 2,
+              "duration": 1
+            }
+          ],
+          "precedence_violations": 0,
+          "machine_conflicts": 0,
+          "feasible": true,
+          "weighted_completion": 7,
+          "makespan": 3,
+          "objective": 7,
+          "penalized_cost": 7
+        },
+        "observed_objective_gap": 0,
+        "feasible_probability": 0.4228515625,
+        "optimal_probability": 0.2099609375,
+        "decision_rule": "best feasible actually sampled candidate; not the most frequent string"
+      }
+    },
+    "experiments": [
+      {
+        "name": "qaoa",
+        "kernel_id": "f9fdff562498598f6c5c1cac6cb92e6f19377560440b45a10d92af4f3667afd9",
+        "postprocessing": null
+      }
+    ],
+    "update_status": "NOT_SUBMITTED_NEW_SDK_CREDENTIALS_REQUIRED"
+  },
+  "updated_at": "2026-11-16T07:11:01.697257+00:00",
+  "local_source": {
+    "kind": "Python source files only",
+    "files": 777,
+    "sha256": "dd1809f029afabd6773ba8ffb396558d6d55d2707f55653c12760646a055734f",
+    "files_manifest": "source-files.json"
+  },
+  "local_verification_at": "2026-11-16T07:11:01.697257+00:00",
+  "backend_snapshot_sha256": "70b47bdc0d5ef6013b1ccbe3d1dc22b312d56f8508c6689ce012ad7c96a8d085",
+  "experiments": [
+    {
+      "name": "qaoa",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\nrz(0.90169042399738275) q[1];\ncx q[0],q[1];\ncx q[0],q[2];\nrz(-0.45084521199869149) q[2];\ncx q[0],q[2];\nrz(-0.4508452119986916) q[0];\ncx q[1],q[3];\nrz(-0.45084521199869149) q[3];\ncx q[1],q[3];\nrz(-0.4508452119986916) q[1];\ncx q[2],q[3];\nrz(0.90169042399738275) q[3];\ncx q[2],q[3];\nrz(0.27050712719921477) q[2];\nrz(0.3606761695989531) q[3];\nrz(2.7952403143918865) q[0];\nu1(-2.7952403143918865) q[0];\nrx(5.5165414137673423) q[0];\nrx(5.5165414137673423) q[1];\nrx(5.5165414137673423) q[2];\nrx(5.5165414137673423) q[3];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+      "qasm_sha256": "f9fdff562498598f6c5c1cac6cb92e6f19377560440b45a10d92af4f3667afd9",
+      "num_qubits": 4,
+      "logical_depth": 12,
+      "gate_count": 26,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "0101": 221,
+          "0110": 106,
+          "0010": 88,
+          "1010": 222,
+          "1011": 59,
+          "0001": 90,
+          "1001": 109,
+          "0000": 20,
+          "0111": 66,
+          "0011": 21,
+          "1100": 9,
+          "1111": 12,
+          "0100": 1
+        },
+        "ideal_probabilities": [
+          0.02316918586285312,
+          0.08017353854876383,
+          0.07676386143515501,
+          0.014026771835982119,
+          0.0005612265152671339,
+          0.21994223605432292,
+          0.11092935690940914,
+          0.05881416448977439,
+          0.0007733959098508099,
+          0.11637300271814278,
+          0.2121700983013035,
+          0.060930487039476525,
+          0.007147811858555257,
+          0.00011124467035451412,
+          0.00014307586982428803,
+          0.017970541980963723
+        ],
+        "labels_q0_first": [
+          "0000",
+          "0001",
+          "0010",
+          "0011",
+          "0100",
+          "0101",
+          "0110",
+          "0111",
+          "1000",
+          "1001",
+          "1010",
+          "1011",
+          "1100",
+          "1101",
+          "1110",
+          "1111"
+        ]
+      },
+      "receipt": null
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "case": {
+    "id": "industry/03_energy",
+    "domain": "industry",
+    "kind": "case",
+    "direction": "energy",
+    "file": "03_energy.html",
+    "title": {
+      "zh-CN": "能源 · 机组容量承诺",
+      "en": "Energy · Capacity commitment"
+    },
+    "original_cells_sha256": "31886ae5635d4a5d6ddf2152bf2a735d65c523c28f8293b52ff444dffa698fb8",
+    "provenance": {
+      "path": "output/jupyter-notebook/industry/03_energy_evidence.json",
+      "sha256": "a0f3a170a0fcddbae556839495306dbc79311ad74f88126dee225a00d933b2c3",
+      "original_summary": {
+        "best_observed_feasible": {
+          "bitstring": "1011",
+          "commitment_by_time": [
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "available_capacity": [
+            2,
+            3
+          ],
+          "capacity_deficit": [
+            0,
+            0
+          ],
+          "startups": 2,
+          "feasible": true,
+          "objective": 10,
+          "penalized_cost": 10
+        },
+        "observed_objective_gap": 0,
+        "feasible_probability": 0.541015625,
+        "optimal_probability": 0.20703125,
+        "decision_rule": "best feasible actually sampled candidate; not the most frequent string"
+      }
+    },
+    "experiments": [
+      {
+        "name": "qaoa",
+        "kernel_id": "3a1b9e033c46817913443545cbdd27d8d1a8b6a8211f9d3eef2400b4ef85f143",
+        "postprocessing": null
+      }
+    ],
+    "update_status": "NOT_SUBMITTED_NEW_SDK_CREDENTIALS_REQUIRED"
+  },
+  "updated_at": "2026-11-16T07:11:01.697257+00:00",
+  "local_source": {
+    "kind": "Python source files only",
+    "files": 777,
+    "sha256": "dd1809f029afabd6773ba8ffb396558d6d55d2707f55653c12760646a055734f",
+    "files_manifest": "source-files.json"
+  },
+  "local_verification_at": "2026-11-16T07:11:01.697257+00:00",
+  "backend_snapshot_sha256": "70b47bdc0d5ef6013b1ccbe3d1dc22b312d56f8508c6689ce012ad7c96a8d085",
+  "experiments": [
+    {
+      "name": "qaoa",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\nrz(0.36799111843077503) q[1];\ncx q[0],q[1];\ncx q[0],q[2];\nrz(-0.0061331853071795138) q[2];\ncx q[0],q[2];\nrz(0.57038623356770146) q[0];\ncx q[1],q[3];\nrz(-0.0061331853071795884) q[3];\ncx q[1],q[3];\nrz(0.33732519189487714) q[1];\ncx q[2],q[3];\nrz(0.49065482457436671) q[3];\ncx q[2],q[3];\nrz(1.4290321765728433) q[2];\nrz(0.70531631032565245) q[3];\nrz(2.2447458224277281) q[0];\nu1(-2.2447458224277281) q[0];\nrx(4.98321946706122) q[0];\nrx(4.98321946706122) q[1];\nrx(4.98321946706122) q[2];\nrx(4.98321946706122) q[3];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+      "qasm_sha256": "3a1b9e033c46817913443545cbdd27d8d1a8b6a8211f9d3eef2400b4ef85f143",
+      "num_qubits": 4,
+      "logical_depth": 12,
+      "gate_count": 26,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "0111": 170,
+          "1011": 219,
+          "1111": 320,
+          "0110": 49,
+          "1010": 44,
+          "1110": 87,
+          "0001": 6,
+          "0011": 41,
+          "1100": 17,
+          "1101": 22,
+          "0101": 12,
+          "0100": 5,
+          "1000": 6,
+          "1001": 16,
+          "0010": 8,
+          "0000": 2
+        },
+        "ideal_probabilities": [
+          0.0012466569283977027,
+          0.003128037679655693,
+          0.010830969277084908,
+          0.03913721178719746,
+          0.004674583231737187,
+          0.011725446448535197,
+          0.04032524577494574,
+          0.14621451858784998,
+          0.006978645900762626,
+          0.0163677058110861,
+          0.0604196007441549,
+          0.21311872534133489,
+          0.010574120243137686,
+          0.02463863443457736,
+          0.0894794974273512,
+          0.3211404003821904
+        ],
+        "labels_q0_first": [
+          "0000",
+          "0001",
+          "0010",
+          "0011",
+          "0100",
+          "0101",
+          "0110",
+          "0111",
+          "1000",
+          "1001",
+          "1010",
+          "1011",
+          "1100",
+          "1101",
+          "1110",
+          "1111"
+        ]
+      },
+      "receipt": null
+    }
+  ]
+}

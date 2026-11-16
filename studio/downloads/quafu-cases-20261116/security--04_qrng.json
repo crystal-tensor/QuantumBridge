@@ -1,0 +1,81 @@
+{
+  "case": {
+    "id": "security/04_qrng",
+    "domain": "security",
+    "kind": "case",
+    "direction": "qrng",
+    "file": "04_qrng.html",
+    "title": {
+      "zh-CN": "随机数 · 诊断与去偏模拟",
+      "en": "Randomness · Diagnostics & extraction simulation"
+    },
+    "original_cells_sha256": "5de8b318c4046f5fd723bf436301d8d4cab428dad2e8381bffaa36357300565a",
+    "provenance": {
+      "path": "output/jupyter-notebook/security/04_qrng_evidence.json",
+      "sha256": "a00c724fc25100b50675c83989e13f449af41d44e49f0bbed6b0330b30e1abfb",
+      "original_summary": {
+        "raw_ones_fraction": 0.705322265625,
+        "extracted_length": 855,
+        "extracted_ones_fraction": 0.49707602339181284,
+        "diagnostics_pass": true,
+        "physical_entropy_claim": false,
+        "production_random_bytes_emitted": false,
+        "hardware_receipt": null
+      }
+    },
+    "experiments": [
+      {
+        "name": "biased_sampling",
+        "kernel_id": "0150bdc2a6cb5944153619f238a71addbc6aa085dc867d7155a2a9dc8163b7f3",
+        "postprocessing": null
+      }
+    ],
+    "update_status": "NOT_SUBMITTED_NEW_SDK_CREDENTIALS_REQUIRED"
+  },
+  "updated_at": "2026-11-16T07:11:01.697257+00:00",
+  "local_source": {
+    "kind": "Python source files only",
+    "files": 777,
+    "sha256": "dd1809f029afabd6773ba8ffb396558d6d55d2707f55653c12760646a055734f",
+    "files_manifest": "source-files.json"
+  },
+  "local_verification_at": "2026-11-16T07:11:01.697257+00:00",
+  "backend_snapshot_sha256": "70b47bdc0d5ef6013b1ccbe3d1dc22b312d56f8508c6689ce012ad7c96a8d085",
+  "experiments": [
+    {
+      "name": "biased_sampling",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\ncreg c[1];\nry(2.0263950001907198) q[0];\nmeasure q[0] -> c[0];\n",
+      "qasm_sha256": "0150bdc2a6cb5944153619f238a71addbc6aa085dc867d7155a2a9dc8163b7f3",
+      "num_qubits": 1,
+      "logical_depth": 1,
+      "gate_count": 1,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "0": 315,
+          "1": 709
+        },
+        "ideal_probabilities": [
+          0.28,
+          0.72
+        ],
+        "labels_q0_first": [
+          "0",
+          "1"
+        ]
+      },
+      "receipt": null
+    }
+  ]
+}

@@ -1,0 +1,5153 @@
+{
+  "case": {
+    "id": "finance/qmc_hybrid",
+    "domain": "finance",
+    "kind": "case",
+    "direction": "market-models",
+    "file": "qmc_hybrid.html",
+    "title": {
+      "zh-CN": "可微混合模型 · IBM 波动研究",
+      "en": "Differentiable hybrid · IBM volatility research"
+    },
+    "original_cells_sha256": "ec389aa6db5f343d38e9ed648d9fee47a9bfc57814ead32b5759261102b9ddf5",
+    "provenance": {
+      "original_evidence_sha256": "8291556d05cd15db8b0552e51e279a7a91816d36c2a20ec0bca8209cedf1d017",
+      "stock_provenance": {
+        "provider": "Plotly public datasets / stockdata.csv",
+        "source_url": "https://github.com/plotly/datasets/blob/0f7c47868a3393316098a8bf97d548e1ee23d22a/stockdata.csv",
+        "download_url": "https://raw.githubusercontent.com/plotly/datasets/0f7c47868a3393316098a8bf97d548e1ee23d22a/stockdata.csv",
+        "source_commit": "0f7c47868a3393316098a8bf97d548e1ee23d22a",
+        "sha256": "60bf505fec160ce05ba959382adee32ea6e53ce14fe22886db27c58fe1b0d26b",
+        "retrieved_date_utc": "2026-11-01",
+        "observations": [
+          "2007-01-03",
+          "2016-03-01"
+        ],
+        "symbols": [
+          "MSFT",
+          "IBM",
+          "SBUX",
+          "AAPL",
+          "GSPC"
+        ],
+        "currency": "USD",
+        "license_url": "https://github.com/plotly/datasets/blob/master/LICENSE",
+        "license_file": "PLOTLY_LICENSE.txt",
+        "license": "MIT as published by the source repository; original upstream data methodology is not documented",
+        "price_basis": "Source-published historical price series. Split/dividend adjustment methodology not independently verified. Not audited total returns or current executable quotes.",
+        "usage": "Frozen historical research replay only. No live download, synthetic fallback, forward filling or trading endpoint."
+      },
+      "scope": "Native gate-model MLAE / frozen hybrid inference; original PennyLane QPE reference is retained and not claimed hardware-validated"
+    },
+    "experiments": [
+      {
+        "name": "inference-2015-10-02",
+        "kernel_id": "68476276274556e49d8ec42bbbab71243877f3d54786a707db5d1665b7817579",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.006894667599308235,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-10-05",
+        "kernel_id": "e44c4f90f3ec4979b862ebc9e8bad71d35f1fef412f80e3e062bd88e4d9200b9",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.030847916107836992,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-10-06",
+        "kernel_id": "eb2ffc1eb7819b722109c6b44cff8a8eaf0b52455e71517a15bc7bb3da7745ee",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.0017444617799291517,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-10-07",
+        "kernel_id": "b59c5dc8e4c9d76ceb2377bbb53c190062fa4b37554f058453251beeceaec4dc",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.008804929753444934,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-10-08",
+        "kernel_id": "881e2c9845c50d0bce6b38f8799377a7dfd331cb1194212bcc8ab8dc92f9d150",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.0145912629293794,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-10-09",
+        "kernel_id": "d35eba65e18d3815f6cf4f554d0a6fc670d087f589b5cf3fb8601441b4460cfd",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.0007223544523176084,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-10-12",
+        "kernel_id": "e12871a120d5445fb15b8a0ae688a0af2fff818d9bfafa91ed23c19ff006a871",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.008202637152976977,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-10-13",
+        "kernel_id": "52780f47c8a232f86b01bf3c4abb8c39f40b3beabdfa4df261a41df01225b671",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.010056925569897901,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-10-14",
+        "kernel_id": "510b688b2d9cadee63a645c9ba47a472922dd2d11cd93f0b2a9e5116174b88a3",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.002606596765454716,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-10-15",
+        "kernel_id": "893326268d9535600528e7835719a49457451bfa021ddd351b78aeb220ea2455",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.0005333101965105946,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-10-16",
+        "kernel_id": "e4eec40076482393814287842f958654955a2abffc93b5fe3ceb0e0c1f10f110",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.001998821754327862,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-10-19",
+        "kernel_id": "11931080943da251887e4d321cc18a358a630109f6e93711ee6596278fa0cbf6",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.007779759375545647,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-10-20",
+        "kernel_id": "2d08d7a7ece58023ef6fb38b3898ee7da2ff670a6d22d530bc38f368530bf885",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.05749901022300219,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-10-21",
+        "kernel_id": "eabcd6f8654327de60232321f9f39ae075e7f9cf4703426fb655091fb2134853",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.001990890663066347,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-10-22",
+        "kernel_id": "9d1b00df04d90acac511cf0c7d15c97549bbaf7a902fe8e03b0ebb6cccc3bed7",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.022495023129399216,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-10-23",
+        "kernel_id": "ac4d44e74712366517b4ea09c3abb9067d6a128a2cf344badc8b1aa2c99016eb",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.0040946353789268475,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-10-26",
+        "kernel_id": "de32164482deb132a037cec8974ccc33b01ee677bee84f1353a8a7d22ca79718",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.007049960799916932,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-10-27",
+        "kernel_id": "0e0209deef88fc0a436d6735a8ea17342ae8ce635c821a2450876dac2b336f4c",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.040373128360259414,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-10-28",
+        "kernel_id": "9e670a2852ff86ced979b2ce124725ce04d44d3c0aa414df42fcbffd3abf5963",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.021543606566679863,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-10-29",
+        "kernel_id": "af926d4ab5a6b2fe0aef42275656bcce2faf349a73a2e11f5fc29f9c70498e67",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.001988204621583889,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-10-30",
+        "kernel_id": "88464937d17e9dc9777f1d9fee826a269c51182886c9850a15252746bba4ff87",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.0033440117044654105,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-11-02",
+        "kernel_id": "aaf4444c2fe3f3020b0d1278564bfac7b094458aa51c0000b67147f6319db58d",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.0020701944813605877,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-11-03",
+        "kernel_id": "c470960629a5d2bb73c6d83c03eac772d3572ce2bdf9aeb2c09b61bfb9194d4f",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.01075735404326772,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-11-04",
+        "kernel_id": "6126399280760247ceb3b9997e29d7a85bd396c2286729064dc7435b93bd8914",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.00176204931627999,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-11-05",
+        "kernel_id": "4fbf2eb36349415695d2579b65b8d895516390c2eec6fec4d8557f39342bd80b",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.01228557485056625,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-11-06",
+        "kernel_id": "76b7f1b2b870d1b8004e1f21af32919a7a29cc48c3d169a9dbec5daa72d4acf3",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.0024532417331627476,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-11-09",
+        "kernel_id": "69939cbc6fdfb9d381651b5365fc928dc41fec50a5ffac6555dbde5d5dd86804",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.021265844428794978,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-11-10",
+        "kernel_id": "a2a2863791dc652cd09d387d636300edf010755e0480deeadef929f884677ba1",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.0011824982347377055,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-11-11",
+        "kernel_id": "fce5aa3e4f77bb7f645629ef07c42145f662ea478930f3ab25f0219d14b8143b",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.0033217466024575426,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-11-12",
+        "kernel_id": "283ffdf93bd2f47e7f2388ba8a23ffd06dce8147c1fb88ae820b2cb0f449fbbd",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.014664570041441394,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-11-13",
+        "kernel_id": "9672dbea91d7b16d6c8979f7d3eea86a75e13d924a88ef993ee583fce415228e",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.009696282764335207,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-11-16",
+        "kernel_id": "c4fb9cda4fb8a5bc2c113272ce5c638125cfa5d5076c5c8b054df334c2f40803",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.01487670613917813,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-11-17",
+        "kernel_id": "ee766efb4b272e2e1df2afdeb2b6e3307c591b9ac72de85eb7ea1ff6c7bb61ab",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.0008226852202612989,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-11-18",
+        "kernel_id": "2c8c814b5f1f1b6cd716d2f207e39186a533d8d1f33c08efdd5c6d51ec985f80",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.014945443928739088,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-11-19",
+        "kernel_id": "01c637cff22f72b1ecaed82a46fd2f580dccb1cc66b33bfd076fdf1e45b9ce05",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.006773658159350049,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-11-20",
+        "kernel_id": "375157d0db50e31cef9cf761d08c85f1adeeb38d9da4919fad482b4e7f49dd62",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.0128711029152615,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-11-23",
+        "kernel_id": "f871c28f4b6ca6e28a10de46937b949cc528e33f30f8c3daeb180790f230242b",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.0002887608779768014,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-11-24",
+        "kernel_id": "e9002aa560b4015af905559cb900c7efdd6df0d77b3e7a53267bb943515fae1b",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.00101111915884311,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-11-25",
+        "kernel_id": "777a780ac8d4453102a4366acdca9d6b1fc033a55181b467ee6e830baf387c0c",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.004329045884085891,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-11-27",
+        "kernel_id": "babf0f7391f8bae975f87188f505e70f71917f4b44ce7b6cf7c56ec58fc8f526",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.003333378402564424,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-11-30",
+        "kernel_id": "22777b1958cc946a0e17b9239930b507bb63d9d32ff773a2559b8bc311e884a2",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.006933349952817691,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-12-01",
+        "kernel_id": "7437240064cb5611e3772419e8e7250cfadb3bfb13a2d9a65ae14345f789b185",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.013340990443372336,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-12-02",
+        "kernel_id": "67d7ebd96d6a35fabb7fb346130ee37b64ee621e722ce9e87274a92e2b3d172a",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.01118347779884521,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-12-03",
+        "kernel_id": "b3233044c934d12b89d37f409c25a1b1c2c2e052d0084534f4d05130140b4bbe",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.0055833840206236385,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-12-04",
+        "kernel_id": "a04869ac9fa1501acbfec533b64eb454944e3ed85686676527543de54f91f09b",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.010869521190685516,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-12-07",
+        "kernel_id": "d583aa7444f205123630faf6dfcecc6ab4ab27c50a6392c090a446d1735c28ce",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.006266394719951052,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-12-08",
+        "kernel_id": "3872c6a1049494f4d4885b661e6c9df06b324169208676a14d884376e2df50e3",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.010748834020299802,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-12-09",
+        "kernel_id": "1f2a0aab61b4e834b09a40245bf3bf2d39db8204a5fccb75c80535708e65c2a9",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.010431018743301768,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-12-10",
+        "kernel_id": "f1b55af4daeb7b2891668e0268e506b48916533c7255e7e768e4c882ba0a8cfb",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.0012444029266329704,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-12-11",
+        "kernel_id": "c7f86aa7cf9215aaf265a5b53bb3a810cf909a80d60511f1440b6175ecc39ba7",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.016157272391888577,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-12-14",
+        "kernel_id": "0450e6412a3580b9423c3025a684933f916118d772f77fcc3e788f47d0a64c5c",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.010106160648298834,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-12-15",
+        "kernel_id": "4fd97a3a67116c6f4f9a2e7ac5d216ed1bb5f26d1176b68c271f3c74752edeca",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.013683513197550567,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-12-16",
+        "kernel_id": "5beec2437295cfc246d2e6d0dff41efdb30084aa46a06e96dd363b3b9f6fc3c0",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.01088613763277646,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-12-17",
+        "kernel_id": "8bfa6990379e9b7a1c8b0b1838511506679bf95426d63fec4f0b4583daae9047",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.018235289881276096,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-12-18",
+        "kernel_id": "8baa98e0e067216828259e56765cdc400b1899c0c4bac97901f3e75799f0d871",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.013528386162884876,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-12-21",
+        "kernel_id": "11531afa36f01e2c55666382d03e68bfb9cc33a4237ad04cd916f2f7b2496417",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.004447789659942636,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-12-22",
+        "kernel_id": "b0587d405a110b41d081bddbf2d66323ee2145aaacd9af7611fcc9aa50014271",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.01793352148969629,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-12-23",
+        "kernel_id": "e6db7bff34f698f17c76075b2a13e0477d2eb8e83fa0e55be29919d1fedf670b",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.004422539560138716,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-12-24",
+        "kernel_id": "ed9df8913b2d52d4b7c60ccb18857cae891e4936f1fe9acd53981a64478b423c",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.0020932091575925904,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-12-28",
+        "kernel_id": "45aa6922e13ef543753a4d528074678831bd42742cb936a2a3e67b2e59c4745c",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.0046292887304454355,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-12-29",
+        "kernel_id": "10884935cbfac6c290ebdf6eb69a71a600a634ffc2fc9fe9cbada3b241559490",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.015769183116751906,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-12-30",
+        "kernel_id": "ac066bbc1d977a9174a22c3eedd4c6bd4133aa58e4f833aa3f6d8919693c5cba",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.0031478177043137157,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      },
+      {
+        "name": "inference-2015-12-31",
+        "kernel_id": "c9fdeb8b2e0e086e8490d46f022aae3597631c391508c85257dedba4620e758b",
+        "postprocessing": {
+          "objective_cbit": 1,
+          "weights_frozen": [
+            0.5436891472654173,
+            -0.1902887424394269,
+            -0.02339266552538731,
+            -0.3258997203796482
+          ],
+          "classical_head": [
+            -0.369248562806502,
+            0.6843136426398096
+          ],
+          "target_scale": 0.00993832907776995,
+          "actual_absolute_return": 0.012343916636639585,
+          "scope": "frozen trained model validation inference; training/AD remains local"
+        }
+      }
+    ],
+    "update_status": "NOT_SUBMITTED_NEW_SDK_CREDENTIALS_REQUIRED"
+  },
+  "updated_at": "2026-11-16T07:11:01.697257+00:00",
+  "local_source": {
+    "kind": "Python source files only",
+    "files": 777,
+    "sha256": "dd1809f029afabd6773ba8ffb396558d6d55d2707f55653c12760646a055734f",
+    "files_manifest": "source-files.json"
+  },
+  "local_verification_at": "2026-11-16T07:11:01.697257+00:00",
+  "backend_snapshot_sha256": "70b47bdc0d5ef6013b1ccbe3d1dc22b312d56f8508c6689ce012ad7c96a8d085",
+  "experiments": [
+    {
+      "name": "inference-2015-10-02",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-0.69844276743445799) q[0];\nry(1.3684784138678807) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "68476276274556e49d8ec42bbbab71243877f3d54786a707db5d1665b7817579",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 529,
+          "10": 64,
+          "01": 330,
+          "11": 101
+        },
+        "ideal_probabilities": [
+          0.49933195807802194,
+          0.3246353360337691,
+          0.07317642838156573,
+          0.1028562775066436
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.006894667599308235,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-10-05",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(0.54564385841915508) q[0];\nry(-0.68580233753587549) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "e44c4f90f3ec4979b862ebc9e8bad71d35f1fef412f80e3e062bd88e4d9200b9",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 861,
+          "01": 132,
+          "11": 25,
+          "10": 6
+        },
+        "ideal_probabilities": [
+          0.8265394381273209,
+          0.1351450976760257,
+          0.004846759900430075,
+          0.033468704296223784
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.030847916107836992,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-10-06",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(2.3611714835290183) q[0];\nry(0.55995931852287228) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "eb2ffc1eb7819b722109c6b44cff8a8eaf0b52455e71517a15bc7bb3da7745ee",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "01": 27,
+          "11": 700,
+          "10": 88,
+          "00": 209
+        },
+        "ideal_probabilities": [
+          0.18872398378254812,
+          0.019324704829503103,
+          0.08288202597073661,
+          0.7090692854172125
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.0017444617799291517,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-10-07",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-0.10915576257250596) q[0];\nry(2.3779313583118409) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "b59c5dc8e4c9d76ceb2377bbb53c190062fa4b37554f058453251beeceaec4dc",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "01": 829,
+          "00": 180,
+          "10": 13,
+          "11": 2
+        },
+        "ideal_probabilities": [
+          0.1621728457260791,
+          0.8170629633542579,
+          0.017643605082850507,
+          0.003120585836813037
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.008804929753444934,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-10-08",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(0.6904314729592953) q[0];\nry(-0.095721920453162815) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "881e2c9845c50d0bce6b38f8799377a7dfd331cb1194212bcc8ab8dc92f9d150",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 932,
+          "11": 62,
+          "01": 29,
+          "10": 1
+        },
+        "ideal_probabilities": [
+          0.9024725569391594,
+          0.027599771483068806,
+          0.0019269947648920796,
+          0.06800067681287988
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.0145912629293794,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-10-09",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(1.1290044592186843) q[0];\nry(0.70494187417293552) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "d35eba65e18d3815f6cf4f554d0a6fc670d087f589b5cf3fb8601441b4460cfd",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 705,
+          "11": 172,
+          "10": 33,
+          "01": 114
+        },
+        "ideal_probabilities": [
+          0.679608150177612,
+          0.1034768856675686,
+          0.03177783594476943,
+          0.18513712821004988
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.0007223544523176084,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-10-12",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(0.077815662790479245) q[0];\nry(1.144105352270975) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "e12871a120d5445fb15b8a0ae688a0af2fff818d9bfafa91ed23c19ff006a871",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 724,
+          "01": 296,
+          "10": 2,
+          "11": 2
+        },
+        "ideal_probabilities": [
+          0.703091697888558,
+          0.2926890164912473,
+          0.0013252848411255535,
+          0.0028940007790694013
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.008202637152976977,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-10-13",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-0.59865078006033179) q[0];\nry(0.091501242030431029) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "52780f47c8a232f86b01bf3c4abb8c39f40b3beabdfa4df261a41df01225b671",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 867,
+          "01": 20,
+          "11": 132,
+          "10": 5
+        },
+        "ideal_probabilities": [
+          0.8364058068023503,
+          0.023577915724680237,
+          0.004122286108326672,
+          0.13589399136464275
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.010056925569897901,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-10-14",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-0.73919588585850771) q[0];\nry(-0.58587599087389231) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "510b688b2d9cadee63a645c9ba47a472922dd2d11cd93f0b2a9e5116174b88a3",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 743,
+          "11": 162,
+          "10": 19,
+          "01": 100
+        },
+        "ideal_probabilities": [
+          0.7181437639481915,
+          0.09016664093422508,
+          0.019034197727917604,
+          0.172655397389666
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.002606596765454716,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-10-15",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(0.22063111309081282) q[0];\nry(-0.72661032569559725) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "893326268d9535600528e7835719a49457451bfa021ddd351b78aeb220ea2455",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 874,
+          "01": 148,
+          "11": 2
+        },
+        "ideal_probabilities": [
+          0.8438652220778488,
+          0.15292032458513874,
+          0.00044581941354582705,
+          0.0027686339234669517
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.0005333101965105946,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-10-16",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(0.063487123232942214) q[0];\nry(0.23450897813148114) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "e4eec40076482393814287842f958654955a2abffc93b5fe3ceb0e0c1f10f110",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 988,
+          "01": 32,
+          "11": 4
+        },
+        "ideal_probabilities": [
+          0.9584649499037323,
+          0.03665560403512586,
+          0.00020486062217229075,
+          0.004674585438969682
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.001998821754327862,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-10-19",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(0.17456503056512232) q[0];\nry(0.07715341061969376) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "11931080943da251887e4d321cc18a358a630109f6e93711ee6596278fa0cbf6",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 1003,
+          "01": 19,
+          "11": 2
+        },
+        "ideal_probabilities": [
+          0.9706325854139187,
+          0.02693720689866639,
+          6.977320999474418e-05,
+          0.002360434477420258
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.007779759375545647,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-10-20",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-0.56659891508267424) q[0];\nry(0.18838087252953595) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "2d08d7a7ece58023ef6fb38b3898ee7da2ff670a6d22d530bc38f368530bf885",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 872,
+          "01": 24,
+          "11": 123,
+          "10": 5
+        },
+        "ideal_probabilities": [
+          0.8422882091628705,
+          0.028519770797494234,
+          0.0047672729735024795,
+          0.12442474706613305
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.05749901022300219,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-10-21",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-4.335051172453281) q[0];\nry(-0.55378097147205507) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "eabcd6f8654327de60232321f9f39ae075e7f9cf4703426fb655091fb2134853",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 375,
+          "10": 64,
+          "01": 42,
+          "11": 543
+        },
+        "ideal_probabilities": [
+          0.35370523940234383,
+          0.040637397518611625,
+          0.055355414076886905,
+          0.5503019490021576
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.001990890663066347,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-10-22",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(0.17396389643179502) q[0];\nry(-4.3273070486446983) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "9d1b00df04d90acac511cf0c7d15c97549bbaf7a902fe8e03b0ebb6cccc3bed7",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 353,
+          "01": 669,
+          "11": 1,
+          "10": 1
+        },
+        "ideal_probabilities": [
+          0.331578877828275,
+          0.6659941715842868,
+          0.0016701084384353488,
+          0.0007568421490026543
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.022495023129399216,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-10-23",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(1.7280670448329309) q[0];\nry(0.18777892903309057) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "ac4d44e74712366517b4ea09c3abb9067d6a128a2cf344badc8b1aa2c99016eb",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 520,
+          "11": 478,
+          "10": 16,
+          "01": 10
+        },
+        "ideal_probabilities": [
+          0.4865862811946853,
+          0.016451438301447338,
+          0.018308501959843886,
+          0.47865377854402347
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.0040946353789268475,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-10-26",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(0.33341645028743205) q[0];\nry(1.7439745118848267) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "de32164482deb132a037cec8974ccc33b01ee677bee84f1353a8a7d22ca79718",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 452,
+          "01": 567,
+          "10": 1,
+          "11": 4
+        },
+        "ideal_probabilities": [
+          0.4252034567839363,
+          0.5652210039177556,
+          0.005673636260558011,
+          0.003901903037750363
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.007049960799916932,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-10-27",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-0.51128410154713255) q[0];\nry(0.34744616877831408) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "0e0209deef88fc0a436d6735a8ea17342ae8ce635c821a2450876dac2b336f4c",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 872,
+          "01": 42,
+          "11": 103,
+          "10": 7
+        },
+        "ideal_probabilities": [
+          0.843292965688786,
+          0.04529337814327614,
+          0.006519659642387211,
+          0.10489399652555075
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.040373128360259414,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-10-28",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-3.0370012810113454) q[0];\nry(-0.49839168242850773) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "9e670a2852ff86ced979b2ce124725ce04d44d3c0aa414df42fcbffd3abf5963",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "11": 933,
+          "10": 86,
+          "00": 5
+        },
+        "ideal_probabilities": [
+          0.0029674027312764496,
+          0.0002911543899336205,
+          0.07850161431524505,
+          0.918239828563545
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.021543606566679863,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-10-29",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(1.6559547778062258) q[0];\nry(-3.0275094712050565) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "af926d4ab5a6b2fe0aef42275656bcce2faf349a73a2e11f5fc29f9c70498e67",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "01": 544,
+          "10": 456,
+          "00": 16,
+          "11": 8
+        },
+        "ideal_probabilities": [
+          0.01523153031167921,
+          0.5236496665897549,
+          0.44692205021237585,
+          0.01419675288619052
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.001988204621583889,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-10-30",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-0.12763016124496121) q[0];\nry(1.6717651533671267) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "88464937d17e9dc9777f1d9fee826a269c51182886c9850a15252746bba4ff87",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 483,
+          "01": 523,
+          "10": 12,
+          "11": 6
+        },
+        "ideal_probabilities": [
+          0.4524863891705856,
+          0.5241933324213621,
+          0.013030345866948364,
+          0.010289932541103991
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.0033440117044654105,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-11-02",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-0.23039305841168917) q[0];\nry(-0.11422119293677797) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "aaf4444c2fe3f3020b0d1278564bfac7b094458aa51c0000b67147f6319db58d",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 961,
+          "10": 1,
+          "11": 32,
+          "01": 30
+        },
+        "ideal_probabilities": [
+          0.9299694883552327,
+          0.02954992462436833,
+          0.001144427645498777,
+          0.03933615937490039
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.0020701944813605877,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-11-03",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(0.17997470005363456) q[0];\nry(-0.21712244940513681) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "c470960629a5d2bb73c6d83c03eac772d3572ce2bdf9aeb2c09b61bfb9194d4f",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 988,
+          "01": 34,
+          "11": 2
+        },
+        "ideal_probabilities": [
+          0.9576777754485484,
+          0.0398546164362148,
+          8.680954435375709e-05,
+          0.0023807985708834537
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.01075735404326772,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-11-04",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(0.83841475100388529) q[0];\nry(0.19379782556213968) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "6126399280760247ceb3b9997e29d7a85bd396c2286729064dc7435b93bd8914",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 887,
+          "01": 27,
+          "11": 105,
+          "10": 5
+        },
+        "ideal_probabilities": [
+          0.8589896293516364,
+          0.02947867626381253,
+          0.004176505940599815,
+          0.10735518844395121
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.00176204931627999,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-11-05",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-0.11048880339539065) q[0];\nry(0.85312439594816969) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "4fbf2eb36349415695d2579b65b8d895516390c2eec6fec4d8557f39342bd80b",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 838,
+          "01": 171,
+          "10": 5,
+          "11": 10
+        },
+        "ideal_probabilities": [
+          0.8026013656041886,
+          0.17645547116415336,
+          0.004124201807787325,
+          0.016818961423870748
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.01228557485056625,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-11-06",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-0.90811553507827592) q[0];\nry(-0.097056756073609501) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "76b7f1b2b870d1b8004e1f21af32919a7a29cc48c3d169a9dbec5daa72d4acf3",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 743,
+          "11": 244,
+          "01": 24,
+          "10": 13
+        },
+        "ideal_probabilities": [
+          0.7162956577677219,
+          0.021963521665755752,
+          0.007224853884415234,
+          0.2545159666821073
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.0024532417331627476,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-11-09",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-0.16287747738548802) q[0];\nry(-0.89575740724106034) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "69939cbc6fdfb9d381651b5365fc928dc41fec50a5ffac6555dbde5d5dd86804",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 801,
+          "01": 202,
+          "10": 3,
+          "11": 18
+        },
+        "ideal_probabilities": [
+          0.7647321980433709,
+          0.20662024590929992,
+          0.00559815015511715,
+          0.023049405892212427
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.021265844428794978,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-11-10",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-1.5887717514742608) q[0];\nry(-0.14951596583631047) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "a2a2863791dc652cd09d387d636300edf010755e0480deeadef929f884677ba1",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 420,
+          "10": 20,
+          "11": 567,
+          "01": 17
+        },
+        "ideal_probabilities": [
+          0.39655845661306655,
+          0.013694986273031428,
+          0.017740123736338397,
+          0.5720064333775638
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.0011824982347377055,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-11-11",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(0.11269209085445461) q[0];\nry(-1.577330054774623) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "fce5aa3e4f77bb7f645629ef07c42145f662ea478930f3ab25f0219d14b8143b",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 517,
+          "01": 505,
+          "11": 1,
+          "10": 1
+        },
+        "ideal_probabilities": [
+          0.4843505754948459,
+          0.5126113843007669,
+          0.0014947601693730522,
+          0.0015432800350145986
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.0033217466024575426,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-11-12",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-0.22870548322718839) q[0];\nry(0.1264246274920991) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "283ffdf93bd2f47e7f2388ba8a23ffd06dce8147c1fb88ae820b2cb0f449fbbd",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 962,
+          "10": 1,
+          "11": 32,
+          "01": 29
+        },
+        "ideal_probabilities": [
+          0.9321682932329055,
+          0.027672648987421517,
+          0.0012700093405147218,
+          0.03888904843915813
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.014664570041441394,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-11-13",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-1.0884305970415613) q[0];\nry(-0.2154326020802973) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "9672dbea91d7b16d6c8979f7d3eea86a75e13d924a88ef993ee583fce415228e",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 648,
+          "11": 334,
+          "01": 32,
+          "10": 10
+        },
+        "ideal_probabilities": [
+          0.6299648829738054,
+          0.026086705819849357,
+          0.012047203292163312,
+          0.33190120791418215
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.009696282764335207,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-11-16",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-0.71186109759114324) q[0];\nry(-1.0763152442402255) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "c4fb9cda4fb8a5bc2c113272ce5c638125cfa5d5076c5c8b054df334c2f40803",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 613,
+          "10": 37,
+          "01": 242,
+          "11": 132
+        },
+        "ideal_probabilities": [
+          0.5854786523528656,
+          0.23339162146931294,
+          0.048092048308258965,
+          0.13303767786956264
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.01487670613917813,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-11-17",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(1.1506395218952605) q[0];\nry(-0.69923873404569714) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "ee766efb4b272e2e1df2afdeb2b6e3307c591b9ac72de85eb7ea1ff6c7bb61ab",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 688,
+          "11": 185,
+          "01": 120,
+          "10": 31
+        },
+        "ideal_probabilities": [
+          0.662138830920773,
+          0.11202691911298741,
+          0.029458747679494496,
+          0.1963755022867451
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.0008226852202612989,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-11-18",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(0.085420196296045289) q[0];\nry(1.1657695442563307) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "2c8c814b5f1f1b6cd716d2f207e39186a533d8d1f33c08efdd5c6d51ec985f80",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 716,
+          "01": 304,
+          "10": 2,
+          "11": 2
+        },
+        "ideal_probabilities": [
+          0.6940586265647707,
+          0.30203111500757995,
+          0.0012652940391717385,
+          0.0026449643884775436
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.014945443928739088,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-11-19",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(1.155849477271145) q[0];\nry(0.099116014230838004) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "01c637cff22f72b1ecaed82a46fd2f580dccb1cc66b33bfd076fdf1e45b9ce05",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 783,
+          "11": 211,
+          "01": 24,
+          "10": 6
+        },
+        "ideal_probabilities": [
+          0.7506328236117237,
+          0.02136573566563251,
+          0.006810089473082545,
+          0.22119135124956127
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.006773658159350049,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-11-20",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(0.53647199260458978) q[0];\nry(1.1709865142825142) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "375157d0db50e31cef9cf761d08c85f1adeeb38d9da4919fad482b4e7f49dd62",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 691,
+          "01": 304,
+          "10": 9,
+          "11": 20
+        },
+        "ideal_probabilities": [
+          0.6690902860122585,
+          0.2942772714163096,
+          0.011937744329388641,
+          0.024694698242043272
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.0128711029152615,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-11-23",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(0.99862556617925169) q[0];\nry(0.55077510376735905) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "f871c28f4b6ca6e28a10de46937b949cc528e33f30f8c3daeb180790f230242b",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 792,
+          "10": 16,
+          "01": 73,
+          "11": 143
+        },
+        "ideal_probabilities": [
+          0.7582705533367441,
+          0.07561583723181804,
+          0.016989412252746288,
+          0.14912419717869202
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.0002887608779768014,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-11-24",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(0.001178549721328504) q[0];\nry(1.0135509179312705) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "e9002aa560b4015af905559cb900c7efdd6df0d77b3e7a53267bb943515fae1b",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 787,
+          "01": 232,
+          "10": 1,
+          "11": 4
+        },
+        "ideal_probabilities": [
+          0.7530560986067215,
+          0.23801377717787298,
+          0.002312592976476805,
+          0.006617531238928734
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.00101111915884311,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-11-25",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(0.099702477084879573) q[0];\nry(0.014760945246772392) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "777a780ac8d4453102a4366acdca9d6b1fc033a55181b467ee6e830baf387c0c",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 1003,
+          "01": 18,
+          "10": 1,
+          "11": 2
+        },
+        "ideal_probabilities": [
+          0.9703462033476004,
+          0.02624638084553229,
+          9.085260802551148e-05,
+          0.0033165631988422944
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.004329045884085891,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-11-27",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-0.30505336029690749) q[0];\nry(0.11341752459036483) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "babf0f7391f8bae975f87188f505e70f71917f4b44ce7b6cf7c56ec58fc8f526",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 945,
+          "11": 47,
+          "01": 31,
+          "10": 1
+        },
+        "ideal_probabilities": [
+          0.9173433841238223,
+          0.026655359249884922,
+          0.0017217316477405287,
+          0.05427952497855247
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.003333378402564424,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-11-30",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(0.27571725888541893) q[0];\nry(-0.29188327343904114) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "22777b1958cc946a0e17b9239930b507bb63d9d32ff773a2559b8bc311e884a2",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 977,
+          "01": 43,
+          "11": 4
+        },
+        "ideal_probabilities": [
+          0.9450733224609528,
+          0.0493908922467772,
+          0.00023964051841249224,
+          0.005296144773857816
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.006933349952817691,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-12-01",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(0.54857577311856121) q[0];\nry(0.28966929155732202) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "7437240064cb5611e3772419e8e7250cfadb3bfb13a2d9a65ae14345f789b185",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 949,
+          "01": 43,
+          "11": 29,
+          "10": 3
+        },
+        "ideal_probabilities": [
+          0.9197976007751689,
+          0.04134073495283191,
+          0.0019175024848885802,
+          0.03694416178711119
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.013340990443372336,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-12-02",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(1.0342405178496299) q[0];\nry(0.56289518073331046) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "67d7ebd96d6a35fabb7fb346130ee37b64ee621e722ce9e87274a92e2b3d172a",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 776,
+          "11": 154,
+          "01": 81,
+          "10": 13
+        },
+        "ideal_probabilities": [
+          0.7437364290228743,
+          0.07680075092181234,
+          0.01891953956533147,
+          0.16054328048998234
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.01118347779884521,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-12-03",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-0.82458249603184963) q[0];\nry(1.0492138213427593) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "b3233044c934d12b89d37f409c25a1b1c2c2e052d0084534f4d05130140b4bbe",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 604,
+          "11": 159,
+          "10": 57,
+          "01": 204
+        },
+        "ideal_probabilities": [
+          0.5769682639965842,
+          0.1969092527182713,
+          0.061880186784960906,
+          0.16424229650018385
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.0055833840206236385,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-12-04",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-0.4001254561465481) q[0];\nry(-0.81211189984988896) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "a04869ac9fa1501acbfec533b64eb454944e3ed85686676527543de54f91f09b",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 787,
+          "01": 162,
+          "11": 59,
+          "10": 16
+        },
+        "ideal_probabilities": [
+          0.7528729104990294,
+          0.1677940854704338,
+          0.013182828427119766,
+          0.0661501756034171
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.010869521190685516,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-12-07",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(0.84691641852068467) q[0];\nry(-0.38708337374504692) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "d583aa7444f205123630faf6dfcecc6ab4ab27c50a6392c090a446d1735c28ce",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 862,
+          "01": 51,
+          "11": 106,
+          "10": 5
+        },
+        "ideal_probabilities": [
+          0.8276422865950093,
+          0.05816829313400226,
+          0.006543263224129679,
+          0.10764615704685902
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.006266394719951052,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-12-08",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-0.45189399987593015) q[0];\nry(0.86163751005525346) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "3872c6a1049494f4d4885b661e6c9df06b324169208676a14d884376e2df50e3",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 769,
+          "01": 170,
+          "11": 68,
+          "10": 17
+        },
+        "ideal_probabilities": [
+          0.7402915234402926,
+          0.16605833130787512,
+          0.018733168577412224,
+          0.07491697667442088
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.010748834020299802,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-12-09",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-0.79163883134476765) q[0];\nry(-0.43892161830765108) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "1f2a0aab61b4e834b09a40245bf3bf2d39db8204a5fccb75c80535708e65c2a9",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 758,
+          "11": 186,
+          "01": 63,
+          "10": 17
+        },
+        "ideal_probabilities": [
+          0.7275345948645219,
+          0.059878252123229836,
+          0.014164126250470923,
+          0.19842302676177748
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.010431018743301768,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-12-10",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-0.76755013978936426) q[0];\nry(-0.7791238800252529) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "f1b55af4daeb7b2891668e0268e506b48916533c7255e7e768e4c882ba0a8cfb",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 687,
+          "11": 162,
+          "10": 29,
+          "01": 146
+        },
+        "ideal_probabilities": [
+          0.6609352979033593,
+          0.13617810821895904,
+          0.03150193239571821,
+          0.17138466148196344
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.0012444029266329704,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-12-11",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(0.11738413411613373) q[0];\nry(-0.75500275561098029) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "c7f86aa7cf9215aaf265a5b53bb3a810cf909a80d60511f1440b6175ecc39ba7",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 865,
+          "01": 157,
+          "11": 2
+        },
+        "ideal_probabilities": [
+          0.8348314738804317,
+          0.1622432982842159,
+          0.0004315697146712606,
+          0.00249365812068144
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.016157272391888577,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-12-14",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-1.2015694204599527) q[0];\nry(0.13112298809054865) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "0450e6412a3580b9423c3025a684933f916118d772f77fcc3e788f47d0a64c5c",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 613,
+          "11": 389,
+          "10": 9,
+          "01": 13
+        },
+        "ideal_probabilities": [
+          0.5842215424485493,
+          0.01748842788796141,
+          0.01273007637576996,
+          0.38555995328771914
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.010106160648298834,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-12-15",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(0.78905778810867988) q[0];\nry(-1.1896063970403989) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "4fd97a3a67116c6f4f9a2e7ac5d216ed1bb5f26d1176b68c271f3c74752edeca",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 625,
+          "01": 310,
+          "11": 60,
+          "10": 29
+        },
+        "ideal_probabilities": [
+          0.6015222455647758,
+          0.3018150249711918,
+          0.030307857439889396,
+          0.06635487202414293
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.013683513197550567,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-12-16",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(1.0602019035137862) q[0];\nry(0.80370097915661554) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "5beec2437295cfc246d2e6d0dff41efdb30084aa46a06e96dd363b3b9f6fc3c0",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 703,
+          "11": 150,
+          "10": 30,
+          "01": 141
+        },
+        "ideal_probabilities": [
+          0.6781409981143063,
+          0.13240816111842935,
+          0.0339702920558044,
+          0.15548054871146028
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.01088613763277646,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-12-17",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(0.84817585561275199) q[0];\nry(1.0752101612490488) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "8bfa6990379e9b7a1c8b0b1838511506679bf95426d63fec4f0b4583daae9047",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 675,
+          "01": 236,
+          "11": 78,
+          "10": 35
+        },
+        "ideal_probabilities": [
+          0.6507292226274608,
+          0.23468526543675894,
+          0.03260534086602475,
+          0.08198017106975575
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.018235289881276096,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-12-18",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-1.359071988685769) q[0];\nry(0.86289864284529461) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "8baa98e0e067216828259e56765cdc400b1899c0c4bac97901f3e75799f0d871",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 457,
+          "11": 385,
+          "01": 90,
+          "10": 92
+        },
+        "ideal_probabilities": [
+          0.42780170080997304,
+          0.09624736142097998,
+          0.0954263027838558,
+          0.3805246349851913
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.013528386162884876,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-12-21",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-1.0023139595429205) q[0];\nry(-1.3473210257077326) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "11531afa36f01e2c55666382d03e68bfb9cc33a4237ad04cd916f2f7b2496417",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 440,
+          "01": 277,
+          "11": 177,
+          "10": 130
+        },
+        "ideal_probabilities": [
+          0.4135916014577811,
+          0.2825213859248848,
+          0.116767780045196,
+          0.1871192325721382
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.004447789659942636,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-12-22",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(0.36018364860216939) q[0];\nry(-0.99008265985655508) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "b0587d405a110b41d081bddbf2d66323ee2145aaacd9af7611fcc9aa50014271",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 773,
+          "01": 245,
+          "11": 5,
+          "10": 1
+        },
+        "ideal_probabilities": [
+          0.7415269115200154,
+          0.24646819616604654,
+          0.002772364154376439,
+          0.009232528159561756
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.01793352148969629,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-12-23",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(1.3823297125493417) q[0];\nry(0.37424940627613745) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "e6db7bff34f698f17c76075b2a13e0477d2eb8e83fa0e55be29919d1fedf670b",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 654,
+          "11": 308,
+          "10": 23,
+          "01": 39
+        },
+        "ideal_probabilities": [
+          0.6344371939770703,
+          0.037049846521052344,
+          0.02078721300846704,
+          0.30772574649341056
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.004422539560138716,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-12-24",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(0.35826982661203416) q[0];\nry(1.3977716810880445) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "ed9df8913b2d52d4b7c60ccb18857cae891e4936f1fe9acd53981a64478b423c",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 613,
+          "01": 405,
+          "10": 2,
+          "11": 4
+        },
+        "ideal_probabilities": [
+          0.5854397548855602,
+          0.40274067567919414,
+          0.0050751610538818485,
+          0.006744408381363908
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.0020932091575925904,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-12-28",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-0.13558894127505869) q[0];\nry(0.3723330075284243) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "45aa6922e13ef543753a4d528074678831bd42742cb936a2a3e67b2e59c4745c",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 950,
+          "01": 54,
+          "10": 2,
+          "11": 18
+        },
+        "ideal_probabilities": [
+          0.9220063582092347,
+          0.053522007121763526,
+          0.0015399012541591844,
+          0.022931733414842614
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.0046292887304454355,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-12-29",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-0.32781015596131524) q[0];\nry(-0.12219068861695111) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "10884935cbfac6c290ebdf6eb69a71a600a634ffc2fc9fe9cbada3b241559490",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 940,
+          "11": 52,
+          "01": 31,
+          "10": 1
+        },
+        "ideal_probabilities": [
+          0.9093606002650619,
+          0.029411095657225043,
+          0.001752868832531593,
+          0.05947543524518126
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.015769183116751906,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-12-30",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(1.2182844848314076) q[0];\nry(-0.31467070870628505) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "ac066bbc1d977a9174a22c3eedd4c6bd4133aa58e4f833aa3f6d8919693c5cba",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 727,
+          "11": 232,
+          "01": 53,
+          "10": 12
+        },
+        "ideal_probabilities": [
+          0.7058635674737564,
+          0.03960640642614598,
+          0.011777374019775638,
+          0.24275265208032257
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.0031478177043137157,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    },
+    {
+      "name": "inference-2015-12-31",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-0.21552260662184594) q[0];\nry(1.2335055839340716) q[1];\nrz(0.54368914726541728) q[0];\nry(-0.19028874243942689) q[0];\ncx q[0],q[1];\nry(-0.02339266552538731) q[1];\nrx(-0.32589972037964821) q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+      "qasm_sha256": "c9fdeb8b2e0e086e8490d46f022aae3597631c391508c85257dedba4620e758b",
+      "num_qubits": 2,
+      "logical_depth": 6,
+      "gate_count": 7,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "00": 664,
+          "01": 330,
+          "10": 10,
+          "11": 20
+        },
+        "ideal_probabilities": [
+          0.6420214655655111,
+          0.32028603193268423,
+          0.013333422269426408,
+          0.024359080232378115
+        ],
+        "labels_q0_first": [
+          "00",
+          "01",
+          "10",
+          "11"
+        ]
+      },
+      "postprocessing": {
+        "objective_cbit": 1,
+        "weights_frozen": [
+          0.5436891472654173,
+          -0.1902887424394269,
+          -0.02339266552538731,
+          -0.3258997203796482
+        ],
+        "classical_head": [
+          -0.369248562806502,
+          0.6843136426398096
+        ],
+        "target_scale": 0.00993832907776995,
+        "actual_absolute_return": 0.012343916636639585,
+        "scope": "frozen trained model validation inference; training/AD remains local"
+      },
+      "receipt": null
+    }
+  ]
+}

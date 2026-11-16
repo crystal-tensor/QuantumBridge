@@ -1,0 +1,143 @@
+{
+  "case": {
+    "id": "industry/04_combinatorial",
+    "domain": "industry",
+    "kind": "case",
+    "direction": "combinatorial",
+    "file": "04_combinatorial.html",
+    "title": {
+      "zh-CN": "组合优化 · 加权 MaxCut",
+      "en": "Optimization · Weighted MaxCut"
+    },
+    "original_cells_sha256": "7d4cb7c1b64e28e7258d0f6196f4ef2bf2deb05ed0860322c1861d8285a39412",
+    "provenance": {
+      "path": "output/jupyter-notebook/industry/04_combinatorial_evidence.json",
+      "sha256": "2a95cd341df31f0eb1d130d7fdd18f3b27d37de560904246a1dee49f67254804",
+      "original_summary": {
+        "best_observed_feasible": {
+          "bitstring": "0101",
+          "partition0": [
+            0,
+            2
+          ],
+          "cut_weight": 6,
+          "feasible": true,
+          "objective": -6,
+          "penalized_cost": -6
+        },
+        "observed_objective_gap": 0,
+        "feasible_probability": 1.0,
+        "optimal_probability": 0.4384765625,
+        "decision_rule": "best feasible actually sampled candidate; not the most frequent string"
+      }
+    },
+    "experiments": [
+      {
+        "name": "qaoa",
+        "kernel_id": "76ddde9039002e87b94fd3a1c4d13b5a736276681c2663643447ce4fc1ea4632",
+        "postprocessing": null
+      }
+    ],
+    "update_status": "NOT_SUBMITTED_NEW_SDK_CREDENTIALS_REQUIRED"
+  },
+  "updated_at": "2026-11-16T07:11:01.697257+00:00",
+  "local_source": {
+    "kind": "Python source files only",
+    "files": 777,
+    "sha256": "dd1809f029afabd6773ba8ffb396558d6d55d2707f55653c12760646a055734f",
+    "files_manifest": "source-files.json"
+  },
+  "local_verification_at": "2026-11-16T07:11:01.697257+00:00",
+  "backend_snapshot_sha256": "70b47bdc0d5ef6013b1ccbe3d1dc22b312d56f8508c6689ce012ad7c96a8d085",
+  "experiments": [
+    {
+      "name": "qaoa",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\nrz(0.52359877559829893) q[1];\ncx q[0],q[1];\ncx q[0],q[2];\nrz(0.26179938779914935) q[2];\ncx q[0],q[2];\ncx q[0],q[3];\nrz(1.0471975511965976) q[3];\ncx q[0],q[3];\ncx q[1],q[2];\nrz(1.0471975511965979) q[2];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.52359877559829882) q[3];\ncx q[2],q[3];\nrz(2.879793265790644) q[0];\nu1(-2.879793265790644) q[0];\nrx(2.4166097335306098) q[0];\nrx(2.4166097335306098) q[1];\nrx(2.4166097335306098) q[2];\nrx(2.4166097335306098) q[3];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+      "qasm_sha256": "76ddde9039002e87b94fd3a1c4d13b5a736276681c2663643447ce4fc1ea4632",
+      "num_qubits": 4,
+      "logical_depth": 14,
+      "gate_count": 25,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "0011": 183,
+          "0101": 236,
+          "1100": 154,
+          "0110": 40,
+          "1101": 20,
+          "1010": 239,
+          "0000": 17,
+          "0001": 3,
+          "0010": 23,
+          "1001": 40,
+          "0100": 10,
+          "1011": 10,
+          "1000": 16,
+          "1110": 6,
+          "0111": 17,
+          "1111": 10
+        },
+        "ideal_probabilities": [
+          0.01633713016939828,
+          0.005714334501677848,
+          0.01962118493167596,
+          0.15966049436604693,
+          0.005714334501677867,
+          0.23564534308028126,
+          0.03768599351756534,
+          0.01962118493167595,
+          0.01962118493167596,
+          0.03768599351756535,
+          0.23564534308028126,
+          0.005714334501677867,
+          0.15966049436604696,
+          0.01962118493167597,
+          0.005714334501677847,
+          0.01633713016939828
+        ],
+        "labels_q0_first": [
+          "0000",
+          "0001",
+          "0010",
+          "0011",
+          "0100",
+          "0101",
+          "0110",
+          "0111",
+          "1000",
+          "1001",
+          "1010",
+          "1011",
+          "1100",
+          "1101",
+          "1110",
+          "1111"
+        ]
+      },
+      "receipt": null
+    }
+  ]
+}

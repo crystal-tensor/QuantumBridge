@@ -1,0 +1,126 @@
+{
+  "case": {
+    "id": "finance/dwave_constraints",
+    "domain": "finance",
+    "kind": "case",
+    "direction": "financial-constraints",
+    "file": "dwave_constraints.html",
+    "title": {
+      "zh-CN": "D-Wave CQM · 预算与行业约束",
+      "en": "D-Wave CQM · Budget & sector constraints"
+    },
+    "original_cells_sha256": "a691745e5460e174977c8c630c547aa80f49523cab50df388459206d70ec55e8",
+    "provenance": {
+      "original_evidence_sha256": "afe49fa75da9b1484770551182d562d4c550e5ed36b8c1514a0607b9ae05945e",
+      "classical_scope": "D-Wave CQM is solved classically; only the explicit gate-model counterpart is a Quafu task"
+    },
+    "experiments": [
+      {
+        "name": "same-model-gate-qaoa",
+        "kernel_id": "04441850a3469e5891cfc9f9225c74fb8883be684bd6d9359e85cc1366cb674a",
+        "postprocessing": null
+      }
+    ],
+    "update_status": "NOT_SUBMITTED_NEW_SDK_CREDENTIALS_REQUIRED"
+  },
+  "updated_at": "2026-11-16T07:11:01.697257+00:00",
+  "local_source": {
+    "kind": "Python source files only",
+    "files": 777,
+    "sha256": "dd1809f029afabd6773ba8ffb396558d6d55d2707f55653c12760646a055734f",
+    "files_manifest": "source-files.json"
+  },
+  "local_verification_at": "2026-11-16T07:11:01.697257+00:00",
+  "backend_snapshot_sha256": "70b47bdc0d5ef6013b1ccbe3d1dc22b312d56f8508c6689ce012ad7c96a8d085",
+  "experiments": [
+    {
+      "name": "same-model-gate-qaoa",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\nrz(-0.29024910670418602) q[3];\nrz(0.74753555591025889) q[2];\ncx q[2],q[3];\nrz(0.22217999572926683) q[3];\ncx q[2],q[3];\nrz(-0.39008323331194111) q[1];\ncx q[1],q[3];\nrz(0.23395916285517659) q[3];\ncx q[1],q[3];\ncx q[1],q[2];\nrz(0.22207440916533092) q[2];\ncx q[1],q[2];\ncx q[1],q[3];\ncx q[2],q[3];\nrz(-0.2116459031973216) q[3];\ncx q[2],q[3];\ncx q[1],q[3];\nrz(-0.18005640632247771) q[0];\ncx q[0],q[3];\nrz(0.22384064270045906) q[3];\ncx q[0],q[3];\ncx q[0],q[2];\nrz(0.21820435835455262) q[2];\ncx q[0],q[2];\ncx q[0],q[3];\ncx q[2],q[3];\nrz(-0.21164590319732149) q[3];\ncx q[2],q[3];\ncx q[0],q[3];\ncx q[0],q[1];\nrz(0.22481793107325318) q[1];\ncx q[0],q[1];\ncx q[0],q[3];\ncx q[1],q[3];\nrz(0.63493770959196505) q[3];\ncx q[1],q[3];\ncx q[0],q[3];\ncx q[0],q[2];\ncx q[1],q[2];\nrz(-0.21164590319732182) q[2];\ncx q[1],q[2];\ncx q[0],q[2];\ncx q[0],q[3];\ncx q[1],q[3];\ncx q[2],q[3];\nrz(-0.63493770959196505) q[3];\ncx q[2],q[3];\ncx q[1],q[3];\ncx q[0],q[3];\nrx(5.7595865315812871) q[0];\nrx(5.7595865315812871) q[1];\nrx(5.7595865315812871) q[2];\nrx(5.7595865315812871) q[3];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+      "qasm_sha256": "04441850a3469e5891cfc9f9225c74fb8883be684bd6d9359e85cc1366cb674a",
+      "num_qubits": 4,
+      "logical_depth": 48,
+      "gate_count": 57,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "0011": 202,
+          "0110": 175,
+          "1100": 51,
+          "1011": 9,
+          "1101": 66,
+          "1111": 52,
+          "0001": 35,
+          "1010": 193,
+          "0100": 22,
+          "1001": 55,
+          "0000": 64,
+          "0101": 43,
+          "1000": 43,
+          "0010": 5,
+          "1110": 8,
+          "0111": 1
+        },
+        "ideal_probabilities": [
+          0.062428013495386306,
+          0.030123232274234867,
+          0.0037702042799508655,
+          0.1734982063806671,
+          0.026313152589192312,
+          0.054177441801321245,
+          0.1714390377667453,
+          0.0049139741853379045,
+          0.03395115738940663,
+          0.06518542440985019,
+          0.17664654158008866,
+          0.010504713719104804,
+          0.059842786347748395,
+          0.060311054126512866,
+          0.0078882646041827,
+          0.059006795050268776
+        ],
+        "labels_q0_first": [
+          "0000",
+          "0001",
+          "0010",
+          "0011",
+          "0100",
+          "0101",
+          "0110",
+          "0111",
+          "1000",
+          "1001",
+          "1010",
+          "1011",
+          "1100",
+          "1101",
+          "1110",
+          "1111"
+        ]
+      },
+      "receipt": null
+    }
+  ]
+}

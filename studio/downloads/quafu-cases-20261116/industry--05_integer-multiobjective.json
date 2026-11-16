@@ -1,0 +1,143 @@
+{
+  "case": {
+    "id": "industry/05_integer-multiobjective",
+    "domain": "industry",
+    "kind": "case",
+    "direction": "integer-multiobjective",
+    "file": "05_integer-multiobjective.html",
+    "title": {
+      "zh-CN": "整数多目标 · 收益与排放",
+      "en": "Integer objectives · Profit & emissions"
+    },
+    "original_cells_sha256": "becb724b383c176d4cafdfbccf147e21dc22884eac6a69e0e6935442e3458aee",
+    "provenance": {
+      "path": "output/jupyter-notebook/industry/05_integer-multiobjective_evidence.json",
+      "sha256": "0b6945be7e067a63b7785878fc3508a7e2b1e266d4e0d5c633a9bd775de8f6d3",
+      "original_summary": {
+        "best_observed_feasible": {
+          "bitstring": "0111",
+          "allocation_A": 1,
+          "allocation_B": 3,
+          "resource_use": 5,
+          "profit": 11,
+          "emissions": 7,
+          "feasible": true,
+          "objective": -2.5999999999999996,
+          "penalized_cost": -2.5999999999999996
+        },
+        "observed_objective_gap": 0.0,
+        "feasible_probability": 0.7783203125,
+        "optimal_probability": 0.0517578125,
+        "decision_rule": "best feasible actually sampled candidate; not the most frequent string"
+      }
+    },
+    "experiments": [
+      {
+        "name": "qaoa",
+        "kernel_id": "df3cf86d66a94bb2c5817bba37b91b9cf72574c2bba1875f6fb9f0d6a587407d",
+        "postprocessing": null
+      }
+    ],
+    "update_status": "NOT_SUBMITTED_NEW_SDK_CREDENTIALS_REQUIRED"
+  },
+  "updated_at": "2026-11-16T07:11:01.697257+00:00",
+  "local_source": {
+    "kind": "Python source files only",
+    "files": 777,
+    "sha256": "dd1809f029afabd6773ba8ffb396558d6d55d2707f55653c12760646a055734f",
+    "files_manifest": "source-files.json"
+  },
+  "local_verification_at": "2026-11-16T07:11:01.697257+00:00",
+  "backend_snapshot_sha256": "70b47bdc0d5ef6013b1ccbe3d1dc22b312d56f8508c6689ce012ad7c96a8d085",
+  "experiments": [
+    {
+      "name": "qaoa",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.013656103933001415) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\ncx q[0],q[1];\ncx q[1],q[2];\nrz(-0.20484155899502074) q[2];\ncx q[1],q[2];\ncx q[0],q[1];\ncx q[0],q[1];\ncx q[1],q[3];\nrz(-0.095592727531009669) q[3];\ncx q[1],q[3];\ncx q[0],q[1];\ncx q[0],q[1];\nrz(0.3414025983250345) q[1];\ncx q[0],q[1];\ncx q[0],q[2];\ncx q[2],q[3];\nrz(-0.095592727531009669) q[3];\ncx q[2],q[3];\ncx q[0],q[2];\ncx q[0],q[2];\nrz(0.3414025983250345) q[2];\ncx q[0],q[2];\ncx q[0],q[3];\nrz(0.17752935112901791) q[3];\ncx q[0],q[3];\nrz(-0.47577866102576805) q[0];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.013656103933001415) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[1],q[2];\nrz(0.20484155899502074) q[2];\ncx q[1],q[2];\ncx q[1],q[3];\nrz(0.095592727531009669) q[3];\ncx q[1],q[3];\nrz(-0.34031011001039441) q[1];\ncx q[2],q[3];\nrz(0.095592727531009669) q[3];\ncx q[2],q[3];\nrz(-0.33266269180791369) q[2];\nrz(-0.1731593978704575) q[3];\nrz(0.48998100911608955) q[0];\nu1(-0.48998100911608955) q[0];\nrx(5.5665414137673421) q[0];\nrx(5.5665414137673421) q[1];\nrx(5.5665414137673421) q[2];\nrx(5.5665414137673421) q[3];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+      "qasm_sha256": "df3cf86d66a94bb2c5817bba37b91b9cf72574c2bba1875f6fb9f0d6a587407d",
+      "num_qubits": 4,
+      "logical_depth": 47,
+      "gate_count": 59,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "0010": 98,
+          "0101": 89,
+          "0011": 82,
+          "0100": 85,
+          "0001": 91,
+          "1010": 59,
+          "1011": 27,
+          "1100": 77,
+          "1101": 19,
+          "1001": 97,
+          "1000": 102,
+          "0111": 51,
+          "0000": 68,
+          "0110": 74,
+          "1110": 1,
+          "1111": 4
+        },
+        "ideal_probabilities": [
+          0.06500820054924447,
+          0.07825017903461509,
+          0.08699887953976274,
+          0.0834741038411244,
+          0.08623083895565001,
+          0.0827357985487674,
+          0.07658534753776172,
+          0.05844349612838109,
+          0.09500757393288696,
+          0.08766724566431056,
+          0.07087919961315237,
+          0.02542010933099418,
+          0.07044339124365305,
+          0.025224306909377988,
+          0.0023345434810704054,
+          0.005296785689246083
+        ],
+        "labels_q0_first": [
+          "0000",
+          "0001",
+          "0010",
+          "0011",
+          "0100",
+          "0101",
+          "0110",
+          "0111",
+          "1000",
+          "1001",
+          "1010",
+          "1011",
+          "1100",
+          "1101",
+          "1110",
+          "1111"
+        ]
+      },
+      "receipt": null
+    }
+  ]
+}

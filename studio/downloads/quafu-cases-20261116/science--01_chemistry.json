@@ -1,0 +1,1232 @@
+{
+  "case": {
+    "id": "science/01_chemistry",
+    "domain": "science",
+    "kind": "case",
+    "direction": "chemistry",
+    "file": "01_chemistry.html",
+    "title": {
+      "zh-CN": "量子化学 · H2 变分与测量",
+      "en": "Chemistry · H2 variation & measurement"
+    },
+    "original_cells_sha256": "40df81004c23760ab78b0fde4f6d00cffda2a6897ccb1361ffb244443d5ebabc",
+    "provenance": {
+      "path": "output/jupyter-notebook/science/01_chemistry_evidence.json",
+      "sha256": "50494db33278476c33cca03791ab67cc7abb1089aad38bffd4aa556534cc9120",
+      "original_summary": {
+        "optimized_theta": -0.22399999999999998,
+        "variational_energy_hartree": -1.1373059484229502,
+        "variational_gap_hartree": 8.748218927046025e-08,
+        "pauli_energy_constant": -0.09057899440489706,
+        "pauli_energy_terms": {
+          "ZIII": 0.17218393302860957,
+          "IZII": 0.17218393302860957,
+          "ZZII": 0.16892753905660593,
+          "IIZI": -0.22575348784816712,
+          "ZIZI": 0.12091263250339156,
+          "IIIZ": -0.22575348784816712,
+          "ZIIZ": 0.16614543228746326,
+          "IZZI": 0.16614543228746326,
+          "IZIZ": 0.12091263250339156,
+          "YXXY": 0.04523279978407171,
+          "XXYY": -0.04523279978407171,
+          "YYXX": -0.04523279978407171,
+          "XYYX": 0.04523279978407171,
+          "IIZZ": 0.17464342983154682
+        },
+        "sampled_energy_hartree": -1.1373937907338199,
+        "energy_standard_error_hartree": 0.003997871230536198
+      }
+    },
+    "experiments": [
+      {
+        "name": "ZIII",
+        "kernel_id": "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+        "postprocessing": null
+      },
+      {
+        "name": "IZII",
+        "kernel_id": "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+        "postprocessing": null
+      },
+      {
+        "name": "ZZII",
+        "kernel_id": "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+        "postprocessing": null
+      },
+      {
+        "name": "IIZI",
+        "kernel_id": "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+        "postprocessing": null
+      },
+      {
+        "name": "ZIZI",
+        "kernel_id": "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+        "postprocessing": null
+      },
+      {
+        "name": "IIIZ",
+        "kernel_id": "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+        "postprocessing": null
+      },
+      {
+        "name": "ZIIZ",
+        "kernel_id": "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+        "postprocessing": null
+      },
+      {
+        "name": "IZZI",
+        "kernel_id": "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+        "postprocessing": null
+      },
+      {
+        "name": "IZIZ",
+        "kernel_id": "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+        "postprocessing": null
+      },
+      {
+        "name": "YXXY",
+        "kernel_id": "e32626e2a3429fe3f30ed6afe21abd1a95d42b157f1284c88971e150d62763f8",
+        "postprocessing": null
+      },
+      {
+        "name": "XXYY",
+        "kernel_id": "c01215183ea00f0fdb1b0d26c7256819791510d82eab8e9c712f4ed9ed639879",
+        "postprocessing": null
+      },
+      {
+        "name": "YYXX",
+        "kernel_id": "09454ff6e9fcb5d525d1c847d70e8f4523bf47fbcf462a8e37aa03a8f9e092d4",
+        "postprocessing": null
+      },
+      {
+        "name": "XYYX",
+        "kernel_id": "276b942538c75af80a6d10d741d905a63ebeb939c3843833d5633cff51c283d5",
+        "postprocessing": null
+      },
+      {
+        "name": "IIZZ",
+        "kernel_id": "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+        "postprocessing": null
+      }
+    ],
+    "update_status": "NOT_SUBMITTED_NEW_SDK_CREDENTIALS_REQUIRED"
+  },
+  "updated_at": "2026-11-16T07:11:01.697257+00:00",
+  "local_source": {
+    "kind": "Python source files only",
+    "files": 777,
+    "sha256": "dd1809f029afabd6773ba8ffb396558d6d55d2707f55653c12760646a055734f",
+    "files_manifest": "source-files.json"
+  },
+  "local_verification_at": "2026-11-16T07:11:01.697257+00:00",
+  "backend_snapshot_sha256": "70b47bdc0d5ef6013b1ccbe3d1dc22b312d56f8508c6689ce012ad7c96a8d085",
+  "experiments": [
+    {
+      "name": "ZIII",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nx q[0];\nx q[1];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nh q[0];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+      "qasm_sha256": "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+      "num_qubits": 4,
+      "logical_depth": 82,
+      "gate_count": 154,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "1100": 1011,
+          "0011": 13
+        },
+        "ideal_probabilities": [
+          0.0,
+          0.0,
+          0.0,
+          0.012491637001561003,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.9875083629984295,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "labels_q0_first": [
+          "0000",
+          "0001",
+          "0010",
+          "0011",
+          "0100",
+          "0101",
+          "0110",
+          "0111",
+          "1000",
+          "1001",
+          "1010",
+          "1011",
+          "1100",
+          "1101",
+          "1110",
+          "1111"
+        ]
+      },
+      "receipt": null
+    },
+    {
+      "name": "ZIII",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nx q[0];\nx q[1];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nh q[0];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+      "qasm_sha256": "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+      "num_qubits": 4,
+      "logical_depth": 82,
+      "gate_count": 154,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "1100": 1011,
+          "0011": 13
+        },
+        "ideal_probabilities": [
+          0.0,
+          0.0,
+          0.0,
+          0.012491637001561003,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.9875083629984295,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "labels_q0_first": [
+          "0000",
+          "0001",
+          "0010",
+          "0011",
+          "0100",
+          "0101",
+          "0110",
+          "0111",
+          "1000",
+          "1001",
+          "1010",
+          "1011",
+          "1100",
+          "1101",
+          "1110",
+          "1111"
+        ]
+      },
+      "receipt": null
+    },
+    {
+      "name": "ZIII",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nx q[0];\nx q[1];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nh q[0];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+      "qasm_sha256": "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+      "num_qubits": 4,
+      "logical_depth": 82,
+      "gate_count": 154,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "1100": 1011,
+          "0011": 13
+        },
+        "ideal_probabilities": [
+          0.0,
+          0.0,
+          0.0,
+          0.012491637001561003,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.9875083629984295,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "labels_q0_first": [
+          "0000",
+          "0001",
+          "0010",
+          "0011",
+          "0100",
+          "0101",
+          "0110",
+          "0111",
+          "1000",
+          "1001",
+          "1010",
+          "1011",
+          "1100",
+          "1101",
+          "1110",
+          "1111"
+        ]
+      },
+      "receipt": null
+    },
+    {
+      "name": "ZIII",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nx q[0];\nx q[1];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nh q[0];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+      "qasm_sha256": "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+      "num_qubits": 4,
+      "logical_depth": 82,
+      "gate_count": 154,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "1100": 1011,
+          "0011": 13
+        },
+        "ideal_probabilities": [
+          0.0,
+          0.0,
+          0.0,
+          0.012491637001561003,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.9875083629984295,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "labels_q0_first": [
+          "0000",
+          "0001",
+          "0010",
+          "0011",
+          "0100",
+          "0101",
+          "0110",
+          "0111",
+          "1000",
+          "1001",
+          "1010",
+          "1011",
+          "1100",
+          "1101",
+          "1110",
+          "1111"
+        ]
+      },
+      "receipt": null
+    },
+    {
+      "name": "ZIII",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nx q[0];\nx q[1];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nh q[0];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+      "qasm_sha256": "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+      "num_qubits": 4,
+      "logical_depth": 82,
+      "gate_count": 154,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "1100": 1011,
+          "0011": 13
+        },
+        "ideal_probabilities": [
+          0.0,
+          0.0,
+          0.0,
+          0.012491637001561003,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.9875083629984295,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "labels_q0_first": [
+          "0000",
+          "0001",
+          "0010",
+          "0011",
+          "0100",
+          "0101",
+          "0110",
+          "0111",
+          "1000",
+          "1001",
+          "1010",
+          "1011",
+          "1100",
+          "1101",
+          "1110",
+          "1111"
+        ]
+      },
+      "receipt": null
+    },
+    {
+      "name": "ZIII",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nx q[0];\nx q[1];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nh q[0];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+      "qasm_sha256": "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+      "num_qubits": 4,
+      "logical_depth": 82,
+      "gate_count": 154,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "1100": 1011,
+          "0011": 13
+        },
+        "ideal_probabilities": [
+          0.0,
+          0.0,
+          0.0,
+          0.012491637001561003,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.9875083629984295,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "labels_q0_first": [
+          "0000",
+          "0001",
+          "0010",
+          "0011",
+          "0100",
+          "0101",
+          "0110",
+          "0111",
+          "1000",
+          "1001",
+          "1010",
+          "1011",
+          "1100",
+          "1101",
+          "1110",
+          "1111"
+        ]
+      },
+      "receipt": null
+    },
+    {
+      "name": "ZIII",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nx q[0];\nx q[1];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nh q[0];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+      "qasm_sha256": "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+      "num_qubits": 4,
+      "logical_depth": 82,
+      "gate_count": 154,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "1100": 1011,
+          "0011": 13
+        },
+        "ideal_probabilities": [
+          0.0,
+          0.0,
+          0.0,
+          0.012491637001561003,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.9875083629984295,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "labels_q0_first": [
+          "0000",
+          "0001",
+          "0010",
+          "0011",
+          "0100",
+          "0101",
+          "0110",
+          "0111",
+          "1000",
+          "1001",
+          "1010",
+          "1011",
+          "1100",
+          "1101",
+          "1110",
+          "1111"
+        ]
+      },
+      "receipt": null
+    },
+    {
+      "name": "ZIII",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nx q[0];\nx q[1];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nh q[0];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+      "qasm_sha256": "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+      "num_qubits": 4,
+      "logical_depth": 82,
+      "gate_count": 154,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "1100": 1011,
+          "0011": 13
+        },
+        "ideal_probabilities": [
+          0.0,
+          0.0,
+          0.0,
+          0.012491637001561003,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.9875083629984295,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "labels_q0_first": [
+          "0000",
+          "0001",
+          "0010",
+          "0011",
+          "0100",
+          "0101",
+          "0110",
+          "0111",
+          "1000",
+          "1001",
+          "1010",
+          "1011",
+          "1100",
+          "1101",
+          "1110",
+          "1111"
+        ]
+      },
+      "receipt": null
+    },
+    {
+      "name": "ZIII",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nx q[0];\nx q[1];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nh q[0];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+      "qasm_sha256": "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+      "num_qubits": 4,
+      "logical_depth": 82,
+      "gate_count": 154,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "1100": 1011,
+          "0011": 13
+        },
+        "ideal_probabilities": [
+          0.0,
+          0.0,
+          0.0,
+          0.012491637001561003,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.9875083629984295,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "labels_q0_first": [
+          "0000",
+          "0001",
+          "0010",
+          "0011",
+          "0100",
+          "0101",
+          "0110",
+          "0111",
+          "1000",
+          "1001",
+          "1010",
+          "1011",
+          "1100",
+          "1101",
+          "1110",
+          "1111"
+        ]
+      },
+      "receipt": null
+    },
+    {
+      "name": "YXXY",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nx q[0];\nx q[1];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nh q[0];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+      "qasm_sha256": "e32626e2a3429fe3f30ed6afe21abd1a95d42b157f1284c88971e150d62763f8",
+      "num_qubits": 4,
+      "logical_depth": 84,
+      "gate_count": 160,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "0010": 87,
+          "0110": 55,
+          "0011": 54,
+          "1101": 67,
+          "0111": 80,
+          "0001": 85,
+          "1110": 80,
+          "1111": 43,
+          "1011": 86,
+          "0100": 65,
+          "1001": 40,
+          "1100": 51,
+          "0000": 54,
+          "0101": 49,
+          "1000": 75,
+          "1010": 53
+        },
+        "ideal_probabilities": [
+          0.04861678396037636,
+          0.07638321603962236,
+          0.07638321603962236,
+          0.04861678396037636,
+          0.07638321603962236,
+          0.04861678396037636,
+          0.04861678396037636,
+          0.07638321603962236,
+          0.07638321603962236,
+          0.04861678396037636,
+          0.04861678396037636,
+          0.07638321603962236,
+          0.04861678396037636,
+          0.07638321603962236,
+          0.07638321603962236,
+          0.04861678396037636
+        ],
+        "labels_q0_first": [
+          "0000",
+          "0001",
+          "0010",
+          "0011",
+          "0100",
+          "0101",
+          "0110",
+          "0111",
+          "1000",
+          "1001",
+          "1010",
+          "1011",
+          "1100",
+          "1101",
+          "1110",
+          "1111"
+        ]
+      },
+      "receipt": null
+    },
+    {
+      "name": "XXYY",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nx q[0];\nx q[1];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nh q[0];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+      "qasm_sha256": "c01215183ea00f0fdb1b0d26c7256819791510d82eab8e9c712f4ed9ed639879",
+      "num_qubits": 4,
+      "logical_depth": 83,
+      "gate_count": 160,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "0011": 88,
+          "0110": 87,
+          "0010": 53,
+          "1101": 40,
+          "0111": 48,
+          "0001": 55,
+          "1100": 78,
+          "1110": 53,
+          "1111": 70,
+          "0000": 84,
+          "1011": 62,
+          "0100": 49,
+          "1001": 74,
+          "0101": 65,
+          "1010": 77,
+          "1000": 41
+        },
+        "ideal_probabilities": [
+          0.07638321603962236,
+          0.04861678396037636,
+          0.04861678396037636,
+          0.07638321603962236,
+          0.04861678396037636,
+          0.07638321603962236,
+          0.07638321603962236,
+          0.04861678396037636,
+          0.04861678396037636,
+          0.07638321603962236,
+          0.07638321603962236,
+          0.04861678396037636,
+          0.07638321603962236,
+          0.04861678396037636,
+          0.04861678396037636,
+          0.07638321603962236
+        ],
+        "labels_q0_first": [
+          "0000",
+          "0001",
+          "0010",
+          "0011",
+          "0100",
+          "0101",
+          "0110",
+          "0111",
+          "1000",
+          "1001",
+          "1010",
+          "1011",
+          "1100",
+          "1101",
+          "1110",
+          "1111"
+        ]
+      },
+      "receipt": null
+    },
+    {
+      "name": "YYXX",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nx q[0];\nx q[1];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nh q[0];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nh q[3];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+      "qasm_sha256": "09454ff6e9fcb5d525d1c847d70e8f4523bf47fbcf462a8e37aa03a8f9e092d4",
+      "num_qubits": 4,
+      "logical_depth": 84,
+      "gate_count": 160,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "0011": 88,
+          "0110": 87,
+          "0010": 53,
+          "1101": 40,
+          "0111": 48,
+          "0001": 55,
+          "1100": 78,
+          "1110": 53,
+          "1111": 70,
+          "0000": 84,
+          "1011": 62,
+          "0100": 49,
+          "1001": 74,
+          "0101": 65,
+          "1010": 77,
+          "1000": 41
+        },
+        "ideal_probabilities": [
+          0.07638321603962236,
+          0.04861678396037636,
+          0.04861678396037636,
+          0.07638321603962236,
+          0.04861678396037636,
+          0.07638321603962236,
+          0.07638321603962236,
+          0.04861678396037636,
+          0.04861678396037636,
+          0.07638321603962236,
+          0.07638321603962236,
+          0.04861678396037636,
+          0.07638321603962236,
+          0.04861678396037636,
+          0.04861678396037636,
+          0.07638321603962236
+        ],
+        "labels_q0_first": [
+          "0000",
+          "0001",
+          "0010",
+          "0011",
+          "0100",
+          "0101",
+          "0110",
+          "0111",
+          "1000",
+          "1001",
+          "1010",
+          "1011",
+          "1100",
+          "1101",
+          "1110",
+          "1111"
+        ]
+      },
+      "receipt": null
+    },
+    {
+      "name": "XYYX",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nx q[0];\nx q[1];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nh q[0];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+      "qasm_sha256": "276b942538c75af80a6d10d741d905a63ebeb939c3843833d5633cff51c283d5",
+      "num_qubits": 4,
+      "logical_depth": 84,
+      "gate_count": 160,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "0010": 87,
+          "0110": 55,
+          "0011": 54,
+          "1101": 67,
+          "0111": 80,
+          "0001": 85,
+          "1110": 80,
+          "1111": 43,
+          "1011": 86,
+          "0100": 65,
+          "1001": 40,
+          "1100": 51,
+          "0000": 54,
+          "0101": 49,
+          "1000": 75,
+          "1010": 53
+        },
+        "ideal_probabilities": [
+          0.04861678396037636,
+          0.07638321603962236,
+          0.07638321603962236,
+          0.04861678396037636,
+          0.07638321603962236,
+          0.04861678396037636,
+          0.04861678396037636,
+          0.07638321603962236,
+          0.07638321603962236,
+          0.04861678396037636,
+          0.04861678396037636,
+          0.07638321603962236,
+          0.04861678396037636,
+          0.07638321603962236,
+          0.07638321603962236,
+          0.04861678396037636
+        ],
+        "labels_q0_first": [
+          "0000",
+          "0001",
+          "0010",
+          "0011",
+          "0100",
+          "0101",
+          "0110",
+          "0111",
+          "1000",
+          "1001",
+          "1010",
+          "1011",
+          "1100",
+          "1101",
+          "1110",
+          "1111"
+        ]
+      },
+      "receipt": null
+    },
+    {
+      "name": "ZIII",
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\nx q[0];\nx q[1];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nu1(-1.5707963267948966) q[2];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nu1(1.5707963267948966) q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nh q[0];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(-0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nh q[0];\nu1(-1.5707963267948966) q[0];\nh q[0];\nu1(-1.5707963267948966) q[1];\nh q[1];\nh q[2];\nu1(-1.5707963267948966) q[3];\nh q[3];\ncx q[0],q[1];\ncx q[1],q[2];\ncx q[2],q[3];\nrz(0.027999999999999997) q[3];\ncx q[2],q[3];\ncx q[1],q[2];\ncx q[0],q[1];\nh q[3];\nu1(1.5707963267948966) q[3];\nh q[2];\nh q[1];\nu1(1.5707963267948966) q[1];\nh q[0];\nu1(1.5707963267948966) q[0];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+      "qasm_sha256": "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+      "num_qubits": 4,
+      "logical_depth": 82,
+      "gate_count": 154,
+      "terminal_measurements": [
+        {
+          "virtual_qubit": 0,
+          "cbit": 0
+        },
+        {
+          "virtual_qubit": 1,
+          "cbit": 1
+        },
+        {
+          "virtual_qubit": 2,
+          "cbit": 2
+        },
+        {
+          "virtual_qubit": 3,
+          "cbit": 3
+        }
+      ],
+      "source_bit_order": "q0_first",
+      "provider_bit_order_expected": "c0_rightmost",
+      "measurement_scope": "terminal probabilities only; not controlled phase-preserving reuse",
+      "local": {
+        "mode": "fresh_local_simulator",
+        "seed": 20261116,
+        "shots": 1024,
+        "counts_q0_first": {
+          "1100": 1011,
+          "0011": 13
+        },
+        "ideal_probabilities": [
+          0.0,
+          0.0,
+          0.0,
+          0.012491637001561003,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.9875083629984295,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "labels_q0_first": [
+          "0000",
+          "0001",
+          "0010",
+          "0011",
+          "0100",
+          "0101",
+          "0110",
+          "0111",
+          "1000",
+          "1001",
+          "1010",
+          "1011",
+          "1100",
+          "1101",
+          "1110",
+          "1111"
+        ]
+      },
+      "receipt": null
+    }
+  ]
+}

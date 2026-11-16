@@ -1,0 +1,17 @@
+﻿实验,q0-first,预期 provider c0-rightmost,本地 counts,本地 P,理想 P,新云 counts
+same-model-gate-qaoa,0000,0000,64,0.0625,0.062428,—
+same-model-gate-qaoa,0001,1000,35,0.03418,0.030123,—
+same-model-gate-qaoa,0010,0100,5,0.004883,0.00377,—
+same-model-gate-qaoa,0011,1100,202,0.197266,0.173498,—
+same-model-gate-qaoa,0100,0010,22,0.021484,0.026313,—
+same-model-gate-qaoa,0101,1010,43,0.041992,0.054177,—
+same-model-gate-qaoa,0110,0110,175,0.170898,0.171439,—
+same-model-gate-qaoa,0111,1110,1,0.000977,0.004914,—
+same-model-gate-qaoa,1000,0001,43,0.041992,0.033951,—
+same-model-gate-qaoa,1001,1001,55,0.053711,0.065185,—
+same-model-gate-qaoa,1010,0101,193,0.188477,0.176647,—
+same-model-gate-qaoa,1011,1101,9,0.008789,0.010505,—
+same-model-gate-qaoa,1100,0011,51,0.049805,0.059843,—
+same-model-gate-qaoa,1101,1011,66,0.064453,0.060311,—
+same-model-gate-qaoa,1110,0111,8,0.007812,0.007888,—
+same-model-gate-qaoa,1111,1111,52,0.050781,0.059007,—

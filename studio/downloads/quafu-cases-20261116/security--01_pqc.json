@@ -1,0 +1,150 @@
+{
+  "case": {
+    "id": "security/01_pqc",
+    "domain": "security",
+    "kind": "case",
+    "direction": "pqc",
+    "file": "01_pqc.html",
+    "title": {
+      "zh-CN": "后量子密码 · ML-KEM / ML-DSA",
+      "en": "PQC · ML-KEM / ML-DSA"
+    },
+    "original_cells_sha256": "f0f4dd06f29f9a5ec20d23ba8b31f82506c835fc6cbad3d98e21a959ad25f24e",
+    "provenance": {
+      "path": "output/jupyter-notebook/security/01_pqc_evidence.json",
+      "sha256": "f7c2c42cc2023ae7b3d760418cb6125bc6bc701b030375fbb7d5ebec417dab94",
+      "original_summary": {
+        "kem_ciphertext_bytes": 1088,
+        "shared_secret_bytes": 32,
+        "kem_public_spki_der_bytes": 1206,
+        "mldsa65_signature_bytes": 3309,
+        "shared_secrets_equal": true,
+        "tampered_kem_implicit_rejection": true,
+        "valid_signature_accepted": true,
+        "altered_message_rejected": true,
+        "private_keys_exported": false,
+        "temporary_directory_removed": true,
+        "certification": "not a FIPS module certification or completed migration"
+      },
+      "fresh_classical": {
+        "evidence": {
+          "execution_mode": "local_classical",
+          "hardware_access": false,
+          "new_cloud_tasks": 0,
+          "experiments": {},
+          "estimates": {},
+          "summary": {
+            "kem_ciphertext_bytes": 1088,
+            "shared_secret_bytes": 32,
+            "kem_public_spki_der_bytes": 1206,
+            "mldsa65_signature_bytes": 3309,
+            "shared_secrets_equal": true,
+            "tampered_kem_implicit_rejection": true,
+            "valid_signature_accepted": true,
+            "altered_message_rejected": true,
+            "private_keys_exported": false,
+            "temporary_directory_removed": true,
+            "certification": "not a FIPS module certification or completed migration"
+          }
+        },
+        "intermediate": {
+          "operation_log": [
+            {
+              "arguments": "genpkey -algorithm ML-KEM-768 -out kem-private.pem",
+              "returncode": 0
+            },
+            {
+              "arguments": "pkey -in kem-private.pem -pubout -out kem-public.pem",
+              "returncode": 0
+            },
+            {
+              "arguments": "pkey -in kem-private.pem -pubout -outform DER -out kem-public.der",
+              "returncode": 0
+            },
+            {
+              "arguments": "pkeyutl -encap -pubin -inkey kem-public.pem -out ciphertext.bin -secret sender.bin",
+              "returncode": 0
+            },
+            {
+              "arguments": "pkeyutl -decap -inkey kem-private.pem -in ciphertext.bin -secret receiver.bin",
+              "returncode": 0
+            },
+            {
+              "arguments": "pkeyutl -decap -inkey kem-private.pem -in changed.bin -secret changed-secret.bin",
+              "returncode": 0
+            },
+            {
+              "arguments": "genpkey -algorithm ML-DSA-65 -out signature-private.pem",
+              "returncode": 0
+            },
+            {
+              "arguments": "pkey -in signature-private.pem -pubout -out signature-public.pem",
+              "returncode": 0
+            },
+            {
+              "arguments": "pkeyutl -sign -inkey signature-private.pem -in message.bin -out signature.bin",
+              "returncode": 0
+            },
+            {
+              "arguments": "pkeyutl -verify -pubin -inkey signature-public.pem -in message.bin -sigfile signature.bin",
+              "returncode": 0
+            },
+            {
+              "arguments": "pkeyutl -verify -pubin -inkey signature-public.pem -in message.bin -sigfile signature.bin",
+              "returncode": 1
+            }
+          ],
+          "public_sizes": {
+            "kem_ciphertext_bytes": 1088,
+            "shared_secret_bytes": 32,
+            "kem_public_spki_der_bytes": 1206,
+            "mldsa65_signature_bytes": 3309
+          },
+          "chart_rows": [
+            {
+              "label": "kem_ciphertext_bytes",
+              "value": 1088
+            },
+            {
+              "label": "shared_secret_bytes",
+              "value": 32
+            },
+            {
+              "label": "kem_public_spki_der_bytes",
+              "value": 1206
+            },
+            {
+              "label": "mldsa65_signature_bytes",
+              "value": 3309
+            }
+          ],
+          "chart_units": "Bytes",
+          "chart_title": "Actual local algorithm / container sizes"
+        },
+        "inputs": {
+          "implementation": "OpenSSL 4.1.0 23 Oct 2026 (Library: OpenSSL 4.1.0 23 Oct 2026)",
+          "kem": "ML-KEM-768",
+          "signature": "ML-DSA-65",
+          "execution": "classical OpenSSL provider; not a quantum computer"
+        },
+        "reference": {
+          "kem_ciphertext_bytes": 1088,
+          "shared_secret_bytes": 32,
+          "mldsa65_signature_bytes": 3309
+        }
+      }
+    },
+    "experiments": [],
+    "update_status": "CLASSICAL_NOT_APPLICABLE"
+  },
+  "updated_at": "2026-11-16T07:11:01.697257+00:00",
+  "local_source": {
+    "kind": "Python source files only",
+    "files": 777,
+    "sha256": "dd1809f029afabd6773ba8ffb396558d6d55d2707f55653c12760646a055734f",
+    "files_manifest": "source-files.json"
+  },
+  "local_verification_at": "2026-11-16T07:11:01.697257+00:00",
+  "backend_snapshot_sha256": "70b47bdc0d5ef6013b1ccbe3d1dc22b312d56f8508c6689ce012ad7c96a8d085",
+  "experiments": []
+}
