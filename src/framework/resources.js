@@ -58,8 +58,6 @@ export const projectDocuments = !publicSite && privateDocuments ? privateDocumen
 
 // Guides share the owner-facing taxonomy; they are not notebook artifacts.
 export const documentationResources = [
-  { domain: "science", kind: "guide", href: "/articles/biohydrogen/", title: bi("产品深读 · 生物光制氢与可验证计算", "Biohydrogen · Reproducible study") },
-  { domain: "science", direction: "chemistry", kind: "guide", href: "/articles/biohydrogen/", title: bi("公众号 · 一束光如何成为氢气", "Article · How light becomes hydrogen") },
   { domain: "science", kind: "guide", href: "/media/biohydrogen/film/", title: bi("Anima 影像 · 从光捕获到系统工程", "Anima film · From light to system engineering") },
   { domain: "science", direction: "chemistry", kind: "guide", href: "/media/biohydrogen/film/", title: bi("Anima 生物光制氢视频与交互图", "Anima biohydrogen film and figures") },
   { domain: "science", direction: "chemistry", kind: "guide", href: "/media/biohydrogen/", title: bi("生物光制氢 · 过程情景可视化", "Biohydrogen · Process visualization") },
