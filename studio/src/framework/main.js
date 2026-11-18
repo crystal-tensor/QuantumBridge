@@ -1,6 +1,6 @@
 // Copyright 2026 QuantumBridge Contributors. Apache-2.0.
 import { domains, directions, foundation } from "./data.js";
-import { resourceHref, domainResources, directionResources } from "./resources.js";
+import { resourceHref, domainResources, directionResources } from "./resources.js?v=biohydrogen-20261118-private-article";
 
 const root=document.querySelector("#framework-app");
 const params=new URLSearchParams(location.search);
