@@ -1,0 +1,93 @@
+{
+  "schema": "qb-quafu-case-plan-v1",
+  "kernels": {
+    "biohydrogen-text_cnot-initial-Z": {
+      "num_qubits": 3,
+      "logical_depth": 6,
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncreg c[3];\nh q[0];\nh q[1];\nh q[2];\nu1(0.78539816339744828) q[0];\nh q[0];\ncx q[0],q[1];\ncx q[1],q[2];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\n",
+      "qasm_sha256": "d72a9ca2d8b989ea509c3213d9530a7ce62a214687a888d846e7e897ff8272b3",
+      "metadata_sidecar": {
+        "name": "patent-biohydrogen-text_cnot",
+        "metadata": {},
+        "parameter_uuids": {}
+      }
+    },
+    "biohydrogen-text_cnot-initial-X": {
+      "num_qubits": 3,
+      "logical_depth": 7,
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncreg c[3];\nh q[0];\nh q[1];\nh q[2];\nu1(0.78539816339744828) q[0];\nh q[0];\ncx q[0],q[1];\ncx q[1],q[2];\nh q[1];\nh q[2];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\n",
+      "qasm_sha256": "e27c6053710a5f2b8c49e4a25398c203d7ee2d20a925fff163ab77fb15d4692d",
+      "metadata_sidecar": {
+        "name": "patent-biohydrogen-text_cnot",
+        "metadata": {},
+        "parameter_uuids": {}
+      }
+    },
+    "biohydrogen-text_cnot-optimized-Z": {
+      "num_qubits": 3,
+      "logical_depth": 11,
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncreg c[3];\nh q[0];\nh q[1];\nh q[2];\nu1(0.78539816339744828) q[0];\nh q[0];\ncx q[0],q[1];\ncx q[1],q[2];\nry(2.0932732412497854) q[1];\nrz(-2.492030657634198) q[1];\nry(-0.52469249759756142) q[2];\nrz(2.1090988362241476) q[2];\ncx q[1],q[2];\nry(1.3700582142366162) q[1];\nrz(-0.150299349025454) q[1];\nry(3.9160559831313315) q[2];\nrz(-2.3378596636761646) q[2];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\n",
+      "qasm_sha256": "9e3ccc14de70b759ca7f8c783bdb4a932c493cce8751e46bf0c07805cc9ed041",
+      "metadata_sidecar": {
+        "name": "patent-biohydrogen-text_cnot",
+        "metadata": {},
+        "parameter_uuids": {}
+      }
+    },
+    "biohydrogen-text_cnot-optimized-X": {
+      "num_qubits": 3,
+      "logical_depth": 12,
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncreg c[3];\nh q[0];\nh q[1];\nh q[2];\nu1(0.78539816339744828) q[0];\nh q[0];\ncx q[0],q[1];\ncx q[1],q[2];\nry(2.0932732412497854) q[1];\nrz(-2.492030657634198) q[1];\nry(-0.52469249759756142) q[2];\nrz(2.1090988362241476) q[2];\ncx q[1],q[2];\nry(1.3700582142366162) q[1];\nrz(-0.150299349025454) q[1];\nry(3.9160559831313315) q[2];\nrz(-2.3378596636761646) q[2];\nh q[1];\nh q[2];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\n",
+      "qasm_sha256": "dc67acb38f9ddffb3b8724e1301366bddbd0ce66df5e0697cb8eea427a832165",
+      "metadata_sidecar": {
+        "name": "patent-biohydrogen-text_cnot",
+        "metadata": {},
+        "parameter_uuids": {}
+      }
+    },
+    "biohydrogen-figure_cz-initial-Z": {
+      "num_qubits": 3,
+      "logical_depth": 6,
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncreg c[3];\nh q[0];\nh q[1];\nh q[2];\nu1(0.78539816339744828) q[0];\nh q[0];\ncz q[0],q[1];\ncz q[1],q[2];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\n",
+      "qasm_sha256": "246b32dfaacf6edfdf927222ce35b2703ac2875d4ef83ee55ea8376135f00215",
+      "metadata_sidecar": {
+        "name": "patent-biohydrogen-figure_cz",
+        "metadata": {},
+        "parameter_uuids": {}
+      }
+    },
+    "biohydrogen-figure_cz-initial-X": {
+      "num_qubits": 3,
+      "logical_depth": 7,
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncreg c[3];\nh q[0];\nh q[1];\nh q[2];\nu1(0.78539816339744828) q[0];\nh q[0];\ncz q[0],q[1];\ncz q[1],q[2];\nh q[1];\nh q[2];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\n",
+      "qasm_sha256": "28962e2c42678197e8028dbb14121300e99aaa5a8018220dac1cf69023b24e8d",
+      "metadata_sidecar": {
+        "name": "patent-biohydrogen-figure_cz",
+        "metadata": {},
+        "parameter_uuids": {}
+      }
+    },
+    "biohydrogen-figure_cz-optimized-Z": {
+      "num_qubits": 3,
+      "logical_depth": 11,
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncreg c[3];\nh q[0];\nh q[1];\nh q[2];\nu1(0.78539816339744828) q[0];\nh q[0];\ncz q[0],q[1];\ncz q[1],q[2];\nry(0.55357449020678706) q[1];\nrz(-1.7184171914997113) q[1];\nry(0.5535742297663454) q[2];\nrz(-5.8232356503782635e-08) q[2];\ncx q[1],q[2];\nry(-1.2748068320610856e-08) q[1];\nrz(-1.4231754919621773) q[1];\nry(1.5707963076396643) q[2];\nrz(-3.2103514035006162e-08) q[2];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\n",
+      "qasm_sha256": "6dcde99edd84a634e546934f175ccbf4ec96a9fe9622a2490dc2bd74176fbcea",
+      "metadata_sidecar": {
+        "name": "patent-biohydrogen-figure_cz",
+        "metadata": {},
+        "parameter_uuids": {}
+      }
+    },
+    "biohydrogen-figure_cz-optimized-X": {
+      "num_qubits": 3,
+      "logical_depth": 12,
+      "openqasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncreg c[3];\nh q[0];\nh q[1];\nh q[2];\nu1(0.78539816339744828) q[0];\nh q[0];\ncz q[0],q[1];\ncz q[1],q[2];\nry(0.55357449020678706) q[1];\nrz(-1.7184171914997113) q[1];\nry(0.5535742297663454) q[2];\nrz(-5.8232356503782635e-08) q[2];\ncx q[1],q[2];\nry(-1.2748068320610856e-08) q[1];\nrz(-1.4231754919621773) q[1];\nry(1.5707963076396643) q[2];\nrz(-3.2103514035006162e-08) q[2];\nh q[1];\nh q[2];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\n",
+      "qasm_sha256": "6669af439f031adebb365fe5cdeb5339e75b8c330e88657605560440fc21a5a4",
+      "metadata_sidecar": {
+        "name": "patent-biohydrogen-figure_cz",
+        "metadata": {},
+        "parameter_uuids": {}
+      }
+    }
+  }
+}

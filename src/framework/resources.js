@@ -29,6 +29,7 @@ export const resources = [
   { domain: "finance", kind: "diagnostic", file: "finance_quafu_d3_client_contract.html", title: bi("D3 · 夸父客户端契约审计", "D3 · Quafu client contract audit") },
   { domain: "science", kind: "index", file: "index.html", title: bi("科学计算 · 四类本地案例", "Science · Four local case studies") },
   { domain: "science", kind: "case", direction: "chemistry", file: "01_chemistry.html", title: bi("量子化学 · H2 变分与测量", "Chemistry · H2 variation & measurement") },
+  { domain: "science", kind: "case", direction: "chemistry", file: "05_biohydrogen.html", title: bi("生物光制氢 · 量子模型与过程情景", "Biohydrogen · Quantum model and process scenarios") },
   { domain: "science", kind: "case", direction: "biomedicine", file: "02_biomedicine.html", title: bi("量子生物 · 格点构象", "Biomedicine · Lattice conformation") },
   { domain: "science", kind: "case", direction: "materials", file: "03_materials.html", title: bi("量子材料 · Hubbard 有限簇", "Materials · Finite Hubbard cluster") },
   { domain: "science", kind: "case", direction: "physics", file: "04_physics.html", title: bi("基础物理 · 自旋动力学", "Physics · Spin dynamics") },
@@ -57,6 +58,11 @@ export const projectDocuments = !publicSite && privateDocuments ? privateDocumen
 
 // Guides share the owner-facing taxonomy; they are not notebook artifacts.
 export const documentationResources = [
+  { domain: "science", kind: "guide", href: "/articles/biohydrogen/", title: bi("产品深读 · 生物光制氢与可验证计算", "Biohydrogen · Reproducible study") },
+  { domain: "science", direction: "chemistry", kind: "guide", href: "/articles/biohydrogen/", title: bi("公众号 · 一束光如何成为氢气", "Article · How light becomes hydrogen") },
+  { domain: "science", kind: "guide", href: "/media/biohydrogen/film/", title: bi("Anima 影像 · 从光捕获到系统工程", "Anima film · From light to system engineering") },
+  { domain: "science", direction: "chemistry", kind: "guide", href: "/media/biohydrogen/film/", title: bi("Anima 生物光制氢视频与交互图", "Anima biohydrogen film and figures") },
+  { domain: "science", direction: "chemistry", kind: "guide", href: "/media/biohydrogen/", title: bi("生物光制氢 · 过程情景可视化", "Biohydrogen · Process visualization") },
   ...domains.map(domain => ({ domain: domain.id, kind: "guide", href: `/readme.html#${domain.id}`, title: bi(`${domain.name["zh-CN"]} · 安装与使用指南`, `${domain.name.en} · User guide`) })),
   ...directions.map(direction => ({ domain: direction.domain, direction: direction.id, kind: "guide", href: `/readme.html#${direction.id}`, title: bi(`${direction.name["zh-CN"]} · 使用教程`, `${direction.name.en} · Tutorial`) })),
 ];

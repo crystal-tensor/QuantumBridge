@@ -1,0 +1,807 @@
+{
+  "title": "追光成氢 · 微生物内部的能量旅程",
+  "patent": "CN 116913402 A",
+  "scope": "以绿藻 Chlamydomonas reinhardtii 的光系统—铁氧还蛋白—[FeFe]氢酶通路解释生物化学；另述参考技术文献的三比特概念映射。不同微生物通路不同。 扩展到2026年整细胞调控、核壳共生水凝胶、半导体生物杂化与生物光电化学路线；这些是不同实验体系，不拼接为同一套已验证装置。",
+  "scenes": [
+    {
+      "id": "opening",
+      "title": "追光成氢",
+      "eyebrow": "A JOURNEY FROM LIGHT TO HYDROGEN",
+      "sentences": [
+        "一束阳光，如何在微生物体内，变成一分子氢气？",
+        "让我们穿过细胞边界，跟随光能、电子和质子，进入这场微观尺度的能量接力。",
+        "从天然光合通路，到二〇二六年的生物材料研究，再到计算模型，我们将看见不同技术如何接力。"
+      ],
+      "start": 0,
+      "end": 26.098,
+      "duration": 26.098
+    },
+    {
+      "id": "cell",
+      "title": "进入细胞的光能工厂",
+      "eyebrow": "01 / THE PHOTOSYNTHETIC CELL",
+      "sentences": [
+        "在莱茵衣藻这类光合微生物中，叶绿体内分布着类囊体膜。",
+        "膜上的光系统与电子载体，把吸收光能和传递电子连接起来。",
+        "这里呈现的是结构示意：细胞、蛋白质和分子的镜头，使用不同的放大尺度。"
+      ],
+      "start": 26.098,
+      "end": 49.772,
+      "duration": 23.674
+    },
+    {
+      "id": "antenna",
+      "title": "捕获光，不是捕获物质",
+      "eyebrow": "02 / LIGHT HARVESTING",
+      "sentences": [
+        "光子被色素吸收后，激发能在捕光复合体之间传递，汇聚到反应中心。",
+        "能量到达反应中心，触发电荷分离，让电子进入传递链。",
+        "图中的光脉冲表示能量传递，并不是一个光子沿着导线穿过细胞。"
+      ],
+      "start": 49.772,
+      "end": 73.182,
+      "duration": 23.41
+    },
+    {
+      "id": "water",
+      "title": "水，提供电子的起点",
+      "eyebrow": "03 / WATER OXIDATION AT PHOTOSYSTEM II",
+      "sentences": [
+        "在光系统二，失去的电子可以由水的氧化来补充。",
+        "两分子水被氧化，释放四个电子、四个质子，并形成一分子氧气。",
+        "这些电子进入光合电子传递链；质子与氧气各有自己的去向，不能与电子混为一谈。"
+      ],
+      "start": 73.182,
+      "end": 97.192,
+      "duration": 24.01
+    },
+    {
+      "id": "chain",
+      "title": "膜内接力，让电子向前",
+      "eyebrow": "04 / THE ELECTRON TRANSPORT CHAIN",
+      "sentences": [
+        "电子从光系统二出发，经质体醌、细胞色素复合体和质体蓝素，传到光系统一。",
+        "这一过程还与膜两侧的质子分布变化耦合，参与建立质子动力势。",
+        "金色光脉冲、青色电子和带加号的质子，分别表示能量、负电荷与正电荷。"
+      ],
+      "start": 97.192,
+      "end": 123.938,
+      "duration": 26.746
+    },
+    {
+      "id": "psi",
+      "title": "第二次受光，再次提升能量",
+      "eyebrow": "05 / PHOTOSYSTEM I & FERREDOXIN",
+      "sentences": [
+        "到达光系统一的电子，在再次吸收光能后，被送往受体侧。",
+        "还原型铁氧还蛋白接过电子，把还原力带到后续反应。",
+        "在适当的低氧条件下，其中一条去路，可以通向产氢的氢酶。"
+      ],
+      "start": 123.938,
+      "end": 145.284,
+      "duration": 21.346
+    },
+    {
+      "id": "enzyme",
+      "title": "氢酶，把还原力交给质子",
+      "eyebrow": "06 / THE HYDROGENASE CATALYTIC CENTRE",
+      "sentences": [
+        "镜头继续放大，进入氢酶。蛋白质环境包围着含金属的催化中心。",
+        "在绿藻的铁铁氢酶中，电子经辅因子传递，质子经蛋白质中的通道到达反应区域。",
+        "催化中心降低反应的能垒，使质子还原与氢氢键的形成得以进行。"
+      ],
+      "start": 145.284,
+      "end": 171.142,
+      "duration": 25.858
+    },
+    {
+      "id": "hydrogen",
+      "title": "两个质子，两个电子，一分子氢",
+      "eyebrow": "07 / PROTON REDUCTION",
+      "sentences": [
+        "产氢反应的净计量是：两个氢质子，加两个电子，生成一分子氢气。",
+        "这里用逐步汇聚的粒子和成键动画，表示催化反应的净结果。",
+        "真实氢酶会经过多个中间态；这不是四个小球直接碰撞，就自动生成氢气的过程。"
+      ],
+      "start": 171.142,
+      "end": 196.064,
+      "duration": 24.922
+    },
+    {
+      "id": "oxygen",
+      "title": "产氧与产氢之间的矛盾",
+      "eyebrow": "08 / THE OXYGEN BOTTLENECK",
+      "sentences": [
+        "水氧化带来的氧气，却可能抑制对氧敏感的氢酶。",
+        "因此，实际体系需要调节产氧、耗氧和电子分配，让产氢通路获得合适的条件。",
+        "图中比较的是有利与不利的示意状态，不是产氢速率或转化效率的实验测量。"
+      ],
+      "start": 196.064,
+      "end": 220.914,
+      "duration": 24.85
+    },
+    {
+      "id": "wholecell",
+      "title": "让更多电子，走向产氢通路",
+      "eyebrow": "2026 / ENGINEERING WHOLE-CELL BIOCATALYSIS",
+      "sentences": [
+        "二〇二六年十一月，一项蓝藻整细胞研究，把氢酶供电子、耗氧与细胞状态放在一起调节。",
+        "研究通过阻断光系统二，验证水氧化是其主要电子来源。",
+        "动画把竞争分支和目标通路分别点亮：改造的重点，是把还原力送到真正需要它的地方。"
+      ],
+      "start": 220.914,
+      "end": 248.164,
+      "duration": 27.25
+    },
+    {
+      "id": "hydrogel",
+      "title": "把微生物，打印成有分工的材料",
+      "eyebrow": "2026 / CORE–SHELL MICROBIAL HYDROGELS",
+      "sentences": [
+        "二〇二六年的一项研究，用同轴三维生物打印，把微藻放在水凝胶纤维内核，把细菌放在外壳。",
+        "外层细菌呼吸耗氧，为内层微藻创造局部低氧环境，帮助保护对氧敏感的产氢通路。",
+        "光、营养与气体仍要穿过材料；结构设计同时影响生物活性和传质。"
+      ],
+      "start": 248.164,
+      "end": 277.694,
+      "duration": 29.53
+    },
+    {
+      "id": "biohybrid",
+      "title": "半导体捕光，微生物接力",
+      "eyebrow": "2026 / SEMICONDUCTOR–MICROBE BIOHYBRIDS",
+      "sentences": [
+        "另一项二〇二六年的研究，把硫化锌铟材料与希瓦氏菌构成生物杂化体系。",
+        "材料吸光后产生的电子进入细胞，改变还原力与碳代谢的分配，进而支持氢酶产氢。",
+        "这里增加了材料与细胞的电子交换界面；研究中的有机底物也参与过程，不能把它当作只靠水和阳光的完整分解。"
+      ],
+      "start": 277.694,
+      "end": 308.328,
+      "duration": 30.634
+    },
+    {
+      "id": "bioelectrode",
+      "title": "把电子引出细胞，在阴极制氢",
+      "eyebrow": "2026 / BIOHYBRID PHOTOELECTROCHEMISTRY",
+      "sentences": [
+        "还有一条路线，把活的硅藻固定在石墨烯与醋酸纤维素构成的导电支架上。",
+        "光合细胞向生物光阳极供电子，电子经外电路到达铂基阴极，在那里驱动析氢反应。",
+        "这与细胞内氢酶产氢不同：材料界面、外电路和电化学条件成为系统的一部分，完整能量收支仍需逐项测量。"
+      ],
+      "start": 308.328,
+      "end": 339.586,
+      "duration": 31.258
+    },
+    {
+      "id": "reactor",
+      "title": "从分子，回到可收集的气体",
+      "eyebrow": "09 / FROM CELLS TO A PHOTOBIOREACTOR",
+      "sentences": [
+        "氢分子离开酶的活性中心，扩散到细胞外，并可能在培养液中进入气相。",
+        "光照培养装置需要同时考虑传光、传质、培养条件与气体管理。",
+        "这里展示的是概念性收集画面，参考技术文献没有提供这套反应器的实际运行或产氢数据。"
+      ],
+      "start": 339.586,
+      "end": 366.356,
+      "duration": 26.77
+    },
+    {
+      "id": "circuit",
+      "title": "参考技术文献如何映射这场反应",
+      "eyebrow": "10 / THREE-QUBIT CONCEPTUAL MAPPING",
+      "sentences": [
+        "参考技术文献把光子、电子和氢质子，分别映射到三个量子比特。",
+        "通过哈达玛门、旋转门与受控操作，构造它们相互作用的简化线路。",
+        "这些量子态是计算模型里的编码；量子比特本身，不是装置中真实流动的光子或质子。"
+      ],
+      "start": 366.356,
+      "end": 392.694,
+      "duration": 26.338
+    },
+    {
+      "id": "vqe",
+      "title": "VQE：寻找模型中的低能态",
+      "eyebrow": "11 / A QUANTUM–CLASSICAL OPTIMIZATION LOOP",
+      "sentences": [
+        "在计算子线路中，变分量子本征求解器，根据给定哈密顿量估计能量，并由经典优化器更新参数。",
+        "参考技术文献还提出统计三个测量结果同时为一的概率，用于调整模型。",
+        "这个概率不是氢气产率；计算得到的低能态，也不等于证明真实微生物已经高效制氢。"
+      ],
+      "start": 392.694,
+      "end": 422.584,
+      "duration": 29.89
+    },
+    {
+      "id": "ending",
+      "title": "让机制可见，让模型有边界",
+      "eyebrow": "LIGHT → ELECTRON TRANSFER → CATALYSIS → H₂",
+      "sentences": [
+        "回看这条路径：吸收阳光，分离电荷，传递电子，再由氢酶催化质子还原，形成氢气。",
+        "生物结构让反应发生，量子模型帮助研究其中的相互作用。",
+        "从一束光，到一个氢氢键，这就是微生物光生物制氢的核心旅程。"
+      ],
+      "start": 422.584,
+      "end": 447.866,
+      "duration": 25.282
+    }
+  ],
+  "sources": [
+    {
+      "id": "P",
+      "title": "用户提供的 CN 116913402 A：说明书[0002]、[0011]—[0024]、[0118]—[0134]及图1—2",
+      "url": "https://patents.google.com/patent/CN116913402A/zh",
+      "scope": "仅作为三比特映射、VQE及测量概率方案的来源；不将参考技术文献表述当作实验验证。"
+    },
+    {
+      "id": "B1",
+      "title": "Winkler et al. (2009), Characterization of the Key Step for Light-driven Hydrogen Evolution in Green Algae",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2794776/",
+      "scope": "衣藻PSI—PetF—HydA1的体外重构及电子传递。"
+    },
+    {
+      "id": "B2",
+      "title": "Melis et al. (2000), Sustained Photobiological Hydrogen Gas Production…",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC58851/",
+      "scope": "衣藻缺硫低氧产氢条件；不据此声称普遍或商业产率。"
+    },
+    {
+      "id": "B3",
+      "title": "Appel et al. (2020), Cyanobacterial in vivo solar hydrogen production using a photosystem I–hydrogenase fusion complex",
+      "url": "https://doi.org/10.1038/s41560-020-0609-6",
+      "scope": "蓝藻存在不同的氢酶电子耦合策略；不混用藻类与蓝藻的具体结构。"
+    },
+    {
+      "id": "B4",
+      "title": "OpenStax Biology 2e §8.2, The Light-Dependent Reactions of Photosynthesis",
+      "url": "https://openstax.org/books/biology-2e/pages/8-2-the-light-dependent-reactions-of-photosynthesis",
+      "scope": "捕光、电荷分离、水氧化、线性电子传递和质子动力势的教学来源。"
+    },
+    {
+      "id": "B5",
+      "title": "Senger et al. (2019), How [FeFe]-Hydrogenase Facilitates Bidirectional Proton Transfer; JACS",
+      "url": "https://doi.org/10.1021/jacs.9b09225",
+      "scope": "衣藻HydA1仅携带H-cluster；四铁四硫亚簇与双铁位点、蛋白内质子传递；图中不添加细菌氢酶的额外辅因子链。"
+    },
+    {
+      "id": "R1",
+      "title": "Lyu et al. (2026-11), Light-driven hydrogen production from water by an oxygen-sensitive [NiFe] hydrogenase in a cyanobacterial whole-cell biocatalyst",
+      "url": "https://doi.org/10.1002/cmtd.70175",
+      "scope": "整细胞电子分配、耗氧与PSII阻断实验。作者机构记录：https://www.ufz.de/index.php?en=20939&pub_id=33069 。"
+    },
+    {
+      "id": "R2",
+      "title": "Li et al. (2026), Engineered microbial hydrogels with confined architecture and binary microbes for efficient hydrogen production, Nature Communications 17, 4303",
+      "url": "https://doi.org/10.1038/s41467-026-70988-x",
+      "scope": "同轴3D生物打印，微藻内核与细菌外壳，空间分隔及局部低氧。动画为机制转绘，不呈现实测产率。"
+    },
+    {
+      "id": "R3",
+      "title": "Wang et al. (2026), Photoelectron-driven modulation of carbon metabolism enhances hydrogen production in a ZnIn2S4–Shewanella oneidensis biohybrid system",
+      "url": "https://doi.org/10.1016/j.biortech.2026.134285",
+      "scope": "半导体向细胞供电子和碳代谢重分配；图中不将有机底物依赖体系宣称为无牺牲供体的全水分解。"
+    },
+    {
+      "id": "R4",
+      "title": "Aktas et al. (2026), Diatom microalgae-based living biophotovoltaics for high-performance photocurrent and hydrogen generation",
+      "url": "https://www.sciencedirect.com/science/article/pii/S0960852426003470",
+      "scope": "硅藻/石墨烯–醋酸纤维素光阳极供电子，非生物铂基阴极析氢。装置图仅为功能拓扑，不推断自供能或未经证实的效率。"
+    }
+  ],
+  "research_cutoff": "2026-11-18",
+  "duration": 447.866,
+  "captions": [
+    {
+      "start": 1.2,
+      "end": 6.288,
+      "text": "一束阳光，如何在微生物体内，变成一分子氢气？"
+    },
+    {
+      "start": 6.738,
+      "end": 14.514,
+      "text": "让我们穿过细胞边界，跟随光能、电子和质子，进入这场微观尺度的能量接力。"
+    },
+    {
+      "start": 14.964,
+      "end": 24.348,
+      "text": "从天然光合通路，到二〇二六年的生物材料研究，再到计算模型，我们将看见不同技术如何接力。"
+    },
+    {
+      "start": 27.298,
+      "end": 33.322,
+      "text": "在莱茵衣藻这类光合微生物中，叶绿体内分布着类囊体膜。"
+    },
+    {
+      "start": 33.772,
+      "end": 39.964,
+      "text": "膜上的光系统与电子载体，把吸收光能和传递电子连接起来。"
+    },
+    {
+      "start": 40.414,
+      "end": 48.022,
+      "text": "这里呈现的是结构示意：细胞、蛋白质和分子的镜头，使用不同的放大尺度。"
+    },
+    {
+      "start": 50.972,
+      "end": 58.1,
+      "text": "光子被色素吸收后，激发能在捕光复合体之间传递，汇聚到反应中心。"
+    },
+    {
+      "start": 58.55,
+      "end": 64.478,
+      "text": "能量到达反应中心，触发电荷分离，让电子进入传递链。"
+    },
+    {
+      "start": 64.928,
+      "end": 71.432,
+      "text": "图中的光脉冲表示能量传递，并不是一个光子沿着导线穿过细胞。"
+    },
+    {
+      "start": 74.382,
+      "end": 79.422,
+      "text": "在光系统二，失去的电子可以由水的氧化来补充。"
+    },
+    {
+      "start": 79.872,
+      "end": 86.616,
+      "text": "两分子水被氧化，释放四个电子、四个质子，并形成一分子氧气。"
+    },
+    {
+      "start": 87.066,
+      "end": 95.442,
+      "text": "这些电子进入光合电子传递链；质子与氧气各有自己的去向，不能与电子混为一谈。"
+    },
+    {
+      "start": 98.392,
+      "end": 106.72,
+      "text": "电子从光系统二出发，经质体醌、细胞色素复合体和质体蓝素，传到光系统一。"
+    },
+    {
+      "start": 107.17,
+      "end": 113.746,
+      "text": "这一过程还与膜两侧的质子分布变化耦合，参与建立质子动力势。"
+    },
+    {
+      "start": 114.196,
+      "end": 122.188,
+      "text": "金色光脉冲、青色电子和带加号的质子，分别表示能量、负电荷与正电荷。"
+    },
+    {
+      "start": 125.138,
+      "end": 131.138,
+      "text": "到达光系统一的电子，在再次吸收光能后，被送往受体侧。"
+    },
+    {
+      "start": 131.588,
+      "end": 137.252,
+      "text": "还原型铁氧还蛋白接过电子，把还原力带到后续反应。"
+    },
+    {
+      "start": 137.702,
+      "end": 143.534,
+      "text": "在适当的低氧条件下，其中一条去路，可以通向产氢的氢酶。"
+    },
+    {
+      "start": 146.484,
+      "end": 153.468,
+      "text": "镜头继续放大，进入氢酶。蛋白质环境包围着含金属的催化中心。"
+    },
+    {
+      "start": 153.918,
+      "end": 162.102,
+      "text": "在绿藻的铁铁氢酶中，电子经辅因子传递，质子经蛋白质中的通道到达反应区域。"
+    },
+    {
+      "start": 162.552,
+      "end": 169.392,
+      "text": "催化中心降低反应的能垒，使质子还原与氢氢键的形成得以进行。"
+    },
+    {
+      "start": 172.342,
+      "end": 179.134,
+      "text": "产氢反应的净计量是：两个氢质子，加两个电子，生成一分子氢气。"
+    },
+    {
+      "start": 179.584,
+      "end": 185.776,
+      "text": "这里用逐步汇聚的粒子和成键动画，表示催化反应的净结果。"
+    },
+    {
+      "start": 186.226,
+      "end": 194.314,
+      "text": "真实氢酶会经过多个中间态；这不是四个小球直接碰撞，就自动生成氢气的过程。"
+    },
+    {
+      "start": 197.264,
+      "end": 202.112,
+      "text": "水氧化带来的氧气，却可能抑制对氧敏感的氢酶。"
+    },
+    {
+      "start": 202.562,
+      "end": 211.034,
+      "text": "因此，实际体系需要调节产氧、耗氧和电子分配，让产氢通路获得合适的条件。"
+    },
+    {
+      "start": 211.484,
+      "end": 219.164,
+      "text": "图中比较的是有利与不利的示意状态，不是产氢速率或转化效率的实验测量。"
+    },
+    {
+      "start": 222.114,
+      "end": 231.186,
+      "text": "二〇二六年十一月，一项蓝藻整细胞研究，把氢酶供电子、耗氧与细胞状态放在一起调节。"
+    },
+    {
+      "start": 231.636,
+      "end": 237.468,
+      "text": "研究通过阻断光系统二，验证水氧化是其主要电子来源。"
+    },
+    {
+      "start": 237.918,
+      "end": 246.414,
+      "text": "动画把竞争分支和目标通路分别点亮：改造的重点，是把还原力送到真正需要它的地方。"
+    },
+    {
+      "start": 249.364,
+      "end": 259.06,
+      "text": "二〇二六年的一项研究，用同轴三维生物打印，把微藻放在水凝胶纤维内核，把细菌放在外壳。"
+    },
+    {
+      "start": 259.51,
+      "end": 268.126,
+      "text": "外层细菌呼吸耗氧，为内层微藻创造局部低氧环境，帮助保护对氧敏感的产氢通路。"
+    },
+    {
+      "start": 268.576,
+      "end": 275.944,
+      "text": "光、营养与气体仍要穿过材料；结构设计同时影响生物活性和传质。"
+    },
+    {
+      "start": 278.894,
+      "end": 286.31,
+      "text": "另一项二〇二六年的研究，把硫化锌铟材料与希瓦氏菌构成生物杂化体系。"
+    },
+    {
+      "start": 286.76,
+      "end": 295.232,
+      "text": "材料吸光后产生的电子进入细胞，改变还原力与碳代谢的分配，进而支持氢酶产氢。"
+    },
+    {
+      "start": 295.682,
+      "end": 306.578,
+      "text": "这里增加了材料与细胞的电子交换界面；研究中的有机底物也参与过程，不能把它当作只靠水和阳光的完整分解。"
+    },
+    {
+      "start": 309.528,
+      "end": 316.968,
+      "text": "还有一条路线，把活的硅藻固定在石墨烯与醋酸纤维素构成的导电支架上。"
+    },
+    {
+      "start": 317.418,
+      "end": 326.25,
+      "text": "光合细胞向生物光阳极供电子，电子经外电路到达铂基阴极，在那里驱动析氢反应。"
+    },
+    {
+      "start": 326.7,
+      "end": 337.836,
+      "text": "这与细胞内氢酶产氢不同：材料界面、外电路和电化学条件成为系统的一部分，完整能量收支仍需逐项测量。"
+    },
+    {
+      "start": 340.786,
+      "end": 348.106,
+      "text": "氢分子离开酶的活性中心，扩散到细胞外，并可能在培养液中进入气相。"
+    },
+    {
+      "start": 348.556,
+      "end": 355.276,
+      "text": "光照培养装置需要同时考虑传光、传质、培养条件与气体管理。"
+    },
+    {
+      "start": 355.726,
+      "end": 364.606,
+      "text": "这里展示的是概念性收集画面，参考技术文献没有提供这套反应器的实际运行或产氢数据。"
+    },
+    {
+      "start": 367.556,
+      "end": 374.564,
+      "text": "参考技术文献把光子、电子和氢质子，分别映射到三个量子比特。"
+    },
+    {
+      "start": 375.014,
+      "end": 381.926,
+      "text": "通过哈达玛门、旋转门与受控操作，构造它们相互作用的简化线路。"
+    },
+    {
+      "start": 382.376,
+      "end": 390.944,
+      "text": "这些量子态是计算模型里的编码；量子比特本身，不是装置中真实流动的光子或质子。"
+    },
+    {
+      "start": 393.894,
+      "end": 403.446,
+      "text": "在计算子线路中，变分量子本征求解器，根据给定哈密顿量估计能量，并由经典优化器更新参数。"
+    },
+    {
+      "start": 403.896,
+      "end": 411.696,
+      "text": "参考技术文献还提出统计三个测量结果同时为一的概率，用于调整模型。"
+    },
+    {
+      "start": 412.146,
+      "end": 420.834,
+      "text": "这个概率不是氢气产率；计算得到的低能态，也不等于证明真实微生物已经高效制氢。"
+    },
+    {
+      "start": 423.784,
+      "end": 432.832,
+      "text": "回看这条路径：吸收阳光，分离电荷，传递电子，再由氢酶催化质子还原，形成氢气。"
+    },
+    {
+      "start": 433.282,
+      "end": 439.258,
+      "text": "生物结构让反应发生，量子模型帮助研究其中的相互作用。"
+    },
+    {
+      "start": 439.708,
+      "end": 446.116,
+      "text": "从一束光，到一个氢氢键，这就是微生物光生物制氢的核心旅程。"
+    }
+  ],
+  "audio": [
+    {
+      "start": 1.2,
+      "duration": 5.088,
+      "file": "voice-opening-00.mp3"
+    },
+    {
+      "start": 6.738,
+      "duration": 7.776,
+      "file": "voice-opening-01.mp3"
+    },
+    {
+      "start": 14.964,
+      "duration": 9.384,
+      "file": "voice-opening-02.mp3"
+    },
+    {
+      "start": 27.298,
+      "duration": 6.024,
+      "file": "voice-cell-00.mp3"
+    },
+    {
+      "start": 33.772,
+      "duration": 6.192,
+      "file": "voice-cell-01.mp3"
+    },
+    {
+      "start": 40.414,
+      "duration": 7.608,
+      "file": "voice-cell-02.mp3"
+    },
+    {
+      "start": 50.972,
+      "duration": 7.128,
+      "file": "voice-antenna-00.mp3"
+    },
+    {
+      "start": 58.55,
+      "duration": 5.928,
+      "file": "voice-antenna-01.mp3"
+    },
+    {
+      "start": 64.928,
+      "duration": 6.504,
+      "file": "voice-antenna-02.mp3"
+    },
+    {
+      "start": 74.382,
+      "duration": 5.04,
+      "file": "voice-water-00.mp3"
+    },
+    {
+      "start": 79.872,
+      "duration": 6.744,
+      "file": "voice-water-01.mp3"
+    },
+    {
+      "start": 87.066,
+      "duration": 8.376,
+      "file": "voice-water-02.mp3"
+    },
+    {
+      "start": 98.392,
+      "duration": 8.328,
+      "file": "voice-chain-00.mp3"
+    },
+    {
+      "start": 107.17,
+      "duration": 6.576,
+      "file": "voice-chain-01.mp3"
+    },
+    {
+      "start": 114.196,
+      "duration": 7.992,
+      "file": "voice-chain-02.mp3"
+    },
+    {
+      "start": 125.138,
+      "duration": 6.0,
+      "file": "voice-psi-00.mp3"
+    },
+    {
+      "start": 131.588,
+      "duration": 5.664,
+      "file": "voice-psi-01.mp3"
+    },
+    {
+      "start": 137.702,
+      "duration": 5.832,
+      "file": "voice-psi-02.mp3"
+    },
+    {
+      "start": 146.484,
+      "duration": 6.984,
+      "file": "voice-enzyme-00.mp3"
+    },
+    {
+      "start": 153.918,
+      "duration": 8.184,
+      "file": "voice-enzyme-01.mp3"
+    },
+    {
+      "start": 162.552,
+      "duration": 6.84,
+      "file": "voice-enzyme-02.mp3"
+    },
+    {
+      "start": 172.342,
+      "duration": 6.792,
+      "file": "voice-hydrogen-00.mp3"
+    },
+    {
+      "start": 179.584,
+      "duration": 6.192,
+      "file": "voice-hydrogen-01.mp3"
+    },
+    {
+      "start": 186.226,
+      "duration": 8.088,
+      "file": "voice-hydrogen-02.mp3"
+    },
+    {
+      "start": 197.264,
+      "duration": 4.848,
+      "file": "voice-oxygen-00.mp3"
+    },
+    {
+      "start": 202.562,
+      "duration": 8.472,
+      "file": "voice-oxygen-01.mp3"
+    },
+    {
+      "start": 211.484,
+      "duration": 7.68,
+      "file": "voice-oxygen-02.mp3"
+    },
+    {
+      "start": 222.114,
+      "duration": 9.072,
+      "file": "voice-wholecell-00.mp3"
+    },
+    {
+      "start": 231.636,
+      "duration": 5.832,
+      "file": "voice-wholecell-01.mp3"
+    },
+    {
+      "start": 237.918,
+      "duration": 8.496,
+      "file": "voice-wholecell-02.mp3"
+    },
+    {
+      "start": 249.364,
+      "duration": 9.696,
+      "file": "voice-hydrogel-00.mp3"
+    },
+    {
+      "start": 259.51,
+      "duration": 8.616,
+      "file": "voice-hydrogel-01.mp3"
+    },
+    {
+      "start": 268.576,
+      "duration": 7.368,
+      "file": "voice-hydrogel-02.mp3"
+    },
+    {
+      "start": 278.894,
+      "duration": 7.416,
+      "file": "voice-biohybrid-00.mp3"
+    },
+    {
+      "start": 286.76,
+      "duration": 8.472,
+      "file": "voice-biohybrid-01.mp3"
+    },
+    {
+      "start": 295.682,
+      "duration": 10.896,
+      "file": "voice-biohybrid-02.mp3"
+    },
+    {
+      "start": 309.528,
+      "duration": 7.44,
+      "file": "voice-bioelectrode-00.mp3"
+    },
+    {
+      "start": 317.418,
+      "duration": 8.832,
+      "file": "voice-bioelectrode-01.mp3"
+    },
+    {
+      "start": 326.7,
+      "duration": 11.136,
+      "file": "voice-bioelectrode-02.mp3"
+    },
+    {
+      "start": 340.786,
+      "duration": 7.32,
+      "file": "voice-reactor-00.mp3"
+    },
+    {
+      "start": 348.556,
+      "duration": 6.72,
+      "file": "voice-reactor-01.mp3"
+    },
+    {
+      "start": 355.726,
+      "duration": 8.88,
+      "file": "voice-reactor-02.mp3"
+    },
+    {
+      "start": 367.556,
+      "duration": 7.008,
+      "file": "voice-circuit-00.mp3"
+    },
+    {
+      "start": 375.014,
+      "duration": 6.912,
+      "file": "voice-circuit-01.mp3"
+    },
+    {
+      "start": 382.376,
+      "duration": 8.568,
+      "file": "voice-circuit-02.mp3"
+    },
+    {
+      "start": 393.894,
+      "duration": 9.552,
+      "file": "voice-vqe-00.mp3"
+    },
+    {
+      "start": 403.896,
+      "duration": 7.8,
+      "file": "voice-vqe-01.mp3"
+    },
+    {
+      "start": 412.146,
+      "duration": 8.688,
+      "file": "voice-vqe-02.mp3"
+    },
+    {
+      "start": 423.784,
+      "duration": 9.048,
+      "file": "voice-ending-00.mp3"
+    },
+    {
+      "start": 433.282,
+      "duration": 5.976,
+      "file": "voice-ending-01.mp3"
+    },
+    {
+      "start": 439.708,
+      "duration": 6.408,
+      "file": "voice-ending-02.mp3"
+    }
+  ],
+  "voice": "zh-CN-XiaoxiaoNeural"
+}
