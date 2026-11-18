@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "errors": [],
+  "scope": "Schematic topology and declared label targets only; no physical dimensions validated.",
+  "parts": [
+    "cell-envelope",
+    "chloroplast-envelope",
+    "nucleus",
+    "thylakoid",
+    "PSII",
+    "PQ",
+    "Cyt-b6f",
+    "PC",
+    "PSI",
+    "Fd",
+    "HydA",
+    "H-cluster"
+  ]
+}

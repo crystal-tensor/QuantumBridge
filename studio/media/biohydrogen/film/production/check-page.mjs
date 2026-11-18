@@ -1,0 +1,38 @@
+import {chromium} from '/Users/avalok/.codex/skills/teardown/node_modules/playwright-core/index.mjs';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const root=new URL('../',import.meta.url),base='http://127.0.0.1:8765',result=[];
+fs.mkdirSync(new URL('shots/',root),{recursive:true});
+const browser=await chromium.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true});
+for(const [name,viewport] of [['desktop',{width:1440,height:1000}],['mobile',{width:390,height:844}]]){
+ const page=await browser.newPage({viewport});const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto(base+'/framework.html');
+ await page.locator('[data-direction="biomedicine"]').first().click();
+ await page.locator('#direction-dialog a[href="/media/biohydrogen/film/"]').first().click();
+ await page.waitForURL('**/media/biohydrogen/film/');
+ assert.equal(await page.locator('h1').innerText(),'追光成氢');
+ assert.equal(await page.locator('.chapter').count(),17);
+ assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+ await page.screenshot({path:new URL(`shots/page-${name}.jpg`,root).pathname,fullPage:false,type:'jpeg',quality:90});
+ await page.locator('#figure').scrollIntoViewIfNeeded();
+ await page.frameLocator('#figure').locator('#stage').waitFor();
+ await page.waitForFunction(()=>document.querySelector('#figure').contentWindow.filmReady);
+ await page.locator('#scene').selectOption('6');
+ await page.locator('#oxygen-condition').check();
+ assert.match(await page.locator('#condition-readout').innerText(),/受抑制/);
+ await page.locator('#oxygen-condition').uncheck();
+ await page.locator('#light-condition').uncheck();
+ assert.match(await page.locator('#condition-readout').innerText(),/无光/);
+ await page.locator('#light-condition').check();
+ await page.locator('#theme').click();
+ await page.locator('#theme').click();
+ await page.locator('#home').click();
+ await page.waitForURL('**/framework.html');
+ assert.equal(errors.length,0,errors.join('\n'));
+ result.push({device:name,home_to_direction_to_page_to_home:true,no_horizontal_overflow:true,interactive_controls:true,console_errors:errors});
+ await page.close();
+}
+await browser.close();
+fs.writeFileSync(new URL('production/navigation-check.json',root),JSON.stringify(result,null,2));
+console.log(JSON.stringify(result));
+process.exit(0);

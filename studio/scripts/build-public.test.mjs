@@ -10,8 +10,8 @@ test("public export keeps every case and notebook, project paths, and private-do
   const directory = await mkdtemp(path.join(tmpdir(), "qb-pages-"));
   try {
     const result = await buildPublic(directory, "/QuantumBridge/");
-    assert.equal(result.pages, 37);
-    assert.equal(result.notebooks, 32);
+    assert.equal(result.pages, 38);
+    assert.equal(result.notebooks, 33);
     assert.ok((await readFile(path.join(directory, "framework.html"), "utf8")).includes("framework-app"));
     assert.match(await readFile(path.join(directory, "src/framework/deployment.js"), "utf8"), /publicSite = true/);
     assert.ok(!(await readdir(directory)).includes("reports"));
@@ -27,6 +27,14 @@ test("public export keeps every case and notebook, project paths, and private-do
           await readFile(new URL(`../../output/jupyter-notebook/${resource.domain}/${notebook}`, import.meta.url)));
       }
     }
+    const article=await readFile(path.join(directory,"articles/biohydrogen/index.html"),"utf8");
+    assert.ok(article.includes("作者：曾祥洪 --QuantumBridge研发组"));
+    assert.ok(article.includes("biohydrogen-zh.mp4"));
+    const filmAssets=await readdir(path.join(directory,"media/biohydrogen/film/assets"));
+    assert.ok(!filmAssets.some(name=>name.endsWith(".pdf") || name.endsWith(".wav") || name.startsWith("voice-")));
+    const evidence=JSON.parse(await readFile(path.join(directory,"downloads/biohydrogen-patent/hardware-evidence.json"),"utf8"));
+    assert.equal(evidence.verified_tasks,8);
+    assert.equal(Object.keys(evidence.receipts).length,8);
     await assert.rejects(buildPublic(directory), /must be empty/);
     await assert.rejects(buildPublic(directory, "/../"), /base path/);
   } finally {

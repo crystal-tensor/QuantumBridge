@@ -1,0 +1,7 @@
+{
+  "sample_rate": 48000,
+  "channels": 2,
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "pre_limit_peak": 0.9137983918190002,
+  "music": "Original procedural ambient score; no external recordings."
+}

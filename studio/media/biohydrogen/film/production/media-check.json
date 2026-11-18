@@ -1,0 +1,26 @@
+{
+  "profiles": [
+    {
+      "device": "desktop",
+      "playback": true,
+      "chapter_seek": true,
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "duration": 373.222
+    },
+    {
+      "device": "mobile",
+      "playback": true,
+      "chapter_seek": true,
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "duration": 373.222
+    }
+  ],
+  "downloads": true,
+  "range_requests": true
+}

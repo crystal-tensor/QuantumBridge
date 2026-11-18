@@ -1,0 +1,51 @@
+{
+  "size": "Hero",
+  "estimate": "2–4 hours for animation/figure work",
+  "representation": "Schematic biological cutaway, not to scale; Chlamydomonas chloroplast thylakoid pathway, educational context, not an atomistic or kinetic model",
+  "anima_skill": "Garinmckayl/anima",
+  "anima_skill_sha256": "f63598abdd6150c827c25a0b4c05cd55ecd6c20cc06603332465fdedb2ab2fe5",
+  "sources": [
+    {
+      "id": "patent",
+      "document": "CN116913402A",
+      "pages": [
+        12,
+        17
+      ],
+      "scope": "toy circuit and Hamiltonian, not experimentally validated biohydrogen yield"
+    },
+    {
+      "id": "bio",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7703569/",
+      "scope": "PSII water oxidation, photosynthetic electron transport, ferredoxin, oxygen-sensitive hydrogenase under specific algal experimental conditions"
+    }
+  ],
+  "parts": [
+    {
+      "group": "thylakoid membrane",
+      "parts": "closed membrane contour, 80 schematic lipid heads, stromal/lumen separation"
+    },
+    {
+      "group": "photosystems",
+      "parts": "PSII reaction centre and antenna lobes; cytochrome b6f; PSI reaction centre and antenna lobes"
+    },
+    {
+      "group": "carriers",
+      "parts": "plastoquinone, plastocyanin, ferredoxin shown as named schematic carriers"
+    },
+    {
+      "group": "hydrogenase",
+      "parts": "protein envelope, schematic active site, proton approach, H2 release"
+    },
+    {
+      "group": "dynamic",
+      "parts": "photons to both PSII and PSI; electron relay; proton reduction; H2 release; oxygen inhibition control"
+    }
+  ],
+  "quantitative_boundary": "No kinetic constant, quantum yield, rate, energy unit or biological length is inferred from animation timing or drawing geometry. Reaction stoichiometry sourced; timing is editorial.",
+  "scope_update": {
+    "date": "2026-11-18",
+    "instruction": "用户明确要求先跳过真机验证",
+    "hardware_validation": "deferred by user; local simulations only; never claim hardware verification"
+  }
+}

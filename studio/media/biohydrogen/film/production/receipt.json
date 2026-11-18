@@ -1,0 +1,83 @@
+{
+  "created_local_date": "2026-11-18",
+  "title": "追光成氢 · 微生物内部的能量旅程",
+  "research_cutoff": "2026-11-18",
+  "duration_seconds": 447.874674,
+  "video": {
+    "codec": "h264",
+    "width": 1920,
+    "height": 1080,
+    "fps": "24/1"
+  },
+  "audio": {
+    "codec": "aac",
+    "sample_rate": "48000",
+    "channels": 2,
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "target_loudness_lufs": -16,
+    "target_true_peak_db": -1.5
+  },
+  "chapters": 17,
+  "captions": 51,
+  "skill": {
+    "name": "Anima",
+    "repository": "https://github.com/Garinmckayl/anima",
+    "source_revision": "8cd9077",
+    "license": "MIT"
+  },
+  "local_generation": {
+    "model": "LTX-2.3 MLX distilled 1.1",
+    "model_directory": "/Users/avalok/work/music/.mv-runtime/model23",
+    "text_encoder": "/Users/avalok/work/music/.mv-runtime/gemma",
+    "seed": 116913402,
+    "resolution": [
+      640,
+      384
+    ],
+    "frames": 121,
+    "fps": 24,
+    "use": "Opening imagery only; not microscopy or a species identification."
+  },
+  "science": "Educational schematics and separate published research routes. Eight completed Baihua quantum hardware tasks and their deviations are documented separately in the executable case; no new physical hydrogen-production experiments, yield measurements or physical rate predictions.",
+  "navigation": [
+    {
+      "device": "desktop",
+      "home_to_direction_to_page_to_home": true,
+      "no_horizontal_overflow": true,
+      "interactive_controls": true,
+      "console_errors": []
+    },
+    {
+      "device": "mobile",
+      "home_to_direction_to_page_to_home": true,
+      "no_horizontal_overflow": true,
+      "interactive_controls": true,
+      "console_errors": []
+    }
+  ],
+  "video_sha256": "4538fda2d7a6e25d9c60200f9f341a5dcf105777bf0b3a8c3d3d8ce1a48df0c9",
+  "checks": {
+    "full_video_decode": true,
+    "narration_inputs_match_captions": true,
+    "anima_bio_topology": {
+      "ok": true,
+      "errors": [],
+      "scope": "Schematic topology and declared label targets only; no physical dimensions validated.",
+      "parts": [
+        "cell-envelope",
+        "chloroplast-envelope",
+        "nucleus",
+        "thylakoid",
+        "PSII",
+        "PQ",
+        "Cyt-b6f",
+        "PC",
+        "PSI",
+        "Fd",
+        "HydA",
+        "H-cluster"
+      ]
+    },
+    "forbidden_term_matches": 0
+  }
+}

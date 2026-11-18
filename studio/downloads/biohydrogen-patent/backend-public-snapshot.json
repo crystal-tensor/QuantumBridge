@@ -1,0 +1,1301 @@
+{
+  "observed_at": "2026-11-18T10:00:20.836993+00:00",
+  "sdk": {
+    "distribution": "quafu-sdk",
+    "version": "0.2.7",
+    "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+    "python": "3.12.6"
+  },
+  "devices": [
+    {
+      "name": "sim",
+      "kind": "sim",
+      "status": "online",
+      "n_qubits": 24,
+      "queue": null,
+      "limits": {
+        "max_qubits": 24,
+        "qubit_count": "declared",
+        "guest_max_qubits": 20,
+        "min_shots": 1,
+        "max_shots": 8192,
+        "shots_step": 1,
+        "guest_max_shots": null,
+        "max_depth": 1000,
+        "wall_s": 60,
+        "max_memory_mb": 512,
+        "max_tasks_per_job": 500,
+        "method": "statevector"
+      }
+    },
+    {
+      "name": "Baihua",
+      "kind": "real",
+      "status": "online",
+      "n_qubits": 156,
+      "queue": 0,
+      "limits": {
+        "max_qubits": 156,
+        "qubit_count": "declared",
+        "guest_max_qubits": null,
+        "min_shots": 1024,
+        "max_shots": 8192,
+        "shots_step": 1024,
+        "guest_max_shots": 1024,
+        "max_depth": 223,
+        "wall_s": null,
+        "max_memory_mb": null,
+        "max_tasks_per_job": 500,
+        "method": "hardware"
+      }
+    },
+    {
+      "name": "Dongling",
+      "kind": "real",
+      "status": "online",
+      "n_qubits": 84,
+      "queue": 2,
+      "limits": {
+        "max_qubits": 84,
+        "qubit_count": "declared",
+        "guest_max_qubits": null,
+        "min_shots": 1024,
+        "max_shots": 8192,
+        "shots_step": 1024,
+        "guest_max_shots": 1024,
+        "max_depth": 146,
+        "wall_s": null,
+        "max_memory_mb": null,
+        "max_tasks_per_job": 500,
+        "method": "hardware"
+      }
+    },
+    {
+      "name": "Shenglian",
+      "kind": "real",
+      "status": "online",
+      "n_qubits": 84,
+      "queue": 0,
+      "limits": {
+        "max_qubits": 84,
+        "qubit_count": "declared",
+        "guest_max_qubits": null,
+        "min_shots": 1024,
+        "max_shots": 8192,
+        "shots_step": 1024,
+        "guest_max_shots": 1024,
+        "max_depth": 902,
+        "wall_s": null,
+        "max_memory_mb": null,
+        "max_tasks_per_job": 500,
+        "method": "hardware"
+      }
+    },
+    {
+      "name": "Hongluo",
+      "kind": "real",
+      "status": "calibrating",
+      "n_qubits": 84,
+      "queue": null,
+      "limits": {
+        "max_qubits": 84,
+        "qubit_count": "declared",
+        "guest_max_qubits": null,
+        "min_shots": 1024,
+        "max_shots": 8192,
+        "shots_step": 1024,
+        "guest_max_shots": 1024,
+        "max_depth": null,
+        "wall_s": null,
+        "max_memory_mb": null,
+        "max_tasks_per_job": 500,
+        "method": "hardware"
+      }
+    },
+    {
+      "name": "Ling",
+      "kind": "real",
+      "status": "calibrating",
+      "n_qubits": 112,
+      "queue": null,
+      "limits": {
+        "max_qubits": 112,
+        "qubit_count": "declared",
+        "guest_max_qubits": null,
+        "min_shots": 1024,
+        "max_shots": 8192,
+        "shots_step": 1024,
+        "guest_max_shots": 1024,
+        "max_depth": null,
+        "wall_s": null,
+        "max_memory_mb": null,
+        "max_tasks_per_job": 500,
+        "method": "hardware"
+      }
+    },
+    {
+      "name": "Haituo",
+      "kind": "real",
+      "status": "online",
+      "n_qubits": 84,
+      "queue": 0,
+      "limits": {
+        "max_qubits": 84,
+        "qubit_count": "declared",
+        "guest_max_qubits": null,
+        "min_shots": 1024,
+        "max_shots": 8192,
+        "shots_step": 1024,
+        "guest_max_shots": 1024,
+        "max_depth": 833,
+        "wall_s": null,
+        "max_memory_mb": null,
+        "max_tasks_per_job": 500,
+        "method": "hardware"
+      }
+    },
+    {
+      "name": "Baihua-sim",
+      "kind": "sim",
+      "status": "online",
+      "n_qubits": 156,
+      "queue": null,
+      "limits": {
+        "max_qubits": 16,
+        "qubit_count": "active",
+        "guest_max_qubits": 12,
+        "min_shots": 1,
+        "max_shots": 8192,
+        "shots_step": 1,
+        "guest_max_shots": null,
+        "max_depth": 1000,
+        "wall_s": 60,
+        "max_memory_mb": 512,
+        "max_tasks_per_job": 500,
+        "method": "noise_model"
+      }
+    },
+    {
+      "name": "Dongling-sim",
+      "kind": "sim",
+      "status": "online",
+      "n_qubits": 84,
+      "queue": null,
+      "limits": {
+        "max_qubits": 16,
+        "qubit_count": "active",
+        "guest_max_qubits": 12,
+        "min_shots": 1,
+        "max_shots": 8192,
+        "shots_step": 1,
+        "guest_max_shots": null,
+        "max_depth": 1000,
+        "wall_s": 60,
+        "max_memory_mb": 512,
+        "max_tasks_per_job": 500,
+        "method": "noise_model"
+      }
+    },
+    {
+      "name": "Shenglian-sim",
+      "kind": "sim",
+      "status": "online",
+      "n_qubits": 84,
+      "queue": null,
+      "limits": {
+        "max_qubits": 16,
+        "qubit_count": "active",
+        "guest_max_qubits": 12,
+        "min_shots": 1,
+        "max_shots": 8192,
+        "shots_step": 1,
+        "guest_max_shots": null,
+        "max_depth": 1000,
+        "wall_s": 60,
+        "max_memory_mb": 512,
+        "max_tasks_per_job": 500,
+        "method": "noise_model"
+      }
+    },
+    {
+      "name": "Hongluo-sim",
+      "kind": "sim",
+      "status": "online",
+      "n_qubits": 84,
+      "queue": null,
+      "limits": {
+        "max_qubits": 16,
+        "qubit_count": "active",
+        "guest_max_qubits": 12,
+        "min_shots": 1,
+        "max_shots": 8192,
+        "shots_step": 1,
+        "guest_max_shots": null,
+        "max_depth": 1000,
+        "wall_s": 60,
+        "max_memory_mb": 512,
+        "max_tasks_per_job": 500,
+        "method": "noise_model"
+      }
+    },
+    {
+      "name": "Ling-sim",
+      "kind": "sim",
+      "status": "online",
+      "n_qubits": 112,
+      "queue": null,
+      "limits": {
+        "max_qubits": 16,
+        "qubit_count": "active",
+        "guest_max_qubits": 12,
+        "min_shots": 1,
+        "max_shots": 8192,
+        "shots_step": 1,
+        "guest_max_shots": null,
+        "max_depth": 1000,
+        "wall_s": 60,
+        "max_memory_mb": 512,
+        "max_tasks_per_job": 500,
+        "method": "noise_model"
+      }
+    },
+    {
+      "name": "Haituo-sim",
+      "kind": "sim",
+      "status": "online",
+      "n_qubits": 84,
+      "queue": null,
+      "limits": {
+        "max_qubits": 16,
+        "qubit_count": "active",
+        "guest_max_qubits": 12,
+        "min_shots": 1,
+        "max_shots": 8192,
+        "shots_step": 1,
+        "guest_max_shots": null,
+        "max_depth": 1000,
+        "wall_s": 60,
+        "max_memory_mb": 512,
+        "max_tasks_per_job": 500,
+        "method": "noise_model"
+      }
+    }
+  ],
+  "target": "Baihua",
+  "metadata": {
+    "name": "Baihua",
+    "device": "Baihua",
+    "n_qubits": 156,
+    "limits": {
+      "max_qubits": 156,
+      "qubit_count": "declared",
+      "guest_max_qubits": null,
+      "min_shots": 1024,
+      "max_shots": 8192,
+      "shots_step": 1024,
+      "guest_max_shots": 1024,
+      "max_depth": 223,
+      "wall_s": null,
+      "max_memory_mb": null,
+      "max_tasks_per_job": 500,
+      "method": "hardware"
+    },
+    "basis_gates": [
+      "h",
+      "rx",
+      "ry",
+      "rz",
+      "cz"
+    ],
+    "coupling_map": [
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        15
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        6,
+        7
+      ],
+      [
+        6,
+        19
+      ],
+      [
+        7,
+        8
+      ],
+      [
+        10,
+        11
+      ],
+      [
+        10,
+        23
+      ],
+      [
+        11,
+        12
+      ],
+      [
+        13,
+        14
+      ],
+      [
+        13,
+        26
+      ],
+      [
+        14,
+        15
+      ],
+      [
+        15,
+        16
+      ],
+      [
+        16,
+        17
+      ],
+      [
+        17,
+        18
+      ],
+      [
+        17,
+        30
+      ],
+      [
+        19,
+        20
+      ],
+      [
+        23,
+        24
+      ],
+      [
+        24,
+        25
+      ],
+      [
+        26,
+        27
+      ],
+      [
+        27,
+        28
+      ],
+      [
+        28,
+        29
+      ],
+      [
+        28,
+        41
+      ],
+      [
+        29,
+        30
+      ],
+      [
+        30,
+        31
+      ],
+      [
+        32,
+        45
+      ],
+      [
+        36,
+        37
+      ],
+      [
+        36,
+        49
+      ],
+      [
+        37,
+        38
+      ],
+      [
+        40,
+        41
+      ],
+      [
+        42,
+        43
+      ],
+      [
+        43,
+        44
+      ],
+      [
+        43,
+        56
+      ],
+      [
+        44,
+        45
+      ],
+      [
+        45,
+        46
+      ],
+      [
+        46,
+        47
+      ],
+      [
+        47,
+        48
+      ],
+      [
+        48,
+        49
+      ],
+      [
+        49,
+        50
+      ],
+      [
+        50,
+        51
+      ],
+      [
+        53,
+        54
+      ],
+      [
+        54,
+        55
+      ],
+      [
+        55,
+        56
+      ],
+      [
+        56,
+        57
+      ],
+      [
+        57,
+        58
+      ],
+      [
+        58,
+        59
+      ],
+      [
+        58,
+        71
+      ],
+      [
+        61,
+        62
+      ],
+      [
+        67,
+        68
+      ],
+      [
+        69,
+        70
+      ],
+      [
+        69,
+        82
+      ],
+      [
+        70,
+        71
+      ],
+      [
+        71,
+        72
+      ],
+      [
+        73,
+        74
+      ],
+      [
+        73,
+        86
+      ],
+      [
+        74,
+        75
+      ],
+      [
+        75,
+        76
+      ],
+      [
+        76,
+        77
+      ],
+      [
+        77,
+        90
+      ],
+      [
+        78,
+        79
+      ],
+      [
+        79,
+        80
+      ],
+      [
+        81,
+        82
+      ],
+      [
+        82,
+        83
+      ],
+      [
+        83,
+        84
+      ],
+      [
+        84,
+        85
+      ],
+      [
+        85,
+        86
+      ],
+      [
+        86,
+        87
+      ],
+      [
+        89,
+        90
+      ],
+      [
+        93,
+        94
+      ],
+      [
+        94,
+        95
+      ],
+      [
+        95,
+        108
+      ],
+      [
+        97,
+        98
+      ],
+      [
+        99,
+        100
+      ],
+      [
+        99,
+        112
+      ],
+      [
+        100,
+        101
+      ],
+      [
+        104,
+        105
+      ],
+      [
+        105,
+        106
+      ],
+      [
+        106,
+        107
+      ],
+      [
+        108,
+        109
+      ],
+      [
+        109,
+        110
+      ],
+      [
+        110,
+        123
+      ],
+      [
+        112,
+        113
+      ],
+      [
+        113,
+        114
+      ],
+      [
+        114,
+        115
+      ],
+      [
+        114,
+        127
+      ],
+      [
+        115,
+        116
+      ],
+      [
+        120,
+        121
+      ],
+      [
+        122,
+        123
+      ],
+      [
+        123,
+        124
+      ],
+      [
+        125,
+        126
+      ],
+      [
+        125,
+        138
+      ],
+      [
+        126,
+        127
+      ],
+      [
+        128,
+        129
+      ],
+      [
+        129,
+        142
+      ],
+      [
+        130,
+        131
+      ],
+      [
+        131,
+        132
+      ],
+      [
+        132,
+        133
+      ],
+      [
+        133,
+        134
+      ],
+      [
+        136,
+        137
+      ],
+      [
+        136,
+        149
+      ],
+      [
+        137,
+        138
+      ],
+      [
+        138,
+        139
+      ],
+      [
+        139,
+        140
+      ],
+      [
+        140,
+        141
+      ],
+      [
+        140,
+        153
+      ],
+      [
+        141,
+        142
+      ],
+      [
+        146,
+        147
+      ],
+      [
+        147,
+        148
+      ],
+      [
+        149,
+        150
+      ],
+      [
+        150,
+        151
+      ],
+      [
+        151,
+        152
+      ],
+      [
+        152,
+        153
+      ]
+    ],
+    "coupling_map_directed": false,
+    "edge_fidelities": {
+      "2-3": 0.984,
+      "3-4": 0.989,
+      "4-5": 0.984,
+      "5-6": 0.954,
+      "6-7": 0.991,
+      "7-8": 0.981,
+      "10-11": 0.99,
+      "11-12": 0.993,
+      "2-15": 0.96,
+      "6-19": 0.954,
+      "10-23": 0.985,
+      "13-14": 0.994,
+      "14-15": 0.994,
+      "15-16": 0.987,
+      "16-17": 0.984,
+      "17-18": 0.981,
+      "19-20": 0.985,
+      "23-24": 0.991,
+      "24-25": 0.979,
+      "13-26": 0.944,
+      "17-30": 0.989,
+      "26-27": 0.99,
+      "27-28": 0.95,
+      "28-29": 0.994,
+      "29-30": 0.992,
+      "30-31": 0.968,
+      "36-37": 0.97,
+      "37-38": 0.972,
+      "28-41": 0.99,
+      "32-45": 0.944,
+      "36-49": 0.959,
+      "40-41": 0.947,
+      "42-43": 0.89,
+      "43-44": 0.985,
+      "44-45": 0.966,
+      "45-46": 0.97,
+      "46-47": 0.986,
+      "47-48": 0.976,
+      "48-49": 0.988,
+      "49-50": 0.955,
+      "50-51": 0.977,
+      "43-56": 0.991,
+      "53-54": 0.99,
+      "54-55": 0.988,
+      "55-56": 0.974,
+      "56-57": 0.989,
+      "57-58": 0.993,
+      "58-59": 0.991,
+      "61-62": 0.995,
+      "58-71": 0.929,
+      "67-68": 0.976,
+      "69-70": 0.983,
+      "70-71": 0.987,
+      "71-72": 0.987,
+      "73-74": 0.991,
+      "74-75": 0.996,
+      "75-76": 0.955,
+      "76-77": 0.956,
+      "69-82": 0.989,
+      "73-86": 0.958,
+      "77-90": 0.955,
+      "78-79": 0.988,
+      "79-80": 0.89,
+      "81-82": 0.992,
+      "82-83": 0.988,
+      "83-84": 0.982,
+      "84-85": 0.989,
+      "85-86": 0.99,
+      "86-87": 0.986,
+      "89-90": 0.955,
+      "93-94": 0.992,
+      "94-95": 0.994,
+      "97-98": 0.99,
+      "99-100": 0.989,
+      "100-101": 0.994,
+      "95-108": 0.986,
+      "99-112": 0.923,
+      "104-105": 0.991,
+      "105-106": 0.982,
+      "106-107": 0.999,
+      "108-109": 0.982,
+      "109-110": 0.985,
+      "112-113": 0.989,
+      "113-114": 0.985,
+      "114-115": 0.992,
+      "115-116": 0.995,
+      "110-123": 0.988,
+      "114-127": 0.947,
+      "120-121": 0.89,
+      "122-123": 0.962,
+      "123-124": 0.957,
+      "125-126": 0.99,
+      "126-127": 0.995,
+      "128-129": 0.982,
+      "125-138": 0.942,
+      "129-142": 0.978,
+      "130-131": 0.987,
+      "131-132": 0.951,
+      "132-133": 0.971,
+      "133-134": 0.985,
+      "136-137": 0.966,
+      "137-138": 0.957,
+      "138-139": 0.974,
+      "139-140": 0.985,
+      "140-141": 0.99,
+      "141-142": 0.978,
+      "136-149": 0.978,
+      "140-153": 0.96,
+      "146-147": 0.975,
+      "147-148": 0.99,
+      "149-150": 0.982,
+      "150-151": 0.966,
+      "151-152": 0.989,
+      "152-153": 0.989
+    },
+    "measured_edges": {
+      "2-3": {
+        "state": "confirmed"
+      },
+      "2-15": {
+        "state": "confirmed"
+      },
+      "3-4": {
+        "state": "confirmed"
+      },
+      "4-5": {
+        "state": "confirmed"
+      },
+      "5-6": {
+        "state": "confirmed"
+      },
+      "6-19": {
+        "state": "confirmed"
+      },
+      "7-8": {
+        "state": "confirmed"
+      },
+      "10-11": {
+        "state": "confirmed"
+      },
+      "10-23": {
+        "state": "confirmed"
+      },
+      "11-12": {
+        "state": "confirmed"
+      },
+      "13-14": {
+        "state": "confirmed"
+      },
+      "13-26": {
+        "state": "confirmed"
+      },
+      "14-15": {
+        "state": "confirmed"
+      },
+      "15-16": {
+        "state": "confirmed"
+      },
+      "16-17": {
+        "state": "confirmed"
+      },
+      "17-18": {
+        "state": "confirmed"
+      },
+      "17-30": {
+        "state": "confirmed"
+      },
+      "19-20": {
+        "state": "confirmed"
+      },
+      "23-24": {
+        "state": "confirmed"
+      },
+      "24-25": {
+        "state": "confirmed"
+      },
+      "26-27": {
+        "state": "confirmed"
+      },
+      "27-28": {
+        "state": "confirmed"
+      },
+      "28-29": {
+        "state": "confirmed"
+      },
+      "28-41": {
+        "state": "confirmed"
+      },
+      "29-30": {
+        "state": "confirmed"
+      },
+      "30-31": {
+        "state": "confirmed"
+      },
+      "32-33": {
+        "state": "confirmed"
+      },
+      "32-45": {
+        "state": "confirmed"
+      },
+      "36-37": {
+        "state": "confirmed"
+      },
+      "42-43": {
+        "state": "confirmed"
+      },
+      "43-44": {
+        "state": "confirmed"
+      },
+      "43-56": {
+        "state": "confirmed"
+      },
+      "44-45": {
+        "state": "confirmed"
+      },
+      "45-46": {
+        "state": "confirmed"
+      },
+      "46-47": {
+        "state": "confirmed"
+      },
+      "47-48": {
+        "state": "confirmed"
+      },
+      "51-64": {
+        "state": "confirmed"
+      },
+      "53-54": {
+        "state": "confirmed"
+      },
+      "54-55": {
+        "state": "confirmed"
+      },
+      "55-56": {
+        "state": "confirmed"
+      },
+      "56-57": {
+        "state": "confirmed"
+      },
+      "57-58": {
+        "state": "confirmed"
+      },
+      "58-59": {
+        "state": "confirmed"
+      },
+      "58-71": {
+        "state": "confirmed"
+      },
+      "61-62": {
+        "state": "confirmed"
+      },
+      "65-78": {
+        "state": "confirmed"
+      },
+      "67-68": {
+        "state": "confirmed"
+      },
+      "68-69": {
+        "state": "confirmed"
+      },
+      "69-70": {
+        "state": "confirmed"
+      },
+      "69-82": {
+        "state": "confirmed"
+      },
+      "70-71": {
+        "state": "confirmed"
+      },
+      "71-72": {
+        "state": "confirmed"
+      },
+      "73-74": {
+        "state": "confirmed"
+      },
+      "73-86": {
+        "state": "confirmed"
+      },
+      "74-75": {
+        "state": "confirmed"
+      },
+      "75-76": {
+        "state": "confirmed"
+      },
+      "76-77": {
+        "state": "confirmed"
+      },
+      "77-90": {
+        "state": "confirmed"
+      },
+      "78-79": {
+        "state": "confirmed"
+      },
+      "81-82": {
+        "state": "confirmed"
+      },
+      "82-83": {
+        "state": "confirmed"
+      },
+      "83-84": {
+        "state": "confirmed"
+      },
+      "84-85": {
+        "state": "confirmed"
+      },
+      "84-97": {
+        "state": "confirmed"
+      },
+      "85-86": {
+        "state": "confirmed"
+      },
+      "86-87": {
+        "state": "confirmed"
+      },
+      "89-90": {
+        "state": "confirmed"
+      },
+      "93-94": {
+        "state": "confirmed"
+      },
+      "94-95": {
+        "state": "confirmed"
+      },
+      "95-108": {
+        "state": "confirmed"
+      },
+      "97-98": {
+        "state": "confirmed"
+      },
+      "99-100": {
+        "state": "confirmed"
+      },
+      "99-112": {
+        "state": "confirmed"
+      },
+      "100-101": {
+        "state": "confirmed"
+      },
+      "104-105": {
+        "state": "confirmed"
+      },
+      "105-106": {
+        "state": "confirmed"
+      },
+      "108-109": {
+        "state": "confirmed"
+      },
+      "109-110": {
+        "state": "confirmed"
+      },
+      "110-123": {
+        "state": "confirmed"
+      },
+      "112-113": {
+        "state": "confirmed"
+      },
+      "113-114": {
+        "state": "confirmed"
+      },
+      "114-115": {
+        "state": "confirmed"
+      },
+      "117-118": {
+        "state": "confirmed"
+      },
+      "117-130": {
+        "state": "confirmed"
+      },
+      "122-123": {
+        "state": "confirmed"
+      },
+      "123-124": {
+        "state": "confirmed"
+      },
+      "124-125": {
+        "state": "confirmed"
+      },
+      "125-126": {
+        "state": "confirmed"
+      },
+      "125-138": {
+        "state": "confirmed"
+      },
+      "126-127": {
+        "state": "confirmed"
+      },
+      "128-129": {
+        "state": "confirmed"
+      },
+      "129-142": {
+        "state": "confirmed"
+      },
+      "130-131": {
+        "state": "confirmed"
+      },
+      "136-137": {
+        "state": "confirmed"
+      },
+      "136-149": {
+        "state": "confirmed"
+      },
+      "137-138": {
+        "state": "confirmed"
+      },
+      "138-139": {
+        "state": "confirmed"
+      },
+      "139-140": {
+        "state": "confirmed"
+      },
+      "140-141": {
+        "state": "confirmed"
+      },
+      "140-153": {
+        "state": "confirmed"
+      },
+      "141-142": {
+        "state": "confirmed"
+      },
+      "146-147": {
+        "state": "confirmed"
+      },
+      "147-148": {
+        "state": "confirmed"
+      },
+      "149-150": {
+        "state": "confirmed"
+      },
+      "150-151": {
+        "state": "confirmed"
+      },
+      "151-152": {
+        "state": "confirmed"
+      },
+      "152-153": {
+        "state": "confirmed"
+      },
+      "20-21": {
+        "state": "marginal"
+      },
+      "22-23": {
+        "state": "marginal"
+      },
+      "39-40": {
+        "state": "marginal"
+      },
+      "62-63": {
+        "state": "marginal"
+      },
+      "72-73": {
+        "state": "marginal"
+      },
+      "80-81": {
+        "state": "marginal"
+      },
+      "88-89": {
+        "state": "marginal"
+      },
+      "91-92": {
+        "state": "marginal"
+      },
+      "92-93": {
+        "state": "marginal"
+      },
+      "101-102": {
+        "state": "marginal"
+      },
+      "102-103": {
+        "state": "marginal"
+      },
+      "107-108": {
+        "state": "marginal"
+      },
+      "119-120": {
+        "state": "marginal"
+      },
+      "127-128": {
+        "state": "marginal"
+      },
+      "148-149": {
+        "state": "marginal"
+      },
+      "153-154": {
+        "state": "marginal"
+      },
+      "0-1": {
+        "state": "failed"
+      },
+      "31-32": {
+        "state": "failed"
+      }
+    },
+    "topology": {
+      "source": "calibrated",
+      "origin": "live",
+      "version": "90ce0f54f2e9f945",
+      "calibrated_at": "2026-11-18T15:56:30+08:00",
+      "public_edges": 130,
+      "edges": 114,
+      "endpoint_removed": 1,
+      "measured_removed": 15,
+      "measured": {
+        "at": "2026-10-11",
+        "confirmed": 107,
+        "marginal": 16,
+        "failed": 2
+      }
+    },
+    "status": "online",
+    "calibration_id": "90ce0f54f2e9f945",
+    "calibration_version": "90ce0f54f2e9f945",
+    "noise_model_version": "",
+    "simulator": false,
+    "metadata": {
+      "coupling_map_semantics": "undirected; the graph submission precheck enforces",
+      "basis_gates_semantics": "accepted_at_submission"
+    }
+  },
+  "calibration": {
+    "id": "90ce0f54f2e9f945",
+    "calibrated_at": "2026-11-18T15:56:30+08:00",
+    "basis_gates": [
+      "h",
+      "rx",
+      "ry",
+      "rz",
+      "cz"
+    ]
+  },
+  "authenticated": false,
+  "new_cloud_tasks": 0
+}

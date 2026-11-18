@@ -15,6 +15,20 @@ export async function buildPublic(destination, basePath = "/QuantumBridge/") {
   for (const name of ["src", "assets", "downloads", "readme.html", "framework.html", "ecosystem.html", "engineering.html", "index.html"]) {
     await cp(path.join(root, name), path.join(output, name), { recursive: true });
   }
+  // Biohydrogen has a strict delivery boundary: exclude render caches,
+  // narration intermediates, local credentials and source PDFs.
+  for (const name of ["index.html", "index-light.html"]) {
+    const target = path.join(output, "media/biohydrogen", name);
+    await mkdir(path.dirname(target), { recursive: true });
+    await cp(path.join(root, "media/biohydrogen", name), target);
+  }
+  for (const name of ["index.html", "film.html", "film-light.html", "scenes.json", "timing.json", "SCRIPT.txt", "captions.srt", "captions.vtt", "biohydrogen-zh.mp4", "source.zip", "assets/poster.jpg", "assets/microbial-world.mp4", "production/receipt.json"]) {
+    const target = path.join(output, "media/biohydrogen/film", name);
+    await mkdir(path.dirname(target), { recursive: true });
+    await cp(path.join(root, "media/biohydrogen/film", name), target);
+  }
+  await cp(path.join(root, "media/biohydrogen/film/shots"), path.join(output, "media/biohydrogen/film/shots"), { recursive: true });
+  await cp(path.join(root, "articles/biohydrogen"), path.join(output, "articles/biohydrogen"), { recursive: true });
   await writeFile(path.join(output, "src/framework/deployment.js"), "export const publicSite = true;\nexport const privateDocuments = false;\n");
   const framework = await readFile(path.join(root, "framework.html"), "utf8");
   await writeFile(path.join(output, "progress.html"), await readFile(path.join(root, "index.html")));
@@ -31,6 +45,20 @@ export async function buildPublic(destination, basePath = "/QuantumBridge/") {
       await writeFile(path.join(directory, path.basename(notebook.filename)), notebook.body);
     }
   }
+  // Rebase only root-local HTML links; external and relative URLs are preserved.
+  async function rebaseHtml(folder) {
+    for (const entry of await readdir(folder, {withFileTypes:true})) {
+      const file=path.join(folder,entry.name);
+      if(entry.isDirectory()) await rebaseHtml(file);
+      else if(entry.name.endsWith(".html")) {
+        const html=await readFile(file,"utf8");
+        await writeFile(file,html.replace(/((?:href|src)=["'])\/(?!\/|QuantumBridge\/)/g,`$1${basePath}`));
+      }
+    }
+  }
+  await rebaseHtml(path.join(output,"examples/science"));
+  await rebaseHtml(path.join(output,"media/biohydrogen"));
+  await rebaseHtml(path.join(output,"articles/biohydrogen"));
   await writeFile(path.join(output, ".nojekyll"), "");
   return { output, basePath, pages: resources.length, notebooks: resources.filter(item => item.kind !== "index").length };
 }

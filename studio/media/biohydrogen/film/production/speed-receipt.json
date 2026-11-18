@@ -1,0 +1,15 @@
+{
+  "playback_speed": 1.2,
+  "duration_seconds": 373.222,
+  "original_duration_seconds": 447.866,
+  "video": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 24,
+    "codec": "h264"
+  },
+  "audio": "AAC, 48000 Hz, atempo=1.2 (preserves pitch)",
+  "captions_retimed": 51,
+  "chapters_retimed": 17,
+  "bytes": 69950327
+}

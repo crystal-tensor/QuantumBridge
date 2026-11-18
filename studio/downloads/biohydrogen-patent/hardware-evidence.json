@@ -1,0 +1,755 @@
+{
+  "schema": "qb-biohydrogen-hardware-evidence-v1",
+  "target": "Baihua",
+  "sdk": {
+    "distribution": "quafu-sdk",
+    "version": "0.2.7",
+    "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+    "python": "3.12.6"
+  },
+  "verified_tasks": 8,
+  "submitted_tasks": 8,
+  "mode": "cloud_hardware",
+  "note": "Classically optimized angles evaluated on hardware; not hardware-in-the-loop VQE. No biological hydrogen experiment.",
+  "energy_statistics": "ZZ from Z basis; XI+IX evaluated per shared X shot, including covariance. Distinct bases assumed independent. SE captures sampling, not calibration bias or hardware drift.",
+  "rows": [
+    {
+      "reading": "text_cnot",
+      "stage": "initial",
+      "energy_dimensionless": 1.775390625,
+      "standard_error": 0.03779813770198627,
+      "p111": 0.03515625,
+      "p111_wilson95": [
+        0.025500926905294527,
+        0.048286190913159416
+      ],
+      "ideal_energy_dimensionless": 1.9999999999999987,
+      "ideal_p111": 0.03661165235168153,
+      "energy_error_vs_local": -0.22460937499999867,
+      "shots_per_basis": [
+        1024,
+        1024
+      ],
+      "task_ids": [
+        "uc4e9da3f-261118-182516-0",
+        "uc4e9da3f-261118-182522-0"
+      ],
+      "total_variation_per_basis": [
+        0.04442415235168168,
+        0.09765624999999951
+      ]
+    },
+    {
+      "reading": "text_cnot",
+      "stage": "optimized",
+      "energy_dimensionless": -1.3515625,
+      "standard_error": 0.051300035491812626,
+      "p111": 0.017578125,
+      "p111_wilson95": [
+        0.011147506606701729,
+        0.027614754322534085
+      ],
+      "ideal_energy_dimensionless": -2.2360679774997876,
+      "ideal_p111": 0.020238424056687722,
+      "energy_error_vs_local": 0.8845054774997876,
+      "shots_per_basis": [
+        1024,
+        1024
+      ],
+      "task_ids": [
+        "uc4e9da3f-261118-182530-0",
+        "uc4e9da3f-261118-182535-0"
+      ],
+      "total_variation_per_basis": [
+        0.13473988693882688,
+        0.3017057844807144
+      ]
+    },
+    {
+      "reading": "figure_cz",
+      "stage": "initial",
+      "energy_dimensionless": 0.080078125,
+      "standard_error": 0.053763371874931874,
+      "p111": 0.0166015625,
+      "p111_wilson95": [
+        0.010390694646358972,
+        0.0264257409001425
+      ],
+      "ideal_energy_dimensionless": -1.563923685902801e-17,
+      "ideal_p111": 0.03661165235168153,
+      "energy_error_vs_local": 0.08007812500000001,
+      "shots_per_basis": [
+        1024,
+        1024
+      ],
+      "task_ids": [
+        "uc4e9da3f-261118-182543-0",
+        "uc4e9da3f-261118-182551-0"
+      ],
+      "total_variation_per_basis": [
+        0.03220767970336321,
+        0.04833040235168176
+      ]
+    },
+    {
+      "reading": "figure_cz",
+      "stage": "optimized",
+      "energy_dimensionless": -0.783203125,
+      "standard_error": 0.04991153561506395,
+      "p111": 0.01171875,
+      "p111_wilson95": [
+        0.0067161566035602565,
+        0.020371152029269507
+      ],
+      "ideal_energy_dimensionless": -2.0550500131987093,
+      "ideal_p111": 1.1742358294963345e-15,
+      "energy_error_vs_local": 1.2718468881987093,
+      "shots_per_basis": [
+        1024,
+        1024
+      ],
+      "task_ids": [
+        "uc4e9da3f-261118-182556-0",
+        "uc4e9da3f-261118-182603-0"
+      ],
+      "total_variation_per_basis": [
+        0.1369246386392326,
+        0.5164862871039805
+      ]
+    }
+  ],
+  "receipts": {
+    "biohydrogen-text_cnot-initial-Z": {
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-18T10:26:31.733986+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261118-182516",
+      "task_id": "uc4e9da3f-261118-182516-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "d72a9ca2d8b989ea509c3213d9530a7ce62a214687a888d846e7e897ff8272b3",
+      "executed_qasm": "// q[0] -> Q70\n// q[1] -> Q71\n// q[2] -> Q72\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[73];\ncreg c[3];\nrx(0.7853981633974483) q[70];\nrx(3.141592653589793) q[71];\ncz q[70],q[71];\nrz(-3.141592653589793) q[70];\nry(-1.5707963267948966) q[71];\nrx(3.141592653589793) q[72];\ncz q[71],q[72];\nrz(-3.141592653589793) q[71];\nry(-1.5707963267948966) q[72];\nbarrier q[72],q[70],q[71];\nmeasure q[70] -> c[0];\nmeasure q[71] -> c[1];\nmeasure q[72] -> c[2];",
+      "executed_qasm_sha256": "d79abaf0713cb9e1fabfc05aeabd01499e8017428cfca71c791a3c9301d3f844",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "bb102b73e3094f3b",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 70,
+          "virtual_qubit": 0
+        },
+        {
+          "cbit": 1,
+          "physical_qubit": 71,
+          "virtual_qubit": 1
+        },
+        {
+          "cbit": 2,
+          "physical_qubit": 72,
+          "virtual_qubit": 2
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "100": 225,
+        "000": 238,
+        "110": 191,
+        "010": 231,
+        "111": 36,
+        "101": 40,
+        "001": 42,
+        "011": 21
+      },
+      "counts_q0_first": {
+        "001": 225,
+        "000": 238,
+        "011": 191,
+        "010": 231,
+        "111": 36,
+        "101": 40,
+        "100": 42,
+        "110": 21
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "001": 0.2197265625,
+        "000": 0.232421875,
+        "011": 0.1865234375,
+        "010": 0.2255859375,
+        "111": 0.03515625,
+        "101": 0.0390625,
+        "100": 0.041015625,
+        "110": 0.0205078125
+      },
+      "raw_payload_sha256": "1d7ff35ac5ad2b38ef57e95a0d97662bc96e04b814295caf754e55a292833e51",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    },
+    "biohydrogen-text_cnot-initial-X": {
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-18T10:26:32.460429+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261118-182522",
+      "task_id": "uc4e9da3f-261118-182522-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "e27c6053710a5f2b8c49e4a25398c203d7ee2d20a925fff163ab77fb15d4692d",
+      "executed_qasm": "// q[0] -> Q70\n// q[1] -> Q71\n// q[2] -> Q72\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[73];\ncreg c[3];\nrx(0.7853981633974483) q[70];\nrx(3.141592653589793) q[71];\ncz q[70],q[71];\nrz(-3.141592653589793) q[70];\nry(-1.5707963267948966) q[71];\nrx(-3.141592653589793) q[72];\ncz q[71],q[72];\nry(1.5707963267948966) q[71];\nrx(-3.141592653589793) q[72];\nbarrier q[72],q[70],q[71];\nmeasure q[70] -> c[0];\nmeasure q[71] -> c[1];\nmeasure q[72] -> c[2];",
+      "executed_qasm_sha256": "1b4b07fe6ebf0786dae0886d2faa62c916bd3906df01bab1c544025e07339087",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "bb102b73e3094f3b",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 70,
+          "virtual_qubit": 0
+        },
+        {
+          "cbit": 1,
+          "physical_qubit": 71,
+          "virtual_qubit": 1
+        },
+        {
+          "cbit": 2,
+          "physical_qubit": 72,
+          "virtual_qubit": 2
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "000": 828,
+        "010": 37,
+        "001": 96,
+        "100": 41,
+        "101": 8,
+        "110": 9,
+        "011": 4,
+        "111": 1
+      },
+      "counts_q0_first": {
+        "000": 828,
+        "010": 37,
+        "100": 96,
+        "001": 41,
+        "101": 8,
+        "011": 9,
+        "110": 4,
+        "111": 1
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "000": 0.80859375,
+        "010": 0.0361328125,
+        "100": 0.09375,
+        "001": 0.0400390625,
+        "101": 0.0078125,
+        "011": 0.0087890625,
+        "110": 0.00390625,
+        "111": 0.0009765625
+      },
+      "raw_payload_sha256": "0043dd345ab1d21d83166e3646a0d7153fa74a39ec40dcf763156233729f91f1",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    },
+    "biohydrogen-text_cnot-optimized-Z": {
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-18T10:26:33.234043+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261118-182530",
+      "task_id": "uc4e9da3f-261118-182530-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "9e3ccc14de70b759ca7f8c783bdb4a932c493cce8751e46bf0c07805cc9ed041",
+      "executed_qasm": "// q[0] -> Q72\n// q[1] -> Q71\n// q[2] -> Q70\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[73];\ncreg c[3];\nrz(1.861452638066706) q[70];\nrx(3.141592653589793) q[71];\nrx(0.7853981633974483) q[72];\ncz q[72],q[71];\nry(1.5707963267948966) q[71];\ncz q[71],q[70];\nry(1.1110590617853622) q[70];\nry(2.0932732412497845) q[71];\ncz q[71],q[70];\nrz(-2.1639599436232424) q[70];\nry(2.3452596563364363) q[70];\nrz(-0.6495619959555938) q[71];\nry(-1.771534439353176) q[71];\nrz(-3.141592653589793) q[72];\nbarrier q[72],q[70],q[71];\nmeasure q[72] -> c[0];\nmeasure q[71] -> c[1];\nmeasure q[70] -> c[2];",
+      "executed_qasm_sha256": "352bc7e5e4629392c05786152de6e474fa1226a43eaed518ff3939f5cf7588d8",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "bb102b73e3094f3b",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 72,
+          "virtual_qubit": 0
+        },
+        {
+          "cbit": 1,
+          "physical_qubit": 71,
+          "virtual_qubit": 1
+        },
+        {
+          "cbit": 2,
+          "physical_qubit": 70,
+          "virtual_qubit": 2
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "100": 238,
+        "001": 50,
+        "011": 59,
+        "101": 61,
+        "110": 97,
+        "010": 283,
+        "000": 218,
+        "111": 18
+      },
+      "counts_q0_first": {
+        "001": 238,
+        "100": 50,
+        "110": 59,
+        "101": 61,
+        "011": 97,
+        "010": 283,
+        "000": 218,
+        "111": 18
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "001": 0.232421875,
+        "100": 0.048828125,
+        "110": 0.0576171875,
+        "101": 0.0595703125,
+        "011": 0.0947265625,
+        "010": 0.2763671875,
+        "000": 0.212890625,
+        "111": 0.017578125
+      },
+      "raw_payload_sha256": "ac3a03d8cb8e1ba118e1c2e02e4fd88b1a792e476969d61d6307d63f2b49d62c",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    },
+    "biohydrogen-text_cnot-optimized-X": {
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-18T10:26:34.031842+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261118-182535",
+      "task_id": "uc4e9da3f-261118-182535-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "dc67acb38f9ddffb3b8724e1301366bddbd0ce66df5e0697cb8eea427a832165",
+      "executed_qasm": "// q[0] -> Q72\n// q[1] -> Q71\n// q[2] -> Q70\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[73];\ncreg c[3];\nrz(1.8614526380667051) q[70];\nrx(3.141592653589793) q[71];\nrx(0.7853981633974483) q[72];\ncz q[72],q[71];\nry(1.5707963267948966) q[71];\ncz q[71],q[70];\nry(1.1110590617853622) q[70];\nry(2.0932732412497845) q[71];\ncz q[71],q[70];\nry(2.0898813257228754) q[70];\nrz(2.507195137739348) q[70];\nry(2.891430734750912) q[71];\nrz(-2.507195223194741) q[71];\nrz(-3.141592653589793) q[72];\nbarrier q[72],q[70],q[71];\nmeasure q[72] -> c[0];\nmeasure q[71] -> c[1];\nmeasure q[70] -> c[2];",
+      "executed_qasm_sha256": "e29e4e528976f2571c0f5038b6704c46bb52d01e21738256a8ce02061a2afbde",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "bb102b73e3094f3b",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 72,
+          "virtual_qubit": 0
+        },
+        {
+          "cbit": 1,
+          "physical_qubit": 71,
+          "virtual_qubit": 1
+        },
+        {
+          "cbit": 2,
+          "physical_qubit": 70,
+          "virtual_qubit": 2
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "001": 12,
+        "111": 103,
+        "100": 90,
+        "110": 558,
+        "010": 122,
+        "000": 86,
+        "101": 25,
+        "011": 28
+      },
+      "counts_q0_first": {
+        "100": 12,
+        "111": 103,
+        "001": 90,
+        "011": 558,
+        "010": 122,
+        "000": 86,
+        "101": 25,
+        "110": 28
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "100": 0.01171875,
+        "111": 0.1005859375,
+        "001": 0.087890625,
+        "011": 0.544921875,
+        "010": 0.119140625,
+        "000": 0.083984375,
+        "101": 0.0244140625,
+        "110": 0.02734375
+      },
+      "raw_payload_sha256": "c00d055cfbcc0437d27d7e3d812e3394ee333aa6bf62db3e313fd21aeaa2b9a2",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    },
+    "biohydrogen-figure_cz-initial-Z": {
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-18T10:26:34.687519+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261118-182543",
+      "task_id": "uc4e9da3f-261118-182543-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "246b32dfaacf6edfdf927222ce35b2703ac2875d4ef83ee55ea8376135f00215",
+      "executed_qasm": "// q[0] -> Q70\n// q[1] -> Q71\n// q[2] -> Q139\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[140];\ncreg c[3];\nrx(0.7853981633974483) q[70];\nh q[71];\ncz q[70],q[71];\nh q[139];\nbarrier q[139],q[70],q[71];\nmeasure q[70] -> c[0];\nmeasure q[71] -> c[1];\nmeasure q[139] -> c[2];",
+      "executed_qasm_sha256": "e36e107e24b15a48448c3769955ad9ed076b956d0a62f0531df58e6fa94bd8fc",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "bb102b73e3094f3b",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 70,
+          "virtual_qubit": 0
+        },
+        {
+          "cbit": 1,
+          "physical_qubit": 71,
+          "virtual_qubit": 1
+        },
+        {
+          "cbit": 2,
+          "physical_qubit": 139,
+          "virtual_qubit": 2
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "011": 34,
+        "000": 220,
+        "110": 225,
+        "001": 37,
+        "010": 210,
+        "100": 235,
+        "101": 46,
+        "111": 17
+      },
+      "counts_q0_first": {
+        "110": 34,
+        "000": 220,
+        "011": 225,
+        "100": 37,
+        "010": 210,
+        "001": 235,
+        "101": 46,
+        "111": 17
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "110": 0.033203125,
+        "000": 0.21484375,
+        "011": 0.2197265625,
+        "100": 0.0361328125,
+        "010": 0.205078125,
+        "001": 0.2294921875,
+        "101": 0.044921875,
+        "111": 0.0166015625
+      },
+      "raw_payload_sha256": "2f9770e93934b6836873e58a8a41f547ae25fe1cc4db0e3b57bbe1eca879381c",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    },
+    "biohydrogen-figure_cz-initial-X": {
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-18T10:26:35.615019+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261118-182551",
+      "task_id": "uc4e9da3f-261118-182551-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "28962e2c42678197e8028dbb14121300e99aaa5a8018220dac1cf69023b24e8d",
+      "executed_qasm": "// q[0] -> Q70\n// q[1] -> Q71\n// q[2] -> Q72\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[73];\ncreg c[3];\nrx(0.7853981633974483) q[70];\nh q[71];\ncz q[70],q[71];\nh q[72];\ncz q[71],q[72];\nh q[71];\nh q[72];\nbarrier q[72],q[70],q[71];\nmeasure q[70] -> c[0];\nmeasure q[71] -> c[1];\nmeasure q[72] -> c[2];",
+      "executed_qasm_sha256": "8c094e7c4a4350fee84123e928afec468d09e9b7c2a2c6e699c0a751f8152bc1",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "bb102b73e3094f3b",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 70,
+          "virtual_qubit": 0
+        },
+        {
+          "cbit": 1,
+          "physical_qubit": 71,
+          "virtual_qubit": 1
+        },
+        {
+          "cbit": 2,
+          "physical_qubit": 72,
+          "virtual_qubit": 2
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "111": 38,
+        "100": 219,
+        "010": 244,
+        "101": 32,
+        "000": 239,
+        "110": 187,
+        "001": 40,
+        "011": 25
+      },
+      "counts_q0_first": {
+        "111": 38,
+        "001": 219,
+        "010": 244,
+        "101": 32,
+        "000": 239,
+        "011": 187,
+        "100": 40,
+        "110": 25
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "111": 0.037109375,
+        "001": 0.2138671875,
+        "010": 0.23828125,
+        "101": 0.03125,
+        "000": 0.2333984375,
+        "011": 0.1826171875,
+        "100": 0.0390625,
+        "110": 0.0244140625
+      },
+      "raw_payload_sha256": "040e15ed9629795a91352449e4fc5f1b196973048a18328f4b3a0617b80b4795",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    },
+    "biohydrogen-figure_cz-optimized-Z": {
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-18T10:26:36.369883+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261118-182556",
+      "task_id": "uc4e9da3f-261118-182556-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "6dcde99edd84a634e546934f175ccbf4ec96a9fe9622a2490dc2bd74176fbcea",
+      "executed_qasm": "// q[0] -> Q72\n// q[1] -> Q71\n// q[2] -> Q70\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[73];\ncreg c[3];\nry(-1.5707963267948966) q[70];\nry(1.5707963267948966) q[71];\nrz(4.71238898038469) q[71];\nrx(0.7853981633974483) q[72];\ncz q[72],q[71];\nry(3.141592653589793) q[71];\ncz q[71],q[70];\nry(1.017222097028551) q[70];\nrz(-1.5707963267948966) q[71];\nry(2.5880181633830053) q[71];\ncz q[71],q[70];\nry(3.141592634434561) q[70];\nrz(-1.4231754620900816) q[71];\nry(3.141592653589793) q[71];\nrz(-3.141592653589793) q[72];\nbarrier q[72],q[70],q[71];\nmeasure q[72] -> c[0];\nmeasure q[71] -> c[1];\nmeasure q[70] -> c[2];",
+      "executed_qasm_sha256": "44964c665ca495c8f45efdbc113a386d3848edede88191eca658fe9e87f0602c",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "bb102b73e3094f3b",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 72,
+          "virtual_qubit": 0
+        },
+        {
+          "cbit": 1,
+          "physical_qubit": 71,
+          "virtual_qubit": 1
+        },
+        {
+          "cbit": 2,
+          "physical_qubit": 70,
+          "virtual_qubit": 2
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "010": 304,
+        "100": 255,
+        "000": 219,
+        "011": 71,
+        "001": 30,
+        "111": 12,
+        "110": 74,
+        "101": 59
+      },
+      "counts_q0_first": {
+        "010": 304,
+        "001": 255,
+        "000": 219,
+        "110": 71,
+        "100": 30,
+        "111": 12,
+        "011": 74,
+        "101": 59
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "010": 0.296875,
+        "001": 0.2490234375,
+        "000": 0.2138671875,
+        "110": 0.0693359375,
+        "100": 0.029296875,
+        "111": 0.01171875,
+        "011": 0.072265625,
+        "101": 0.0576171875
+      },
+      "raw_payload_sha256": "6278a13d5602bcb7149f4ee42209739450e3dc7367c370254cd74cc734f33755",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    },
+    "biohydrogen-figure_cz-optimized-X": {
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-18T10:26:10.090933+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261118-182603",
+      "task_id": "uc4e9da3f-261118-182603-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "6669af439f031adebb365fe5cdeb5339e75b8c330e88657605560440fc21a5a4",
+      "executed_qasm": "// q[0] -> Q72\n// q[1] -> Q71\n// q[2] -> Q70\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[73];\ncreg c[3];\nry(-1.5707963267948966) q[70];\nry(1.5707963267948966) q[71];\nrz(4.71238898038469) q[71];\nrx(0.7853981633974483) q[72];\ncz q[72],q[71];\nry(3.141592653589793) q[71];\ncz q[71],q[70];\nry(1.017222097028551) q[70];\nrz(-1.5707963267948966) q[71];\nry(2.5880181633830053) q[71];\ncz q[71],q[70];\nrz(-3.141592653589793) q[70];\nry(-1.5707963076396638) q[70];\nrz(-3.141592623717697) q[71];\nry(-1.5707963267948966) q[71];\nrz(-3.141592653589793) q[72];\nbarrier q[72],q[70],q[71];\nmeasure q[72] -> c[0];\nmeasure q[71] -> c[1];\nmeasure q[70] -> c[2];",
+      "executed_qasm_sha256": "c76c2ef902327912087bf200474083272c9307b6d7f6b375e4c95d512198e015",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "bb102b73e3094f3b",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 72,
+          "virtual_qubit": 0
+        },
+        {
+          "cbit": 1,
+          "physical_qubit": 71,
+          "virtual_qubit": 1
+        },
+        {
+          "cbit": 2,
+          "physical_qubit": 70,
+          "virtual_qubit": 2
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "101": 45,
+        "010": 330,
+        "000": 101,
+        "110": 329,
+        "011": 81,
+        "100": 92,
+        "001": 25,
+        "111": 21
+      },
+      "counts_q0_first": {
+        "101": 45,
+        "010": 330,
+        "000": 101,
+        "011": 329,
+        "110": 81,
+        "001": 92,
+        "100": 25,
+        "111": 21
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "101": 0.0439453125,
+        "010": 0.322265625,
+        "000": 0.0986328125,
+        "011": 0.3212890625,
+        "110": 0.0791015625,
+        "001": 0.08984375,
+        "100": 0.0244140625,
+        "111": 0.0205078125
+      },
+      "raw_payload_sha256": "1e73d8ffc15dc6508c1617d79088342783f315aabf7f55928dd7c603b25d667c",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    }
+  }
+}

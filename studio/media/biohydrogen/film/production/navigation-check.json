@@ -1,0 +1,16 @@
+[
+  {
+    "device": "desktop",
+    "home_to_direction_to_page_to_home": true,
+    "no_horizontal_overflow": true,
+    "interactive_controls": true,
+    "console_errors": []
+  },
+  {
+    "device": "mobile",
+    "home_to_direction_to_page_to_home": true,
+    "no_horizontal_overflow": true,
+    "interactive_controls": true,
+    "console_errors": []
+  }
+]
