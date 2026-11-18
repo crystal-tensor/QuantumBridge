@@ -27,9 +27,7 @@ test("public export keeps every case and notebook, project paths, and private-do
           await readFile(new URL(`../../output/jupyter-notebook/${resource.domain}/${notebook}`, import.meta.url)));
       }
     }
-    const article=await readFile(path.join(directory,"articles/biohydrogen/index.html"),"utf8");
-    assert.ok(article.includes("作者：曾祥洪 --QuantumBridge研发组"));
-    assert.ok(article.includes("biohydrogen-zh.mp4"));
+    assert.ok(!(await readdir(directory)).includes("articles"));
     const filmAssets=await readdir(path.join(directory,"media/biohydrogen/film/assets"));
     assert.ok(!filmAssets.some(name=>name.endsWith(".pdf") || name.endsWith(".wav") || name.startsWith("voice-")));
     const evidence=JSON.parse(await readFile(path.join(directory,"downloads/biohydrogen-patent/hardware-evidence.json"),"utf8"));

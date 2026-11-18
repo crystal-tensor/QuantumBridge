@@ -28,7 +28,6 @@ export async function buildPublic(destination, basePath = "/QuantumBridge/") {
     await cp(path.join(root, "media/biohydrogen/film", name), target);
   }
   await cp(path.join(root, "media/biohydrogen/film/shots"), path.join(output, "media/biohydrogen/film/shots"), { recursive: true });
-  await cp(path.join(root, "articles/biohydrogen"), path.join(output, "articles/biohydrogen"), { recursive: true });
   await writeFile(path.join(output, "src/framework/deployment.js"), "export const publicSite = true;\nexport const privateDocuments = false;\n");
   const framework = await readFile(path.join(root, "framework.html"), "utf8");
   await writeFile(path.join(output, "progress.html"), await readFile(path.join(root, "index.html")));
@@ -58,7 +57,6 @@ export async function buildPublic(destination, basePath = "/QuantumBridge/") {
   }
   await rebaseHtml(path.join(output,"examples/science"));
   await rebaseHtml(path.join(output,"media/biohydrogen"));
-  await rebaseHtml(path.join(output,"articles/biohydrogen"));
   await writeFile(path.join(output, ".nojekyll"), "");
   return { output, basePath, pages: resources.length, notebooks: resources.filter(item => item.kind !== "index").length };
 }
