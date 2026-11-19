@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { createHash } from "node:crypto";
 import { gzipSync } from "node:zlib";
-import { verifiedEvidence } from "../src/progress/transport.js";
+import { verifiedEvidence, verifiedBytes } from "../src/progress/transport.js";
 import { restoreManifest, deferredManifestFields } from "../src/progress/model.js";
 
 const sha = value => createHash("sha256").update(value).digest("hex");
@@ -95,4 +95,33 @@ test("a projection or archive index cannot stand in for a complete snapshot", as
 test("reordered JSON bytes cannot bypass the original-byte hash", async () => {
   const row = fixture(x => { x.snapshot.original_sha256 = sha(Buffer.from(JSON.stringify(value))); });
   await assert.rejects(read(row), /original bytes\/hash/);
+});
+
+test("a transient range failure retries the same bytes without dropping any range or integrity check", async () => {
+  const body=Buffer.from("original failed evidence"),calls=[];
+  let interrupted=false;
+  const fetcher=async(url,request)=>{
+    if(request.method==="HEAD")return new Response(null,{headers:{"content-length":String(body.length),"accept-ranges":"bytes"}});
+    const range=request.headers.Range;calls.push(range);
+    const [,start,end]=range.match(/^bytes=(\d+)-(\d+)$/).map(Number);
+    if(start===4&&!interrupted){interrupted=true;throw new TypeError("Failed to fetch");}
+    return new Response(body.subarray(start,end+1),{status:206,headers:{"content-range":`bytes ${start}-${end}/${body.length}`}});
+  };
+  const result=await verifiedBytes("https://example.test/evidence.gz",{bytes:body.length,sha256:sha(body)},
+    {fetcher,chunkBytes:4,concurrency:2});
+  assert.deepEqual(Buffer.from(result),body);
+  assert.equal(calls.filter(range=>range==="bytes=4-7").length,2);
+  assert.equal(calls.length,Math.ceil(body.length/4)+1);
+});
+test("persistent network errors remain failures after exactly three attempts",async()=>{
+  let calls=0;
+  await assert.rejects(verifiedBytes("https://example.test/evidence.gz",{bytes:4,sha256:"a".repeat(64)},
+    {fetcher:async(_,request)=>{if(request.method==="HEAD")return new Response(null,{headers:{"content-length":"4"}});calls++;throw new TypeError("Failed to fetch");}}),/Failed to fetch/);
+  assert.equal(calls,3);
+});
+test("a malformed range response fails immediately and is never retried as a network interruption",async()=>{
+  let calls=0;
+  await assert.rejects(verifiedBytes("https://example.test/evidence.gz",{bytes:8,sha256:"a".repeat(64)},
+    {chunkBytes:4,concurrency:1,fetcher:async(_,request)=>{if(request.method==="HEAD")return new Response(null,{headers:{"content-length":"8","accept-ranges":"bytes"}});calls++;return new Response("bad",{status:206,headers:{"content-range":"bytes 4-7/8"}});}}),/Invalid artifact range/);
+  assert.equal(calls,1);
 });

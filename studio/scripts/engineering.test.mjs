@@ -529,7 +529,10 @@ test("week-one review remains reachable and does not turn metadata into function
   assert.ok(engineeringResources.every(row=>row.reviewDownload===engineeringReviewDownload));
   const source=await readFile(new URL("../src/progress/main.js",import.meta.url),"utf8");
   assert.ok(source.includes("data-first-week-review")&&source.includes("resourceHref(engineeringReviewDownload)"));
-  assert.equal(engineeringReviewDownload.href,"/downloads/quantumbridge-first-week-review.json");
+  assert.equal(engineeringReviewDownload.href,"/downloads/quantumbridge-first-week-review.json.gz");
+  const reviewBytes=await readFile(new URL("../downloads/quantumbridge-first-week-review.json",import.meta.url));
+  const archive=await readFile(new URL("../downloads/quantumbridge-first-week-review.json.gz",import.meta.url));
+  assert.deepEqual(gunzipSync(archive),reviewBytes);
   assert.equal(JSON.stringify(report).includes("/Users/"),false);
 });
 test("SDK-only mixed diagnostics retain strict failures and never become Native passes",async()=>{
