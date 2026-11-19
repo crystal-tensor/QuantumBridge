@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "recorded_at": "2026-11-19T11:16:24.112003+00:00",
+  "recorded_at": "2026-11-19T12:25:20.259669+00:00",
   "checkpoint": "goal-first-thirty-IAs58X",
   "reason": "Owner requires at least several dozen genuinely complete functions before later recommendations.",
   "baseline_source_fingerprint": "d205b48e65fa275a8eff90f31bd82c0832eb4038a14770f8934e77833a696bd3",
@@ -43,8 +43,8 @@
         "sdk_free_execution"
       ],
       "canonical_target": "qiskit.quantum_info.states.measures.state_fidelity",
-      "source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
-      "evidence_hash": "e49677a48c0b27d33ff16a66c72776beb50836e01384019d5a0f8f206d8bb115",
+      "source_fingerprint": "a67f19c333a6729812c97bc430b460c8ef526cdc2e0915ccebbe1741756c8df8",
+      "evidence_hash": "c088e8f27bc14a918dcc9ad2c79902efb13089ee64296e17393df69cb8489ef3",
       "contract": {
         "signature": {
           "state": "VERIFIED",
@@ -282,8 +282,8 @@
         "sdk_free_execution"
       ],
       "canonical_target": "qiskit.quantum_info.states.measures.purity",
-      "source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
-      "evidence_hash": "d629741c68ce6c915728ef4e4d5b68215af82916b2e6328156e80411f2876aa5",
+      "source_fingerprint": "a67f19c333a6729812c97bc430b460c8ef526cdc2e0915ccebbe1741756c8df8",
+      "evidence_hash": "3fc86e0f3943ba89f6c53c66dd5b4d140a5f9cc156502b8d5e6c30e59439e9eb",
       "contract": {
         "signature": {
           "state": "VERIFIED",
@@ -546,8 +546,8 @@
         "sdk_free_execution"
       ],
       "canonical_target": "qiskit.quantum_info.analysis.distance.hellinger_distance",
-      "source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
-      "evidence_hash": "0637c5b336765c53c9bad800ee07a13210f7deebb0712b033f87e7f36c10b122",
+      "source_fingerprint": "a67f19c333a6729812c97bc430b460c8ef526cdc2e0915ccebbe1741756c8df8",
+      "evidence_hash": "03d1a7ff0c3879dc36dd93aafb0e9b4e5dfdf72e6adf7d8d308c4bade676bcfd",
       "contract": {
         "signature": {
           "state": "VERIFIED",
@@ -785,8 +785,8 @@
         "sdk_free_execution"
       ],
       "canonical_target": "qiskit.quantum_info.analysis.distance.hellinger_fidelity",
-      "source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
-      "evidence_hash": "4b14c273214aad25f20982ec1dbc678d19333dd17375d359e6f52ba15e40ab73",
+      "source_fingerprint": "a67f19c333a6729812c97bc430b460c8ef526cdc2e0915ccebbe1741756c8df8",
+      "evidence_hash": "2cd5b472202d62766325b7b2471581a4407597f774630a5d37d73291fb7c222a",
       "contract": {
         "signature": {
           "state": "VERIFIED",
@@ -1099,8 +1099,8 @@
         "sdk_free_execution"
       ],
       "canonical_target": "qiskit.quantum_info.states.measures.entropy",
-      "source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
-      "evidence_hash": "ead09499e75938bdcba0d305d776faf57cd34bafeed6899c5099c705c0907d78",
+      "source_fingerprint": "a67f19c333a6729812c97bc430b460c8ef526cdc2e0915ccebbe1741756c8df8",
+      "evidence_hash": "d5fa56f9e71c8a7f6853b2552cd388945dc142e7a6f3d0338f5168afc55783fb",
       "contract": {
         "signature": {
           "state": "VERIFIED",
@@ -1254,8 +1254,8 @@
         "sdk_free_execution"
       ],
       "canonical_target": "qiskit.quantum_info.states.measures.mutual_information",
-      "source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
-      "evidence_hash": "5d69d6a75d89e7fbb8301b50c7e203e6b1abf6a16ce23964ac901858f6327d82",
+      "source_fingerprint": "a67f19c333a6729812c97bc430b460c8ef526cdc2e0915ccebbe1741756c8df8",
+      "evidence_hash": "04201e00947c19b7490c80f0de036d5160d29f6621c908b90f19f6ddd81ff0ab",
       "contract": {
         "signature": {
           "state": "VERIFIED",
@@ -1409,8 +1409,8 @@
         "sdk_free_execution"
       ],
       "canonical_target": "qiskit.quantum_info.states.measures.concurrence",
-      "source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
-      "evidence_hash": "c06b62948089e248a7d0f41ddc6db88ca628e70e294c243f3c58c5af9f99bfc0",
+      "source_fingerprint": "a67f19c333a6729812c97bc430b460c8ef526cdc2e0915ccebbe1741756c8df8",
+      "evidence_hash": "dca61404aac8b2408dfe6f0718811fc702a62d1e19dfab7fe5fe72562d6ff27b",
       "contract": {
         "signature": {
           "state": "VERIFIED",
@@ -1564,8 +1564,8 @@
         "sdk_free_execution"
       ],
       "canonical_target": "qiskit.quantum_info.states.measures.entanglement_of_formation",
-      "source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
-      "evidence_hash": "e9dbceb50eb233b2797d2a6e850a42b1deff23cb47a9796875c8bcf4fa9a038b",
+      "source_fingerprint": "a67f19c333a6729812c97bc430b460c8ef526cdc2e0915ccebbe1741756c8df8",
+      "evidence_hash": "e3f6728e34a95d15ebdd3f8b689731b35b18b80e43748913bcf98efc4c3a4c0e",
       "contract": {
         "signature": {
           "state": "VERIFIED",
@@ -1719,8 +1719,8 @@
         "sdk_free_execution"
       ],
       "canonical_target": "qiskit.quantum_info.states.measures.negativity",
-      "source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
-      "evidence_hash": "83ceb14c94a389eb05dde0609c00be6000f6dfe9a6b656f15af3cb1be24b29c4",
+      "source_fingerprint": "a67f19c333a6729812c97bc430b460c8ef526cdc2e0915ccebbe1741756c8df8",
+      "evidence_hash": "0b6a6b440ec4f310cf49393dfb4e866dc15bb2536583f666fed117c8c817b7c5",
       "contract": {
         "signature": {
           "state": "VERIFIED",
@@ -1874,8 +1874,8 @@
         "sdk_free_execution"
       ],
       "canonical_target": "qiskit.quantum_info.states.utils.schmidt_decomposition",
-      "source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
-      "evidence_hash": "6991cb819020a3642765c89a6b3cc26a2e83418ace2d5130fede136c973b6b99",
+      "source_fingerprint": "a67f19c333a6729812c97bc430b460c8ef526cdc2e0915ccebbe1741756c8df8",
+      "evidence_hash": "98c426a3c15614eb9874c562d5cc284a2c5943e429fd3491f594b2e6898d0427",
       "contract": {
         "signature": {
           "state": "VERIFIED",
@@ -2029,8 +2029,8 @@
         "sdk_free_execution"
       ],
       "canonical_target": "qiskit.quantum_info.states.utils.shannon_entropy",
-      "source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
-      "evidence_hash": "c5641e50a026d55a2dc8c9689c679d0c6a12f909a600b7a4668c7a5ddf45979c",
+      "source_fingerprint": "a67f19c333a6729812c97bc430b460c8ef526cdc2e0915ccebbe1741756c8df8",
+      "evidence_hash": "416fdbe9b2cfa87c3324c9d9adfc9081d6b4b77a2215ad7c36a437409af7f45f",
       "contract": {
         "signature": {
           "state": "VERIFIED",
@@ -2259,14 +2259,15 @@
         "sdk_free_execution"
       ],
       "canonical_target": "qiskit.quantum_info.operators.predicates.matrix_equal",
-      "source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
-      "evidence_hash": "e807c97eafc8808fdc6a90efcb243eb3d3163f2fdad5dd28333cbee89271439f",
+      "source_fingerprint": "a67f19c333a6729812c97bc430b460c8ef526cdc2e0915ccebbe1741756c8df8",
+      "evidence_hash": "b71dc980651423f24e7a7c31f58bb5753aea3863e75184de7a73cead55864e92",
       "contract": {
         "signature": {
           "state": "VERIFIED",
           "contract": "Exact pinned public argument names, kinds, annotations and defaults; real Python binding and unknown-keyword refusal.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2276,6 +2277,7 @@
           "contract": "Default validation, tolerance, phase, log base and state-kind policies verified; original Legacy identities retained.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2285,6 +2287,7 @@
           "contract": "Scalar/vector/column/density/matrix and mixed-radix partitions; malformed/empty/rank and index paths tested. No implicit broadcast added where the SDK lacks it.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2294,6 +2297,7 @@
           "contract": "Real and complex numeric storage, integer and low-precision inputs, copied and readonly views. Stored values are not silently normalized.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2303,6 +2307,7 @@
           "contract": "Pinned SDK ndarray shape behavior including rectangular/rank errors; no generic broadcast promise or implicit batch loop.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2312,6 +2317,7 @@
           "contract": "Independent complex algebra, global phase and full Schmidt reconstruction; no comparison by real part or probabilities alone.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2321,6 +2327,7 @@
           "contract": "Default/unchecked paths, invalid and nonfinite states, malformed containers, shape and argument errors. Physical checks and original tolerances not weakened.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2330,6 +2337,7 @@
           "contract": "No input mutation; Native owned snapshots and returned Schmidt vectors; real traceback holders and final-release tests.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2339,6 +2347,7 @@
           "contract": "Managed quota preflight and shared work accounts; higher-rank Gram output sizing. Explicit numerical buffer leases, not a hard RSS or internal LAPACK/Python/FLOP measurement. Foreign managed callbacks are explicitly unsupported.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2348,6 +2357,7 @@
           "contract": "Not a serializer API. Stateless scalar/boolean functions have no serialization protocol. Schmidt returns Native statevectors with tested dimensions, complex data and independent storage; this does not certify the entire Statevector QPY ABI.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2357,6 +2367,7 @@
           "contract": "These pinned Qiskit NumPy analysis/predicate functions do not advertise an autodiff or higher-derivative API. No PennyLane/JAX/TF differentiability is inferred.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2366,6 +2377,7 @@
           "contract": "Analytic entangled qudit, diagonal entropy, probability ratio, polar/quadratic fidelity, spectral and full-complex matrix oracles are separate from actual SDK calls.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2375,6 +2387,7 @@
           "contract": "Actual Qiskit 2.4.1 and 2.6.0 imports, distribution identities, root and definition-file hashes plus normal process exits.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2384,6 +2397,7 @@
           "contract": "Own wheel actually built and pip-installed outside the repository; existing explicit classical packages linked individually. Actual test worker cannot discover installed or imported Qiskit/PennyLane; frozen Native Python bytes match.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2414,14 +2428,15 @@
         "sdk_free_execution"
       ],
       "canonical_target": "qiskit.quantum_info.operators.predicates.is_square_matrix",
-      "source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
-      "evidence_hash": "01966838830ab6b2756834177da5260cc2ccd6e99f9f0a7418f4144a4847f998",
+      "source_fingerprint": "a67f19c333a6729812c97bc430b460c8ef526cdc2e0915ccebbe1741756c8df8",
+      "evidence_hash": "3c1e051ade62bd88dd4681c336e36d4ed4e5aab05750fbaa5cd7f4752e643639",
       "contract": {
         "signature": {
           "state": "VERIFIED",
           "contract": "Exact pinned public argument names, kinds, annotations and defaults; real Python binding and unknown-keyword refusal.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2431,6 +2446,7 @@
           "contract": "Default validation, tolerance, phase, log base and state-kind policies verified; original Legacy identities retained.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2440,6 +2456,7 @@
           "contract": "Scalar/vector/column/density/matrix and mixed-radix partitions; malformed/empty/rank and index paths tested. No implicit broadcast added where the SDK lacks it.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2449,6 +2466,7 @@
           "contract": "Real and complex numeric storage, integer and low-precision inputs, copied and readonly views. Stored values are not silently normalized.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2458,6 +2476,7 @@
           "contract": "Pinned SDK ndarray shape behavior including rectangular/rank errors; no generic broadcast promise or implicit batch loop.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2467,6 +2486,7 @@
           "contract": "Independent complex algebra, global phase and full Schmidt reconstruction; no comparison by real part or probabilities alone.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2476,6 +2496,7 @@
           "contract": "Default/unchecked paths, invalid and nonfinite states, malformed containers, shape and argument errors. Physical checks and original tolerances not weakened.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2485,6 +2506,7 @@
           "contract": "No input mutation; Native owned snapshots and returned Schmidt vectors; real traceback holders and final-release tests.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2494,6 +2516,7 @@
           "contract": "Managed quota preflight and shared work accounts; higher-rank Gram output sizing. Explicit numerical buffer leases, not a hard RSS or internal LAPACK/Python/FLOP measurement. Foreign managed callbacks are explicitly unsupported.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2503,6 +2526,7 @@
           "contract": "Not a serializer API. Stateless scalar/boolean functions have no serialization protocol. Schmidt returns Native statevectors with tested dimensions, complex data and independent storage; this does not certify the entire Statevector QPY ABI.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2512,6 +2536,7 @@
           "contract": "These pinned Qiskit NumPy analysis/predicate functions do not advertise an autodiff or higher-derivative API. No PennyLane/JAX/TF differentiability is inferred.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2521,6 +2546,7 @@
           "contract": "Analytic entangled qudit, diagonal entropy, probability ratio, polar/quadratic fidelity, spectral and full-complex matrix oracles are separate from actual SDK calls.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2530,6 +2556,7 @@
           "contract": "Actual Qiskit 2.4.1 and 2.6.0 imports, distribution identities, root and definition-file hashes plus normal process exits.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2539,6 +2566,7 @@
           "contract": "Own wheel actually built and pip-installed outside the repository; existing explicit classical packages linked individually. Actual test worker cannot discover installed or imported Qiskit/PennyLane; frozen Native Python bytes match.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2569,14 +2597,15 @@
         "sdk_free_execution"
       ],
       "canonical_target": "qiskit.quantum_info.operators.predicates.is_diagonal_matrix",
-      "source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
-      "evidence_hash": "4b1646e8b52bd65ed1f2cab655829b5f08633c55db07a3af12c4af9045d4d111",
+      "source_fingerprint": "a67f19c333a6729812c97bc430b460c8ef526cdc2e0915ccebbe1741756c8df8",
+      "evidence_hash": "901ba959b301703519511a8a469cd36d6184f434524d2e820ba4ede131a9d98a",
       "contract": {
         "signature": {
           "state": "VERIFIED",
           "contract": "Exact pinned public argument names, kinds, annotations and defaults; real Python binding and unknown-keyword refusal.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2586,6 +2615,7 @@
           "contract": "Default validation, tolerance, phase, log base and state-kind policies verified; original Legacy identities retained.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2595,6 +2625,7 @@
           "contract": "Scalar/vector/column/density/matrix and mixed-radix partitions; malformed/empty/rank and index paths tested. No implicit broadcast added where the SDK lacks it.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2604,6 +2635,7 @@
           "contract": "Real and complex numeric storage, integer and low-precision inputs, copied and readonly views. Stored values are not silently normalized.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2613,6 +2645,7 @@
           "contract": "Pinned SDK ndarray shape behavior including rectangular/rank errors; no generic broadcast promise or implicit batch loop.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2622,6 +2655,7 @@
           "contract": "Independent complex algebra, global phase and full Schmidt reconstruction; no comparison by real part or probabilities alone.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2631,6 +2665,7 @@
           "contract": "Default/unchecked paths, invalid and nonfinite states, malformed containers, shape and argument errors. Physical checks and original tolerances not weakened.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2640,6 +2675,7 @@
           "contract": "No input mutation; Native owned snapshots and returned Schmidt vectors; real traceback holders and final-release tests.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2649,6 +2685,7 @@
           "contract": "Managed quota preflight and shared work accounts; higher-rank Gram output sizing. Explicit numerical buffer leases, not a hard RSS or internal LAPACK/Python/FLOP measurement. Foreign managed callbacks are explicitly unsupported.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2658,6 +2695,7 @@
           "contract": "Not a serializer API. Stateless scalar/boolean functions have no serialization protocol. Schmidt returns Native statevectors with tested dimensions, complex data and independent storage; this does not certify the entire Statevector QPY ABI.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2667,6 +2705,7 @@
           "contract": "These pinned Qiskit NumPy analysis/predicate functions do not advertise an autodiff or higher-derivative API. No PennyLane/JAX/TF differentiability is inferred.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2676,6 +2715,7 @@
           "contract": "Analytic entangled qudit, diagonal entropy, probability ratio, polar/quadratic fidelity, spectral and full-complex matrix oracles are separate from actual SDK calls.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2685,6 +2725,7 @@
           "contract": "Actual Qiskit 2.4.1 and 2.6.0 imports, distribution identities, root and definition-file hashes plus normal process exits.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2694,6 +2735,7 @@
           "contract": "Own wheel actually built and pip-installed outside the repository; existing explicit classical packages linked individually. Actual test worker cannot discover installed or imported Qiskit/PennyLane; frozen Native Python bytes match.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2724,14 +2766,15 @@
         "sdk_free_execution"
       ],
       "canonical_target": "qiskit.quantum_info.operators.predicates.is_symmetric_matrix",
-      "source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
-      "evidence_hash": "996df91ad77bd09e2327413dc0a27379fe119a065550d8d199ac8d0ed9643c17",
+      "source_fingerprint": "a67f19c333a6729812c97bc430b460c8ef526cdc2e0915ccebbe1741756c8df8",
+      "evidence_hash": "82b91f670939ee05fc8b50bf23b8f37afff3c53bc98d31c91fded3143ec9c0c5",
       "contract": {
         "signature": {
           "state": "VERIFIED",
           "contract": "Exact pinned public argument names, kinds, annotations and defaults; real Python binding and unknown-keyword refusal.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2741,6 +2784,7 @@
           "contract": "Default validation, tolerance, phase, log base and state-kind policies verified; original Legacy identities retained.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2750,6 +2794,7 @@
           "contract": "Scalar/vector/column/density/matrix and mixed-radix partitions; malformed/empty/rank and index paths tested. No implicit broadcast added where the SDK lacks it.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2759,6 +2804,7 @@
           "contract": "Real and complex numeric storage, integer and low-precision inputs, copied and readonly views. Stored values are not silently normalized.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2768,6 +2814,7 @@
           "contract": "Pinned SDK ndarray shape behavior including rectangular/rank errors; no generic broadcast promise or implicit batch loop.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2777,6 +2824,7 @@
           "contract": "Independent complex algebra, global phase and full Schmidt reconstruction; no comparison by real part or probabilities alone.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2786,6 +2834,7 @@
           "contract": "Default/unchecked paths, invalid and nonfinite states, malformed containers, shape and argument errors. Physical checks and original tolerances not weakened.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2795,6 +2844,7 @@
           "contract": "No input mutation; Native owned snapshots and returned Schmidt vectors; real traceback holders and final-release tests.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2804,6 +2854,7 @@
           "contract": "Managed quota preflight and shared work accounts; higher-rank Gram output sizing. Explicit numerical buffer leases, not a hard RSS or internal LAPACK/Python/FLOP measurement. Foreign managed callbacks are explicitly unsupported.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2813,6 +2864,7 @@
           "contract": "Not a serializer API. Stateless scalar/boolean functions have no serialization protocol. Schmidt returns Native statevectors with tested dimensions, complex data and independent storage; this does not certify the entire Statevector QPY ABI.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2822,6 +2874,7 @@
           "contract": "These pinned Qiskit NumPy analysis/predicate functions do not advertise an autodiff or higher-derivative API. No PennyLane/JAX/TF differentiability is inferred.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2831,6 +2884,7 @@
           "contract": "Analytic entangled qudit, diagonal entropy, probability ratio, polar/quadratic fidelity, spectral and full-complex matrix oracles are separate from actual SDK calls.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2840,6 +2894,7 @@
           "contract": "Actual Qiskit 2.4.1 and 2.6.0 imports, distribution identities, root and definition-file hashes plus normal process exits.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2849,6 +2904,7 @@
           "contract": "Own wheel actually built and pip-installed outside the repository; existing explicit classical packages linked individually. Actual test worker cannot discover installed or imported Qiskit/PennyLane; frozen Native Python bytes match.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2879,14 +2935,15 @@
         "sdk_free_execution"
       ],
       "canonical_target": "qiskit.quantum_info.operators.predicates.is_hermitian_matrix",
-      "source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
-      "evidence_hash": "2fef9d53f3b65689fc95e2acbc128ae4798c33a445054242e6969c3f8e9cc0fb",
+      "source_fingerprint": "a67f19c333a6729812c97bc430b460c8ef526cdc2e0915ccebbe1741756c8df8",
+      "evidence_hash": "5fc750644f3c9de9c5de946b234e49a37575536a7f0cc04e61a3b73ca8be4abf",
       "contract": {
         "signature": {
           "state": "VERIFIED",
           "contract": "Exact pinned public argument names, kinds, annotations and defaults; real Python binding and unknown-keyword refusal.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2896,6 +2953,7 @@
           "contract": "Default validation, tolerance, phase, log base and state-kind policies verified; original Legacy identities retained.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2905,6 +2963,7 @@
           "contract": "Scalar/vector/column/density/matrix and mixed-radix partitions; malformed/empty/rank and index paths tested. No implicit broadcast added where the SDK lacks it.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2914,6 +2973,7 @@
           "contract": "Real and complex numeric storage, integer and low-precision inputs, copied and readonly views. Stored values are not silently normalized.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2923,6 +2983,7 @@
           "contract": "Pinned SDK ndarray shape behavior including rectangular/rank errors; no generic broadcast promise or implicit batch loop.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2932,6 +2993,7 @@
           "contract": "Independent complex algebra, global phase and full Schmidt reconstruction; no comparison by real part or probabilities alone.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2941,6 +3003,7 @@
           "contract": "Default/unchecked paths, invalid and nonfinite states, malformed containers, shape and argument errors. Physical checks and original tolerances not weakened.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2950,6 +3013,7 @@
           "contract": "No input mutation; Native owned snapshots and returned Schmidt vectors; real traceback holders and final-release tests.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2959,6 +3023,7 @@
           "contract": "Managed quota preflight and shared work accounts; higher-rank Gram output sizing. Explicit numerical buffer leases, not a hard RSS or internal LAPACK/Python/FLOP measurement. Foreign managed callbacks are explicitly unsupported.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2968,6 +3033,7 @@
           "contract": "Not a serializer API. Stateless scalar/boolean functions have no serialization protocol. Schmidt returns Native statevectors with tested dimensions, complex data and independent storage; this does not certify the entire Statevector QPY ABI.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2977,6 +3043,7 @@
           "contract": "These pinned Qiskit NumPy analysis/predicate functions do not advertise an autodiff or higher-derivative API. No PennyLane/JAX/TF differentiability is inferred.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2986,6 +3053,7 @@
           "contract": "Analytic entangled qudit, diagonal entropy, probability ratio, polar/quadratic fidelity, spectral and full-complex matrix oracles are separate from actual SDK calls.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -2995,6 +3063,7 @@
           "contract": "Actual Qiskit 2.4.1 and 2.6.0 imports, distribution identities, root and definition-file hashes plus normal process exits.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3004,6 +3073,7 @@
           "contract": "Own wheel actually built and pip-installed outside the repository; existing explicit classical packages linked individually. Actual test worker cannot discover installed or imported Qiskit/PennyLane; frozen Native Python bytes match.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3034,14 +3104,15 @@
         "sdk_free_execution"
       ],
       "canonical_target": "qiskit.quantum_info.operators.predicates.is_positive_semidefinite_matrix",
-      "source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
-      "evidence_hash": "489f5895055cfa6bc0107a2058c9cd78889bbf510ce2de1b69051d153ebc584f",
+      "source_fingerprint": "a67f19c333a6729812c97bc430b460c8ef526cdc2e0915ccebbe1741756c8df8",
+      "evidence_hash": "296ab7690e4c79ba1b8e3c6ca5490cc6d07a31066fa953aace4ed073bcf24aa2",
       "contract": {
         "signature": {
           "state": "VERIFIED",
           "contract": "Exact pinned public argument names, kinds, annotations and defaults; real Python binding and unknown-keyword refusal.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3051,6 +3122,7 @@
           "contract": "Default validation, tolerance, phase, log base and state-kind policies verified; original Legacy identities retained.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3060,6 +3132,7 @@
           "contract": "Scalar/vector/column/density/matrix and mixed-radix partitions; malformed/empty/rank and index paths tested. No implicit broadcast added where the SDK lacks it.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3069,6 +3142,7 @@
           "contract": "Real and complex numeric storage, integer and low-precision inputs, copied and readonly views. Stored values are not silently normalized.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3078,6 +3152,7 @@
           "contract": "Pinned SDK ndarray shape behavior including rectangular/rank errors; no generic broadcast promise or implicit batch loop.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3087,6 +3162,7 @@
           "contract": "Independent complex algebra, global phase and full Schmidt reconstruction; no comparison by real part or probabilities alone.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3096,6 +3172,7 @@
           "contract": "Default/unchecked paths, invalid and nonfinite states, malformed containers, shape and argument errors. Physical checks and original tolerances not weakened.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3105,6 +3182,7 @@
           "contract": "No input mutation; Native owned snapshots and returned Schmidt vectors; real traceback holders and final-release tests.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3114,6 +3192,7 @@
           "contract": "Managed quota preflight and shared work accounts; higher-rank Gram output sizing. Explicit numerical buffer leases, not a hard RSS or internal LAPACK/Python/FLOP measurement. Foreign managed callbacks are explicitly unsupported.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3123,6 +3202,7 @@
           "contract": "Not a serializer API. Stateless scalar/boolean functions have no serialization protocol. Schmidt returns Native statevectors with tested dimensions, complex data and independent storage; this does not certify the entire Statevector QPY ABI.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3132,6 +3212,7 @@
           "contract": "These pinned Qiskit NumPy analysis/predicate functions do not advertise an autodiff or higher-derivative API. No PennyLane/JAX/TF differentiability is inferred.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3141,6 +3222,7 @@
           "contract": "Analytic entangled qudit, diagonal entropy, probability ratio, polar/quadratic fidelity, spectral and full-complex matrix oracles are separate from actual SDK calls.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3150,6 +3232,7 @@
           "contract": "Actual Qiskit 2.4.1 and 2.6.0 imports, distribution identities, root and definition-file hashes plus normal process exits.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3159,6 +3242,7 @@
           "contract": "Own wheel actually built and pip-installed outside the repository; existing explicit classical packages linked individually. Actual test worker cannot discover installed or imported Qiskit/PennyLane; frozen Native Python bytes match.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3189,14 +3273,15 @@
         "sdk_free_execution"
       ],
       "canonical_target": "qiskit.quantum_info.operators.predicates.is_identity_matrix",
-      "source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
-      "evidence_hash": "a866fcaf603f04017645ad765231dc4d2ac4e8b3a10b698519be20719e210b50",
+      "source_fingerprint": "a67f19c333a6729812c97bc430b460c8ef526cdc2e0915ccebbe1741756c8df8",
+      "evidence_hash": "1807eb84bfba9fa04b9983dacd6fb3dfc743377780e573163a0cc43d35e8554c",
       "contract": {
         "signature": {
           "state": "VERIFIED",
           "contract": "Exact pinned public argument names, kinds, annotations and defaults; real Python binding and unknown-keyword refusal.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3206,6 +3291,7 @@
           "contract": "Default validation, tolerance, phase, log base and state-kind policies verified; original Legacy identities retained.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3215,6 +3301,7 @@
           "contract": "Scalar/vector/column/density/matrix and mixed-radix partitions; malformed/empty/rank and index paths tested. No implicit broadcast added where the SDK lacks it.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3224,6 +3311,7 @@
           "contract": "Real and complex numeric storage, integer and low-precision inputs, copied and readonly views. Stored values are not silently normalized.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3233,6 +3321,7 @@
           "contract": "Pinned SDK ndarray shape behavior including rectangular/rank errors; no generic broadcast promise or implicit batch loop.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3242,6 +3331,7 @@
           "contract": "Independent complex algebra, global phase and full Schmidt reconstruction; no comparison by real part or probabilities alone.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3251,6 +3341,7 @@
           "contract": "Default/unchecked paths, invalid and nonfinite states, malformed containers, shape and argument errors. Physical checks and original tolerances not weakened.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3260,6 +3351,7 @@
           "contract": "No input mutation; Native owned snapshots and returned Schmidt vectors; real traceback holders and final-release tests.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3269,6 +3361,7 @@
           "contract": "Managed quota preflight and shared work accounts; higher-rank Gram output sizing. Explicit numerical buffer leases, not a hard RSS or internal LAPACK/Python/FLOP measurement. Foreign managed callbacks are explicitly unsupported.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3278,6 +3371,7 @@
           "contract": "Not a serializer API. Stateless scalar/boolean functions have no serialization protocol. Schmidt returns Native statevectors with tested dimensions, complex data and independent storage; this does not certify the entire Statevector QPY ABI.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3287,6 +3381,7 @@
           "contract": "These pinned Qiskit NumPy analysis/predicate functions do not advertise an autodiff or higher-derivative API. No PennyLane/JAX/TF differentiability is inferred.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3296,6 +3391,7 @@
           "contract": "Analytic entangled qudit, diagonal entropy, probability ratio, polar/quadratic fidelity, spectral and full-complex matrix oracles are separate from actual SDK calls.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3305,6 +3401,7 @@
           "contract": "Actual Qiskit 2.4.1 and 2.6.0 imports, distribution identities, root and definition-file hashes plus normal process exits.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3314,6 +3411,7 @@
           "contract": "Own wheel actually built and pip-installed outside the repository; existing explicit classical packages linked individually. Actual test worker cannot discover installed or imported Qiskit/PennyLane; frozen Native Python bytes match.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3344,14 +3442,15 @@
         "sdk_free_execution"
       ],
       "canonical_target": "qiskit.quantum_info.operators.predicates.is_unitary_matrix",
-      "source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
-      "evidence_hash": "6089bcfcc7f7f153c6f7ae53870c9806907bc3c74d6f59b5e2fa3b4d1d4e950e",
+      "source_fingerprint": "a67f19c333a6729812c97bc430b460c8ef526cdc2e0915ccebbe1741756c8df8",
+      "evidence_hash": "c12b6c7efb7dd5e98cbb0a22ab06ddf93e1d93c135af565028574535a981cadc",
       "contract": {
         "signature": {
           "state": "VERIFIED",
           "contract": "Exact pinned public argument names, kinds, annotations and defaults; real Python binding and unknown-keyword refusal.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3361,6 +3460,7 @@
           "contract": "Default validation, tolerance, phase, log base and state-kind policies verified; original Legacy identities retained.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3370,6 +3470,7 @@
           "contract": "Scalar/vector/column/density/matrix and mixed-radix partitions; malformed/empty/rank and index paths tested. No implicit broadcast added where the SDK lacks it.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3379,6 +3480,7 @@
           "contract": "Real and complex numeric storage, integer and low-precision inputs, copied and readonly views. Stored values are not silently normalized.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3388,6 +3490,7 @@
           "contract": "Pinned SDK ndarray shape behavior including rectangular/rank errors; no generic broadcast promise or implicit batch loop.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3397,6 +3500,7 @@
           "contract": "Independent complex algebra, global phase and full Schmidt reconstruction; no comparison by real part or probabilities alone.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3406,6 +3510,7 @@
           "contract": "Default/unchecked paths, invalid and nonfinite states, malformed containers, shape and argument errors. Physical checks and original tolerances not weakened.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3415,6 +3520,7 @@
           "contract": "No input mutation; Native owned snapshots and returned Schmidt vectors; real traceback holders and final-release tests.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3424,6 +3530,7 @@
           "contract": "Managed quota preflight and shared work accounts; higher-rank Gram output sizing. Explicit numerical buffer leases, not a hard RSS or internal LAPACK/Python/FLOP measurement. Foreign managed callbacks are explicitly unsupported.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3433,6 +3540,7 @@
           "contract": "Not a serializer API. Stateless scalar/boolean functions have no serialization protocol. Schmidt returns Native statevectors with tested dimensions, complex data and independent storage; this does not certify the entire Statevector QPY ABI.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3442,6 +3550,7 @@
           "contract": "These pinned Qiskit NumPy analysis/predicate functions do not advertise an autodiff or higher-derivative API. No PennyLane/JAX/TF differentiability is inferred.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3451,6 +3560,7 @@
           "contract": "Analytic entangled qudit, diagonal entropy, probability ratio, polar/quadratic fidelity, spectral and full-complex matrix oracles are separate from actual SDK calls.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3460,6 +3570,7 @@
           "contract": "Actual Qiskit 2.4.1 and 2.6.0 imports, distribution identities, root and definition-file hashes plus normal process exits.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3469,6 +3580,7 @@
           "contract": "Own wheel actually built and pip-installed outside the repository; existing explicit classical packages linked individually. Actual test worker cannot discover installed or imported Qiskit/PennyLane; frozen Native Python bytes match.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3499,14 +3611,15 @@
         "sdk_free_execution"
       ],
       "canonical_target": "qiskit.quantum_info.operators.predicates.is_isometry",
-      "source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
-      "evidence_hash": "9fcebcd01d0609aced6d35f2c3a54f6d51ecc1a9eb76990f27e99ebb1ca60517",
+      "source_fingerprint": "a67f19c333a6729812c97bc430b460c8ef526cdc2e0915ccebbe1741756c8df8",
+      "evidence_hash": "750cee628c7c5b02c36d64b39ed796bb863e7623aaac3c9fb2232fe63a096f50",
       "contract": {
         "signature": {
           "state": "VERIFIED",
           "contract": "Exact pinned public argument names, kinds, annotations and defaults; real Python binding and unknown-keyword refusal.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3516,6 +3629,7 @@
           "contract": "Default validation, tolerance, phase, log base and state-kind policies verified; original Legacy identities retained.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3525,6 +3639,7 @@
           "contract": "Scalar/vector/column/density/matrix and mixed-radix partitions; malformed/empty/rank and index paths tested. No implicit broadcast added where the SDK lacks it.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3534,6 +3649,7 @@
           "contract": "Real and complex numeric storage, integer and low-precision inputs, copied and readonly views. Stored values are not silently normalized.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3543,6 +3659,7 @@
           "contract": "Pinned SDK ndarray shape behavior including rectangular/rank errors; no generic broadcast promise or implicit batch loop.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3552,6 +3669,7 @@
           "contract": "Independent complex algebra, global phase and full Schmidt reconstruction; no comparison by real part or probabilities alone.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3561,6 +3679,7 @@
           "contract": "Default/unchecked paths, invalid and nonfinite states, malformed containers, shape and argument errors. Physical checks and original tolerances not weakened.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3570,6 +3689,7 @@
           "contract": "No input mutation; Native owned snapshots and returned Schmidt vectors; real traceback holders and final-release tests.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3579,6 +3699,7 @@
           "contract": "Managed quota preflight and shared work accounts; higher-rank Gram output sizing. Explicit numerical buffer leases, not a hard RSS or internal LAPACK/Python/FLOP measurement. Foreign managed callbacks are explicitly unsupported.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3588,6 +3709,7 @@
           "contract": "Not a serializer API. Stateless scalar/boolean functions have no serialization protocol. Schmidt returns Native statevectors with tested dimensions, complex data and independent storage; this does not certify the entire Statevector QPY ABI.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3597,6 +3719,7 @@
           "contract": "These pinned Qiskit NumPy analysis/predicate functions do not advertise an autodiff or higher-derivative API. No PennyLane/JAX/TF differentiability is inferred.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3606,6 +3729,7 @@
           "contract": "Analytic entangled qudit, diagonal entropy, probability ratio, polar/quadratic fidelity, spectral and full-complex matrix oracles are separate from actual SDK calls.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3615,6 +3739,7 @@
           "contract": "Actual Qiskit 2.4.1 and 2.6.0 imports, distribution identities, root and definition-file hashes plus normal process exits.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3624,6 +3749,7 @@
           "contract": "Own wheel actually built and pip-installed outside the repository; existing explicit classical packages linked individually. Actual test worker cannot discover installed or imported Qiskit/PennyLane; frozen Native Python bytes match.",
           "test_files": {
             "tests/information/test_native_matrix_predicates.py": "57e524d7978134ae5d5fe9177747abc14b0d5049de7f74dd6cb05b0af12b1cbc",
+            "tests/information/test_matrix_predicate_workspace_owners.py": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
             "tests/compat/test_public_matrix_predicates_reference.py": "6d15c1e2fd6c1f3725059740cbafc3fd3198043524ff76ea6c6629ab57a9f6b4",
             "tests/information/test_public_information_registry.py": "c0ecd9086500378df827985ff52ecbbf142fe58ddb3ee142a09799c850cb73e4"
           }
@@ -3710,7 +3836,7 @@
   "current_strict_failures_retained": true,
   "new_hardware_tasks": 0,
   "goal_complete": false,
-  "source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
+  "source_fingerprint": "a67f19c333a6729812c97bc430b460c8ef526cdc2e0915ccebbe1741756c8df8",
   "remaining_batch_functions": 10,
   "original_files_unchanged": 1335,
   "approved_migration_files": 38,
@@ -3718,5 +3844,241 @@
   "new_original_test_migrations": 0,
   "core_source_published": false,
   "full_suite_passed": false,
-  "hardware_tasks_added": 0
+  "hardware_tasks_added": 0,
+  "revalidation_history": [
+    {
+      "recorded_at": "2026-11-19T11:16:24.112003+00:00",
+      "source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
+      "checkpoint": "goal-first-thirty-IAs58X",
+      "function_evidence": [
+        {
+          "function": "state_fidelity",
+          "evidence_hash": "e49677a48c0b27d33ff16a66c72776beb50836e01384019d5a0f8f206d8bb115"
+        },
+        {
+          "function": "purity",
+          "evidence_hash": "d629741c68ce6c915728ef4e4d5b68215af82916b2e6328156e80411f2876aa5"
+        },
+        {
+          "function": "hellinger_distance",
+          "evidence_hash": "0637c5b336765c53c9bad800ee07a13210f7deebb0712b033f87e7f36c10b122"
+        },
+        {
+          "function": "hellinger_fidelity",
+          "evidence_hash": "4b14c273214aad25f20982ec1dbc678d19333dd17375d359e6f52ba15e40ab73"
+        },
+        {
+          "function": "entropy",
+          "evidence_hash": "ead09499e75938bdcba0d305d776faf57cd34bafeed6899c5099c705c0907d78"
+        },
+        {
+          "function": "mutual_information",
+          "evidence_hash": "5d69d6a75d89e7fbb8301b50c7e203e6b1abf6a16ce23964ac901858f6327d82"
+        },
+        {
+          "function": "concurrence",
+          "evidence_hash": "c06b62948089e248a7d0f41ddc6db88ca628e70e294c243f3c58c5af9f99bfc0"
+        },
+        {
+          "function": "entanglement_of_formation",
+          "evidence_hash": "e9dbceb50eb233b2797d2a6e850a42b1deff23cb47a9796875c8bcf4fa9a038b"
+        },
+        {
+          "function": "negativity",
+          "evidence_hash": "83ceb14c94a389eb05dde0609c00be6000f6dfe9a6b656f15af3cb1be24b29c4"
+        },
+        {
+          "function": "schmidt_decomposition",
+          "evidence_hash": "6991cb819020a3642765c89a6b3cc26a2e83418ace2d5130fede136c973b6b99"
+        },
+        {
+          "function": "shannon_entropy",
+          "evidence_hash": "c5641e50a026d55a2dc8c9689c679d0c6a12f909a600b7a4668c7a5ddf45979c"
+        },
+        {
+          "function": "matrix_equal",
+          "evidence_hash": "e807c97eafc8808fdc6a90efcb243eb3d3163f2fdad5dd28333cbee89271439f"
+        },
+        {
+          "function": "is_square_matrix",
+          "evidence_hash": "01966838830ab6b2756834177da5260cc2ccd6e99f9f0a7418f4144a4847f998"
+        },
+        {
+          "function": "is_diagonal_matrix",
+          "evidence_hash": "4b1646e8b52bd65ed1f2cab655829b5f08633c55db07a3af12c4af9045d4d111"
+        },
+        {
+          "function": "is_symmetric_matrix",
+          "evidence_hash": "996df91ad77bd09e2327413dc0a27379fe119a065550d8d199ac8d0ed9643c17"
+        },
+        {
+          "function": "is_hermitian_matrix",
+          "evidence_hash": "2fef9d53f3b65689fc95e2acbc128ae4798c33a445054242e6969c3f8e9cc0fb"
+        },
+        {
+          "function": "is_positive_semidefinite_matrix",
+          "evidence_hash": "489f5895055cfa6bc0107a2058c9cd78889bbf510ce2de1b69051d153ebc584f"
+        },
+        {
+          "function": "is_identity_matrix",
+          "evidence_hash": "a866fcaf603f04017645ad765231dc4d2ac4e8b3a10b698519be20719e210b50"
+        },
+        {
+          "function": "is_unitary_matrix",
+          "evidence_hash": "6089bcfcc7f7f153c6f7ae53870c9806907bc3c74d6f59b5e2fa3b4d1d4e950e"
+        },
+        {
+          "function": "is_isometry",
+          "evidence_hash": "9fcebcd01d0609aced6d35f2c3a54f6d51ecc1a9eb76990f27e99ebb1ca60517"
+        }
+      ]
+    }
+  ],
+  "current_revalidation_checkpoint": "goal-tf-atomic-sNIMki",
+  "full_function_acceptances_added": 0,
+  "resource_ownership_revalidation": {
+    "validation_key": "matrix_predicate_owner_revalidation",
+    "source_fingerprint": "a67f19c333a6729812c97bc430b460c8ef526cdc2e0915ccebbe1741756c8df8",
+    "parent_source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
+    "full_function_acceptances_added": 0,
+    "distinct_functions_revalidated": 20,
+    "prerepair_replay": {
+      "recorded_at": "2026-11-19T12:29:48.848003+00:00",
+      "source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
+      "not_backdated": true,
+      "test_sha256": "2f108ed0478baedb92dac76dc3f83a5931a52c1fa09999f0f2dbc2de1e32c66b",
+      "identical_before_after_test_bytes": true,
+      "results": [
+        {
+          "name": "predicate-owners-before-main-native",
+          "profile": "main",
+          "recorded_at": "2026-11-19T12:25:19.411324+00:00",
+          "total": 9,
+          "passed": 0,
+          "failed": 9,
+          "skipped": 0,
+          "evidence_hash": "0002ac24ca19f97a72c76020116635db2ea3d0f1b7190b33cbb2c42f0b0b48d1",
+          "source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
+          "process_terminal_validation": {
+            "provided": true,
+            "exit": 1,
+            "receipt_hash": "567efdd3c527b434b1b676660f20d5ef1b5e0284b723e32d6446860422b92076"
+          }
+        },
+        {
+          "name": "predicate-owners-before-alternate-native",
+          "profile": "alternate",
+          "recorded_at": "2026-11-19T12:25:20.422128+00:00",
+          "total": 9,
+          "passed": 0,
+          "failed": 9,
+          "skipped": 0,
+          "evidence_hash": "88b6cc052f43052d66d13af62557e460226bae18ae3befce4fe0a6f9debd3325",
+          "source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
+          "process_terminal_validation": {
+            "provided": true,
+            "exit": 1,
+            "receipt_hash": "8200eb62bf2f07c02a1790315fab9714d202de99439818b0bd069ff4e0a6765e"
+          }
+        }
+      ],
+      "meaning": "New fault-injection tests replayed against frozen prior Native after discovery. Historical failed ownership contract retained; not nine missing functions."
+    },
+    "rejected_private_candidate": {
+      "source_fingerprint": "932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32",
+      "ended_at": "2026-11-19T11:56:58.090309+00:00",
+      "classification": "REJECTED_PRIVATE_ATOMIC_CALLBACK_PROTOTYPE",
+      "native_accepted": false,
+      "production_patch_promoted": false,
+      "canonical_test_acceptance": false,
+      "observed_pytest_summary": {
+        "total": 17,
+        "passed": 16,
+        "failed": 1,
+        "skipped": 0
+      },
+      "terminal_exit": 1,
+      "terminal_sha256": "2df2cbc0500c309c2020fb3e6e18cbff03bcf9a6a591aebc24542eee13de9129",
+      "log_sha256": "c539ded6c883677573ba76bf6a3bed6fdd733eef6bb5ab8d68a38f1dff461455",
+      "failed_case": "test_original_samples_determine_nonlinear_loss_gradient_and_hessian[reverse_forward]",
+      "observed_absolute_error": 0.392,
+      "required_atol": 8e-14,
+      "required_rtol": 0,
+      "limitations": "Private runtime substitution, without formal frozen-import/environment attestation; diagnostic only. Original two shared-bank cases passing under substitution do not fix the production strict failure. Stronger nonlinear-loss curvature check failed; original tolerances and third-order boundaries retained. No whole-TensorFlow root-cause attribution."
+    },
+    "profiles": [
+      {
+        "profile": "main",
+        "current_selected_scope": {
+          "total": 926,
+          "passed": 921,
+          "failed": 5,
+          "skipped": 0
+        },
+        "information_function_scope": {
+          "total": 896,
+          "passed": 896,
+          "failed": 0,
+          "skipped": 0
+        },
+        "exact_old_failure_scope": {
+          "total": 30,
+          "passed": 25,
+          "failed": 5,
+          "skipped": 0
+        },
+        "current_selected_unique_failure_ids": [
+          "tests.interfaces.test_native_shared_bank_hessian_frameworks::test_framework_gradient_replays_actual_sample_means_and_hessian_uses_real_second_shifts[True-tf]",
+          "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature[False-True-forward_reverse]",
+          "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature[False-True-reverse_forward]",
+          "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature[True-True-forward_reverse]",
+          "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature[True-True-reverse_forward]"
+        ],
+        "native_strict_failures": 5,
+        "separate_reference_scope": {
+          "total": 1502,
+          "passed": 1502,
+          "failed": 0,
+          "skipped": 0
+        },
+        "selected_scope_is_not_the_full_repository": true
+      },
+      {
+        "profile": "alternate",
+        "current_selected_scope": {
+          "total": 926,
+          "passed": 921,
+          "failed": 5,
+          "skipped": 0
+        },
+        "information_function_scope": {
+          "total": 896,
+          "passed": 896,
+          "failed": 0,
+          "skipped": 0
+        },
+        "exact_old_failure_scope": {
+          "total": 30,
+          "passed": 25,
+          "failed": 5,
+          "skipped": 0
+        },
+        "current_selected_unique_failure_ids": [
+          "tests.interfaces.test_native_shared_bank_hessian_frameworks::test_framework_gradient_replays_actual_sample_means_and_hessian_uses_real_second_shifts[True-tf]",
+          "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature[False-True-forward_reverse]",
+          "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature[False-True-reverse_forward]",
+          "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature[True-True-forward_reverse]",
+          "tests.interfaces.test_native_tf_cached_derivative_graphs::test_cached_tensor_rules_keep_mixed_loss_curvature[True-True-reverse_forward]"
+        ],
+        "native_strict_failures": 5,
+        "separate_reference_scope": {
+          "total": 1502,
+          "passed": 1502,
+          "failed": 0,
+          "skipped": 0
+        },
+        "selected_scope_is_not_the_full_repository": true
+      }
+    ]
+  }
 }
