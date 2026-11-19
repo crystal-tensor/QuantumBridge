@@ -1,0 +1,7041 @@
+{
+  "id": "9652d6d727726984",
+  "schema_version": "1",
+  "chip": "Baihua",
+  "calibrated_at": "2026-11-19T10:09:19+08:00",
+  "source": "live",
+  "basis_gates": [
+    "h",
+    "rx",
+    "ry",
+    "rz",
+    "cz"
+  ],
+  "n_qubits": 156,
+  "grid": {
+    "rows": 12,
+    "cols": 13
+  },
+  "qubits": [
+    {
+      "index": 0,
+      "t1_us": 69.45,
+      "t2_us": 12.319,
+      "t2_kind": null,
+      "frequency_ghz": 4.461,
+      "gate_fidelity_1q": {
+        "value": 0.998,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        0,
+        0
+      ]
+    },
+    {
+      "index": 1,
+      "t1_us": 86.015,
+      "t2_us": 7.041,
+      "t2_kind": null,
+      "frequency_ghz": 4.076,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        1,
+        0
+      ]
+    },
+    {
+      "index": 2,
+      "t1_us": 75.448,
+      "t2_us": 8.28,
+      "t2_kind": null,
+      "frequency_ghz": 4.392,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        2,
+        0
+      ]
+    },
+    {
+      "index": 3,
+      "t1_us": 58.816,
+      "t2_us": 24.881,
+      "t2_kind": null,
+      "frequency_ghz": 3.919,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        3,
+        0
+      ]
+    },
+    {
+      "index": 4,
+      "t1_us": 35.625,
+      "t2_us": 23.724,
+      "t2_kind": null,
+      "frequency_ghz": 4.444,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        4,
+        0
+      ]
+    },
+    {
+      "index": 5,
+      "t1_us": 26.141,
+      "t2_us": 10.683,
+      "t2_kind": null,
+      "frequency_ghz": 4.043,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        5,
+        0
+      ]
+    },
+    {
+      "index": 6,
+      "t1_us": 40.629,
+      "t2_us": 10.087,
+      "t2_kind": null,
+      "frequency_ghz": 4.389,
+      "gate_fidelity_1q": {
+        "value": 0.998,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        6,
+        0
+      ]
+    },
+    {
+      "index": 7,
+      "t1_us": 38.454,
+      "t2_us": 5.942,
+      "t2_kind": null,
+      "frequency_ghz": 4.027,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        7,
+        0
+      ]
+    },
+    {
+      "index": 8,
+      "t1_us": 19.076,
+      "t2_us": 7.638,
+      "t2_kind": null,
+      "frequency_ghz": 4.405,
+      "gate_fidelity_1q": {
+        "value": 0.979,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        8,
+        0
+      ]
+    },
+    {
+      "index": 9,
+      "t1_us": 64.882,
+      "t2_us": 15.499,
+      "t2_kind": null,
+      "frequency_ghz": 4.155,
+      "gate_fidelity_1q": {
+        "value": 0.991,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        9,
+        0
+      ]
+    },
+    {
+      "index": 10,
+      "t1_us": 80.817,
+      "t2_us": 30.566,
+      "t2_kind": null,
+      "frequency_ghz": 4.452,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        10,
+        0
+      ]
+    },
+    {
+      "index": 11,
+      "t1_us": 120.404,
+      "t2_us": 14.622,
+      "t2_kind": null,
+      "frequency_ghz": 4.092,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        11,
+        0
+      ]
+    },
+    {
+      "index": 12,
+      "t1_us": 68.646,
+      "t2_us": 18.661,
+      "t2_kind": null,
+      "frequency_ghz": 4.423,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        12,
+        0
+      ]
+    },
+    {
+      "index": 13,
+      "t1_us": 93.036,
+      "t2_us": 12.289,
+      "t2_kind": null,
+      "frequency_ghz": 3.852,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        0,
+        1
+      ]
+    },
+    {
+      "index": 14,
+      "t1_us": 78.201,
+      "t2_us": 25.84,
+      "t2_kind": null,
+      "frequency_ghz": 4.347,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        1,
+        1
+      ]
+    },
+    {
+      "index": 15,
+      "t1_us": 104.205,
+      "t2_us": 16.0,
+      "t2_kind": null,
+      "frequency_ghz": 3.998,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        2,
+        1
+      ]
+    },
+    {
+      "index": 16,
+      "t1_us": 37.728,
+      "t2_us": 26.322,
+      "t2_kind": null,
+      "frequency_ghz": 4.304,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        3,
+        1
+      ]
+    },
+    {
+      "index": 17,
+      "t1_us": 74.412,
+      "t2_us": 57.043,
+      "t2_kind": null,
+      "frequency_ghz": 3.9,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        4,
+        1
+      ]
+    },
+    {
+      "index": 18,
+      "t1_us": 49.66,
+      "t2_us": 13.252,
+      "t2_kind": null,
+      "frequency_ghz": 4.413,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        5,
+        1
+      ]
+    },
+    {
+      "index": 19,
+      "t1_us": 46.191,
+      "t2_us": 5.469,
+      "t2_kind": null,
+      "frequency_ghz": 3.991,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        6,
+        1
+      ]
+    },
+    {
+      "index": 20,
+      "t1_us": 48.425,
+      "t2_us": 10.98,
+      "t2_kind": null,
+      "frequency_ghz": 4.35,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        7,
+        1
+      ]
+    },
+    {
+      "index": 21,
+      "t1_us": 60.866,
+      "t2_us": 6.277,
+      "t2_kind": null,
+      "frequency_ghz": 3.982,
+      "gate_fidelity_1q": {
+        "value": 0.998,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        8,
+        1
+      ]
+    },
+    {
+      "index": 22,
+      "t1_us": 78.365,
+      "t2_us": 40.27,
+      "t2_kind": null,
+      "frequency_ghz": 4.423,
+      "gate_fidelity_1q": {
+        "value": 0.997,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        9,
+        1
+      ]
+    },
+    {
+      "index": 23,
+      "t1_us": 107.354,
+      "t2_us": 58.385,
+      "t2_kind": null,
+      "frequency_ghz": 4.055,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        10,
+        1
+      ]
+    },
+    {
+      "index": 24,
+      "t1_us": 67.095,
+      "t2_us": 18.636,
+      "t2_kind": null,
+      "frequency_ghz": 4.354,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        11,
+        1
+      ]
+    },
+    {
+      "index": 25,
+      "t1_us": 132.743,
+      "t2_us": 6.451,
+      "t2_kind": null,
+      "frequency_ghz": 3.973,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        12,
+        1
+      ]
+    },
+    {
+      "index": 26,
+      "t1_us": 59.738,
+      "t2_us": 12.256,
+      "t2_kind": null,
+      "frequency_ghz": 4.487,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        0,
+        2
+      ]
+    },
+    {
+      "index": 27,
+      "t1_us": 104.584,
+      "t2_us": 13.916,
+      "t2_kind": null,
+      "frequency_ghz": 4.192,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        1,
+        2
+      ]
+    },
+    {
+      "index": 28,
+      "t1_us": 67.591,
+      "t2_us": 33.73,
+      "t2_kind": null,
+      "frequency_ghz": 4.347,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        2,
+        2
+      ]
+    },
+    {
+      "index": 29,
+      "t1_us": 40.451,
+      "t2_us": 13.612,
+      "t2_kind": null,
+      "frequency_ghz": 4.057,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        3,
+        2
+      ]
+    },
+    {
+      "index": 30,
+      "t1_us": 92.225,
+      "t2_us": 20.043,
+      "t2_kind": null,
+      "frequency_ghz": 4.428,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        4,
+        2
+      ]
+    },
+    {
+      "index": 31,
+      "t1_us": 66.732,
+      "t2_us": 1.688,
+      "t2_kind": null,
+      "frequency_ghz": 4.019,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        5,
+        2
+      ]
+    },
+    {
+      "index": 32,
+      "t1_us": 49.257,
+      "t2_us": 2.799,
+      "t2_kind": null,
+      "frequency_ghz": 4.393,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        6,
+        2
+      ]
+    },
+    {
+      "index": 33,
+      "t1_us": 76.676,
+      "t2_us": 34.231,
+      "t2_kind": null,
+      "frequency_ghz": 3.976,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        7,
+        2
+      ]
+    },
+    {
+      "index": 34,
+      "t1_us": 31.307,
+      "t2_us": 13.069,
+      "t2_kind": null,
+      "frequency_ghz": 4.435,
+      "gate_fidelity_1q": {
+        "value": 0.983,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        8,
+        2
+      ]
+    },
+    {
+      "index": 35,
+      "t1_us": 4.441,
+      "t2_us": 60.643,
+      "t2_kind": null,
+      "frequency_ghz": 3.978,
+      "gate_fidelity_1q": {
+        "value": 0.998,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        9,
+        2
+      ]
+    },
+    {
+      "index": 36,
+      "t1_us": 49.722,
+      "t2_us": 23.943,
+      "t2_kind": null,
+      "frequency_ghz": 4.463,
+      "gate_fidelity_1q": {
+        "value": 0.996,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        10,
+        2
+      ]
+    },
+    {
+      "index": 37,
+      "t1_us": 71.507,
+      "t2_us": 6.816,
+      "t2_kind": null,
+      "frequency_ghz": 4.089,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        11,
+        2
+      ]
+    },
+    {
+      "index": 38,
+      "t1_us": 63.846,
+      "t2_us": 16.05,
+      "t2_kind": null,
+      "frequency_ghz": 4.468,
+      "gate_fidelity_1q": {
+        "value": 0.983,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        12,
+        2
+      ]
+    },
+    {
+      "index": 39,
+      "t1_us": 122.704,
+      "t2_us": 49.029,
+      "t2_kind": null,
+      "frequency_ghz": 3.926,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        0,
+        3
+      ]
+    },
+    {
+      "index": 40,
+      "t1_us": 69.649,
+      "t2_us": 2.824,
+      "t2_kind": null,
+      "frequency_ghz": 4.248,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        1,
+        3
+      ]
+    },
+    {
+      "index": 41,
+      "t1_us": 96.753,
+      "t2_us": 32.947,
+      "t2_kind": null,
+      "frequency_ghz": 3.925,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        2,
+        3
+      ]
+    },
+    {
+      "index": 42,
+      "t1_us": 54.174,
+      "t2_us": 11.687,
+      "t2_kind": null,
+      "frequency_ghz": 4.399,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        3,
+        3
+      ]
+    },
+    {
+      "index": 43,
+      "t1_us": 76.733,
+      "t2_us": 5.597,
+      "t2_kind": null,
+      "frequency_ghz": 3.956,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        4,
+        3
+      ]
+    },
+    {
+      "index": 44,
+      "t1_us": 71.709,
+      "t2_us": 20.31,
+      "t2_kind": null,
+      "frequency_ghz": 4.295,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        5,
+        3
+      ]
+    },
+    {
+      "index": 45,
+      "t1_us": 83.584,
+      "t2_us": 47.704,
+      "t2_kind": null,
+      "frequency_ghz": 4.008,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        6,
+        3
+      ]
+    },
+    {
+      "index": 46,
+      "t1_us": 55.779,
+      "t2_us": 43.187,
+      "t2_kind": null,
+      "frequency_ghz": 4.399,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        7,
+        3
+      ]
+    },
+    {
+      "index": 47,
+      "t1_us": 100.337,
+      "t2_us": 26.805,
+      "t2_kind": null,
+      "frequency_ghz": 3.977,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        8,
+        3
+      ]
+    },
+    {
+      "index": 48,
+      "t1_us": 51.614,
+      "t2_us": 34.867,
+      "t2_kind": null,
+      "frequency_ghz": 4.294,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        9,
+        3
+      ]
+    },
+    {
+      "index": 49,
+      "t1_us": 83.41,
+      "t2_us": 42.847,
+      "t2_kind": null,
+      "frequency_ghz": 3.98,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        10,
+        3
+      ]
+    },
+    {
+      "index": 50,
+      "t1_us": 69.107,
+      "t2_us": 20.25,
+      "t2_kind": null,
+      "frequency_ghz": 4.397,
+      "gate_fidelity_1q": {
+        "value": 0.985,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        11,
+        3
+      ]
+    },
+    {
+      "index": 51,
+      "t1_us": 26.314,
+      "t2_us": 0.355,
+      "t2_kind": null,
+      "frequency_ghz": 3.98,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        12,
+        3
+      ]
+    },
+    {
+      "index": 52,
+      "t1_us": 32.403,
+      "t2_us": 58.77,
+      "t2_kind": null,
+      "frequency_ghz": 4.373,
+      "gate_fidelity_1q": {
+        "value": 0.98,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        0,
+        4
+      ]
+    },
+    {
+      "index": 53,
+      "t1_us": 150.095,
+      "t2_us": 24.696,
+      "t2_kind": null,
+      "frequency_ghz": 3.943,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        1,
+        4
+      ]
+    },
+    {
+      "index": 54,
+      "t1_us": 104.95,
+      "t2_us": 30.412,
+      "t2_kind": null,
+      "frequency_ghz": 4.366,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        2,
+        4
+      ]
+    },
+    {
+      "index": 55,
+      "t1_us": 11.809,
+      "t2_us": 21.702,
+      "t2_kind": null,
+      "frequency_ghz": 3.96,
+      "gate_fidelity_1q": {
+        "value": 0.997,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        3,
+        4
+      ]
+    },
+    {
+      "index": 56,
+      "t1_us": 86.845,
+      "t2_us": 51.516,
+      "t2_kind": null,
+      "frequency_ghz": 4.288,
+      "gate_fidelity_1q": {
+        "value": 0.997,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        4,
+        4
+      ]
+    },
+    {
+      "index": 57,
+      "t1_us": 40.648,
+      "t2_us": 58.835,
+      "t2_kind": null,
+      "frequency_ghz": 4.062,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        5,
+        4
+      ]
+    },
+    {
+      "index": 58,
+      "t1_us": 62.013,
+      "t2_us": 8.331,
+      "t2_kind": null,
+      "frequency_ghz": 4.404,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        6,
+        4
+      ]
+    },
+    {
+      "index": 59,
+      "t1_us": 82.45,
+      "t2_us": 35.382,
+      "t2_kind": null,
+      "frequency_ghz": 4.133,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        7,
+        4
+      ]
+    },
+    {
+      "index": 60,
+      "t1_us": 67.188,
+      "t2_us": 40.287,
+      "t2_kind": null,
+      "frequency_ghz": 4.393,
+      "gate_fidelity_1q": {
+        "value": 0.994,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        8,
+        4
+      ]
+    },
+    {
+      "index": 61,
+      "t1_us": 84.84,
+      "t2_us": 27.845,
+      "t2_kind": null,
+      "frequency_ghz": 4.139,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        9,
+        4
+      ]
+    },
+    {
+      "index": 62,
+      "t1_us": 72.053,
+      "t2_us": 37.787,
+      "t2_kind": null,
+      "frequency_ghz": 4.475,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        10,
+        4
+      ]
+    },
+    {
+      "index": 63,
+      "t1_us": 99.775,
+      "t2_us": 34.1,
+      "t2_kind": null,
+      "frequency_ghz": 4.117,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        11,
+        4
+      ]
+    },
+    {
+      "index": 64,
+      "t1_us": 37.312,
+      "t2_us": 21.627,
+      "t2_kind": null,
+      "frequency_ghz": 4.557,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        12,
+        4
+      ]
+    },
+    {
+      "index": 65,
+      "t1_us": 100.393,
+      "t2_us": 59.081,
+      "t2_kind": null,
+      "frequency_ghz": 3.904,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        0,
+        5
+      ]
+    },
+    {
+      "index": 66,
+      "t1_us": null,
+      "t2_us": null,
+      "t2_kind": null,
+      "frequency_ghz": 4.419,
+      "gate_fidelity_1q": null,
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        1,
+        5
+      ]
+    },
+    {
+      "index": 67,
+      "t1_us": 106.234,
+      "t2_us": 24.07,
+      "t2_kind": null,
+      "frequency_ghz": 3.928,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        2,
+        5
+      ]
+    },
+    {
+      "index": 68,
+      "t1_us": 93.36,
+      "t2_us": 22.658,
+      "t2_kind": null,
+      "frequency_ghz": 4.252,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        3,
+        5
+      ]
+    },
+    {
+      "index": 69,
+      "t1_us": 52.21,
+      "t2_us": 25.331,
+      "t2_kind": null,
+      "frequency_ghz": 3.976,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        4,
+        5
+      ]
+    },
+    {
+      "index": 70,
+      "t1_us": 61.364,
+      "t2_us": 20.895,
+      "t2_kind": null,
+      "frequency_ghz": 4.476,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        5,
+        5
+      ]
+    },
+    {
+      "index": 71,
+      "t1_us": 19.195,
+      "t2_us": 12.503,
+      "t2_kind": null,
+      "frequency_ghz": 3.935,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        6,
+        5
+      ]
+    },
+    {
+      "index": 72,
+      "t1_us": 78.065,
+      "t2_us": 18.116,
+      "t2_kind": null,
+      "frequency_ghz": 4.376,
+      "gate_fidelity_1q": {
+        "value": 0.992,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        7,
+        5
+      ]
+    },
+    {
+      "index": 73,
+      "t1_us": 76.74,
+      "t2_us": 30.748,
+      "t2_kind": null,
+      "frequency_ghz": 3.975,
+      "gate_fidelity_1q": {
+        "value": 0.998,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        8,
+        5
+      ]
+    },
+    {
+      "index": 74,
+      "t1_us": 43.208,
+      "t2_us": 17.258,
+      "t2_kind": null,
+      "frequency_ghz": 4.42,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        9,
+        5
+      ]
+    },
+    {
+      "index": 75,
+      "t1_us": 112.198,
+      "t2_us": 52.095,
+      "t2_kind": null,
+      "frequency_ghz": 3.988,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        10,
+        5
+      ]
+    },
+    {
+      "index": 76,
+      "t1_us": 118.289,
+      "t2_us": 22.055,
+      "t2_kind": null,
+      "frequency_ghz": 4.319,
+      "gate_fidelity_1q": {
+        "value": 0.997,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        11,
+        5
+      ]
+    },
+    {
+      "index": 77,
+      "t1_us": 38.893,
+      "t2_us": 51.258,
+      "t2_kind": null,
+      "frequency_ghz": 4.023,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        12,
+        5
+      ]
+    },
+    {
+      "index": 78,
+      "t1_us": 75.505,
+      "t2_us": 9.815,
+      "t2_kind": null,
+      "frequency_ghz": 4.478,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        0,
+        6
+      ]
+    },
+    {
+      "index": 79,
+      "t1_us": 121.729,
+      "t2_us": 17.823,
+      "t2_kind": null,
+      "frequency_ghz": 4.092,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        1,
+        6
+      ]
+    },
+    {
+      "index": 80,
+      "t1_us": 118.315,
+      "t2_us": 33.465,
+      "t2_kind": null,
+      "frequency_ghz": 4.335,
+      "gate_fidelity_1q": {
+        "value": 0.95,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        2,
+        6
+      ]
+    },
+    {
+      "index": 81,
+      "t1_us": 89.7,
+      "t2_us": 29.727,
+      "t2_kind": null,
+      "frequency_ghz": 4.052,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        3,
+        6
+      ]
+    },
+    {
+      "index": 82,
+      "t1_us": 69.311,
+      "t2_us": 24.121,
+      "t2_kind": null,
+      "frequency_ghz": 4.336,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        4,
+        6
+      ]
+    },
+    {
+      "index": 83,
+      "t1_us": 92.188,
+      "t2_us": 25.738,
+      "t2_kind": null,
+      "frequency_ghz": 4.058,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        5,
+        6
+      ]
+    },
+    {
+      "index": 84,
+      "t1_us": 51.579,
+      "t2_us": 14.64,
+      "t2_kind": null,
+      "frequency_ghz": 4.458,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        6,
+        6
+      ]
+    },
+    {
+      "index": 85,
+      "t1_us": 82.5,
+      "t2_us": 5.353,
+      "t2_kind": null,
+      "frequency_ghz": 4.115,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        7,
+        6
+      ]
+    },
+    {
+      "index": 86,
+      "t1_us": 72.879,
+      "t2_us": 34.638,
+      "t2_kind": null,
+      "frequency_ghz": 4.423,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        8,
+        6
+      ]
+    },
+    {
+      "index": 87,
+      "t1_us": 101.271,
+      "t2_us": 30.1,
+      "t2_kind": null,
+      "frequency_ghz": 4.045,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        9,
+        6
+      ]
+    },
+    {
+      "index": 88,
+      "t1_us": 40.542,
+      "t2_us": 43.851,
+      "t2_kind": null,
+      "frequency_ghz": 4.437,
+      "gate_fidelity_1q": {
+        "value": 0.996,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        10,
+        6
+      ]
+    },
+    {
+      "index": 89,
+      "t1_us": 133.181,
+      "t2_us": 20.699,
+      "t2_kind": null,
+      "frequency_ghz": 4.058,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        11,
+        6
+      ]
+    },
+    {
+      "index": 90,
+      "t1_us": 51.799,
+      "t2_us": 38.68,
+      "t2_kind": null,
+      "frequency_ghz": 4.495,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        12,
+        6
+      ]
+    },
+    {
+      "index": 91,
+      "t1_us": 149.035,
+      "t2_us": 43.176,
+      "t2_kind": null,
+      "frequency_ghz": 3.788,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        0,
+        7
+      ]
+    },
+    {
+      "index": 92,
+      "t1_us": 125.201,
+      "t2_us": 29.688,
+      "t2_kind": null,
+      "frequency_ghz": 4.328,
+      "gate_fidelity_1q": {
+        "value": 0.994,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        1,
+        7
+      ]
+    },
+    {
+      "index": 93,
+      "t1_us": 51.119,
+      "t2_us": 16.149,
+      "t2_kind": null,
+      "frequency_ghz": 3.988,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        2,
+        7
+      ]
+    },
+    {
+      "index": 94,
+      "t1_us": 13.87,
+      "t2_us": 28.883,
+      "t2_kind": null,
+      "frequency_ghz": 4.352,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        3,
+        7
+      ]
+    },
+    {
+      "index": 95,
+      "t1_us": 97.384,
+      "t2_us": 15.673,
+      "t2_kind": null,
+      "frequency_ghz": 4.002,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        4,
+        7
+      ]
+    },
+    {
+      "index": 96,
+      "t1_us": 68.757,
+      "t2_us": 55.326,
+      "t2_kind": null,
+      "frequency_ghz": 4.377,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        5,
+        7
+      ]
+    },
+    {
+      "index": 97,
+      "t1_us": 53.861,
+      "t2_us": 31.771,
+      "t2_kind": null,
+      "frequency_ghz": 3.978,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        6,
+        7
+      ]
+    },
+    {
+      "index": 98,
+      "t1_us": 63.802,
+      "t2_us": 50.411,
+      "t2_kind": null,
+      "frequency_ghz": 4.455,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        7,
+        7
+      ]
+    },
+    {
+      "index": 99,
+      "t1_us": 82.316,
+      "t2_us": 31.0,
+      "t2_kind": null,
+      "frequency_ghz": 3.971,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        8,
+        7
+      ]
+    },
+    {
+      "index": 100,
+      "t1_us": 73.017,
+      "t2_us": 29.718,
+      "t2_kind": null,
+      "frequency_ghz": 4.364,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        9,
+        7
+      ]
+    },
+    {
+      "index": 101,
+      "t1_us": 102.065,
+      "t2_us": 9.806,
+      "t2_kind": null,
+      "frequency_ghz": 4.0,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        10,
+        7
+      ]
+    },
+    {
+      "index": 102,
+      "t1_us": 47.379,
+      "t2_us": 15.182,
+      "t2_kind": null,
+      "frequency_ghz": 4.423,
+      "gate_fidelity_1q": {
+        "value": 0.998,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        11,
+        7
+      ]
+    },
+    {
+      "index": 103,
+      "t1_us": 82.827,
+      "t2_us": 6.779,
+      "t2_kind": null,
+      "frequency_ghz": 3.959,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        12,
+        7
+      ]
+    },
+    {
+      "index": 104,
+      "t1_us": 51.596,
+      "t2_us": 17.639,
+      "t2_kind": null,
+      "frequency_ghz": 4.404,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        0,
+        8
+      ]
+    },
+    {
+      "index": 105,
+      "t1_us": 114.909,
+      "t2_us": 56.46,
+      "t2_kind": null,
+      "frequency_ghz": 4.072,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        1,
+        8
+      ]
+    },
+    {
+      "index": 106,
+      "t1_us": 76.125,
+      "t2_us": 19.831,
+      "t2_kind": null,
+      "frequency_ghz": 4.363,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        2,
+        8
+      ]
+    },
+    {
+      "index": 107,
+      "t1_us": 85.015,
+      "t2_us": 35.985,
+      "t2_kind": null,
+      "frequency_ghz": 4.006,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        3,
+        8
+      ]
+    },
+    {
+      "index": 108,
+      "t1_us": 26.183,
+      "t2_us": 10.984,
+      "t2_kind": null,
+      "frequency_ghz": 4.396,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        4,
+        8
+      ]
+    },
+    {
+      "index": 109,
+      "t1_us": 94.646,
+      "t2_us": 32.473,
+      "t2_kind": null,
+      "frequency_ghz": 3.968,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        5,
+        8
+      ]
+    },
+    {
+      "index": 110,
+      "t1_us": 54.461,
+      "t2_us": 13.473,
+      "t2_kind": null,
+      "frequency_ghz": 4.334,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        6,
+        8
+      ]
+    },
+    {
+      "index": 111,
+      "t1_us": null,
+      "t2_us": null,
+      "t2_kind": null,
+      "frequency_ghz": 4.058,
+      "gate_fidelity_1q": null,
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        7,
+        8
+      ]
+    },
+    {
+      "index": 112,
+      "t1_us": 38.421,
+      "t2_us": 18.386,
+      "t2_kind": null,
+      "frequency_ghz": 4.483,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        8,
+        8
+      ]
+    },
+    {
+      "index": 113,
+      "t1_us": 51.783,
+      "t2_us": 16.962,
+      "t2_kind": null,
+      "frequency_ghz": 4.102,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        9,
+        8
+      ]
+    },
+    {
+      "index": 114,
+      "t1_us": 66.72,
+      "t2_us": 50.595,
+      "t2_kind": null,
+      "frequency_ghz": 4.492,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        10,
+        8
+      ]
+    },
+    {
+      "index": 115,
+      "t1_us": 86.838,
+      "t2_us": 37.144,
+      "t2_kind": null,
+      "frequency_ghz": 4.176,
+      "gate_fidelity_1q": {
+        "value": 0.992,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        11,
+        8
+      ]
+    },
+    {
+      "index": 116,
+      "t1_us": 84.33,
+      "t2_us": 80.659,
+      "t2_kind": null,
+      "frequency_ghz": 4.558,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        12,
+        8
+      ]
+    },
+    {
+      "index": 117,
+      "t1_us": 97.815,
+      "t2_us": 24.532,
+      "t2_kind": null,
+      "frequency_ghz": 4.01,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        0,
+        9
+      ]
+    },
+    {
+      "index": 118,
+      "t1_us": 90.671,
+      "t2_us": 37.377,
+      "t2_kind": null,
+      "frequency_ghz": 4.115,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        1,
+        9
+      ]
+    },
+    {
+      "index": 119,
+      "t1_us": 100.603,
+      "t2_us": 53.978,
+      "t2_kind": null,
+      "frequency_ghz": 3.941,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        2,
+        9
+      ]
+    },
+    {
+      "index": 120,
+      "t1_us": 113.79,
+      "t2_us": 40.838,
+      "t2_kind": null,
+      "frequency_ghz": 4.213,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        3,
+        9
+      ]
+    },
+    {
+      "index": 121,
+      "t1_us": 150.183,
+      "t2_us": 25.705,
+      "t2_kind": null,
+      "frequency_ghz": 3.894,
+      "gate_fidelity_1q": {
+        "value": 0.988,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        4,
+        9
+      ]
+    },
+    {
+      "index": 122,
+      "t1_us": 79.267,
+      "t2_us": 3.487,
+      "t2_kind": null,
+      "frequency_ghz": 4.441,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        5,
+        9
+      ]
+    },
+    {
+      "index": 123,
+      "t1_us": 36.414,
+      "t2_us": 68.655,
+      "t2_kind": null,
+      "frequency_ghz": 3.985,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        6,
+        9
+      ]
+    },
+    {
+      "index": 124,
+      "t1_us": 27.679,
+      "t2_us": 9.455,
+      "t2_kind": null,
+      "frequency_ghz": 4.357,
+      "gate_fidelity_1q": {
+        "value": 0.995,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        7,
+        9
+      ]
+    },
+    {
+      "index": 125,
+      "t1_us": 54.418,
+      "t2_us": 38.488,
+      "t2_kind": null,
+      "frequency_ghz": 4.023,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        8,
+        9
+      ]
+    },
+    {
+      "index": 126,
+      "t1_us": 28.06,
+      "t2_us": 24.676,
+      "t2_kind": null,
+      "frequency_ghz": 4.227,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        9,
+        9
+      ]
+    },
+    {
+      "index": 127,
+      "t1_us": 84.012,
+      "t2_us": 40.747,
+      "t2_kind": null,
+      "frequency_ghz": 3.925,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        10,
+        9
+      ]
+    },
+    {
+      "index": 128,
+      "t1_us": 72.295,
+      "t2_us": 43.103,
+      "t2_kind": null,
+      "frequency_ghz": 4.327,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        11,
+        9
+      ]
+    },
+    {
+      "index": 129,
+      "t1_us": 36.003,
+      "t2_us": 17.317,
+      "t2_kind": null,
+      "frequency_ghz": 4.028,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        12,
+        9
+      ]
+    },
+    {
+      "index": 130,
+      "t1_us": 63.79,
+      "t2_us": 23.856,
+      "t2_kind": null,
+      "frequency_ghz": 4.385,
+      "gate_fidelity_1q": {
+        "value": 0.998,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        0,
+        10
+      ]
+    },
+    {
+      "index": 131,
+      "t1_us": 110.318,
+      "t2_us": 8.189,
+      "t2_kind": null,
+      "frequency_ghz": 4.047,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        1,
+        10
+      ]
+    },
+    {
+      "index": 132,
+      "t1_us": 68.701,
+      "t2_us": 1.257,
+      "t2_kind": null,
+      "frequency_ghz": 4.419,
+      "gate_fidelity_1q": {
+        "value": 0.998,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        2,
+        10
+      ]
+    },
+    {
+      "index": 133,
+      "t1_us": 15.453,
+      "t2_us": 25.187,
+      "t2_kind": null,
+      "frequency_ghz": 4.057,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        3,
+        10
+      ]
+    },
+    {
+      "index": 134,
+      "t1_us": 82.853,
+      "t2_us": 13.679,
+      "t2_kind": null,
+      "frequency_ghz": 4.412,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        4,
+        10
+      ]
+    },
+    {
+      "index": 135,
+      "t1_us": 48.547,
+      "t2_us": 12.751,
+      "t2_kind": null,
+      "frequency_ghz": 4.064,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        5,
+        10
+      ]
+    },
+    {
+      "index": 136,
+      "t1_us": 99.102,
+      "t2_us": 20.102,
+      "t2_kind": null,
+      "frequency_ghz": 4.526,
+      "gate_fidelity_1q": {
+        "value": 0.998,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        6,
+        10
+      ]
+    },
+    {
+      "index": 137,
+      "t1_us": 56.213,
+      "t2_us": 18.405,
+      "t2_kind": null,
+      "frequency_ghz": 4.084,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        7,
+        10
+      ]
+    },
+    {
+      "index": 138,
+      "t1_us": 27.885,
+      "t2_us": 19.835,
+      "t2_kind": null,
+      "frequency_ghz": 4.432,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        8,
+        10
+      ]
+    },
+    {
+      "index": 139,
+      "t1_us": 40.618,
+      "t2_us": 17.424,
+      "t2_kind": null,
+      "frequency_ghz": 4.124,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        9,
+        10
+      ]
+    },
+    {
+      "index": 140,
+      "t1_us": 33.561,
+      "t2_us": 5.394,
+      "t2_kind": null,
+      "frequency_ghz": 4.456,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        10,
+        10
+      ]
+    },
+    {
+      "index": 141,
+      "t1_us": 64.453,
+      "t2_us": 28.963,
+      "t2_kind": null,
+      "frequency_ghz": 4.108,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        11,
+        10
+      ]
+    },
+    {
+      "index": 142,
+      "t1_us": 49.85,
+      "t2_us": 22.902,
+      "t2_kind": null,
+      "frequency_ghz": 4.606,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        12,
+        10
+      ]
+    },
+    {
+      "index": 143,
+      "t1_us": 177.426,
+      "t2_us": 28.369,
+      "t2_kind": null,
+      "frequency_ghz": 3.994,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        0,
+        11
+      ]
+    },
+    {
+      "index": 144,
+      "t1_us": 56.907,
+      "t2_us": 19.034,
+      "t2_kind": null,
+      "frequency_ghz": 4.357,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        1,
+        11
+      ]
+    },
+    {
+      "index": 145,
+      "t1_us": 59.202,
+      "t2_us": 63.001,
+      "t2_kind": null,
+      "frequency_ghz": 3.943,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        2,
+        11
+      ]
+    },
+    {
+      "index": 146,
+      "t1_us": 101.927,
+      "t2_us": 55.648,
+      "t2_kind": null,
+      "frequency_ghz": 4.323,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        3,
+        11
+      ]
+    },
+    {
+      "index": 147,
+      "t1_us": 44.523,
+      "t2_us": 6.371,
+      "t2_kind": null,
+      "frequency_ghz": 3.989,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        4,
+        11
+      ]
+    },
+    {
+      "index": 148,
+      "t1_us": 63.683,
+      "t2_us": 46.392,
+      "t2_kind": null,
+      "frequency_ghz": 4.375,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        5,
+        11
+      ]
+    },
+    {
+      "index": 149,
+      "t1_us": 138.511,
+      "t2_us": 30.739,
+      "t2_kind": null,
+      "frequency_ghz": 3.947,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        6,
+        11
+      ]
+    },
+    {
+      "index": 150,
+      "t1_us": 123.795,
+      "t2_us": 9.223,
+      "t2_kind": null,
+      "frequency_ghz": 4.47,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        7,
+        11
+      ]
+    },
+    {
+      "index": 151,
+      "t1_us": 138.532,
+      "t2_us": 32.819,
+      "t2_kind": null,
+      "frequency_ghz": 4.013,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        8,
+        11
+      ]
+    },
+    {
+      "index": 152,
+      "t1_us": 73.49,
+      "t2_us": 66.697,
+      "t2_kind": null,
+      "frequency_ghz": 4.406,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        9,
+        11
+      ]
+    },
+    {
+      "index": 153,
+      "t1_us": 132.089,
+      "t2_us": 60.608,
+      "t2_kind": null,
+      "frequency_ghz": 3.923,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        10,
+        11
+      ]
+    },
+    {
+      "index": 154,
+      "t1_us": 72.696,
+      "t2_us": 11.547,
+      "t2_kind": null,
+      "frequency_ghz": 4.462,
+      "gate_fidelity_1q": {
+        "value": 0.999,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        11,
+        11
+      ]
+    },
+    {
+      "index": 155,
+      "t1_us": 64.48,
+      "t2_us": 14.067,
+      "t2_kind": null,
+      "frequency_ghz": 4.031,
+      "gate_fidelity_1q": {
+        "value": 0.95,
+        "gate": null,
+        "method": null,
+        "measured_at": null
+      },
+      "readout_fidelity_0": null,
+      "readout_fidelity_1": null,
+      "coordinate": [
+        12,
+        11
+      ]
+    }
+  ],
+  "couplers": [
+    {
+      "qubits": [
+        0,
+        1
+      ],
+      "cz_fidelity": {
+        "value": 0.973,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        1,
+        2
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        2,
+        3
+      ],
+      "cz_fidelity": {
+        "value": 0.984,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        2,
+        15
+      ],
+      "cz_fidelity": {
+        "value": 0.96,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        3,
+        4
+      ],
+      "cz_fidelity": {
+        "value": 0.989,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        4,
+        5
+      ],
+      "cz_fidelity": {
+        "value": 0.984,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        5,
+        6
+      ],
+      "cz_fidelity": {
+        "value": 0.954,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        6,
+        7
+      ],
+      "cz_fidelity": {
+        "value": 0.991,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        6,
+        19
+      ],
+      "cz_fidelity": {
+        "value": 0.954,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        7,
+        8
+      ],
+      "cz_fidelity": {
+        "value": 0.981,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        8,
+        9
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        9,
+        10
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        10,
+        11
+      ],
+      "cz_fidelity": {
+        "value": 0.99,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        10,
+        23
+      ],
+      "cz_fidelity": {
+        "value": 0.985,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        11,
+        12
+      ],
+      "cz_fidelity": {
+        "value": 0.993,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        13,
+        14
+      ],
+      "cz_fidelity": {
+        "value": 0.994,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        13,
+        26
+      ],
+      "cz_fidelity": {
+        "value": 0.944,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        14,
+        15
+      ],
+      "cz_fidelity": {
+        "value": 0.994,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        15,
+        16
+      ],
+      "cz_fidelity": {
+        "value": 0.987,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        16,
+        17
+      ],
+      "cz_fidelity": {
+        "value": 0.984,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        17,
+        18
+      ],
+      "cz_fidelity": {
+        "value": 0.981,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        17,
+        30
+      ],
+      "cz_fidelity": {
+        "value": 0.989,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        18,
+        19
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        19,
+        20
+      ],
+      "cz_fidelity": {
+        "value": 0.985,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        20,
+        21
+      ],
+      "cz_fidelity": {
+        "value": 0.976,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        21,
+        22
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        21,
+        34
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        22,
+        23
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        23,
+        24
+      ],
+      "cz_fidelity": {
+        "value": 0.991,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        24,
+        25
+      ],
+      "cz_fidelity": {
+        "value": 0.979,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        25,
+        38
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        26,
+        27
+      ],
+      "cz_fidelity": {
+        "value": 0.99,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        27,
+        28
+      ],
+      "cz_fidelity": {
+        "value": 0.95,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        28,
+        29
+      ],
+      "cz_fidelity": {
+        "value": 0.994,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        28,
+        41
+      ],
+      "cz_fidelity": {
+        "value": 0.99,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        29,
+        30
+      ],
+      "cz_fidelity": {
+        "value": 0.992,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        30,
+        31
+      ],
+      "cz_fidelity": {
+        "value": 0.968,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        31,
+        32
+      ],
+      "cz_fidelity": {
+        "value": 0.89,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        32,
+        33
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        32,
+        45
+      ],
+      "cz_fidelity": {
+        "value": 0.944,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        33,
+        34
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        34,
+        35
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        35,
+        36
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        36,
+        37
+      ],
+      "cz_fidelity": {
+        "value": 0.97,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        36,
+        49
+      ],
+      "cz_fidelity": {
+        "value": 0.959,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        37,
+        38
+      ],
+      "cz_fidelity": {
+        "value": 0.972,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        39,
+        40
+      ],
+      "cz_fidelity": {
+        "value": 0.953,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        39,
+        52
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        40,
+        41
+      ],
+      "cz_fidelity": {
+        "value": 0.947,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        41,
+        42
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        42,
+        43
+      ],
+      "cz_fidelity": {
+        "value": 0.89,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        43,
+        44
+      ],
+      "cz_fidelity": {
+        "value": 0.985,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        43,
+        56
+      ],
+      "cz_fidelity": {
+        "value": 0.991,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        44,
+        45
+      ],
+      "cz_fidelity": {
+        "value": 0.966,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        45,
+        46
+      ],
+      "cz_fidelity": {
+        "value": 0.97,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        46,
+        47
+      ],
+      "cz_fidelity": {
+        "value": 0.986,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        47,
+        48
+      ],
+      "cz_fidelity": {
+        "value": 0.976,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        47,
+        60
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        48,
+        49
+      ],
+      "cz_fidelity": {
+        "value": 0.988,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        49,
+        50
+      ],
+      "cz_fidelity": {
+        "value": 0.955,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        50,
+        51
+      ],
+      "cz_fidelity": {
+        "value": 0.977,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        51,
+        64
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        52,
+        53
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        53,
+        54
+      ],
+      "cz_fidelity": {
+        "value": 0.99,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        54,
+        55
+      ],
+      "cz_fidelity": {
+        "value": 0.988,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        54,
+        67
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        55,
+        56
+      ],
+      "cz_fidelity": {
+        "value": 0.974,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        56,
+        57
+      ],
+      "cz_fidelity": {
+        "value": 0.989,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        57,
+        58
+      ],
+      "cz_fidelity": {
+        "value": 0.993,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        58,
+        59
+      ],
+      "cz_fidelity": {
+        "value": 0.991,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        58,
+        71
+      ],
+      "cz_fidelity": {
+        "value": 0.929,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        59,
+        60
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        60,
+        61
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        61,
+        62
+      ],
+      "cz_fidelity": {
+        "value": 0.995,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        62,
+        63
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        62,
+        75
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        63,
+        64
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        65,
+        66
+      ],
+      "cz_fidelity": {
+        "value": 0.982,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        65,
+        78
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        66,
+        67
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        67,
+        68
+      ],
+      "cz_fidelity": {
+        "value": 0.976,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        68,
+        69
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        69,
+        70
+      ],
+      "cz_fidelity": {
+        "value": 0.983,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        69,
+        82
+      ],
+      "cz_fidelity": {
+        "value": 0.989,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        70,
+        71
+      ],
+      "cz_fidelity": {
+        "value": 0.987,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        71,
+        72
+      ],
+      "cz_fidelity": {
+        "value": 0.987,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        72,
+        73
+      ],
+      "cz_fidelity": {
+        "value": 0.989,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        73,
+        74
+      ],
+      "cz_fidelity": {
+        "value": 0.991,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        73,
+        86
+      ],
+      "cz_fidelity": {
+        "value": 0.958,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        74,
+        75
+      ],
+      "cz_fidelity": {
+        "value": 0.996,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        75,
+        76
+      ],
+      "cz_fidelity": {
+        "value": 0.955,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        76,
+        77
+      ],
+      "cz_fidelity": {
+        "value": 0.956,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        77,
+        90
+      ],
+      "cz_fidelity": {
+        "value": 0.955,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        78,
+        79
+      ],
+      "cz_fidelity": {
+        "value": 0.988,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        79,
+        80
+      ],
+      "cz_fidelity": {
+        "value": 0.89,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        80,
+        81
+      ],
+      "cz_fidelity": {
+        "value": 0.943,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        80,
+        93
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        81,
+        82
+      ],
+      "cz_fidelity": {
+        "value": 0.992,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        82,
+        83
+      ],
+      "cz_fidelity": {
+        "value": 0.988,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        83,
+        84
+      ],
+      "cz_fidelity": {
+        "value": 0.982,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        84,
+        85
+      ],
+      "cz_fidelity": {
+        "value": 0.989,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        84,
+        97
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        85,
+        86
+      ],
+      "cz_fidelity": {
+        "value": 0.99,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        86,
+        87
+      ],
+      "cz_fidelity": {
+        "value": 0.986,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        87,
+        88
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        88,
+        89
+      ],
+      "cz_fidelity": {
+        "value": 0.98,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        88,
+        101
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        89,
+        90
+      ],
+      "cz_fidelity": {
+        "value": 0.955,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        91,
+        92
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        91,
+        104
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        92,
+        93
+      ],
+      "cz_fidelity": {
+        "value": 0.962,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        93,
+        94
+      ],
+      "cz_fidelity": {
+        "value": 0.992,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        94,
+        95
+      ],
+      "cz_fidelity": {
+        "value": 0.994,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        95,
+        96
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        95,
+        108
+      ],
+      "cz_fidelity": {
+        "value": 0.986,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        96,
+        97
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        97,
+        98
+      ],
+      "cz_fidelity": {
+        "value": 0.99,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        98,
+        99
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        99,
+        100
+      ],
+      "cz_fidelity": {
+        "value": 0.989,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        99,
+        112
+      ],
+      "cz_fidelity": {
+        "value": 0.923,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        100,
+        101
+      ],
+      "cz_fidelity": {
+        "value": 0.994,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        101,
+        102
+      ],
+      "cz_fidelity": {
+        "value": 0.973,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        102,
+        103
+      ],
+      "cz_fidelity": {
+        "value": 0.989,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        103,
+        116
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        104,
+        105
+      ],
+      "cz_fidelity": {
+        "value": 0.991,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        105,
+        106
+      ],
+      "cz_fidelity": {
+        "value": 0.982,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        106,
+        107
+      ],
+      "cz_fidelity": {
+        "value": 0.999,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        106,
+        119
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        107,
+        108
+      ],
+      "cz_fidelity": {
+        "value": 0.972,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        108,
+        109
+      ],
+      "cz_fidelity": {
+        "value": 0.982,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        109,
+        110
+      ],
+      "cz_fidelity": {
+        "value": 0.985,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        110,
+        111
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        110,
+        123
+      ],
+      "cz_fidelity": {
+        "value": 0.988,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        111,
+        112
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        112,
+        113
+      ],
+      "cz_fidelity": {
+        "value": 0.989,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        113,
+        114
+      ],
+      "cz_fidelity": {
+        "value": 0.985,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        114,
+        115
+      ],
+      "cz_fidelity": {
+        "value": 0.992,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        114,
+        127
+      ],
+      "cz_fidelity": {
+        "value": 0.947,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        115,
+        116
+      ],
+      "cz_fidelity": {
+        "value": 0.995,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        117,
+        118
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        117,
+        130
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        118,
+        119
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        119,
+        120
+      ],
+      "cz_fidelity": {
+        "value": 0.995,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        120,
+        121
+      ],
+      "cz_fidelity": {
+        "value": 0.89,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        121,
+        122
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        121,
+        134
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        122,
+        123
+      ],
+      "cz_fidelity": {
+        "value": 0.962,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        123,
+        124
+      ],
+      "cz_fidelity": {
+        "value": 0.957,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        124,
+        125
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        125,
+        126
+      ],
+      "cz_fidelity": {
+        "value": 0.99,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        125,
+        138
+      ],
+      "cz_fidelity": {
+        "value": 0.942,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        126,
+        127
+      ],
+      "cz_fidelity": {
+        "value": 0.995,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        127,
+        128
+      ],
+      "cz_fidelity": {
+        "value": 0.992,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        128,
+        129
+      ],
+      "cz_fidelity": {
+        "value": 0.982,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        129,
+        142
+      ],
+      "cz_fidelity": {
+        "value": 0.978,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        130,
+        131
+      ],
+      "cz_fidelity": {
+        "value": 0.987,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        131,
+        132
+      ],
+      "cz_fidelity": {
+        "value": 0.951,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        132,
+        133
+      ],
+      "cz_fidelity": {
+        "value": 0.971,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        132,
+        145
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        133,
+        134
+      ],
+      "cz_fidelity": {
+        "value": 0.985,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        134,
+        135
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        135,
+        136
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        136,
+        137
+      ],
+      "cz_fidelity": {
+        "value": 0.966,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        136,
+        149
+      ],
+      "cz_fidelity": {
+        "value": 0.978,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        137,
+        138
+      ],
+      "cz_fidelity": {
+        "value": 0.957,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        138,
+        139
+      ],
+      "cz_fidelity": {
+        "value": 0.974,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        139,
+        140
+      ],
+      "cz_fidelity": {
+        "value": 0.985,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        140,
+        141
+      ],
+      "cz_fidelity": {
+        "value": 0.99,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        140,
+        153
+      ],
+      "cz_fidelity": {
+        "value": 0.96,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        141,
+        142
+      ],
+      "cz_fidelity": {
+        "value": 0.978,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        143,
+        144
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        144,
+        145
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        145,
+        146
+      ],
+      "cz_fidelity": null
+    },
+    {
+      "qubits": [
+        146,
+        147
+      ],
+      "cz_fidelity": {
+        "value": 0.975,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        147,
+        148
+      ],
+      "cz_fidelity": {
+        "value": 0.99,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        148,
+        149
+      ],
+      "cz_fidelity": {
+        "value": 0.99,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        149,
+        150
+      ],
+      "cz_fidelity": {
+        "value": 0.982,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        150,
+        151
+      ],
+      "cz_fidelity": {
+        "value": 0.966,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        151,
+        152
+      ],
+      "cz_fidelity": {
+        "value": 0.989,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        152,
+        153
+      ],
+      "cz_fidelity": {
+        "value": 0.989,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        153,
+        154
+      ],
+      "cz_fidelity": {
+        "value": 0.97,
+        "method": null
+      }
+    },
+    {
+      "qubits": [
+        154,
+        155
+      ],
+      "cz_fidelity": null
+    }
+  ],
+  "measured": {
+    "census_date": "2026-10-11",
+    "readout_date": "2026-10-11",
+    "qubits": [
+      {
+        "index": 0,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.993,
+        "readout_fidelity_1": 0.928
+      },
+      {
+        "index": 1,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.972,
+        "readout_fidelity_1": 0.88
+      },
+      {
+        "index": 2,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.923,
+        "readout_fidelity_1": 0.845
+      },
+      {
+        "index": 3,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.973,
+        "readout_fidelity_1": 0.841
+      },
+      {
+        "index": 4,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.976,
+        "readout_fidelity_1": 0.929
+      },
+      {
+        "index": 5,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.955,
+        "readout_fidelity_1": 0.87
+      },
+      {
+        "index": 6,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.96,
+        "readout_fidelity_1": 0.926
+      },
+      {
+        "index": 7,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.963,
+        "readout_fidelity_1": 0.938
+      },
+      {
+        "index": 8,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.92,
+        "readout_fidelity_1": 0.879
+      },
+      {
+        "index": 9,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.861,
+        "readout_fidelity_1": 0.858
+      },
+      {
+        "index": 10,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.97,
+        "readout_fidelity_1": 0.907
+      },
+      {
+        "index": 11,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.954,
+        "readout_fidelity_1": 0.907
+      },
+      {
+        "index": 12,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.986,
+        "readout_fidelity_1": 0.935
+      },
+      {
+        "index": 13,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.97,
+        "readout_fidelity_1": 0.919
+      },
+      {
+        "index": 14,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.988,
+        "readout_fidelity_1": 0.92
+      },
+      {
+        "index": 15,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.986,
+        "readout_fidelity_1": 0.926
+      },
+      {
+        "index": 16,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.986,
+        "readout_fidelity_1": 0.931
+      },
+      {
+        "index": 17,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.98,
+        "readout_fidelity_1": 0.926
+      },
+      {
+        "index": 18,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.976,
+        "readout_fidelity_1": 0.902
+      },
+      {
+        "index": 19,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.968,
+        "readout_fidelity_1": 0.913
+      },
+      {
+        "index": 20,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.946,
+        "readout_fidelity_1": 0.938
+      },
+      {
+        "index": 21,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.98,
+        "readout_fidelity_1": 0.744
+      },
+      {
+        "index": 22,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.976,
+        "readout_fidelity_1": 0.713
+      },
+      {
+        "index": 23,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.985,
+        "readout_fidelity_1": 0.925
+      },
+      {
+        "index": 24,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.98,
+        "readout_fidelity_1": 0.949
+      },
+      {
+        "index": 25,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.981,
+        "readout_fidelity_1": 0.905
+      },
+      {
+        "index": 26,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.982,
+        "readout_fidelity_1": 0.839
+      },
+      {
+        "index": 27,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.948,
+        "readout_fidelity_1": 0.907
+      },
+      {
+        "index": 28,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.973,
+        "readout_fidelity_1": 0.88
+      },
+      {
+        "index": 29,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.983,
+        "readout_fidelity_1": 0.947
+      },
+      {
+        "index": 30,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.954,
+        "readout_fidelity_1": 0.948
+      },
+      {
+        "index": 31,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.913,
+        "readout_fidelity_1": 0.864
+      },
+      {
+        "index": 32,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.977,
+        "readout_fidelity_1": 0.846
+      },
+      {
+        "index": 33,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.968,
+        "readout_fidelity_1": 0.82
+      },
+      {
+        "index": 34,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.815,
+        "readout_fidelity_1": 0.679
+      },
+      {
+        "index": 35,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.922,
+        "readout_fidelity_1": 0.522
+      },
+      {
+        "index": 36,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.778,
+        "readout_fidelity_1": 0.915
+      },
+      {
+        "index": 37,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.99,
+        "readout_fidelity_1": 0.935
+      },
+      {
+        "index": 38,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.956,
+        "readout_fidelity_1": 0.71
+      },
+      {
+        "index": 39,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.964,
+        "readout_fidelity_1": 0.862
+      },
+      {
+        "index": 40,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.982,
+        "readout_fidelity_1": 0.58
+      },
+      {
+        "index": 41,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.974,
+        "readout_fidelity_1": 0.906
+      },
+      {
+        "index": 42,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.985,
+        "readout_fidelity_1": 0.826
+      },
+      {
+        "index": 43,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.976,
+        "readout_fidelity_1": 0.94
+      },
+      {
+        "index": 44,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.956,
+        "readout_fidelity_1": 0.891
+      },
+      {
+        "index": 45,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.976,
+        "readout_fidelity_1": 0.916
+      },
+      {
+        "index": 46,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.978,
+        "readout_fidelity_1": 0.935
+      },
+      {
+        "index": 47,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.967,
+        "readout_fidelity_1": 0.918
+      },
+      {
+        "index": 48,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.983,
+        "readout_fidelity_1": 0.94
+      },
+      {
+        "index": 49,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.944,
+        "readout_fidelity_1": 0.868
+      },
+      {
+        "index": 50,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.986,
+        "readout_fidelity_1": 0.928
+      },
+      {
+        "index": 51,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.974,
+        "readout_fidelity_1": 0.867
+      },
+      {
+        "index": 52,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.97,
+        "readout_fidelity_1": 0.584
+      },
+      {
+        "index": 53,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.941,
+        "readout_fidelity_1": 0.774
+      },
+      {
+        "index": 54,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.941,
+        "readout_fidelity_1": 0.951
+      },
+      {
+        "index": 55,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.938,
+        "readout_fidelity_1": 0.74
+      },
+      {
+        "index": 56,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.978,
+        "readout_fidelity_1": 0.932
+      },
+      {
+        "index": 57,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.989,
+        "readout_fidelity_1": 0.918
+      },
+      {
+        "index": 58,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.95,
+        "readout_fidelity_1": 0.903
+      },
+      {
+        "index": 59,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.988,
+        "readout_fidelity_1": 0.893
+      },
+      {
+        "index": 60,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.356,
+        "readout_fidelity_1": 0.6
+      },
+      {
+        "index": 61,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.985,
+        "readout_fidelity_1": 0.94
+      },
+      {
+        "index": 62,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.986,
+        "readout_fidelity_1": 0.908
+      },
+      {
+        "index": 63,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.953,
+        "readout_fidelity_1": 0.941
+      },
+      {
+        "index": 64,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.982,
+        "readout_fidelity_1": 0.928
+      },
+      {
+        "index": 65,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.963,
+        "readout_fidelity_1": 0.918
+      },
+      {
+        "index": 66,
+        "readout_status": "rejected",
+        "readout_fidelity_0": null,
+        "readout_fidelity_1": null
+      },
+      {
+        "index": 67,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.986,
+        "readout_fidelity_1": 0.942
+      },
+      {
+        "index": 68,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.989,
+        "readout_fidelity_1": 0.969
+      },
+      {
+        "index": 69,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.981,
+        "readout_fidelity_1": 0.964
+      },
+      {
+        "index": 70,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.995,
+        "readout_fidelity_1": 0.99
+      },
+      {
+        "index": 71,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.985,
+        "readout_fidelity_1": 0.985
+      },
+      {
+        "index": 72,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.995,
+        "readout_fidelity_1": 0.952
+      },
+      {
+        "index": 73,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.99,
+        "readout_fidelity_1": 0.968
+      },
+      {
+        "index": 74,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.993,
+        "readout_fidelity_1": 0.96
+      },
+      {
+        "index": 75,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.978,
+        "readout_fidelity_1": 0.967
+      },
+      {
+        "index": 76,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.995,
+        "readout_fidelity_1": 0.953
+      },
+      {
+        "index": 77,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.99,
+        "readout_fidelity_1": 0.945
+      },
+      {
+        "index": 78,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.991,
+        "readout_fidelity_1": 0.947
+      },
+      {
+        "index": 79,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.996,
+        "readout_fidelity_1": 0.917
+      },
+      {
+        "index": 80,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.987,
+        "readout_fidelity_1": 0.723
+      },
+      {
+        "index": 81,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.984,
+        "readout_fidelity_1": 0.945
+      },
+      {
+        "index": 82,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.991,
+        "readout_fidelity_1": 0.905
+      },
+      {
+        "index": 83,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.988,
+        "readout_fidelity_1": 0.931
+      },
+      {
+        "index": 84,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.974,
+        "readout_fidelity_1": 0.903
+      },
+      {
+        "index": 85,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.977,
+        "readout_fidelity_1": 0.932
+      },
+      {
+        "index": 86,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.976,
+        "readout_fidelity_1": 0.798
+      },
+      {
+        "index": 87,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.968,
+        "readout_fidelity_1": 0.911
+      },
+      {
+        "index": 88,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.964,
+        "readout_fidelity_1": 0.806
+      },
+      {
+        "index": 89,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.99,
+        "readout_fidelity_1": 0.94
+      },
+      {
+        "index": 90,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.978,
+        "readout_fidelity_1": 0.945
+      },
+      {
+        "index": 91,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.986,
+        "readout_fidelity_1": 0.94
+      },
+      {
+        "index": 92,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.982,
+        "readout_fidelity_1": 0.589
+      },
+      {
+        "index": 93,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.985,
+        "readout_fidelity_1": 0.932
+      },
+      {
+        "index": 94,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.996,
+        "readout_fidelity_1": 0.98
+      },
+      {
+        "index": 95,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.981,
+        "readout_fidelity_1": 0.955
+      },
+      {
+        "index": 96,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.503,
+        "readout_fidelity_1": 0.491
+      },
+      {
+        "index": 97,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.943,
+        "readout_fidelity_1": 0.888
+      },
+      {
+        "index": 98,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.925,
+        "readout_fidelity_1": 0.87
+      },
+      {
+        "index": 99,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.982,
+        "readout_fidelity_1": 0.946
+      },
+      {
+        "index": 100,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.988,
+        "readout_fidelity_1": 0.949
+      },
+      {
+        "index": 101,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.984,
+        "readout_fidelity_1": 0.94
+      },
+      {
+        "index": 102,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.991,
+        "readout_fidelity_1": 0.684
+      },
+      {
+        "index": 103,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.986,
+        "readout_fidelity_1": 0.765
+      },
+      {
+        "index": 104,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.993,
+        "readout_fidelity_1": 0.934
+      },
+      {
+        "index": 105,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.993,
+        "readout_fidelity_1": 0.906
+      },
+      {
+        "index": 106,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.955,
+        "readout_fidelity_1": 0.92
+      },
+      {
+        "index": 107,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.981,
+        "readout_fidelity_1": 0.882
+      },
+      {
+        "index": 108,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.993,
+        "readout_fidelity_1": 0.944
+      },
+      {
+        "index": 109,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.981,
+        "readout_fidelity_1": 0.95
+      },
+      {
+        "index": 110,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.992,
+        "readout_fidelity_1": 0.924
+      },
+      {
+        "index": 111,
+        "readout_status": "rejected",
+        "readout_fidelity_0": null,
+        "readout_fidelity_1": null
+      },
+      {
+        "index": 112,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.982,
+        "readout_fidelity_1": 0.907
+      },
+      {
+        "index": 113,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.989,
+        "readout_fidelity_1": 0.94
+      },
+      {
+        "index": 114,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.973,
+        "readout_fidelity_1": 0.875
+      },
+      {
+        "index": 115,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.973,
+        "readout_fidelity_1": 0.926
+      },
+      {
+        "index": 116,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.987,
+        "readout_fidelity_1": 0.934
+      },
+      {
+        "index": 117,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.974,
+        "readout_fidelity_1": 0.903
+      },
+      {
+        "index": 118,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.993,
+        "readout_fidelity_1": 0.938
+      },
+      {
+        "index": 119,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.985,
+        "readout_fidelity_1": 0.887
+      },
+      {
+        "index": 120,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.987,
+        "readout_fidelity_1": 0.933
+      },
+      {
+        "index": 121,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.968,
+        "readout_fidelity_1": 0.701
+      },
+      {
+        "index": 122,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.99,
+        "readout_fidelity_1": 0.924
+      },
+      {
+        "index": 123,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.994,
+        "readout_fidelity_1": 0.968
+      },
+      {
+        "index": 124,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.995,
+        "readout_fidelity_1": 0.899
+      },
+      {
+        "index": 125,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.973,
+        "readout_fidelity_1": 0.957
+      },
+      {
+        "index": 126,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.99,
+        "readout_fidelity_1": 0.965
+      },
+      {
+        "index": 127,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.996,
+        "readout_fidelity_1": 0.964
+      },
+      {
+        "index": 128,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.994,
+        "readout_fidelity_1": 0.92
+      },
+      {
+        "index": 129,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.994,
+        "readout_fidelity_1": 0.959
+      },
+      {
+        "index": 130,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.975,
+        "readout_fidelity_1": 0.866
+      },
+      {
+        "index": 131,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.981,
+        "readout_fidelity_1": 0.932
+      },
+      {
+        "index": 132,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.988,
+        "readout_fidelity_1": 0.789
+      },
+      {
+        "index": 133,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.959,
+        "readout_fidelity_1": 0.841
+      },
+      {
+        "index": 134,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.991,
+        "readout_fidelity_1": 0.92
+      },
+      {
+        "index": 135,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.98,
+        "readout_fidelity_1": 0.94
+      },
+      {
+        "index": 136,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.945,
+        "readout_fidelity_1": 0.907
+      },
+      {
+        "index": 137,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.991,
+        "readout_fidelity_1": 0.97
+      },
+      {
+        "index": 138,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.993,
+        "readout_fidelity_1": 0.85
+      },
+      {
+        "index": 139,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.993,
+        "readout_fidelity_1": 0.996
+      },
+      {
+        "index": 140,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.982,
+        "readout_fidelity_1": 0.93
+      },
+      {
+        "index": 141,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.988,
+        "readout_fidelity_1": 0.957
+      },
+      {
+        "index": 142,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.992,
+        "readout_fidelity_1": 0.962
+      },
+      {
+        "index": 143,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.982,
+        "readout_fidelity_1": 0.923
+      },
+      {
+        "index": 144,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.972,
+        "readout_fidelity_1": 0.943
+      },
+      {
+        "index": 145,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.985,
+        "readout_fidelity_1": 0.928
+      },
+      {
+        "index": 146,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.991,
+        "readout_fidelity_1": 0.953
+      },
+      {
+        "index": 147,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.987,
+        "readout_fidelity_1": 0.914
+      },
+      {
+        "index": 148,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.98,
+        "readout_fidelity_1": 0.927
+      },
+      {
+        "index": 149,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.989,
+        "readout_fidelity_1": 0.962
+      },
+      {
+        "index": 150,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.992,
+        "readout_fidelity_1": 0.966
+      },
+      {
+        "index": 151,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.986,
+        "readout_fidelity_1": 0.974
+      },
+      {
+        "index": 152,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.985,
+        "readout_fidelity_1": 0.922
+      },
+      {
+        "index": 153,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.942,
+        "readout_fidelity_1": 0.76
+      },
+      {
+        "index": 154,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.973,
+        "readout_fidelity_1": 0.926
+      },
+      {
+        "index": 155,
+        "readout_status": "measured",
+        "readout_fidelity_0": 0.946,
+        "readout_fidelity_1": 0.869
+      }
+    ],
+    "couplers": [
+      {
+        "qubits": [
+          0,
+          1
+        ],
+        "census": "fail",
+        "f": 0.44
+      },
+      {
+        "qubits": [
+          1,
+          2
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          2,
+          3
+        ],
+        "census": "pass",
+        "f": 0.758
+      },
+      {
+        "qubits": [
+          2,
+          15
+        ],
+        "census": "pass",
+        "f": 0.758
+      },
+      {
+        "qubits": [
+          3,
+          4
+        ],
+        "census": "pass",
+        "f": 0.81
+      },
+      {
+        "qubits": [
+          4,
+          5
+        ],
+        "census": "pass",
+        "f": 0.785
+      },
+      {
+        "qubits": [
+          5,
+          6
+        ],
+        "census": "pass",
+        "f": 0.747
+      },
+      {
+        "qubits": [
+          6,
+          7
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          6,
+          19
+        ],
+        "census": "pass",
+        "f": 0.776
+      },
+      {
+        "qubits": [
+          7,
+          8
+        ],
+        "census": "pass",
+        "f": 0.74
+      },
+      {
+        "qubits": [
+          8,
+          9
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          9,
+          10
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          10,
+          11
+        ],
+        "census": "pass",
+        "f": 0.819
+      },
+      {
+        "qubits": [
+          10,
+          23
+        ],
+        "census": "pass",
+        "f": 0.829
+      },
+      {
+        "qubits": [
+          11,
+          12
+        ],
+        "census": "pass",
+        "f": 0.827
+      },
+      {
+        "qubits": [
+          13,
+          14
+        ],
+        "census": "pass",
+        "f": 0.864
+      },
+      {
+        "qubits": [
+          13,
+          26
+        ],
+        "census": "pass",
+        "f": 0.745
+      },
+      {
+        "qubits": [
+          14,
+          15
+        ],
+        "census": "pass",
+        "f": 0.853
+      },
+      {
+        "qubits": [
+          15,
+          16
+        ],
+        "census": "pass",
+        "f": 0.835
+      },
+      {
+        "qubits": [
+          16,
+          17
+        ],
+        "census": "pass",
+        "f": 0.86
+      },
+      {
+        "qubits": [
+          17,
+          18
+        ],
+        "census": "pass",
+        "f": 0.845
+      },
+      {
+        "qubits": [
+          17,
+          30
+        ],
+        "census": "pass",
+        "f": 0.663
+      },
+      {
+        "qubits": [
+          18,
+          19
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          19,
+          20
+        ],
+        "census": "pass",
+        "f": 0.8
+      },
+      {
+        "qubits": [
+          20,
+          21
+        ],
+        "census": "edge",
+        "f": 0.692
+      },
+      {
+        "qubits": [
+          21,
+          22
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          21,
+          34
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          22,
+          23
+        ],
+        "census": "edge",
+        "f": 0.667
+      },
+      {
+        "qubits": [
+          23,
+          24
+        ],
+        "census": "pass",
+        "f": 0.898
+      },
+      {
+        "qubits": [
+          24,
+          25
+        ],
+        "census": "pass",
+        "f": 0.868
+      },
+      {
+        "qubits": [
+          25,
+          38
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          26,
+          27
+        ],
+        "census": "pass",
+        "f": 0.763
+      },
+      {
+        "qubits": [
+          27,
+          28
+        ],
+        "census": "pass",
+        "f": 0.748
+      },
+      {
+        "qubits": [
+          28,
+          29
+        ],
+        "census": "pass",
+        "f": 0.854
+      },
+      {
+        "qubits": [
+          28,
+          41
+        ],
+        "census": "pass",
+        "f": 0.825
+      },
+      {
+        "qubits": [
+          29,
+          30
+        ],
+        "census": "pass",
+        "f": 0.755
+      },
+      {
+        "qubits": [
+          30,
+          31
+        ],
+        "census": "pass",
+        "f": 0.689
+      },
+      {
+        "qubits": [
+          31,
+          32
+        ],
+        "census": "fail",
+        "f": 0.428
+      },
+      {
+        "qubits": [
+          32,
+          33
+        ],
+        "census": "pass",
+        "f": 0.742
+      },
+      {
+        "qubits": [
+          32,
+          45
+        ],
+        "census": "pass",
+        "f": 0.734
+      },
+      {
+        "qubits": [
+          33,
+          34
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          34,
+          35
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          35,
+          36
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          36,
+          37
+        ],
+        "census": "pass",
+        "f": 0.667
+      },
+      {
+        "qubits": [
+          36,
+          49
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          37,
+          38
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          39,
+          40
+        ],
+        "census": "edge",
+        "f": 0.54
+      },
+      {
+        "qubits": [
+          39,
+          52
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          40,
+          41
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          41,
+          42
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          42,
+          43
+        ],
+        "census": "pass",
+        "f": 0.692
+      },
+      {
+        "qubits": [
+          43,
+          44
+        ],
+        "census": "pass",
+        "f": 0.824
+      },
+      {
+        "qubits": [
+          43,
+          56
+        ],
+        "census": "pass",
+        "f": 0.875
+      },
+      {
+        "qubits": [
+          44,
+          45
+        ],
+        "census": "pass",
+        "f": 0.769
+      },
+      {
+        "qubits": [
+          45,
+          46
+        ],
+        "census": "pass",
+        "f": 0.836
+      },
+      {
+        "qubits": [
+          46,
+          47
+        ],
+        "census": "pass",
+        "f": 0.835
+      },
+      {
+        "qubits": [
+          47,
+          48
+        ],
+        "census": "pass",
+        "f": 0.806
+      },
+      {
+        "qubits": [
+          47,
+          60
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          48,
+          49
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          49,
+          50
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          50,
+          51
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          51,
+          64
+        ],
+        "census": "pass",
+        "f": 0.747
+      },
+      {
+        "qubits": [
+          52,
+          53
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          53,
+          54
+        ],
+        "census": "pass",
+        "f": 0.69
+      },
+      {
+        "qubits": [
+          54,
+          55
+        ],
+        "census": "pass",
+        "f": 0.63
+      },
+      {
+        "qubits": [
+          54,
+          67
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          55,
+          56
+        ],
+        "census": "pass",
+        "f": 0.659
+      },
+      {
+        "qubits": [
+          56,
+          57
+        ],
+        "census": "pass",
+        "f": 0.871
+      },
+      {
+        "qubits": [
+          57,
+          58
+        ],
+        "census": "pass",
+        "f": 0.832
+      },
+      {
+        "qubits": [
+          58,
+          59
+        ],
+        "census": "pass",
+        "f": 0.818
+      },
+      {
+        "qubits": [
+          58,
+          71
+        ],
+        "census": "pass",
+        "f": 0.799
+      },
+      {
+        "qubits": [
+          59,
+          60
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          60,
+          61
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          61,
+          62
+        ],
+        "census": "pass",
+        "f": 0.859
+      },
+      {
+        "qubits": [
+          62,
+          63
+        ],
+        "census": "edge",
+        "f": 0.353
+      },
+      {
+        "qubits": [
+          62,
+          75
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          63,
+          64
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          65,
+          66
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          65,
+          78
+        ],
+        "census": "pass",
+        "f": 0.811
+      },
+      {
+        "qubits": [
+          66,
+          67
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          67,
+          68
+        ],
+        "census": "pass",
+        "f": 0.923
+      },
+      {
+        "qubits": [
+          68,
+          69
+        ],
+        "census": "pass",
+        "f": 0.903
+      },
+      {
+        "qubits": [
+          69,
+          70
+        ],
+        "census": "pass",
+        "f": 0.891
+      },
+      {
+        "qubits": [
+          69,
+          82
+        ],
+        "census": "pass",
+        "f": 0.858
+      },
+      {
+        "qubits": [
+          70,
+          71
+        ],
+        "census": "pass",
+        "f": 0.934
+      },
+      {
+        "qubits": [
+          71,
+          72
+        ],
+        "census": "pass",
+        "f": 0.912
+      },
+      {
+        "qubits": [
+          72,
+          73
+        ],
+        "census": "edge",
+        "f": 0.875
+      },
+      {
+        "qubits": [
+          73,
+          74
+        ],
+        "census": "pass",
+        "f": 0.896
+      },
+      {
+        "qubits": [
+          73,
+          86
+        ],
+        "census": "pass",
+        "f": 0.664
+      },
+      {
+        "qubits": [
+          74,
+          75
+        ],
+        "census": "pass",
+        "f": 0.934
+      },
+      {
+        "qubits": [
+          75,
+          76
+        ],
+        "census": "pass",
+        "f": 0.917
+      },
+      {
+        "qubits": [
+          76,
+          77
+        ],
+        "census": "pass",
+        "f": 0.933
+      },
+      {
+        "qubits": [
+          77,
+          90
+        ],
+        "census": "pass",
+        "f": 0.868
+      },
+      {
+        "qubits": [
+          78,
+          79
+        ],
+        "census": "pass",
+        "f": 0.874
+      },
+      {
+        "qubits": [
+          79,
+          80
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          80,
+          81
+        ],
+        "census": "edge",
+        "f": 0.25
+      },
+      {
+        "qubits": [
+          80,
+          93
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          81,
+          82
+        ],
+        "census": "pass",
+        "f": 0.843
+      },
+      {
+        "qubits": [
+          82,
+          83
+        ],
+        "census": "pass",
+        "f": 0.867
+      },
+      {
+        "qubits": [
+          83,
+          84
+        ],
+        "census": "pass",
+        "f": 0.851
+      },
+      {
+        "qubits": [
+          84,
+          85
+        ],
+        "census": "pass",
+        "f": 0.842
+      },
+      {
+        "qubits": [
+          84,
+          97
+        ],
+        "census": "pass",
+        "f": 0.758
+      },
+      {
+        "qubits": [
+          85,
+          86
+        ],
+        "census": "pass",
+        "f": 0.641
+      },
+      {
+        "qubits": [
+          86,
+          87
+        ],
+        "census": "pass",
+        "f": 0.697
+      },
+      {
+        "qubits": [
+          87,
+          88
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          88,
+          89
+        ],
+        "census": "edge",
+        "f": 0.715
+      },
+      {
+        "qubits": [
+          88,
+          101
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          89,
+          90
+        ],
+        "census": "pass",
+        "f": 0.874
+      },
+      {
+        "qubits": [
+          91,
+          92
+        ],
+        "census": "edge",
+        "f": 0.56
+      },
+      {
+        "qubits": [
+          91,
+          104
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          92,
+          93
+        ],
+        "census": "edge",
+        "f": 0.51
+      },
+      {
+        "qubits": [
+          93,
+          94
+        ],
+        "census": "pass",
+        "f": 0.827
+      },
+      {
+        "qubits": [
+          94,
+          95
+        ],
+        "census": "pass",
+        "f": 0.917
+      },
+      {
+        "qubits": [
+          95,
+          96
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          95,
+          108
+        ],
+        "census": "pass",
+        "f": 0.819
+      },
+      {
+        "qubits": [
+          96,
+          97
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          97,
+          98
+        ],
+        "census": "pass",
+        "f": 0.749
+      },
+      {
+        "qubits": [
+          98,
+          99
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          99,
+          100
+        ],
+        "census": "pass",
+        "f": 0.869
+      },
+      {
+        "qubits": [
+          99,
+          112
+        ],
+        "census": "pass",
+        "f": 0.789
+      },
+      {
+        "qubits": [
+          100,
+          101
+        ],
+        "census": "pass",
+        "f": 0.89
+      },
+      {
+        "qubits": [
+          101,
+          102
+        ],
+        "census": "edge",
+        "f": 0.693
+      },
+      {
+        "qubits": [
+          102,
+          103
+        ],
+        "census": "edge",
+        "f": 0.636
+      },
+      {
+        "qubits": [
+          103,
+          116
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          104,
+          105
+        ],
+        "census": "pass",
+        "f": 0.862
+      },
+      {
+        "qubits": [
+          105,
+          106
+        ],
+        "census": "pass",
+        "f": 0.799
+      },
+      {
+        "qubits": [
+          106,
+          107
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          106,
+          119
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          107,
+          108
+        ],
+        "census": "edge",
+        "f": 0.767
+      },
+      {
+        "qubits": [
+          108,
+          109
+        ],
+        "census": "pass",
+        "f": 0.896
+      },
+      {
+        "qubits": [
+          109,
+          110
+        ],
+        "census": "pass",
+        "f": 0.844
+      },
+      {
+        "qubits": [
+          110,
+          111
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          110,
+          123
+        ],
+        "census": "pass",
+        "f": 0.86
+      },
+      {
+        "qubits": [
+          111,
+          112
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          112,
+          113
+        ],
+        "census": "pass",
+        "f": 0.844
+      },
+      {
+        "qubits": [
+          113,
+          114
+        ],
+        "census": "pass",
+        "f": 0.832
+      },
+      {
+        "qubits": [
+          114,
+          115
+        ],
+        "census": "pass",
+        "f": 0.84
+      },
+      {
+        "qubits": [
+          114,
+          127
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          115,
+          116
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          117,
+          118
+        ],
+        "census": "pass",
+        "f": 0.842
+      },
+      {
+        "qubits": [
+          117,
+          130
+        ],
+        "census": "pass",
+        "f": 0.812
+      },
+      {
+        "qubits": [
+          118,
+          119
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          119,
+          120
+        ],
+        "census": "edge",
+        "f": 0.181
+      },
+      {
+        "qubits": [
+          120,
+          121
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          121,
+          122
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          121,
+          134
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          122,
+          123
+        ],
+        "census": "pass",
+        "f": 0.886
+      },
+      {
+        "qubits": [
+          123,
+          124
+        ],
+        "census": "pass",
+        "f": 0.833
+      },
+      {
+        "qubits": [
+          124,
+          125
+        ],
+        "census": "pass",
+        "f": 0.85
+      },
+      {
+        "qubits": [
+          125,
+          126
+        ],
+        "census": "pass",
+        "f": 0.9
+      },
+      {
+        "qubits": [
+          125,
+          138
+        ],
+        "census": "pass",
+        "f": 0.812
+      },
+      {
+        "qubits": [
+          126,
+          127
+        ],
+        "census": "pass",
+        "f": 0.938
+      },
+      {
+        "qubits": [
+          127,
+          128
+        ],
+        "census": "edge",
+        "f": 0.102
+      },
+      {
+        "qubits": [
+          128,
+          129
+        ],
+        "census": "pass",
+        "f": 0.9
+      },
+      {
+        "qubits": [
+          129,
+          142
+        ],
+        "census": "pass",
+        "f": 0.924
+      },
+      {
+        "qubits": [
+          130,
+          131
+        ],
+        "census": "pass",
+        "f": 0.815
+      },
+      {
+        "qubits": [
+          131,
+          132
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          132,
+          133
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          132,
+          145
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          133,
+          134
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          134,
+          135
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          135,
+          136
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          136,
+          137
+        ],
+        "census": "pass",
+        "f": 0.835
+      },
+      {
+        "qubits": [
+          136,
+          149
+        ],
+        "census": "pass",
+        "f": 0.817
+      },
+      {
+        "qubits": [
+          137,
+          138
+        ],
+        "census": "pass",
+        "f": 0.877
+      },
+      {
+        "qubits": [
+          138,
+          139
+        ],
+        "census": "pass",
+        "f": 0.819
+      },
+      {
+        "qubits": [
+          139,
+          140
+        ],
+        "census": "pass",
+        "f": 0.903
+      },
+      {
+        "qubits": [
+          140,
+          141
+        ],
+        "census": "pass",
+        "f": 0.896
+      },
+      {
+        "qubits": [
+          140,
+          153
+        ],
+        "census": "pass",
+        "f": 0.776
+      },
+      {
+        "qubits": [
+          141,
+          142
+        ],
+        "census": "pass",
+        "f": 0.899
+      },
+      {
+        "qubits": [
+          143,
+          144
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          144,
+          145
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          145,
+          146
+        ],
+        "census": null,
+        "f": null
+      },
+      {
+        "qubits": [
+          146,
+          147
+        ],
+        "census": "pass",
+        "f": 0.859
+      },
+      {
+        "qubits": [
+          147,
+          148
+        ],
+        "census": "pass",
+        "f": 0.829
+      },
+      {
+        "qubits": [
+          148,
+          149
+        ],
+        "census": "edge",
+        "f": 0.196
+      },
+      {
+        "qubits": [
+          149,
+          150
+        ],
+        "census": "pass",
+        "f": 0.919
+      },
+      {
+        "qubits": [
+          150,
+          151
+        ],
+        "census": "pass",
+        "f": 0.909
+      },
+      {
+        "qubits": [
+          151,
+          152
+        ],
+        "census": "pass",
+        "f": 0.885
+      },
+      {
+        "qubits": [
+          152,
+          153
+        ],
+        "census": "pass",
+        "f": 0.748
+      },
+      {
+        "qubits": [
+          153,
+          154
+        ],
+        "census": "edge",
+        "f": 0.742
+      },
+      {
+        "qubits": [
+          154,
+          155
+        ],
+        "census": null,
+        "f": null
+      }
+    ]
+  }
+}

@@ -19,17 +19,294 @@
       {
         "name": "magnetization",
         "kernel_id": "e5dbc239894e6e33d73a24de248a4bd20fc3d25320bafcdc917f391e6e39acbf",
-        "postprocessing": null
+        "postprocessing": null,
+        "receipt": {
+          "schema": "qb-quafu-sdk-receipt-v1",
+          "observed_at": "2026-11-19T04:15:02.272393+00:00",
+          "sdk": {
+            "distribution": "quafu-sdk",
+            "version": "0.2.7",
+            "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+            "python": "3.12.6"
+          },
+          "mode": "cloud_hardware",
+          "target": "Baihua",
+          "backend": "Baihua",
+          "job_id": "uc4e9da3f-261119-121312",
+          "task_id": "uc4e9da3f-261119-121312-0",
+          "status": "Finished",
+          "submitted_qasm_sha256": "e5dbc239894e6e33d73a24de248a4bd20fc3d25320bafcdc917f391e6e39acbf",
+          "executed_qasm": "// q[0] -> Q76\n// q[1] -> Q75\n// q[2] -> Q74\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[77];\ncreg c[3];\nrz(-1.5707963267948966) q[74];\nry(1.5707963267948966) q[74];\nh q[75];\nrx(3.141592653589793) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nh q[75];\ncz q[75],q[74];\nrz(1.5707963267948966) q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(-1.387597678286312) q[74];\nry(0.17791633906664772) q[74];\nrz(1.3904267468556686) q[74];\nry(1.5707963267948966) q[75];\nrz(-2.9665926535897933) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nry(-1.5385494443596417) q[74];\nrz(-1.3957963267948958) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nh q[75];\ncz q[75],q[74];\nrx(0.25) q[74];\ncz q[75],q[74];\nrz(-2.9665926535897933) q[74];\nry(1.5707963267948966) q[74];\nrx(0.17499999999999996) q[75];\nrx(0.17499999999999996) q[76];\nbarrier q[74],q[75],q[76];\nmeasure q[76] -> c[0];\nmeasure q[75] -> c[1];\nmeasure q[74] -> c[2];",
+          "executed_qasm_sha256": "d4f71a8b2992dd5a75a06e11ac98180bd48ee119df487b51d2f7a056cf450881",
+          "compiler": {
+            "name": "qiskit",
+            "optimization_level": 2,
+            "seed": null,
+            "version": "2.5.2"
+          },
+          "calibration_id": "9652d6d727726984",
+          "measurements": [
+            {
+              "cbit": 0,
+              "physical_qubit": 76,
+              "virtual_qubit": 0
+            },
+            {
+              "cbit": 1,
+              "physical_qubit": 75,
+              "virtual_qubit": 1
+            },
+            {
+              "cbit": 2,
+              "physical_qubit": 74,
+              "virtual_qubit": 2
+            }
+          ],
+          "bit_order": "c0_rightmost",
+          "counts_raw": {
+            "000": 80,
+            "111": 137,
+            "001": 252,
+            "101": 247,
+            "011": 138,
+            "010": 38,
+            "110": 45,
+            "100": 87
+          },
+          "counts_q0_first": {
+            "000": 80,
+            "111": 137,
+            "100": 252,
+            "101": 247,
+            "110": 138,
+            "010": 38,
+            "011": 45,
+            "001": 87
+          },
+          "shots_requested": 1024,
+          "shots_returned": 1024,
+          "shot_shortfall": false,
+          "probabilities_q0_first": {
+            "000": 0.078125,
+            "111": 0.1337890625,
+            "100": 0.24609375,
+            "101": 0.2412109375,
+            "110": 0.134765625,
+            "010": 0.037109375,
+            "011": 0.0439453125,
+            "001": 0.0849609375
+          },
+          "raw_payload_sha256": "b6ac61fe66681ef0eabc633bbdc04045fc53ce1b9a59ded716cc0c547f5b2fed",
+          "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+        },
+        "job_id": "uc4e9da3f-261119-121312",
+        "state": "verified_result"
       },
       {
         "name": "correlation",
         "kernel_id": "e5dbc239894e6e33d73a24de248a4bd20fc3d25320bafcdc917f391e6e39acbf",
-        "postprocessing": null
+        "postprocessing": null,
+        "receipt": {
+          "schema": "qb-quafu-sdk-receipt-v1",
+          "observed_at": "2026-11-19T04:15:02.272393+00:00",
+          "sdk": {
+            "distribution": "quafu-sdk",
+            "version": "0.2.7",
+            "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+            "python": "3.12.6"
+          },
+          "mode": "cloud_hardware",
+          "target": "Baihua",
+          "backend": "Baihua",
+          "job_id": "uc4e9da3f-261119-121312",
+          "task_id": "uc4e9da3f-261119-121312-0",
+          "status": "Finished",
+          "submitted_qasm_sha256": "e5dbc239894e6e33d73a24de248a4bd20fc3d25320bafcdc917f391e6e39acbf",
+          "executed_qasm": "// q[0] -> Q76\n// q[1] -> Q75\n// q[2] -> Q74\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[77];\ncreg c[3];\nrz(-1.5707963267948966) q[74];\nry(1.5707963267948966) q[74];\nh q[75];\nrx(3.141592653589793) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nh q[75];\ncz q[75],q[74];\nrz(1.5707963267948966) q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(-1.387597678286312) q[74];\nry(0.17791633906664772) q[74];\nrz(1.3904267468556686) q[74];\nry(1.5707963267948966) q[75];\nrz(-2.9665926535897933) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nry(-1.5385494443596417) q[74];\nrz(-1.3957963267948958) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nh q[75];\ncz q[75],q[74];\nrx(0.25) q[74];\ncz q[75],q[74];\nrz(-2.9665926535897933) q[74];\nry(1.5707963267948966) q[74];\nrx(0.17499999999999996) q[75];\nrx(0.17499999999999996) q[76];\nbarrier q[74],q[75],q[76];\nmeasure q[76] -> c[0];\nmeasure q[75] -> c[1];\nmeasure q[74] -> c[2];",
+          "executed_qasm_sha256": "d4f71a8b2992dd5a75a06e11ac98180bd48ee119df487b51d2f7a056cf450881",
+          "compiler": {
+            "name": "qiskit",
+            "optimization_level": 2,
+            "seed": null,
+            "version": "2.5.2"
+          },
+          "calibration_id": "9652d6d727726984",
+          "measurements": [
+            {
+              "cbit": 0,
+              "physical_qubit": 76,
+              "virtual_qubit": 0
+            },
+            {
+              "cbit": 1,
+              "physical_qubit": 75,
+              "virtual_qubit": 1
+            },
+            {
+              "cbit": 2,
+              "physical_qubit": 74,
+              "virtual_qubit": 2
+            }
+          ],
+          "bit_order": "c0_rightmost",
+          "counts_raw": {
+            "000": 80,
+            "111": 137,
+            "001": 252,
+            "101": 247,
+            "011": 138,
+            "010": 38,
+            "110": 45,
+            "100": 87
+          },
+          "counts_q0_first": {
+            "000": 80,
+            "111": 137,
+            "100": 252,
+            "101": 247,
+            "110": 138,
+            "010": 38,
+            "011": 45,
+            "001": 87
+          },
+          "shots_requested": 1024,
+          "shots_returned": 1024,
+          "shot_shortfall": false,
+          "probabilities_q0_first": {
+            "000": 0.078125,
+            "111": 0.1337890625,
+            "100": 0.24609375,
+            "101": 0.2412109375,
+            "110": 0.134765625,
+            "010": 0.037109375,
+            "011": 0.0439453125,
+            "001": 0.0849609375
+          },
+          "raw_payload_sha256": "b6ac61fe66681ef0eabc633bbdc04045fc53ce1b9a59ded716cc0c547f5b2fed",
+          "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+        },
+        "job_id": "uc4e9da3f-261119-121312",
+        "state": "verified_result"
       }
     ],
-    "update_status": "NOT_SUBMITTED_NEW_SDK_CREDENTIALS_REQUIRED"
+    "update_status": "VERIFIED_PROVIDER_RESULTS",
+    "hardware_analysis": {
+      "business": {
+        "acceptance": "NOT_ACCEPTED_NO_PREREGISTERED_HARDWARE_THRESHOLD",
+        "correlation_z0z2": {
+          "approximate_95pct_sampling_interval": [
+            -0.08079948981531457,
+            0.041736989815314575
+          ],
+          "estimate": -0.01953125,
+          "excludes_systematic_noise_calibration_and_temporal_correlation": true,
+          "sampling_standard_error": 0.031259306028221724
+        },
+        "exact_z0_reference": -0.2708606941403311,
+        "magnetization_z0": {
+          "approximate_95pct_sampling_interval": [
+            -0.5643675865192094,
+            -0.4590699134807907
+          ],
+          "estimate": -0.51171875,
+          "excludes_systematic_noise_calibration_and_temporal_correlation": true,
+          "sampling_standard_error": 0.026861651285310883
+        },
+        "scope": "Descriptive hardware statistics, not production or quantum-advantage acceptance"
+      },
+      "experiments": {
+        "correlation": {
+          "maximum_probability_difference": 0.11217360853082026,
+          "shots_returned": 1024,
+          "total_variation_from_frozen_ideal": 0.2984777066171951
+        },
+        "magnetization": {
+          "maximum_probability_difference": 0.11217360853082026,
+          "shots_returned": 1024,
+          "total_variation_from_frozen_ideal": 0.2984777066171951
+        }
+      }
+    },
+    "physical_compilation_audit": {
+      "magnetization": {
+        "native_basis_checked": true,
+        "physical_couplings_checked": true,
+        "executed_measurements_match_receipt": true,
+        "native_gates": [
+          "cz",
+          "h",
+          "rx",
+          "ry",
+          "rz"
+        ],
+        "barriers_not_counted_as_native_gates": 1,
+        "declared_physical_width": 77,
+        "active_physical_wires": [
+          74,
+          75,
+          76
+        ],
+        "dependency_depth_including_terminal_measurement": 111,
+        "depth_method": "Native parsed gate DAG; not pulse duration or routing performance acceptance",
+        "calibration_id": "9652d6d727726984",
+        "calibration_time": "2026-11-19T10:09:19+08:00",
+        "compiler": {
+          "name": "qiskit",
+          "optimization_level": 2,
+          "seed": null,
+          "version": "2.5.2"
+        },
+        "native_compiler_acceptance": false,
+        "independent_terminal_distribution": {
+          "terminal_distribution_preserved": true,
+          "maximum_probability_error": 1.4710455076283324e-15,
+          "total_variation_from_frozen_ideal": 2.203098814490545e-15,
+          "absolute_tolerance": 3e-12,
+          "physical_active_qubits": 3,
+          "scope": "Fresh local Native replay of returned physical circuit; not another hardware task, full matrix or coherent-control acceptance"
+        }
+      },
+      "correlation": {
+        "native_basis_checked": true,
+        "physical_couplings_checked": true,
+        "executed_measurements_match_receipt": true,
+        "native_gates": [
+          "cz",
+          "h",
+          "rx",
+          "ry",
+          "rz"
+        ],
+        "barriers_not_counted_as_native_gates": 1,
+        "declared_physical_width": 77,
+        "active_physical_wires": [
+          74,
+          75,
+          76
+        ],
+        "dependency_depth_including_terminal_measurement": 111,
+        "depth_method": "Native parsed gate DAG; not pulse duration or routing performance acceptance",
+        "calibration_id": "9652d6d727726984",
+        "calibration_time": "2026-11-19T10:09:19+08:00",
+        "compiler": {
+          "name": "qiskit",
+          "optimization_level": 2,
+          "seed": null,
+          "version": "2.5.2"
+        },
+        "native_compiler_acceptance": false,
+        "independent_terminal_distribution": {
+          "terminal_distribution_preserved": true,
+          "maximum_probability_error": 1.4710455076283324e-15,
+          "total_variation_from_frozen_ideal": 2.203098814490545e-15,
+          "absolute_tolerance": 3e-12,
+          "physical_active_qubits": 3,
+          "scope": "Fresh local Native replay of returned physical circuit; not another hardware task, full matrix or coherent-control acceptance"
+        }
+      }
+    }
   },
-  "updated_at": "2026-11-16T07:11:01.697257+00:00",
+  "updated_at": "2026-11-19T04:45:50.207602+00:00",
   "local_source": {
     "kind": "Python source files only",
     "files": 777,
@@ -37,7 +314,128 @@
     "files_manifest": "source-files.json"
   },
   "local_verification_at": "2026-11-16T07:11:01.697257+00:00",
-  "backend_snapshot_sha256": "70b47bdc0d5ef6013b1ccbe3d1dc22b312d56f8508c6689ce012ad7c96a8d085",
+  "backend_snapshot_sha256": "e794770a69bda69b30b40705f12b627c07429db161243ae2032ca600f4364c14",
+  "actual_submitted_plan_sha256": "a278d140810828863d14777a75d803f998a8769b773084c1445f455eaddc23da",
+  "actual_submitted_plan_journal_digest": "f68fd1c3502c4cf3c4330c75a8b1d71010d3632547207d73bb40f795c7d70e84",
+  "receipt_identity": "0ebc9c540afa455e5f93385d7537c5efa651230e75f509f7f89b975046658cc9",
+  "hardware_analysis": {
+    "business": {
+      "acceptance": "NOT_ACCEPTED_NO_PREREGISTERED_HARDWARE_THRESHOLD",
+      "correlation_z0z2": {
+        "approximate_95pct_sampling_interval": [
+          -0.08079948981531457,
+          0.041736989815314575
+        ],
+        "estimate": -0.01953125,
+        "excludes_systematic_noise_calibration_and_temporal_correlation": true,
+        "sampling_standard_error": 0.031259306028221724
+      },
+      "exact_z0_reference": -0.2708606941403311,
+      "magnetization_z0": {
+        "approximate_95pct_sampling_interval": [
+          -0.5643675865192094,
+          -0.4590699134807907
+        ],
+        "estimate": -0.51171875,
+        "excludes_systematic_noise_calibration_and_temporal_correlation": true,
+        "sampling_standard_error": 0.026861651285310883
+      },
+      "scope": "Descriptive hardware statistics, not production or quantum-advantage acceptance"
+    },
+    "experiments": {
+      "correlation": {
+        "maximum_probability_difference": 0.11217360853082026,
+        "shots_returned": 1024,
+        "total_variation_from_frozen_ideal": 0.2984777066171951
+      },
+      "magnetization": {
+        "maximum_probability_difference": 0.11217360853082026,
+        "shots_returned": 1024,
+        "total_variation_from_frozen_ideal": 0.2984777066171951
+      }
+    }
+  },
+  "physical_compilation_audit": {
+    "magnetization": {
+      "native_basis_checked": true,
+      "physical_couplings_checked": true,
+      "executed_measurements_match_receipt": true,
+      "native_gates": [
+        "cz",
+        "h",
+        "rx",
+        "ry",
+        "rz"
+      ],
+      "barriers_not_counted_as_native_gates": 1,
+      "declared_physical_width": 77,
+      "active_physical_wires": [
+        74,
+        75,
+        76
+      ],
+      "dependency_depth_including_terminal_measurement": 111,
+      "depth_method": "Native parsed gate DAG; not pulse duration or routing performance acceptance",
+      "calibration_id": "9652d6d727726984",
+      "calibration_time": "2026-11-19T10:09:19+08:00",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "native_compiler_acceptance": false,
+      "independent_terminal_distribution": {
+        "terminal_distribution_preserved": true,
+        "maximum_probability_error": 1.4710455076283324e-15,
+        "total_variation_from_frozen_ideal": 2.203098814490545e-15,
+        "absolute_tolerance": 3e-12,
+        "physical_active_qubits": 3,
+        "scope": "Fresh local Native replay of returned physical circuit; not another hardware task, full matrix or coherent-control acceptance"
+      }
+    },
+    "correlation": {
+      "native_basis_checked": true,
+      "physical_couplings_checked": true,
+      "executed_measurements_match_receipt": true,
+      "native_gates": [
+        "cz",
+        "h",
+        "rx",
+        "ry",
+        "rz"
+      ],
+      "barriers_not_counted_as_native_gates": 1,
+      "declared_physical_width": 77,
+      "active_physical_wires": [
+        74,
+        75,
+        76
+      ],
+      "dependency_depth_including_terminal_measurement": 111,
+      "depth_method": "Native parsed gate DAG; not pulse duration or routing performance acceptance",
+      "calibration_id": "9652d6d727726984",
+      "calibration_time": "2026-11-19T10:09:19+08:00",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "native_compiler_acceptance": false,
+      "independent_terminal_distribution": {
+        "terminal_distribution_preserved": true,
+        "maximum_probability_error": 1.4710455076283324e-15,
+        "total_variation_from_frozen_ideal": 2.203098814490545e-15,
+        "absolute_tolerance": 3e-12,
+        "physical_active_qubits": 3,
+        "scope": "Fresh local Native replay of returned physical circuit; not another hardware task, full matrix or coherent-control acceptance"
+      }
+    }
+  },
+  "report_source_sha256": "1ffef7716d59fc260ea19905a65b88925fb0508d8647fd7d6d0923d1630f8eb2",
+  "new_cloud_tasks": 0,
+  "backend_snapshot_file": "backend-baihua-20261119.json",
   "experiments": [
     {
       "name": "magnetization",
@@ -98,7 +496,85 @@
           "111"
         ]
       },
-      "receipt": null
+      "receipt": {
+        "schema": "qb-quafu-sdk-receipt-v1",
+        "observed_at": "2026-11-19T04:15:02.272393+00:00",
+        "sdk": {
+          "distribution": "quafu-sdk",
+          "version": "0.2.7",
+          "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+          "python": "3.12.6"
+        },
+        "mode": "cloud_hardware",
+        "target": "Baihua",
+        "backend": "Baihua",
+        "job_id": "uc4e9da3f-261119-121312",
+        "task_id": "uc4e9da3f-261119-121312-0",
+        "status": "Finished",
+        "submitted_qasm_sha256": "e5dbc239894e6e33d73a24de248a4bd20fc3d25320bafcdc917f391e6e39acbf",
+        "executed_qasm": "// q[0] -> Q76\n// q[1] -> Q75\n// q[2] -> Q74\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[77];\ncreg c[3];\nrz(-1.5707963267948966) q[74];\nry(1.5707963267948966) q[74];\nh q[75];\nrx(3.141592653589793) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nh q[75];\ncz q[75],q[74];\nrz(1.5707963267948966) q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(-1.387597678286312) q[74];\nry(0.17791633906664772) q[74];\nrz(1.3904267468556686) q[74];\nry(1.5707963267948966) q[75];\nrz(-2.9665926535897933) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nry(-1.5385494443596417) q[74];\nrz(-1.3957963267948958) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nh q[75];\ncz q[75],q[74];\nrx(0.25) q[74];\ncz q[75],q[74];\nrz(-2.9665926535897933) q[74];\nry(1.5707963267948966) q[74];\nrx(0.17499999999999996) q[75];\nrx(0.17499999999999996) q[76];\nbarrier q[74],q[75],q[76];\nmeasure q[76] -> c[0];\nmeasure q[75] -> c[1];\nmeasure q[74] -> c[2];",
+        "executed_qasm_sha256": "d4f71a8b2992dd5a75a06e11ac98180bd48ee119df487b51d2f7a056cf450881",
+        "compiler": {
+          "name": "qiskit",
+          "optimization_level": 2,
+          "seed": null,
+          "version": "2.5.2"
+        },
+        "calibration_id": "9652d6d727726984",
+        "measurements": [
+          {
+            "cbit": 0,
+            "physical_qubit": 76,
+            "virtual_qubit": 0
+          },
+          {
+            "cbit": 1,
+            "physical_qubit": 75,
+            "virtual_qubit": 1
+          },
+          {
+            "cbit": 2,
+            "physical_qubit": 74,
+            "virtual_qubit": 2
+          }
+        ],
+        "bit_order": "c0_rightmost",
+        "counts_raw": {
+          "000": 80,
+          "111": 137,
+          "001": 252,
+          "101": 247,
+          "011": 138,
+          "010": 38,
+          "110": 45,
+          "100": 87
+        },
+        "counts_q0_first": {
+          "000": 80,
+          "111": 137,
+          "100": 252,
+          "101": 247,
+          "110": 138,
+          "010": 38,
+          "011": 45,
+          "001": 87
+        },
+        "shots_requested": 1024,
+        "shots_returned": 1024,
+        "shot_shortfall": false,
+        "probabilities_q0_first": {
+          "000": 0.078125,
+          "111": 0.1337890625,
+          "100": 0.24609375,
+          "101": 0.2412109375,
+          "110": 0.134765625,
+          "010": 0.037109375,
+          "011": 0.0439453125,
+          "001": 0.0849609375
+        },
+        "raw_payload_sha256": "b6ac61fe66681ef0eabc633bbdc04045fc53ce1b9a59ded716cc0c547f5b2fed",
+        "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+      }
     },
     {
       "name": "magnetization",
@@ -159,7 +635,85 @@
           "111"
         ]
       },
-      "receipt": null
+      "receipt": {
+        "schema": "qb-quafu-sdk-receipt-v1",
+        "observed_at": "2026-11-19T04:15:02.272393+00:00",
+        "sdk": {
+          "distribution": "quafu-sdk",
+          "version": "0.2.7",
+          "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+          "python": "3.12.6"
+        },
+        "mode": "cloud_hardware",
+        "target": "Baihua",
+        "backend": "Baihua",
+        "job_id": "uc4e9da3f-261119-121312",
+        "task_id": "uc4e9da3f-261119-121312-0",
+        "status": "Finished",
+        "submitted_qasm_sha256": "e5dbc239894e6e33d73a24de248a4bd20fc3d25320bafcdc917f391e6e39acbf",
+        "executed_qasm": "// q[0] -> Q76\n// q[1] -> Q75\n// q[2] -> Q74\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[77];\ncreg c[3];\nrz(-1.5707963267948966) q[74];\nry(1.5707963267948966) q[74];\nh q[75];\nrx(3.141592653589793) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nh q[75];\ncz q[75],q[74];\nrz(1.5707963267948966) q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(-1.387597678286312) q[74];\nry(0.17791633906664772) q[74];\nrz(1.3904267468556686) q[74];\nry(1.5707963267948966) q[75];\nrz(-2.9665926535897933) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nry(-1.5385494443596417) q[74];\nrz(-1.3957963267948958) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nh q[75];\ncz q[75],q[74];\nrx(0.25) q[74];\ncz q[75],q[74];\nrz(-2.9665926535897933) q[74];\nry(1.5707963267948966) q[74];\nrx(0.17499999999999996) q[75];\nrx(0.17499999999999996) q[76];\nbarrier q[74],q[75],q[76];\nmeasure q[76] -> c[0];\nmeasure q[75] -> c[1];\nmeasure q[74] -> c[2];",
+        "executed_qasm_sha256": "d4f71a8b2992dd5a75a06e11ac98180bd48ee119df487b51d2f7a056cf450881",
+        "compiler": {
+          "name": "qiskit",
+          "optimization_level": 2,
+          "seed": null,
+          "version": "2.5.2"
+        },
+        "calibration_id": "9652d6d727726984",
+        "measurements": [
+          {
+            "cbit": 0,
+            "physical_qubit": 76,
+            "virtual_qubit": 0
+          },
+          {
+            "cbit": 1,
+            "physical_qubit": 75,
+            "virtual_qubit": 1
+          },
+          {
+            "cbit": 2,
+            "physical_qubit": 74,
+            "virtual_qubit": 2
+          }
+        ],
+        "bit_order": "c0_rightmost",
+        "counts_raw": {
+          "000": 80,
+          "111": 137,
+          "001": 252,
+          "101": 247,
+          "011": 138,
+          "010": 38,
+          "110": 45,
+          "100": 87
+        },
+        "counts_q0_first": {
+          "000": 80,
+          "111": 137,
+          "100": 252,
+          "101": 247,
+          "110": 138,
+          "010": 38,
+          "011": 45,
+          "001": 87
+        },
+        "shots_requested": 1024,
+        "shots_returned": 1024,
+        "shot_shortfall": false,
+        "probabilities_q0_first": {
+          "000": 0.078125,
+          "111": 0.1337890625,
+          "100": 0.24609375,
+          "101": 0.2412109375,
+          "110": 0.134765625,
+          "010": 0.037109375,
+          "011": 0.0439453125,
+          "001": 0.0849609375
+        },
+        "raw_payload_sha256": "b6ac61fe66681ef0eabc633bbdc04045fc53ce1b9a59ded716cc0c547f5b2fed",
+        "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+      }
     }
   ]
 }

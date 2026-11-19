@@ -25,22 +25,494 @@
       {
         "name": "positive_correlation",
         "kernel_id": "dfbdce9bd41a8304caaf9ed22b756e643f356552a32b0f9ba80c724d44af0e46",
-        "postprocessing": null
+        "postprocessing": null,
+        "receipt": {
+          "schema": "qb-quafu-sdk-receipt-v1",
+          "observed_at": "2026-11-19T04:14:58.815756+00:00",
+          "sdk": {
+            "distribution": "quafu-sdk",
+            "version": "0.2.7",
+            "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+            "python": "3.12.6"
+          },
+          "mode": "cloud_hardware",
+          "target": "Baihua",
+          "backend": "Baihua",
+          "job_id": "uc4e9da3f-261119-121259",
+          "task_id": "uc4e9da3f-261119-121259-0",
+          "status": "Finished",
+          "submitted_qasm_sha256": "dfbdce9bd41a8304caaf9ed22b756e643f356552a32b0f9ba80c724d44af0e46",
+          "executed_qasm": "// q[0] -> Q58\n// q[1] -> Q71\n// q[2] -> Q70\n// q[3] -> Q72\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[73];\ncreg c[4];\nry(-1.5707963267948966) q[58];\nrz(-3.141592653589793) q[58];\nry(-1.5707963267948966) q[70];\ncz q[58],q[71];\nry(3.141592653589793) q[58];\nry(0.026859513181998296) q[71];\ncz q[58],q[71];\nrz(-3.141592653589793) q[58];\nrz(-1.1129028239251255) q[71];\nry(2.773435740382431) q[71];\nrz(0.4859702179250327) q[71];\ncz q[71],q[70];\nrz(-3.141592653589793) q[70];\nry(-1.5707963267948966) q[70];\nrx(1.5707963267948966) q[71];\ncz q[71],q[70];\nry(-1.5707963267948966) q[70];\nrz(4.383679396037237) q[70];\nrz(1.5707963267948966) q[71];\nry(1.5198289756049594) q[71];\ncz q[71],q[70];\nry(3.141592653589793) q[70];\nrz(-3.141592653589793) q[71];\nry(-2.623510316870354) q[71];\ncz q[58],q[71];\nry(-0.09117916865266104) q[71];\ncz q[70],q[71];\nrz(-1.5707963267948966) q[70];\nry(3.141592653589793) q[70];\nry(0.07831778700455073) q[71];\ncz q[70],q[71];\nrz(-3.141592653589793) q[70];\nrz(-4.71238898038469) q[71];\ncz q[58],q[71];\nry(0.34723062664797605) q[71];\nry(-1.5707963267948966) q[72];\ncz q[71],q[72];\nrx(1.5707963267948966) q[71];\nrz(-3.141592653589793) q[72];\nry(-1.5707963267948966) q[72];\ncz q[71],q[72];\nrz(1.5707963267948966) q[71];\nry(-0.42476118803374124) q[71];\nry(-1.5707963267948966) q[72];\nrz(3.488823280237769) q[72];\ncz q[71],q[72];\nry(-1.6930199527818424) q[71];\nrz(-3.141592653589793) q[71];\ncz q[70],q[71];\nry(0.43157764899249373) q[71];\ncz q[72],q[71];\nry(2.683422216030197) q[71];\ncz q[72],q[71];\ncz q[70],q[71];\ncz q[58],q[71];\nry(0.26938588887112863) q[71];\ncz q[72],q[71];\nry(-0.08326641661366009) q[71];\ncz q[72],q[71];\ncz q[70],q[71];\nry(0.025540832673732382) q[71];\ncz q[72],q[71];\nry(-0.014510989843641795) q[71];\ncz q[72],q[71];\ncz q[70],q[71];\ncz q[58],q[71];\nh q[58];\nh q[71];\nbarrier q[72],q[58],q[70],q[71];\nmeasure q[58] -> c[0];\nmeasure q[70] -> c[1];\nmeasure q[72] -> c[2];\nmeasure q[71] -> c[3];",
+          "executed_qasm_sha256": "3e4b3a0e3b3092e90d499e60e94eff46c97d495fea7d989003528b3ca302c845",
+          "compiler": {
+            "name": "qiskit",
+            "optimization_level": 2,
+            "seed": null,
+            "version": "2.5.2"
+          },
+          "calibration_id": "9652d6d727726984",
+          "measurements": [
+            {
+              "cbit": 0,
+              "physical_qubit": 58,
+              "virtual_qubit": 0
+            },
+            {
+              "cbit": 1,
+              "physical_qubit": 70,
+              "virtual_qubit": 1
+            },
+            {
+              "cbit": 2,
+              "physical_qubit": 72,
+              "virtual_qubit": 2
+            },
+            {
+              "cbit": 3,
+              "physical_qubit": 71,
+              "virtual_qubit": 3
+            }
+          ],
+          "bit_order": "c0_rightmost",
+          "counts_raw": {
+            "0010": 53,
+            "1110": 27,
+            "1000": 115,
+            "1011": 115,
+            "0110": 20,
+            "1010": 59,
+            "0000": 77,
+            "1100": 26,
+            "0001": 116,
+            "0100": 46,
+            "1001": 167,
+            "1111": 38,
+            "0101": 49,
+            "0011": 64,
+            "1101": 28,
+            "0111": 24
+          },
+          "counts_q0_first": {
+            "0100": 53,
+            "0111": 27,
+            "0001": 115,
+            "1101": 115,
+            "0110": 20,
+            "0101": 59,
+            "0000": 77,
+            "0011": 26,
+            "1000": 116,
+            "0010": 46,
+            "1001": 167,
+            "1111": 38,
+            "1010": 49,
+            "1100": 64,
+            "1011": 28,
+            "1110": 24
+          },
+          "shots_requested": 1024,
+          "shots_returned": 1024,
+          "shot_shortfall": false,
+          "probabilities_q0_first": {
+            "0100": 0.0517578125,
+            "0111": 0.0263671875,
+            "0001": 0.1123046875,
+            "1101": 0.1123046875,
+            "0110": 0.01953125,
+            "0101": 0.0576171875,
+            "0000": 0.0751953125,
+            "0011": 0.025390625,
+            "1000": 0.11328125,
+            "0010": 0.044921875,
+            "1001": 0.1630859375,
+            "1111": 0.037109375,
+            "1010": 0.0478515625,
+            "1100": 0.0625,
+            "1011": 0.02734375,
+            "1110": 0.0234375
+          },
+          "raw_payload_sha256": "f79b5854667cb30dd6686bd55cee226c26e9e0174aec3116a1fe0692161b85fb",
+          "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+        },
+        "job_id": "uc4e9da3f-261119-121259",
+        "state": "verified_result"
       },
       {
         "name": "negative_correlation",
         "kernel_id": "17174decccefbe73a3c4811859b1c21ccebed628d206491eb89d36f5d3e1fd9f",
-        "postprocessing": null
+        "postprocessing": null,
+        "receipt": {
+          "schema": "qb-quafu-sdk-receipt-v1",
+          "observed_at": "2026-11-19T04:14:59.457770+00:00",
+          "sdk": {
+            "distribution": "quafu-sdk",
+            "version": "0.2.7",
+            "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+            "python": "3.12.6"
+          },
+          "mode": "cloud_hardware",
+          "target": "Baihua",
+          "backend": "Baihua",
+          "job_id": "uc4e9da3f-261119-121302",
+          "task_id": "uc4e9da3f-261119-121302-0",
+          "status": "Finished",
+          "submitted_qasm_sha256": "17174decccefbe73a3c4811859b1c21ccebed628d206491eb89d36f5d3e1fd9f",
+          "executed_qasm": "// q[0] -> Q58\n// q[1] -> Q71\n// q[2] -> Q70\n// q[3] -> Q72\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[73];\ncreg c[4];\nry(-1.5707963267948966) q[58];\nrz(-3.141592653589793) q[58];\nrz(-3.141592653589793) q[70];\nry(-1.5707963267948966) q[70];\nrz(-1.5707963267948966) q[71];\nry(3.141592653589793) q[71];\ncz q[58],q[71];\nry(3.141592653589793) q[58];\nrz(1.5707963267948966) q[71];\nry(0.03880351314618849) q[71];\ncz q[58],q[71];\nrz(-3.141592653589793) q[58];\nrz(-2.1362062691928307) q[71];\nry(2.950575814600763) q[71];\nrz(-0.5737458922687275) q[71];\ncz q[71],q[70];\nrz(-3.141592653589793) q[70];\nry(-1.5707963267948966) q[70];\nrx(1.5707963267948966) q[71];\ncz q[71],q[70];\nry(-1.5707963267948966) q[70];\nrz(-0.1610043599634201) q[70];\nrz(1.5707963267948966) q[71];\nry(1.483763479465294) q[71];\ncz q[71],q[70];\nry(-2.81171946559315) q[71];\ncz q[58],q[71];\nry(0.09702998007013569) q[71];\ncz q[70],q[71];\nry(3.141592653589793) q[70];\nry(0.05968241151498986) q[71];\ncz q[70],q[71];\nry(3.141592653589793) q[70];\nrz(-4.71238898038469) q[71];\ncz q[58],q[71];\nry(0.5178551804907673) q[71];\nry(-1.5707963267948966) q[72];\ncz q[71],q[72];\nrx(1.5707963267948966) q[71];\nrz(-3.141592653589793) q[72];\nry(-1.5707963267948966) q[72];\ncz q[71],q[72];\nrz(1.5707963267948966) q[71];\nry(-0.3189816919403139) q[71];\nry(-1.5707963267948966) q[72];\nrz(3.6594478340805594) q[72];\ncz q[71],q[72];\nry(-2.173419329184268) q[71];\nrz(-3.141592653589793) q[71];\ncz q[70],q[71];\nry(0.4445574040561371) q[71];\ncz q[72],q[71];\nry(-0.4440751666232825) q[71];\ncz q[72],q[71];\ncz q[70],q[71];\ncz q[58],q[71];\nry(-0.21101348753129703) q[71];\ncz q[72],q[71];\nry(0.022513079479767415) q[71];\ncz q[72],q[71];\ncz q[70],q[71];\nry(0.012561077610089118) q[71];\ncz q[72],q[71];\nry(3.112986392809838) q[71];\ncz q[72],q[71];\ncz q[70],q[71];\ncz q[58],q[71];\nh q[58];\nh q[71];\nbarrier q[72],q[58],q[70],q[71];\nmeasure q[58] -> c[0];\nmeasure q[70] -> c[1];\nmeasure q[72] -> c[2];\nmeasure q[71] -> c[3];",
+          "executed_qasm_sha256": "d5df72bae4954b255edbd7c7f5694c63f33728480780f4c56d64ba5338d86454",
+          "compiler": {
+            "name": "qiskit",
+            "optimization_level": 2,
+            "seed": null,
+            "version": "2.5.2"
+          },
+          "calibration_id": "9652d6d727726984",
+          "measurements": [
+            {
+              "cbit": 0,
+              "physical_qubit": 58,
+              "virtual_qubit": 0
+            },
+            {
+              "cbit": 1,
+              "physical_qubit": 70,
+              "virtual_qubit": 1
+            },
+            {
+              "cbit": 2,
+              "physical_qubit": 72,
+              "virtual_qubit": 2
+            },
+            {
+              "cbit": 3,
+              "physical_qubit": 71,
+              "virtual_qubit": 3
+            }
+          ],
+          "bit_order": "c0_rightmost",
+          "counts_raw": {
+            "1001": 86,
+            "0100": 89,
+            "1100": 54,
+            "0001": 73,
+            "1000": 188,
+            "0011": 39,
+            "0110": 24,
+            "0101": 55,
+            "1010": 102,
+            "1011": 60,
+            "1110": 39,
+            "0000": 118,
+            "1111": 15,
+            "0010": 47,
+            "0111": 18,
+            "1101": 17
+          },
+          "counts_q0_first": {
+            "1001": 86,
+            "0010": 89,
+            "0011": 54,
+            "1000": 73,
+            "0001": 188,
+            "1100": 39,
+            "0110": 24,
+            "1010": 55,
+            "0101": 102,
+            "1101": 60,
+            "0111": 39,
+            "0000": 118,
+            "1111": 15,
+            "0100": 47,
+            "1110": 18,
+            "1011": 17
+          },
+          "shots_requested": 1024,
+          "shots_returned": 1024,
+          "shot_shortfall": false,
+          "probabilities_q0_first": {
+            "1001": 0.083984375,
+            "0010": 0.0869140625,
+            "0011": 0.052734375,
+            "1000": 0.0712890625,
+            "0001": 0.18359375,
+            "1100": 0.0380859375,
+            "0110": 0.0234375,
+            "1010": 0.0537109375,
+            "0101": 0.099609375,
+            "1101": 0.05859375,
+            "0111": 0.0380859375,
+            "0000": 0.115234375,
+            "1111": 0.0146484375,
+            "0100": 0.0458984375,
+            "1110": 0.017578125,
+            "1011": 0.0166015625
+          },
+          "raw_payload_sha256": "ae62164a18cdc4253a49da2241c935c38ea444bc231a2e6bf058b4374fd8778f",
+          "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+        },
+        "job_id": "uc4e9da3f-261119-121302",
+        "state": "verified_result"
       },
       {
         "name": "time_sampling",
         "kernel_id": "ad0acd4930f37e690fb659d90c78b90b139e68b60220fd19da0cfecb5946a98b",
-        "postprocessing": null
+        "postprocessing": null,
+        "receipt": {
+          "schema": "qb-quafu-sdk-receipt-v1",
+          "observed_at": "2026-11-19T04:15:00.224575+00:00",
+          "sdk": {
+            "distribution": "quafu-sdk",
+            "version": "0.2.7",
+            "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+            "python": "3.12.6"
+          },
+          "mode": "cloud_hardware",
+          "target": "Baihua",
+          "backend": "Baihua",
+          "job_id": "uc4e9da3f-261119-121305",
+          "task_id": "uc4e9da3f-261119-121305-0",
+          "status": "Finished",
+          "submitted_qasm_sha256": "ad0acd4930f37e690fb659d90c78b90b139e68b60220fd19da0cfecb5946a98b",
+          "executed_qasm": "// q[0] -> Q94\n// q[1] -> Q70\n// q[2] -> Q139\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[140];\ncreg c[3];\nh q[70];\nh q[94];\nh q[139];\nbarrier q[94],q[139],q[70];\nmeasure q[94] -> c[0];\nmeasure q[70] -> c[1];\nmeasure q[139] -> c[2];",
+          "executed_qasm_sha256": "a970adee73e20f16cf269c101ef32ed123c2e3c12491192ab526c11d57ecc930",
+          "compiler": {
+            "name": "qiskit",
+            "optimization_level": 2,
+            "seed": null,
+            "version": "2.5.2"
+          },
+          "calibration_id": "9652d6d727726984",
+          "measurements": [
+            {
+              "cbit": 0,
+              "physical_qubit": 94,
+              "virtual_qubit": 0
+            },
+            {
+              "cbit": 1,
+              "physical_qubit": 70,
+              "virtual_qubit": 1
+            },
+            {
+              "cbit": 2,
+              "physical_qubit": 139,
+              "virtual_qubit": 2
+            }
+          ],
+          "bit_order": "c0_rightmost",
+          "counts_raw": {
+            "110": 123,
+            "010": 107,
+            "101": 118,
+            "000": 178,
+            "100": 158,
+            "111": 90,
+            "011": 100,
+            "001": 150
+          },
+          "counts_q0_first": {
+            "011": 123,
+            "010": 107,
+            "101": 118,
+            "000": 178,
+            "001": 158,
+            "111": 90,
+            "110": 100,
+            "100": 150
+          },
+          "shots_requested": 1024,
+          "shots_returned": 1024,
+          "shot_shortfall": false,
+          "probabilities_q0_first": {
+            "011": 0.1201171875,
+            "010": 0.1044921875,
+            "101": 0.115234375,
+            "000": 0.173828125,
+            "001": 0.154296875,
+            "111": 0.087890625,
+            "110": 0.09765625,
+            "100": 0.146484375
+          },
+          "raw_payload_sha256": "0cc728e1395eff8e9eceb8d6bab6e2f539306421487865926b167e245fcbe1d0",
+          "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+        },
+        "job_id": "uc4e9da3f-261119-121305",
+        "state": "verified_result"
       }
     ],
-    "update_status": "NOT_SUBMITTED_NEW_SDK_CREDENTIALS_REQUIRED"
+    "update_status": "VERIFIED_PROVIDER_RESULTS",
+    "hardware_analysis": {
+      "business": {
+        "acceptance": "NOT_ACCEPTED_NO_PREREGISTERED_HARDWARE_THRESHOLD",
+        "daily_return": {
+          "approximate_95pct_sampling_interval": [
+            -0.00046742496535942665,
+            0.001326799965359427
+          ],
+          "estimate": 0.00042968750000000016,
+          "excludes_systematic_noise_calibration_and_temporal_correlation": true,
+          "sampling_standard_error": 0.00045771044150991165
+        },
+        "input_scope": "8 synthetic daily returns; no live data",
+        "negative_correlation": {
+          "absolute_error": 1.2636817445352715,
+          "approximate_95pct_sampling_interval": [
+            0.2323879953458995,
+            0.3496432546541005
+          ],
+          "estimate": 0.291015625,
+          "excludes_systematic_noise_calibration_and_temporal_correlation": true,
+          "frozen_reference": -0.9726661195352715,
+          "reference_inside_sampling_only_interval": false,
+          "sampling_standard_error": 0.029912055945969657
+        },
+        "positive_correlation": {
+          "absolute_error": 1.1400020469933148,
+          "approximate_95pct_sampling_interval": [
+            -0.23417512890546988,
+            -0.11348112109453011
+          ],
+          "estimate": -0.173828125,
+          "excludes_systematic_noise_calibration_and_temporal_correlation": true,
+          "frozen_reference": 0.9661739219933148,
+          "reference_inside_sampling_only_interval": false,
+          "sampling_standard_error": 0.030789287706872392
+        },
+        "scope": "Descriptive hardware statistics, not production or quantum-advantage acceptance"
+      },
+      "experiments": {
+        "negative_correlation": {
+          "maximum_probability_difference": 0.2860913220115202,
+          "shots_returned": 1024,
+          "total_variation_from_frozen_ideal": 0.6854960722857206
+        },
+        "positive_correlation": {
+          "maximum_probability_difference": 0.26604321310907103,
+          "shots_returned": 1024,
+          "total_variation_from_frozen_ideal": 0.5913864797476976
+        },
+        "time_sampling": {
+          "maximum_probability_difference": 0.048828125000000056,
+          "shots_returned": 1024,
+          "total_variation_from_frozen_ideal": 0.09960937499999994
+        }
+      }
+    },
+    "physical_compilation_audit": {
+      "positive_correlation": {
+        "native_basis_checked": true,
+        "physical_couplings_checked": true,
+        "executed_measurements_match_receipt": true,
+        "native_gates": [
+          "cz",
+          "h",
+          "rx",
+          "ry",
+          "rz"
+        ],
+        "barriers_not_counted_as_native_gates": 1,
+        "declared_physical_width": 73,
+        "active_physical_wires": [
+          58,
+          70,
+          71,
+          72
+        ],
+        "dependency_depth_including_terminal_measurement": 55,
+        "depth_method": "Native parsed gate DAG; not pulse duration or routing performance acceptance",
+        "calibration_id": "9652d6d727726984",
+        "calibration_time": "2026-11-19T10:09:19+08:00",
+        "compiler": {
+          "name": "qiskit",
+          "optimization_level": 2,
+          "seed": null,
+          "version": "2.5.2"
+        },
+        "native_compiler_acceptance": false,
+        "independent_terminal_distribution": {
+          "terminal_distribution_preserved": true,
+          "maximum_probability_error": 1.2212453270876722e-15,
+          "total_variation_from_frozen_ideal": 1.7552148970367831e-15,
+          "absolute_tolerance": 3e-12,
+          "physical_active_qubits": 4,
+          "scope": "Fresh local Native replay of returned physical circuit; not another hardware task, full matrix or coherent-control acceptance"
+        }
+      },
+      "negative_correlation": {
+        "native_basis_checked": true,
+        "physical_couplings_checked": true,
+        "executed_measurements_match_receipt": true,
+        "native_gates": [
+          "cz",
+          "h",
+          "rx",
+          "ry",
+          "rz"
+        ],
+        "barriers_not_counted_as_native_gates": 1,
+        "declared_physical_width": 73,
+        "active_physical_wires": [
+          58,
+          70,
+          71,
+          72
+        ],
+        "dependency_depth_including_terminal_measurement": 54,
+        "depth_method": "Native parsed gate DAG; not pulse duration or routing performance acceptance",
+        "calibration_id": "9652d6d727726984",
+        "calibration_time": "2026-11-19T10:09:19+08:00",
+        "compiler": {
+          "name": "qiskit",
+          "optimization_level": 2,
+          "seed": null,
+          "version": "2.5.2"
+        },
+        "native_compiler_acceptance": false,
+        "independent_terminal_distribution": {
+          "terminal_distribution_preserved": true,
+          "maximum_probability_error": 4.440892098500626e-16,
+          "total_variation_from_frozen_ideal": 6.616767935810908e-16,
+          "absolute_tolerance": 3e-12,
+          "physical_active_qubits": 4,
+          "scope": "Fresh local Native replay of returned physical circuit; not another hardware task, full matrix or coherent-control acceptance"
+        }
+      },
+      "time_sampling": {
+        "native_basis_checked": true,
+        "physical_couplings_checked": true,
+        "executed_measurements_match_receipt": true,
+        "native_gates": [
+          "h"
+        ],
+        "barriers_not_counted_as_native_gates": 1,
+        "declared_physical_width": 140,
+        "active_physical_wires": [
+          70,
+          94,
+          139
+        ],
+        "dependency_depth_including_terminal_measurement": 2,
+        "depth_method": "Native parsed gate DAG; not pulse duration or routing performance acceptance",
+        "calibration_id": "9652d6d727726984",
+        "calibration_time": "2026-11-19T10:09:19+08:00",
+        "compiler": {
+          "name": "qiskit",
+          "optimization_level": 2,
+          "seed": null,
+          "version": "2.5.2"
+        },
+        "native_compiler_acceptance": false,
+        "independent_terminal_distribution": {
+          "terminal_distribution_preserved": true,
+          "maximum_probability_error": 0.0,
+          "total_variation_from_frozen_ideal": 0.0,
+          "absolute_tolerance": 3e-12,
+          "physical_active_qubits": 3,
+          "scope": "Fresh local Native replay of returned physical circuit; not another hardware task, full matrix or coherent-control acceptance"
+        }
+      }
+    }
   },
-  "updated_at": "2026-11-16T07:11:01.697257+00:00",
+  "updated_at": "2026-11-19T04:45:49.068526+00:00",
   "local_source": {
     "kind": "Python source files only",
     "files": 777,
@@ -48,7 +520,184 @@
     "files_manifest": "source-files.json"
   },
   "local_verification_at": "2026-11-16T07:11:01.697257+00:00",
-  "backend_snapshot_sha256": "70b47bdc0d5ef6013b1ccbe3d1dc22b312d56f8508c6689ce012ad7c96a8d085",
+  "backend_snapshot_sha256": "e794770a69bda69b30b40705f12b627c07429db161243ae2032ca600f4364c14",
+  "actual_submitted_plan_sha256": "a278d140810828863d14777a75d803f998a8769b773084c1445f455eaddc23da",
+  "actual_submitted_plan_journal_digest": "f68fd1c3502c4cf3c4330c75a8b1d71010d3632547207d73bb40f795c7d70e84",
+  "receipt_identity": "5b70f9d4c831e343f3db403ca89e08faef55cfb0cb977ac696f57233267c3bba",
+  "hardware_analysis": {
+    "business": {
+      "acceptance": "NOT_ACCEPTED_NO_PREREGISTERED_HARDWARE_THRESHOLD",
+      "daily_return": {
+        "approximate_95pct_sampling_interval": [
+          -0.00046742496535942665,
+          0.001326799965359427
+        ],
+        "estimate": 0.00042968750000000016,
+        "excludes_systematic_noise_calibration_and_temporal_correlation": true,
+        "sampling_standard_error": 0.00045771044150991165
+      },
+      "input_scope": "8 synthetic daily returns; no live data",
+      "negative_correlation": {
+        "absolute_error": 1.2636817445352715,
+        "approximate_95pct_sampling_interval": [
+          0.2323879953458995,
+          0.3496432546541005
+        ],
+        "estimate": 0.291015625,
+        "excludes_systematic_noise_calibration_and_temporal_correlation": true,
+        "frozen_reference": -0.9726661195352715,
+        "reference_inside_sampling_only_interval": false,
+        "sampling_standard_error": 0.029912055945969657
+      },
+      "positive_correlation": {
+        "absolute_error": 1.1400020469933148,
+        "approximate_95pct_sampling_interval": [
+          -0.23417512890546988,
+          -0.11348112109453011
+        ],
+        "estimate": -0.173828125,
+        "excludes_systematic_noise_calibration_and_temporal_correlation": true,
+        "frozen_reference": 0.9661739219933148,
+        "reference_inside_sampling_only_interval": false,
+        "sampling_standard_error": 0.030789287706872392
+      },
+      "scope": "Descriptive hardware statistics, not production or quantum-advantage acceptance"
+    },
+    "experiments": {
+      "negative_correlation": {
+        "maximum_probability_difference": 0.2860913220115202,
+        "shots_returned": 1024,
+        "total_variation_from_frozen_ideal": 0.6854960722857206
+      },
+      "positive_correlation": {
+        "maximum_probability_difference": 0.26604321310907103,
+        "shots_returned": 1024,
+        "total_variation_from_frozen_ideal": 0.5913864797476976
+      },
+      "time_sampling": {
+        "maximum_probability_difference": 0.048828125000000056,
+        "shots_returned": 1024,
+        "total_variation_from_frozen_ideal": 0.09960937499999994
+      }
+    }
+  },
+  "physical_compilation_audit": {
+    "positive_correlation": {
+      "native_basis_checked": true,
+      "physical_couplings_checked": true,
+      "executed_measurements_match_receipt": true,
+      "native_gates": [
+        "cz",
+        "h",
+        "rx",
+        "ry",
+        "rz"
+      ],
+      "barriers_not_counted_as_native_gates": 1,
+      "declared_physical_width": 73,
+      "active_physical_wires": [
+        58,
+        70,
+        71,
+        72
+      ],
+      "dependency_depth_including_terminal_measurement": 55,
+      "depth_method": "Native parsed gate DAG; not pulse duration or routing performance acceptance",
+      "calibration_id": "9652d6d727726984",
+      "calibration_time": "2026-11-19T10:09:19+08:00",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "native_compiler_acceptance": false,
+      "independent_terminal_distribution": {
+        "terminal_distribution_preserved": true,
+        "maximum_probability_error": 1.2212453270876722e-15,
+        "total_variation_from_frozen_ideal": 1.7552148970367831e-15,
+        "absolute_tolerance": 3e-12,
+        "physical_active_qubits": 4,
+        "scope": "Fresh local Native replay of returned physical circuit; not another hardware task, full matrix or coherent-control acceptance"
+      }
+    },
+    "negative_correlation": {
+      "native_basis_checked": true,
+      "physical_couplings_checked": true,
+      "executed_measurements_match_receipt": true,
+      "native_gates": [
+        "cz",
+        "h",
+        "rx",
+        "ry",
+        "rz"
+      ],
+      "barriers_not_counted_as_native_gates": 1,
+      "declared_physical_width": 73,
+      "active_physical_wires": [
+        58,
+        70,
+        71,
+        72
+      ],
+      "dependency_depth_including_terminal_measurement": 54,
+      "depth_method": "Native parsed gate DAG; not pulse duration or routing performance acceptance",
+      "calibration_id": "9652d6d727726984",
+      "calibration_time": "2026-11-19T10:09:19+08:00",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "native_compiler_acceptance": false,
+      "independent_terminal_distribution": {
+        "terminal_distribution_preserved": true,
+        "maximum_probability_error": 4.440892098500626e-16,
+        "total_variation_from_frozen_ideal": 6.616767935810908e-16,
+        "absolute_tolerance": 3e-12,
+        "physical_active_qubits": 4,
+        "scope": "Fresh local Native replay of returned physical circuit; not another hardware task, full matrix or coherent-control acceptance"
+      }
+    },
+    "time_sampling": {
+      "native_basis_checked": true,
+      "physical_couplings_checked": true,
+      "executed_measurements_match_receipt": true,
+      "native_gates": [
+        "h"
+      ],
+      "barriers_not_counted_as_native_gates": 1,
+      "declared_physical_width": 140,
+      "active_physical_wires": [
+        70,
+        94,
+        139
+      ],
+      "dependency_depth_including_terminal_measurement": 2,
+      "depth_method": "Native parsed gate DAG; not pulse duration or routing performance acceptance",
+      "calibration_id": "9652d6d727726984",
+      "calibration_time": "2026-11-19T10:09:19+08:00",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "native_compiler_acceptance": false,
+      "independent_terminal_distribution": {
+        "terminal_distribution_preserved": true,
+        "maximum_probability_error": 0.0,
+        "total_variation_from_frozen_ideal": 0.0,
+        "absolute_tolerance": 3e-12,
+        "physical_active_qubits": 3,
+        "scope": "Fresh local Native replay of returned physical circuit; not another hardware task, full matrix or coherent-control acceptance"
+      }
+    }
+  },
+  "report_source_sha256": "1ffef7716d59fc260ea19905a65b88925fb0508d8647fd7d6d0923d1630f8eb2",
+  "new_cloud_tasks": 0,
+  "backend_snapshot_file": "backend-baihua-20261119.json",
   "experiments": [
     {
       "name": "positive_correlation",
@@ -134,7 +783,114 @@
           "1111"
         ]
       },
-      "receipt": null
+      "receipt": {
+        "schema": "qb-quafu-sdk-receipt-v1",
+        "observed_at": "2026-11-19T04:14:58.815756+00:00",
+        "sdk": {
+          "distribution": "quafu-sdk",
+          "version": "0.2.7",
+          "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+          "python": "3.12.6"
+        },
+        "mode": "cloud_hardware",
+        "target": "Baihua",
+        "backend": "Baihua",
+        "job_id": "uc4e9da3f-261119-121259",
+        "task_id": "uc4e9da3f-261119-121259-0",
+        "status": "Finished",
+        "submitted_qasm_sha256": "dfbdce9bd41a8304caaf9ed22b756e643f356552a32b0f9ba80c724d44af0e46",
+        "executed_qasm": "// q[0] -> Q58\n// q[1] -> Q71\n// q[2] -> Q70\n// q[3] -> Q72\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[73];\ncreg c[4];\nry(-1.5707963267948966) q[58];\nrz(-3.141592653589793) q[58];\nry(-1.5707963267948966) q[70];\ncz q[58],q[71];\nry(3.141592653589793) q[58];\nry(0.026859513181998296) q[71];\ncz q[58],q[71];\nrz(-3.141592653589793) q[58];\nrz(-1.1129028239251255) q[71];\nry(2.773435740382431) q[71];\nrz(0.4859702179250327) q[71];\ncz q[71],q[70];\nrz(-3.141592653589793) q[70];\nry(-1.5707963267948966) q[70];\nrx(1.5707963267948966) q[71];\ncz q[71],q[70];\nry(-1.5707963267948966) q[70];\nrz(4.383679396037237) q[70];\nrz(1.5707963267948966) q[71];\nry(1.5198289756049594) q[71];\ncz q[71],q[70];\nry(3.141592653589793) q[70];\nrz(-3.141592653589793) q[71];\nry(-2.623510316870354) q[71];\ncz q[58],q[71];\nry(-0.09117916865266104) q[71];\ncz q[70],q[71];\nrz(-1.5707963267948966) q[70];\nry(3.141592653589793) q[70];\nry(0.07831778700455073) q[71];\ncz q[70],q[71];\nrz(-3.141592653589793) q[70];\nrz(-4.71238898038469) q[71];\ncz q[58],q[71];\nry(0.34723062664797605) q[71];\nry(-1.5707963267948966) q[72];\ncz q[71],q[72];\nrx(1.5707963267948966) q[71];\nrz(-3.141592653589793) q[72];\nry(-1.5707963267948966) q[72];\ncz q[71],q[72];\nrz(1.5707963267948966) q[71];\nry(-0.42476118803374124) q[71];\nry(-1.5707963267948966) q[72];\nrz(3.488823280237769) q[72];\ncz q[71],q[72];\nry(-1.6930199527818424) q[71];\nrz(-3.141592653589793) q[71];\ncz q[70],q[71];\nry(0.43157764899249373) q[71];\ncz q[72],q[71];\nry(2.683422216030197) q[71];\ncz q[72],q[71];\ncz q[70],q[71];\ncz q[58],q[71];\nry(0.26938588887112863) q[71];\ncz q[72],q[71];\nry(-0.08326641661366009) q[71];\ncz q[72],q[71];\ncz q[70],q[71];\nry(0.025540832673732382) q[71];\ncz q[72],q[71];\nry(-0.014510989843641795) q[71];\ncz q[72],q[71];\ncz q[70],q[71];\ncz q[58],q[71];\nh q[58];\nh q[71];\nbarrier q[72],q[58],q[70],q[71];\nmeasure q[58] -> c[0];\nmeasure q[70] -> c[1];\nmeasure q[72] -> c[2];\nmeasure q[71] -> c[3];",
+        "executed_qasm_sha256": "3e4b3a0e3b3092e90d499e60e94eff46c97d495fea7d989003528b3ca302c845",
+        "compiler": {
+          "name": "qiskit",
+          "optimization_level": 2,
+          "seed": null,
+          "version": "2.5.2"
+        },
+        "calibration_id": "9652d6d727726984",
+        "measurements": [
+          {
+            "cbit": 0,
+            "physical_qubit": 58,
+            "virtual_qubit": 0
+          },
+          {
+            "cbit": 1,
+            "physical_qubit": 70,
+            "virtual_qubit": 1
+          },
+          {
+            "cbit": 2,
+            "physical_qubit": 72,
+            "virtual_qubit": 2
+          },
+          {
+            "cbit": 3,
+            "physical_qubit": 71,
+            "virtual_qubit": 3
+          }
+        ],
+        "bit_order": "c0_rightmost",
+        "counts_raw": {
+          "0010": 53,
+          "1110": 27,
+          "1000": 115,
+          "1011": 115,
+          "0110": 20,
+          "1010": 59,
+          "0000": 77,
+          "1100": 26,
+          "0001": 116,
+          "0100": 46,
+          "1001": 167,
+          "1111": 38,
+          "0101": 49,
+          "0011": 64,
+          "1101": 28,
+          "0111": 24
+        },
+        "counts_q0_first": {
+          "0100": 53,
+          "0111": 27,
+          "0001": 115,
+          "1101": 115,
+          "0110": 20,
+          "0101": 59,
+          "0000": 77,
+          "0011": 26,
+          "1000": 116,
+          "0010": 46,
+          "1001": 167,
+          "1111": 38,
+          "1010": 49,
+          "1100": 64,
+          "1011": 28,
+          "1110": 24
+        },
+        "shots_requested": 1024,
+        "shots_returned": 1024,
+        "shot_shortfall": false,
+        "probabilities_q0_first": {
+          "0100": 0.0517578125,
+          "0111": 0.0263671875,
+          "0001": 0.1123046875,
+          "1101": 0.1123046875,
+          "0110": 0.01953125,
+          "0101": 0.0576171875,
+          "0000": 0.0751953125,
+          "0011": 0.025390625,
+          "1000": 0.11328125,
+          "0010": 0.044921875,
+          "1001": 0.1630859375,
+          "1111": 0.037109375,
+          "1010": 0.0478515625,
+          "1100": 0.0625,
+          "1011": 0.02734375,
+          "1110": 0.0234375
+        },
+        "raw_payload_sha256": "f79b5854667cb30dd6686bd55cee226c26e9e0174aec3116a1fe0692161b85fb",
+        "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+      }
     },
     {
       "name": "negative_correlation",
@@ -220,7 +976,114 @@
           "1111"
         ]
       },
-      "receipt": null
+      "receipt": {
+        "schema": "qb-quafu-sdk-receipt-v1",
+        "observed_at": "2026-11-19T04:14:59.457770+00:00",
+        "sdk": {
+          "distribution": "quafu-sdk",
+          "version": "0.2.7",
+          "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+          "python": "3.12.6"
+        },
+        "mode": "cloud_hardware",
+        "target": "Baihua",
+        "backend": "Baihua",
+        "job_id": "uc4e9da3f-261119-121302",
+        "task_id": "uc4e9da3f-261119-121302-0",
+        "status": "Finished",
+        "submitted_qasm_sha256": "17174decccefbe73a3c4811859b1c21ccebed628d206491eb89d36f5d3e1fd9f",
+        "executed_qasm": "// q[0] -> Q58\n// q[1] -> Q71\n// q[2] -> Q70\n// q[3] -> Q72\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[73];\ncreg c[4];\nry(-1.5707963267948966) q[58];\nrz(-3.141592653589793) q[58];\nrz(-3.141592653589793) q[70];\nry(-1.5707963267948966) q[70];\nrz(-1.5707963267948966) q[71];\nry(3.141592653589793) q[71];\ncz q[58],q[71];\nry(3.141592653589793) q[58];\nrz(1.5707963267948966) q[71];\nry(0.03880351314618849) q[71];\ncz q[58],q[71];\nrz(-3.141592653589793) q[58];\nrz(-2.1362062691928307) q[71];\nry(2.950575814600763) q[71];\nrz(-0.5737458922687275) q[71];\ncz q[71],q[70];\nrz(-3.141592653589793) q[70];\nry(-1.5707963267948966) q[70];\nrx(1.5707963267948966) q[71];\ncz q[71],q[70];\nry(-1.5707963267948966) q[70];\nrz(-0.1610043599634201) q[70];\nrz(1.5707963267948966) q[71];\nry(1.483763479465294) q[71];\ncz q[71],q[70];\nry(-2.81171946559315) q[71];\ncz q[58],q[71];\nry(0.09702998007013569) q[71];\ncz q[70],q[71];\nry(3.141592653589793) q[70];\nry(0.05968241151498986) q[71];\ncz q[70],q[71];\nry(3.141592653589793) q[70];\nrz(-4.71238898038469) q[71];\ncz q[58],q[71];\nry(0.5178551804907673) q[71];\nry(-1.5707963267948966) q[72];\ncz q[71],q[72];\nrx(1.5707963267948966) q[71];\nrz(-3.141592653589793) q[72];\nry(-1.5707963267948966) q[72];\ncz q[71],q[72];\nrz(1.5707963267948966) q[71];\nry(-0.3189816919403139) q[71];\nry(-1.5707963267948966) q[72];\nrz(3.6594478340805594) q[72];\ncz q[71],q[72];\nry(-2.173419329184268) q[71];\nrz(-3.141592653589793) q[71];\ncz q[70],q[71];\nry(0.4445574040561371) q[71];\ncz q[72],q[71];\nry(-0.4440751666232825) q[71];\ncz q[72],q[71];\ncz q[70],q[71];\ncz q[58],q[71];\nry(-0.21101348753129703) q[71];\ncz q[72],q[71];\nry(0.022513079479767415) q[71];\ncz q[72],q[71];\ncz q[70],q[71];\nry(0.012561077610089118) q[71];\ncz q[72],q[71];\nry(3.112986392809838) q[71];\ncz q[72],q[71];\ncz q[70],q[71];\ncz q[58],q[71];\nh q[58];\nh q[71];\nbarrier q[72],q[58],q[70],q[71];\nmeasure q[58] -> c[0];\nmeasure q[70] -> c[1];\nmeasure q[72] -> c[2];\nmeasure q[71] -> c[3];",
+        "executed_qasm_sha256": "d5df72bae4954b255edbd7c7f5694c63f33728480780f4c56d64ba5338d86454",
+        "compiler": {
+          "name": "qiskit",
+          "optimization_level": 2,
+          "seed": null,
+          "version": "2.5.2"
+        },
+        "calibration_id": "9652d6d727726984",
+        "measurements": [
+          {
+            "cbit": 0,
+            "physical_qubit": 58,
+            "virtual_qubit": 0
+          },
+          {
+            "cbit": 1,
+            "physical_qubit": 70,
+            "virtual_qubit": 1
+          },
+          {
+            "cbit": 2,
+            "physical_qubit": 72,
+            "virtual_qubit": 2
+          },
+          {
+            "cbit": 3,
+            "physical_qubit": 71,
+            "virtual_qubit": 3
+          }
+        ],
+        "bit_order": "c0_rightmost",
+        "counts_raw": {
+          "1001": 86,
+          "0100": 89,
+          "1100": 54,
+          "0001": 73,
+          "1000": 188,
+          "0011": 39,
+          "0110": 24,
+          "0101": 55,
+          "1010": 102,
+          "1011": 60,
+          "1110": 39,
+          "0000": 118,
+          "1111": 15,
+          "0010": 47,
+          "0111": 18,
+          "1101": 17
+        },
+        "counts_q0_first": {
+          "1001": 86,
+          "0010": 89,
+          "0011": 54,
+          "1000": 73,
+          "0001": 188,
+          "1100": 39,
+          "0110": 24,
+          "1010": 55,
+          "0101": 102,
+          "1101": 60,
+          "0111": 39,
+          "0000": 118,
+          "1111": 15,
+          "0100": 47,
+          "1110": 18,
+          "1011": 17
+        },
+        "shots_requested": 1024,
+        "shots_returned": 1024,
+        "shot_shortfall": false,
+        "probabilities_q0_first": {
+          "1001": 0.083984375,
+          "0010": 0.0869140625,
+          "0011": 0.052734375,
+          "1000": 0.0712890625,
+          "0001": 0.18359375,
+          "1100": 0.0380859375,
+          "0110": 0.0234375,
+          "1010": 0.0537109375,
+          "0101": 0.099609375,
+          "1101": 0.05859375,
+          "0111": 0.0380859375,
+          "0000": 0.115234375,
+          "1111": 0.0146484375,
+          "0100": 0.0458984375,
+          "1110": 0.017578125,
+          "1011": 0.0166015625
+        },
+        "raw_payload_sha256": "ae62164a18cdc4253a49da2241c935c38ea444bc231a2e6bf058b4374fd8778f",
+        "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+      }
     },
     {
       "name": "time_sampling",
@@ -281,7 +1144,85 @@
           "111"
         ]
       },
-      "receipt": null
+      "receipt": {
+        "schema": "qb-quafu-sdk-receipt-v1",
+        "observed_at": "2026-11-19T04:15:00.224575+00:00",
+        "sdk": {
+          "distribution": "quafu-sdk",
+          "version": "0.2.7",
+          "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+          "python": "3.12.6"
+        },
+        "mode": "cloud_hardware",
+        "target": "Baihua",
+        "backend": "Baihua",
+        "job_id": "uc4e9da3f-261119-121305",
+        "task_id": "uc4e9da3f-261119-121305-0",
+        "status": "Finished",
+        "submitted_qasm_sha256": "ad0acd4930f37e690fb659d90c78b90b139e68b60220fd19da0cfecb5946a98b",
+        "executed_qasm": "// q[0] -> Q94\n// q[1] -> Q70\n// q[2] -> Q139\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[140];\ncreg c[3];\nh q[70];\nh q[94];\nh q[139];\nbarrier q[94],q[139],q[70];\nmeasure q[94] -> c[0];\nmeasure q[70] -> c[1];\nmeasure q[139] -> c[2];",
+        "executed_qasm_sha256": "a970adee73e20f16cf269c101ef32ed123c2e3c12491192ab526c11d57ecc930",
+        "compiler": {
+          "name": "qiskit",
+          "optimization_level": 2,
+          "seed": null,
+          "version": "2.5.2"
+        },
+        "calibration_id": "9652d6d727726984",
+        "measurements": [
+          {
+            "cbit": 0,
+            "physical_qubit": 94,
+            "virtual_qubit": 0
+          },
+          {
+            "cbit": 1,
+            "physical_qubit": 70,
+            "virtual_qubit": 1
+          },
+          {
+            "cbit": 2,
+            "physical_qubit": 139,
+            "virtual_qubit": 2
+          }
+        ],
+        "bit_order": "c0_rightmost",
+        "counts_raw": {
+          "110": 123,
+          "010": 107,
+          "101": 118,
+          "000": 178,
+          "100": 158,
+          "111": 90,
+          "011": 100,
+          "001": 150
+        },
+        "counts_q0_first": {
+          "011": 123,
+          "010": 107,
+          "101": 118,
+          "000": 178,
+          "001": 158,
+          "111": 90,
+          "110": 100,
+          "100": 150
+        },
+        "shots_requested": 1024,
+        "shots_returned": 1024,
+        "shot_shortfall": false,
+        "probabilities_q0_first": {
+          "011": 0.1201171875,
+          "010": 0.1044921875,
+          "101": 0.115234375,
+          "000": 0.173828125,
+          "001": 0.154296875,
+          "111": 0.087890625,
+          "110": 0.09765625,
+          "100": 0.146484375
+        },
+        "raw_payload_sha256": "0cc728e1395eff8e9eceb8d6bab6e2f539306421487865926b167e245fcbe1d0",
+        "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+      }
     }
   ]
 }

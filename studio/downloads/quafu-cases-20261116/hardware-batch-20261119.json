@@ -1,0 +1,2333 @@
+{
+  "schema": "qb-baihua-existing-case-batch-v1",
+  "observed_at": "2026-11-19T04:22:47.943587+00:00",
+  "target": "Baihua",
+  "sdk": {
+    "distribution": "quafu-sdk",
+    "version": "0.2.7",
+    "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+    "python": "3.12.6"
+  },
+  "full_plan_sha256": "396d2be72063e5cca52789efd6c2fad6a40cb73020225c6de5ba4d4a21119cca",
+  "submitted_plan_sha256": "a278d140810828863d14777a75d803f998a8769b773084c1445f455eaddc23da",
+  "journal_sha256": "abb3de5a5968cb4116281f160bd015c1c8312444f9fa782845e9ba26de1bee11",
+  "frozen_case_count": 29,
+  "quantum_case_count": 27,
+  "classical_case_count": 2,
+  "full_kernel_count": 111,
+  "submitted_jobs": 20,
+  "hardware_results": 19,
+  "provider_compiler_rejections": 1,
+  "unsubmitted_kernels": 91,
+  "updated_existing_case_count": 15,
+  "unchanged_existing_case_count": 14,
+  "selected_task_ceiling": 20,
+  "requested_shots": 1024,
+  "logical_qubit_ceiling": 6,
+  "no_automatic_retry_or_next_day_batch": true,
+  "no_degraded_quota_used": true,
+  "original_notebooks_rerun": false,
+  "original_inputs_and_outputs_preserved": true,
+  "scope_reduced": false,
+  "full_case_set_accepted": false,
+  "per_function_hardware_acceptance": false,
+  "business_acceptance": "NOT_ACCEPTED_NO_PREREGISTERED_HARDWARE_THRESHOLD",
+  "compiler_is_provider_not_native_acceptance": true,
+  "hardware_receipts": [
+    {
+      "kernel_id": "503493d33caa8539ceaa7642045cc416e2ea8a743d80b964c43d1b421e52758c",
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-19T04:12:32.508896+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261119-121223",
+      "task_id": "uc4e9da3f-261119-121223-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "503493d33caa8539ceaa7642045cc416e2ea8a743d80b964c43d1b421e52758c",
+      "executed_qasm": "// q[0] -> Q70\n// q[1] -> Q72\n// q[2] -> Q58\n// q[3] -> Q71\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[73];\ncreg c[4];\nry(-1.5707963267948966) q[58];\nrz(2.256060385978079) q[58];\nry(1.5707963267948966) q[70];\nrz(-2.993798675112547) q[70];\nrx(-0.6626238913453768) q[71];\ncz q[58],q[71];\nrx(3.141592653589793) q[58];\nrx(0.5008176635366014) q[71];\nrz(3.141592653589793) q[71];\ncz q[58],q[71];\nrz(-0.8955080940873881) q[58];\nrx(-1.5707963267948966) q[58];\nrx(0.6704175057794985) q[71];\nh q[72];\nrz(0.01122280478513393) q[72];\ncz q[72],q[71];\nrx(0.502844003289472) q[71];\ncz q[72],q[71];\nrz(-3.141592653589793) q[71];\nrx(-1.811736981457468) q[71];\ncz q[70],q[71];\nry(3.141592653589793) q[70];\nrz(1.5707963267948966) q[71];\nry(0.5008176635366014) q[71];\ncz q[70],q[71];\nrz(0.16431644107758103) q[70];\nrz(1.211088413818656) q[71];\nry(2.532177142937145) q[71];\nrz(-2.0008044961017983) q[71];\ncz q[71],q[58];\nrx(1.5707963267948966) q[58];\nrx(1.5707963267948966) q[71];\ncz q[71],q[58];\nrx(1.5707963267948966) q[58];\nrx(1.5707963267948966) q[71];\ncz q[71],q[58];\nh q[71];\ncz q[72],q[71];\nrx(0.5008176635366006) q[71];\ncz q[72],q[71];\ncz q[70],q[71];\nrx(0.502844003289472) q[71];\ncz q[70],q[71];\nrz(-2.1361982735010194) q[71];\nry(1.5707963267948966) q[71];\nrx(1.5707963267948966) q[72];\ncz q[71],q[72];\nrx(1.5707963267948966) q[71];\nrx(1.5707963267948966) q[72];\ncz q[71],q[72];\nrx(1.5707963267948966) q[71];\nrx(1.5707963267948966) q[72];\ncz q[71],q[72];\nh q[71];\ncz q[70],q[71];\nrx(0.5048703430423436) q[71];\ncz q[70],q[71];\nrx(5.717783360473464) q[70];\nrz(2.576190706883671) q[71];\nry(1.5707963267948966) q[71];\nbarrier q[72],q[58],q[70],q[71];\nmeasure q[70] -> c[0];\nmeasure q[71] -> c[1];\nmeasure q[72] -> c[2];\nmeasure q[58] -> c[3];",
+      "executed_qasm_sha256": "3f34ee4744c75da711210084f7376a7491b03978b955fab8101e9963d5707f54",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "9652d6d727726984",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 70,
+          "virtual_qubit": 0
+        },
+        {
+          "cbit": 1,
+          "physical_qubit": 71,
+          "virtual_qubit": 1
+        },
+        {
+          "cbit": 2,
+          "physical_qubit": 72,
+          "virtual_qubit": 2
+        },
+        {
+          "cbit": 3,
+          "physical_qubit": 58,
+          "virtual_qubit": 3
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "1001": 36,
+        "0010": 65,
+        "1101": 58,
+        "0001": 55,
+        "1100": 185,
+        "1000": 60,
+        "0000": 42,
+        "0101": 96,
+        "0100": 69,
+        "1110": 90,
+        "1010": 65,
+        "1011": 16,
+        "0110": 78,
+        "0111": 31,
+        "0011": 59,
+        "1111": 19
+      },
+      "counts_q0_first": {
+        "1001": 36,
+        "0100": 65,
+        "1011": 58,
+        "1000": 55,
+        "0011": 185,
+        "0001": 60,
+        "0000": 42,
+        "1010": 96,
+        "0010": 69,
+        "0111": 90,
+        "0101": 65,
+        "1101": 16,
+        "0110": 78,
+        "1110": 31,
+        "1100": 59,
+        "1111": 19
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "1001": 0.03515625,
+        "0100": 0.0634765625,
+        "1011": 0.056640625,
+        "1000": 0.0537109375,
+        "0011": 0.1806640625,
+        "0001": 0.05859375,
+        "0000": 0.041015625,
+        "1010": 0.09375,
+        "0010": 0.0673828125,
+        "0111": 0.087890625,
+        "0101": 0.0634765625,
+        "1101": 0.015625,
+        "0110": 0.076171875,
+        "1110": 0.0302734375,
+        "1100": 0.0576171875,
+        "1111": 0.0185546875
+      },
+      "raw_payload_sha256": "c437f0442da449784882d94cdc9839156ee6c9ec335f57586cd10ead2f1ccdef",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    },
+    {
+      "kernel_id": "4bb0e58cb81a6b8ef527d2651f912b5311739cc6b2db53dbc47ae465003da330",
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-19T04:14:55.590749+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261119-121233",
+      "task_id": "uc4e9da3f-261119-121233-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "4bb0e58cb81a6b8ef527d2651f912b5311739cc6b2db53dbc47ae465003da330",
+      "executed_qasm": "// q[0] -> Q126\n// q[1] -> Q127\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[128];\ncreg c[2];\nry(0.927295217998902) q[126];\ncz q[126],q[127];\nry(3.141592653589793) q[126];\nry(0.06960100035098556) q[127];\ncz q[126],q[127];\nrz(-0.5235987757030172) q[126];\nry(3.141592653589793) q[126];\nry(-1.1167985517570225) q[127];\nbarrier q[126],q[127];\nmeasure q[126] -> c[0];\nmeasure q[127] -> c[1];",
+      "executed_qasm_sha256": "02a83c136c3ce7a723d6b6ca23292806d602afc0ade41de89909a001da62ede2",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "9652d6d727726984",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 126,
+          "virtual_qubit": 0
+        },
+        {
+          "cbit": 1,
+          "physical_qubit": 127,
+          "virtual_qubit": 1
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "01": 155,
+        "00": 583,
+        "10": 244,
+        "11": 42
+      },
+      "counts_q0_first": {
+        "10": 155,
+        "00": 583,
+        "01": 244,
+        "11": 42
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "10": 0.1513671875,
+        "00": 0.5693359375,
+        "01": 0.23828125,
+        "11": 0.041015625
+      },
+      "raw_payload_sha256": "40a668a6acd152871e12f50e88ffec95dbe7eb6b77d94852dfb0aab870191199",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    },
+    {
+      "kernel_id": "c5d559677a78a2d097c287572b770ff1c6354c635c86f336f96de47e14006710",
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-19T04:14:57.445848+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261119-121241",
+      "task_id": "uc4e9da3f-261119-121241-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "c5d559677a78a2d097c287572b770ff1c6354c635c86f336f96de47e14006710",
+      "executed_qasm": "// q[0] -> Q94\n// q[1] -> Q70\n// q[2] -> Q139\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[140];\ncreg c[3];\nry(1.5999733890172156) q[70];\nry(1.5999733890172156) q[94];\nry(1.5999733890172156) q[139];\nbarrier q[94],q[139],q[70];\nmeasure q[94] -> c[0];\nmeasure q[70] -> c[1];\nmeasure q[139] -> c[2];",
+      "executed_qasm_sha256": "c501f64742c8474711cb377475c9d671bcfd37a8ffd3a0bebebea08a3f6bf543",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "9652d6d727726984",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 94,
+          "virtual_qubit": 0
+        },
+        {
+          "cbit": 1,
+          "physical_qubit": 70,
+          "virtual_qubit": 1
+        },
+        {
+          "cbit": 2,
+          "physical_qubit": 139,
+          "virtual_qubit": 2
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "000": 140,
+        "010": 131,
+        "001": 111,
+        "101": 125,
+        "100": 138,
+        "110": 133,
+        "011": 120,
+        "111": 126
+      },
+      "counts_q0_first": {
+        "000": 140,
+        "010": 131,
+        "100": 111,
+        "101": 125,
+        "001": 138,
+        "011": 133,
+        "110": 120,
+        "111": 126
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "000": 0.13671875,
+        "010": 0.1279296875,
+        "100": 0.1083984375,
+        "101": 0.1220703125,
+        "001": 0.134765625,
+        "011": 0.1298828125,
+        "110": 0.1171875,
+        "111": 0.123046875
+      },
+      "raw_payload_sha256": "bb54df8a0c13ee38133b78cf17183bafccc9ad9a35d31b789e487122682df27b",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    },
+    {
+      "kernel_id": "489629650fd6001f014c2011b36fc7e2718af122d7462d2f2fb4efb1329fc45a",
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-19T04:14:58.126990+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261119-121251",
+      "task_id": "uc4e9da3f-261119-121251-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "489629650fd6001f014c2011b36fc7e2718af122d7462d2f2fb4efb1329fc45a",
+      "executed_qasm": "// q[0] -> Q70\n// q[1] -> Q72\n// q[2] -> Q58\n// q[3] -> Q71\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[73];\ncreg c[4];\nry(1.5707963267948966) q[58];\nrz(2.9830188714891577) q[58];\nry(-1.5707963267948966) q[70];\nrz(3.752186043101055) q[70];\nrx(-1.7326562598278432) q[71];\nrz(-3.141592653589793) q[71];\ncz q[58],q[71];\nrx(3.141592653589793) q[58];\nrx(0.28136272082898395) q[71];\ncz q[58],q[71];\nrz(2.988459223490219) q[58];\nrx(1.5707963267948966) q[58];\nrx(1.7322175217632416) q[71];\nh q[72];\nrz(0.0005264856775219601) q[72];\ncz q[72],q[71];\nrx(0.42232926098546564) q[71];\ncz q[72],q[71];\nrx(-2.1813897163061586) q[71];\ncz q[70],q[71];\nrx(3.141592653589793) q[70];\nrx(0.42175890150148376) q[71];\nrz(4.00484968870543) q[71];\ncz q[70],q[71];\nrz(0.6033103376388755) q[70];\nrx(3.141592653589793) q[70];\nrx(0.8223038796283317) q[71];\nrz(-2.242913616734703) q[71];\ncz q[71],q[58];\nrx(1.5707963267948966) q[58];\nrx(1.5707963267948966) q[71];\ncz q[71],q[58];\nrx(1.5707963267948966) q[58];\nrx(1.5707963267948966) q[71];\ncz q[71],q[58];\nh q[71];\ncz q[72],q[71];\nrx(0.4217589015014837) q[71];\ncz q[72],q[71];\ncz q[70],q[71];\nrx(0.42232926098546575) q[71];\ncz q[70],q[71];\nrz(-2.16136947350102) q[71];\nry(1.5707963267948966) q[71];\nrx(1.5707963267948966) q[72];\ncz q[71],q[72];\nrx(1.5707963267948966) q[71];\nrx(1.5707963267948966) q[72];\ncz q[71],q[72];\nrx(1.5707963267948966) q[71];\nrx(1.5707963267948966) q[72];\ncz q[71],q[72];\nh q[71];\ncz q[70],q[71];\nrx(0.8440881624869495) q[71];\ncz q[70],q[71];\nrx(5.692612160473463) q[70];\nrz(2.5510195068836703) q[71];\nry(1.5707963267948966) q[71];\nbarrier q[72],q[58],q[70],q[71];\nmeasure q[70] -> c[0];\nmeasure q[71] -> c[1];\nmeasure q[72] -> c[2];\nmeasure q[58] -> c[3];",
+      "executed_qasm_sha256": "f98e9fcf31d312c2b824b67c0bec160626a47f54f6a21cdd0097cbbe8b3b2734",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "9652d6d727726984",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 70,
+          "virtual_qubit": 0
+        },
+        {
+          "cbit": 1,
+          "physical_qubit": 71,
+          "virtual_qubit": 1
+        },
+        {
+          "cbit": 2,
+          "physical_qubit": 72,
+          "virtual_qubit": 2
+        },
+        {
+          "cbit": 3,
+          "physical_qubit": 58,
+          "virtual_qubit": 3
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "1000": 71,
+        "1100": 160,
+        "0110": 109,
+        "0101": 74,
+        "0010": 65,
+        "1101": 66,
+        "0000": 54,
+        "0100": 82,
+        "0001": 50,
+        "0111": 10,
+        "1010": 73,
+        "1001": 44,
+        "1110": 94,
+        "1111": 21,
+        "1011": 21,
+        "0011": 30
+      },
+      "counts_q0_first": {
+        "0001": 71,
+        "0011": 160,
+        "0110": 109,
+        "1010": 74,
+        "0100": 65,
+        "1011": 66,
+        "0000": 54,
+        "0010": 82,
+        "1000": 50,
+        "1110": 10,
+        "0101": 73,
+        "1001": 44,
+        "0111": 94,
+        "1111": 21,
+        "1101": 21,
+        "1100": 30
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "0001": 0.0693359375,
+        "0011": 0.15625,
+        "0110": 0.1064453125,
+        "1010": 0.072265625,
+        "0100": 0.0634765625,
+        "1011": 0.064453125,
+        "0000": 0.052734375,
+        "0010": 0.080078125,
+        "1000": 0.048828125,
+        "1110": 0.009765625,
+        "0101": 0.0712890625,
+        "1001": 0.04296875,
+        "0111": 0.091796875,
+        "1111": 0.0205078125,
+        "1101": 0.0205078125,
+        "1100": 0.029296875
+      },
+      "raw_payload_sha256": "d6f3aaca8b770665778a9f29b53bd849dd53b7c16b902344af8fbcc682da4b2d",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    },
+    {
+      "kernel_id": "dfbdce9bd41a8304caaf9ed22b756e643f356552a32b0f9ba80c724d44af0e46",
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-19T04:14:58.815756+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261119-121259",
+      "task_id": "uc4e9da3f-261119-121259-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "dfbdce9bd41a8304caaf9ed22b756e643f356552a32b0f9ba80c724d44af0e46",
+      "executed_qasm": "// q[0] -> Q58\n// q[1] -> Q71\n// q[2] -> Q70\n// q[3] -> Q72\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[73];\ncreg c[4];\nry(-1.5707963267948966) q[58];\nrz(-3.141592653589793) q[58];\nry(-1.5707963267948966) q[70];\ncz q[58],q[71];\nry(3.141592653589793) q[58];\nry(0.026859513181998296) q[71];\ncz q[58],q[71];\nrz(-3.141592653589793) q[58];\nrz(-1.1129028239251255) q[71];\nry(2.773435740382431) q[71];\nrz(0.4859702179250327) q[71];\ncz q[71],q[70];\nrz(-3.141592653589793) q[70];\nry(-1.5707963267948966) q[70];\nrx(1.5707963267948966) q[71];\ncz q[71],q[70];\nry(-1.5707963267948966) q[70];\nrz(4.383679396037237) q[70];\nrz(1.5707963267948966) q[71];\nry(1.5198289756049594) q[71];\ncz q[71],q[70];\nry(3.141592653589793) q[70];\nrz(-3.141592653589793) q[71];\nry(-2.623510316870354) q[71];\ncz q[58],q[71];\nry(-0.09117916865266104) q[71];\ncz q[70],q[71];\nrz(-1.5707963267948966) q[70];\nry(3.141592653589793) q[70];\nry(0.07831778700455073) q[71];\ncz q[70],q[71];\nrz(-3.141592653589793) q[70];\nrz(-4.71238898038469) q[71];\ncz q[58],q[71];\nry(0.34723062664797605) q[71];\nry(-1.5707963267948966) q[72];\ncz q[71],q[72];\nrx(1.5707963267948966) q[71];\nrz(-3.141592653589793) q[72];\nry(-1.5707963267948966) q[72];\ncz q[71],q[72];\nrz(1.5707963267948966) q[71];\nry(-0.42476118803374124) q[71];\nry(-1.5707963267948966) q[72];\nrz(3.488823280237769) q[72];\ncz q[71],q[72];\nry(-1.6930199527818424) q[71];\nrz(-3.141592653589793) q[71];\ncz q[70],q[71];\nry(0.43157764899249373) q[71];\ncz q[72],q[71];\nry(2.683422216030197) q[71];\ncz q[72],q[71];\ncz q[70],q[71];\ncz q[58],q[71];\nry(0.26938588887112863) q[71];\ncz q[72],q[71];\nry(-0.08326641661366009) q[71];\ncz q[72],q[71];\ncz q[70],q[71];\nry(0.025540832673732382) q[71];\ncz q[72],q[71];\nry(-0.014510989843641795) q[71];\ncz q[72],q[71];\ncz q[70],q[71];\ncz q[58],q[71];\nh q[58];\nh q[71];\nbarrier q[72],q[58],q[70],q[71];\nmeasure q[58] -> c[0];\nmeasure q[70] -> c[1];\nmeasure q[72] -> c[2];\nmeasure q[71] -> c[3];",
+      "executed_qasm_sha256": "3e4b3a0e3b3092e90d499e60e94eff46c97d495fea7d989003528b3ca302c845",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "9652d6d727726984",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 58,
+          "virtual_qubit": 0
+        },
+        {
+          "cbit": 1,
+          "physical_qubit": 70,
+          "virtual_qubit": 1
+        },
+        {
+          "cbit": 2,
+          "physical_qubit": 72,
+          "virtual_qubit": 2
+        },
+        {
+          "cbit": 3,
+          "physical_qubit": 71,
+          "virtual_qubit": 3
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "0010": 53,
+        "1110": 27,
+        "1000": 115,
+        "1011": 115,
+        "0110": 20,
+        "1010": 59,
+        "0000": 77,
+        "1100": 26,
+        "0001": 116,
+        "0100": 46,
+        "1001": 167,
+        "1111": 38,
+        "0101": 49,
+        "0011": 64,
+        "1101": 28,
+        "0111": 24
+      },
+      "counts_q0_first": {
+        "0100": 53,
+        "0111": 27,
+        "0001": 115,
+        "1101": 115,
+        "0110": 20,
+        "0101": 59,
+        "0000": 77,
+        "0011": 26,
+        "1000": 116,
+        "0010": 46,
+        "1001": 167,
+        "1111": 38,
+        "1010": 49,
+        "1100": 64,
+        "1011": 28,
+        "1110": 24
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "0100": 0.0517578125,
+        "0111": 0.0263671875,
+        "0001": 0.1123046875,
+        "1101": 0.1123046875,
+        "0110": 0.01953125,
+        "0101": 0.0576171875,
+        "0000": 0.0751953125,
+        "0011": 0.025390625,
+        "1000": 0.11328125,
+        "0010": 0.044921875,
+        "1001": 0.1630859375,
+        "1111": 0.037109375,
+        "1010": 0.0478515625,
+        "1100": 0.0625,
+        "1011": 0.02734375,
+        "1110": 0.0234375
+      },
+      "raw_payload_sha256": "f79b5854667cb30dd6686bd55cee226c26e9e0174aec3116a1fe0692161b85fb",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    },
+    {
+      "kernel_id": "17174decccefbe73a3c4811859b1c21ccebed628d206491eb89d36f5d3e1fd9f",
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-19T04:14:59.457770+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261119-121302",
+      "task_id": "uc4e9da3f-261119-121302-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "17174decccefbe73a3c4811859b1c21ccebed628d206491eb89d36f5d3e1fd9f",
+      "executed_qasm": "// q[0] -> Q58\n// q[1] -> Q71\n// q[2] -> Q70\n// q[3] -> Q72\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[73];\ncreg c[4];\nry(-1.5707963267948966) q[58];\nrz(-3.141592653589793) q[58];\nrz(-3.141592653589793) q[70];\nry(-1.5707963267948966) q[70];\nrz(-1.5707963267948966) q[71];\nry(3.141592653589793) q[71];\ncz q[58],q[71];\nry(3.141592653589793) q[58];\nrz(1.5707963267948966) q[71];\nry(0.03880351314618849) q[71];\ncz q[58],q[71];\nrz(-3.141592653589793) q[58];\nrz(-2.1362062691928307) q[71];\nry(2.950575814600763) q[71];\nrz(-0.5737458922687275) q[71];\ncz q[71],q[70];\nrz(-3.141592653589793) q[70];\nry(-1.5707963267948966) q[70];\nrx(1.5707963267948966) q[71];\ncz q[71],q[70];\nry(-1.5707963267948966) q[70];\nrz(-0.1610043599634201) q[70];\nrz(1.5707963267948966) q[71];\nry(1.483763479465294) q[71];\ncz q[71],q[70];\nry(-2.81171946559315) q[71];\ncz q[58],q[71];\nry(0.09702998007013569) q[71];\ncz q[70],q[71];\nry(3.141592653589793) q[70];\nry(0.05968241151498986) q[71];\ncz q[70],q[71];\nry(3.141592653589793) q[70];\nrz(-4.71238898038469) q[71];\ncz q[58],q[71];\nry(0.5178551804907673) q[71];\nry(-1.5707963267948966) q[72];\ncz q[71],q[72];\nrx(1.5707963267948966) q[71];\nrz(-3.141592653589793) q[72];\nry(-1.5707963267948966) q[72];\ncz q[71],q[72];\nrz(1.5707963267948966) q[71];\nry(-0.3189816919403139) q[71];\nry(-1.5707963267948966) q[72];\nrz(3.6594478340805594) q[72];\ncz q[71],q[72];\nry(-2.173419329184268) q[71];\nrz(-3.141592653589793) q[71];\ncz q[70],q[71];\nry(0.4445574040561371) q[71];\ncz q[72],q[71];\nry(-0.4440751666232825) q[71];\ncz q[72],q[71];\ncz q[70],q[71];\ncz q[58],q[71];\nry(-0.21101348753129703) q[71];\ncz q[72],q[71];\nry(0.022513079479767415) q[71];\ncz q[72],q[71];\ncz q[70],q[71];\nry(0.012561077610089118) q[71];\ncz q[72],q[71];\nry(3.112986392809838) q[71];\ncz q[72],q[71];\ncz q[70],q[71];\ncz q[58],q[71];\nh q[58];\nh q[71];\nbarrier q[72],q[58],q[70],q[71];\nmeasure q[58] -> c[0];\nmeasure q[70] -> c[1];\nmeasure q[72] -> c[2];\nmeasure q[71] -> c[3];",
+      "executed_qasm_sha256": "d5df72bae4954b255edbd7c7f5694c63f33728480780f4c56d64ba5338d86454",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "9652d6d727726984",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 58,
+          "virtual_qubit": 0
+        },
+        {
+          "cbit": 1,
+          "physical_qubit": 70,
+          "virtual_qubit": 1
+        },
+        {
+          "cbit": 2,
+          "physical_qubit": 72,
+          "virtual_qubit": 2
+        },
+        {
+          "cbit": 3,
+          "physical_qubit": 71,
+          "virtual_qubit": 3
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "1001": 86,
+        "0100": 89,
+        "1100": 54,
+        "0001": 73,
+        "1000": 188,
+        "0011": 39,
+        "0110": 24,
+        "0101": 55,
+        "1010": 102,
+        "1011": 60,
+        "1110": 39,
+        "0000": 118,
+        "1111": 15,
+        "0010": 47,
+        "0111": 18,
+        "1101": 17
+      },
+      "counts_q0_first": {
+        "1001": 86,
+        "0010": 89,
+        "0011": 54,
+        "1000": 73,
+        "0001": 188,
+        "1100": 39,
+        "0110": 24,
+        "1010": 55,
+        "0101": 102,
+        "1101": 60,
+        "0111": 39,
+        "0000": 118,
+        "1111": 15,
+        "0100": 47,
+        "1110": 18,
+        "1011": 17
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "1001": 0.083984375,
+        "0010": 0.0869140625,
+        "0011": 0.052734375,
+        "1000": 0.0712890625,
+        "0001": 0.18359375,
+        "1100": 0.0380859375,
+        "0110": 0.0234375,
+        "1010": 0.0537109375,
+        "0101": 0.099609375,
+        "1101": 0.05859375,
+        "0111": 0.0380859375,
+        "0000": 0.115234375,
+        "1111": 0.0146484375,
+        "0100": 0.0458984375,
+        "1110": 0.017578125,
+        "1011": 0.0166015625
+      },
+      "raw_payload_sha256": "ae62164a18cdc4253a49da2241c935c38ea444bc231a2e6bf058b4374fd8778f",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    },
+    {
+      "kernel_id": "ad0acd4930f37e690fb659d90c78b90b139e68b60220fd19da0cfecb5946a98b",
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-19T04:15:00.224575+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261119-121305",
+      "task_id": "uc4e9da3f-261119-121305-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "ad0acd4930f37e690fb659d90c78b90b139e68b60220fd19da0cfecb5946a98b",
+      "executed_qasm": "// q[0] -> Q94\n// q[1] -> Q70\n// q[2] -> Q139\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[140];\ncreg c[3];\nh q[70];\nh q[94];\nh q[139];\nbarrier q[94],q[139],q[70];\nmeasure q[94] -> c[0];\nmeasure q[70] -> c[1];\nmeasure q[139] -> c[2];",
+      "executed_qasm_sha256": "a970adee73e20f16cf269c101ef32ed123c2e3c12491192ab526c11d57ecc930",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "9652d6d727726984",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 94,
+          "virtual_qubit": 0
+        },
+        {
+          "cbit": 1,
+          "physical_qubit": 70,
+          "virtual_qubit": 1
+        },
+        {
+          "cbit": 2,
+          "physical_qubit": 139,
+          "virtual_qubit": 2
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "110": 123,
+        "010": 107,
+        "101": 118,
+        "000": 178,
+        "100": 158,
+        "111": 90,
+        "011": 100,
+        "001": 150
+      },
+      "counts_q0_first": {
+        "011": 123,
+        "010": 107,
+        "101": 118,
+        "000": 178,
+        "001": 158,
+        "111": 90,
+        "110": 100,
+        "100": 150
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "011": 0.1201171875,
+        "010": 0.1044921875,
+        "101": 0.115234375,
+        "000": 0.173828125,
+        "001": 0.154296875,
+        "111": 0.087890625,
+        "110": 0.09765625,
+        "100": 0.146484375
+      },
+      "raw_payload_sha256": "0cc728e1395eff8e9eceb8d6bab6e2f539306421487865926b167e245fcbe1d0",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    },
+    {
+      "kernel_id": "4ed237fc873733229e2e169276c343d4690d4e10f1e56f4b37d31efc0b97e28e",
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-19T04:15:00.895369+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261119-121307",
+      "task_id": "uc4e9da3f-261119-121307-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "4ed237fc873733229e2e169276c343d4690d4e10f1e56f4b37d31efc0b97e28e",
+      "executed_qasm": "// q[0] -> Q77\n// q[1] -> Q76\n// q[2] -> Q75\n// q[3] -> Q74\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[78];\ncreg c[4];\nrx(1.5707963267948966) q[74];\nrx(3.141592653589793) q[75];\nry(-1.5707963267948966) q[77];\nrz(3.141592653589793) q[77];\ncz q[77],q[76];\nry(-1.5707963267948966) q[76];\nrz(-4.060890650023373) q[76];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nrx(0.06514983303613078) q[74];\nrz(3.141592653589793) q[74];\nrx(3.141592653589793) q[75];\ncz q[75],q[74];\nrx(-1.5707963267948966) q[74];\nrz(-0.06514983303613109) q[75];\nry(1.5707963267948966) q[75];\ncz q[76],q[75];\nry(3.141592653589793) q[76];\nrx(-1.5707963267948966) q[77];\ncz q[77],q[76];\nrx(1.5707963267948966) q[76];\nrx(-1.5707963267948966) q[77];\nrz(-1.5707963267948966) q[77];\ncz q[77],q[76];\nrx(1.5707963267948966) q[76];\ncz q[76],q[75];\nh q[75];\ncz q[75],q[74];\nrx(-0.06514983303613171) q[74];\ncz q[75],q[74];\nrz(-1.5707963267948966) q[74];\nry(1.5707963267948966) q[74];\nrz(-0.0651498330361316) q[75];\nh q[75];\nrx(3.141592653589793) q[76];\ncz q[76],q[75];\nrx(1.5707963267948966) q[75];\nrz(1.5707963267948966) q[75];\ncz q[75],q[74];\nrx(1.5707963267948966) q[74];\nrx(1.5707963267948966) q[75];\ncz q[75],q[74];\nrx(1.5707963267948966) q[74];\nrx(1.5707963267948966) q[75];\ncz q[75],q[74];\nh q[75];\nrz(0.6514983303613162) q[76];\nrx(-2.4874402202071404) q[76];\nrx(1.5707963267948966) q[77];\ncz q[76],q[77];\nrx(1.5707963267948966) q[76];\nrx(1.5707963267948966) q[77];\ncz q[76],q[77];\nrx(1.5707963267948966) q[76];\nrx(1.5707963267948966) q[77];\ncz q[76],q[77];\ncz q[76],q[75];\nrx(-0.06514983303613159) q[75];\ncz q[76],q[75];\ncz q[74],q[75];\nrx(0.6514983303613164) q[75];\ncz q[74],q[75];\nrz(-0.6514983303613164) q[74];\nrx(5.366541413767342) q[74];\nrz(2.3645884249022986) q[75];\nry(1.0224681355773837) q[75];\nrz(-0.4874260232869565) q[75];\nrz(-0.7166481633974482) q[76];\nrx(5.366541413767342) q[76];\nbarrier q[74],q[75],q[76],q[77];\nmeasure q[77] -> c[0];\nmeasure q[76] -> c[1];\nmeasure q[74] -> c[2];\nmeasure q[75] -> c[3];",
+      "executed_qasm_sha256": "07f6dabe98db73cb541966d497b7bb78cafe03b7cbaa330c1359fba9358263fd",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "9652d6d727726984",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 77,
+          "virtual_qubit": 0
+        },
+        {
+          "cbit": 1,
+          "physical_qubit": 76,
+          "virtual_qubit": 1
+        },
+        {
+          "cbit": 2,
+          "physical_qubit": 74,
+          "virtual_qubit": 2
+        },
+        {
+          "cbit": 3,
+          "physical_qubit": 75,
+          "virtual_qubit": 3
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "1101": 5,
+        "0101": 119,
+        "0011": 67,
+        "0100": 102,
+        "0000": 140,
+        "1000": 63,
+        "0110": 108,
+        "0010": 85,
+        "0001": 120,
+        "1001": 53,
+        "0111": 68,
+        "1100": 13,
+        "1010": 38,
+        "1011": 36,
+        "1111": 3,
+        "1110": 4
+      },
+      "counts_q0_first": {
+        "1011": 5,
+        "1010": 119,
+        "1100": 67,
+        "0010": 102,
+        "0000": 140,
+        "0001": 63,
+        "0110": 108,
+        "0100": 85,
+        "1000": 120,
+        "1001": 53,
+        "1110": 68,
+        "0011": 13,
+        "0101": 38,
+        "1101": 36,
+        "1111": 3,
+        "0111": 4
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "1011": 0.0048828125,
+        "1010": 0.1162109375,
+        "1100": 0.0654296875,
+        "0010": 0.099609375,
+        "0000": 0.13671875,
+        "0001": 0.0615234375,
+        "0110": 0.10546875,
+        "0100": 0.0830078125,
+        "1000": 0.1171875,
+        "1001": 0.0517578125,
+        "1110": 0.06640625,
+        "0011": 0.0126953125,
+        "0101": 0.037109375,
+        "1101": 0.03515625,
+        "1111": 0.0029296875,
+        "0111": 0.00390625
+      },
+      "raw_payload_sha256": "ae8098635521352e48cd8b192d5998f8bbc3e29847962ef3a19f3f42d0f2f3e1",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    },
+    {
+      "kernel_id": "2f8714b44854e16b15fa1280e2220e041253d2caf66bfe969172d01c2817174a",
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-19T04:15:01.594018+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261119-121310",
+      "task_id": "uc4e9da3f-261119-121310-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "2f8714b44854e16b15fa1280e2220e041253d2caf66bfe969172d01c2817174a",
+      "executed_qasm": "// q[0] -> Q71\n// q[1] -> Q72\n// q[2] -> Q70\n// q[3] -> Q58\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[73];\ncreg c[4];\nrx(1.5707963267948966) q[58];\nrz(-0.39269908169872414) q[58];\nrx(-1.5707963267948966) q[70];\nry(-1.5707963267948966) q[71];\nrz(-1.5707963267948966) q[72];\nry(3.141592653589793) q[72];\ncz q[71],q[72];\nry(3.141592653589793) q[71];\nrz(1.5707963267948966) q[72];\nry(0.7853981633974483) q[72];\ncz q[71],q[72];\ncz q[71],q[70];\nrz(-1.5707963267948966) q[70];\nry(-1.5707963267948966) q[70];\nrz(-1.5707963267948966) q[71];\nrx(1.5707963267948966) q[71];\ncz q[71],q[58];\nrx(1.5707963267948966) q[58];\nrx(1.5707963267948966) q[71];\ncz q[71],q[58];\nrx(1.5707963267948966) q[58];\nrx(1.5707963267948966) q[71];\ncz q[71],q[58];\nh q[71];\ncz q[70],q[71];\nrz(-1.5707963267948966) q[70];\nry(3.141592653589793) q[70];\nry(0.39269908169872414) q[71];\ncz q[70],q[71];\nrz(-3.141592653589793) q[70];\nrz(-3.141592653589793) q[71];\nry(-1.5707963267948966) q[72];\ncz q[72],q[71];\nry(1.1780972450961724) q[71];\ncz q[70],q[71];\nry(3.141592653589793) q[70];\nry(0.39269908169872414) q[71];\ncz q[70],q[71];\nry(3.141592653589793) q[70];\nrz(-3.141592653589793) q[71];\ncz q[72],q[71];\ncz q[58],q[71];\nry(1.1780972450961724) q[71];\ncz q[70],q[71];\nry(3.141592653589793) q[70];\nry(0.39269908169872414) q[71];\ncz q[70],q[71];\nrx(3.141592653589793) q[70];\nrz(-3.141592653589793) q[71];\ncz q[72],q[71];\nry(-1.1780972450961724) q[71];\nrz(-1.5707963267948966) q[71];\ncz q[70],q[71];\nrx(3.141592653589793) q[70];\nrx(1.1780972450961724) q[71];\nrz(1.5707963267948966) q[71];\ncz q[70],q[71];\nrx(3.141592653589793) q[70];\nrx(3.141592653589793) q[71];\ncz q[72],q[71];\ncz q[58],q[71];\nh q[71];\nbarrier q[72],q[58],q[70],q[71];\nmeasure q[58] -> c[0];\nmeasure q[72] -> c[1];\nmeasure q[70] -> c[2];\nmeasure q[71] -> c[3];",
+      "executed_qasm_sha256": "6ff3159c2490d643a2e01f2d62a73bb85ffe4cda115b75bd588268e84eaf5279",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "9652d6d727726984",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 58,
+          "virtual_qubit": 0
+        },
+        {
+          "cbit": 1,
+          "physical_qubit": 72,
+          "virtual_qubit": 1
+        },
+        {
+          "cbit": 2,
+          "physical_qubit": 70,
+          "virtual_qubit": 2
+        },
+        {
+          "cbit": 3,
+          "physical_qubit": 71,
+          "virtual_qubit": 3
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "1001": 180,
+        "1000": 56,
+        "0010": 74,
+        "1100": 70,
+        "0001": 91,
+        "0100": 57,
+        "0110": 155,
+        "0101": 55,
+        "0111": 19,
+        "1110": 59,
+        "0000": 66,
+        "1101": 19,
+        "1010": 46,
+        "0011": 45,
+        "1011": 25,
+        "1111": 7
+      },
+      "counts_q0_first": {
+        "1001": 180,
+        "0001": 56,
+        "0100": 74,
+        "0011": 70,
+        "1000": 91,
+        "0010": 57,
+        "0110": 155,
+        "1010": 55,
+        "1110": 19,
+        "0111": 59,
+        "0000": 66,
+        "1011": 19,
+        "0101": 46,
+        "1100": 45,
+        "1101": 25,
+        "1111": 7
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "1001": 0.17578125,
+        "0001": 0.0546875,
+        "0100": 0.072265625,
+        "0011": 0.068359375,
+        "1000": 0.0888671875,
+        "0010": 0.0556640625,
+        "0110": 0.1513671875,
+        "1010": 0.0537109375,
+        "1110": 0.0185546875,
+        "0111": 0.0576171875,
+        "0000": 0.064453125,
+        "1011": 0.0185546875,
+        "0101": 0.044921875,
+        "1100": 0.0439453125,
+        "1101": 0.0244140625,
+        "1111": 0.0068359375
+      },
+      "raw_payload_sha256": "8f3bdce473d54b2154a8e04085ba01ab30a8d5187de636e8a023b9e300e6e302",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    },
+    {
+      "kernel_id": "e5dbc239894e6e33d73a24de248a4bd20fc3d25320bafcdc917f391e6e39acbf",
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-19T04:15:02.272393+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261119-121312",
+      "task_id": "uc4e9da3f-261119-121312-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "e5dbc239894e6e33d73a24de248a4bd20fc3d25320bafcdc917f391e6e39acbf",
+      "executed_qasm": "// q[0] -> Q76\n// q[1] -> Q75\n// q[2] -> Q74\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[77];\ncreg c[3];\nrz(-1.5707963267948966) q[74];\nry(1.5707963267948966) q[74];\nh q[75];\nrx(3.141592653589793) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nh q[75];\ncz q[75],q[74];\nrz(1.5707963267948966) q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(-1.387597678286312) q[74];\nry(0.17791633906664772) q[74];\nrz(1.3904267468556686) q[74];\nry(1.5707963267948966) q[75];\nrz(-2.9665926535897933) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5736246543128667) q[74];\nry(0.1749087872900716) q[74];\nrz(1.5736246543128813) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nry(0.25000000000000033) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nry(-1.5385494443596417) q[74];\nrz(-1.3957963267948958) q[74];\nry(1.5707963267948966) q[75];\nrz(0.17499999999999982) q[75];\nrx(0.17499999999999996) q[76];\ncz q[76],q[75];\nrx(0.25) q[75];\ncz q[76],q[75];\nh q[75];\ncz q[75],q[74];\nrx(0.25) q[74];\ncz q[75],q[74];\nrz(-2.9665926535897933) q[74];\nry(1.5707963267948966) q[74];\nrx(0.17499999999999996) q[75];\nrx(0.17499999999999996) q[76];\nbarrier q[74],q[75],q[76];\nmeasure q[76] -> c[0];\nmeasure q[75] -> c[1];\nmeasure q[74] -> c[2];",
+      "executed_qasm_sha256": "d4f71a8b2992dd5a75a06e11ac98180bd48ee119df487b51d2f7a056cf450881",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "9652d6d727726984",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 76,
+          "virtual_qubit": 0
+        },
+        {
+          "cbit": 1,
+          "physical_qubit": 75,
+          "virtual_qubit": 1
+        },
+        {
+          "cbit": 2,
+          "physical_qubit": 74,
+          "virtual_qubit": 2
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "000": 80,
+        "111": 137,
+        "001": 252,
+        "101": 247,
+        "011": 138,
+        "010": 38,
+        "110": 45,
+        "100": 87
+      },
+      "counts_q0_first": {
+        "000": 80,
+        "111": 137,
+        "100": 252,
+        "101": 247,
+        "110": 138,
+        "010": 38,
+        "011": 45,
+        "001": 87
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "000": 0.078125,
+        "111": 0.1337890625,
+        "100": 0.24609375,
+        "101": 0.2412109375,
+        "110": 0.134765625,
+        "010": 0.037109375,
+        "011": 0.0439453125,
+        "001": 0.0849609375
+      },
+      "raw_payload_sha256": "b6ac61fe66681ef0eabc633bbdc04045fc53ce1b9a59ded716cc0c547f5b2fed",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    },
+    {
+      "kernel_id": "f9fdff562498598f6c5c1cac6cb92e6f19377560440b45a10d92af4f3667afd9",
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-19T04:15:02.967244+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261119-121315",
+      "task_id": "uc4e9da3f-261119-121315-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "f9fdff562498598f6c5c1cac6cb92e6f19377560440b45a10d92af4f3667afd9",
+      "executed_qasm": "// q[0] -> Q72\n// q[1] -> Q71\n// q[2] -> Q58\n// q[3] -> Q70\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[73];\ncreg c[4];\nrz(-1.5707963267948966) q[58];\nry(1.5707963267948966) q[58];\nrz(-3.141592653589793) q[70];\nrx(-2.714965160462917) q[70];\nh q[72];\ncz q[72],q[71];\nrx(0.9016904239973829) q[71];\ncz q[72],q[71];\nry(-1.5707963267948966) q[71];\ncz q[71],q[70];\nrx(0.4508452119986917) q[70];\nrx(3.141592653589793) q[71];\ncz q[71],q[70];\nrx(-2.714965160462917) q[70];\nrz(-2.6907474415911024) q[71];\nrx(-2.3374402202071414) q[71];\ncz q[71],q[58];\nrx(1.5707963267948966) q[58];\nrx(1.5707963267948966) q[71];\ncz q[71],q[58];\nrx(1.5707963267948966) q[58];\nrx(1.5707963267948966) q[71];\ncz q[71],q[58];\nh q[71];\ncz q[72],q[71];\nrx(-0.45084521199869143) q[71];\ncz q[72],q[71];\nh q[71];\ncz q[71],q[70];\nrx(0.9016904239973829) q[70];\ncz q[71],q[70];\nrz(2.4081120200750323) q[70];\nry(1.8181296562919305) q[70];\nrz(0.26525619592643324) q[70];\nrz(0.27050712719921477) q[71];\nrx(5.516541413767342) q[71];\nrz(-0.45084521199869165) q[72];\nrx(5.516541413767342) q[72];\nbarrier q[72],q[58],q[70],q[71];\nmeasure q[72] -> c[0];\nmeasure q[58] -> c[1];\nmeasure q[71] -> c[2];\nmeasure q[70] -> c[3];",
+      "executed_qasm_sha256": "a4ec7d76f940a6c81cc4b484658b388c1d94ce6376797e375171a50f28c28a04",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "9652d6d727726984",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 72,
+          "virtual_qubit": 0
+        },
+        {
+          "cbit": 1,
+          "physical_qubit": 58,
+          "virtual_qubit": 1
+        },
+        {
+          "cbit": 2,
+          "physical_qubit": 71,
+          "virtual_qubit": 2
+        },
+        {
+          "cbit": 3,
+          "physical_qubit": 70,
+          "virtual_qubit": 3
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "1001": 44,
+        "0100": 121,
+        "0110": 142,
+        "1111": 32,
+        "0101": 154,
+        "1100": 30,
+        "1000": 88,
+        "1110": 66,
+        "1010": 91,
+        "0001": 35,
+        "0000": 54,
+        "1011": 21,
+        "1101": 43,
+        "0010": 60,
+        "0111": 32,
+        "0011": 11
+      },
+      "counts_q0_first": {
+        "1001": 44,
+        "0010": 121,
+        "0110": 142,
+        "1111": 32,
+        "1010": 154,
+        "0011": 30,
+        "0001": 88,
+        "0111": 66,
+        "0101": 91,
+        "1000": 35,
+        "0000": 54,
+        "1101": 21,
+        "1011": 43,
+        "0100": 60,
+        "1110": 32,
+        "1100": 11
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "1001": 0.04296875,
+        "0010": 0.1181640625,
+        "0110": 0.138671875,
+        "1111": 0.03125,
+        "1010": 0.150390625,
+        "0011": 0.029296875,
+        "0001": 0.0859375,
+        "0111": 0.064453125,
+        "0101": 0.0888671875,
+        "1000": 0.0341796875,
+        "0000": 0.052734375,
+        "1101": 0.0205078125,
+        "1011": 0.0419921875,
+        "0100": 0.05859375,
+        "1110": 0.03125,
+        "1100": 0.0107421875
+      },
+      "raw_payload_sha256": "d3954bd0e7f7f4027bbe69e74d738c32b8d5749f877c6bd38cae6cc7fa1fa111",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    },
+    {
+      "kernel_id": "6c2244dfbb0f461c78bf28b2d5e375f4f49685901dbf7033dab067d2ae8fa423",
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-19T04:15:03.625672+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261119-121317",
+      "task_id": "uc4e9da3f-261119-121317-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "6c2244dfbb0f461c78bf28b2d5e375f4f49685901dbf7033dab067d2ae8fa423",
+      "executed_qasm": "// q[0] -> Q72\n// q[1] -> Q71\n// q[2] -> Q58\n// q[3] -> Q70\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[73];\ncreg c[4];\nrz(-1.5707963267948966) q[58];\nry(1.5707963267948966) q[58];\nrx(-0.11065722117389591) q[70];\nh q[72];\ncz q[72],q[71];\nrx(0.3838868150100892) q[71];\ncz q[72],q[71];\nry(-1.5707963267948966) q[71];\ncz q[71],q[70];\nrx(0.7677736300201783) q[70];\nrz(3.141592653589793) q[70];\nrx(3.141592653589793) q[71];\ncz q[71],q[70];\nrx(0.11065722117389605) q[70];\nrz(-2.565762431074658) q[71];\nrx(-2.387440220207141) q[71];\ncz q[71],q[58];\nrx(1.5707963267948966) q[58];\nrx(1.5707963267948966) q[71];\ncz q[71],q[58];\nrx(1.5707963267948966) q[58];\nrx(1.5707963267948966) q[71];\ncz q[71],q[58];\nh q[71];\ncz q[72],q[71];\nrx(0.7677736300201782) q[71];\ncz q[72],q[71];\nh q[71];\ncz q[71],q[70];\nrx(0.3838868150100891) q[70];\ncz q[71],q[70];\nrz(2.3708969190474134) q[70];\nry(1.2674549879369181) q[70];\nrz(-0.29843828135136885) q[70];\nrz(-0.5374415410141248) q[71];\nrx(5.4665414137673425) q[71];\nrz(-0.4606641780121068) q[72];\nrx(5.4665414137673425) q[72];\nbarrier q[72],q[58],q[70],q[71];\nmeasure q[72] -> c[0];\nmeasure q[58] -> c[1];\nmeasure q[71] -> c[2];\nmeasure q[70] -> c[3];",
+      "executed_qasm_sha256": "f3b439edc36f3bbc404fce6e1ca29f4f6926d090ca305fd3d34ee9521d17112c",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "9652d6d727726984",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 72,
+          "virtual_qubit": 0
+        },
+        {
+          "cbit": 1,
+          "physical_qubit": 58,
+          "virtual_qubit": 1
+        },
+        {
+          "cbit": 2,
+          "physical_qubit": 71,
+          "virtual_qubit": 2
+        },
+        {
+          "cbit": 3,
+          "physical_qubit": 70,
+          "virtual_qubit": 3
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "0100": 131,
+        "1000": 108,
+        "1100": 69,
+        "0000": 96,
+        "0010": 98,
+        "0110": 209,
+        "1001": 69,
+        "0011": 42,
+        "0101": 24,
+        "0001": 80,
+        "0111": 32,
+        "1010": 22,
+        "1011": 17,
+        "1110": 18,
+        "1111": 2,
+        "1101": 7
+      },
+      "counts_q0_first": {
+        "0010": 131,
+        "0001": 108,
+        "0011": 69,
+        "0000": 96,
+        "0100": 98,
+        "0110": 209,
+        "1001": 69,
+        "1100": 42,
+        "1010": 24,
+        "1000": 80,
+        "1110": 32,
+        "0101": 22,
+        "1101": 17,
+        "0111": 18,
+        "1111": 2,
+        "1011": 7
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "0010": 0.1279296875,
+        "0001": 0.10546875,
+        "0011": 0.0673828125,
+        "0000": 0.09375,
+        "0100": 0.095703125,
+        "0110": 0.2041015625,
+        "1001": 0.0673828125,
+        "1100": 0.041015625,
+        "1010": 0.0234375,
+        "1000": 0.078125,
+        "1110": 0.03125,
+        "0101": 0.021484375,
+        "1101": 0.0166015625,
+        "0111": 0.017578125,
+        "1111": 0.001953125,
+        "1011": 0.0068359375
+      },
+      "raw_payload_sha256": "3303cc998297843808c6355a069dd15b9e59096aa15f2fb13d57cf544ad3703b",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    },
+    {
+      "kernel_id": "3a1b9e033c46817913443545cbdd27d8d1a8b6a8211f9d3eef2400b4ef85f143",
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-19T04:15:04.288320+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261119-121320",
+      "task_id": "uc4e9da3f-261119-121320-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "3a1b9e033c46817913443545cbdd27d8d1a8b6a8211f9d3eef2400b4ef85f143",
+      "executed_qasm": "// q[0] -> Q72\n// q[1] -> Q71\n// q[2] -> Q58\n// q[3] -> Q70\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[73];\ncreg c[4];\nrz(-1.5707963267948966) q[58];\nry(1.5707963267948966) q[58];\nrx(-2.405883327218413) q[70];\nrz(-3.141592653589793) q[70];\nh q[72];\ncz q[72],q[71];\nrx(0.36799111843077503) q[71];\ncz q[72],q[71];\nry(-1.5707963267948966) q[71];\ncz q[71],q[70];\nrx(0.006133185307179789) q[70];\nrx(3.141592653589793) q[71];\ncz q[71],q[70];\nrx(2.405883327218412) q[70];\nrz(2.8042674616951038) q[71];\nrx(-2.870762166913273) q[71];\ncz q[71],q[58];\nrx(1.5707963267948966) q[58];\nrx(1.5707963267948966) q[71];\ncz q[71],q[58];\nrx(1.5707963267948966) q[58];\nrx(1.5707963267948966) q[71];\ncz q[71],q[58];\nh q[71];\ncz q[72],q[71];\nrx(-0.006133185307179515) q[71];\ncz q[72],q[71];\nh q[71];\ncz q[71],q[70];\nrx(0.49065482457436677) q[70];\ncz q[71],q[70];\nrz(1.9204687243266125) q[70];\nry(2.2454725024786866) q[70];\nrz(0.22396000603881294) q[70];\nrz(1.4290321765728433) q[71];\nrx(4.98321946706122) q[71];\nrz(0.5703862335677017) q[72];\nrx(4.98321946706122) q[72];\nbarrier q[72],q[58],q[70],q[71];\nmeasure q[72] -> c[0];\nmeasure q[58] -> c[1];\nmeasure q[71] -> c[2];\nmeasure q[70] -> c[3];",
+      "executed_qasm_sha256": "f6f2f47c00d251420aaa58cef15e0623606d512e580851c06928453d6fe4683a",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "9652d6d727726984",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 72,
+          "virtual_qubit": 0
+        },
+        {
+          "cbit": 1,
+          "physical_qubit": 58,
+          "virtual_qubit": 1
+        },
+        {
+          "cbit": 2,
+          "physical_qubit": 71,
+          "virtual_qubit": 2
+        },
+        {
+          "cbit": 3,
+          "physical_qubit": 70,
+          "virtual_qubit": 3
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "0010": 52,
+        "0100": 50,
+        "1110": 164,
+        "1101": 96,
+        "0110": 103,
+        "1001": 32,
+        "0101": 69,
+        "1100": 62,
+        "0001": 24,
+        "1111": 112,
+        "1010": 34,
+        "1000": 30,
+        "0011": 44,
+        "0111": 90,
+        "0000": 25,
+        "1011": 37
+      },
+      "counts_q0_first": {
+        "0100": 52,
+        "0010": 50,
+        "0111": 164,
+        "1011": 96,
+        "0110": 103,
+        "1001": 32,
+        "1010": 69,
+        "0011": 62,
+        "1000": 24,
+        "1111": 112,
+        "0101": 34,
+        "0001": 30,
+        "1100": 44,
+        "1110": 90,
+        "0000": 25,
+        "1101": 37
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "0100": 0.05078125,
+        "0010": 0.048828125,
+        "0111": 0.16015625,
+        "1011": 0.09375,
+        "0110": 0.1005859375,
+        "1001": 0.03125,
+        "1010": 0.0673828125,
+        "0011": 0.060546875,
+        "1000": 0.0234375,
+        "1111": 0.109375,
+        "0101": 0.033203125,
+        "0001": 0.029296875,
+        "1100": 0.04296875,
+        "1110": 0.087890625,
+        "0000": 0.0244140625,
+        "1101": 0.0361328125
+      },
+      "raw_payload_sha256": "cea828fb66b5ecc6bac39c4ab1d0dbbb8c1315bcdeb0bba6621fb53f0b91408a",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    },
+    {
+      "kernel_id": "76ddde9039002e87b94fd3a1c4d13b5a736276681c2663643447ce4fc1ea4632",
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-19T04:15:04.908420+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261119-121329",
+      "task_id": "uc4e9da3f-261119-121329-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "76ddde9039002e87b94fd3a1c4d13b5a736276681c2663643447ce4fc1ea4632",
+      "executed_qasm": "// q[0] -> Q71\n// q[1] -> Q72\n// q[2] -> Q58\n// q[3] -> Q70\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[73];\ncreg c[4];\nrx(-1.3885955057397759) q[58];\nrz(-1.5707963267948966) q[58];\nrx(-0.7853981633974483) q[70];\nrz(-3.141592653589793) q[70];\nry(-1.5707963267948966) q[71];\nrz(2.356194490192345) q[71];\nrx(-2.356194490192345) q[72];\ncz q[71],q[72];\nrx(3.141592653589793) q[71];\nrx(0.5235987755982988) q[72];\nrz(1.5707963267948966) q[72];\ncz q[71],q[72];\nrz(-0.7853981633974483) q[71];\ncz q[71],q[58];\nry(0.2617993877991494) q[58];\nry(3.141592653589793) q[71];\ncz q[71],q[58];\nry(-0.1822008210551201) q[58];\nrz(-3.141592653589793) q[58];\nrz(-1.5707963267948966) q[71];\nry(3.141592653589793) q[71];\ncz q[71],q[70];\nrx(1.0471975511965976) q[70];\nrz(1.5707963267948966) q[71];\nrx(3.141592653589793) q[71];\ncz q[71],q[70];\nrx(0.7853981633974483) q[70];\nrz(-3.141592653589793) q[71];\nrx(-2.2957792468540807) q[71];\ncz q[71],q[58];\nrx(1.5707963267948966) q[58];\nrx(1.5707963267948966) q[71];\ncz q[71],q[58];\nrx(1.5707963267948966) q[58];\nrx(1.5707963267948966) q[71];\ncz q[71],q[58];\nh q[71];\nrx(-1.5707963267948966) q[72];\nrz(0.7853981633974483) q[72];\ncz q[72],q[71];\nrx(1.0471975511965976) q[71];\ncz q[72],q[71];\nh q[71];\ncz q[71],q[70];\nrx(0.5235987755982988) q[70];\ncz q[71],q[70];\nrz(-0.7249829200591831) q[70];\nry(1.5707963267948966) q[70];\nrx(2.4166097335306103) q[71];\nrx(2.4166097335306103) q[72];\nbarrier q[72],q[58],q[70],q[71];\nmeasure q[58] -> c[0];\nmeasure q[72] -> c[1];\nmeasure q[71] -> c[2];\nmeasure q[70] -> c[3];",
+      "executed_qasm_sha256": "dc3f83ff419dffb20f2591c04b6c453a00f7fd31bf3052f5b4679bff4ca04f1b",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "9652d6d727726984",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 58,
+          "virtual_qubit": 0
+        },
+        {
+          "cbit": 1,
+          "physical_qubit": 72,
+          "virtual_qubit": 1
+        },
+        {
+          "cbit": 2,
+          "physical_qubit": 71,
+          "virtual_qubit": 2
+        },
+        {
+          "cbit": 3,
+          "physical_qubit": 70,
+          "virtual_qubit": 3
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "1010": 193,
+        "0000": 48,
+        "0010": 98,
+        "0011": 175,
+        "1011": 110,
+        "1001": 58,
+        "1100": 19,
+        "0101": 28,
+        "1000": 65,
+        "0001": 97,
+        "1110": 27,
+        "0110": 12,
+        "0100": 20,
+        "1111": 27,
+        "1101": 11,
+        "0111": 36
+      },
+      "counts_q0_first": {
+        "0101": 193,
+        "0000": 48,
+        "0100": 98,
+        "1100": 175,
+        "1101": 110,
+        "1001": 58,
+        "0011": 19,
+        "1010": 28,
+        "0001": 65,
+        "1000": 97,
+        "0111": 27,
+        "0110": 12,
+        "0010": 20,
+        "1111": 27,
+        "1011": 11,
+        "1110": 36
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "0101": 0.1884765625,
+        "0000": 0.046875,
+        "0100": 0.095703125,
+        "1100": 0.1708984375,
+        "1101": 0.107421875,
+        "1001": 0.056640625,
+        "0011": 0.0185546875,
+        "1010": 0.02734375,
+        "0001": 0.0634765625,
+        "1000": 0.0947265625,
+        "0111": 0.0263671875,
+        "0110": 0.01171875,
+        "0010": 0.01953125,
+        "1111": 0.0263671875,
+        "1011": 0.0107421875,
+        "1110": 0.03515625
+      },
+      "raw_payload_sha256": "bd41e1280defd03f5d29117593d1490d121ece08970867740a2788d536339688",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    },
+    {
+      "kernel_id": "df3cf86d66a94bb2c5817bba37b91b9cf72574c2bba1875f6fb9f0d6a587407d",
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-19T04:15:05.551344+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261119-121342",
+      "task_id": "uc4e9da3f-261119-121342-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "df3cf86d66a94bb2c5817bba37b91b9cf72574c2bba1875f6fb9f0d6a587407d",
+      "executed_qasm": "// q[0] -> Q77\n// q[1] -> Q76\n// q[2] -> Q75\n// q[3] -> Q74\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[78];\ncreg c[4];\nrz(-3.141592653589793) q[74];\nrx(-1.5762780103068208) q[74];\nrx(3.141592653589793) q[75];\nry(-1.5707963267948966) q[77];\nrz(-1.3349708546357144) q[77];\ncz q[77],q[76];\nry(-1.5707963267948966) q[76];\nrz(-7.512579035649448) q[76];\ncz q[76],q[75];\nry(1.5707963267948966) q[75];\nrz(-3.141592653589793) q[75];\ncz q[75],q[74];\nrz(1.5707963267948966) q[74];\nry(0.013656103933002142) q[74];\nry(3.141592653589793) q[75];\ncz q[75],q[74];\nrz(-3.141592653589793) q[74];\nry(-3.1361109700778695) q[74];\nrz(-0.20484155899501966) q[75];\nry(1.5707963267948966) q[75];\ncz q[76],q[75];\nrz(-1.5707963267948966) q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nrx(1.5707963267948966) q[74];\nrx(1.5707963267948966) q[75];\ncz q[75],q[74];\nrx(1.5707963267948966) q[74];\nrx(1.5707963267948966) q[75];\ncz q[75],q[74];\nrx(1.5707963267948966) q[74];\nh q[75];\ncz q[76],q[75];\nrx(-0.09559272753100968) q[75];\ncz q[76],q[75];\nrz(-1.5707963267948966) q[75];\nry(1.5707963267948966) q[75];\ncz q[75],q[74];\nrx(1.5707963267948966) q[74];\nrx(1.5707963267948966) q[75];\ncz q[75],q[74];\nrx(1.5707963267948966) q[74];\nrx(1.5707963267948966) q[75];\ncz q[75],q[74];\nh q[74];\nh q[75];\nry(1.8066217989540783) q[76];\nrx(-1.5707963267948966) q[77];\ncz q[77],q[76];\nrx(1.5707963267948966) q[76];\nrz(1.5707963267948966) q[76];\nrx(-1.5707963267948966) q[77];\nrz(-4.71238898038469) q[77];\ncz q[77],q[76];\nry(1.5707963267948966) q[76];\nrz(-1.2311623929471502) q[76];\ncz q[76],q[75];\nh q[75];\ncz q[75],q[74];\nrx(-0.09559272753100968) q[74];\ncz q[75],q[74];\nrz(1.5707963267948966) q[74];\nry(-1.5707963267948966) q[74];\nrz(1.912198925119931) q[75];\nry(0.9953369207879696) q[75];\nrx(1.5707963267948966) q[76];\ncz q[76],q[75];\nrz(1.5707963267948966) q[75];\nry(1.5707963267948966) q[75];\nrz(-1.5707963267948966) q[76];\nry(1.5707963267948966) q[76];\ncz q[76],q[75];\nrz(-1.5707963267948966) q[75];\nry(-2.1153122219513314) q[75];\ncz q[75],q[74];\nrz(-3.141592653589793) q[74];\nry(-1.5707963267948966) q[74];\nrx(1.5707963267948966) q[75];\ncz q[75],q[74];\nrz(1.5707963267948966) q[74];\nrx(1.5707963267948966) q[74];\nrx(-1.3932669756658789) q[75];\ncz q[75],q[74];\nrz(1.545838691400661) q[74];\nrx(-0.7166438934122447) q[74];\nry(-1.5707963267948966) q[76];\nrz(2.1462557328018246) q[76];\nrx(-1.3349708546357155) q[77];\ncz q[77],q[76];\nh q[76];\ncz q[76],q[75];\nrx(-0.013656103933001413) q[75];\ncz q[76],q[75];\nrz(-1.5707963267948966) q[75];\nry(1.5707963267948966) q[75];\nrz(0.20484155899502074) q[76];\nh q[76];\ncz q[77],q[76];\nrz(-1.5707963267948966) q[76];\nry(1.5707963267948966) q[76];\ncz q[76],q[75];\nrx(1.5707963267948966) q[75];\nrx(1.5707963267948966) q[76];\ncz q[76],q[75];\nrx(1.5707963267948966) q[75];\nrx(1.5707963267948966) q[76];\ncz q[76],q[75];\nrz(3.141592653589793) q[75];\nrz(1.3436903853243738) q[76];\nry(1.5707963267948966) q[76];\nrz(3.141592653589793) q[77];\ncz q[77],q[76];\nrx(0.09559272753100963) q[76];\nrz(1.5707963267948966) q[76];\nrx(3.141592653589793) q[77];\ncz q[77],q[76];\nry(1.7958345176992452) q[76];\nrz(1.5707963267948966) q[76];\ncz q[75],q[76];\nrx(3.141592653589793) q[75];\nrx(0.09559272753100963) q[76];\nrz(-0.8736246093352174) q[76];\ncz q[75],q[76];\nrz(-2.8089299617818706) q[75];\nrx(2.424948760177549) q[75];\nrx(1.3889097374706063) q[76];\nrz(-1.3580726328269894) q[76];\nrz(-2.8012825435793958) q[77];\nrx(2.4249487601775486) q[77];\nbarrier q[74],q[75],q[76],q[77];\nmeasure q[74] -> c[0];\nmeasure q[77] -> c[1];\nmeasure q[75] -> c[2];\nmeasure q[76] -> c[3];",
+      "executed_qasm_sha256": "51fa4f145f3d8214d617931b597570e91d50ee32dcb7e87c56b7c28c9ee3f6bf",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "9652d6d727726984",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 74,
+          "virtual_qubit": 0
+        },
+        {
+          "cbit": 1,
+          "physical_qubit": 77,
+          "virtual_qubit": 1
+        },
+        {
+          "cbit": 2,
+          "physical_qubit": 75,
+          "virtual_qubit": 2
+        },
+        {
+          "cbit": 3,
+          "physical_qubit": 76,
+          "virtual_qubit": 3
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "1000": 95,
+        "1111": 59,
+        "1100": 20,
+        "1101": 24,
+        "0110": 93,
+        "0010": 52,
+        "1001": 106,
+        "1110": 30,
+        "0001": 128,
+        "0011": 50,
+        "0000": 134,
+        "0101": 37,
+        "0111": 95,
+        "0100": 26,
+        "1010": 43,
+        "1011": 32
+      },
+      "counts_q0_first": {
+        "0001": 95,
+        "1111": 59,
+        "0011": 20,
+        "1011": 24,
+        "0110": 93,
+        "0100": 52,
+        "1001": 106,
+        "0111": 30,
+        "1000": 128,
+        "1100": 50,
+        "0000": 134,
+        "1010": 37,
+        "1110": 95,
+        "0010": 26,
+        "0101": 43,
+        "1101": 32
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "0001": 0.0927734375,
+        "1111": 0.0576171875,
+        "0011": 0.01953125,
+        "1011": 0.0234375,
+        "0110": 0.0908203125,
+        "0100": 0.05078125,
+        "1001": 0.103515625,
+        "0111": 0.029296875,
+        "1000": 0.125,
+        "1100": 0.048828125,
+        "0000": 0.130859375,
+        "1010": 0.0361328125,
+        "1110": 0.0927734375,
+        "0010": 0.025390625,
+        "0101": 0.0419921875,
+        "1101": 0.03125
+      },
+      "raw_payload_sha256": "9653631a71f425638f3e8814e3d5bbc51e44542d435d744a9dcd3e71f970f5bb",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    },
+    {
+      "kernel_id": "c845c4d643aeccb8a0c3e8c8cc6e192eca8c9c5c869510d9e2087ebae713bbb2",
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-19T04:15:11.003339+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261119-121354",
+      "task_id": "uc4e9da3f-261119-121354-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "c845c4d643aeccb8a0c3e8c8cc6e192eca8c9c5c869510d9e2087ebae713bbb2",
+      "executed_qasm": "// q[0] -> Q139\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[140];\ncreg c[1];\nrx(3.141592653589793) q[139];\nbarrier q[139];\nmeasure q[139] -> c[0];",
+      "executed_qasm_sha256": "7b05462588332e09050c3e03d967404573c0a7dec7b56f76881f7f2eec953eed",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "9652d6d727726984",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 139,
+          "virtual_qubit": 0
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "1": 1008,
+        "0": 16
+      },
+      "counts_q0_first": {
+        "1": 1008,
+        "0": 16
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "1": 0.984375,
+        "0": 0.015625
+      },
+      "raw_payload_sha256": "5118dae5183cfd231f48c64226e9bfd187f85597afeb6650a6f74e1eabbec344",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    },
+    {
+      "kernel_id": "5a4d41122ebc4751af98e6871045a214b230e922b9070e65814f127faca7d95b",
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-19T04:15:14.035615+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261119-121357",
+      "task_id": "uc4e9da3f-261119-121357-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "5a4d41122ebc4751af98e6871045a214b230e922b9070e65814f127faca7d95b",
+      "executed_qasm": "// q[0] -> Q139\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[140];\ncreg c[1];\nrx(3.141592653589793) q[139];\nbarrier q[139];\nmeasure q[139] -> c[0];",
+      "executed_qasm_sha256": "7b05462588332e09050c3e03d967404573c0a7dec7b56f76881f7f2eec953eed",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "9652d6d727726984",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 139,
+          "virtual_qubit": 0
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "1": 1006,
+        "0": 18
+      },
+      "counts_q0_first": {
+        "1": 1006,
+        "0": 18
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "1": 0.982421875,
+        "0": 0.017578125
+      },
+      "raw_payload_sha256": "971515b579509d6ffdee697214de6ed592b321df5877c5cdb2153eec45a9e169",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    },
+    {
+      "kernel_id": "811bd590fd9809255ac7a2018b0cd062ecaedf239273e5731c1bd467ca7933d4",
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-19T04:22:46.063510+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261119-121359",
+      "task_id": "uc4e9da3f-261119-121359-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "811bd590fd9809255ac7a2018b0cd062ecaedf239273e5731c1bd467ca7933d4",
+      "executed_qasm": "// q[0] -> Q139\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[140];\ncreg c[1];\nry(-1.5707963267948966) q[139];\nbarrier q[139];\nmeasure q[139] -> c[0];",
+      "executed_qasm_sha256": "1ccb126eecb26d7e092455c23b782852c3dfb61769009a724948fb9262d12522",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "9652d6d727726984",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 139,
+          "virtual_qubit": 0
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "1": 494,
+        "0": 530
+      },
+      "counts_q0_first": {
+        "1": 494,
+        "0": 530
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "1": 0.482421875,
+        "0": 0.517578125
+      },
+      "raw_payload_sha256": "6358ff62a471410667dc6720ab329daa599d398516cb3a6e59e2251ad8bb7251",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    },
+    {
+      "kernel_id": "0150bdc2a6cb5944153619f238a71addbc6aa085dc867d7155a2a9dc8163b7f3",
+      "schema": "qb-quafu-sdk-receipt-v1",
+      "observed_at": "2026-11-19T04:22:47.943587+00:00",
+      "sdk": {
+        "distribution": "quafu-sdk",
+        "version": "0.2.7",
+        "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+        "python": "3.12.6"
+      },
+      "mode": "cloud_hardware",
+      "target": "Baihua",
+      "backend": "Baihua",
+      "job_id": "uc4e9da3f-261119-121414",
+      "task_id": "uc4e9da3f-261119-121414-0",
+      "status": "Finished",
+      "submitted_qasm_sha256": "0150bdc2a6cb5944153619f238a71addbc6aa085dc867d7155a2a9dc8163b7f3",
+      "executed_qasm": "// q[0] -> Q139\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[140];\ncreg c[1];\nry(2.02639500019072) q[139];\nbarrier q[139];\nmeasure q[139] -> c[0];",
+      "executed_qasm_sha256": "b729c1e8741f32eb0aea831d12694fd46163c75a2868753afc5500a672f7ae51",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "calibration_id": "9652d6d727726984",
+      "measurements": [
+        {
+          "cbit": 0,
+          "physical_qubit": 139,
+          "virtual_qubit": 0
+        }
+      ],
+      "bit_order": "c0_rightmost",
+      "counts_raw": {
+        "1": 711,
+        "0": 313
+      },
+      "counts_q0_first": {
+        "1": 711,
+        "0": 313
+      },
+      "shots_requested": 1024,
+      "shots_returned": 1024,
+      "shot_shortfall": false,
+      "probabilities_q0_first": {
+        "1": 0.6943359375,
+        "0": 0.3056640625
+      },
+      "raw_payload_sha256": "bc6294ba5a463ee3368aa528a16d6a67783eeebff391f345ef0261f639968eb6",
+      "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+    }
+  ],
+  "provider_failures": [
+    {
+      "kernel_id": "ba30fb2911c038f1de4648f1a3f0d75c3fda600f371da5dff394409cc342507c",
+      "job_id": "uc4e9da3f-261119-121402",
+      "task_id": "uc4e9da3f-261119-121402-0",
+      "state": "provider_terminal_failure",
+      "failure": {
+        "category": "precheck.tooDeep",
+        "stage": "precheck",
+        "retryable": false
+      },
+      "detail": "编译后深度 370 超过设备 Baihua 的深度上限 223，未向设备提交",
+      "provider_raw_payload_sha256": "222ad0e9e21903bf003a85f0f5887f3672151536f07766fb280cb7ae7f45f99f",
+      "sent_to_hardware": false
+    }
+  ],
+  "cases": [
+    {
+      "id": "finance/01_allocation_quafu",
+      "domain": "finance",
+      "direction": "portfolio",
+      "file": "01_allocation_quafu.html",
+      "status": "HARDWARE_RECEIPTS_RECONCILED_BUSINESS_UNACCEPTED",
+      "required_kernel_ids": [
+        "503493d33caa8539ceaa7642045cc416e2ea8a743d80b964c43d1b421e52758c"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "097225d28c8297d343c5fede1e6bfabb0fb8d0f014f8f163bab3773c05094d6e"
+    },
+    {
+      "id": "finance/02_risk_quafu",
+      "domain": "finance",
+      "direction": "risk",
+      "file": "02_risk_quafu.html",
+      "status": "PENDING_ORIGINAL_CASE_PRESERVED",
+      "required_kernel_ids": [
+        "e6fec722015d95e7e6a25ffc17f24012ba408030fee60b9e5f2a6b20e5f60128",
+        "7e84362517c916020d33f1fad25f944a60e11dea452e39b46d4fa9f8dde137c4"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "5412c7d7054e8b6e1226c78058c8eaaa7fd906d7f43ae937b841f5cf1211d58b"
+    },
+    {
+      "id": "finance/03_derivatives_quafu",
+      "domain": "finance",
+      "direction": "pricing",
+      "file": "03_derivatives_quafu.html",
+      "status": "HARDWARE_RECEIPTS_RECONCILED_BUSINESS_UNACCEPTED",
+      "required_kernel_ids": [
+        "c5d559677a78a2d097c287572b770ff1c6354c635c86f336f96de47e14006710"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "9d260e7260edea13a549017ddde40b11ba51af2dcd0a5826885c5a1d1be83dd7"
+    },
+    {
+      "id": "finance/04_constraints_quafu",
+      "domain": "finance",
+      "direction": "financial-constraints",
+      "file": "04_constraints_quafu.html",
+      "status": "HARDWARE_RECEIPTS_RECONCILED_BUSINESS_UNACCEPTED",
+      "required_kernel_ids": [
+        "489629650fd6001f014c2011b36fc7e2718af122d7462d2f2fb4efb1329fc45a"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "3ff49fd4f5cf4b5b614a9db0d3e3f728e89b2918e197dd8c696ebab593f84497"
+    },
+    {
+      "id": "finance/05_correlation_quafu",
+      "domain": "finance",
+      "direction": "market-models",
+      "file": "05_correlation_quafu.html",
+      "status": "HARDWARE_RECEIPTS_RECONCILED_BUSINESS_UNACCEPTED",
+      "required_kernel_ids": [
+        "dfbdce9bd41a8304caaf9ed22b756e643f356552a32b0f9ba80c724d44af0e46",
+        "17174decccefbe73a3c4811859b1c21ccebed628d206491eb89d36f5d3e1fd9f",
+        "ad0acd4930f37e690fb659d90c78b90b139e68b60220fd19da0cfecb5946a98b"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "5ea6ea5a66e979b52275f7101700a6278879ee983969cfe27da6da6ca6e02573"
+    },
+    {
+      "id": "finance/dwave_portfolio",
+      "domain": "finance",
+      "direction": "portfolio",
+      "file": "dwave_portfolio.html",
+      "status": "PENDING_ORIGINAL_CASE_PRESERVED",
+      "required_kernel_ids": [
+        "04441850a3469e5891cfc9f9225c74fb8883be684bd6d9359e85cc1366cb674a"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "a691745e5460e174977c8c630c547aa80f49523cab50df388459206d70ec55e8"
+    },
+    {
+      "id": "finance/dwave_constraints",
+      "domain": "finance",
+      "direction": "financial-constraints",
+      "file": "dwave_constraints.html",
+      "status": "PENDING_ORIGINAL_CASE_PRESERVED",
+      "required_kernel_ids": [
+        "04441850a3469e5891cfc9f9225c74fb8883be684bd6d9359e85cc1366cb674a"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "a691745e5460e174977c8c630c547aa80f49523cab50df388459206d70ec55e8"
+    },
+    {
+      "id": "finance/qmc_pricing",
+      "domain": "finance",
+      "direction": "pricing",
+      "file": "qmc_pricing.html",
+      "status": "PENDING_ORIGINAL_CASE_PRESERVED",
+      "required_kernel_ids": [
+        "31b3bc5dd41fe450fe6f53683c3210452ad0b9b1d3cf043e3772041b768383dc",
+        "d8859ca7252a3b4dcd865dced86cfaa13d0bf67cbac2242237c1b2eb4ddaa54c",
+        "66261114513b1eb82d1ccb1e5b0b20e17e45acb63f46e38a2d30c2edbee591c5",
+        "87e5d4ee40c29b031f73f8f8312e0db10f2fb4749c73c787ed6b4d054a7d0e46",
+        "c1a4f356f0a891e49aae8b7779b33d10cf471914e3db29f7db60df5f68a54508",
+        "2b136448ed4741af1db3ef94f092caccecfbccf74ef6f26b4cca57e7b16c72ec",
+        "5a1eb29db69a4100c8b28f4cd9e395e617f8290f906a8039dbb80e953ee1e7da",
+        "578a2919c69e0efc7fc1469e3f41a16fb5281a64972acbbe7797604c1f56ece9"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "ec389aa6db5f343d38e9ed648d9fee47a9bfc57814ead32b5759261102b9ddf5"
+    },
+    {
+      "id": "finance/qmc_risk",
+      "domain": "finance",
+      "direction": "risk",
+      "file": "qmc_risk.html",
+      "status": "PENDING_ORIGINAL_CASE_PRESERVED",
+      "required_kernel_ids": [
+        "385dda316f6be89d9cde157e2a04637925686064330da919fcdb9a4387ed6dad",
+        "527cc066e44a3233200693c060edac4eeec91376785d9fb8b1ab65247973253b",
+        "216490c3c9d787a0993a648692a86a8bfa439cc3c4670c4dff38c33bea2e1e00",
+        "a45d930eefd52471307412b463aab42aa86f21aeb89ed83383e713043e6c2956",
+        "3894e5a267995f9e2ee6c995581372bb9073c8e30825e0a512ff4c46e20de13c",
+        "9cc671cb58b2668acf5e26322feeb795dfb100e98cd803475088ab4f40ccce2c",
+        "1bc93cfb24f59f0db6ee5a5f712cecccbd6d943dc4032c43cb21f4f8d697fc84",
+        "c681ff165eb3764c3b52da04d7e9490b039c0558277f9734e5c2d51870008972"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "ec389aa6db5f343d38e9ed648d9fee47a9bfc57814ead32b5759261102b9ddf5"
+    },
+    {
+      "id": "finance/qmc_hybrid",
+      "domain": "finance",
+      "direction": "market-models",
+      "file": "qmc_hybrid.html",
+      "status": "PENDING_ORIGINAL_CASE_PRESERVED",
+      "required_kernel_ids": [
+        "68476276274556e49d8ec42bbbab71243877f3d54786a707db5d1665b7817579",
+        "e44c4f90f3ec4979b862ebc9e8bad71d35f1fef412f80e3e062bd88e4d9200b9",
+        "eb2ffc1eb7819b722109c6b44cff8a8eaf0b52455e71517a15bc7bb3da7745ee",
+        "b59c5dc8e4c9d76ceb2377bbb53c190062fa4b37554f058453251beeceaec4dc",
+        "881e2c9845c50d0bce6b38f8799377a7dfd331cb1194212bcc8ab8dc92f9d150",
+        "d35eba65e18d3815f6cf4f554d0a6fc670d087f589b5cf3fb8601441b4460cfd",
+        "e12871a120d5445fb15b8a0ae688a0af2fff818d9bfafa91ed23c19ff006a871",
+        "52780f47c8a232f86b01bf3c4abb8c39f40b3beabdfa4df261a41df01225b671",
+        "510b688b2d9cadee63a645c9ba47a472922dd2d11cd93f0b2a9e5116174b88a3",
+        "893326268d9535600528e7835719a49457451bfa021ddd351b78aeb220ea2455",
+        "e4eec40076482393814287842f958654955a2abffc93b5fe3ceb0e0c1f10f110",
+        "11931080943da251887e4d321cc18a358a630109f6e93711ee6596278fa0cbf6",
+        "2d08d7a7ece58023ef6fb38b3898ee7da2ff670a6d22d530bc38f368530bf885",
+        "eabcd6f8654327de60232321f9f39ae075e7f9cf4703426fb655091fb2134853",
+        "9d1b00df04d90acac511cf0c7d15c97549bbaf7a902fe8e03b0ebb6cccc3bed7",
+        "ac4d44e74712366517b4ea09c3abb9067d6a128a2cf344badc8b1aa2c99016eb",
+        "de32164482deb132a037cec8974ccc33b01ee677bee84f1353a8a7d22ca79718",
+        "0e0209deef88fc0a436d6735a8ea17342ae8ce635c821a2450876dac2b336f4c",
+        "9e670a2852ff86ced979b2ce124725ce04d44d3c0aa414df42fcbffd3abf5963",
+        "af926d4ab5a6b2fe0aef42275656bcce2faf349a73a2e11f5fc29f9c70498e67",
+        "88464937d17e9dc9777f1d9fee826a269c51182886c9850a15252746bba4ff87",
+        "aaf4444c2fe3f3020b0d1278564bfac7b094458aa51c0000b67147f6319db58d",
+        "c470960629a5d2bb73c6d83c03eac772d3572ce2bdf9aeb2c09b61bfb9194d4f",
+        "6126399280760247ceb3b9997e29d7a85bd396c2286729064dc7435b93bd8914",
+        "4fbf2eb36349415695d2579b65b8d895516390c2eec6fec4d8557f39342bd80b",
+        "76b7f1b2b870d1b8004e1f21af32919a7a29cc48c3d169a9dbec5daa72d4acf3",
+        "69939cbc6fdfb9d381651b5365fc928dc41fec50a5ffac6555dbde5d5dd86804",
+        "a2a2863791dc652cd09d387d636300edf010755e0480deeadef929f884677ba1",
+        "fce5aa3e4f77bb7f645629ef07c42145f662ea478930f3ab25f0219d14b8143b",
+        "283ffdf93bd2f47e7f2388ba8a23ffd06dce8147c1fb88ae820b2cb0f449fbbd",
+        "9672dbea91d7b16d6c8979f7d3eea86a75e13d924a88ef993ee583fce415228e",
+        "c4fb9cda4fb8a5bc2c113272ce5c638125cfa5d5076c5c8b054df334c2f40803",
+        "ee766efb4b272e2e1df2afdeb2b6e3307c591b9ac72de85eb7ea1ff6c7bb61ab",
+        "2c8c814b5f1f1b6cd716d2f207e39186a533d8d1f33c08efdd5c6d51ec985f80",
+        "01c637cff22f72b1ecaed82a46fd2f580dccb1cc66b33bfd076fdf1e45b9ce05",
+        "375157d0db50e31cef9cf761d08c85f1adeeb38d9da4919fad482b4e7f49dd62",
+        "f871c28f4b6ca6e28a10de46937b949cc528e33f30f8c3daeb180790f230242b",
+        "e9002aa560b4015af905559cb900c7efdd6df0d77b3e7a53267bb943515fae1b",
+        "777a780ac8d4453102a4366acdca9d6b1fc033a55181b467ee6e830baf387c0c",
+        "babf0f7391f8bae975f87188f505e70f71917f4b44ce7b6cf7c56ec58fc8f526",
+        "22777b1958cc946a0e17b9239930b507bb63d9d32ff773a2559b8bc311e884a2",
+        "7437240064cb5611e3772419e8e7250cfadb3bfb13a2d9a65ae14345f789b185",
+        "67d7ebd96d6a35fabb7fb346130ee37b64ee621e722ce9e87274a92e2b3d172a",
+        "b3233044c934d12b89d37f409c25a1b1c2c2e052d0084534f4d05130140b4bbe",
+        "a04869ac9fa1501acbfec533b64eb454944e3ed85686676527543de54f91f09b",
+        "d583aa7444f205123630faf6dfcecc6ab4ab27c50a6392c090a446d1735c28ce",
+        "3872c6a1049494f4d4885b661e6c9df06b324169208676a14d884376e2df50e3",
+        "1f2a0aab61b4e834b09a40245bf3bf2d39db8204a5fccb75c80535708e65c2a9",
+        "f1b55af4daeb7b2891668e0268e506b48916533c7255e7e768e4c882ba0a8cfb",
+        "c7f86aa7cf9215aaf265a5b53bb3a810cf909a80d60511f1440b6175ecc39ba7",
+        "0450e6412a3580b9423c3025a684933f916118d772f77fcc3e788f47d0a64c5c",
+        "4fd97a3a67116c6f4f9a2e7ac5d216ed1bb5f26d1176b68c271f3c74752edeca",
+        "5beec2437295cfc246d2e6d0dff41efdb30084aa46a06e96dd363b3b9f6fc3c0",
+        "8bfa6990379e9b7a1c8b0b1838511506679bf95426d63fec4f0b4583daae9047",
+        "8baa98e0e067216828259e56765cdc400b1899c0c4bac97901f3e75799f0d871",
+        "11531afa36f01e2c55666382d03e68bfb9cc33a4237ad04cd916f2f7b2496417",
+        "b0587d405a110b41d081bddbf2d66323ee2145aaacd9af7611fcc9aa50014271",
+        "e6db7bff34f698f17c76075b2a13e0477d2eb8e83fa0e55be29919d1fedf670b",
+        "ed9df8913b2d52d4b7c60ccb18857cae891e4936f1fe9acd53981a64478b423c",
+        "45aa6922e13ef543753a4d528074678831bd42742cb936a2a3e67b2e59c4745c",
+        "10884935cbfac6c290ebdf6eb69a71a600a634ffc2fc9fe9cbada3b241559490",
+        "ac066bbc1d977a9174a22c3eedd4c6bd4133aa58e4f833aa3f6d8919693c5cba",
+        "c9fdeb8b2e0e086e8490d46f022aae3597631c391508c85257dedba4620e758b"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "ec389aa6db5f343d38e9ed648d9fee47a9bfc57814ead32b5759261102b9ddf5"
+    },
+    {
+      "id": "finance/cirq_portfolio",
+      "domain": "finance",
+      "direction": "portfolio",
+      "file": "cirq_portfolio.html",
+      "status": "PENDING_ORIGINAL_CASE_PRESERVED",
+      "required_kernel_ids": [
+        "a44cab68a600fae7b409c93b0ce57d3796104fb3b954d5ad76f5931f837cc1d4"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "eb4bc2556eaf8c28e60c4d4b4f9ddf2ddcf67514ce72be3f0770beca003c2a4d"
+    },
+    {
+      "id": "finance/cirq_risk",
+      "domain": "finance",
+      "direction": "risk",
+      "file": "cirq_risk.html",
+      "status": "HARDWARE_RECEIPTS_RECONCILED_BUSINESS_UNACCEPTED",
+      "required_kernel_ids": [
+        "4bb0e58cb81a6b8ef527d2651f912b5311739cc6b2db53dbc47ae465003da330"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "28e21d11adc001857093350f5492d4057cc0fdda782b372c8ae7bde073f23cf8"
+    },
+    {
+      "id": "finance/cirq_pricing",
+      "domain": "finance",
+      "direction": "pricing",
+      "file": "cirq_pricing.html",
+      "status": "PENDING_ORIGINAL_CASE_PRESERVED",
+      "required_kernel_ids": [
+        "396b79339c65ca327cfd3fff0c659d8e5439aaae856db165b2027ca5bf1a4de6"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "307ce748a2c82421a325bfa71ac594bd6c797af7f0aa6d3b8a41f096092e4524"
+    },
+    {
+      "id": "finance/cirq_constraints",
+      "domain": "finance",
+      "direction": "financial-constraints",
+      "file": "cirq_constraints.html",
+      "status": "PENDING_ORIGINAL_CASE_PRESERVED",
+      "required_kernel_ids": [
+        "1d36cc28c40e11286b780e2b13c48870d9931de9e2d228c3df682f6a7703e1cd"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "9583bd144cb6766455d2aadd02373d4f355ff52c078bbbea23c7d128a45119f9"
+    },
+    {
+      "id": "finance/cirq_market_walk",
+      "domain": "finance",
+      "direction": "market-models",
+      "file": "cirq_market_walk.html",
+      "status": "PENDING_ORIGINAL_CASE_PRESERVED",
+      "required_kernel_ids": [
+        "933ed85e8e26e48d7d708452a6393bc50d9d6ddc67b84f7b6d8cdeb254bb40fd"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "e2924a01ca7eb15540f36fe6260e5170a76b6ac837d5e99eed3bcf4a3cc433b3"
+    },
+    {
+      "id": "science/01_chemistry",
+      "domain": "science",
+      "direction": "chemistry",
+      "file": "01_chemistry.html",
+      "status": "PENDING_ORIGINAL_CASE_PRESERVED",
+      "required_kernel_ids": [
+        "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+        "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+        "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+        "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+        "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+        "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+        "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+        "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+        "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87",
+        "e32626e2a3429fe3f30ed6afe21abd1a95d42b157f1284c88971e150d62763f8",
+        "c01215183ea00f0fdb1b0d26c7256819791510d82eab8e9c712f4ed9ed639879",
+        "09454ff6e9fcb5d525d1c847d70e8f4523bf47fbcf462a8e37aa03a8f9e092d4",
+        "276b942538c75af80a6d10d741d905a63ebeb939c3843833d5633cff51c283d5",
+        "dd8ad337d1378c22b3392e80ed9e1d260f071f86f5125ed6d6f93ddd626faf87"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "40df81004c23760ab78b0fde4f6d00cffda2a6897ccb1361ffb244443d5ebabc"
+    },
+    {
+      "id": "science/02_biomedicine",
+      "domain": "science",
+      "direction": "biomedicine",
+      "file": "02_biomedicine.html",
+      "status": "HARDWARE_RECEIPTS_RECONCILED_BUSINESS_UNACCEPTED",
+      "required_kernel_ids": [
+        "4ed237fc873733229e2e169276c343d4690d4e10f1e56f4b37d31efc0b97e28e"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "9148ab895e269bbe7c6fdc8a111e5e49d1cdb4d83e176562015c0f05410e3496"
+    },
+    {
+      "id": "science/03_materials",
+      "domain": "science",
+      "direction": "materials",
+      "file": "03_materials.html",
+      "status": "HARDWARE_RECEIPTS_RECONCILED_BUSINESS_UNACCEPTED",
+      "required_kernel_ids": [
+        "2f8714b44854e16b15fa1280e2220e041253d2caf66bfe969172d01c2817174a"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "658dca1e06aab323d1d81e5936e17be3efe5f0df31a5539a6e9b3dd054c97ba7"
+    },
+    {
+      "id": "science/04_physics",
+      "domain": "science",
+      "direction": "physics",
+      "file": "04_physics.html",
+      "status": "HARDWARE_RECEIPTS_RECONCILED_BUSINESS_UNACCEPTED",
+      "required_kernel_ids": [
+        "e5dbc239894e6e33d73a24de248a4bd20fc3d25320bafcdc917f391e6e39acbf",
+        "e5dbc239894e6e33d73a24de248a4bd20fc3d25320bafcdc917f391e6e39acbf"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "17a2183349939c326de57b247feab367aadbda0488da01ae378590d0091d88b9"
+    },
+    {
+      "id": "industry/01_routing-scheduling",
+      "domain": "industry",
+      "direction": "routing-scheduling",
+      "file": "01_routing-scheduling.html",
+      "status": "HARDWARE_RECEIPTS_RECONCILED_BUSINESS_UNACCEPTED",
+      "required_kernel_ids": [
+        "f9fdff562498598f6c5c1cac6cb92e6f19377560440b45a10d92af4f3667afd9"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "b09f949026800a241dc2169a87ad416208d089c5fa3128f2f11915d6e97ed1c6"
+    },
+    {
+      "id": "industry/02_supply-chain",
+      "domain": "industry",
+      "direction": "supply-chain",
+      "file": "02_supply-chain.html",
+      "status": "HARDWARE_RECEIPTS_RECONCILED_BUSINESS_UNACCEPTED",
+      "required_kernel_ids": [
+        "6c2244dfbb0f461c78bf28b2d5e375f4f49685901dbf7033dab067d2ae8fa423"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "72477f15c98bfaa3d68e7f38f44e00305ebc867ba3bddd842605f17828d4a1a2"
+    },
+    {
+      "id": "industry/03_energy",
+      "domain": "industry",
+      "direction": "energy",
+      "file": "03_energy.html",
+      "status": "HARDWARE_RECEIPTS_RECONCILED_BUSINESS_UNACCEPTED",
+      "required_kernel_ids": [
+        "3a1b9e033c46817913443545cbdd27d8d1a8b6a8211f9d3eef2400b4ef85f143"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "31886ae5635d4a5d6ddf2152bf2a735d65c523c28f8293b52ff444dffa698fb8"
+    },
+    {
+      "id": "industry/04_combinatorial",
+      "domain": "industry",
+      "direction": "combinatorial",
+      "file": "04_combinatorial.html",
+      "status": "HARDWARE_RECEIPTS_RECONCILED_BUSINESS_UNACCEPTED",
+      "required_kernel_ids": [
+        "76ddde9039002e87b94fd3a1c4d13b5a736276681c2663643447ce4fc1ea4632"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "7d4cb7c1b64e28e7258d0f6196f4ef2bf2deb05ed0860322c1861d8285a39412"
+    },
+    {
+      "id": "industry/05_integer-multiobjective",
+      "domain": "industry",
+      "direction": "integer-multiobjective",
+      "file": "05_integer-multiobjective.html",
+      "status": "HARDWARE_RECEIPTS_RECONCILED_BUSINESS_UNACCEPTED",
+      "required_kernel_ids": [
+        "df3cf86d66a94bb2c5817bba37b91b9cf72574c2bba1875f6fb9f0d6a587407d"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "becb724b383c176d4cafdfbccf147e21dc22884eac6a69e0e6935442e3458aee"
+    },
+    {
+      "id": "security/01_pqc",
+      "domain": "security",
+      "direction": "pqc",
+      "file": "01_pqc.html",
+      "status": "CLASSICAL_NOT_APPLICABLE",
+      "required_kernel_ids": [],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "f0f4dd06f29f9a5ec20d23ba8b31f82506c835fc6cbad3d98e21a959ad25f24e"
+    },
+    {
+      "id": "security/02_qkd",
+      "domain": "security",
+      "direction": "qkd",
+      "file": "02_qkd.html",
+      "status": "HARDWARE_RECEIPTS_RECONCILED_BUSINESS_UNACCEPTED",
+      "required_kernel_ids": [
+        "c845c4d643aeccb8a0c3e8c8cc6e192eca8c9c5c869510d9e2087ebae713bbb2",
+        "5a4d41122ebc4751af98e6871045a214b230e922b9070e65814f127faca7d95b",
+        "811bd590fd9809255ac7a2018b0cd062ecaedf239273e5731c1bd467ca7933d4"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "fb01f5023a88d53dbb1ed58501bf5da3ad12b6e2463ec1b1d004e8555076af80"
+    },
+    {
+      "id": "security/03_threat",
+      "domain": "security",
+      "direction": "threat",
+      "file": "03_threat.html",
+      "status": "PROVIDER_COMPILER_REJECTED_ORIGINAL_CASE_PRESERVED",
+      "required_kernel_ids": [
+        "ba30fb2911c038f1de4648f1a3f0d75c3fda600f371da5dff394409cc342507c"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "7fb4535ca6735dcd7e76a00943ebcee25a23a011e48cab964c6ab6dd61dba7d7"
+    },
+    {
+      "id": "security/04_qrng",
+      "domain": "security",
+      "direction": "qrng",
+      "file": "04_qrng.html",
+      "status": "HARDWARE_RECEIPTS_RECONCILED_BUSINESS_UNACCEPTED",
+      "required_kernel_ids": [
+        "0150bdc2a6cb5944153619f238a71addbc6aa085dc867d7155a2a9dc8163b7f3"
+      ],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "5de8b318c4046f5fd723bf436301d8d4cab428dad2e8381bffaa36357300565a"
+    },
+    {
+      "id": "security/05_privacy",
+      "domain": "security",
+      "direction": "privacy",
+      "file": "05_privacy.html",
+      "status": "CLASSICAL_NOT_APPLICABLE",
+      "required_kernel_ids": [],
+      "complete_business_acceptance": false,
+      "original_cells_sha256": "463d88f3dcc92b5dda94c74ad835d8076998df10c1bbb333105e4bb0c40ceccd"
+    }
+  ],
+  "unchanged_original_artifact_hashes": [
+    {
+      "file": "output/jupyter-notebook/finance/02_risk_quafu.html",
+      "sha256": "074fe1f0942254543a3ca94b80c8d6132017f35415bde1bbab188e67ddce5b19"
+    },
+    {
+      "file": "output/jupyter-notebook/finance/02_risk_quafu.ipynb",
+      "sha256": "32e541249b04b63a2903f93399976109946facbd623d81cb454bf852de696798"
+    },
+    {
+      "file": "output/jupyter-notebook/finance/dwave_portfolio.html",
+      "sha256": "a7256d8b1213e8b19258e67e2405d7b29bfe39dfc56ce5667ccc37e2f2425b78"
+    },
+    {
+      "file": "output/jupyter-notebook/finance/dwave_portfolio.ipynb",
+      "sha256": "914090288d9710d1fd40be165d054c966831033d4aafb2f6926938e4b88db534"
+    },
+    {
+      "file": "output/jupyter-notebook/finance/dwave_constraints.html",
+      "sha256": "caad67d2f775018b363ec44e93b74402f7c532b45e90739727d5466e045c35ab"
+    },
+    {
+      "file": "output/jupyter-notebook/finance/dwave_constraints.ipynb",
+      "sha256": "ecd125ec06fc10552525fc537e47f9eaf6619a72eb31beb481eaa8fa96d99243"
+    },
+    {
+      "file": "output/jupyter-notebook/finance/qmc_pricing.html",
+      "sha256": "335780fe111e97246ab38a0bc8733f30c7ab6511827e3b3874d318d1830718b0"
+    },
+    {
+      "file": "output/jupyter-notebook/finance/qmc_pricing.ipynb",
+      "sha256": "d21a45fc63d87ec54201ab36bd8ee9d88f69cd3345afff43fb7ed458aace4033"
+    },
+    {
+      "file": "output/jupyter-notebook/finance/qmc_risk.html",
+      "sha256": "ca4b9c1b5a1780ea3e645eb8b1856c98984712ccef09dd262f7b664f3eb9fb21"
+    },
+    {
+      "file": "output/jupyter-notebook/finance/qmc_risk.ipynb",
+      "sha256": "c56bb52608a713d7f33ccd468074f9069d32b8afe392237274bbfee130bf645e"
+    },
+    {
+      "file": "output/jupyter-notebook/finance/qmc_hybrid.html",
+      "sha256": "3158154361cd10cf2f73e6a4f1a31b1c7cc364695a5058dd879370ef48b96000"
+    },
+    {
+      "file": "output/jupyter-notebook/finance/qmc_hybrid.ipynb",
+      "sha256": "fd08afb903ef2afe90508e2aa230305ee46c509cd6ce76301094dd8fcf36c11e"
+    },
+    {
+      "file": "output/jupyter-notebook/finance/cirq_portfolio.html",
+      "sha256": "caaa165660b450f22f0d38b67b65d82797c74547f2c689ef3ec4ca0d1bf1950e"
+    },
+    {
+      "file": "output/jupyter-notebook/finance/cirq_portfolio.ipynb",
+      "sha256": "889a3cb862af58ff34f432b920365443cb58f5f46aafaf486dcadfbd2fea0f9c"
+    },
+    {
+      "file": "output/jupyter-notebook/finance/cirq_pricing.html",
+      "sha256": "d5a3c8bd6bc9ea34d0c40def4dbe702bd282f3e46a5a5d8b324bf8016011e8cc"
+    },
+    {
+      "file": "output/jupyter-notebook/finance/cirq_pricing.ipynb",
+      "sha256": "22ee59408fa8c0a70d2be7e0bba64cfed7292b742e7e6afdf5c55c9810cea4dc"
+    },
+    {
+      "file": "output/jupyter-notebook/finance/cirq_constraints.html",
+      "sha256": "f0907c5769c43a9f0520d3fca362b1116d8c9f5e468478afa432c9682e2d8875"
+    },
+    {
+      "file": "output/jupyter-notebook/finance/cirq_constraints.ipynb",
+      "sha256": "9ffed2154cdd0089460750a9680eb0a244d88de59517e69046b355994771dff0"
+    },
+    {
+      "file": "output/jupyter-notebook/finance/cirq_market_walk.html",
+      "sha256": "a5b68ab735b2ccf687914d35fb2776523b32dfa8b5477a4b19b0d0e7eb3b61db"
+    },
+    {
+      "file": "output/jupyter-notebook/finance/cirq_market_walk.ipynb",
+      "sha256": "8ec1716fb4e3a55b8cab8b7bb05ab0bc22f20add77f639b3bd23bdce73e19032"
+    },
+    {
+      "file": "output/jupyter-notebook/science/01_chemistry.html",
+      "sha256": "c6f972e38d13c53faba5f95dba043434b094e553b83ab6a2891efa67a097d7a8"
+    },
+    {
+      "file": "output/jupyter-notebook/science/01_chemistry.ipynb",
+      "sha256": "bc464504b99f788261b1da554fe7ef5b4e1aca5e8d76b7ffbd42c277b840b9bc"
+    },
+    {
+      "file": "output/jupyter-notebook/security/01_pqc.html",
+      "sha256": "99a671b2af8603cb7c9d667710f88854a86373f5bea632089d33366cb228c8e3"
+    },
+    {
+      "file": "output/jupyter-notebook/security/01_pqc.ipynb",
+      "sha256": "ee59e5c3a66b4dacb61aea32104a4eb47fa073822e5e31c9a423d0016c692bec"
+    },
+    {
+      "file": "output/jupyter-notebook/security/03_threat.html",
+      "sha256": "4758eb0d4df15e13b9f0d389ce34c07dcf9e8dd90e8dd2a3e1d919e85fe5ccc6"
+    },
+    {
+      "file": "output/jupyter-notebook/security/03_threat.ipynb",
+      "sha256": "a2cf65b7d0698391ff30962988481afea94aa906805a2b1e27142ef6b1ceca27"
+    },
+    {
+      "file": "output/jupyter-notebook/security/05_privacy.html",
+      "sha256": "688fe9844c3646775f008e4a95201ca82072e21f5415d33e6253d92b25bdf8e7"
+    },
+    {
+      "file": "output/jupyter-notebook/security/05_privacy.ipynb",
+      "sha256": "7837e52650107cdfb10ab837dc56dda114632ff390ac963a223eaacfd77a1195"
+    }
+  ],
+  "calibration_files": [
+    {
+      "file": "calibration-9652d6d727726984.json",
+      "sha256": "f0b04a94a1bb9849b2c65cfcae428ca0d99c81f3dd34ccbbeb9419cef40d624e"
+    }
+  ],
+  "warnings": [
+    "Hardware receipt reconciliation is separate from accuracy, domain and per-function acceptance.",
+    "Correlation measurements disagree in sign with ideal references; QRNG one-frequency is biased.",
+    "Histograms cannot reconstruct ordered random streams, secure keys or certified entropy.",
+    "Sampling-only intervals do not bound systematic hardware errors.",
+    "Frozen original financial input provenance remains; synthetic examples are not relabelled real market data.",
+    "All unverified or failed original cases retain their exact notebook and HTML bytes."
+  ]
+}
