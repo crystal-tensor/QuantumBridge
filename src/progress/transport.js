@@ -1,5 +1,61 @@
+import { validDeferredManifestFields } from "./model.js?manifest=migration-pool-20261119";
+
 const CHUNK_BYTES = 1024 * 1024;
 const CONCURRENCY = 8;
+const MAX_ORIGINAL = 4 * 1024 ** 3;
+const digest = async bytes => [...new Uint8Array(await crypto.subtle.digest("SHA-256", bytes))].map(value => value.toString(16).padStart(2, "0")).join("");
+const positiveSize = (value, limit) => Number.isSafeInteger(value) && value > 0 && value <= limit;
+
+async function inflateBounded(bytes, limit) {
+  const reader = new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip")).getReader();
+  const chunks = [];
+  let length = 0;
+  try {
+    for (;;) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      length += value.length;
+      if (length > limit) throw new Error("Evidence expansion exceeds its bound");
+      chunks.push(value);
+    }
+  } catch (error) {
+    await reader.cancel().catch(() => {});
+    throw error;
+  } finally { reader.releaseLock(); }
+  const raw = new Uint8Array(length);
+  let offset = 0;
+  for (const chunk of chunks) { raw.set(chunk, offset); offset += chunk.length; }
+  return raw;
+}
+
+function evidenceReference(value) {
+  if (value?.schema !== 2 || value.encoding !== "deferred-manifest-snapshot-v2" ||
+      typeof value.generated_at !== "string" || !value.generated_at || !/^[0-9a-f]{64}$/.test(value.source_fingerprint || "") ||
+      !validDeferredManifestFields(value.fields) || value.snapshot?.file !== "manifest.json.gz" ||
+      !positiveSize(value.snapshot.bytes, 100 * 1024 ** 2 - 1) || !positiveSize(value.snapshot.original_bytes, MAX_ORIGINAL) ||
+      !/^[0-9a-f]{64}$/.test(value.snapshot.sha256 || "") || !/^[0-9a-f]{64}$/.test(value.snapshot.original_sha256 || "")) {
+    throw new Error("Invalid deferred snapshot reference");
+  }
+  return value.snapshot;
+}
+
+export async function verifiedEvidence(url, descriptor, options) {
+  const payload = await verifiedJSON(url, descriptor, options);
+  if (payload?.schema === 1 && payload.encoding === "deferred-manifest-v1") return payload;
+  const snapshot = evidenceReference(payload);
+  const compressed = await verifiedBytes(new URL(snapshot.file, url), snapshot, options);
+  const raw = await inflateBounded(compressed, snapshot.original_bytes);
+  if (raw.length !== snapshot.original_bytes || await digest(raw) !== snapshot.original_sha256) {
+    throw new Error("Deferred snapshot original bytes/hash differ");
+  }
+  const value = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(raw));
+  if (!value || Array.isArray(value) || Object.hasOwn(value, "public_snapshot_format") ||
+      Object.hasOwn(value, "byte_view_format") || Object.hasOwn(value, "deferred_evidence") ||
+      value.generated_at !== payload.generated_at || value.source?.fingerprint !== payload.source_fingerprint ||
+      payload.fields.some(name => !Object.hasOwn(value, name))) throw new Error("Deferred snapshot identity differs");
+  return { schema: 1, encoding: "deferred-manifest-v1", generated_at: value.generated_at,
+    source_fingerprint: value.source.fingerprint, fields: Object.fromEntries(payload.fields.map(name => [name, value[name]])) };
+}
 
 function byteLength(value) {
   return /^\d+$/.test(value || "") && Number.isSafeInteger(Number(value)) && Number(value) > 0 ? Number(value) : null;
@@ -51,7 +107,7 @@ export async function verifiedBytes(url, descriptor, { fetcher = globalThis.fetc
     bytes = new Uint8Array(await response.arrayBuffer());
     if (size !== null && bytes.byteLength !== size) throw new Error("Artifact size mismatch");
   }
-  const hash = [...new Uint8Array(await crypto.subtle.digest("SHA-256", bytes))].map(value => value.toString(16).padStart(2, "0")).join("");
+  const hash = await digest(bytes);
   if (hash !== descriptor.sha256) throw new Error("Artifact integrity mismatch");
   return bytes;
 }
