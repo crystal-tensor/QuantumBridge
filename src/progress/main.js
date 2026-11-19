@@ -1,5 +1,5 @@
 import { domains, directions } from "../framework/data.js";
-import { resources, engineeringReviewDownload, resourceHref } from "../framework/resources.js";
+import { resources, engineeringReviewDownload, resourceHref } from "../framework/resources.js?observer=20261119-review";
 import { statuses, statusNames, countStatuses, filterRows, aggregate, isStale, verificationWindow, currentVerification, abnormalObservations, originalChildFollowup, decodeDataset, restoreManifest } from "./model.js?manifest=migration-pool-20261119";
 import { verifiedJSON, verifiedEvidence } from "./transport.js?http=migration-pool-20261119";
 import { scheduleIconLibrary } from "../icon-library.js";
