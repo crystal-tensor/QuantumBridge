@@ -60,7 +60,6 @@ export const projectDocuments = !publicSite && privateDocuments ? privateDocumen
 export const documentationResources = [
   { domain: "science", kind: "guide", href: "/media/biohydrogen/film/", title: bi("Anima 影像 · 从光捕获到系统工程", "Anima film · From light to system engineering") },
   { domain: "science", direction: "chemistry", kind: "guide", href: "/media/biohydrogen/film/", title: bi("Anima 生物光制氢视频与交互图", "Anima biohydrogen film and figures") },
-  { domain: "science", direction: "chemistry", kind: "guide", href: "/media/biohydrogen/", title: bi("生物光制氢 · 过程情景可视化", "Biohydrogen · Process visualization") },
   ...domains.map(domain => ({ domain: domain.id, kind: "guide", href: `/readme.html#${domain.id}`, title: bi(`${domain.name["zh-CN"]} · 安装与使用指南`, `${domain.name.en} · User guide`) })),
   ...directions.map(direction => ({ domain: direction.domain, direction: direction.id, kind: "guide", href: `/readme.html#${direction.id}`, title: bi(`${direction.name["zh-CN"]} · 使用教程`, `${direction.name.en} · Tutorial`) })),
 ];
