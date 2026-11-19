@@ -16,6 +16,13 @@ export function filterRows(rows, filters) {
     (!query || `${row.name} ${row.signature || ""} ${row.file || ""} ${(row.exposures || []).join(" ")}`.toLowerCase().includes(query)));
 }
 export const isStale = (generatedAt, now = Date.now()) => now - Date.parse(generatedAt) > 12 * 3600000;
+export function fullContractReview(row, fingerprint) {
+  const review = row.review;
+  return row.status === "implemented" && review?.status === "implemented" &&
+    review.source_hash === row.source_hash && review.project_fingerprint === fingerprint &&
+    ["contract_complete", "native_independent", "versions_verified", "strict_tests_pass"].every(key => review[key] === true) &&
+    /^[0-9a-f]{64}$/.test(review.evidence_hash || "");
+}
 export const deferredManifestFields = ["verification", "test_contexts", "runtime_census", "goal_execution", "strict_backlog", "diagnostic_observations", "tests"];
 export function validDeferredManifestFields(fields) {
   if (!Array.isArray(fields)) return false;
