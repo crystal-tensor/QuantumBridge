@@ -8,8 +8,10 @@ import gzip
 import hashlib
 import importlib.metadata
 import importlib.util
+import io
 import json
 from pathlib import Path
+import re
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
@@ -31,13 +33,26 @@ _archive_spec = importlib.util.spec_from_file_location("qb_verification_archive"
 _archive = importlib.util.module_from_spec(_archive_spec)
 _archive_spec.loader.exec_module(_archive)
 
+_snapshot_spec = importlib.util.spec_from_file_location("qb_public_snapshot_archive",
+    Path(__file__).with_name("public_snapshot_archive.py"))
+_snapshot = importlib.util.module_from_spec(_snapshot_spec)
+_snapshot_spec.loader.exec_module(_snapshot)
+
+_migration_spec = importlib.util.spec_from_file_location("qb_engineering_migration_pool",
+    Path(__file__).with_name("engineering_migration_pool.py"))
+_migration = importlib.util.module_from_spec(_migration_spec)
+_migration_spec.loader.exec_module(_migration)
+
 
 def digest(data):
     return hashlib.sha256(data).hexdigest()
 
 
 def load_json(path):
-    return _archive.load(path)
+    value = _archive.load(path)
+    if isinstance(value, dict) and 'public_snapshot_format' in value:
+        value = _snapshot.load(path)
+    return _migration.restore(value) if isinstance(value, dict) and _migration.FIELD in value else value
 
 
 def dump(path, value):
@@ -49,13 +64,34 @@ DEFERRED_MANIFEST_FIELDS = ("verification", "test_contexts", "runtime_census",
                             "goal_execution", "strict_backlog", "diagnostic_observations", "tests")
 
 
-def browser_manifest_assets(manifest, destination):
+def browser_manifest_assets(manifest, destination, *, reuse_snapshot=False):
     """Split transport only; retain the complete snapshot and its collection identity."""
     if "deferred_evidence" in manifest or "strict_backlog_count" in manifest:
         raise ValueError("Expected the complete manifest, not a browser projection")
-    fields = {name: manifest[name] for name in DEFERRED_MANIFEST_FIELDS}
+    names = list(DEFERRED_MANIFEST_FIELDS)
+    if _migration.FIELD in manifest:
+        _migration.restore(manifest)
+        names.append(_migration.FIELD)
+    fields = {name: manifest[name] for name in names}
     payload = dict(schema=1, encoding="deferred-manifest-v1", generated_at=manifest["generated_at"],
                    source_fingerprint=manifest["source"]["fingerprint"], fields=fields)
+    if reuse_snapshot:
+        # The complete download already contains these fields. Bind its actual
+        # bytes instead of storing a second near-complete copy of the evidence.
+        raw = _snapshot.read_bytes(destination / "manifest.json")
+        download = destination / "manifest.json.gz"
+        if download.is_symlink() or download.stat().st_size > _snapshot.MAX_COMPRESSED_BYTES:
+            raise ValueError("Deferred evidence snapshot exceeds its compressed bound")
+        compressed_snapshot = download.read_bytes()
+        with gzip.GzipFile(fileobj=io.BytesIO(compressed_snapshot)) as stream:
+            download_raw = stream.read(len(raw) + 1)
+        if json.loads(raw) != manifest or download_raw != raw:
+            raise ValueError("Deferred evidence snapshot differs from its complete download")
+        payload = dict(schema=2, encoding="deferred-manifest-snapshot-v2",
+            generated_at=manifest["generated_at"], source_fingerprint=manifest["source"]["fingerprint"],
+            fields=names, snapshot=dict(file="manifest.json.gz",
+                bytes=len(compressed_snapshot), sha256=digest(compressed_snapshot),
+                original_bytes=len(raw), original_sha256=digest(raw)))
     body = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode()
     compressed = gzip.compress(body, mtime=0)
     destination.mkdir(parents=True, exist_ok=True)
@@ -63,10 +99,49 @@ def browser_manifest_assets(manifest, destination):
     bootstrap = {name: value for name, value in manifest.items() if name not in fields}
     bootstrap["strict_backlog_count"] = len(manifest["strict_backlog"])
     bootstrap["deferred_evidence"] = dict(file="manifest-evidence.json.gz", sha256=digest(compressed),
-        bytes=len(compressed), fields=list(DEFERRED_MANIFEST_FIELDS))
+        bytes=len(compressed), fields=names)
     body = json.dumps(bootstrap, ensure_ascii=False, separators=(",", ":")).encode()
     (destination / "manifest-browser.json.gz").write_bytes(gzip.compress(body, mtime=0))
     return bootstrap
+
+
+def write_manifest_snapshot(manifest, destination, *, reuse_views=True):
+    wire = _migration.pack(manifest)
+    if _migration.restore(wire) != manifest:
+        raise ValueError("Migration pooling changed evidence")
+    _snapshot.dump(destination / "manifest.json", wire, reuse_views=reuse_views)
+    browser_manifest_assets(wire, destination, reuse_snapshot=True)
+    return wire
+
+
+def public_goal_execution(value):
+    redactions = []
+    def visit(item, location):
+        if isinstance(item, str):
+            public = re.sub(r"/Users/[^/\s\"']+", "<private-home>", item)
+            public = public.replace("site-packages/", "<installed-packages>/")
+            if public != item:
+                redactions.append(dict(pointer=location,original_value_sha256=digest(item.encode()),
+                    public_value_sha256=digest(public.encode()),reason="private_local_path"))
+            return public
+        if isinstance(item, list):
+            return [visit(child,location+"/"+str(index)) for index,child in enumerate(item)]
+        if isinstance(item, dict):
+            result = {}
+            for key,child in item.items():
+                public_key = key
+                if "/Users/" in key or "site-packages/" in key:
+                    identity = digest(key.encode())
+                    public_key = "private-path-sha256:"+identity
+                    redactions.append(dict(pointer=location,original_key_sha256=identity,
+                        public_key=public_key,reason="private_local_path_key"))
+                if public_key in result:
+                    raise ValueError("Public goal key collision")
+                result[public_key] = visit(child,location+"/"+public_key.replace("~","~0").replace("/","~1"))
+            return result
+        return item
+    return visit(value,""),dict(private_source_modified=False,
+        status_dates_source_and_evidence_identities_not_refreshed=True,path_redactions=redactions)
 
 
 def verification_rows(value):
@@ -254,6 +329,36 @@ def hardware():
                              "execution": result.get("execution_mode"),
                              "acceptance": analysis.get("hardware_status", "UNVERIFIED"),
                              "note": "Existing receipt; not independent hardware certification or function-level acceptance."})
+    batch_path = ROOT / "studio/downloads/quafu-cases-20261116/hardware-batch-20261119.json"
+    if batch_path.exists():
+        batch = load_json(batch_path)
+        rows = batch["hardware_receipts"]
+        if (batch["target"] != "Baihua" or batch["full_case_set_accepted"] is not False
+                or len(rows) != batch["hardware_results"]
+                or len({row["task_id"] for row in rows}) != len(rows)):
+            raise ValueError("Unreconciled Baihua batch identities")
+        for row in rows:
+            counts = row["counts_raw"]
+            if (row["status"] != "Finished" or row["mode"] != "cloud_hardware"
+                    or sum(counts.values()) != row["shots_returned"]
+                    or row["shots_returned"] <= 0
+                    or row["bit_order"] != "c0_rightmost"
+                    or row["counts_q0_first"] != {key[::-1]:value for key,value in counts.items()}
+                    or digest(row["executed_qasm"].encode()) != row["executed_qasm_sha256"]):
+                raise ValueError("Unreconciled Baihua result")
+            cases = [case for case in batch["cases"] if row["kernel_id"] in case["required_kernel_ids"]]
+            receipts.append(dict(case="; ".join(case["id"] for case in cases),
+                domain=cases[0]["domain"] if cases else None,
+                direction=cases[0]["direction"] if cases else None,
+                directions=sorted({case["direction"] for case in cases}),
+                method="quafu-sdk / provider compiler",task_id=row["task_id"],job_id=row["job_id"],
+                backend=row["backend"],shots=row["shots_returned"],qubits=len(row["measurements"]),
+                count_sum=sum(counts.values()),artifact_hash=row["executed_qasm_sha256"],
+                receipt_hash=digest(json.dumps(row,sort_keys=True).encode()),
+                file=str(batch_path.relative_to(ROOT)),public_receipt="./downloads/quafu-cases-20261116/hardware-batch-20261119.json",
+                execution=row["mode"],observed_at=row["observed_at"],calibration_id=row["calibration_id"],
+                acceptance=batch["business_acceptance"],
+                note="Actual hardware counts; no full domain, Native compiler or per-function acceptance."))
     return receipts
 
 
@@ -411,8 +516,11 @@ def test_context_matches(context, cache=None):
     cache = {} if cache is None else cache
     rows = []
     for name in context["files"]:
+        relative = Path(name)
+        if relative.is_absolute() or ".." in relative.parts or not relative.parts or relative.parts[0] not in {"tests", "scripts"}:
+            return False
         path = (ROOT / name).resolve()
-        if not path.is_relative_to((ROOT / "tests").resolve()) or not path.is_file():
+        if not path.is_relative_to((ROOT / relative.parts[0]).resolve()) or not path.is_file():
             return False
         if name not in cache:
             cache[name] = digest(path.read_bytes())
@@ -476,6 +584,14 @@ def process_terminal_matches(run):
             and type(run.get("exit_code")) is int and process["exit"] in (0, 1)
             and process["exit"] == run["exit_code"] and isinstance(evidence, str)
             and len(evidence) == 64 and all(c in "0123456789abcdef" for c in evidence))
+
+
+def snapshot_history(history, previous):
+    result = list(history)
+    if previous and (not result or result[-1]["generated_at"] != previous["generated_at"]):
+        result.append({"generated_at": previous["generated_at"],
+            "fingerprint": previous["source"]["fingerprint"], "datasets": previous["datasets"]})
+    return result
 
 
 def build(args):
@@ -584,9 +700,8 @@ def build(args):
         if name == "runtime":
             datasets[-1]["browser"] = runtime_browser_assets(rows, DATA)
     history = load_json(DATA / "history.json") if (DATA / "history.json").exists() else []
-    if previous and (not history or history[-1]["generated_at"] != previous["generated_at"]):
-        history.append({"generated_at": previous["generated_at"], "fingerprint": previous["source"]["fingerprint"], "datasets": previous["datasets"]})
-    dump(DATA / "history.json", history[-180:])
+    dump(DATA / "history.json", snapshot_history(history, previous))
+    public_execution, public_execution_projection = public_goal_execution(execution)
     manifest = {"schema": 1, "generated_at": now, "refresh_hours": 12,
                 "deadline": "2027-05-11T23:59:59+08:00", "start": "2026-11-11T00:00:00+08:00",
                 "source": {"head": head, "dirty": dirty, "fingerprint": fingerprint, "python_files": len(hashes), "parse_errors": errors},
@@ -602,14 +717,15 @@ def build(args):
                 "diagnostic_observations": diagnostics,
                 "hardware": hardware(), "acceptance_scope": scope,
                 "core_execution": execution.get("status", "paused_pending_new_goal"),
-                "goal_execution": execution, "publication": "workspace_snapshot_not_a_release",
+                "goal_execution": public_execution,
+                "goal_execution_public_projection": public_execution_projection,
+                "publication": "workspace_snapshot_not_a_release",
                 "status_policy": {"implemented": "Complete reviewed contract, independent Native execution and strict version-matched tests for this source hash.",
                                   "partial": "Explicitly scoped implementation with known functional gaps or strict failures.",
                                   "not_implemented": "Reviewed missing implementation or explicit source stub; not inferred from a name mismatch.",
                                   "unverified": "Unreviewed mapping, absent evidence or stale source/test identity."}}
-    dump(DATA / "manifest.json", manifest)
-    (DATA / "manifest.json.gz").write_bytes(gzip.compress((DATA / "manifest.json").read_bytes(), mtime=0))
-    browser_manifest_assets(manifest, DATA)
+    write_manifest_snapshot(manifest, DATA,
+                            reuse_views=not getattr(args, "fresh_snapshot", False))
     print(json.dumps({"generated_at": now, "datasets": datasets, "hardware_receipts": len(manifest["hardware"]), "historical_test_runs": len(manifest["tests"])}, indent=2))
 
 
@@ -621,6 +737,8 @@ if __name__ == "__main__":
     parser.add_argument("--evidence-dir", type=Path)
     parser.add_argument("--project-verification", type=Path)
     parser.add_argument("--project-browser-manifest", action="store_true")
+    parser.add_argument("--fresh-snapshot", action="store_true",
+                        help="Write a complete lossless snapshot instead of extending byte views; preserve prior archive objects")
     args = parser.parse_args()
     if args.project_verification:
         source = ROOT / "docs/engineering/verification_runs.json"
@@ -629,7 +747,7 @@ if __name__ == "__main__":
         result["public_projection"]["private_ledger_original_sha256"] = digest(_archive.read_bytes(source))
         dump(args.project_verification, result)
     elif args.project_browser_manifest:
-        bootstrap = browser_manifest_assets(load_json(DATA / "manifest.json"), DATA)
+        bootstrap = browser_manifest_assets(load_json(DATA / "manifest.json"), DATA, reuse_snapshot=True)
         print(json.dumps(dict(generated_at=bootstrap["generated_at"], deferred=bootstrap["deferred_evidence"])))
     elif args.enumerate_reference:
         reference(args.profile, args.enumerate_reference)
