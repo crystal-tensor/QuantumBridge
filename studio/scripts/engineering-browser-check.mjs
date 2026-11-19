@@ -1,11 +1,23 @@
 import assert from "node:assert/strict";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
+import { createHash } from "node:crypto";
+import { gunzipSync } from "node:zlib";
 import { createPreviewServer } from "./serve.mjs";
-import { abnormalObservations, currentVerification } from "../src/progress/model.js";
+import { abnormalObservations, currentVerification, originalChildFollowup } from "../src/progress/model.js";
+import { readProgressSnapshot } from "./read-progress-snapshot.mjs";
 
-const snapshot=JSON.parse(await readFile(new URL("../src/progress/data/manifest.json",import.meta.url),"utf8"));
+const snapshot=await readProgressSnapshot(new URL("../src/progress/data/manifest.json",import.meta.url));
+const evidenceWire=JSON.parse(gunzipSync(await readFile(new URL("../src/progress/data/manifest-evidence.json.gz",import.meta.url))));
+const evidenceUsesSnapshot=evidenceWire.schema===2&&evidenceWire.encoding==="deferred-manifest-snapshot-v2";
+const manifestBody=await readFile(new URL("../src/progress/data/manifest.json",import.meta.url));
+const manifestIndex=JSON.parse(manifestBody);
+const snapshotSha=manifestIndex.public_snapshot_format ? manifestIndex.sha256 : createHash("sha256").update(manifestBody).digest("hex");
 const core=currentVerification(snapshot);
+const childFollowup=originalChildFollowup(snapshot);
+const childFollowupBatch=snapshot.goal_execution?.original_child_followup_validation;
+if(childFollowupBatch?.source_fingerprint===snapshot.source?.fingerprint)assert.ok(childFollowup);
+else assert.equal(childFollowup,null);
 const expectedMigrations=new Map(snapshot.verification.filter(run=>run.source_match)
   .flatMap(run=>run.approved_test_migrations||[]).map(row=>[row.file+":"+row.after_sha256,row]));
 
@@ -85,7 +97,7 @@ try{
     await collectionSection.getByRole("heading",{name:"测试收集：不是测试通过",exact:true}).waitFor();
     timings.completeEvidenceMs=Date.now()-started;
     assert.ok(requests.some(url=>url.endsWith("/manifest-evidence.json.gz")));
-    assert.equal(requests.some(url=>url.endsWith("/manifest.json.gz")),false);
+    assert.equal(requests.some(url=>url.endsWith("/manifest.json.gz")),evidenceUsesSnapshot);
     assert.equal(await collectionSection.locator("tbody tr").count(),2);
     assert.ok((await collectionSection.innerText()).includes("35,955"));
     assert.ok((await collectionSection.innerText()).includes("35,956"));
@@ -99,9 +111,72 @@ try{
     const currentValidation=page.locator("#current-validation");
     assert.ok((await currentValidation.innerText()).includes(snapshot.source.fingerprint));
     assert.ok((await currentValidation.innerText()).includes(core.batch.checkpoint));
-    if(core.reviewMatches) assert.ok((await currentValidation.innerText()).includes(`${core.review.current_selected_unique_failures_each_profile} 项已知严格失败`));
+    if(core.reviewMatches) {
+      for(const [profile,count] of Object.entries(core.reviewCounts)) assert.ok((await currentValidation.innerText()).includes(`${profile}: ${count}`));
+      assert.ok((await currentValidation.innerText()).includes("不是全库失败总数"));
+    }
     else assert.ok((await currentValidation.innerText()).includes("严格失败身份待重新核验"));
     assert.ok((await currentValidation.innerText()).includes("当前冻结源码"));
+    const unadmittedModules=(core.batch.profiles||[]).flatMap(row=>
+      (row.unadmitted_modules||[]).map(name=>({profile:row.profile,name})));
+    const unadmittedSection=currentValidation.locator("#unadmitted-validation");
+    if(unadmittedModules.length){
+      await unadmittedSection.locator("summary").click();
+      assert.equal(await unadmittedSection.locator("li").count(),unadmittedModules.length);
+      for(const item of unadmittedModules){
+        assert.ok((await unadmittedSection.innerText()).includes(item.name));
+        assert.ok((await unadmittedSection.innerText()).includes(item.profile));
+      }
+      assert.ok((await unadmittedSection.innerText()).includes("不计入通过"));
+      assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+      await unadmittedSection.screenshot({path:`${output}/unadmitted-validation-${viewport.width}.png`});
+      await unadmittedSection.locator("summary").click();
+    }else assert.equal(await unadmittedSection.count(),0);
+    const followupSection=currentValidation.locator("#original-child-followup");
+    if(childFollowup){
+      assert.equal(await followupSection.locator("[data-child-proof]").count(),4);
+      for(const row of childFollowup.rows){
+        assert.ok((await followupSection.innerText()).includes(row.profile));
+        assert.ok((await followupSection.innerText()).includes(row.evidence_hash));
+      }
+      assert.ok((await followupSection.innerText()).includes("证据仍拒收"));
+      assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+      await followupSection.screenshot({path:`${output}/original-child-followup-${viewport.width}.png`});
+    }else assert.equal(await followupSection.count(),0);
+    if(core.references.length){
+      const referenceSection=currentValidation.locator("#reference-validation");
+      await referenceSection.getByRole("heading",{name:"独立 SDK 参考配置",exact:true}).waitFor();
+      for(const reference of core.references){
+        assert.equal(reference.matches,true);
+        assert.ok((await referenceSection.innerText()).includes(reference.profile));
+        assert.ok((await referenceSection.innerText()).includes(`${reference.counts.failed} FAIL`));
+        assert.ok((await referenceSection.innerText()).includes(`${reference.counts.skipped} SKIP`));
+      }
+      assert.ok((await referenceSection.innerText()).includes("不豁免"));
+      await referenceSection.screenshot({path:`${output}/reference-groups-${viewport.width}.png`});
+      assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+    }
+    const textOverflow = await currentValidation.locator(":scope > .table-wrap > table").evaluate(table => {
+      const violations = [];
+      for (const cell of table.querySelectorAll("th, td")) {
+        const bounds = cell.getBoundingClientRect();
+        const walker = document.createTreeWalker(cell, NodeFilter.SHOW_TEXT);
+        while (walker.nextNode()) {
+          if (!walker.currentNode.textContent.trim()) continue;
+          const range = document.createRange();
+          range.selectNodeContents(walker.currentNode);
+          for (const rect of range.getClientRects()) {
+            if (rect.left < bounds.left - 1 || rect.right > bounds.right + 1 ||
+                rect.top < bounds.top - 1 || rect.bottom > bounds.bottom + 1) {
+              violations.push(walker.currentNode.textContent);
+              break;
+            }
+          }
+        }
+      }
+      return violations;
+    });
+    assert.deepEqual(textOverflow, [], "Verification text must stay inside its own table cell");
     await currentValidation.locator("#historical-validation summary").click();
     assert.ok((await currentValidation.locator("#historical-validation").innerText()).includes("85fe4e23"));
     await currentValidation.locator("#historical-ci summary").click();
@@ -131,7 +206,17 @@ try{
       if(row.crash_report_sha256) assert.ok((await processSection.innerText()).includes(row.crash_report_sha256));
     }
     assert.equal((await processSection.innerText()).includes("undefined"),false);
-    await processSection.screenshot({path:`${output}/abnormal-long-hashes-${viewport.width}.png`});
+    // Capture receipts in bounded viewports rather than resizing a long page.
+    const processDetails=await processSection.locator("details").all();
+    for(const [index,detail] of processDetails.entries()){
+      const geometry=await detail.evaluate(element=>({top:element.getBoundingClientRect().top+scrollY,
+        height:element.getBoundingClientRect().height}));
+      for(let offset=0;offset<geometry.height;offset+=viewport.height){
+        await page.evaluate(top=>window.scrollTo({top,behavior:"instant"}),geometry.top+offset);
+        assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+        await page.screenshot({path:`${output}/abnormal-long-hashes-${viewport.width}-${index}-${offset}.png`,fullPage:false});
+      }
+    }
     await processSection.locator("details").last().locator("summary").scrollIntoViewIfNeeded();
     assert.equal(await skip.evaluate(element=>element===document.activeElement),false);
     await page.screenshot({path:`${output}/abnormal-viewport-${viewport.width}.png`,fullPage:false});
@@ -156,6 +241,17 @@ try{
     await page.screenshot({path:`${output}/arrow-dependency-review-${viewport.width}.png`,fullPage:false});
     await diagnostics.locator("details").first().locator("summary").click();
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+    for(const observation of snapshot.diagnostic_observations.filter(row=>row.kind==="tf_atomic_account_candidate_review")){
+      const detail=page.locator(`#diag-${observation.id}`);
+      await detail.locator("summary").click();
+      assert.ok((await detail.innerText()).includes(observation.evidence_hash));
+      assert.ok((await detail.innerText()).includes("REJECTED_ATOMIC_ACCOUNT_CANDIDATE_NOT_A_REPAIR"));
+      assert.ok((await detail.innerText()).includes("test_private_point_order_limit_is_a_real_refusal[2]"));
+      assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+      await detail.locator("summary").scrollIntoViewIfNeeded();
+      await page.screenshot({path:`${output}/atomic-candidate-${observation.profile}-${viewport.width}.png`,fullPage:false});
+      await detail.locator("summary").click();
+    }
     const migrationSection=page.locator("section.band").filter({has:page.getByRole("heading",{name:"经 owner 明确批准的合同迁移",exact:true})});
     assert.equal(await migrationSection.locator("details").count(),expectedMigrations.size);
     for(const summary of await migrationSection.locator("details summary").all()) await summary.click();
@@ -166,14 +262,29 @@ try{
     await page.screenshot({path:`${output}/approved-migrations-${viewport.width}.png`,fullPage:false});
     await page.locator("#view details summary").first().click();
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
-    await page.locator("#view details:has(> summary > code):has(> summary > .failure)").first().locator("summary").click();
+    const failureBacklog=page.locator("section.band").filter({has:page.getByRole("heading",{name:/^逐项严格失败台账/})});
+    const currentFailureIds=[...new Set(Object.values(core.failures).flat())];
+    assert.ok(currentFailureIds.length>0);
+    for(const id of currentFailureIds){
+      const summary=failureBacklog.locator("summary").filter({has:page.getByText(id,{exact:true})});
+      assert.equal(await summary.count(),1);
+      assert.ok((await summary.innerText()).includes("当前批次失败"));
+    }
+    const failureSummary=failureBacklog.locator("summary").filter({has:page.getByText(currentFailureIds[0],{exact:true})});
+    await failureSummary.click();
     const diagnosedFailure=page.locator("#view details").filter({has:page.locator("h3",{hasText:/诊断记录|历史诊断（未按当前源码复核）/})}).first();
     if(await diagnosedFailure.getAttribute("open")===null) await diagnosedFailure.locator("summary").first().click();
     await page.getByRole("heading",{name:/诊断记录|历史诊断（未按当前源码复核）/}).first().waitFor();
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
     await page.getByRole("button",{name:"六个月验收计划",exact:true}).click();
     assert.equal(await page.locator(".timeline li").count(),6);
-    assert.ok((await page.getByRole("link",{name:/完整验证快照/}).getAttribute("href")).endsWith("manifest.json"));
+    assert.ok((await page.getByRole("link",{name:/完整验证快照/}).getAttribute("href")).endsWith("manifest.json.gz"));
+    const snapshotDownload=page.waitForEvent("download");
+    await page.getByRole("link",{name:/完整验证快照/}).click();
+    const downloadedSnapshot=await snapshotDownload;
+    assert.equal(downloadedSnapshot.suggestedFilename(),"manifest.json.gz");
+    const downloadedBytes=await readFile(await downloadedSnapshot.path());
+    assert.equal(createHash("sha256").update(gunzipSync(downloadedBytes)).digest("hex"),snapshotSha);
     assert.ok((await page.getByRole("link",{name:/完整导出与继承清单/}).getAttribute("href")).endsWith("runtime.json.gz"));
     const runtimeSection=page.locator("section.band").filter({has:page.getByRole("heading",{name:"公共导出与继承清点",exact:true})});
     assert.equal(await runtimeSection.locator("details").count(),2);
