@@ -53,12 +53,130 @@
       {
         "name": "cirq_risk",
         "kernel_id": "4bb0e58cb81a6b8ef527d2651f912b5311739cc6b2db53dbc47ae465003da330",
-        "postprocessing": null
+        "postprocessing": null,
+        "receipt": {
+          "schema": "qb-quafu-sdk-receipt-v1",
+          "observed_at": "2026-11-19T04:14:55.590749+00:00",
+          "sdk": {
+            "distribution": "quafu-sdk",
+            "version": "0.2.7",
+            "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+            "python": "3.12.6"
+          },
+          "mode": "cloud_hardware",
+          "target": "Baihua",
+          "backend": "Baihua",
+          "job_id": "uc4e9da3f-261119-121233",
+          "task_id": "uc4e9da3f-261119-121233-0",
+          "status": "Finished",
+          "submitted_qasm_sha256": "4bb0e58cb81a6b8ef527d2651f912b5311739cc6b2db53dbc47ae465003da330",
+          "executed_qasm": "// q[0] -> Q126\n// q[1] -> Q127\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[128];\ncreg c[2];\nry(0.927295217998902) q[126];\ncz q[126],q[127];\nry(3.141592653589793) q[126];\nry(0.06960100035098556) q[127];\ncz q[126],q[127];\nrz(-0.5235987757030172) q[126];\nry(3.141592653589793) q[126];\nry(-1.1167985517570225) q[127];\nbarrier q[126],q[127];\nmeasure q[126] -> c[0];\nmeasure q[127] -> c[1];",
+          "executed_qasm_sha256": "02a83c136c3ce7a723d6b6ca23292806d602afc0ade41de89909a001da62ede2",
+          "compiler": {
+            "name": "qiskit",
+            "optimization_level": 2,
+            "seed": null,
+            "version": "2.5.2"
+          },
+          "calibration_id": "9652d6d727726984",
+          "measurements": [
+            {
+              "cbit": 0,
+              "physical_qubit": 126,
+              "virtual_qubit": 0
+            },
+            {
+              "cbit": 1,
+              "physical_qubit": 127,
+              "virtual_qubit": 1
+            }
+          ],
+          "bit_order": "c0_rightmost",
+          "counts_raw": {
+            "01": 155,
+            "00": 583,
+            "10": 244,
+            "11": 42
+          },
+          "counts_q0_first": {
+            "10": 155,
+            "00": 583,
+            "01": 244,
+            "11": 42
+          },
+          "shots_requested": 1024,
+          "shots_returned": 1024,
+          "shot_shortfall": false,
+          "probabilities_q0_first": {
+            "10": 0.1513671875,
+            "00": 0.5693359375,
+            "01": 0.23828125,
+            "11": 0.041015625
+          },
+          "raw_payload_sha256": "40a668a6acd152871e12f50e88ffec95dbe7eb6b77d94852dfb0aab870191199",
+          "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+        },
+        "job_id": "uc4e9da3f-261119-121233",
+        "state": "verified_result"
       }
     ],
-    "update_status": "NOT_SUBMITTED_NEW_SDK_CREDENTIALS_REQUIRED"
+    "update_status": "VERIFIED_PROVIDER_RESULTS",
+    "hardware_analysis": {
+      "business": {
+        "CVaR_expected_shortfall": 6.1875,
+        "VaR": 4.0,
+        "acceptance": "NOT_ACCEPTED_NO_PREREGISTERED_HARDWARE_THRESHOLD",
+        "confidence": 0.85,
+        "expected_loss": 1.3359375,
+        "scope": "Frozen four-state teaching loss distribution, not a bank risk system"
+      },
+      "experiments": {
+        "cirq_risk": {
+          "maximum_probability_difference": 0.019335937428333283,
+          "shots_returned": 1024,
+          "total_variation_from_frozen_ideal": 0.020703124947288147
+        }
+      }
+    },
+    "physical_compilation_audit": {
+      "cirq_risk": {
+        "native_basis_checked": true,
+        "physical_couplings_checked": true,
+        "executed_measurements_match_receipt": true,
+        "native_gates": [
+          "cz",
+          "ry",
+          "rz"
+        ],
+        "barriers_not_counted_as_native_gates": 1,
+        "declared_physical_width": 128,
+        "active_physical_wires": [
+          126,
+          127
+        ],
+        "dependency_depth_including_terminal_measurement": 7,
+        "depth_method": "Native parsed gate DAG; not pulse duration or routing performance acceptance",
+        "calibration_id": "9652d6d727726984",
+        "calibration_time": "2026-11-19T10:09:19+08:00",
+        "compiler": {
+          "name": "qiskit",
+          "optimization_level": 2,
+          "seed": null,
+          "version": "2.5.2"
+        },
+        "native_compiler_acceptance": false,
+        "independent_terminal_distribution": {
+          "terminal_distribution_preserved": true,
+          "maximum_probability_error": 4.107825191113079e-15,
+          "total_variation_from_frozen_ideal": 4.937023012629993e-15,
+          "absolute_tolerance": 3e-12,
+          "physical_active_qubits": 2,
+          "scope": "Fresh local Native replay of returned physical circuit; not another hardware task, full matrix or coherent-control acceptance"
+        }
+      }
+    }
   },
-  "updated_at": "2026-11-16T07:11:01.697257+00:00",
+  "updated_at": "2026-11-19T04:45:49.315378+00:00",
   "local_source": {
     "kind": "Python source files only",
     "files": 777,
@@ -66,7 +184,67 @@
     "files_manifest": "source-files.json"
   },
   "local_verification_at": "2026-11-16T07:11:01.697257+00:00",
-  "backend_snapshot_sha256": "70b47bdc0d5ef6013b1ccbe3d1dc22b312d56f8508c6689ce012ad7c96a8d085",
+  "backend_snapshot_sha256": "e794770a69bda69b30b40705f12b627c07429db161243ae2032ca600f4364c14",
+  "actual_submitted_plan_sha256": "a278d140810828863d14777a75d803f998a8769b773084c1445f455eaddc23da",
+  "actual_submitted_plan_journal_digest": "f68fd1c3502c4cf3c4330c75a8b1d71010d3632547207d73bb40f795c7d70e84",
+  "receipt_identity": "4b8065600f157dcf6e6b7e40867386fa04ed7d97967694000ec2f16108e31bc8",
+  "hardware_analysis": {
+    "business": {
+      "CVaR_expected_shortfall": 6.1875,
+      "VaR": 4.0,
+      "acceptance": "NOT_ACCEPTED_NO_PREREGISTERED_HARDWARE_THRESHOLD",
+      "confidence": 0.85,
+      "expected_loss": 1.3359375,
+      "scope": "Frozen four-state teaching loss distribution, not a bank risk system"
+    },
+    "experiments": {
+      "cirq_risk": {
+        "maximum_probability_difference": 0.019335937428333283,
+        "shots_returned": 1024,
+        "total_variation_from_frozen_ideal": 0.020703124947288147
+      }
+    }
+  },
+  "physical_compilation_audit": {
+    "cirq_risk": {
+      "native_basis_checked": true,
+      "physical_couplings_checked": true,
+      "executed_measurements_match_receipt": true,
+      "native_gates": [
+        "cz",
+        "ry",
+        "rz"
+      ],
+      "barriers_not_counted_as_native_gates": 1,
+      "declared_physical_width": 128,
+      "active_physical_wires": [
+        126,
+        127
+      ],
+      "dependency_depth_including_terminal_measurement": 7,
+      "depth_method": "Native parsed gate DAG; not pulse duration or routing performance acceptance",
+      "calibration_id": "9652d6d727726984",
+      "calibration_time": "2026-11-19T10:09:19+08:00",
+      "compiler": {
+        "name": "qiskit",
+        "optimization_level": 2,
+        "seed": null,
+        "version": "2.5.2"
+      },
+      "native_compiler_acceptance": false,
+      "independent_terminal_distribution": {
+        "terminal_distribution_preserved": true,
+        "maximum_probability_error": 4.107825191113079e-15,
+        "total_variation_from_frozen_ideal": 4.937023012629993e-15,
+        "absolute_tolerance": 3e-12,
+        "physical_active_qubits": 2,
+        "scope": "Fresh local Native replay of returned physical circuit; not another hardware task, full matrix or coherent-control acceptance"
+      }
+    }
+  },
+  "report_source_sha256": "1ffef7716d59fc260ea19905a65b88925fb0508d8647fd7d6d0923d1630f8eb2",
+  "new_cloud_tasks": 0,
+  "backend_snapshot_file": "backend-baihua-20261119.json",
   "experiments": [
     {
       "name": "cirq_risk",
@@ -120,7 +298,68 @@
         "q(0)",
         "q(1)"
       ],
-      "receipt": null
+      "receipt": {
+        "schema": "qb-quafu-sdk-receipt-v1",
+        "observed_at": "2026-11-19T04:14:55.590749+00:00",
+        "sdk": {
+          "distribution": "quafu-sdk",
+          "version": "0.2.7",
+          "entry_sha256": "254054c2717c392687f9f635a1b66742da0ab4ecefdc6880e3f78db5da14ed35",
+          "python": "3.12.6"
+        },
+        "mode": "cloud_hardware",
+        "target": "Baihua",
+        "backend": "Baihua",
+        "job_id": "uc4e9da3f-261119-121233",
+        "task_id": "uc4e9da3f-261119-121233-0",
+        "status": "Finished",
+        "submitted_qasm_sha256": "4bb0e58cb81a6b8ef527d2651f912b5311739cc6b2db53dbc47ae465003da330",
+        "executed_qasm": "// q[0] -> Q126\n// q[1] -> Q127\nOPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[128];\ncreg c[2];\nry(0.927295217998902) q[126];\ncz q[126],q[127];\nry(3.141592653589793) q[126];\nry(0.06960100035098556) q[127];\ncz q[126],q[127];\nrz(-0.5235987757030172) q[126];\nry(3.141592653589793) q[126];\nry(-1.1167985517570225) q[127];\nbarrier q[126],q[127];\nmeasure q[126] -> c[0];\nmeasure q[127] -> c[1];",
+        "executed_qasm_sha256": "02a83c136c3ce7a723d6b6ca23292806d602afc0ade41de89909a001da62ede2",
+        "compiler": {
+          "name": "qiskit",
+          "optimization_level": 2,
+          "seed": null,
+          "version": "2.5.2"
+        },
+        "calibration_id": "9652d6d727726984",
+        "measurements": [
+          {
+            "cbit": 0,
+            "physical_qubit": 126,
+            "virtual_qubit": 0
+          },
+          {
+            "cbit": 1,
+            "physical_qubit": 127,
+            "virtual_qubit": 1
+          }
+        ],
+        "bit_order": "c0_rightmost",
+        "counts_raw": {
+          "01": 155,
+          "00": 583,
+          "10": 244,
+          "11": 42
+        },
+        "counts_q0_first": {
+          "10": 155,
+          "00": 583,
+          "01": 244,
+          "11": 42
+        },
+        "shots_requested": 1024,
+        "shots_returned": 1024,
+        "shot_shortfall": false,
+        "probabilities_q0_first": {
+          "10": 0.1513671875,
+          "00": 0.5693359375,
+          "01": 0.23828125,
+          "11": 0.041015625
+        },
+        "raw_payload_sha256": "40a668a6acd152871e12f50e88ffec95dbe7eb6b77d94852dfb0aab870191199",
+        "reproducibility": "Frozen inputs and receipts; hardware noise is not a deterministic seed"
+      }
     }
   ]
 }

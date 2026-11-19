@@ -1,9 +1,9 @@
 ﻿实验,q0-first,预期 provider c0-rightmost,本地 counts,本地 P,理想 P,新云 counts
-risk_neutral_paths,000,000,127,0.124023,0.114376,—
-risk_neutral_paths,001,100,138,0.134766,0.12125,—
-risk_neutral_paths,010,010,113,0.110352,0.12125,—
-risk_neutral_paths,011,110,142,0.138672,0.128537,—
-risk_neutral_paths,100,001,109,0.106445,0.12125,—
-risk_neutral_paths,101,101,137,0.133789,0.128537,—
-risk_neutral_paths,110,011,126,0.123047,0.128537,—
-risk_neutral_paths,111,111,132,0.128906,0.136262,—
+risk_neutral_paths,000,000,127,0.124023,0.114376,140
+risk_neutral_paths,001,100,138,0.134766,0.12125,138
+risk_neutral_paths,010,010,113,0.110352,0.12125,131
+risk_neutral_paths,011,110,142,0.138672,0.128537,133
+risk_neutral_paths,100,001,109,0.106445,0.12125,111
+risk_neutral_paths,101,101,137,0.133789,0.128537,125
+risk_neutral_paths,110,011,126,0.123047,0.128537,120
+risk_neutral_paths,111,111,132,0.128906,0.136262,126
