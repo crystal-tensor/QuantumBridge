@@ -1149,7 +1149,9 @@ test("executable function packets keep exact evidence separate from complete con
     assert.equal(Object.keys(packet.axes).length,14);
     assert.ok(Object.values(packet.axes).every(axis=>axis.state==="unverified"));
     assert.deepEqual(packet.missing_executable_axes,["broadcasting","serialization","derivatives","sdk_free_installation","composition"]);
-    const native=await readFile(new URL("../../"+packet.native.file,import.meta.url));
+    // This packet belongs to the frozen historical report, not today's Native ABI.
+    assert.equal(packet.native.file,"quantumbridge/information/qiskit_metrics.py");
+    const native=await readFile(new URL("./fixtures/historical-packet-qiskit-metrics.py",import.meta.url));
     assert.equal(packet.native.file_sha256,createHash("sha256").update(native).digest("hex"));
     assert.equal(packet.references.length,2);
     assert.ok(packet.references.every(row=>!row.contexts_merged&&!row.runtime_execution_verified));
