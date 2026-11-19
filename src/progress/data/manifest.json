@@ -1,13 +1,1 @@
-{
-  "public_snapshot_format": "quantumbridge.public-snapshot-gzip.v1",
-  "encoding": "gzip",
-  "file": "manifest-407a8d7cd842fb3a93b5c9e97b507815643125dfdd959ae1169bd4f9e8356714.json.gz",
-  "bytes": 219744233,
-  "sha256": "b360142c7fe251daf44d2f7481a4afe8823ca3af10e98d92832ff7ac8a2eac9f",
-  "compressed_bytes": 14586627,
-  "compressed_sha256": "407a8d7cd842fb3a93b5c9e97b507815643125dfdd959ae1169bd4f9e8356714",
-  "snapshot_identity": {
-    "generated_at": "2026-11-19T08:02:16.205885+00:00",
-    "source_fingerprint": "d205b48e65fa275a8eff90f31bd82c0832eb4038a14770f8934e77833a696bd3"
-  }
-}
+{"public_snapshot_format":"quantumbridge.public-snapshot-index-gzip.v3","encoding":"gzip-index","file":"manifest-index-0970a662cc252828a82ac89027f2e99e63e80f573a831b4a83eb47cf30d4d025.json.gz","index_bytes":2797068,"index_sha256":"a4213aa0f46c6aa96815180a0d3d6d8611cc46357027019f5243aca5d703a6ee","index_compressed_bytes":694544,"index_compressed_sha256":"0970a662cc252828a82ac89027f2e99e63e80f573a831b4a83eb47cf30d4d025","bytes":221502312,"sha256":"bad99fccc34e1253bbd447bacfb5e28a1c9aab05cf2de2ca98426622acbef982","snapshot_identity":{"generated_at":"2026-11-19T11:17:47.671038+00:00","source_fingerprint":"932c488bb8de7db425d2dd7186bfc05708900b8969bbd88735962a29d23f9a32"},"download":{"file":"manifest.json.gz","bytes":14656038,"sha256":"5c3f10f2623bcd54c6fb2abaf26dc6d07db2f3fb2b5c5ff66c3f81a2ef0b76cb"}}
