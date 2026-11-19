@@ -65,10 +65,15 @@ export const documentationResources = [
 ];
 
 // The owner wants a subtle entrance; keep it registered in every relevant domain.
+export const engineeringReviewDownload = {
+  kind: "review", href: "/downloads/quantumbridge-first-week-review.json.gz",
+  title: bi("首周审查 · 初步记录", "Week-one review · Preliminary"),
+};
 export const engineeringResources = domains.map(domain => ({
   domain: domain.id, kind: "engineering", subtle: true,
   href: `/engineering.html?domain=${domain.id}`,
   title: bi("工程进展", "Engineering progress"),
+  reviewDownload: engineeringReviewDownload,
 }));
 
 export const resourceHref = (resource, notebook = false) => resource.href ?
