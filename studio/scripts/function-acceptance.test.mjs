@@ -68,3 +68,34 @@ test("the first batch has twenty distinct canonical contracts, not aliases or se
     }
   }
 });
+
+test("predicate ownership revalidation retains old evidence without adding duplicate functions",()=>{
+  const batch=JSON.parse(fs.readFileSync(new URL("../../docs/engineering/first_thirty_function_batch.json",import.meta.url)));
+  const current=batch.resource_ownership_revalidation;
+  assert.equal(current.validation_key,"matrix_predicate_owner_revalidation");
+  assert.equal(current.source_fingerprint,batch.source_fingerprint);
+  assert.equal(current.full_function_acceptances_added,0);
+  assert.equal(current.distinct_functions_revalidated,20);
+  const prior=batch.revalidation_history.at(-1);
+  assert.equal(prior.source_fingerprint,current.parent_source_fingerprint);
+  assert.equal(prior.function_evidence.length,20);
+  assert.notEqual(prior.source_fingerprint,batch.source_fingerprint);
+  assert.equal(current.prerepair_replay.identical_before_after_test_bytes,true);
+  assert.equal(current.prerepair_replay.not_backdated,true);
+  for(const row of current.prerepair_replay.results){
+    assert.deepEqual([row.total,row.passed,row.failed,row.skipped],[9,0,9,0]);
+    assert.equal(row.process_terminal_validation.exit,1);
+    assert.equal(row.source_fingerprint,prior.source_fingerprint);
+  }
+  for(const row of batch.functions.filter(row=>row.family==="predicates")){
+    assert.equal(row.contract.ownership.test_files["tests/information/test_matrix_predicate_workspace_owners.py"],current.prerepair_replay.test_sha256);
+  }
+  assert.equal(current.rejected_private_candidate.native_accepted,false);
+  assert.equal(current.rejected_private_candidate.production_patch_promoted,false);
+  assert.equal(current.rejected_private_candidate.observed_pytest_summary.failed,1);
+  for(const profile of current.profiles){
+    assert.equal(profile.information_function_scope.failed,0);
+    assert.equal(profile.information_function_scope.total,896);
+    assert.equal(profile.native_strict_failures,5);
+  }
+});
