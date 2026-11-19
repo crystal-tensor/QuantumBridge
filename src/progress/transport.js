@@ -61,6 +61,21 @@ function byteLength(value) {
   return /^\d+$/.test(value || "") && Number.isSafeInteger(Number(value)) && Number(value) > 0 ? Number(value) : null;
 }
 
+async function transferBytes(fetcher, target, options, validate) {
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const signal = options.signal ? AbortSignal.any([options.signal, AbortSignal.timeout(20000)]) : AbortSignal.timeout(20000);
+    try {
+      const response = await fetcher(target, { ...options, signal });
+      validate(response);
+      return new Uint8Array(await response.arrayBuffer());
+    } catch (error) {
+      const networkFailure = error instanceof TypeError || ["TimeoutError", "AbortError"].includes(error.name);
+      if (options.signal?.aborted || !networkFailure || attempt === 2) throw error;
+      await new Promise(resolve => setTimeout(resolve, 250 * (attempt + 1)));
+    }
+  }
+}
+
 export async function verifiedBytes(url, descriptor, { fetcher = globalThis.fetch, chunkBytes = CHUNK_BYTES, concurrency = CONCURRENCY } = {}) {
   if (!/^[0-9a-f]{64}$/.test(descriptor.sha256 || "")) throw new Error("Missing artifact SHA-256");
   if (!Number.isSafeInteger(chunkBytes) || chunkBytes < 1 || !Number.isSafeInteger(concurrency) || concurrency < 1 || concurrency > CONCURRENCY) throw new Error("Invalid transfer bounds");
@@ -71,7 +86,7 @@ export async function verifiedBytes(url, descriptor, { fetcher = globalThis.fetc
   if (size !== null && (!Number.isSafeInteger(size) || size < 1)) throw new Error("Invalid artifact size");
   let ranged = false;
   try {
-    const head = await fetcher(target, { ...options, method: "HEAD" });
+    const head = await fetcher(target, { ...options, method: "HEAD", signal: AbortSignal.timeout(20000) });
     if (head.ok && (!head.headers.get("content-encoding") || head.headers.get("content-encoding").toLowerCase() === "identity")) {
       const observed = byteLength(head.headers.get("content-length"));
       if (size !== null && observed !== null && size !== observed) throw new Error("Artifact size mismatch");
@@ -89,9 +104,9 @@ export async function verifiedBytes(url, descriptor, { fetcher = globalThis.fetc
     async function worker() {
       while (cursor < chunks.length) {
         const index = cursor++, start = index * chunkBytes, end = Math.min(size - 1, start + chunkBytes - 1);
-        const response = await fetcher(target, { ...options, signal: controller.signal, headers: { Range: `bytes=${start}-${end}` } });
-        if (response.status !== 206 || response.headers.get("content-range") !== `bytes ${start}-${end}/${size}`) throw new Error("Invalid artifact range response");
-        const chunk = new Uint8Array(await response.arrayBuffer());
+        const chunk = await transferBytes(fetcher, target, { ...options, signal: controller.signal, headers: { Range: `bytes=${start}-${end}` } }, response => {
+          if (response.status !== 206 || response.headers.get("content-range") !== `bytes ${start}-${end}/${size}`) throw new Error("Invalid artifact range response");
+        });
         if (chunk.byteLength !== end - start + 1) throw new Error("Incomplete artifact range");
         chunks[index] = chunk;
       }
@@ -102,9 +117,9 @@ export async function verifiedBytes(url, descriptor, { fetcher = globalThis.fetc
     bytes = new Uint8Array(size);
     chunks.forEach((chunk, index) => bytes.set(chunk, index * chunkBytes));
   } else {
-    const response = await fetcher(target, options);
-    if (!response.ok) throw new Error(`Artifact HTTP ${response.status}`);
-    bytes = new Uint8Array(await response.arrayBuffer());
+    bytes = await transferBytes(fetcher, target, options, response => {
+      if (!response.ok) throw new Error(`Artifact HTTP ${response.status}`);
+    });
     if (size !== null && bytes.byteLength !== size) throw new Error("Artifact size mismatch");
   }
   const hash = await digest(bytes);
