@@ -1,0 +1,18 @@
+{
+  "format": "quantumbridge.public-review-download.v1",
+  "original": {
+    "file": "quantumbridge-first-week-review.json",
+    "bytes": 69157782,
+    "sha256": "aa10a16a101e89b3217997d3e30f51f985d3453d3d1f83dd62f16a42bfcebe35"
+  },
+  "transport": {
+    "file": "quantumbridge-first-week-review.json.gz",
+    "bytes": 6092759,
+    "sha256": "e810ea446039fe0f8a5f6c8bb0886e6ce222100b3624282afcb96f2d2a00dbd9",
+    "encoding": "gzip"
+  },
+  "exact_original_bytes_verified": true,
+  "original_preserved_locally": true,
+  "replay_is_not_new_verification": true,
+  "new_function_acceptances": 0
+}

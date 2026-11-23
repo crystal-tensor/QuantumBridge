@@ -1,0 +1,1064 @@
+{
+  "format": "quantumbridge.engineering-history.v1",
+  "purpose": "TRANSPORT_REPLAY_NOT_NEW_VERIFICATION",
+  "packed_at": "2026-11-22T09:38:59.835348+00:00",
+  "original_evidence_unchanged": true,
+  "new_function_acceptances": 0,
+  "zlib_runtime": "1.2.12",
+  "entries": [
+    {
+      "file": "manifest-05614218eacfed4f451f920f523fb16726bf843e49a33e600d31f0f4b99a50ff.json.gz",
+      "bytes": 32697384,
+      "sha256": "05614218eacfed4f451f920f523fb16726bf843e49a33e600d31f0f4b99a50ff",
+      "raw_bytes": 281763749,
+      "raw_sha256": "31253726ed7b2c5b00a78f40072586659e44c99be0065344478fcd4201f703d1",
+      "snapshot_identity": {
+        "generated_at": "2026-11-17T05:17:34.462832+00:00",
+        "source_fingerprint": "20f14692052afb89a2f84b45486e9ad6f9ba22756bf837a492e5eaf5d0e2cba7"
+      },
+      "recipe": {
+        "file": "recipe-7b0258eee8473c77dc68e5ef725dc347845018475819c8e4e437358c94ed2fde.json.gz",
+        "bytes": 130176,
+        "sha256": "7b0258eee8473c77dc68e5ef725dc347845018475819c8e4e437358c94ed2fde",
+        "encoding": "gzip-json",
+        "original_bytes": 387423,
+        "original_sha256": "55f46589885aa39b1ea91b234fd2572faa1cc95a2e75658ce08d209f51ce6b74",
+        "original_file": "recipe-55f46589885aa39b1ea91b234fd2572faa1cc95a2e75658ce08d209f51ce6b74.json"
+      }
+    },
+    {
+      "file": "manifest-0981974153e39619f1fb277391b706524aa84f82c5e6489c74f7134ec114f757.json.gz",
+      "bytes": 10429002,
+      "sha256": "0981974153e39619f1fb277391b706524aa84f82c5e6489c74f7134ec114f757",
+      "raw_bytes": 140055447,
+      "raw_sha256": "18fe0cd1662fe871d622f92676b8859de2e4215f6f0d44910541c75880c82d9e",
+      "snapshot_identity": {
+        "generated_at": "2026-11-16T12:58:52.928661+00:00",
+        "source_fingerprint": "daf3271d55e38c75cf982ff8369b6d8b020a3c857fe524addd7e29a9eea4003c"
+      },
+      "recipe": {
+        "file": "recipe-e21b778f106e6425b0f14d86f62bd4d9d0fe509c8db9747e05db53e3335eee30.json.gz",
+        "bytes": 31140,
+        "sha256": "e21b778f106e6425b0f14d86f62bd4d9d0fe509c8db9747e05db53e3335eee30",
+        "encoding": "gzip-json",
+        "original_bytes": 90616,
+        "original_sha256": "e1ebca684c48d7ad0d11d0e61e1a40bc4de16247b682ae20ad3bdeb0fb09e0e4",
+        "original_file": "recipe-e1ebca684c48d7ad0d11d0e61e1a40bc4de16247b682ae20ad3bdeb0fb09e0e4.json"
+      }
+    },
+    {
+      "file": "manifest-1003b601cc886908af910e3ec7a0e4cc6015580a70cd7042cb4865c2e4439a68.json.gz",
+      "bytes": 26898565,
+      "sha256": "1003b601cc886908af910e3ec7a0e4cc6015580a70cd7042cb4865c2e4439a68",
+      "raw_bytes": 533632860,
+      "raw_sha256": "ef62c18342d4aa6e65d3817c2edd29bd76b136a689bb07446d5bbcf33de04bde",
+      "snapshot_identity": {
+        "generated_at": "2026-11-20T09:36:20.538734+00:00",
+        "source_fingerprint": "103c1f99c619eeff4d6b0a1bce63da9da78d170643f61a0db2a49791ff78352f"
+      },
+      "recipe": {
+        "file": "recipe-69de84fc98c5182a0750ad91c5c0d57e93699af155f3b18e1fdc38e14c8468c6.json.gz",
+        "bytes": 203710,
+        "sha256": "69de84fc98c5182a0750ad91c5c0d57e93699af155f3b18e1fdc38e14c8468c6",
+        "encoding": "gzip-json",
+        "original_bytes": 606126,
+        "original_sha256": "c8bbbe41beb22a3f3c3e17da2bcd1ebab6a4e265e0446c684ef9851adc541ea3",
+        "original_file": "recipe-c8bbbe41beb22a3f3c3e17da2bcd1ebab6a4e265e0446c684ef9851adc541ea3.json"
+      }
+    },
+    {
+      "file": "manifest-14f215e6fb7746ef6eb4c7de86703997fe14c79d8124d72f594b98c393d3a792.json.gz",
+      "bytes": 27393365,
+      "sha256": "14f215e6fb7746ef6eb4c7de86703997fe14c79d8124d72f594b98c393d3a792",
+      "raw_bytes": 545629004,
+      "raw_sha256": "5c2aae3dea389f2846f63b789c30f7b67c64ddfcdcef73fce2b389b5edc0f589",
+      "snapshot_identity": {
+        "generated_at": "2026-11-20T13:04:48.409126+00:00",
+        "source_fingerprint": "6473daf3ddb42dea0b87a51f43de3481a0770f602037a939e070211c09bbe4b0"
+      },
+      "recipe": {
+        "file": "recipe-54882d06d7548ebc1088bb43d9734cf0fe34e3220f25f7efce08978b27ad26c6.json.gz",
+        "bytes": 205445,
+        "sha256": "54882d06d7548ebc1088bb43d9734cf0fe34e3220f25f7efce08978b27ad26c6",
+        "encoding": "gzip-json",
+        "original_bytes": 610993,
+        "original_sha256": "86b98d2b7ca02b22e998e2f42895b6deac750d47defd6317ed164142e93e9e32",
+        "original_file": "recipe-86b98d2b7ca02b22e998e2f42895b6deac750d47defd6317ed164142e93e9e32.json"
+      }
+    },
+    {
+      "file": "manifest-175e3bfe4bebd41e1f8e2952e34b115ac819cb3287c7e89bf0058f66c8ad831b.json.gz",
+      "bytes": 26058996,
+      "sha256": "175e3bfe4bebd41e1f8e2952e34b115ac819cb3287c7e89bf0058f66c8ad831b",
+      "raw_bytes": 508443531,
+      "raw_sha256": "7276b6c23678075a0db293dc90d8ad504b196de1fe1a0e200ee062877e99907f",
+      "snapshot_identity": {
+        "generated_at": "2026-11-20T06:58:53.167333+00:00",
+        "source_fingerprint": "eb1078b1813ec58b5dbed4ebc7daa3af0508e257d56e311b3598d6fd757af29d"
+      },
+      "recipe": {
+        "file": "recipe-0f3eedc57bfbe2f878e1f48cfdb6c4c980aca83c3f6e4c03dcc5aa477c1ce5d4.json.gz",
+        "bytes": 195723,
+        "sha256": "0f3eedc57bfbe2f878e1f48cfdb6c4c980aca83c3f6e4c03dcc5aa477c1ce5d4",
+        "encoding": "gzip-json",
+        "original_bytes": 583460,
+        "original_sha256": "c3d72250e2014cbc34492042263f36b9f14047093113bc1e3b358f340dd03203",
+        "original_file": "recipe-c3d72250e2014cbc34492042263f36b9f14047093113bc1e3b358f340dd03203.json"
+      }
+    },
+    {
+      "file": "manifest-1b5041753b6b79e0fbc1f706cd6608b988227299e8c9e8030d7a1157aa833710.json.gz",
+      "bytes": 25616520,
+      "sha256": "1b5041753b6b79e0fbc1f706cd6608b988227299e8c9e8030d7a1157aa833710",
+      "raw_bytes": 493588461,
+      "raw_sha256": "1983e75d577d7e031cd2e959372339c28695153fd59d2d1a9d719f4cf5217eda",
+      "snapshot_identity": {
+        "generated_at": "2026-11-20T04:18:54.305793+00:00",
+        "source_fingerprint": "590b7c2b5cf57aebc75f2b45911fc6f3e324a27be91f8314b1e7b12f669bdc41"
+      },
+      "recipe": {
+        "file": "recipe-2ef6f9d2e2e89c2643565d230416d7f0f4242e414b7e303ca97f4b4771ec1a33.json.gz",
+        "bytes": 190106,
+        "sha256": "2ef6f9d2e2e89c2643565d230416d7f0f4242e414b7e303ca97f4b4771ec1a33",
+        "encoding": "gzip-json",
+        "original_bytes": 564797,
+        "original_sha256": "78b8dcb49f1dc4e9d43d644ef155201f2e258ffee8285dfc8bc7f42ff736342e",
+        "original_file": "recipe-78b8dcb49f1dc4e9d43d644ef155201f2e258ffee8285dfc8bc7f42ff736342e.json"
+      }
+    },
+    {
+      "file": "manifest-1d692e5ac290afd1829ddc35c19e9338e556a5131339e584c8c6f20657ed3210.json.gz",
+      "bytes": 5202778,
+      "sha256": "1d692e5ac290afd1829ddc35c19e9338e556a5131339e584c8c6f20657ed3210",
+      "raw_bytes": 86947046,
+      "raw_sha256": "eb1c070b56f8ae8ef7f09ae9b847ae5559d03b02003e8faeefe8cb429bc4115c",
+      "snapshot_identity": {
+        "generated_at": "2026-11-13T12:44:02.818769+00:00",
+        "source_fingerprint": "21ef0d200578eab2fd9eb8be5dc8cbc6a71e782c1ef5e478b5aaa3e67f9e7fe8"
+      },
+      "recipe": {
+        "file": "recipe-76ed9be00fdecd8327f25791314b984bec0f17e4359835f4c852f60ffa8f52a9.json.gz",
+        "bytes": 28044,
+        "sha256": "76ed9be00fdecd8327f25791314b984bec0f17e4359835f4c852f60ffa8f52a9",
+        "encoding": "gzip-json",
+        "original_bytes": 81644,
+        "original_sha256": "6708060668938de90334101641fe74d97cfe3b27cf44a2a84e1d5e063425a901",
+        "original_file": "recipe-6708060668938de90334101641fe74d97cfe3b27cf44a2a84e1d5e063425a901.json"
+      }
+    },
+    {
+      "file": "manifest-216fb59202a8317e647771b15bcab1fdd3606ae0c81d925bee960802b0fcd021.json.gz",
+      "bytes": 24509433,
+      "sha256": "216fb59202a8317e647771b15bcab1fdd3606ae0c81d925bee960802b0fcd021",
+      "raw_bytes": 461420024,
+      "raw_sha256": "a39b3ac9e4fa19e546dfe284618523fc385d6064a610ce7e446e287cf46bfdde",
+      "snapshot_identity": {
+        "generated_at": "2026-11-20T01:55:43.255882+00:00",
+        "source_fingerprint": "f86fbb7962bc658fcc2a69174cc56c4332c05c449bece479a6b6e6e1e746c8a7"
+      },
+      "recipe": {
+        "file": "recipe-a06dc70cb4d89fe1fc555aac7a2cf689f6094c441967490eb59a52f2340158cd.json.gz",
+        "bytes": 168751,
+        "sha256": "a06dc70cb4d89fe1fc555aac7a2cf689f6094c441967490eb59a52f2340158cd",
+        "encoding": "gzip-json",
+        "original_bytes": 500915,
+        "original_sha256": "3e9f6964852c74f2c6a65e44f64c36872ebd9cfe7c3bd86368688f7a6a475d18",
+        "original_file": "recipe-3e9f6964852c74f2c6a65e44f64c36872ebd9cfe7c3bd86368688f7a6a475d18.json"
+      }
+    },
+    {
+      "file": "manifest-38261e23d7e541d2fa8296681d90f87b0d6346e321df887606ea55ae14910b2c.json.gz",
+      "bytes": 14553173,
+      "sha256": "38261e23d7e541d2fa8296681d90f87b0d6346e321df887606ea55ae14910b2c",
+      "raw_bytes": 164632037,
+      "raw_sha256": "bb2a6ee64bb2901f642c05080a6e01ea1af39f55f28970c82ac77b96090f22e8",
+      "snapshot_identity": {
+        "generated_at": "2026-11-16T18:46:01.507661+00:00",
+        "source_fingerprint": "e1d73a6a1e38c38492a73ecea6465313fa814df9120a73b1815657fb3f93e9d3"
+      },
+      "recipe": {
+        "file": "recipe-d53e3c9fed175b0d44a0a320a721d846b3c92ee97596cb13d32fab2d7c1093d0.json.gz",
+        "bytes": 31870,
+        "sha256": "d53e3c9fed175b0d44a0a320a721d846b3c92ee97596cb13d32fab2d7c1093d0",
+        "encoding": "gzip-json",
+        "original_bytes": 92688,
+        "original_sha256": "89b20494dcc28f4b2bfc2763226d6c293f5598e51a0947043213171ae2c5c781",
+        "original_file": "recipe-89b20494dcc28f4b2bfc2763226d6c293f5598e51a0947043213171ae2c5c781.json"
+      }
+    },
+    {
+      "file": "manifest-39e65f2eb8a85f82ad0ee93d659ad675b4aecf383e601ea10a34c63e18d681b8.json.gz",
+      "bytes": 20772395,
+      "sha256": "39e65f2eb8a85f82ad0ee93d659ad675b4aecf383e601ea10a34c63e18d681b8",
+      "raw_bytes": 205170988,
+      "raw_sha256": "66f2d88de74d718ec4e8a8e286f9eee1ce513ff1697dfc193480e5f5e8d2c659",
+      "snapshot_identity": {
+        "generated_at": "2026-11-16T23:08:20.405192+00:00",
+        "source_fingerprint": "e7ddc0feff6c8f44e3aea4ce39b0ef3d03946386ef90a790017f3cca9d518255"
+      },
+      "recipe": {
+        "file": "recipe-d87f5a9f0936a259e0df38c108a44c903ac1c9ba27b49c57c430d8cdcb0df58a.json.gz",
+        "bytes": 63525,
+        "sha256": "d87f5a9f0936a259e0df38c108a44c903ac1c9ba27b49c57c430d8cdcb0df58a",
+        "encoding": "gzip-json",
+        "original_bytes": 186754,
+        "original_sha256": "fc2688c08e88259d30d8466917212f0f7fc1b219a64c48db135893b793cc98af",
+        "original_file": "recipe-fc2688c08e88259d30d8466917212f0f7fc1b219a64c48db135893b793cc98af.json"
+      }
+    },
+    {
+      "file": "manifest-3cbb60840686d97038be291797946da7883827e0108771794b6664866b7e7827.json.gz",
+      "bytes": 24020477,
+      "sha256": "3cbb60840686d97038be291797946da7883827e0108771794b6664866b7e7827",
+      "raw_bytes": 421127140,
+      "raw_sha256": "97bb7a8268044ba745671c4b63aa9949c2bdb57f4f2fc1a498db411851908797",
+      "snapshot_identity": {
+        "generated_at": "2026-11-20T13:04:48.409126+00:00",
+        "source_fingerprint": "6473daf3ddb42dea0b87a51f43de3481a0770f602037a939e070211c09bbe4b0"
+      },
+      "recipe": {
+        "file": "recipe-89b936705915048c17dea066b0f4a2bef1281e8b2a67c952d1b9c2a391247e28.json.gz",
+        "bytes": 179407,
+        "sha256": "89b936705915048c17dea066b0f4a2bef1281e8b2a67c952d1b9c2a391247e28",
+        "encoding": "gzip-json",
+        "original_bytes": 534147,
+        "original_sha256": "b115295373e4a1bfd6165bf873538c755fd85cf0cd61936526bc4dc738ff9450",
+        "original_file": "recipe-b115295373e4a1bfd6165bf873538c755fd85cf0cd61936526bc4dc738ff9450.json"
+      }
+    },
+    {
+      "file": "manifest-3e89671a8053f5ab0f9d331d4751717246512179002b2121148596bcb65d5cbc.json.gz",
+      "bytes": 11148542,
+      "sha256": "3e89671a8053f5ab0f9d331d4751717246512179002b2121148596bcb65d5cbc",
+      "raw_bytes": 165364070,
+      "raw_sha256": "cab0db39cd730af4d56d3fb5d85a843273730e1b367c06ed1312530f7d9adc1e",
+      "snapshot_identity": {
+        "generated_at": "2026-11-18T14:31:53.098018+00:00",
+        "source_fingerprint": "a425a962da0f1e2bc48884f1176bba5a24bc5a9b26302f6cb134d9df93df01f6"
+      },
+      "recipe": {
+        "file": "recipe-6334bebcdd56473e3a32596785bc3e507d5ea79c7c71bca480f16a2842da6d76.json.gz",
+        "bytes": 59587,
+        "sha256": "6334bebcdd56473e3a32596785bc3e507d5ea79c7c71bca480f16a2842da6d76",
+        "encoding": "gzip-json",
+        "original_bytes": 174685,
+        "original_sha256": "d9a9d380a15f532feeec76cb76636711b79cc06450fb75d2a24282aa2cc78164",
+        "original_file": "recipe-d9a9d380a15f532feeec76cb76636711b79cc06450fb75d2a24282aa2cc78164.json"
+      }
+    },
+    {
+      "file": "manifest-407a8d7cd842fb3a93b5c9e97b507815643125dfdd959ae1169bd4f9e8356714.json.gz",
+      "bytes": 14586627,
+      "sha256": "407a8d7cd842fb3a93b5c9e97b507815643125dfdd959ae1169bd4f9e8356714",
+      "raw_bytes": 219744233,
+      "raw_sha256": "b360142c7fe251daf44d2f7481a4afe8823ca3af10e98d92832ff7ac8a2eac9f",
+      "snapshot_identity": {
+        "generated_at": "2026-11-19T08:02:16.205885+00:00",
+        "source_fingerprint": "d205b48e65fa275a8eff90f31bd82c0832eb4038a14770f8934e77833a696bd3"
+      },
+      "recipe": {
+        "file": "recipe-3c5a1564955e8daa3d25295a52ff1824c905c7afb8e4fc34f56d54604a5d42ef.json.gz",
+        "bytes": 83957,
+        "sha256": "3c5a1564955e8daa3d25295a52ff1824c905c7afb8e4fc34f56d54604a5d42ef",
+        "encoding": "gzip-json",
+        "original_bytes": 247180,
+        "original_sha256": "4a79810c6919cbd6371ee6deb8d7cfaa112913f2b40f9a3daa419660051b9f02",
+        "original_file": "recipe-4a79810c6919cbd6371ee6deb8d7cfaa112913f2b40f9a3daa419660051b9f02.json"
+      }
+    },
+    {
+      "file": "manifest-4383a5f93edeb20f12be40ab290f647707a705a35d74c42a4d392d039867a2e7.json.gz",
+      "bytes": 15794632,
+      "sha256": "4383a5f93edeb20f12be40ab290f647707a705a35d74c42a4d392d039867a2e7",
+      "raw_bytes": 172896584,
+      "raw_sha256": "1834c628b305a364e50a385bc8c1435878ec97563d37787cd1774e42fce073a2",
+      "snapshot_identity": {
+        "generated_at": "2026-11-16T20:53:40.087518+00:00",
+        "source_fingerprint": "98bd835e220f9986940dcd850a1e326ec45b3278e54970388e994aad691e6ef5"
+      },
+      "recipe": {
+        "file": "recipe-47b4837a4394acd1760a28ad8a0ec379249651470cdc3f79989dfbf0e0f19197.json.gz",
+        "bytes": 32089,
+        "sha256": "47b4837a4394acd1760a28ad8a0ec379249651470cdc3f79989dfbf0e0f19197",
+        "encoding": "gzip-json",
+        "original_bytes": 93279,
+        "original_sha256": "d4c8a305cb9d1ca5e54a1c650ee5489b3a0ed744413cbfa709c4bf63c7df3da1",
+        "original_file": "recipe-d4c8a305cb9d1ca5e54a1c650ee5489b3a0ed744413cbfa709c4bf63c7df3da1.json"
+      }
+    },
+    {
+      "file": "manifest-496dd4d4db6d1030eaf39fbf5d3a448559f6aeec6e41f5781bcd625a9266675d.json.gz",
+      "bytes": 13419126,
+      "sha256": "496dd4d4db6d1030eaf39fbf5d3a448559f6aeec6e41f5781bcd625a9266675d",
+      "raw_bytes": 157885082,
+      "raw_sha256": "ff127686fcdd3c259de2b9ef1ef2dc18fc9222cfad3d1cefcf1b43a9c4d3a6d9",
+      "snapshot_identity": {
+        "generated_at": "2026-11-16T16:34:43.578289+00:00",
+        "source_fingerprint": "daf3271d55e38c75cf982ff8369b6d8b020a3c857fe524addd7e29a9eea4003c"
+      },
+      "recipe": {
+        "file": "recipe-e28b2b44b0cc80a72d9e5683abf122d9a8347e68452efc0202e2ce92811e86ed.json.gz",
+        "bytes": 31675,
+        "sha256": "e28b2b44b0cc80a72d9e5683abf122d9a8347e68452efc0202e2ce92811e86ed",
+        "encoding": "gzip-json",
+        "original_bytes": 92096,
+        "original_sha256": "c6b6f086885db557c569efaa33b22ea93a47911f4c3f4716dca8003f106ab016",
+        "original_file": "recipe-c6b6f086885db557c569efaa33b22ea93a47911f4c3f4716dca8003f106ab016.json"
+      }
+    },
+    {
+      "file": "manifest-4fb4ee28404bc36b203300419a2256e8c726a49a1f746c66df42be14c22b35ef.json.gz",
+      "bytes": 14393244,
+      "sha256": "4fb4ee28404bc36b203300419a2256e8c726a49a1f746c66df42be14c22b35ef",
+      "raw_bytes": 163627880,
+      "raw_sha256": "97120932a9b5a47d7695164e58e8c04a0a4d17e139923de0f3f46db9e1089c76",
+      "snapshot_identity": {
+        "generated_at": "2026-11-16T18:18:36.479489+00:00",
+        "source_fingerprint": "e1d73a6a1e38c38492a73ecea6465313fa814df9120a73b1815657fb3f93e9d3"
+      },
+      "recipe": {
+        "file": "recipe-b68c74b656d977e932a822591f2b694b9d7e59792eb8c0a1a7b4d3ebfe82b531.json.gz",
+        "bytes": 31862,
+        "sha256": "b68c74b656d977e932a822591f2b694b9d7e59792eb8c0a1a7b4d3ebfe82b531",
+        "encoding": "gzip-json",
+        "original_bytes": 92687,
+        "original_sha256": "e827dab3c51ba194c126eec046c464d78963844bd254ec8c3133d2024f6e841e",
+        "original_file": "recipe-e827dab3c51ba194c126eec046c464d78963844bd254ec8c3133d2024f6e841e.json"
+      }
+    },
+    {
+      "file": "manifest-501559ede551a1fa0a7b13e80436fef5eac025e8be57edaf752e9b3e23e2544a.json.gz",
+      "bytes": 26570631,
+      "sha256": "501559ede551a1fa0a7b13e80436fef5eac025e8be57edaf752e9b3e23e2544a",
+      "raw_bytes": 522170959,
+      "raw_sha256": "890e361c97143aeb35b4acf4e29d75e79638cb80e45539abb3d89434932354f9",
+      "snapshot_identity": {
+        "generated_at": "2026-11-20T09:19:56.912664+00:00",
+        "source_fingerprint": "581fcea28e7bc22cd4a3728c287f8fa2ac6a9bc6714933e631dc7d9b51285a1a"
+      },
+      "recipe": {
+        "file": "recipe-643299a3b25135b2053bf82da003c79cb9cc0765a5d6a8df54523f56351f7424.json.gz",
+        "bytes": 202084,
+        "sha256": "643299a3b25135b2053bf82da003c79cb9cc0765a5d6a8df54523f56351f7424",
+        "encoding": "gzip-json",
+        "original_bytes": 601517,
+        "original_sha256": "b224bd557cad06b74774205718065c57a1d3f460f86cc0154a31f82c29775526",
+        "original_file": "recipe-b224bd557cad06b74774205718065c57a1d3f460f86cc0154a31f82c29775526.json"
+      }
+    },
+    {
+      "file": "manifest-52903f2d8b7b67fe3e14c784dc75eef08d6e8785d5103b0c0ab8209f1aee08d4.json.gz",
+      "bytes": 24559398,
+      "sha256": "52903f2d8b7b67fe3e14c784dc75eef08d6e8785d5103b0c0ab8209f1aee08d4",
+      "raw_bytes": 228838305,
+      "raw_sha256": "d5760cf48167aee1556109212636dd608e98e6f5d302eee32a72d66efd31b915",
+      "snapshot_identity": {
+        "generated_at": "2026-11-17T00:18:23.787238+00:00",
+        "source_fingerprint": "2a4d9a14227c10fc5894e412144a05a8089bb0d40daef56026b8b80195dfd0f8"
+      },
+      "recipe": {
+        "file": "recipe-0e70e38b36859f892a0e9b6e213f2d0b9cd7da2f1390faa745c4065a1f57a8af.json.gz",
+        "bytes": 92795,
+        "sha256": "0e70e38b36859f892a0e9b6e213f2d0b9cd7da2f1390faa745c4065a1f57a8af",
+        "encoding": "gzip-json",
+        "original_bytes": 274308,
+        "original_sha256": "014b444501c90d07c5ff1f8e8f0e5c633b0d4a55e79cd6cb204cd659e79cab65",
+        "original_file": "recipe-014b444501c90d07c5ff1f8e8f0e5c633b0d4a55e79cd6cb204cd659e79cab65.json"
+      }
+    },
+    {
+      "file": "manifest-59232e9e666bfe2ebbc973483714ebb83fdf5c036a90f9ede3546cb1a0657c30.json.gz",
+      "bytes": 14122084,
+      "sha256": "59232e9e666bfe2ebbc973483714ebb83fdf5c036a90f9ede3546cb1a0657c30",
+      "raw_bytes": 161956663,
+      "raw_sha256": "c7ce842d485ac13132d5a3ef983bd310c4c0bdd59491cd16f75258474a0b6810",
+      "snapshot_identity": {
+        "generated_at": "2026-11-16T17:29:07.412327+00:00",
+        "source_fingerprint": "e1d73a6a1e38c38492a73ecea6465313fa814df9120a73b1815657fb3f93e9d3"
+      },
+      "recipe": {
+        "file": "recipe-e8c9996be5baeac64ce9e688553eea9b3ece26ca99538e5f8ee978655ee0d4c6.json.gz",
+        "bytes": 31774,
+        "sha256": "e8c9996be5baeac64ce9e688553eea9b3ece26ca99538e5f8ee978655ee0d4c6",
+        "encoding": "gzip-json",
+        "original_bytes": 92392,
+        "original_sha256": "8345ced8d8f0640b582c61632a729b88d935eef1a2d0b759957b79bcac44791c",
+        "original_file": "recipe-8345ced8d8f0640b582c61632a729b88d935eef1a2d0b759957b79bcac44791c.json"
+      }
+    },
+    {
+      "file": "manifest-5b58b01ad8827ee07d3da8138a3729a219b8cf8fe3cf5c3bdb3499f36e4ec43e.json.gz",
+      "bytes": 14378684,
+      "sha256": "5b58b01ad8827ee07d3da8138a3729a219b8cf8fe3cf5c3bdb3499f36e4ec43e",
+      "raw_bytes": 215743906,
+      "raw_sha256": "b144258b5059377b0d318a88787613a3facc690eab11901083988b754faf863e",
+      "snapshot_identity": {
+        "generated_at": "2026-11-19T05:49:31.168053+00:00",
+        "source_fingerprint": "d205b48e65fa275a8eff90f31bd82c0832eb4038a14770f8934e77833a696bd3"
+      },
+      "recipe": {
+        "file": "recipe-985d963ab0e0bf9c14cc1d94f3115d4485625974991072e5939d49dd5ed17e4e.json.gz",
+        "bytes": 83141,
+        "sha256": "985d963ab0e0bf9c14cc1d94f3115d4485625974991072e5939d49dd5ed17e4e",
+        "encoding": "gzip-json",
+        "original_bytes": 244847,
+        "original_sha256": "b6deb29ef59d61e7259a8ebd7b196030e40cf64b27ab6df0604ffd2fea1aa441",
+        "original_file": "recipe-b6deb29ef59d61e7259a8ebd7b196030e40cf64b27ab6df0604ffd2fea1aa441.json"
+      }
+    },
+    {
+      "file": "manifest-69c7096f3097d334f106d92d1d76b63a4c5504a27d2614ccb0af50a3f3feeff2.json.gz",
+      "bytes": 24517692,
+      "sha256": "69c7096f3097d334f106d92d1d76b63a4c5504a27d2614ccb0af50a3f3feeff2",
+      "raw_bytes": 461501041,
+      "raw_sha256": "eed03bf1873d3c3e5a5e8836e62d6b0294477d6d5ddb907d476be669a82cedbf",
+      "snapshot_identity": {
+        "generated_at": "2026-11-20T03:02:19.480431+00:00",
+        "source_fingerprint": "f86fbb7962bc658fcc2a69174cc56c4332c05c449bece479a6b6e6e1e746c8a7"
+      },
+      "recipe": {
+        "file": "recipe-09f5a49045dc354dc25aa47dc4b3259a6b2101bab7baace515018dc43cf6091d.json.gz",
+        "bytes": 169083,
+        "sha256": "09f5a49045dc354dc25aa47dc4b3259a6b2101bab7baace515018dc43cf6091d",
+        "encoding": "gzip-json",
+        "original_bytes": 502143,
+        "original_sha256": "a3ee8c887368b3e2dc9d3199ec32f3761d004c6d253adffd9fcbc199fc14129a",
+        "original_file": "recipe-a3ee8c887368b3e2dc9d3199ec32f3761d004c6d253adffd9fcbc199fc14129a.json"
+      }
+    },
+    {
+      "file": "manifest-78bb85be64e4ca817506598f86fd9aa700f1876f44f69a394fb55d45dc33b868.json.gz",
+      "bytes": 31782115,
+      "sha256": "78bb85be64e4ca817506598f86fd9aa700f1876f44f69a394fb55d45dc33b868",
+      "raw_bytes": 661572512,
+      "raw_sha256": "8aeae6f6007987c7535623652c74b08b6ffe89ad255fcc04be650b7b35830929",
+      "snapshot_identity": {
+        "generated_at": "2026-11-21T01:10:13.802854+00:00",
+        "source_fingerprint": "24203b97c0efc8d076ddb4707b3911f7c7702b9767b08004906233484d1dde68"
+      },
+      "recipe": {
+        "file": "recipe-9ee3fbf6d46b2716398292424218c0fe98c469ca792b7cbc56ac8cbf0be05b08.json.gz",
+        "bytes": 224771,
+        "sha256": "9ee3fbf6d46b2716398292424218c0fe98c469ca792b7cbc56ac8cbf0be05b08",
+        "encoding": "gzip-json",
+        "original_bytes": 670621,
+        "original_sha256": "bb5bd11d90b2dbdb2fb216b3110e9572df4cae369479fb3e76c3aa00cf56b2b9",
+        "original_file": "recipe-bb5bd11d90b2dbdb2fb216b3110e9572df4cae369479fb3e76c3aa00cf56b2b9.json"
+      }
+    },
+    {
+      "file": "manifest-7ffca85236824a09833f289772263f2a4302f7070a2ee820b5a6899bb2938061.json.gz",
+      "bytes": 24509671,
+      "sha256": "7ffca85236824a09833f289772263f2a4302f7070a2ee820b5a6899bb2938061",
+      "raw_bytes": 461421118,
+      "raw_sha256": "3adc17cc78249e40cd029b0ed66dcf619b11eb032dcc0e488b7d3fc3a9557bd9",
+      "snapshot_identity": {
+        "generated_at": "2026-11-20T02:05:04.026020+00:00",
+        "source_fingerprint": "f86fbb7962bc658fcc2a69174cc56c4332c05c449bece479a6b6e6e1e746c8a7"
+      },
+      "recipe": {
+        "file": "recipe-fabe15cd8f065e183ff9470f76a8d591438df3108762f9e690e1e8baf38f45ec.json.gz",
+        "bytes": 168752,
+        "sha256": "fabe15cd8f065e183ff9470f76a8d591438df3108762f9e690e1e8baf38f45ec",
+        "encoding": "gzip-json",
+        "original_bytes": 500915,
+        "original_sha256": "37f069d5e915e427e0cb002043315f9a5899f51b9ad72bf324ce1c45ebfcb47d",
+        "original_file": "recipe-37f069d5e915e427e0cb002043315f9a5899f51b9ad72bf324ce1c45ebfcb47d.json"
+      }
+    },
+    {
+      "file": "manifest-9412dbf762f96d80315ee2eb089a37185eacf179c213265285a483affb5184c0.json.gz",
+      "bytes": 14995156,
+      "sha256": "9412dbf762f96d80315ee2eb089a37185eacf179c213265285a483affb5184c0",
+      "raw_bytes": 167395077,
+      "raw_sha256": "6d5244652b9332eb49d27441a609494b300b576fc8f5c4b7780e87acec83ce7e",
+      "snapshot_identity": {
+        "generated_at": "2026-11-16T19:20:24.657181+00:00",
+        "source_fingerprint": "e1d73a6a1e38c38492a73ecea6465313fa814df9120a73b1815657fb3f93e9d3"
+      },
+      "recipe": {
+        "file": "recipe-9254e1ad03db3377eb6e04ff2d4b955457a86884d3b76480d41f6fb3a09fa3cc.json.gz",
+        "bytes": 31970,
+        "sha256": "9254e1ad03db3377eb6e04ff2d4b955457a86884d3b76480d41f6fb3a09fa3cc",
+        "encoding": "gzip-json",
+        "original_bytes": 92982,
+        "original_sha256": "37c59055752ce28470d81bf635b581ec5a61db4eaff345989af3261e831665e1",
+        "original_file": "recipe-37c59055752ce28470d81bf635b581ec5a61db4eaff345989af3261e831665e1.json"
+      }
+    },
+    {
+      "file": "manifest-97381ed29e360afd2252200fdc9303fa2a5eb89b8a4ee8123fe4739a9f8b427d.json.gz",
+      "bytes": 25205574,
+      "sha256": "97381ed29e360afd2252200fdc9303fa2a5eb89b8a4ee8123fe4739a9f8b427d",
+      "raw_bytes": 480435991,
+      "raw_sha256": "13490484a175f82b802a2e56c396343ccb237e0b596601d395ff28b68f86f417",
+      "snapshot_identity": {
+        "generated_at": "2026-11-20T03:50:24.825381+00:00",
+        "source_fingerprint": "7ad4bcd4d9b0c0d10f92b7c15fa50c073996050a619f6ec778a38c24a648fe3e"
+      },
+      "recipe": {
+        "file": "recipe-217bdac3fc2e1d730eaec247b326c00bc8a0f47cb8f87e153994a05527f627e5.json.gz",
+        "bytes": 177204,
+        "sha256": "217bdac3fc2e1d730eaec247b326c00bc8a0f47cb8f87e153994a05527f627e5",
+        "encoding": "gzip-json",
+        "original_bytes": 526461,
+        "original_sha256": "9d81e074cc709eb1ed55c6b8067a7950edcb3a74e358efc01799e5e3feac9afb",
+        "original_file": "recipe-9d81e074cc709eb1ed55c6b8067a7950edcb3a74e358efc01799e5e3feac9afb.json"
+      }
+    },
+    {
+      "file": "manifest-ac7972ba7e1a4b89cd44fa3c0f4cf52f3f233ba8c9893cc167f1aecb21375a7c.json.gz",
+      "bytes": 28968669,
+      "sha256": "ac7972ba7e1a4b89cd44fa3c0f4cf52f3f233ba8c9893cc167f1aecb21375a7c",
+      "raw_bytes": 257480720,
+      "raw_sha256": "9180783801fc5db698e0a33c23742cec34f1b12edc7f05dba0d9ee18fe0a08e9",
+      "snapshot_identity": {
+        "generated_at": "2026-11-17T02:55:58.470721+00:00",
+        "source_fingerprint": "378320b8ed1de36ca2f2963cc2bbb1890de190d31e96164a692a00bd3f6d7280"
+      },
+      "recipe": {
+        "file": "recipe-0608868826e07345685b0781ca82f9c7ff6d70438de5c1293f976146f0d943a9.json.gz",
+        "bytes": 101561,
+        "sha256": "0608868826e07345685b0781ca82f9c7ff6d70438de5c1293f976146f0d943a9",
+        "encoding": "gzip-json",
+        "original_bytes": 302194,
+        "original_sha256": "8273434fe57d62a589effb0e9425541a21960ed2eb454b85c5efd7fbe8cae8b3",
+        "original_file": "recipe-8273434fe57d62a589effb0e9425541a21960ed2eb454b85c5efd7fbe8cae8b3.json"
+      }
+    },
+    {
+      "file": "manifest-acd2cfcf37eddc0e4453c0daa074a31773f6044855db0a6ea94eb0b401639592.json.gz",
+      "bytes": 6412027,
+      "sha256": "acd2cfcf37eddc0e4453c0daa074a31773f6044855db0a6ea94eb0b401639592",
+      "raw_bytes": 109626292,
+      "raw_sha256": "db4ef9d12e543d9ddc171a8f175054dae98329894b365a411f267098466f413d",
+      "snapshot_identity": {
+        "generated_at": "2026-11-16T05:21:06.103562+00:00",
+        "source_fingerprint": "1e2480121a6f4a58b340ff507516081bbbc4f59ce24bc0189ea1a967f35827fc"
+      },
+      "recipe": {
+        "file": "recipe-80b76ec0ce32a60c60327c42601ee1c672dcf5afa8125d7bfc36e8436c9818d0.json.gz",
+        "bytes": 29963,
+        "sha256": "80b76ec0ce32a60c60327c42601ee1c672dcf5afa8125d7bfc36e8436c9818d0",
+        "encoding": "gzip-json",
+        "original_bytes": 87291,
+        "original_sha256": "d053edc75f17eac75ddd785d81b7db6078de3d3704c6c537ee7080be37dcb76b",
+        "original_file": "recipe-d053edc75f17eac75ddd785d81b7db6078de3d3704c6c537ee7080be37dcb76b.json"
+      }
+    },
+    {
+      "file": "manifest-ae1b2825ce30451a0faf4b9ad4f88639f657912da42a02bbd0248849c38b9b17.json.gz",
+      "bytes": 102481221,
+      "sha256": "ae1b2825ce30451a0faf4b9ad4f88639f657912da42a02bbd0248849c38b9b17",
+      "raw_bytes": 678398798,
+      "raw_sha256": "61fc0716a50edeb1b9f843b4e2dc418ec028a964da12ff9ba210e67f1d440085",
+      "snapshot_identity": {
+        "generated_at": "2026-11-19T05:49:31.168053+00:00",
+        "source_fingerprint": "d205b48e65fa275a8eff90f31bd82c0832eb4038a14770f8934e77833a696bd3"
+      },
+      "recipe": {
+        "file": "recipe-d5108a8fba4e78114058c1d1a6d9216e9782dfe834c184f274f4e91e2c1fdab5.json.gz",
+        "bytes": 597538,
+        "sha256": "d5108a8fba4e78114058c1d1a6d9216e9782dfe834c184f274f4e91e2c1fdab5",
+        "encoding": "gzip-json",
+        "original_bytes": 1803084,
+        "original_sha256": "c2a06b3ee0a14c2891ffa96a8a43146e88b029b0cd9e64ce8832d8173d8b98ec",
+        "original_file": "recipe-c2a06b3ee0a14c2891ffa96a8a43146e88b029b0cd9e64ce8832d8173d8b98ec.json"
+      }
+    },
+    {
+      "file": "manifest-ae8b71d3a2403f084c5099b4720572e538c2a6536cb025b558daab2e912a734f.json.gz",
+      "bytes": 17693950,
+      "sha256": "ae8b71d3a2403f084c5099b4720572e538c2a6536cb025b558daab2e912a734f",
+      "raw_bytes": 184911185,
+      "raw_sha256": "ee18528fd06f32689ae4c85b11460ff861f9d51abb99a6bbfa1e69d427492e95",
+      "snapshot_identity": {
+        "generated_at": "2026-11-16T21:39:10.495460+00:00",
+        "source_fingerprint": "98bd835e220f9986940dcd850a1e326ec45b3278e54970388e994aad691e6ef5"
+      },
+      "recipe": {
+        "file": "recipe-165c46f3ebfd809c04b9c6567e75e3f9df062b87321d556cf1b5c07a306f607a.json.gz",
+        "bytes": 42623,
+        "sha256": "165c46f3ebfd809c04b9c6567e75e3f9df062b87321d556cf1b5c07a306f607a",
+        "encoding": "gzip-json",
+        "original_bytes": 124710,
+        "original_sha256": "a77cb50d7d3d39e062e43f581295039876fcf9e25d26e06c9fa207c58a47dd86",
+        "original_file": "recipe-a77cb50d7d3d39e062e43f581295039876fcf9e25d26e06c9fa207c58a47dd86.json"
+      }
+    },
+    {
+      "file": "manifest-af21393ae195eae43cbc101f82000f5a809e197f6d3e7692da6a816763548f83.json.gz",
+      "bytes": 13109875,
+      "sha256": "af21393ae195eae43cbc101f82000f5a809e197f6d3e7692da6a816763548f83",
+      "raw_bytes": 155856295,
+      "raw_sha256": "55e0f10cc270c5e366790458b3f24b7256d5b74c9e1d37bd7f54e51cde7a54e9",
+      "snapshot_identity": {
+        "generated_at": "2026-11-16T15:26:16.098690+00:00",
+        "source_fingerprint": "daf3271d55e38c75cf982ff8369b6d8b020a3c857fe524addd7e29a9eea4003c"
+      },
+      "recipe": {
+        "file": "recipe-edaa4379637de50350ffd4cc69f848c4290c9a640916127b9d949a12f89767d9.json.gz",
+        "bytes": 31675,
+        "sha256": "edaa4379637de50350ffd4cc69f848c4290c9a640916127b9d949a12f89767d9",
+        "encoding": "gzip-json",
+        "original_bytes": 92094,
+        "original_sha256": "1f999043ffb4e9f2be343616c982eadcc3e99e4e8bc6dae0eb17ea354f8a9609",
+        "original_file": "recipe-1f999043ffb4e9f2be343616c982eadcc3e99e4e8bc6dae0eb17ea354f8a9609.json"
+      }
+    },
+    {
+      "file": "manifest-b4d323472a104aa2de52428037f55028c2ac64c7b5ffecbcdb3cdf94d4c649ab.json.gz",
+      "bytes": 19363971,
+      "sha256": "b4d323472a104aa2de52428037f55028c2ac64c7b5ffecbcdb3cdf94d4c649ab",
+      "raw_bytes": 196161965,
+      "raw_sha256": "fd13fc2b116f00e0736f69fd76c6910884689f49e0de4a061c3dbdd3f14eb2c2",
+      "snapshot_identity": {
+        "generated_at": "2026-11-16T22:36:05.165882+00:00",
+        "source_fingerprint": "975b8af7fc37a6f6d2a7c85ce7bccd430a547ea574f38e560406b85203417a1a"
+      },
+      "recipe": {
+        "file": "recipe-c80318e1175cc2cc26fae4961ba913085f5d46863b5d6e7d73bd19909394dfba.json.gz",
+        "bytes": 49670,
+        "sha256": "c80318e1175cc2cc26fae4961ba913085f5d46863b5d6e7d73bd19909394dfba",
+        "encoding": "gzip-json",
+        "original_bytes": 146459,
+        "original_sha256": "91f138d9559c1c7364db917d15ee0c275632947ba779505e45c68245c7a03b10",
+        "original_file": "recipe-91f138d9559c1c7364db917d15ee0c275632947ba779505e45c68245c7a03b10.json"
+      }
+    },
+    {
+      "file": "manifest-d4e8c670b96dd8c7b929e42e08a9cfe7da9fc48e14b473af7df237b6b8f43071.json.gz",
+      "bytes": 15794913,
+      "sha256": "d4e8c670b96dd8c7b929e42e08a9cfe7da9fc48e14b473af7df237b6b8f43071",
+      "raw_bytes": 172897263,
+      "raw_sha256": "cd831a6164fd8fc057bec0ba11c1bd41a7a3b5d6737ade560deeaad2c57ed0f0",
+      "snapshot_identity": {
+        "generated_at": "2026-11-16T20:53:40.087518+00:00",
+        "source_fingerprint": "98bd835e220f9986940dcd850a1e326ec45b3278e54970388e994aad691e6ef5"
+      },
+      "recipe": {
+        "file": "recipe-374d7ecabad56b3f0918f784fc724ad997f7111f526d500d428134253a287b71.json.gz",
+        "bytes": 32080,
+        "sha256": "374d7ecabad56b3f0918f784fc724ad997f7111f526d500d428134253a287b71",
+        "encoding": "gzip-json",
+        "original_bytes": 93279,
+        "original_sha256": "db42de118078da46aec85469b3c905839a03abf0b0502b01f5d3e0ed61ab7ecb",
+        "original_file": "recipe-db42de118078da46aec85469b3c905839a03abf0b0502b01f5d3e0ed61ab7ecb.json"
+      }
+    },
+    {
+      "file": "manifest-d64a5f7ba5d359301e84593c1f460a686b02be2b3828b3382f62c66b213399be.json.gz",
+      "bytes": 26570361,
+      "sha256": "d64a5f7ba5d359301e84593c1f460a686b02be2b3828b3382f62c66b213399be",
+      "raw_bytes": 522169917,
+      "raw_sha256": "ded7c14a260df25448cc8756aa83b1cb2ceef1c50f9b050385b8b6fc303ccd0a",
+      "snapshot_identity": {
+        "generated_at": "2026-11-20T09:05:10.003906+00:00",
+        "source_fingerprint": "581fcea28e7bc22cd4a3728c287f8fa2ac6a9bc6714933e631dc7d9b51285a1a"
+      },
+      "recipe": {
+        "file": "recipe-db8d2ff8e41e7b5ea5287705601a5c942f242b9c0bb823d1454b8c1318a497a3.json.gz",
+        "bytes": 202090,
+        "sha256": "db8d2ff8e41e7b5ea5287705601a5c942f242b9c0bb823d1454b8c1318a497a3",
+        "encoding": "gzip-json",
+        "original_bytes": 601517,
+        "original_sha256": "33ada085a3fd2aa6c9277667a04d1679448d9b1a5c81f00701787072af28de36",
+        "original_file": "recipe-33ada085a3fd2aa6c9277667a04d1679448d9b1a5c81f00701787072af28de36.json"
+      }
+    },
+    {
+      "file": "manifest-ec51d44579ac932209d71166868c476d1e4806044ae0c39974060bafc6653183.json.gz",
+      "bytes": 6246448,
+      "sha256": "ec51d44579ac932209d71166868c476d1e4806044ae0c39974060bafc6653183",
+      "raw_bytes": 107157410,
+      "raw_sha256": "63405610767d602b058c08e1bfef4409ce7471595ce8882068f3bd04f282cbc6",
+      "snapshot_identity": {
+        "generated_at": "2026-11-16T02:53:44.737152+00:00",
+        "source_fingerprint": "eb26a6ee501bf134e9f5edbf0afe23322f7e421c4deb75438ad846d2ca3732d2"
+      },
+      "recipe": {
+        "file": "recipe-b437161b3a769476ddbd31fa42e596da0df802de683f52918f1f3f4e19bc0e5c.json.gz",
+        "bytes": 29859,
+        "sha256": "b437161b3a769476ddbd31fa42e596da0df802de683f52918f1f3f4e19bc0e5c",
+        "encoding": "gzip-json",
+        "original_bytes": 86961,
+        "original_sha256": "e5fb8984ec12b8eeabf42c7b462461e6c049332576a645680dec4d4ad0cabaf3",
+        "original_file": "recipe-e5fb8984ec12b8eeabf42c7b462461e6c049332576a645680dec4d4ad0cabaf3.json"
+      }
+    },
+    {
+      "file": "manifest-ee1953a5050e89b020e9d33d02b9261ec6193e11252297b2c6cc4ad1e438e5d3.json.gz",
+      "bytes": 24517451,
+      "sha256": "ee1953a5050e89b020e9d33d02b9261ec6193e11252297b2c6cc4ad1e438e5d3",
+      "raw_bytes": 461500398,
+      "raw_sha256": "d41b5b89620362a16174740b7718a0976463c44ba998e3140edb8088ecc1bc2c",
+      "snapshot_identity": {
+        "generated_at": "2026-11-20T02:58:40.397733+00:00",
+        "source_fingerprint": "f86fbb7962bc658fcc2a69174cc56c4332c05c449bece479a6b6e6e1e746c8a7"
+      },
+      "recipe": {
+        "file": "recipe-0fc0bcc7147a1a8309def66d09643d6f0d3bffeb9495e0a3493f2aeecb97ea24.json.gz",
+        "bytes": 169088,
+        "sha256": "0fc0bcc7147a1a8309def66d09643d6f0d3bffeb9495e0a3493f2aeecb97ea24",
+        "encoding": "gzip-json",
+        "original_bytes": 502143,
+        "original_sha256": "e53bf4b571aeff917ad1631526ea368a0284d805e7cf8f070aae8fdaf4d5404e",
+        "original_file": "recipe-e53bf4b571aeff917ad1631526ea368a0284d805e7cf8f070aae8fdaf4d5404e.json"
+      }
+    },
+    {
+      "file": "manifest-ee96c24f257b87b8e6020dcb417bbcfc61f2310dff1927ad60580748e0a35324.json.gz",
+      "bytes": 24133969,
+      "sha256": "ee96c24f257b87b8e6020dcb417bbcfc61f2310dff1927ad60580748e0a35324",
+      "raw_bytes": 450286224,
+      "raw_sha256": "133c1f03df81d82f4eb53cc203b93e4eda64c201c79bf2443273b6bff03f93df",
+      "snapshot_identity": {
+        "generated_at": "2026-11-20T00:59:31.700213+00:00",
+        "source_fingerprint": "abd32520e54bce61786451768aaa79bede73a1a07645eeb834e7ba3141264a64"
+      },
+      "recipe": {
+        "file": "recipe-198847a117fac3801579cd848d2466a0fe8c8dde13bb13d469d41c6a0509be1c.json.gz",
+        "bytes": 166625,
+        "sha256": "198847a117fac3801579cd848d2466a0fe8c8dde13bb13d469d41c6a0509be1c",
+        "encoding": "gzip-json",
+        "original_bytes": 494191,
+        "original_sha256": "376b85776ea8e4f82e67fe534f213d6e5282cddc57c08884d5b4445871b6cd5a",
+        "original_file": "recipe-376b85776ea8e4f82e67fe534f213d6e5282cddc57c08884d5b4445871b6cd5a.json"
+      }
+    },
+    {
+      "file": "manifest-f70be70829b3eb6107b718d02c8176872f53ba6da36eb0675311dbfa4b0cdd43.json.gz",
+      "bytes": 26379392,
+      "sha256": "f70be70829b3eb6107b718d02c8176872f53ba6da36eb0675311dbfa4b0cdd43",
+      "raw_bytes": 240295642,
+      "raw_sha256": "be6f09fd6b9981f196d4338b1a74de63c6c269fa0d09398a7f3d933b125d9c85",
+      "snapshot_identity": {
+        "generated_at": "2026-11-17T01:05:19.638099+00:00",
+        "source_fingerprint": "16b0c691b47391d07949b09e60ed14afcb80def78ebeb390c376c9597e368b20"
+      },
+      "recipe": {
+        "file": "recipe-1ae63fef978ba1aba361c7a076cbda5daaa69956e0e4476ec1020766a89b4438.json.gz",
+        "bytes": 93490,
+        "sha256": "1ae63fef978ba1aba361c7a076cbda5daaa69956e0e4476ec1020766a89b4438",
+        "encoding": "gzip-json",
+        "original_bytes": 276643,
+        "original_sha256": "510ef34b4d3f0cd4c61b7c952328f9fc35cabdd47ed41fd283fb93669262f365",
+        "original_file": "recipe-510ef34b4d3f0cd4c61b7c952328f9fc35cabdd47ed41fd283fb93669262f365.json"
+      }
+    },
+    {
+      "file": "manifest-fe17a30e5b54012385787d87981e70fd909cc38f8d3d8d55ef580a03f1278466.json.gz",
+      "bytes": 6253762,
+      "sha256": "fe17a30e5b54012385787d87981e70fd909cc38f8d3d8d55ef580a03f1278466",
+      "raw_bytes": 107200757,
+      "raw_sha256": "1adb786bf6afb1477c670d79cd194a27a3554ec1ea0436e1cb2a8f84bf366e34",
+      "snapshot_identity": {
+        "generated_at": "2026-11-16T03:49:59.218422+00:00",
+        "source_fingerprint": "eb26a6ee501bf134e9f5edbf0afe23322f7e421c4deb75438ad846d2ca3732d2"
+      },
+      "recipe": {
+        "file": "recipe-33eb522d0d8c140b41920b557c8cfe5fc6e030b13d1eec3230347ec31ccb015e.json.gz",
+        "bytes": 29862,
+        "sha256": "33eb522d0d8c140b41920b557c8cfe5fc6e030b13d1eec3230347ec31ccb015e",
+        "encoding": "gzip-json",
+        "original_bytes": 86961,
+        "original_sha256": "98bfca545bd3b07fc6a53ac6fa1e3dd6dbe7968f49311578a13aa795cc1b4347",
+        "original_file": "recipe-98bfca545bd3b07fc6a53ac6fa1e3dd6dbe7968f49311578a13aa795cc1b4347.json"
+      }
+    },
+    {
+      "file": "manifest-preserved-216fb59202a8317e647771b15bcab1fdd3606ae0c81d925bee960802b0fcd021.json.gz",
+      "bytes": 24509433,
+      "sha256": "216fb59202a8317e647771b15bcab1fdd3606ae0c81d925bee960802b0fcd021",
+      "raw_bytes": 461420024,
+      "raw_sha256": "a39b3ac9e4fa19e546dfe284618523fc385d6064a610ce7e446e287cf46bfdde",
+      "snapshot_identity": {
+        "generated_at": "2026-11-20T01:55:43.255882+00:00",
+        "source_fingerprint": "f86fbb7962bc658fcc2a69174cc56c4332c05c449bece479a6b6e6e1e746c8a7"
+      },
+      "recipe": {
+        "file": "recipe-a06dc70cb4d89fe1fc555aac7a2cf689f6094c441967490eb59a52f2340158cd.json.gz",
+        "bytes": 168751,
+        "sha256": "a06dc70cb4d89fe1fc555aac7a2cf689f6094c441967490eb59a52f2340158cd",
+        "encoding": "gzip-json",
+        "original_bytes": 500915,
+        "original_sha256": "3e9f6964852c74f2c6a65e44f64c36872ebd9cfe7c3bd86368688f7a6a475d18",
+        "original_file": "recipe-3e9f6964852c74f2c6a65e44f64c36872ebd9cfe7c3bd86368688f7a6a475d18.json"
+      }
+    },
+    {
+      "file": "manifest-preserved-69c7096f3097d334f106d92d1d76b63a4c5504a27d2614ccb0af50a3f3feeff2.json.gz",
+      "bytes": 24517692,
+      "sha256": "69c7096f3097d334f106d92d1d76b63a4c5504a27d2614ccb0af50a3f3feeff2",
+      "raw_bytes": 461501041,
+      "raw_sha256": "eed03bf1873d3c3e5a5e8836e62d6b0294477d6d5ddb907d476be669a82cedbf",
+      "snapshot_identity": {
+        "generated_at": "2026-11-20T03:02:19.480431+00:00",
+        "source_fingerprint": "f86fbb7962bc658fcc2a69174cc56c4332c05c449bece479a6b6e6e1e746c8a7"
+      },
+      "recipe": {
+        "file": "recipe-09f5a49045dc354dc25aa47dc4b3259a6b2101bab7baace515018dc43cf6091d.json.gz",
+        "bytes": 169083,
+        "sha256": "09f5a49045dc354dc25aa47dc4b3259a6b2101bab7baace515018dc43cf6091d",
+        "encoding": "gzip-json",
+        "original_bytes": 502143,
+        "original_sha256": "a3ee8c887368b3e2dc9d3199ec32f3761d004c6d253adffd9fcbc199fc14129a",
+        "original_file": "recipe-a3ee8c887368b3e2dc9d3199ec32f3761d004c6d253adffd9fcbc199fc14129a.json"
+      }
+    },
+    {
+      "file": "manifest-preserved-7ffca85236824a09833f289772263f2a4302f7070a2ee820b5a6899bb2938061.json.gz",
+      "bytes": 24509671,
+      "sha256": "7ffca85236824a09833f289772263f2a4302f7070a2ee820b5a6899bb2938061",
+      "raw_bytes": 461421118,
+      "raw_sha256": "3adc17cc78249e40cd029b0ed66dcf619b11eb032dcc0e488b7d3fc3a9557bd9",
+      "snapshot_identity": {
+        "generated_at": "2026-11-20T02:05:04.026020+00:00",
+        "source_fingerprint": "f86fbb7962bc658fcc2a69174cc56c4332c05c449bece479a6b6e6e1e746c8a7"
+      },
+      "recipe": {
+        "file": "recipe-fabe15cd8f065e183ff9470f76a8d591438df3108762f9e690e1e8baf38f45ec.json.gz",
+        "bytes": 168752,
+        "sha256": "fabe15cd8f065e183ff9470f76a8d591438df3108762f9e690e1e8baf38f45ec",
+        "encoding": "gzip-json",
+        "original_bytes": 500915,
+        "original_sha256": "37f069d5e915e427e0cb002043315f9a5899f51b9ad72bf324ce1c45ebfcb47d",
+        "original_file": "recipe-37f069d5e915e427e0cb002043315f9a5899f51b9ad72bf324ce1c45ebfcb47d.json"
+      }
+    },
+    {
+      "file": "manifest-preserved-97381ed29e360afd2252200fdc9303fa2a5eb89b8a4ee8123fe4739a9f8b427d.json.gz",
+      "bytes": 25205574,
+      "sha256": "97381ed29e360afd2252200fdc9303fa2a5eb89b8a4ee8123fe4739a9f8b427d",
+      "raw_bytes": 480435991,
+      "raw_sha256": "13490484a175f82b802a2e56c396343ccb237e0b596601d395ff28b68f86f417",
+      "snapshot_identity": {
+        "generated_at": "2026-11-20T03:50:24.825381+00:00",
+        "source_fingerprint": "7ad4bcd4d9b0c0d10f92b7c15fa50c073996050a619f6ec778a38c24a648fe3e"
+      },
+      "recipe": {
+        "file": "recipe-217bdac3fc2e1d730eaec247b326c00bc8a0f47cb8f87e153994a05527f627e5.json.gz",
+        "bytes": 177204,
+        "sha256": "217bdac3fc2e1d730eaec247b326c00bc8a0f47cb8f87e153994a05527f627e5",
+        "encoding": "gzip-json",
+        "original_bytes": 526461,
+        "original_sha256": "9d81e074cc709eb1ed55c6b8067a7950edcb3a74e358efc01799e5e3feac9afb",
+        "original_file": "recipe-9d81e074cc709eb1ed55c6b8067a7950edcb3a74e358efc01799e5e3feac9afb.json"
+      }
+    },
+    {
+      "file": "manifest-preserved-a84d79168c3c716c117beb680e4ddb70c0cbab115eb534f3935b591308d6aae4.json.gz",
+      "bytes": 14732631,
+      "sha256": "a84d79168c3c716c117beb680e4ddb70c0cbab115eb534f3935b591308d6aae4",
+      "raw_bytes": 223273980,
+      "raw_sha256": "598ebfbce3265ff6260151ac21ea8109a9240e4673e328dca83f3bfe09e0b16f",
+      "snapshot_identity": {
+        "generated_at": "2026-11-19T12:31:40.650236+00:00",
+        "source_fingerprint": "a67f19c333a6729812c97bc430b460c8ef526cdc2e0915ccebbe1741756c8df8"
+      },
+      "recipe": {
+        "file": "recipe-b6cf66693cf714d1ffa7c4cf131ef1629679d292b4e2e7f051eb4bcbf6f8911e.json.gz",
+        "bytes": 83974,
+        "sha256": "b6cf66693cf714d1ffa7c4cf131ef1629679d292b4e2e7f051eb4bcbf6f8911e",
+        "encoding": "gzip-json",
+        "original_bytes": 247179,
+        "original_sha256": "1c3ee2e8a07016095cdf34452ea012d7ee839ffe5b63a1c85d08ae6c9dc26f3b",
+        "original_file": "recipe-1c3ee2e8a07016095cdf34452ea012d7ee839ffe5b63a1c85d08ae6c9dc26f3b.json"
+      }
+    },
+    {
+      "file": "manifest-preserved-ee1953a5050e89b020e9d33d02b9261ec6193e11252297b2c6cc4ad1e438e5d3.json.gz",
+      "bytes": 24517451,
+      "sha256": "ee1953a5050e89b020e9d33d02b9261ec6193e11252297b2c6cc4ad1e438e5d3",
+      "raw_bytes": 461500398,
+      "raw_sha256": "d41b5b89620362a16174740b7718a0976463c44ba998e3140edb8088ecc1bc2c",
+      "snapshot_identity": {
+        "generated_at": "2026-11-20T02:58:40.397733+00:00",
+        "source_fingerprint": "f86fbb7962bc658fcc2a69174cc56c4332c05c449bece479a6b6e6e1e746c8a7"
+      },
+      "recipe": {
+        "file": "recipe-0fc0bcc7147a1a8309def66d09643d6f0d3bffeb9495e0a3493f2aeecb97ea24.json.gz",
+        "bytes": 169088,
+        "sha256": "0fc0bcc7147a1a8309def66d09643d6f0d3bffeb9495e0a3493f2aeecb97ea24",
+        "encoding": "gzip-json",
+        "original_bytes": 502143,
+        "original_sha256": "e53bf4b571aeff917ad1631526ea368a0284d805e7cf8f070aae8fdaf4d5404e",
+        "original_file": "recipe-e53bf4b571aeff917ad1631526ea368a0284d805e7cf8f070aae8fdaf4d5404e.json"
+      }
+    },
+    {
+      "file": "manifest-preserved-ee96c24f257b87b8e6020dcb417bbcfc61f2310dff1927ad60580748e0a35324.json.gz",
+      "bytes": 24133969,
+      "sha256": "ee96c24f257b87b8e6020dcb417bbcfc61f2310dff1927ad60580748e0a35324",
+      "raw_bytes": 450286224,
+      "raw_sha256": "133c1f03df81d82f4eb53cc203b93e4eda64c201c79bf2443273b6bff03f93df",
+      "snapshot_identity": {
+        "generated_at": "2026-11-20T00:59:31.700213+00:00",
+        "source_fingerprint": "abd32520e54bce61786451768aaa79bede73a1a07645eeb834e7ba3141264a64"
+      },
+      "recipe": {
+        "file": "recipe-198847a117fac3801579cd848d2466a0fe8c8dde13bb13d469d41c6a0509be1c.json.gz",
+        "bytes": 166625,
+        "sha256": "198847a117fac3801579cd848d2466a0fe8c8dde13bb13d469d41c6a0509be1c",
+        "encoding": "gzip-json",
+        "original_bytes": 494191,
+        "original_sha256": "376b85776ea8e4f82e67fe534f213d6e5282cddc57c08884d5b4445871b6cd5a",
+        "original_file": "recipe-376b85776ea8e4f82e67fe534f213d6e5282cddc57c08884d5b4445871b6cd5a.json"
+      }
+    },
+    {
+      "file": "manifest-24bacfc7c0c480cf7cd9fecadd406d129773a2a1a4750f53042a6dd3630b8461.json.gz",
+      "bytes": 32700597,
+      "sha256": "24bacfc7c0c480cf7cd9fecadd406d129773a2a1a4750f53042a6dd3630b8461",
+      "raw_bytes": 674266394,
+      "raw_sha256": "c9fce490b08dbaebdddabb1b919b0f648c332ddc8377fe12dd758ec303740791",
+      "snapshot_identity": {
+        "generated_at": "2026-11-21T01:57:30.407547+00:00",
+        "source_fingerprint": "24203b97c0efc8d076ddb4707b3911f7c7702b9767b08004906233484d1dde68"
+      },
+      "recipe": {
+        "file": "recipe-9ff92d3dec43e7ae3fd31f6866fdb5c0dff235ce085aac7bced9911fad5024fa.json.gz",
+        "bytes": 226434,
+        "sha256": "9ff92d3dec43e7ae3fd31f6866fdb5c0dff235ce085aac7bced9911fad5024fa",
+        "encoding": "gzip-json",
+        "original_bytes": 675276,
+        "original_sha256": "34261679b710b9c7e13ccdb3340b1f1eb3499d7c7bf095bf48658c2f51c8addc",
+        "original_file": "recipe-34261679b710b9c7e13ccdb3340b1f1eb3499d7c7bf095bf48658c2f51c8addc.json"
+      }
+    },
+    {
+      "file": "manifest-8492401795ac9ed2629a556237b0b5b84e7a5541abb5cb373948c921984aad6c.json.gz",
+      "bytes": 28309267,
+      "sha256": "8492401795ac9ed2629a556237b0b5b84e7a5541abb5cb373948c921984aad6c",
+      "raw_bytes": 510468332,
+      "raw_sha256": "37e8ebdf9dcef46f39ecc383c0da9a2e6ba89a14cc2fb73a54f10af974ad9059",
+      "snapshot_identity": {
+        "generated_at": "2026-11-21T01:10:13.802854+00:00",
+        "source_fingerprint": "24203b97c0efc8d076ddb4707b3911f7c7702b9767b08004906233484d1dde68"
+      },
+      "recipe": {
+        "file": "recipe-2eb1f1c4e96d6ae75c9544564304a0ebe2a05d15a0b30d180731817b5a07b78b.json.gz",
+        "bytes": 198685,
+        "sha256": "2eb1f1c4e96d6ae75c9544564304a0ebe2a05d15a0b30d180731817b5a07b78b",
+        "encoding": "gzip-json",
+        "original_bytes": 593712,
+        "original_sha256": "518580ab415506384aa33c24524b91c679d05fe09c1276bc294b9c7d96e3d9e3",
+        "original_file": "recipe-518580ab415506384aa33c24524b91c679d05fe09c1276bc294b9c7d96e3d9e3.json"
+      }
+    },
+    {
+      "file": "manifest-b945f60331f493a1f9bc2260284f60c7d5dbfe0e809b6ba441da3c8b88b4f2ef.json.gz",
+      "bytes": 38148984,
+      "sha256": "b945f60331f493a1f9bc2260284f60c7d5dbfe0e809b6ba441da3c8b88b4f2ef",
+      "raw_bytes": 792260214,
+      "raw_sha256": "390e8ebbefac79f674d771ec15ad5586b487c43c8ff7c51e7aee53b081580831",
+      "snapshot_identity": {
+        "generated_at": "2026-11-21T12:06:07.910932+00:00",
+        "source_fingerprint": "9357f2e8c3f7073a1c9f58e59942692eb862b4d4fe7d5aea083e827703e71637"
+      },
+      "recipe": {
+        "file": "recipe-27034d5841da4bc22e428edf348ddd12ca5b98340b3192113c8a72fc7885b247.json.gz",
+        "bytes": 252242,
+        "sha256": "27034d5841da4bc22e428edf348ddd12ca5b98340b3192113c8a72fc7885b247",
+        "encoding": "gzip-json",
+        "original_bytes": 753331,
+        "original_sha256": "086b2497f49663379a1d7249c10cc66169b914a94e89d3c824e532bbb225dff6",
+        "original_file": "recipe-086b2497f49663379a1d7249c10cc66169b914a94e89d3c824e532bbb225dff6.json"
+      }
+    },
+    {
+      "file": "manifest-f8bb071eb8943f48d76a9f4cd1cab47831ab7989fc58d17728c23a90705d99a0.json.gz",
+      "bytes": 28740784,
+      "sha256": "f8bb071eb8943f48d76a9f4cd1cab47831ab7989fc58d17728c23a90705d99a0",
+      "raw_bytes": 520264210,
+      "raw_sha256": "616193d4161a2ccc3cc39a7fcbb70149b11daa25b97609beaa2d6e6748409c6f",
+      "snapshot_identity": {
+        "generated_at": "2026-11-21T01:57:30.407547+00:00",
+        "source_fingerprint": "24203b97c0efc8d076ddb4707b3911f7c7702b9767b08004906233484d1dde68"
+      },
+      "recipe": {
+        "file": "recipe-a2cc716ca6bee1ae691e6cbdc2b7d8b1386e940bdab3309ed87809c81cc48fcb.json.gz",
+        "bytes": 200411,
+        "sha256": "a2cc716ca6bee1ae691e6cbdc2b7d8b1386e940bdab3309ed87809c81cc48fcb",
+        "encoding": "gzip-json",
+        "original_bytes": 598352,
+        "original_sha256": "6a2856898c1310df694094b9461b2b5f54463b73879fb0d5e916dca1da3b54bc",
+        "original_file": "recipe-6a2856898c1310df694094b9461b2b5f54463b73879fb0d5e916dca1da3b54bc.json"
+      }
+    },
+    {
+      "file": "manifest-47a32e7a398f39ab4d41f47679906c95ffb4af500328631464a4f0321caa144d.json.gz",
+      "bytes": 32900226,
+      "sha256": "47a32e7a398f39ab4d41f47679906c95ffb4af500328631464a4f0321caa144d",
+      "raw_bytes": 611404857,
+      "raw_sha256": "6709928c7a854bd783c61dbf853737ca732b99f9cc3a9a8e530f3d5a4cac524d",
+      "snapshot_identity": {
+        "generated_at": "2026-11-21T12:06:07.910932+00:00",
+        "source_fingerprint": "9357f2e8c3f7073a1c9f58e59942692eb862b4d4fe7d5aea083e827703e71637"
+      },
+      "recipe": {
+        "file": "recipe-aec18239e0bc84c756efc2554ad0cd3a750b78570a04281402e4fee008b8f1a0.json.gz",
+        "bytes": 225938,
+        "sha256": "aec18239e0bc84c756efc2554ad0cd3a750b78570a04281402e4fee008b8f1a0",
+        "encoding": "gzip-json",
+        "original_bytes": 676362,
+        "original_sha256": "9d4cb4c5dd1ef519dfe8dbb46f6a9b383c4be322b634522f954a2d65d7cd59d2",
+        "original_file": "recipe-9d4cb4c5dd1ef519dfe8dbb46f6a9b383c4be322b634522f954a2d65d7cd59d2.json"
+      }
+    },
+    {
+      "file": "manifest-4c2d234cfc71f782303e6dd59a73f75b4d81825738a60216ff636a84c527e982.json.gz",
+      "bytes": 41092254,
+      "sha256": "4c2d234cfc71f782303e6dd59a73f75b4d81825738a60216ff636a84c527e982",
+      "raw_bytes": 843061510,
+      "raw_sha256": "a3682f00b929fd6b7e284719258bfc31b69d16a9ee8b1ad750224e73c409ba9a",
+      "snapshot_identity": {
+        "generated_at": "2026-11-22T09:33:55.200732+00:00",
+        "source_fingerprint": "c4eda4d830ef31d2da53db7c556466aeb45c3c88835bb7887abf6f0f8fd7450d"
+      },
+      "recipe": {
+        "file": "recipe-2cbc89e56c64a02dcb6f694a737c24a84c69678f2574a65958667b56b178c30c.json.gz",
+        "bytes": 267014,
+        "sha256": "2cbc89e56c64a02dcb6f694a737c24a84c69678f2574a65958667b56b178c30c",
+        "encoding": "gzip-json",
+        "original_bytes": 797680,
+        "original_sha256": "6052612a885f310da4f728b56fac95a566089fe072e8590223ba9e887be3df0e",
+        "original_file": "recipe-6052612a885f310da4f728b56fac95a566089fe072e8590223ba9e887be3df0e.json"
+      }
+    }
+  ],
+  "summary": {
+    "original_files": 51,
+    "unique_originals": 45,
+    "original_bytes": 1190079806,
+    "stored_assets": 14695,
+    "stored_asset_bytes": 317581956,
+    "previous_catalog_sha256": "238d2bd6cf84cd3a6443dcf6d7b7a6e8ef46118b091c70e01da0e7c5997373ef",
+    "original_identities_failures_and_dates_unchanged": true,
+    "publication_capacity_requires_whole_package": true
+  },
+  "reconstruction_attestations": [
+    {
+      "profile": "main",
+      "terminal_exit": 0,
+      "original_files": 51,
+      "originals_binding_sha256": "89bfd6a300e064c41c454a7a887140b3c26deca70eb60d1af7bec4e7a0b7ef70",
+      "exact_compressed_bytes_verified": true,
+      "terminal_receipt_sha256": "09ae439dfc33fe4657271d12ae1f24aad39fd97f0f6d0ae8c46c94eb1c479660",
+      "tool_sha256": "e556d1280c0d9ab3ab3f43809fb3985fa0e3ddc685a9a53f4dfbe5368f0555cd",
+      "recorded_at": "2026-11-22T09:41:52.147607+00:00",
+      "zlib_runtime": "1.2.12"
+    },
+    {
+      "profile": "alternate",
+      "terminal_exit": 0,
+      "original_files": 51,
+      "originals_binding_sha256": "89bfd6a300e064c41c454a7a887140b3c26deca70eb60d1af7bec4e7a0b7ef70",
+      "exact_compressed_bytes_verified": true,
+      "terminal_receipt_sha256": "2886a8d3604763a3de5f2297898780864a4955f1e384833fc7f2f3ade323363a",
+      "tool_sha256": "e556d1280c0d9ab3ab3f43809fb3985fa0e3ddc685a9a53f4dfbe5368f0555cd",
+      "recorded_at": "2026-11-22T09:44:25.320789+00:00",
+      "zlib_runtime": "1.2.12"
+    }
+  ]
+}

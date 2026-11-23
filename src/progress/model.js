@@ -64,6 +64,37 @@ export function verificationWindow(rows, page = 0, size = 20) {
   const index = Math.max(0, Math.min(page, pages - 1));
   return { rows: rows.slice().reverse().slice(index * size, (index + 1) * size), index, pages, total: rows.length };
 }
+export function pendingIntegration(manifest) {
+  const key = manifest.goal_execution?.latest_pending_core_integration_key;
+  const batch = key && manifest.goal_execution[key];
+  const scopes = ["resource_scope", "new_runtime_scope", "lifecycle_scope", "default_original_scope",
+    "explicit_opt_in_original_scope", "combined_new_scope", "related_graph_scope"];
+  const countsValid = row => row && ["total", "passed", "failed", "skipped"].every(name =>
+    Number.isSafeInteger(row[name]) && row[name] >= 0) && row.total === row.passed + row.failed + row.skipped &&
+    row.terminal_exit === (row.failed ? 1 : 0);
+  if (!batch || batch.contract_status !== "partial" || batch.explicit_public_runtime_tested !== true ||
+      batch.independent_audit_exit !== 0 || !/^[0-9a-f]{64}$/.test(batch.independent_audit_report_sha256 || "") ||
+      !/^[0-9a-f]{64}$/.test(batch.source_fingerprint || "") ||
+      !/^[0-9a-f]{64}$/.test(batch.source_manifest_sha256 || "") ||
+      batch.new_full_function_acceptances !== 0 || batch.full_strict_suite_accepted !== false ||
+      batch.default_qnode_admission_changed !== false || !Array.isArray(batch.profiles) || batch.profiles.length !== 2 ||
+      !["main", "alternate"].every(profile => batch.profiles.filter(row => row.profile === profile).length === 1) ||
+      !batch.profiles.every(row => scopes.every(scope => countsValid(row[scope])))) return null;
+  return { key, batch, scopes, sourceMatches: batch.source_fingerprint === manifest.source?.fingerprint };
+}
+export function approvedMigrations(manifest) {
+  const all = (manifest.verification || []).filter(row => row.environment_validation?.verified && row.process_terminal_match);
+  const current = all.filter(row => row.source_match);
+  const key = manifest.goal_execution?.latest_core_validation_key;
+  const source = key && manifest.goal_execution[key]?.source_fingerprint;
+  const historical = all.filter(row => row.source_fingerprint === source).slice(-1);
+  const records = current.length ? current : historical;
+  const migrations = new Map();
+  for (const row of records) for (const migration of row.approved_test_migrations || []) {
+    migrations.set(migration.file + ":" + migration.after_sha256, migration);
+  }
+  return { rows: [...migrations.values()], historicalOnly: !current.length, sourceFingerprint: current.length ? manifest.source?.fingerprint : source };
+}
 export function currentVerification(manifest) {
   const rows = (manifest.verification || []).filter(row => row.source_match && row.environment_validation?.verified);
   const latest = new Map();
@@ -83,14 +114,18 @@ export function currentVerification(manifest) {
     value?.checkpoint === review?.checkpoint && value?.source_fingerprint === manifest.source.fingerprint &&
     Array.isArray(value.profiles) && ["main", "alternate"].every(profile =>
       Array.isArray(value.profiles.find(row => row.profile === profile)?.current_selected_unique_failure_ids)));
+  const failureIds = profile => Object.hasOwn(profile || {}, "current_selected_unique_failure_ids") ?
+    profile.current_selected_unique_failure_ids : profile?.current_selected_unique_native_failure_ids;
   const reviewedFailures = Object.fromEntries(["main", "alternate"].map(profile => [profile,
-    [...new Set(reviewBatch?.profiles?.find(row => row.profile === profile)?.current_selected_unique_failure_ids || [])].sort()]));
+    [...new Set(failureIds(reviewBatch?.profiles?.find(row => row.profile === profile)) || [])].sort()]));
   const reviewedProfiles = Object.fromEntries(["main", "alternate"].map(profile => [profile,
     (reviewBatch?.profiles || []).filter(row => row.profile === profile)]));
   const reviewShape = Object.values(reviewedProfiles).every(profiles => profiles.length === 1 &&
-    Array.isArray(profiles[0].current_selected_unique_failure_ids));
+    Array.isArray(failureIds(profiles[0])));
+  const nativeCounts = batch?.current_selected_unique_native_failures_each_profile;
   const declaredCounts = coreKey ? Object.fromEntries(Object.entries(reviewedProfiles).map(([profile, profiles]) =>
-    [profile, profiles.length === 1 ? profiles[0].native_strict_failures : undefined])) :
+    [profile, profiles.length === 1 ? (Object.hasOwn(profiles[0], "native_strict_failures") ?
+      profiles[0].native_strict_failures : Number.isSafeInteger(nativeCounts) ? nativeCounts : nativeCounts?.[profile]) : undefined])) :
     review?.current_selected_unique_failures_each_profile;
   const countMap = declaredCounts && typeof declaredCounts === "object" && !Array.isArray(declaredCounts) &&
     Object.keys(declaredCounts).length === 2 && ["main", "alternate"].every(profile => Object.hasOwn(declaredCounts, profile));
@@ -116,12 +151,40 @@ export function currentVerification(manifest) {
     reports = rows.filter(row => row.source_manifest_sha256 === batch.source_manifest_sha256).map(row =>
       ({ profile: row.profile, scope: row.name, report: row, checkpoint: batch.checkpoint, recordedAt: row.recorded_at }));
   }
-  const references=(batch?.profiles || []).filter(profile=>profile.separate_reference_scope?.configuration_id).map(profile=>{
+  const references=(batch?.profiles || []).filter(profile=>profile.separate_reference_scope?.configuration_id ||
+    (Array.isArray(profile.current_selected_unique_reference_failure_ids) &&
+      Object.hasOwn(batch?.current_selected_unique_reference_failures_each_profile || {}, profile.profile))).map(profile=>{
+    if (!profile.separate_reference_scope?.configuration_id) {
+      const proofs = rows.filter(row => row.source_manifest_sha256 === batch.source_manifest_sha256 &&
+        row.reference_execution_identity_validation?.verified === true &&
+        row.reference_execution_identity_validation.configuration_id === row.profile &&
+        row.profile.startsWith(profile.profile + "-") && row.profile !== profile.profile);
+      const latestCases = new Map();
+      for (const proof of proofs) for (const item of proof.cases) {
+        const prior = latestCases.get(item.id);
+        if (!prior || Date.parse(proof.recorded_at) >= Date.parse(prior.recorded_at))
+          latestCases.set(item.id, { ...item, recorded_at: proof.recorded_at });
+      }
+      const cases = [...latestCases.values()];
+      const counts = { total: cases.length, ...Object.fromEntries(["passed", "failed", "skipped"].map(status =>
+        [status, cases.filter(item => item.status === status).length])) };
+      const failureIds = cases.filter(item => item.status === "failed").map(item => item.id).sort();
+      const expected = [...new Set(profile.current_selected_unique_reference_failure_ids)].sort();
+      const declared = batch.current_selected_unique_reference_failures_each_profile[profile.profile];
+      const identifiers = [...new Set(proofs.map(row => row.profile))];
+      const matches = batchMatches && proofs.length > 0 && identifiers.length === 1 &&
+        Number.isSafeInteger(declared) && declared >= 0 && counts.failed === declared &&
+        failureIds.length === expected.length && failureIds.every((id, index) => id === expected[index]);
+      return { profile: identifiers[0] || profile.profile, baseProfile: profile.profile,
+        counts, failureIds, matches, proofCount: proofs.length, selectedCaseUnion: true };
+    }
     const scope=profile.separate_reference_scope, identifier=scope.configuration_id;
     const selection=scope.execution_evidence;
-    const selectionValid=selection===undefined||(Array.isArray(selection)&&selection.length===scope.modules&&
+    const batchCount=Object.hasOwn(scope,"execution_batch_count")?scope.execution_batch_count:scope.modules;
+    const batchCountValid=Number.isSafeInteger(batchCount)&&batchCount>0;
+    const selectionValid=batchCountValid&&(selection===undefined||(Array.isArray(selection)&&selection.length===batchCount&&
       selection.every(item=>typeof item.name==="string"&&item.profile===identifier&&/^[0-9a-f]{64}$/.test(item.evidence_hash))&&
-      new Set(selection.map(item=>JSON.stringify([item.name,item.profile,item.evidence_hash]))).size===selection.length);
+      new Set(selection.map(item=>JSON.stringify([item.name,item.profile,item.evidence_hash]))).size===selection.length));
     const proofs=rows.filter(row=>row.profile===identifier&&row.source_manifest_sha256===batch.source_manifest_sha256&&
       row.reference_execution_identity_validation?.verified===true&&
       row.reference_execution_identity_validation.configuration_id===identifier&&selectionValid&&
@@ -137,7 +200,7 @@ export function currentVerification(manifest) {
       [status,cases.filter(item=>item.status===status).length]))};
     const failureIds=cases.filter(item=>item.status==="failed").map(item=>item.id).sort();
     const expected=[...new Set(profile.public_reference_failure_ids||[])].sort();
-    const matches=batchMatches&&selectionValid&&proofs.length===scope.modules&&
+    const matches=batchMatches&&selectionValid&&proofs.length===batchCount&&
       Object.entries(counts).every(([key,value])=>Number.isSafeInteger(scope[key])&&value===scope[key])&&
       Array.isArray(profile.public_reference_failure_ids)&&failureIds.length===expected.length&&
       failureIds.every((id,index)=>id===expected[index]);

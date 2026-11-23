@@ -1,0 +1,51 @@
+{
+  "format": "quantumbridge.snapshot-transport.v1",
+  "purpose": "TRANSPORT_REPLAY_NOT_NEW_VERIFICATION",
+  "snapshot_identity": {
+    "generated_at": "2026-11-23T07:08:41.043873+00:00",
+    "source_fingerprint": "9e87234e6afa34b4f53884ca98601f0ec91312f278101c5e20271b8cc8a176db"
+  },
+  "original_json": {
+    "bytes": 666531874,
+    "sha256": "e782592920128afa45aba9dff9c436c715be94672c8e7588136c26970a41baf7"
+  },
+  "compact_json": {
+    "bytes": 666531874,
+    "sha256": "e782592920128afa45aba9dff9c436c715be94672c8e7588136c26970a41baf7"
+  },
+  "original_gzip": {
+    "file": "manifest-cbd1ecaddf4aacd9589bbcd2d4bda73e80379204c9877ebce77d390cc71625f9.json.gz",
+    "bytes": 35949140,
+    "sha256": "cbd1ecaddf4aacd9589bbcd2d4bda73e80379204c9877ebce77d390cc71625f9"
+  },
+  "original_index": {
+    "bytes": 593,
+    "sha256": "06dde467f21b3cf75f62a204aaff6c3d31f2602f51dd4b6f5a636d94e66dd696",
+    "utf8": "{\n  \"public_snapshot_format\": \"quantumbridge.public-snapshot-gzip.v1\",\n  \"encoding\": \"gzip\",\n  \"file\": \"manifest-cbd1ecaddf4aacd9589bbcd2d4bda73e80379204c9877ebce77d390cc71625f9.json.gz\",\n  \"bytes\": 666531874,\n  \"sha256\": \"e782592920128afa45aba9dff9c436c715be94672c8e7588136c26970a41baf7\",\n  \"compressed_bytes\": 35949140,\n  \"compressed_sha256\": \"cbd1ecaddf4aacd9589bbcd2d4bda73e80379204c9877ebce77d390cc71625f9\",\n  \"snapshot_identity\": {\n    \"generated_at\": \"2026-11-23T07:08:41.043873+00:00\",\n    \"source_fingerprint\": \"9e87234e6afa34b4f53884ca98601f0ec91312f278101c5e20271b8cc8a176db\"\n  }\n}\n"
+  },
+  "browser_assets": {
+    "manifest-browser.json.gz": {
+      "bytes": 31323,
+      "sha256": "06aac4c7824c9a933ae1019fb60bfe9a363f55b6eb1e5a3174f536c66fa27ded"
+    },
+    "manifest-evidence.json.gz": {
+      "bytes": 247874,
+      "sha256": "3e1f4634b1902bb0649d5463d8ec7e363ed6e923fffd4ebbc934af341d0ce48f"
+    }
+  },
+  "same_json_values": true,
+  "original_collection_time_unchanged": true,
+  "original_failures_and_receipts_retained": true,
+  "new_function_acceptances": 0,
+  "structured_json_transport": {
+    "format": "quantumbridge.structured-json.v1",
+    "index_sha256": "0e3e3bbd9d28afde68e4bbbdb1149181095dc25f39d57f0a945bf2cc6c8f6039",
+    "leaf_byte_limit": 8388608,
+    "largest_leaf_bytes": 8160738,
+    "nodes": 24677,
+    "complete_snapshot_bytes_unchanged": true,
+    "complete_download_sha256": "cbd1ecaddf4aacd9589bbcd2d4bda73e80379204c9877ebce77d390cc71625f9",
+    "new_function_acceptances": 0,
+    "original_evidence_dates_unchanged": true
+  }
+}

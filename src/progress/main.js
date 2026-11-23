@@ -1,14 +1,15 @@
 import { domains, directions } from "../framework/data.js";
 import { resources, engineeringReviewDownload, resourceHref } from "../framework/resources.js?observer=20261119-review";
-import { statuses, statusNames, countStatuses, filterRows, aggregate, isStale, verificationWindow, currentVerification, abnormalObservations, originalChildFollowup, decodeDataset, restoreManifest, fullContractReview } from "./model.js?manifest=first-functions-20261119";
-import { verifiedJSON, verifiedEvidence } from "./transport.js?http=network-retry-20261119";
+import { statuses, statusNames, countStatuses, filterRows, aggregate, isStale, verificationWindow, currentVerification, pendingIntegration, approvedMigrations, abnormalObservations, originalChildFollowup, decodeDataset, restoreManifest, fullContractReview } from "./model.js?manifest=delivery-20261123";
+import { verifiedJSON, verifiedEvidence } from "./transport.js?http=delivery-20261123";
 import { scheduleIconLibrary } from "../icon-library.js";
-import { restoreMigrationPool } from "./migration-pool.js?observer=migration-pool-20261119";
+import { restoreMigrationPool } from "./migration-pool.js?observer=delivery-20261123";
+import { archiveDescriptor } from "./history.js?observer=delivery-20261123";
 
 const root = document.querySelector("#engineering-app");
 const params = new URLSearchParams(location.search);
 const state = { en: params.get("lang") === "en", tab: params.has("domain") ? "domains" : "overview", dataset: "target", query: "", family: "", module: "", status: "", kind: "", hardware: "", page: 0, evidencePage: 0, domain: params.get("domain") || "" };
-let manifest, history, datasets = {};
+let manifest, history, archiveInfo, datasets = {};
 let evidencePromise, viewGeneration = 0;
 const runtimeDetails = new Map();
 const t = (zh, en) => state.en ? en : zh;
@@ -71,6 +72,10 @@ function shell() {
   <footer><span>QuantumBridge · ${t("公开观察页，隐藏入口不是访问控制。", "Public observability. A subtle entrance is not access control.")}</span><a href="./framework.html">${t("返回项目首页", "Return home")}</a></footer><dialog id="detail" aria-labelledby="detail-title"></dialog>`;
   renderView();
 }
+function historicalArchiveView() {
+  if (!archiveInfo) return "";
+  return `<section class="band" id="historical-archive"><h2>${t("历史证据存档", "Historical evidence archive")}</h2><p class="muted">${t("无损传输存档，原采集日期与失败记录保留；恢复不等于新验证，也不增加函数验收。", "Lossless transport archive. Original collection dates and failures remain; restoration is not new verification or function acceptance.")}</p><div class="case-links"><a data-history-catalog href="./src/progress/data/${esc(archiveInfo.file)}" download>${ic("download")}${t("历史快照目录", "Historical snapshot catalog")}</a><a data-history-restore href="./downloads/restore-engineering-history.py" download>${ic("download")}${t("精确恢复工具", "Exact restoration tool")}</a><a data-snapshot-transport href="./src/progress/data/manifest-transport.json" download>${ic("download")}${t("快照编码收据", "Snapshot encoding receipt")}</a></div></section>`;
+}
 function overview() {
   const target = manifest.datasets.find(x => x.id === "target");
   const backlogCount = manifest.strict_backlog?.length ?? manifest.strict_backlog_count;
@@ -109,15 +114,27 @@ function evidenceView() {
   return `${currentValidationView()}${testCollectionView()}${processObservationView()}<section class="band" id="verification-batches"><h2>${t("本目标冻结源码验证", "Frozen-source verification for this goal")}</h2><p class="muted">${t("仅验证列出的选定测试，不代表完整函数合同或全套门禁通过。核对源码、导入位置、原测试指纹及真实进程退出码；缺少退出回执的历史批次不算当前验证。", "Selected tests only, not full-contract or full-suite acceptance. Source, imports, test hashes and real process exits are checked; historical batches without exit receipts are not current verification.")}</p>${batches || t("尚无已登记的同源批次。", "No matched batches recorded yet.")}${paging}</section><section class="band"><h2>${t("逐项严格失败台账", "Case-level strict failure backlog")} · ${backlog.length}</h2><p class="muted">${t("历史失败不删除、不算通过；局部通过仍需双环境及完整回归验收。", "Historical failures are retained, not counted as passes; selected passes still require both environments and full regression.")}</p>${failures}</section>${historicalEvidenceView()}`;
 }
 function referenceValidationView() {
-  const references=currentVerification(manifest).references;
+  const current=currentVerification(manifest);
+  const references=current.batchMatches ? current.references : [];
   if(!references.length)return "";
-  return `<div id="reference-validation"><h3>${t("独立 SDK 参考配置", "Separate SDK reference configurations")}</h3><ul>${references.map(row=>`<li><code>${esc(row.profile)}</code><br>${row.counts.passed} PASS / <span class="failure">${row.counts.failed} FAIL</span> / ${row.counts.skipped} SKIP · ${row.matches?t("回执与逐项失败身份一致", "Receipts and exact failure identities match"):t("配置身份或范围待核验", "Configuration identity or scope requires verification")}</li>`).join("")}</ul><p class="muted">${t("独立参考配置的失败不归入 Native 数字，也不豁免。SKIP 包括保留的旧预期失败，均不计为通过；两组都不是完整函数或全套验收。", "Separate reference failures are neither counted as Native failures nor waived. SKIP includes retained expected failures, never passes. Neither population certifies full functions or the complete suite.")}</p></div>`;
+  const rows=references.map(row=>{
+    if(!row.matches && row.proofCount===0){
+      const failures=current.batch.current_selected_unique_reference_failures_each_profile?.[row.baseProfile];
+      return `<li><code>${esc(row.profile)}</code><br>${t("当前没有身份匹配的参考进程；不显示为零失败或通过。", "No identity-matched reference worker; this is not zero failures or a pass.")}${Number.isSafeInteger(failures)?`<br>${t("上次冻结参考失败", "Previously frozen reference failures")}: <span class="failure">${failures} FAIL</span> · ${date(current.batch.recorded_at)}`:""}</li>`;
+    }
+    return `<li><code>${esc(row.profile)}</code><br>${row.counts.passed} PASS / <span class="failure">${row.counts.failed} FAIL</span> / ${row.counts.skipped} SKIP · ${row.matches?t("回执与逐项失败身份一致", "Receipts and exact failure identities match"):t("配置身份或范围待核验", "Configuration identity or scope requires verification")}${row.selectedCaseUnion?`<br>${t("当前同源参考用例去重；不是整套 SDK 验收。", "Deduplicated current-source reference cases, not full SDK acceptance.")}`:""}</li>`;
+  });
+  return `<div id="reference-validation"><h3>${t("独立 SDK 参考配置", "Separate SDK reference configurations")}</h3><ul>${rows.join("")}</ul><p class="muted">${t("独立参考配置的失败不归入 Native 数字，也不豁免。SKIP 包括保留的旧预期失败，均不计为通过；两组都不是完整函数或全套验收。", "Separate reference failures are neither counted as Native failures nor waived. SKIP includes retained expected failures, never passes. Neither population certifies full functions or the complete suite.")}</p></div>`;
 }
 function currentValidationView() {
   const current = currentVerification(manifest);
   const historical = manifest.goal_execution?.resource_validation;
   const repair = manifest.goal_execution?.ci_primitive_repair;
-  if (!current.batchMatches || !repair) return "";
+  const pending = pendingIntegration(manifest);
+  if (!current.batchMatches || !repair) {
+    const old = current.batch;
+    return `<section class="band" id="current-validation"><h2>${t("本地融合验证与远端 CI 分开验收", "Local fusion and remote CI have separate acceptance")}</h2><p><code>${esc(manifest.source.fingerprint)}</code></p><p class="failure">${t("当前源码尚未通过完整集成验收。历史完整合同不会因快照更新自动变为当前通过。", "Full integration is not accepted for this source. A new snapshot does not refresh historical full contracts.")}</p>${pendingIntegrationView(pending)}${old ? `<details id="historical-core"><summary>${t("此前广泛验证：历史源码", "Earlier broad verification: historical source")}</summary><p>${date(old.recorded_at)} · <code>${esc(old.checkpoint)}</code></p><p><code>${esc(old.source_fingerprint)}</code></p></details>` : ""}</section>`;
+  }
   const ci = repair.remote_ci;
   const labels = { new: t("新增 Native 回归", "New Native regressions"), reference: t("实际 Qiskit 参考", "Actual Qiskit references"), operators: t("算子目录", "Operator directory"), algorithms: t("算法目录", "Algorithm directory"), inventory: t("安装声明与清单回归", "Installation metadata and census regressions"), "census-reference": t("采集器参考合同", "Collector reference contracts"), "information-native": t("量子信息 Native", "Native quantum information"), "information-qiskit": t("量子信息 Qiskit 参考", "Qiskit quantum-information references"), "prior-reference": t("此前算子参考", "Earlier operator references"), "compat-core": t("公共核心兼容", "Public core compatibility"), qasm: t("QASM 选定回归", "Selected QASM regressions") };
   const rows = current.reports.map(({profile,scope,report,recordedAt,checkpoint}) =>
@@ -127,9 +144,25 @@ function currentValidationView() {
     (Array.isArray(row.unadmitted_modules) ? row.unadmitted_modules : []).map(name =>
       `<li><code>${esc(row.profile)}</code><br><code>${esc(name)}</code></li>`));
   if (unadmitted.length) old = `<details id="unadmitted-validation"><summary class="failure">${t(`另有 ${unadmitted.length} 个模块进程的证据未获接收`, `Evidence from ${unadmitted.length} additional module workers was not admitted`)}</summary><ul>${unadmitted.join("")}</ul><p>${t("这些进程单独保留，不计入通过、跳过或函数验收。验证守卫拒绝的子进程不能作为数学测试结论。", "These workers remain separate, not passes, skips or function acceptance. A child rejected by the verification guard is not a mathematical test verdict.")}</p></details>`+old;
-  old = originalChildFollowupView()+old;
+  old = pendingIntegrationView(pending)+originalChildFollowupView()+old;
   const failureCounts = "Native: "+Object.entries(current.reviewCounts).map(([profile, count]) => `${profile}: ${count}`).join(" / ");
+  if(!current.reviewMatches)old=`<p class="failure" data-historical-core-failures>${t("上次冻结严格失败（不是本次重跑）", "Previously frozen strict failures (not re-executed here)")}: ${esc(failureCounts)} · ${date(current.batch.recorded_at)}<br>${t("源码相同也不代表测试上下文相同；输入脚本变化后，旧回执不会自动成为当前通过。", "Matching Native source alone does not match the test context. Changed input scripts do not refresh old receipts into current passes.")}</p>`+old;
   return `<section class="band" id="current-validation"><h2>${t("本地融合验证与远端 CI 分开验收", "Local fusion and remote CI have separate acceptance")}</h2><h3>${t("当前冻结源码的选定验证", "Selected verification of the current frozen source")}</h3><p>${date(current.batch.recorded_at)} · <code>${esc(manifest.source.fingerprint)}</code></p><p><code>${esc(current.batch.changed_entry || current.batch.checkpoint)}</code> · ${current.rows.length} ${t("条同源且环境回执已核验的进程记录", "source-matched worker records with verified environments")}</p><div class="table-wrap"><table><thead><tr><th>${t("环境", "Profile")}</th><th>${t("范围", "Scope")}</th><th>${t("实际结果", "Observed result")}</th></tr></thead><tbody>${rows}</tbody></table></div><p class="failure">${current.reviewMatches ? t(`选定严格失败：${failureCounts}；不是全库失败总数。`, `Selected strict failures: ${failureCounts}; not a whole-library failure total.`) : t("严格失败身份待重新核验。", "Strict-failure identity requires revalidation.")}</p><p>${t("各组存在重叠，不能相加为函数完成数。完整函数合同、全套门禁及真机验收仍未完成；核心修复尚未发布。", "Groups overlap: never add them as completed functions. Full contracts, full-suite and hardware gates remain open; core repairs are not yet published.")}</p>${old}<details id="historical-ci"><summary>${t("历史远端 CI：不认证本地融合代码", "Historical remote CI: not local-fusion acceptance")}</summary><p>${date(ci.observed_at)} · <a href="https://github.com/crystal-tensor/QuantumBridge/actions/runs/${ci.run_id}">GitHub Actions</a> · ${esc(ci.status)} / ${esc(ci.conclusion || "pending")}</p><p><a href="https://github.com/crystal-tensor/QuantumBridge/commit/${esc(repair.published_fix_commit)}"><code>${esc(repair.published_fix_commit)}</code></a></p><p>${t("该次 core-only：8276 通过、2550 跳过。保留原观测时间，不表示当前本地源码已通过。", "That core-only run: 8276 passed, 2550 skipped. Original observation time retained; not a pass for current local source.")}</p></details></section>`;
+}
+function pendingIntegrationView(pending) {
+  if (!pending) return "";
+  const { batch, scopes, sourceMatches } = pending;
+  const labels = {
+    resource_scope: t("资源回归", "Resource regressions"), new_runtime_scope: t("显式运行时", "Explicit runtime"),
+    lifecycle_scope: t("请求生命周期", "Request lifecycle"), default_original_scope: t("原严格组：默认入口", "Original strict group: default"),
+    explicit_opt_in_original_scope: t("原严格组：显式启用", "Original strict group: explicit opt-in"),
+    combined_new_scope: t("联合回归", "Combined regressions"), related_graph_scope: t("既有图执行", "Existing graph execution"),
+  };
+  const rows = batch.profiles.flatMap(profile => scopes.map(scope => {
+    const result = profile[scope];
+    return `<tr><td><code>${esc(profile.profile)}</code></td><td>${labels[scope]}</td><td>${result.passed} PASS / <span class="${result.failed ? "failure" : ""}">${result.failed} FAIL</span> / ${result.skipped} SKIP</td></tr>`;
+  })).join("");
+  return `<div id="pending-integration"><h3>${t("待集成局部验证", "Pending integration: scoped verification")}</h3><p>${date(batch.recorded_at)} · ${sourceMatches ? t("当前源码匹配", "Current source matched") : t("历史记录：源码已变化", "Historical record: source changed")}</p><p><code>${esc(batch.source_fingerprint)}</code></p><div class="table-wrap"><table><thead><tr><th>${t("环境", "Profile")}</th><th>${t("范围", "Scope")}</th><th>${t("实际结果", "Observed result")}</th></tr></thead><tbody>${rows}</tbody></table></div><p class="failure">${t("默认入口未切换；显式运行时的局部通过不等于默认路径修复。各组存在重叠，不计为完整函数数或全套通过。", "Default admission is unchanged. Scoped opt-in success is not a default-path repair. Groups overlap and are not full functions or full-suite acceptance.")}</p><p>${t("审计报告 SHA-256", "Audit report SHA-256")} <code>${esc(batch.independent_audit_report_sha256)}</code></p></div>`;
 }
 function originalChildFollowupView() {
   const followup = originalChildFollowup(manifest);
@@ -195,13 +228,9 @@ function namespaceAuditView() {
   return `<section class="band namespace-census"><h2>${t("递归命名空间候选", "Recursive namespace candidates")}</h2><p class="muted">${t("只读取安装包文件清单和哈希，未导入 SDK 模块。公开路径不等于公开 API；私有、测试路径及未安装包不自动排除。数量不能当作函数分母或完成率。", "Installed file metadata and hashes only; no SDK module imports. Public paths are not public API; private/test paths and absent packages are not automatically excluded. Counts are not a function denominator or completion rate.")}</p>${(manifest.namespace_census || []).map(audit => `<details><summary>${esc(audit.profile)} · ${fmt(audit.candidate_modules)} ${t("模块候选", "module candidates")}</summary><p>${date(audit.collected_at)} · ${fmt(audit.public_path_candidates)} ${t("公开路径候选，仅", "public-path candidates; only")} ${fmt(audit.public_path_runtime_inspected)} ${t("个已检视运行时导出", "with runtime exports inspected")}</p><div class="table-wrap"><table><thead><tr><th>${t("包", "Package")}</th><th>${t("版本", "Version")}</th><th>${t("模块候选", "Module candidates")}</th></tr></thead><tbody>${audit.packages.map(row => `<tr><td><code>${esc(row.name)}</code></td><td>${esc(row.version || t("未安装，仍在范围内", "Not installed; still in scope"))}</td><td>${row.available ? fmt(row.candidate_modules) : t("待清点", "Pending census")}</td></tr>`).join("")}</tbody></table></div><a href="./src/progress/data/${esc(audit.file)}" download>${ic("download")}${t("完整命名空间清单", "Full namespace inventory")} (.json.gz)</a><p>SHA-256 <code>${esc(audit.artifact_hash)}</code></p></details>`).join("")}</section>`;
 }
 function contractMigrationView() {
-  const migrations = new Map();
-  for (const run of manifest.verification || []) {
-    if (!run.source_match) continue;
-    for (const migration of run.approved_test_migrations || []) migrations.set(migration.file+":"+migration.after_sha256, migration);
-  }
-  if (!migrations.size) return "";
-  return `<section class="band"><h2>${t("经 owner 明确批准的合同迁移", "Owner-approved contract migrations")}</h2><p class="muted">${t("这些文件不计入“旧测试未改”数量。只迁移批准的案例；原数学输入、容差和数学断言保留，生产身份与资源保护不变。", "These files are excluded from unchanged-test counts. Only approved cases migrate; original mathematical inputs, tolerances and mathematical assertions remain, with production identity and resource protection unchanged.")}</p>${[...migrations.values()].map(migration => `<details><summary><code>${esc(migration.file)}</code> · ${migration.case_ids.length} ${t("项", "cases")}</summary><p>${esc(migration.approval_summary)}</p><dl><dt>${t("迁移前 SHA", "Before SHA")}</dt><dd><code>${esc(migration.before_sha256)}</code></dd><dt>${t("迁移后 SHA", "After SHA")}</dt><dd><code>${esc(migration.after_sha256)}</code></dd></dl><ul>${migration.case_ids.map(id => `<li><code>${esc(id)}</code></li>`).join("")}</ul></details>`).join("")}</section>`;
+  const migrations = approvedMigrations(manifest);
+  if (!migrations.rows.length) return "";
+  return `<section class="band"><h2>${t("经 owner 明确批准的合同迁移", "Owner-approved contract migrations")}</h2><p class="muted">${t("这些文件不计入“旧测试未改”数量。只迁移批准的案例；原数学输入、容差和数学断言保留，生产身份与资源保护不变。", "These files are excluded from unchanged-test counts. Only approved cases migrate; original mathematical inputs, tolerances and mathematical assertions remain, with production identity and resource protection unchanged.")}</p>${migrations.historicalOnly ? `<p>${t("历史授权记录：不是当前测试通过证据。", "Historical approval records: not current passing-test evidence.")} <code>${esc(migrations.sourceFingerprint)}</code></p>` : ""}${migrations.rows.map(migration => `<details><summary><code>${esc(migration.file)}</code> · ${migration.case_ids.length} ${t("项", "cases")}</summary><p>${esc(migration.approval_summary)}</p><dl><dt>${t("迁移前 SHA", "Before SHA")}</dt><dd><code>${esc(migration.before_sha256)}</code></dd><dt>${t("迁移后 SHA", "After SHA")}</dt><dd><code>${esc(migration.after_sha256)}</code></dd></dl><ul>${migration.case_ids.map(id => `<li><code>${esc(id)}</code></li>`).join("")}</ul></details>`).join("")}</section>`;
 }
 function diagnosticView() {
   const observations = manifest.diagnostic_observations || [];
@@ -228,7 +257,7 @@ async function renderView() {
     if (generation !== viewGeneration) return;
   }
   root.setAttribute("aria-busy", "false");
-  root.querySelector("#view").innerHTML = ({ overview, functions: functionView, domains: domainView, evidence: evidenceView, plan: planView }[state.tab])()+ (state.tab === "plan" ? runtimeAuditView()+namespaceAuditView() : state.tab === "evidence" ? diagnosticView()+contractMigrationView() : "");
+  root.querySelector("#view").innerHTML = ({ overview, functions: functionView, domains: domainView, evidence: evidenceView, plan: planView }[state.tab])()+ (state.tab === "plan" ? runtimeAuditView()+namespaceAuditView() : state.tab === "evidence" ? diagnosticView()+contractMigrationView() : state.tab === "overview" ? historicalArchiveView() : "");
   if(state.tab==="evidence")root.querySelector("#current-validation > p.failure")?.insertAdjacentHTML("afterend",referenceValidationView());
   const compiler = root.querySelector("#compiler-execution");
   const compilerRuns = (manifest.verification || []).filter(row => row.name.startsWith("compiler-matrix-"));
@@ -269,7 +298,8 @@ async function detail(id) {
       heading.textContent = t("验收边界", "Acceptance boundary");
       heading.nextElementSibling.textContent = t("验收限于下列固定版本、源码指纹及逐项合同。未扩展为完整 SDK、所有平台或夸父真机认证。", "Acceptance is bound to the pinned versions, source fingerprint and per-function contracts below, not the whole SDK, all platforms or Quafu hardware.");
     }
-    const scope=t(row.review.evidence_scope_zh || row.review.evidence_scope || "", row.review.evidence_scope || "");
+    const missingScope = t("尚未单独登记逐函数验证范围；批次证据不等于本函数完整验收。", "Per-function evidence scope is not yet registered; batch evidence does not certify this full function.");
+    const scope=t(row.review.evidence_scope_zh || row.review.evidence_scope || missingScope, row.review.evidence_scope || missingScope);
     const remaining=t(row.review.remaining_zh || row.review.remaining || "", row.review.remaining || "");
     if (accepted) {
       const bundle = new URL(`./data/function-contracts-${row.review.project_fingerprint}.json.gz`, import.meta.url);
@@ -302,6 +332,8 @@ root.addEventListener("input", event => { if (event.target.id !== "query") retur
 try {
   manifest = await json(new URL("./data/manifest-browser.json.gz", import.meta.url));
   history = await json(new URL("./data/history.json", import.meta.url));
+  try { archiveInfo = archiveDescriptor(await json(new URL("./data/history-archive.json", import.meta.url))); }
+  catch { archiveInfo = null; }
   await loadDataset("target"); shell();
   setInterval(() => { const stale = isStale(manifest.generated_at); if (stale && !root.querySelector(".snapshot .stale")) shell(); }, 60000);
 } catch (error) {

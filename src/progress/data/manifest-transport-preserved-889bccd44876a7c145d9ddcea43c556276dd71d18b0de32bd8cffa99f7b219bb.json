@@ -1,0 +1,40 @@
+{
+  "format": "quantumbridge.snapshot-transport.v1",
+  "purpose": "TRANSPORT_REPLAY_NOT_NEW_VERIFICATION",
+  "snapshot_identity": {
+    "generated_at": "2026-11-21T01:57:30.407547+00:00",
+    "source_fingerprint": "24203b97c0efc8d076ddb4707b3911f7c7702b9767b08004906233484d1dde68"
+  },
+  "original_json": {
+    "bytes": 674266394,
+    "sha256": "c9fce490b08dbaebdddabb1b919b0f648c332ddc8377fe12dd758ec303740791"
+  },
+  "compact_json": {
+    "bytes": 520264210,
+    "sha256": "616193d4161a2ccc3cc39a7fcbb70149b11daa25b97609beaa2d6e6748409c6f"
+  },
+  "original_gzip": {
+    "file": "manifest-24bacfc7c0c480cf7cd9fecadd406d129773a2a1a4750f53042a6dd3630b8461.json.gz",
+    "bytes": 32700597,
+    "sha256": "24bacfc7c0c480cf7cd9fecadd406d129773a2a1a4750f53042a6dd3630b8461"
+  },
+  "original_index": {
+    "bytes": 593,
+    "sha256": "5f88bd51c1b6fe1f59e6a774a4ae1c965dcfd3c97107a9fafddcc3728c29dd37",
+    "utf8": "{\n  \"public_snapshot_format\": \"quantumbridge.public-snapshot-gzip.v1\",\n  \"encoding\": \"gzip\",\n  \"file\": \"manifest-24bacfc7c0c480cf7cd9fecadd406d129773a2a1a4750f53042a6dd3630b8461.json.gz\",\n  \"bytes\": 674266394,\n  \"sha256\": \"c9fce490b08dbaebdddabb1b919b0f648c332ddc8377fe12dd758ec303740791\",\n  \"compressed_bytes\": 32700597,\n  \"compressed_sha256\": \"24bacfc7c0c480cf7cd9fecadd406d129773a2a1a4750f53042a6dd3630b8461\",\n  \"snapshot_identity\": {\n    \"generated_at\": \"2026-11-21T01:57:30.407547+00:00\",\n    \"source_fingerprint\": \"24203b97c0efc8d076ddb4707b3911f7c7702b9767b08004906233484d1dde68\"\n  }\n}\n"
+  },
+  "browser_assets": {
+    "manifest-browser.json.gz": {
+      "bytes": 31114,
+      "sha256": "59731553c7d9bcf8adc67e6710a2f37cfef631f97bb5a6ce565ac875b69acf54"
+    },
+    "manifest-evidence.json.gz": {
+      "bytes": 405,
+      "sha256": "28576464faaf9fb94d4954ea91ab86ada76aaa20cc3bc03468e72d41c2a24162"
+    }
+  },
+  "same_json_values": true,
+  "original_collection_time_unchanged": true,
+  "original_failures_and_receipts_retained": true,
+  "new_function_acceptances": 0
+}

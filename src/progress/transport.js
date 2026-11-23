@@ -1,4 +1,5 @@
-import { validDeferredManifestFields } from "./model.js?manifest=migration-pool-20261119";
+import { validDeferredManifestFields } from "./model.js?manifest=delivery-20261123";
+import { parseStructuredJSON } from "./structured-json.js?observer=delivery-20261123";
 
 const CHUNK_BYTES = 1024 * 1024;
 const CONCURRENCY = 8;
@@ -48,7 +49,7 @@ export async function verifiedEvidence(url, descriptor, options) {
   if (raw.length !== snapshot.original_bytes || await digest(raw) !== snapshot.original_sha256) {
     throw new Error("Deferred snapshot original bytes/hash differ");
   }
-  const value = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(raw));
+  const value = await parseStructuredJSON(raw, snapshot.json_structure);
   if (!value || Array.isArray(value) || Object.hasOwn(value, "public_snapshot_format") ||
       Object.hasOwn(value, "byte_view_format") || Object.hasOwn(value, "deferred_evidence") ||
       value.generated_at !== payload.generated_at || value.source?.fingerprint !== payload.source_fingerprint ||
