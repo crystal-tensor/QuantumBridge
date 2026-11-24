@@ -1,7 +1,7 @@
 {
   "format": "quantumbridge.engineering-history.v1",
   "purpose": "TRANSPORT_REPLAY_NOT_NEW_VERIFICATION",
-  "packed_at": "2026-11-24T14:43:40.795506+00:00",
+  "packed_at": "2026-11-24T18:50:21.972007+00:00",
   "original_evidence_unchanged": true,
   "new_function_acceptances": 0,
   "zlib_runtime": "1.2.12",
@@ -1084,6 +1084,26 @@
         "original_bytes": 784588,
         "original_sha256": "36679c3da488464b795ddeb9c64411ee028620d22ae60fc8aad58f503830480e",
         "original_file": "recipe-36679c3da488464b795ddeb9c64411ee028620d22ae60fc8aad58f503830480e.json"
+      }
+    },
+    {
+      "file": "manifest-4c609f8af992433ddc0f67bc9cc9a34b5d366cca98feef37dced42328140ebec.json.gz",
+      "bytes": 36971211,
+      "sha256": "4c609f8af992433ddc0f67bc9cc9a34b5d366cca98feef37dced42328140ebec",
+      "raw_bytes": 682989020,
+      "raw_sha256": "26f57af936fceb80b4756cb2868b5a08f268a2bd486b0b7964b91abb08a4eb1e",
+      "snapshot_identity": {
+        "generated_at": "2026-11-24T14:11:59.740696+00:00",
+        "source_fingerprint": "264fc0d0b2195e7e0bb8ea653a7dd4fa1d6e74211cc2d4e181840aefa87181f3"
+      },
+      "recipe": {
+        "file": "recipe-9bb85125579772b068d8298071853ea1bcbba4a204a057aa589aad9efbe56ded.json.gz",
+        "bytes": 8558,
+        "sha256": "9bb85125579772b068d8298071853ea1bcbba4a204a057aa589aad9efbe56ded",
+        "encoding": "gzip-json",
+        "original_bytes": 25935,
+        "original_sha256": "811eb284b36b1b9ee9493270884fa937ef1f8037e8e1ac50738636549841f655",
+        "original_file": "recipe-811eb284b36b1b9ee9493270884fa937ef1f8037e8e1ac50738636549841f655.json"
       }
     }
   ],
@@ -158612,6 +158632,17 @@
       }
     },
     {
+      "file": "catalog-59fa1371a6ce467bb71d4c8096293750dea5620dc580433407cc7d8417e6a07d.json",
+      "bytes": 7553197,
+      "sha256": "59fa1371a6ce467bb71d4c8096293750dea5620dc580433407cc7d8417e6a07d",
+      "transport": {
+        "file": "catalog-bce764400b9039ee6b9b7c1c3a946adf32aa4f64c0e5f85a437464e98a5ce877.json.gz",
+        "bytes": 1530374,
+        "sha256": "bce764400b9039ee6b9b7c1c3a946adf32aa4f64c0e5f85a437464e98a5ce877",
+        "encoding": "gzip-bytes"
+      }
+    },
+    {
       "file": "catalog-9319e7ed938989da4f0ec83967e93567fea301b8fe6de4a10426d9b3ee7f5b98.json",
       "bytes": 54619,
       "sha256": "9319e7ed938989da4f0ec83967e93567fea301b8fe6de4a10426d9b3ee7f5b98",
@@ -159153,21 +159184,7 @@
       "worker_sha256": "9be183d472d6ac98fe0469c7063e15cc9e9960f7b14a60af8afd53b153f8e8ab",
       "recorded_at": "2026-11-24T14:57:48.228009+00:00",
       "zlib_runtime": "1.2.12"
-    }
-  ],
-  "summary": {
-    "original_files": 54,
-    "unique_originals": 48,
-    "original_bytes": 1297228901,
-    "unique_chunks": 15353,
-    "chunk_bytes": 190463851,
-    "metadata_bytes": 20467323,
-    "legacy_transports": 9843,
-    "original_identities_failures_and_dates_unchanged": true,
-    "original_metadata_bytes": 49842533
-  },
-  "metadata_transport_updated_at": "2026-11-24T16:29:18.931911+00:00",
-  "reconstruction_attestations": [
+    },
     {
       "profile": "main",
       "terminal_exit": 0,
@@ -159198,6 +159215,52 @@
       "tool_sha256": "82061d1a3cc90bceb65a7f20f99fb6ad24622c093754ad2d15b11d6de67c2416",
       "worker_sha256": "ecaa49f2fcc1f28af28664ab18648d6d30dc17145e9c7e720425388a8f0be418",
       "recorded_at": "2026-11-24T16:35:51.699474+00:00",
+      "zlib_runtime": "1.2.12"
+    }
+  ],
+  "summary": {
+    "original_files": 55,
+    "unique_originals": 49,
+    "original_bytes": 1334200112,
+    "unique_chunks": 15435,
+    "chunk_bytes": 199044071,
+    "metadata_bytes": 21997697,
+    "legacy_transports": 9843,
+    "original_identities_failures_and_dates_unchanged": true,
+    "original_metadata_bytes": 57395730
+  },
+  "metadata_transport_updated_at": "2026-11-24T16:29:18.931911+00:00",
+  "reconstruction_attestations": [
+    {
+      "profile": "main",
+      "terminal_exit": 0,
+      "original_files": 55,
+      "originals_binding_sha256": "96851b4bfcf750d4f32b4d1c5bb01ed86ccc2c89300e068fa775facf393f19d8",
+      "auxiliary_binding_sha256": "c8f341970a0ca612bd18c7cf4d65236ca1db191b176f556446497b34cd409dec",
+      "legacy_transports": 9843,
+      "retained_metadata_files": 102,
+      "exact_legacy_transports_verified": true,
+      "exact_compressed_bytes_verified": true,
+      "terminal_receipt_sha256": "c93530852061b8dc1ded7fcd7b9da00089056acd79f2205db1e5db02988c8371",
+      "tool_sha256": "82061d1a3cc90bceb65a7f20f99fb6ad24622c093754ad2d15b11d6de67c2416",
+      "worker_sha256": "71f9df3ac0b34b426a1064afce406d53cb024a6033ae661bb90197ce9b11fbfc",
+      "recorded_at": "2026-11-24T18:57:43.266974+00:00",
+      "zlib_runtime": "1.2.12"
+    },
+    {
+      "profile": "alternate",
+      "terminal_exit": 0,
+      "original_files": 55,
+      "originals_binding_sha256": "96851b4bfcf750d4f32b4d1c5bb01ed86ccc2c89300e068fa775facf393f19d8",
+      "auxiliary_binding_sha256": "c8f341970a0ca612bd18c7cf4d65236ca1db191b176f556446497b34cd409dec",
+      "legacy_transports": 9843,
+      "retained_metadata_files": 102,
+      "exact_legacy_transports_verified": true,
+      "exact_compressed_bytes_verified": true,
+      "terminal_receipt_sha256": "c3778602f09364561ae496b3bfffdab59ad77b1f4352e0df5fed3837d4290301",
+      "tool_sha256": "82061d1a3cc90bceb65a7f20f99fb6ad24622c093754ad2d15b11d6de67c2416",
+      "worker_sha256": "71f9df3ac0b34b426a1064afce406d53cb024a6033ae661bb90197ce9b11fbfc",
+      "recorded_at": "2026-11-24T19:02:56.814003+00:00",
       "zlib_runtime": "1.2.12"
     }
   ]
