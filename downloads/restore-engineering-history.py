@@ -234,6 +234,15 @@ def validate_catalog(catalog):
     names = set()
     for item in metadata:
         descriptor(item, MAX_INDEX, METADATA)
+        if 'transport' in item:
+            transport = item['transport']
+            descriptor(transport, MAX_INDEX)
+            prefix = item['file'].split('-', 1)[0]+'-'
+            if (transport.get('encoding') != 'gzip-bytes'
+                    or not transport['file'].startswith(prefix)
+                    or not transport['file'].endswith('.json.gz')
+                    or 'transport' in transport):
+                raise ValueError('Invalid retained metadata transport')
         if item['file'] in names:
             raise ValueError('Repeated retained historical metadata')
         names.add(item['file'])
@@ -245,6 +254,15 @@ def checked(store, item, limit):
     if len(body) != item['bytes'] or sha(body) != item['sha256']:
         raise ValueError('Artifact hash or size differs')
     return body
+
+
+def metadata_bytes(store, item):
+    if 'transport' not in item:
+        return checked(store, item, MAX_INDEX)
+    raw = inflate(checked(store, item['transport'], MAX_INDEX), item['bytes'])
+    if len(raw) != item['bytes'] or sha(raw) != item['sha256']:
+        raise ValueError('Original retained metadata identity differs')
+    return raw
 
 
 def recipe_for(store, entry):
@@ -327,7 +345,7 @@ def restore_asset(store, catalog, filename, destination=None):
     validate_catalog(catalog)
     metadata = next((row for row in catalog.get('retained_metadata', []) if row['file'] == filename), None)
     if metadata is not None:
-        body = checked(store, metadata, MAX_INDEX)
+        body = metadata_bytes(store, metadata)
     else:
         alias = next((row for row in catalog.get('legacy_chunk_transports', []) if row['file'] == filename), None)
         if alias is None:
@@ -356,9 +374,13 @@ def repack(catalog_source, destination, *, progress=None):
     entries, known_files, known_raw, aliases, metadata = [], {}, {}, {}, {}
 
     def retain(item):
-        body = checked(source, item, MAX_INDEX)
-        immutable(destination/item['file'], body)
-        metadata[item['file']] = {key: item[key] for key in ('file', 'bytes', 'sha256')}
+        if 'transport' in item:
+            metadata_bytes(source, item)
+            transport = item['transport']
+            immutable(destination/transport['file'], checked(source, transport, MAX_INDEX))
+        else:
+            immutable(destination/item['file'], checked(source, item, MAX_INDEX))
+        metadata[item['file']] = {key: item[key] for key in ('file', 'bytes', 'sha256', 'transport') if key in item}
 
     for item in old.get('retained_metadata', []):
         retain(item)

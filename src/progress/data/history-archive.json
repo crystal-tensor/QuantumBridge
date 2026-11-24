@@ -1,8 +1,8 @@
 {
   "format": "quantumbridge.engineering-history-pointer.v1",
-  "file": "history/catalog-bddeb8dd353142f63947dc4b0dcb9ee8bc4bea7f8571fbf76e9e825878708f23.json",
-  "bytes": 7453742,
-  "sha256": "bddeb8dd353142f63947dc4b0dcb9ee8bc4bea7f8571fbf76e9e825878708f23",
+  "file": "history/catalog-59fa1371a6ce467bb71d4c8096293750dea5620dc580433407cc7d8417e6a07d.json",
+  "bytes": 7553197,
+  "sha256": "59fa1371a6ce467bb71d4c8096293750dea5620dc580433407cc7d8417e6a07d",
   "replayIsNotNewVerification": true,
   "newFunctionAcceptances": 0
 }

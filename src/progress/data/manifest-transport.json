@@ -2,35 +2,35 @@
   "format": "quantumbridge.snapshot-transport.v1",
   "purpose": "TRANSPORT_REPLAY_NOT_NEW_VERIFICATION",
   "snapshot_identity": {
-    "generated_at": "2026-11-24T07:25:28.057164+00:00",
-    "source_fingerprint": "7a907e7119028d2ebe39988c21a8b75f47404d88ddf85fc7c0ee736d95772d71"
+    "generated_at": "2026-11-24T14:11:59.740696+00:00",
+    "source_fingerprint": "264fc0d0b2195e7e0bb8ea653a7dd4fa1d6e74211cc2d4e181840aefa87181f3"
   },
   "original_json": {
-    "bytes": 671001139,
-    "sha256": "ec946ef19d496fb30b6a840c732dff103c044c8318688954f7ebfd8d44e2dc9f"
+    "bytes": 682989020,
+    "sha256": "26f57af936fceb80b4756cb2868b5a08f268a2bd486b0b7964b91abb08a4eb1e"
   },
   "compact_json": {
-    "bytes": 671001139,
-    "sha256": "ec946ef19d496fb30b6a840c732dff103c044c8318688954f7ebfd8d44e2dc9f"
+    "bytes": 682989020,
+    "sha256": "26f57af936fceb80b4756cb2868b5a08f268a2bd486b0b7964b91abb08a4eb1e"
   },
   "original_gzip": {
-    "file": "manifest-74f63baed6b507d4eefd24d1f4593abb8093c92b8ef09aebc09e7e60864cffbc.json.gz",
-    "bytes": 36182993,
-    "sha256": "74f63baed6b507d4eefd24d1f4593abb8093c92b8ef09aebc09e7e60864cffbc"
+    "file": "manifest-4c609f8af992433ddc0f67bc9cc9a34b5d366cca98feef37dced42328140ebec.json.gz",
+    "bytes": 36971211,
+    "sha256": "4c609f8af992433ddc0f67bc9cc9a34b5d366cca98feef37dced42328140ebec"
   },
   "original_index": {
     "bytes": 593,
-    "sha256": "d5fe37e96111e3269fcbfa034a02fc266bedd5e822512855be5d53308d008bbf",
-    "utf8": "{\n  \"public_snapshot_format\": \"quantumbridge.public-snapshot-gzip.v1\",\n  \"encoding\": \"gzip\",\n  \"file\": \"manifest-74f63baed6b507d4eefd24d1f4593abb8093c92b8ef09aebc09e7e60864cffbc.json.gz\",\n  \"bytes\": 671001139,\n  \"sha256\": \"ec946ef19d496fb30b6a840c732dff103c044c8318688954f7ebfd8d44e2dc9f\",\n  \"compressed_bytes\": 36182993,\n  \"compressed_sha256\": \"74f63baed6b507d4eefd24d1f4593abb8093c92b8ef09aebc09e7e60864cffbc\",\n  \"snapshot_identity\": {\n    \"generated_at\": \"2026-11-24T07:25:28.057164+00:00\",\n    \"source_fingerprint\": \"7a907e7119028d2ebe39988c21a8b75f47404d88ddf85fc7c0ee736d95772d71\"\n  }\n}\n"
+    "sha256": "71004845216d6f0ac2f915c453f89c56b834f13be8dd7ec6fe93a3a3772f798a",
+    "utf8": "{\n  \"public_snapshot_format\": \"quantumbridge.public-snapshot-gzip.v1\",\n  \"encoding\": \"gzip\",\n  \"file\": \"manifest-4c609f8af992433ddc0f67bc9cc9a34b5d366cca98feef37dced42328140ebec.json.gz\",\n  \"bytes\": 682989020,\n  \"sha256\": \"26f57af936fceb80b4756cb2868b5a08f268a2bd486b0b7964b91abb08a4eb1e\",\n  \"compressed_bytes\": 36971211,\n  \"compressed_sha256\": \"4c609f8af992433ddc0f67bc9cc9a34b5d366cca98feef37dced42328140ebec\",\n  \"snapshot_identity\": {\n    \"generated_at\": \"2026-11-24T14:11:59.740696+00:00\",\n    \"source_fingerprint\": \"264fc0d0b2195e7e0bb8ea653a7dd4fa1d6e74211cc2d4e181840aefa87181f3\"\n  }\n}\n"
   },
   "browser_assets": {
     "manifest-browser.json.gz": {
-      "bytes": 31874,
-      "sha256": "7b9016d0f060d8ceaf9de1af4e63150d8c23720691d31a5f2e98c939e8e5bb2a"
+      "bytes": 31868,
+      "sha256": "99577e367c9f59205eb7dfdb233632e7f4f464d200375858e70488fbada868b0"
     },
     "manifest-evidence.json.gz": {
-      "bytes": 248784,
-      "sha256": "4dce9ff63153d1c20210a427ee25676febf405d4aa6f0e94e6be11725ce30d81"
+      "bytes": 250003,
+      "sha256": "9f3c08db895d6133f613a9a9ec31e040d010ccad780c259b2cff4e514a4a2176"
     }
   },
   "same_json_values": true,
@@ -39,12 +39,12 @@
   "new_function_acceptances": 0,
   "structured_json_transport": {
     "format": "quantumbridge.structured-json.v1",
-    "index_sha256": "23ae1725dfc193f125646a73d41af10e5460f8e211bfc7c3f28724f90952f885",
+    "index_sha256": "02388e338a7eed5834b7fbc709d87edfc5f3944980039361ec46c7c8d159327a",
     "leaf_byte_limit": 8388608,
     "largest_leaf_bytes": 8160738,
-    "nodes": 24795,
+    "nodes": 24879,
     "complete_snapshot_bytes_unchanged": true,
-    "complete_download_sha256": "74f63baed6b507d4eefd24d1f4593abb8093c92b8ef09aebc09e7e60864cffbc",
+    "complete_download_sha256": "4c609f8af992433ddc0f67bc9cc9a34b5d366cca98feef37dced42328140ebec",
     "new_function_acceptances": 0,
     "original_evidence_dates_unchanged": true
   }
