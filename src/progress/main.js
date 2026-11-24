@@ -1,7 +1,7 @@
 import { domains, directions } from "../framework/data.js";
 import { resources, engineeringReviewDownload, resourceHref } from "../framework/resources.js?observer=20261119-review";
 import { statuses, statusNames, countStatuses, filterRows, aggregate, isStale, verificationWindow, currentVerification, pendingIntegration, approvedMigrations, abnormalObservations, originalChildFollowup, decodeDataset, restoreManifest, fullContractReview } from "./model.js?manifest=delivery-20261123";
-import { verifiedJSON, verifiedEvidence } from "./transport.js?http=delivery-20261123";
+import { verifiedJSON, verifiedEvidence } from "./transport.js?http=delivery-20261124";
 import { scheduleIconLibrary } from "../icon-library.js";
 import { restoreMigrationPool } from "./migration-pool.js?observer=delivery-20261123";
 import { archiveDescriptor } from "./history.js?observer=delivery-20261123";

@@ -3,6 +3,8 @@ import { parseStructuredJSON } from "./structured-json.js?observer=delivery-2026
 
 const CHUNK_BYTES = 1024 * 1024;
 const CONCURRENCY = 8;
+const DEFAULT_CONCURRENCY = 2;
+const REQUEST_TIMEOUT_MS = 60000;
 const MAX_ORIGINAL = 4 * 1024 ** 3;
 const digest = async bytes => [...new Uint8Array(await crypto.subtle.digest("SHA-256", bytes))].map(value => value.toString(16).padStart(2, "0")).join("");
 const positiveSize = (value, limit) => Number.isSafeInteger(value) && value > 0 && value <= limit;
@@ -64,7 +66,7 @@ function byteLength(value) {
 
 async function transferBytes(fetcher, target, options, validate) {
   for (let attempt = 0; attempt < 3; attempt++) {
-    const signal = options.signal ? AbortSignal.any([options.signal, AbortSignal.timeout(20000)]) : AbortSignal.timeout(20000);
+    const signal = options.signal ? AbortSignal.any([options.signal, AbortSignal.timeout(REQUEST_TIMEOUT_MS)]) : AbortSignal.timeout(REQUEST_TIMEOUT_MS);
     try {
       const response = await fetcher(target, { ...options, signal });
       validate(response);
@@ -77,7 +79,7 @@ async function transferBytes(fetcher, target, options, validate) {
   }
 }
 
-export async function verifiedBytes(url, descriptor, { fetcher = globalThis.fetch, chunkBytes = CHUNK_BYTES, concurrency = CONCURRENCY } = {}) {
+export async function verifiedBytes(url, descriptor, { fetcher = globalThis.fetch, chunkBytes = CHUNK_BYTES, concurrency = DEFAULT_CONCURRENCY } = {}) {
   if (!/^[0-9a-f]{64}$/.test(descriptor.sha256 || "")) throw new Error("Missing artifact SHA-256");
   if (!Number.isSafeInteger(chunkBytes) || chunkBytes < 1 || !Number.isSafeInteger(concurrency) || concurrency < 1 || concurrency > CONCURRENCY) throw new Error("Invalid transfer bounds");
   const target = new URL(url);
@@ -87,7 +89,7 @@ export async function verifiedBytes(url, descriptor, { fetcher = globalThis.fetc
   if (size !== null && (!Number.isSafeInteger(size) || size < 1)) throw new Error("Invalid artifact size");
   let ranged = false;
   try {
-    const head = await fetcher(target, { ...options, method: "HEAD", signal: AbortSignal.timeout(20000) });
+    const head = await fetcher(target, { ...options, method: "HEAD", signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) });
     if (head.ok && (!head.headers.get("content-encoding") || head.headers.get("content-encoding").toLowerCase() === "identity")) {
       const observed = byteLength(head.headers.get("content-length"));
       if (size !== null && observed !== null && size !== observed) throw new Error("Artifact size mismatch");
