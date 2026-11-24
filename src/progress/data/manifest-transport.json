@@ -2,35 +2,35 @@
   "format": "quantumbridge.snapshot-transport.v1",
   "purpose": "TRANSPORT_REPLAY_NOT_NEW_VERIFICATION",
   "snapshot_identity": {
-    "generated_at": "2026-11-23T07:08:41.043873+00:00",
-    "source_fingerprint": "9e87234e6afa34b4f53884ca98601f0ec91312f278101c5e20271b8cc8a176db"
+    "generated_at": "2026-11-24T07:25:28.057164+00:00",
+    "source_fingerprint": "7a907e7119028d2ebe39988c21a8b75f47404d88ddf85fc7c0ee736d95772d71"
   },
   "original_json": {
-    "bytes": 666531874,
-    "sha256": "e782592920128afa45aba9dff9c436c715be94672c8e7588136c26970a41baf7"
+    "bytes": 671001139,
+    "sha256": "ec946ef19d496fb30b6a840c732dff103c044c8318688954f7ebfd8d44e2dc9f"
   },
   "compact_json": {
-    "bytes": 666531874,
-    "sha256": "e782592920128afa45aba9dff9c436c715be94672c8e7588136c26970a41baf7"
+    "bytes": 671001139,
+    "sha256": "ec946ef19d496fb30b6a840c732dff103c044c8318688954f7ebfd8d44e2dc9f"
   },
   "original_gzip": {
-    "file": "manifest-cbd1ecaddf4aacd9589bbcd2d4bda73e80379204c9877ebce77d390cc71625f9.json.gz",
-    "bytes": 35949140,
-    "sha256": "cbd1ecaddf4aacd9589bbcd2d4bda73e80379204c9877ebce77d390cc71625f9"
+    "file": "manifest-74f63baed6b507d4eefd24d1f4593abb8093c92b8ef09aebc09e7e60864cffbc.json.gz",
+    "bytes": 36182993,
+    "sha256": "74f63baed6b507d4eefd24d1f4593abb8093c92b8ef09aebc09e7e60864cffbc"
   },
   "original_index": {
     "bytes": 593,
-    "sha256": "06dde467f21b3cf75f62a204aaff6c3d31f2602f51dd4b6f5a636d94e66dd696",
-    "utf8": "{\n  \"public_snapshot_format\": \"quantumbridge.public-snapshot-gzip.v1\",\n  \"encoding\": \"gzip\",\n  \"file\": \"manifest-cbd1ecaddf4aacd9589bbcd2d4bda73e80379204c9877ebce77d390cc71625f9.json.gz\",\n  \"bytes\": 666531874,\n  \"sha256\": \"e782592920128afa45aba9dff9c436c715be94672c8e7588136c26970a41baf7\",\n  \"compressed_bytes\": 35949140,\n  \"compressed_sha256\": \"cbd1ecaddf4aacd9589bbcd2d4bda73e80379204c9877ebce77d390cc71625f9\",\n  \"snapshot_identity\": {\n    \"generated_at\": \"2026-11-23T07:08:41.043873+00:00\",\n    \"source_fingerprint\": \"9e87234e6afa34b4f53884ca98601f0ec91312f278101c5e20271b8cc8a176db\"\n  }\n}\n"
+    "sha256": "d5fe37e96111e3269fcbfa034a02fc266bedd5e822512855be5d53308d008bbf",
+    "utf8": "{\n  \"public_snapshot_format\": \"quantumbridge.public-snapshot-gzip.v1\",\n  \"encoding\": \"gzip\",\n  \"file\": \"manifest-74f63baed6b507d4eefd24d1f4593abb8093c92b8ef09aebc09e7e60864cffbc.json.gz\",\n  \"bytes\": 671001139,\n  \"sha256\": \"ec946ef19d496fb30b6a840c732dff103c044c8318688954f7ebfd8d44e2dc9f\",\n  \"compressed_bytes\": 36182993,\n  \"compressed_sha256\": \"74f63baed6b507d4eefd24d1f4593abb8093c92b8ef09aebc09e7e60864cffbc\",\n  \"snapshot_identity\": {\n    \"generated_at\": \"2026-11-24T07:25:28.057164+00:00\",\n    \"source_fingerprint\": \"7a907e7119028d2ebe39988c21a8b75f47404d88ddf85fc7c0ee736d95772d71\"\n  }\n}\n"
   },
   "browser_assets": {
     "manifest-browser.json.gz": {
-      "bytes": 31323,
-      "sha256": "06aac4c7824c9a933ae1019fb60bfe9a363f55b6eb1e5a3174f536c66fa27ded"
+      "bytes": 31874,
+      "sha256": "7b9016d0f060d8ceaf9de1af4e63150d8c23720691d31a5f2e98c939e8e5bb2a"
     },
     "manifest-evidence.json.gz": {
-      "bytes": 247874,
-      "sha256": "3e1f4634b1902bb0649d5463d8ec7e363ed6e923fffd4ebbc934af341d0ce48f"
+      "bytes": 248784,
+      "sha256": "4dce9ff63153d1c20210a427ee25676febf405d4aa6f0e94e6be11725ce30d81"
     }
   },
   "same_json_values": true,
@@ -39,12 +39,12 @@
   "new_function_acceptances": 0,
   "structured_json_transport": {
     "format": "quantumbridge.structured-json.v1",
-    "index_sha256": "0e3e3bbd9d28afde68e4bbbdb1149181095dc25f39d57f0a945bf2cc6c8f6039",
+    "index_sha256": "23ae1725dfc193f125646a73d41af10e5460f8e211bfc7c3f28724f90952f885",
     "leaf_byte_limit": 8388608,
     "largest_leaf_bytes": 8160738,
-    "nodes": 24677,
+    "nodes": 24795,
     "complete_snapshot_bytes_unchanged": true,
-    "complete_download_sha256": "cbd1ecaddf4aacd9589bbcd2d4bda73e80379204c9877ebce77d390cc71625f9",
+    "complete_download_sha256": "74f63baed6b507d4eefd24d1f4593abb8093c92b8ef09aebc09e7e60864cffbc",
     "new_function_acceptances": 0,
     "original_evidence_dates_unchanged": true
   }

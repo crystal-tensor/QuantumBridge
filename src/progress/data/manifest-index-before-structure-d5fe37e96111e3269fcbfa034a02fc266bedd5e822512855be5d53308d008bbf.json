@@ -1,0 +1,13 @@
+{
+  "public_snapshot_format": "quantumbridge.public-snapshot-gzip.v1",
+  "encoding": "gzip",
+  "file": "manifest-74f63baed6b507d4eefd24d1f4593abb8093c92b8ef09aebc09e7e60864cffbc.json.gz",
+  "bytes": 671001139,
+  "sha256": "ec946ef19d496fb30b6a840c732dff103c044c8318688954f7ebfd8d44e2dc9f",
+  "compressed_bytes": 36182993,
+  "compressed_sha256": "74f63baed6b507d4eefd24d1f4593abb8093c92b8ef09aebc09e7e60864cffbc",
+  "snapshot_identity": {
+    "generated_at": "2026-11-24T07:25:28.057164+00:00",
+    "source_fingerprint": "7a907e7119028d2ebe39988c21a8b75f47404d88ddf85fc7c0ee736d95772d71"
+  }
+}
