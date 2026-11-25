@@ -1,3 +1,4 @@
+# Published catalog-transport extension of own source SHA-256: 82061d1a3cc90bceb65a7f20f99fb6ad24622c093754ad2d15b11d6de67c2416
 """Lossless historical transport. Replaying an archive is not new verification.
 
 The downloadable copy needs only Python's standard library to list and restore
@@ -178,6 +179,12 @@ class Store:
 
     def load(self):
         body = self.fetch(self.catalog if self.remote else Path(self.catalog), MAX_INDEX)
+        if str(self.catalog).endswith('.json.gz'):
+            name = urlsplit(self.catalog).path.rsplit('/', 1)[-1]
+            if name != 'catalog-'+sha(body)+'.json.gz':
+                raise ValueError('Compressed catalog filename or hash differs')
+            body = inflate(body, MAX_INDEX)
+        self._original_catalog_bytes = body
         value = read_json(body)
         validate_catalog(value)
         return value
@@ -343,6 +350,11 @@ def restore(store, entry, destination=None):
 def restore_asset(store, catalog, filename, destination=None):
     """Recover an exact superseded transport, not merely equivalent JSON."""
     validate_catalog(catalog)
+    current = getattr(store, '_original_catalog_bytes', b'')
+    if current and filename == 'catalog-'+sha(current)+'.json':
+        if destination is not None:
+            immutable(Path(destination)/filename, current)
+        return current
     metadata = next((row for row in catalog.get('retained_metadata', []) if row['file'] == filename), None)
     if metadata is not None:
         body = metadata_bytes(store, metadata)

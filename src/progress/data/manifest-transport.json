@@ -2,50 +2,50 @@
   "format": "quantumbridge.snapshot-transport.v2",
   "purpose": "TRANSPORT_REPLAY_NOT_NEW_VERIFICATION",
   "snapshot_identity": {
-    "generated_at": "2026-11-25T09:55:21.863239+00:00",
-    "source_fingerprint": "aa6283bc17450e0f4f5d5b1519955a8061ecc3173184c7ffbac8f4f406c4409b"
+    "generated_at": "2026-11-25T16:31:22.721739+00:00",
+    "source_fingerprint": "736fbd3dde71d27d86ac263f969f43936863195511cfc00ea2e7d71ab4273ee8"
   },
   "compact_json": {
-    "bytes": 722654832,
-    "sha256": "df227be14aabe6a8ced12bef688c538e2c90b0aca8b9a035612bcd2011d1e232"
+    "bytes": 742030862,
+    "sha256": "bbdcba0d9fdf546cfebd82ad95981c4dae719e6b0be6f9db3146a2d65dc7ca23"
   },
   "original_json": {
-    "bytes": 722654832,
-    "sha256": "df227be14aabe6a8ced12bef688c538e2c90b0aca8b9a035612bcd2011d1e232"
+    "bytes": 742030862,
+    "sha256": "bbdcba0d9fdf546cfebd82ad95981c4dae719e6b0be6f9db3146a2d65dc7ca23"
   },
   "original_index": {
-    "file": "manifest-full-index-d2d0f7e1a72df4220da67496802691b4b1fe5e856780049d2ce333d86c25bc3d.json.gz",
+    "file": "manifest-full-index-fab270da00ecb0ccd7851120b0830476d04fa3af721bc353e4fa98d6cc83df3c.json.gz",
     "bytes": 593,
-    "sha256": "d2d0f7e1a72df4220da67496802691b4b1fe5e856780049d2ce333d86c25bc3d",
+    "sha256": "fab270da00ecb0ccd7851120b0830476d04fa3af721bc353e4fa98d6cc83df3c",
     "encoding": "gzip-bytes"
   },
   "current_index": {
     "file": "manifest.json",
     "bytes": 809,
-    "sha256": "ef41f21ca26c1834b3352bc5c4989374660606aabaefa46bfdb1a9607319ec9d"
+    "sha256": "1783f1e6d2bf7dd3b4f3f6cf02e8308e054848c2faa5f2a4ad19923eaaab46eb"
   },
   "complete_download": {
     "file": "manifest.json.gz",
-    "bytes": 36766484,
-    "sha256": "d301adb377cd3beede9cafce98c4c04914dfeb0162ea907464d88e4c1371e8b2"
+    "bytes": 37850802,
+    "sha256": "6c0cbf4ab601a8e5169a1f51f177a354e993731c0e45f6bf6dc3d70e3799657e"
   },
   "previous_base": {
-    "file": "manifest-index-8f6b9ad16ed378b705ed0643b02176ac770f229d04fbe597eb35fba52b66796d.json.gz",
-    "bytes": 602763,
-    "sha256": "8f6b9ad16ed378b705ed0643b02176ac770f229d04fbe597eb35fba52b66796d",
+    "file": "manifest-index-d47b755c0144c3931a2694f88e461b9618df83e40844a12ae83e77eb756f6729.json.gz",
+    "bytes": 638870,
+    "sha256": "d47b755c0144c3931a2694f88e461b9618df83e40844a12ae83e77eb756f6729",
     "snapshot_identity": {
-      "generated_at": "2026-11-25T05:08:34.152256+00:00",
-      "source_fingerprint": "7c37165a4f81fc2751911cea5149d4037c38c90ab24f7181e16465435362d6b5"
+      "generated_at": "2026-11-25T09:55:21.863239+00:00",
+      "source_fingerprint": "aa6283bc17450e0f4f5d5b1519955a8061ecc3173184c7ffbac8f4f406c4409b"
     },
     "representation": "compound_byte_view_index",
-    "restored_original_bytes": 715546056,
-    "restored_original_sha256": "e74704807a2c920eb88373892730f9566d7c09e8611290dcf6966de7af824c15",
-    "source_count": 6
+    "restored_original_bytes": 722654832,
+    "restored_original_sha256": "df227be14aabe6a8ced12bef688c538e2c90b0aca8b9a035612bcd2011d1e232",
+    "source_count": 8
   },
   "prior_encoding_receipt": {
-    "file": "manifest-transport-9cc9c5b1adb603105c917373d98406a89f87d65781bbe9b2e91919a1428359bb.json",
+    "file": "manifest-transport-3471070a33136db3421456985d72a5463d62779811198e4d3350688889ab7bfd.json",
     "bytes": 2359,
-    "sha256": "9cc9c5b1adb603105c917373d98406a89f87d65781bbe9b2e91919a1428359bb"
+    "sha256": "3471070a33136db3421456985d72a5463d62779811198e4d3350688889ab7bfd"
   },
   "structured_json_transport": {
     "complete_snapshot_bytes_unchanged": true,

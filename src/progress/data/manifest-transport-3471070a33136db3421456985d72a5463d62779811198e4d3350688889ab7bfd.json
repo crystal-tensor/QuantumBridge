@@ -1,0 +1,60 @@
+{
+  "format": "quantumbridge.snapshot-transport.v2",
+  "purpose": "TRANSPORT_REPLAY_NOT_NEW_VERIFICATION",
+  "snapshot_identity": {
+    "generated_at": "2026-11-25T09:55:21.863239+00:00",
+    "source_fingerprint": "aa6283bc17450e0f4f5d5b1519955a8061ecc3173184c7ffbac8f4f406c4409b"
+  },
+  "compact_json": {
+    "bytes": 722654832,
+    "sha256": "df227be14aabe6a8ced12bef688c538e2c90b0aca8b9a035612bcd2011d1e232"
+  },
+  "original_json": {
+    "bytes": 722654832,
+    "sha256": "df227be14aabe6a8ced12bef688c538e2c90b0aca8b9a035612bcd2011d1e232"
+  },
+  "original_index": {
+    "file": "manifest-full-index-d2d0f7e1a72df4220da67496802691b4b1fe5e856780049d2ce333d86c25bc3d.json.gz",
+    "bytes": 593,
+    "sha256": "d2d0f7e1a72df4220da67496802691b4b1fe5e856780049d2ce333d86c25bc3d",
+    "encoding": "gzip-bytes"
+  },
+  "current_index": {
+    "file": "manifest.json",
+    "bytes": 809,
+    "sha256": "ef41f21ca26c1834b3352bc5c4989374660606aabaefa46bfdb1a9607319ec9d"
+  },
+  "complete_download": {
+    "file": "manifest.json.gz",
+    "bytes": 36766484,
+    "sha256": "d301adb377cd3beede9cafce98c4c04914dfeb0162ea907464d88e4c1371e8b2"
+  },
+  "previous_base": {
+    "file": "manifest-index-8f6b9ad16ed378b705ed0643b02176ac770f229d04fbe597eb35fba52b66796d.json.gz",
+    "bytes": 602763,
+    "sha256": "8f6b9ad16ed378b705ed0643b02176ac770f229d04fbe597eb35fba52b66796d",
+    "snapshot_identity": {
+      "generated_at": "2026-11-25T05:08:34.152256+00:00",
+      "source_fingerprint": "7c37165a4f81fc2751911cea5149d4037c38c90ab24f7181e16465435362d6b5"
+    },
+    "representation": "compound_byte_view_index",
+    "restored_original_bytes": 715546056,
+    "restored_original_sha256": "e74704807a2c920eb88373892730f9566d7c09e8611290dcf6966de7af824c15",
+    "source_count": 6
+  },
+  "prior_encoding_receipt": {
+    "file": "manifest-transport-9cc9c5b1adb603105c917373d98406a89f87d65781bbe9b2e91919a1428359bb.json",
+    "bytes": 2359,
+    "sha256": "9cc9c5b1adb603105c917373d98406a89f87d65781bbe9b2e91919a1428359bb"
+  },
+  "structured_json_transport": {
+    "complete_snapshot_bytes_unchanged": true,
+    "largest_leaf_bytes": 8160738,
+    "leaf_byte_limit": 8388608
+  },
+  "same_json_values": true,
+  "exact_original_json_bytes_retained": true,
+  "original_collection_time_unchanged": true,
+  "original_failures_and_receipts_retained": true,
+  "new_function_acceptances": 0
+}

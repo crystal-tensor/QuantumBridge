@@ -1,8 +1,14 @@
 {
-  "format": "quantumbridge.engineering-history-pointer.v1",
-  "file": "history/catalog-374c9d4896a800c34a8d695fa23563e2e6664090c0efe37a62fd1320ec9fe907.json",
-  "bytes": 7556387,
-  "sha256": "374c9d4896a800c34a8d695fa23563e2e6664090c0efe37a62fd1320ec9fe907",
+  "format": "quantumbridge.engineering-history-pointer.v2",
+  "encoding": "gzip-bytes",
+  "file": "history/catalog-0b353b1253b6c86f52262599c66ba6d14467ca702708895fcb102001400b35c0.json.gz",
+  "bytes": 1530996,
+  "sha256": "0b353b1253b6c86f52262599c66ba6d14467ca702708895fcb102001400b35c0",
+  "original": {
+    "file": "catalog-374c9d4896a800c34a8d695fa23563e2e6664090c0efe37a62fd1320ec9fe907.json",
+    "bytes": 7556387,
+    "sha256": "374c9d4896a800c34a8d695fa23563e2e6664090c0efe37a62fd1320ec9fe907"
+  },
   "replayIsNotNewVerification": true,
   "newFunctionAcceptances": 0
 }
