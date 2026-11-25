@@ -1,51 +1,56 @@
 {
-  "format": "quantumbridge.snapshot-transport.v1",
+  "format": "quantumbridge.snapshot-transport.v2",
   "purpose": "TRANSPORT_REPLAY_NOT_NEW_VERIFICATION",
   "snapshot_identity": {
-    "generated_at": "2026-11-24T18:15:56.318299+00:00",
-    "source_fingerprint": "e0ba118c9c5710ee94b4184a06736fe486bf40495c032414529e56a1b84ee6ae"
-  },
-  "original_json": {
-    "bytes": 688215721,
-    "sha256": "c67d37e922c79537cf049fa1a6f3521fa9a504b1bd0bc8f351b69a19f2bd09cc"
+    "generated_at": "2026-11-25T01:20:52.500344+00:00",
+    "source_fingerprint": "7c37165a4f81fc2751911cea5149d4037c38c90ab24f7181e16465435362d6b5"
   },
   "compact_json": {
-    "bytes": 688215721,
-    "sha256": "c67d37e922c79537cf049fa1a6f3521fa9a504b1bd0bc8f351b69a19f2bd09cc"
+    "bytes": 709911969,
+    "sha256": "090fc67cabd9e368a66433b09ccbbd2621144080b29237f1290432010e698c76"
   },
-  "original_gzip": {
-    "file": "manifest-16d92c708fad73c5d8bd4246dedf065933b0db5907604f3927ec621f2b3d8c7d.json.gz",
-    "bytes": 37289606,
-    "sha256": "16d92c708fad73c5d8bd4246dedf065933b0db5907604f3927ec621f2b3d8c7d"
+  "original_json": {
+    "bytes": 709911969,
+    "sha256": "090fc67cabd9e368a66433b09ccbbd2621144080b29237f1290432010e698c76"
   },
   "original_index": {
+    "file": "manifest-full-index-f648f0fddca09514c33936cd3a64100eaac3e8007c8010ff00f72ed9a7a2c126.json.gz",
     "bytes": 593,
-    "sha256": "ba7c8406b137b66de229d75ea617c7429465dd92a61f97a6af2db831b1c062f7",
-    "utf8": "{\n  \"public_snapshot_format\": \"quantumbridge.public-snapshot-gzip.v1\",\n  \"encoding\": \"gzip\",\n  \"file\": \"manifest-16d92c708fad73c5d8bd4246dedf065933b0db5907604f3927ec621f2b3d8c7d.json.gz\",\n  \"bytes\": 688215721,\n  \"sha256\": \"c67d37e922c79537cf049fa1a6f3521fa9a504b1bd0bc8f351b69a19f2bd09cc\",\n  \"compressed_bytes\": 37289606,\n  \"compressed_sha256\": \"16d92c708fad73c5d8bd4246dedf065933b0db5907604f3927ec621f2b3d8c7d\",\n  \"snapshot_identity\": {\n    \"generated_at\": \"2026-11-24T18:15:56.318299+00:00\",\n    \"source_fingerprint\": \"e0ba118c9c5710ee94b4184a06736fe486bf40495c032414529e56a1b84ee6ae\"\n  }\n}\n"
+    "sha256": "f648f0fddca09514c33936cd3a64100eaac3e8007c8010ff00f72ed9a7a2c126",
+    "encoding": "gzip-bytes"
   },
-  "browser_assets": {
-    "manifest-browser.json.gz": {
-      "bytes": 31534,
-      "sha256": "2939b77c607c2e5b51bf2ca7bd184574e3393a5e6f4875e651fbebe6a7d808f2"
-    },
-    "manifest-evidence.json.gz": {
-      "bytes": 251280,
-      "sha256": "7dd22d533154e3b86f9cbffe4f1ce11bc197689fa6a60e2f16ad660d6173d5ec"
+  "current_index": {
+    "file": "manifest.json",
+    "bytes": 809,
+    "sha256": "37df237d83a66f8c36d23ae6ff2f39f68595b4ad964cedd5e4869a9f156f09e7"
+  },
+  "complete_download": {
+    "file": "manifest.json.gz",
+    "bytes": 38434735,
+    "sha256": "062dbeddf2849355d8dc1fc2cef82b7e439e0eb92b2f8b5adb2f292f44d99ef8"
+  },
+  "previous_base": {
+    "file": "manifest-16d92c708fad73c5d8bd4246dedf065933b0db5907604f3927ec621f2b3d8c7d.json.gz",
+    "bytes": 37289606,
+    "sha256": "16d92c708fad73c5d8bd4246dedf065933b0db5907604f3927ec621f2b3d8c7d",
+    "snapshot_identity": {
+      "generated_at": "2026-11-24T18:15:56.318299+00:00",
+      "source_fingerprint": "e0ba118c9c5710ee94b4184a06736fe486bf40495c032414529e56a1b84ee6ae"
     }
   },
+  "prior_encoding_receipt": {
+    "file": "manifest-transport-14f14bc2c97ffa7334486f53a5c72b3f6aa2fa5447a8c6afadf01345ed84d5f9.json",
+    "bytes": 2526,
+    "sha256": "14f14bc2c97ffa7334486f53a5c72b3f6aa2fa5447a8c6afadf01345ed84d5f9"
+  },
+  "structured_json_transport": {
+    "complete_snapshot_bytes_unchanged": true,
+    "largest_leaf_bytes": 8160738,
+    "leaf_byte_limit": 8388608
+  },
   "same_json_values": true,
+  "exact_original_json_bytes_retained": true,
   "original_collection_time_unchanged": true,
   "original_failures_and_receipts_retained": true,
-  "new_function_acceptances": 0,
-  "structured_json_transport": {
-    "format": "quantumbridge.structured-json.v1",
-    "index_sha256": "1a98d4ef6de7a710bc40b5bb454bc7417fac5cb13eaa694de03e6c916b1f7a5f",
-    "leaf_byte_limit": 8388608,
-    "largest_leaf_bytes": 8160738,
-    "nodes": 24999,
-    "complete_snapshot_bytes_unchanged": true,
-    "complete_download_sha256": "16d92c708fad73c5d8bd4246dedf065933b0db5907604f3927ec621f2b3d8c7d",
-    "new_function_acceptances": 0,
-    "original_evidence_dates_unchanged": true
-  }
+  "new_function_acceptances": 0
 }
