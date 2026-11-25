@@ -1,6 +1,6 @@
 import { domains, directions } from "../framework/data.js";
 import { resources, engineeringReviewDownload, resourceHref } from "../framework/resources.js?observer=20261119-review";
-import { statuses, statusNames, countStatuses, filterRows, aggregate, isStale, verificationWindow, currentVerification, pendingIntegration, approvedMigrations, abnormalObservations, originalChildFollowup, decodeDataset, restoreManifest, fullContractReview } from "./model.js?manifest=delivery-20261123";
+import { statuses, statusNames, countStatuses, filterRows, aggregate, isStale, verificationWindow, currentVerification, pendingIntegration, approvedMigrations, abnormalObservations, originalChildFollowup, decodeDataset, restoreManifest, fullContractReview, functionEvidenceFilename } from "./model.js?manifest=bind-20261125";
 import { verifiedJSON, verifiedEvidence } from "./transport.js?http=delivery-20261124";
 import { scheduleIconLibrary } from "../icon-library.js";
 import { restoreMigrationPool } from "./migration-pool.js?observer=delivery-20261123";
@@ -301,8 +301,9 @@ async function detail(id) {
     const missingScope = t("尚未单独登记逐函数验证范围；批次证据不等于本函数完整验收。", "Per-function evidence scope is not yet registered; batch evidence does not certify this full function.");
     const scope=t(row.review.evidence_scope_zh || row.review.evidence_scope || missingScope, row.review.evidence_scope || missingScope);
     const remaining=t(row.review.remaining_zh || row.review.remaining || "", row.review.remaining || "");
-    if (accepted) {
-      const bundle = new URL(`./data/function-contracts-${row.review.project_fingerprint}.json.gz`, import.meta.url);
+    const evidenceFile = accepted ? functionEvidenceFilename(row.review) : null;
+    if (evidenceFile) {
+      const bundle = new URL(`./data/${evidenceFile}`, import.meta.url);
       dialog.querySelector(".detail-body").insertAdjacentHTML("beforeend", `<p><a data-function-contracts href="${esc(bundle.href)}" download>${t("下载本批逐函数验收原始证据（gzip JSON）", "Download this batch's per-function evidence (gzip JSON)")}</a></p>`);
     }
     dialog.querySelector(".detail-body").insertAdjacentHTML("beforeend", `<h3>${accepted ? t("已验收的函数合同", "Accepted function contract") : t("已登记的局部合同", "Recorded scoped contract")}</h3><p>${accepted ? t("已按当前固定合同验收；原有严格失败、未封闭分母与未发布核心源码仍单独披露。", "Accepted against the current pinned contract; existing strict failures, the open denominator and unpublished core remain separately disclosed.") : t("以下为当前源码的局部审查，不代表完整函数、SDK 或真机验收通过。", "This is a scoped review for the current source, not full function, SDK or hardware acceptance.")}</p><dl><dt>${t("Native 对应入口", "Native entry")}</dt><dd><code>${esc(row.review.native_entry || row.name)}</code></dd><dt>${t("验证范围", "Evidence scope")}</dt><dd>${esc(scope)}</dd><dt>${t("仍待验收", "Remaining acceptance")}</dt><dd>${esc(remaining)}</dd></dl><details><summary>${t("合同与证据身份", "Contract and evidence identity")}</summary><pre>${esc(JSON.stringify(row.review, null, 2))}</pre></details>`);

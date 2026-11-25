@@ -23,6 +23,16 @@ export function fullContractReview(row, fingerprint) {
     ["contract_complete", "native_independent", "versions_verified", "strict_tests_pass"].every(key => review[key] === true) &&
     /^[0-9a-f]{64}$/.test(review.evidence_hash || "");
 }
+export function functionEvidenceFilename(review) {
+  const fingerprint = review?.project_fingerprint;
+  if (!/^[0-9a-f]{64}$/.test(fingerprint || "")) return null;
+  const legacy = `function-contracts-${fingerprint}.json.gz`;
+  if (review.evidence_bundle_file === undefined) return legacy;
+  const file = review.evidence_bundle_file;
+  const prefix = `function-contracts-${fingerprint}`;
+  return typeof file === "string" && file.startsWith(prefix) &&
+    /^function-contracts-[0-9a-f]{64}(?:-[a-z0-9]+)*\.json\.gz$/.test(file) ? file : null;
+}
 export const deferredManifestFields = ["verification", "test_contexts", "runtime_census", "goal_execution", "strict_backlog", "diagnostic_observations", "tests"];
 export function validDeferredManifestFields(fields) {
   if (!Array.isArray(fields)) return false;

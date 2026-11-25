@@ -6,15 +6,15 @@
   <meta name="description" content="QuantumBridge 工程验收：逐函数清单、源码证据、严格失败与夸父任务收据。">
   <title>QuantumBridge · 工程进展</title>
   <link rel="icon" href="./assets/ecosystem-icon.svg">
-  <link rel="stylesheet" href="./src/progress/progress.css?observer=integration-20261125">
+  <link rel="stylesheet" href="./src/progress/progress.css?observer=bind-20261125">
 </head>
 <body>
-  <aside class="publication-note" aria-label="本次发布范围" data-current-contracts="29" data-contract-source="7c37165a4f81fc2751911cea5149d4037c38c90ab24f7181e16465435362d6b5">
+  <aside class="publication-note" aria-label="本次发布范围" data-current-contracts="30" data-contract-source="7c37165a4f81fc2751911cea5149d4037c38c90ab24f7181e16465435362d6b5">
     <strong>2026-11-25 工程进展更新</strong>
-    <p>当前冻结源码已按完整合同验收 29 项：8 个核心模块的工作区集成后，全部 29 项重新执行并独立核对回执；本批新增完整验收项为 0。核心代码尚未发布。</p>
-    <details><summary>查看发布范围与当前限制</summary><p>本次只发布工程观察页、验收证据和下载资料，不是核心函数库发布。当前冻结源码指纹：<code>7c37165a4f81fc2751911cea5149d4037c38c90ab24f7181e16465435362d6b5</code>。双环境选定 Native 范围各 2504/2504 通过，Qiskit 参考范围各 7381/7381 通过，独立安装的 SDK-free 范围 2509/2509 通过。选定严格组各 30 项中仍有 4 项 TensorFlow 失败；独立主/备参考范围仍有 7/9 项失败，不能将交叠批次相加成全套通过。原测试迁移累计 47 个文件、93 个案例，迁移过的文件不算作原样保留。元数据保留 11 月 21 日原采集时间，真机收据保留 11 月 19 日原时间，本次没有新增硬件任务。完整分母仍未封闭，首次分母审查已逾期；2027 年 5 月 11 日硬截止不变，交付预测仍为高风险、未验证。</p></details>
+    <p>当前冻结源码已按完整合同验收 30 项：全部 29 项重新执行并独立核对回执；本批新增完整验收项为 1：<code>BindingsArray.bind</code>，不重复计算导出别名。核心代码尚未发布。</p>
+    <details><summary>查看发布范围与当前限制</summary><p>本次只发布工程观察页、验收证据和下载资料，不是核心函数库发布。当前冻结源码指纹：<code>7c37165a4f81fc2751911cea5149d4037c38c90ab24f7181e16465435362d6b5</code>。双环境选定 Native 范围各 2612/2612 通过，原有 Qiskit 参考范围各 7381/7381 通过，绑定方法专项参考各 108/108 通过，独立安装的 SDK-free 范围 2617/2617 通过。新增验收仅限 bind 方法，不包括整个类或 bind_all。选定严格组各 30 项中仍有 4 项 TensorFlow 失败；独立主/备参考范围仍有 9/9 项失败，其中主版本新增发现 2 项 SDK 自身 QPY 往返失败，已用不导入 Native 的进程复现，原断言和失败回执完整保留。Native 导出的三组非线性绑定线路均可由两个 SDK 正确读取。不能将交叠批次相加成全套通过。原测试迁移累计 47 个文件、93 个案例，迁移过的文件不算作原样保留。元数据保留 11 月 21 日原采集时间，真机收据保留 11 月 19 日原时间，本次没有新增硬件任务。完整分母仍未封闭，首次分母审查已逾期；2027 年 5 月 11 日硬截止不变，交付预测仍为高风险、未验证。</p></details>
   </aside>
   <div id="engineering-app" aria-busy="true"><p class="loading">正在读取工程快照…</p></div>
-    <script type="module" src="./src/progress/main.js?observer=integration-20261125"></script>
+    <script type="module" src="./src/progress/main.js?observer=bind-20261125"></script>
 </body>
 </html>
