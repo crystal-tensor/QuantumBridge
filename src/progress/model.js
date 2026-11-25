@@ -119,6 +119,12 @@ export function currentVerification(manifest) {
     [...latest.values()].filter(item => item.profile === profile && item.status === "failed").map(item => item.id).sort()]));
   const coreKey = manifest.goal_execution?.latest_core_validation_key;
   const batch = coreKey ? manifest.goal_execution[coreKey] : manifest.goal_execution?.latest_verification_batch;
+  const hasFullManifest = /^[0-9a-f]{64}$/.test(batch?.source_manifest_sha256 || "") &&
+    /^[0-9a-f]{64}$/.test(batch?.full_manifest_sha256 || "");
+  const matchesManifest = row => row.source_manifest_sha256 === batch?.source_manifest_sha256 ||
+    (hasFullManifest && row.source_manifest_sha256 === batch.full_manifest_sha256 &&
+      row.source_fingerprint === batch.source_fingerprint && batch.source_fingerprint === manifest.source.fingerprint &&
+      row.process_terminal_match === true && [0, 1].includes(row.process_terminal_validation?.exit));
   const review = coreKey ? batch : manifest.goal_execution?.latest_strict_review;
   const reviewBatch = coreKey ? batch : Object.values(manifest.goal_execution || {}).find(value =>
     value?.checkpoint === review?.checkpoint && value?.source_fingerprint === manifest.source.fingerprint &&
@@ -158,14 +164,14 @@ export function currentVerification(manifest) {
     return proof ? [{...item,report:proof,recordedAt:proof.recorded_at}] : [];
   });
   if (batchMatches && coreKey && !reports.length && batch.source_manifest_sha256) {
-    reports = rows.filter(row => row.source_manifest_sha256 === batch.source_manifest_sha256).map(row =>
+    reports = rows.filter(matchesManifest).map(row =>
       ({ profile: row.profile, scope: row.name, report: row, checkpoint: batch.checkpoint, recordedAt: row.recorded_at }));
   }
   const references=(batch?.profiles || []).filter(profile=>profile.separate_reference_scope?.configuration_id ||
     (Array.isArray(profile.current_selected_unique_reference_failure_ids) &&
       Object.hasOwn(batch?.current_selected_unique_reference_failures_each_profile || {}, profile.profile))).map(profile=>{
     if (!profile.separate_reference_scope?.configuration_id) {
-      const proofs = rows.filter(row => row.source_manifest_sha256 === batch.source_manifest_sha256 &&
+      const proofs = rows.filter(row => matchesManifest(row) &&
         row.reference_execution_identity_validation?.verified === true &&
         row.reference_execution_identity_validation.configuration_id === row.profile &&
         row.profile.startsWith(profile.profile + "-") && row.profile !== profile.profile);
@@ -195,7 +201,7 @@ export function currentVerification(manifest) {
     const selectionValid=batchCountValid&&(selection===undefined||(Array.isArray(selection)&&selection.length===batchCount&&
       selection.every(item=>typeof item.name==="string"&&item.profile===identifier&&/^[0-9a-f]{64}$/.test(item.evidence_hash))&&
       new Set(selection.map(item=>JSON.stringify([item.name,item.profile,item.evidence_hash]))).size===selection.length));
-    const proofs=rows.filter(row=>row.profile===identifier&&row.source_manifest_sha256===batch.source_manifest_sha256&&
+    const proofs=rows.filter(row=>row.profile===identifier&&matchesManifest(row)&&
       row.reference_execution_identity_validation?.verified===true&&
       row.reference_execution_identity_validation.configuration_id===identifier&&selectionValid&&
       (selection===undefined||selection.some(item=>item.name===row.name&&item.profile===row.profile&&item.evidence_hash===row.evidence_hash)));

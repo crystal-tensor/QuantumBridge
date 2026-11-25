@@ -6,15 +6,15 @@
   <meta name="description" content="QuantumBridge 工程验收：逐函数清单、源码证据、严格失败与夸父任务收据。">
   <title>QuantumBridge · 工程进展</title>
   <link rel="icon" href="./assets/ecosystem-icon.svg">
-  <link rel="stylesheet" href="./src/progress/progress.css?observer=catalog31-20261126">
+  <link rel="stylesheet" href="./src/progress/progress.css?observer=export32-20261126">
 </head>
 <body>
-  <aside class="publication-note" aria-label="本次发布范围" data-current-contracts="31" data-contract-source="736fbd3dde71d27d86ac263f969f43936863195511cfc00ea2e7d71ab4273ee8">
+  <aside class="publication-note" aria-label="本次发布范围" data-current-contracts="32" data-contract-source="b573d549656082fd8b226112fd6939a9e30369eadb1130ed4f68a38ed80b94b6">
     <strong>2026-11-26 工程进展更新</strong>
-    <p>当前冻结源码已按完整合同验收 31 项：全部 31 项重新执行并独立核对回执。比上次线上快照增加 1 项，为 11 月 25 日完成验收的 <code>BindingsArray.bind_all</code>；不是 11 月 26 日新完成的验收。本次快照构建不新增完整合同。核心代码尚未发布。</p>
-    <details><summary>查看发布范围与当前限制</summary><p>本次只发布工程观察页、验收证据和下载资料，不是核心函数库发布。当前冻结源码指纹：<code>736fbd3dde71d27d86ac263f969f43936863195511cfc00ea2e7d71ab4273ee8</code>。双环境选定 Native 范围各 2777/2777 通过，Qiskit 参考范围各 7532/7532 通过，编译器 Native 范围各 1365/1365 通过，绑定方法专项参考各 108/108 通过；独立安装的 SDK-free 范围 2782/2782 通过。这些是不同范围的测试案例数，不是完整函数数量，不能相加成全套通过。选定严格组各 30 项仍有 4 项 TensorFlow 失败；独立主/备参考范围仍各有 10 项失败。主版本其中 2 项为实际 SDK 自身 QPY 往返失败。原测试迁移累计 48 个文件、99 个案例，包括最近精确迁移的 6 条过时稀疏执行元数据断言；原数学、容差及资源限制保留，迁移过的文件不算原样保留。相同 Native 指纹不能刷新旧断言的证据。失败的 TensorFlow 原型不进入生产，也不计任何函数验收。保留全部 12 条异常终止记录、32 项诊断及历史失败。运行时元数据保留 11 月 21 日采集时间，27 条真机收据保留 11 月 19 日原时间，没有新增硬件任务。历史目录仅压缩传输，原目录、哈希、日期和恢复收据不变。完整逐函数分母仍未封闭，首次分母审查已逾期；2027 年 5 月 11 日硬截止不变，交付预测仍为高风险、未验证。</p></details>
+    <p>当前冻结源码已按完整合同验收 32 项：此前 31 项全部重新执行并独立核对回执，11 月 26 日新增 1 项 <code>BindingsArray.as_array</code>。这是一个公共参数数组导出方法，不是整个类或完整函数库的验收。本次页面发布不重复增加验收数。该冻结版本的核心代码尚未发布。</p>
+    <details><summary>查看发布范围与当前限制</summary><p>本次只发布工程观察页、验收证据和下载资料。源码指纹：<code>b573d549656082fd8b226112fd6939a9e30369eadb1130ed4f68a38ed80b94b6</code>。双环境选定 Native 范围各 2826/2826 通过，Qiskit 参考范围各 7639/7639 通过，完整 Primitives 参考范围各 1613/1613 通过；独立安装的 SDK-free 范围 2831/2831 通过。编译器 Native 范围各 1365/1365 通过，绑定方法专项参考各 108/108 通过。这些是不同且有交叠的测试范围，不能相加成全套通过。选定严格组各 30 项仍有 4 项 TensorFlow 失败；选定主/备参考范围仍各有 10 项失败。原保护测试迁移累计仍是 48 个文件、99 个案例，本批未修改这些原测试。另有 9 个后续自编测试文件的迁移记录，本批只将其中 1 个案例的旧回调行为保留到 Legacy 接口，原数学、断言和资源额度不变。迁移文件不算原样保留。拒绝返回上游重复参数放置遗留的未初始化列；不据此伪造数值。保留全部 12 条异常终止、32 项诊断和历史失败，失败的 TensorFlow 原型未进入生产。运行时元数据保留 11 月 21 日采集时间，27 条真机收据保留 11 月 19 日原时间，本批没有新增硬件或收费任务。逐函数分母仍未封闭，首次分母审查已逾期；2027 年 5 月 11 日硬截止不变，交付预测仍为高风险、未验证。本次更新不冒充当日 18 点正式提交。</p></details>
   </aside>
   <div id="engineering-app" aria-busy="true"><p class="loading">正在读取工程快照…</p></div>
-    <script type="module" src="./src/progress/main.js?observer=catalog31-20261126"></script>
+    <script type="module" src="./src/progress/main.js?observer=export32-20261126"></script>
 </body>
 </html>
