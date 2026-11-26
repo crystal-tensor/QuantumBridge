@@ -1,15 +1,16 @@
 import { domains, directions } from "../framework/data.js";
 import { resources, engineeringReviewDownload, resourceHref } from "../framework/resources.js?observer=20261119-review";
 import { statuses, statusNames, countStatuses, filterRows, aggregate, isStale, verificationWindow, currentVerification, pendingIntegration, approvedMigrations, abnormalObservations, originalChildFollowup, decodeDataset, restoreManifest, fullContractReview, functionEvidenceFilename } from "./model.js?manifest=bind-20261125";
-import { verifiedJSON, verifiedEvidence } from "./transport.js?http=delivery-20261124";
+import { verifiedJSON, verifiedEvidence } from "./transport.js?http=history-index-20261126";
 import { scheduleIconLibrary } from "../icon-library.js";
 import { restoreMigrationPool } from "./migration-pool.js?observer=delivery-20261123";
 import { archiveDescriptor } from "./history.js?observer=delivery-20261123";
+import { historyIndexReference, restoreHistoryIndex } from "./history-index.js?observer=20261126";
 
 const root = document.querySelector("#engineering-app");
 const params = new URLSearchParams(location.search);
 const state = { en: params.get("lang") === "en", tab: params.has("domain") ? "domains" : "overview", dataset: "target", query: "", family: "", module: "", status: "", kind: "", hardware: "", page: 0, evidencePage: 0, domain: params.get("domain") || "" };
-let manifest, history, archiveInfo, datasets = {};
+let manifest, history, historyTransport, archiveInfo, datasets = {};
 let evidencePromise, viewGeneration = 0;
 const runtimeDetails = new Map();
 const t = (zh, en) => state.en ? en : zh;
@@ -267,6 +268,10 @@ async function renderView() {
   if (compiler && compilerRuns.length && compilerRuns.every(row => row.source_fingerprint !== manifest.source.fingerprint)) {
     compiler.querySelector("h3").insertAdjacentHTML("afterend", `<p class="muted">${t("核心源码已变化。此处编译结果保留旧快照的指纹和测试时间，不是当前源码的完整编译验收。", "Core source has changed. These compiler results retain the earlier fingerprint and test times, not current-source compiler acceptance.")}</p>`);
   }
+  if (state.tab === "overview" && historyTransport) {
+    root.querySelector("#historical-archive .case-links")?.insertAdjacentHTML("beforeend",
+      `<a data-history-index-download href="./src/progress/data/${esc(historyTransport.file)}" download>${ic("download")}${t("历史索引原始数据", "Original history index")}</a>`);
+  }
   icons();
 }
 async function detail(id) {
@@ -332,7 +337,10 @@ root.addEventListener("change", event => { const field = event.target.dataset.fi
 root.addEventListener("input", event => { if (event.target.id !== "query") return; const selection = event.target.selectionStart; state.query = event.target.value; state.page = 0; renderView(); const input = root.querySelector("#query"); input.focus(); input.setSelectionRange(selection, selection); });
 try {
   manifest = await json(new URL("./data/manifest-browser.json.gz", import.meta.url));
-  history = await json(new URL("./data/history.json", import.meta.url));
+  const historyURL = new URL("./data/history.json", import.meta.url);
+  const historyWire = await json(historyURL);
+  historyTransport = historyIndexReference(historyWire);
+  history = await restoreHistoryIndex(historyWire, historyURL);
   try { archiveInfo = archiveDescriptor(await json(new URL("./data/history-archive.json", import.meta.url))); }
   catch { archiveInfo = null; }
   await loadDataset("target"); shell();

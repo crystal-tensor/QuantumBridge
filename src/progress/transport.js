@@ -9,7 +9,7 @@ const MAX_ORIGINAL = 4 * 1024 ** 3;
 const digest = async bytes => [...new Uint8Array(await crypto.subtle.digest("SHA-256", bytes))].map(value => value.toString(16).padStart(2, "0")).join("");
 const positiveSize = (value, limit) => Number.isSafeInteger(value) && value > 0 && value <= limit;
 
-async function inflateBounded(bytes, limit) {
+export async function inflateBounded(bytes, limit) {
   const reader = new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip")).getReader();
   const chunks = [];
   let length = 0;
