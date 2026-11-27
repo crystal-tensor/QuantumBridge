@@ -13,6 +13,7 @@
     <strong>2026-11-28 工程进展更新：半日快照</strong>
     <p>当前本地冻结源码已按完整合同验收 33 项。本批基线 33 项，新增 0 项、失效或回退 0 项、净增 0 项。11 月 27 日已达到的 33 项保留原验证时间；关键字接口修复、安装资源补验、数值对照和网页维护不计作新增函数。</p>
     <p>快照采集于 2026-11-28 01:55:51（北京时间）。发布身份、线上字节和实际核验完成时间另以交付收据记录；本次半日更新不预记今天 18:00 的日报。<a href="./src/progress/data/delivery-20261127-daily18.json" download>上次日报交付收据</a>；<a href="./src/progress/data/dataset-recovery.json" download>历史同名数据恢复收据</a>；<a href="./src/progress/data/observer-capacity-30757cd2fdbd5054140cc0000a18eb16db733e9306fa3a8bc2f4a53f39d3a256.json" download>本批存储容量评审</a>。</p>
+    <p data-halfday-publication="2026-11-28">本次半日数据发布与线上核验完成：2026-11-28 02:44:18（北京时间）。未预记今天 18:00 的日报。<a href="./src/progress/data/delivery-20261128-halfday.json" download>下载本次半日更新与核验收据</a>。</p>
     <details><summary>查看合同范围、严格失败与证据边界</summary>
       <p>冻结源码指纹：<code>61c76865d27566b403f2cef9bae0a52ab4ee012ad4347d9fc200526438dd6610</code>。四个索引方法的规范关键字调用已修复，原 Legacy 关键字入口保留；它们尚未新增完整合同验收。新关键字用例每个环境 Native 64/64、实际 Qiskit 参考 56/56 通过；原 33 项的相关合同已在这份最终源码和测试上下文重验。交叠组不能相加成全套通过，观察页发布不是完整核心库交付。</p>
       <p>选定严格组每个环境仍为 26 通过、4 失败；选定参考范围仍有主环境 7 项、备用环境 9 项失败。TensorFlow 私有稠密数值正对照达到 16/16，但有三阶边界和资源缺口；后续矩阵无关转置对照仍为 12/16。均未进入生产，也未计入 Native 或逐函数验收。</p>

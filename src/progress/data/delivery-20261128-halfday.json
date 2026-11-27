@@ -1,0 +1,154 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-11-27T18:45:21.763202+00:00",
+  "kind": "HALFDAY_CURRENT_SOURCE_OBSERVER_DATA_DELIVERY_VERIFIED",
+  "date_beijing": "2026-11-28",
+  "formal_daily18_submission": false,
+  "daily18_precredited": false,
+  "submitted_on_time": true,
+  "scheduled_at": "2026-11-27T18:52:08.458120+00:00",
+  "actual_data_verification_completed_at": "2026-11-27T18:44:18.228858+00:00",
+  "actual_data_verification_completed_at_beijing": "2026-11-28T02:44:18.228858+08:00",
+  "late_seconds": 0,
+  "online_target": "https://crystal-tensor.github.io/QuantumBridge/engineering.html",
+  "scientific_data_commit": "1421a74e5b8cd0e55e938da572d5f66555b7dab6",
+  "scientific_data_parent": "013e1ac44a0adeb62750c9160df6bcb4358c17a9",
+  "main_head": "aa0a45b6cfb53ad7da9ad4faa9be722ab645d510",
+  "main_unchanged": true,
+  "source_fingerprint": "61c76865d27566b403f2cef9bae0a52ab4ee012ad4347d9fc200526438dd6610",
+  "scientific_snapshot_generated_at": "2026-11-27T17:55:51.127285+00:00",
+  "full_source_manifest_sha256": "5d6b60e9e846a241174d64bcc4bc3cd65536056f9181a4fe0c8eccab79d13cbf",
+  "baseline_full_contracts": 33,
+  "genuinely_new_distinct_full_contracts": 0,
+  "invalidated_or_stale_contracts": 0,
+  "current_full_contracts": 33,
+  "new_function_entries": [],
+  "selected_Native_failures_each_profile": 4,
+  "selected_reference_failures": {
+    "main": 7,
+    "alternate": 9
+  },
+  "original_protected_files": 1373,
+  "original_unmigrated_files": 1320,
+  "authorized_original_migration_files": 53,
+  "authorized_original_migration_cases": 116,
+  "abnormal_processes_preserved": 12,
+  "diagnostics_preserved": 50,
+  "hardware_receipts": 27,
+  "hardware_evidence_date": "2026-11-19",
+  "runtime_metadata_evidence_date": "2026-11-21",
+  "new_hardware_or_paid_tasks": 0,
+  "public_api_denominator_closed": false,
+  "full_strict_suite_accepted": false,
+  "core_source_published": false,
+  "goal_complete": false,
+  "deadline": "2027-05-11T23:59:59+08:00",
+  "delivery_risk": "HIGH_RISK_UNVERIFIED",
+  "merged_progress_bytes_before_this_receipt": 476897571,
+  "progress_limit_bytes": 503316480,
+  "whole_site_limit_bytes": 1000000000,
+  "storage_capacity_review_sha256": "30757cd2fdbd5054140cc0000a18eb16db733e9306fa3a8bc2f4a53f39d3a256",
+  "checks": {
+    "qa-node-retry": {
+      "terminal_exit": 0,
+      "recorded_at": "2026-11-27T18:33:45.503151+00:00",
+      "terminal_receipt_sha256": "08f75d1356c4ced715aa1fb8d39c8db4807f75bbd3cf5e0f8c0330290cb0618e",
+      "log_sha256": "4a831f8343abeef29c750e9c2141af64df1a97b9250477eb4e6ac5547415e1c4"
+    },
+    "owner-artifact": {
+      "terminal_exit": 0,
+      "recorded_at": "2026-11-27T18:37:01.468198+00:00",
+      "terminal_receipt_sha256": "13b11b2b6498d423b2e0047a91c39b4b5267459d31ac41007499527a7505c123",
+      "log_sha256": "793ac8c39200dd19e6835ab714454265ed6890eecbb9abfac25b409fc14fcb6a"
+    },
+    "browser-private-v2": {
+      "terminal_exit": 0,
+      "recorded_at": "2026-11-27T18:35:53.089455+00:00",
+      "terminal_receipt_sha256": "4c6895a80f6e335d5739f4b79d9a9c30838d3bada1c8e265e7e577943d3935d0",
+      "log_sha256": "9d17854ee0c31d3e3b630506436df2b764785ef785362638ab077f9725a5f0a7"
+    },
+    "publish": {
+      "terminal_exit": 0,
+      "recorded_at": "2026-11-27T18:37:16.928409+00:00",
+      "terminal_receipt_sha256": "9be9000f2e8d5d7aaf61a6cb0f00c79778be0580832ee3d539cc31cf731f2c20",
+      "log_sha256": "66ffe13fda2bea517806220b445eec952d28a98fd6320f1d85b80d79e330c4bd"
+    },
+    "online-bytes": {
+      "terminal_exit": 0,
+      "recorded_at": "2026-11-27T18:39:45.437658+00:00",
+      "terminal_receipt_sha256": "121393569f14342f0d9031d419fb76cc6c55b56af9509f65d04183139f1e3408",
+      "log_sha256": "4b2da8e90902cfae6515233375e6eebab31caa924fcc12b0fa79d0672e91b057"
+    },
+    "browser-online": {
+      "terminal_exit": 0,
+      "recorded_at": "2026-11-27T18:44:18.228858+00:00",
+      "terminal_receipt_sha256": "28258b3049716c3cc9440ede709c1ca262d6f80c9ba5845abf62a4d2bbb15f39",
+      "log_sha256": "302ffde49c2930162aaed43084342db2119361b71661f1dac28a4595ce8903a0"
+    },
+    "current-source-v2": {
+      "terminal_exit": 0,
+      "recorded_at": "2026-11-27T18:22:44.265060+00:00",
+      "terminal_receipt_sha256": "58c33d6c2c45bb78b48adfaa2a2ff488c894301a8809f3f5ceadc16fe9293b24",
+      "log_sha256": "1d46a78584d8fba4ee0de59878cfe4566b238359dfe8a90b0a38c7d454c28684"
+    },
+    "privacy": {
+      "terminal_exit": 0,
+      "recorded_at": "2026-11-27T18:21:31.830489+00:00",
+      "terminal_receipt_sha256": "c2c61511bf7f4b21215247e502bf1c80d3d44979e960fc3bae1434c92a8b6a3e",
+      "log_sha256": "1ebf05f40be60f2e6323758c6b52520bccaf938387db9f9ad2607b830920494e"
+    },
+    "snapshot-main": {
+      "terminal_exit": 0,
+      "recorded_at": "2026-11-27T18:26:48.930860+00:00",
+      "terminal_receipt_sha256": "24564ab2b983556054eba5cccf5ad907faa9566c982b263046de649a21333a13",
+      "log_sha256": "fdf3a83bd7130774c02d972798767e35805b4b71749d40c1d49f4fb9d4da3134"
+    },
+    "snapshot-alternate": {
+      "terminal_exit": 0,
+      "recorded_at": "2026-11-27T18:26:50.093571+00:00",
+      "terminal_receipt_sha256": "c5d8e7276240db9f623d87aa2cd00e01bee3b683d06aab9c4df1e06a3f5a2445",
+      "log_sha256": "c4c525f54477f8d74f13c9875b98a0a5dd68bf2e3d45217bc494109cc917b892"
+    },
+    "historical-preimages": {
+      "terminal_exit": 0,
+      "recorded_at": "2026-11-27T18:31:21.282657+00:00",
+      "terminal_receipt_sha256": "70fa322457932527764e979d87eb95497d29cf2d85e24e8adc2e4b710c2640f8",
+      "log_sha256": "72817dab23dc1b66003501fd3d7c746f1ddb96db0caad8f93e401073b6ba5c41"
+    }
+  },
+  "observer_QA_steps": 38,
+  "observer_QA_not_function_acceptances": true,
+  "public_Node_tests_passed": 358,
+  "public_Node_tests_failed": 0,
+  "public_Node_private_document_exclusions": [
+    "project Word documents are reachable from every domain with valid downloads"
+  ],
+  "owner_artifact_tests_passed": 10,
+  "owner_artifact_tests_skipped": 0,
+  "private_document_check_executed_separately_in_owner_workspace": true,
+  "public_critical_artifacts_verified": 54,
+  "all_changed_actual_online_bytes_verified": true,
+  "online_complete_snapshot_raw_bytes": 788647924,
+  "online_complete_snapshot_raw_sha256": "27bf931dc680db79bcde819aae26120918c2516c1e1f69a674f3918de9ec1859",
+  "browser_viewports": [
+    {
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "actual_default_online_home_engineering_home_and_downloads_verified": true,
+  "online_byte_report_sha256": "83b286706ac5fd1f8b65be57ac31579acf2f2fa4bc0474dcc3880acff4b3dae1",
+  "actual_online_browser_report_sha256": "e78ff4d440243ba50c254303750849242e0983302e5f9ac228eefe72dbab3497",
+  "old_failures_and_original_scientific_dates_preserved": true,
+  "failed_observer_QA_and_selector_attempts_preserved": true,
+  "no_unknown_remote_files_removed": true,
+  "no_global_config_or_authorization_changed": true,
+  "caption_zh": "本地冻结合同",
+  "caption_only_policy_preserved": true,
+  "receipt_publication_separate_from_scientific_evidence": true,
+  "receipt_publication_not_self_certified_or_precredited": true
+}
