@@ -1,0 +1,122 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-11-27T12:41:01.457026+00:00",
+  "kind": "DAILY18_OBSERVER_LATE_DATA_DELIVERY_VERIFIED",
+  "date_beijing": "2026-11-27",
+  "formal_daily18_submission": true,
+  "submitted_on_time": false,
+  "scheduled_at": "2026-11-27T18:00:00+08:00",
+  "actual_data_verification_completed_at": "2026-11-27T12:31:17.487854+00:00",
+  "actual_data_verification_completed_at_beijing": "2026-11-27T20:31:17.487854+08:00",
+  "late_seconds": 9077,
+  "online_target": "https://crystal-tensor.github.io/QuantumBridge/engineering.html",
+  "scientific_data_commit": "06f43837001f238b3f9ddf65296fa3f87f1ff5a5",
+  "scientific_data_parent": "4159a02ced143a707b14c50c06a68e01bc7f0e61",
+  "main_head": "aa0a45b6cfb53ad7da9ad4faa9be722ab645d510",
+  "main_unchanged": true,
+  "source_fingerprint": "a2509199e910bac019a1a403da2e02a933fb3f8897bc627583ddb50ea72133e5",
+  "scientific_snapshot_generated_at": "2026-11-27T06:52:08.458120+00:00",
+  "full_source_manifest_sha256": "ac4b2a309e0918b930df2c0b21fc69f785b02b658ba51dda685f133f46e84eba",
+  "baseline_full_contracts": 32,
+  "genuinely_new_distinct_full_contracts": 1,
+  "invalidated_or_stale_contracts": 0,
+  "current_full_contracts": 33,
+  "new_function_entries": [
+    "quantumbridge.primitives.jobs.PrimitiveJob.result"
+  ],
+  "selected_Native_failures_each_profile": 4,
+  "selected_reference_failures": {
+    "main": 7,
+    "alternate": 9
+  },
+  "original_protected_files": 1373,
+  "original_unmigrated_files": 1320,
+  "authorized_original_migration_files": 53,
+  "authorized_original_migration_cases": 116,
+  "abnormal_processes_preserved": 12,
+  "diagnostics_preserved": 46,
+  "hardware_receipts": 27,
+  "hardware_evidence_date": "2026-11-19",
+  "runtime_metadata_evidence_date": "2026-11-21",
+  "new_hardware_or_paid_tasks": 0,
+  "public_api_denominator_closed": false,
+  "full_strict_suite_accepted": false,
+  "whole_PrimitiveJob_class_accepted": false,
+  "core_source_published": false,
+  "goal_complete": false,
+  "deadline": "2027-05-11T23:59:59+08:00",
+  "delivery_risk": "HIGH_RISK_UNVERIFIED",
+  "merged_progress_bytes_before_this_receipt": 471632701,
+  "progress_limit_bytes": 471859200,
+  "whole_site_limit_bytes": 1000000000,
+  "checks": {
+    "qa-v5": {
+      "terminal_exit": 0,
+      "recorded_at": "2026-11-27T11:57:01.482241+00:00",
+      "terminal_receipt_sha256": "d4b76be3f7e2e11f9da8dc0729175367f590069c8af6fb693d60045d1b702ec2",
+      "log_sha256": "a268f406b5f1990fb13bb2367f320db39de5e7122ac66c67b3c5ffc08a2b13e3"
+    },
+    "browser-v5-private": {
+      "terminal_exit": 0,
+      "recorded_at": "2026-11-27T12:00:51.551232+00:00",
+      "terminal_receipt_sha256": "de455bce73cae2a3fb65fc1a5de4f18e8675aef67a4ccffda336dcfc4358dfab",
+      "log_sha256": "eeceb0e6c49507a4ab6d4761645bfa298c97eae57aa6536886d850617043ee21"
+    },
+    "publish-v5": {
+      "terminal_exit": 0,
+      "recorded_at": "2026-11-27T12:09:47.278043+00:00",
+      "terminal_receipt_sha256": "cb1955a188aa9c73e67bc0598db8486827014d695512b5c7871ad74578bbb497",
+      "log_sha256": "3e5d78f4cfdccd74d97e492335bc56a0e1e402a58690e424422a90a55f7c6c68"
+    },
+    "online-v5-bytes": {
+      "terminal_exit": 0,
+      "recorded_at": "2026-11-27T12:14:46.908139+00:00",
+      "terminal_receipt_sha256": "ff716a45126e490dbd099b021c5f5cd910013c25e485bd5e3955397da9ab2af3",
+      "log_sha256": "fdd42cebb0d3a7508be66d53c6bb5cc19b2a304828d0d61725c357ca9dd5ae16"
+    },
+    "browser-v5-online": {
+      "terminal_exit": 0,
+      "recorded_at": "2026-11-27T12:31:17.487854+00:00",
+      "terminal_receipt_sha256": "9ec32763cd8cb6c8897740eb0c13309eb51a982eb0bff5408d5ccaf9030e9d50",
+      "log_sha256": "9e599ef13b43c57f834b9796e0af976c9a8652c48b69001fbc5e4bd57700584a"
+    },
+    "current-source-v5-scope": {
+      "terminal_exit": 0,
+      "recorded_at": "2026-11-27T12:07:09.477506+00:00",
+      "terminal_receipt_sha256": "cb64ed60c590adfb975f7a84b83ce52ffa7bcfb3daaa0ae6252d47e3eedcccbf",
+      "log_sha256": "1b2b5bf7e936653217e92de62bf1b35aad833b9bd7c04c8c238606fbaa76d209"
+    },
+    "privacy-v5-audit": {
+      "terminal_exit": 0,
+      "recorded_at": "2026-11-27T12:07:13.178020+00:00",
+      "terminal_receipt_sha256": "61e5fb77fc498c2ba08c8630ae0fcea29ef274421d1388113c64dc27077760ac",
+      "log_sha256": "39833b5f15a0736170528a104650fb82b361c907dafbd04653d5d91063ee9d86"
+    }
+  },
+  "observer_QA_steps": 38,
+  "observer_QA_not_function_acceptances": true,
+  "public_critical_artifacts_verified": 56,
+  "all_changed_actual_online_bytes_verified": true,
+  "online_complete_snapshot_raw_bytes": 780971243,
+  "online_complete_snapshot_raw_sha256": "cd712372734786f1ace9ddd9f2f5ccd30f7ba0a532793231271cf8eec59c7702",
+  "browser_viewports": [
+    {
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "actual_default_online_home_engineering_home_and_downloads_verified": true,
+  "online_byte_report_sha256": "ebc558b86ddc0b3b61904e367107ec94e352284d30e9f496e9c1ea14f966c201",
+  "actual_online_browser_report_sha256": "101c394230fe9f5f7ab23baaa052bf798a91671373a65179d55b746c2e53f3d4",
+  "old_failures_and_original_scientific_dates_preserved": true,
+  "no_unknown_remote_files_removed": true,
+  "no_global_config_or_authorization_changed": true,
+  "caption_zh": "本地冻结合同",
+  "caption_only_policy_preserved": true,
+  "receipt_publication_separate_from_scientific_evidence": true,
+  "receipt_publication_not_self_certified_or_precredited": true
+}
