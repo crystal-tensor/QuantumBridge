@@ -1,11 +1,11 @@
 import { domains, directions } from "../framework/data.js";
 import { resources, engineeringReviewDownload, resourceHref } from "../framework/resources.js?observer=20261119-review";
 import { statuses, statusNames, countStatuses, filterRows, aggregate, isStale, verificationWindow, currentVerification, pendingIntegration, approvedMigrations, abnormalObservations, originalChildFollowup, decodeDataset, restoreManifest, fullContractReview, functionEvidenceFilename } from "./model.js?manifest=bind-20261125";
-import { verifiedJSON, verifiedEvidence } from "./transport.js?http=history-index-20261126";
+import { verifiedJSON, verifiedEvidence } from "./transport.js?http=relative-20261127";
 import { scheduleIconLibrary } from "../icon-library.js";
 import { restoreMigrationPool } from "./migration-pool.js?observer=delivery-20261123";
 import { archiveDescriptor } from "./history.js?observer=delivery-20261123";
-import { historyIndexReference, restoreHistoryIndex } from "./history-index.js?observer=20261126";
+import { historyIndexReference, historyIndexSpanFormat, restoreHistoryIndex } from "./history-index.js?observer=spans-20261127";
 
 const root = document.querySelector("#engineering-app");
 const params = new URLSearchParams(location.search);
@@ -269,8 +269,13 @@ async function renderView() {
     compiler.querySelector("h3").insertAdjacentHTML("afterend", `<p class="muted">${t("核心源码已变化。此处编译结果保留旧快照的指纹和测试时间，不是当前源码的完整编译验收。", "Core source has changed. These compiler results retain the earlier fingerprint and test times, not current-source compiler acceptance.")}</p>`);
   }
   if (state.tab === "overview" && historyTransport) {
+    const spans = historyTransport.format === historyIndexSpanFormat;
     root.querySelector("#historical-archive .case-links")?.insertAdjacentHTML("beforeend",
-      `<a data-history-index-download href="./src/progress/data/${esc(historyTransport.file)}" download>${ic("download")}${t("历史索引原始数据", "Original history index")}</a>`);
+      `<a data-history-index-download href="./src/progress/data/${esc(spans ? 'history.json' : historyTransport.file)}" download>${ic("download")}${spans ? t("历史索引分片清单", "History index spans") : t("历史索引原始数据", "Original history index")}</a>`);
+  }
+  if (state.tab === "overview" && manifest.identity_group_storage) {
+    root.querySelector("#historical-archive .case-links")?.insertAdjacentHTML("beforeend",
+      `<a href="./downloads/restore-identity-groups.py" download>${ic("download")}${t("身份分组恢复工具", "Identity-group restoration tool")}</a>`);
   }
   icons();
 }

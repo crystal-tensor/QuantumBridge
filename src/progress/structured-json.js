@@ -10,16 +10,26 @@ export async function parseStructuredJSON(raw, structure) {
   if (!(raw instanceof Uint8Array) || raw.length < 1 || raw.length > MAX_BYTES)
     throw new Error('JSON byte bounds differ');
   if (structure === undefined) return JSON.parse(decode(raw));
-  if (structure?.format !== 'quantumbridge.structured-json.v1' || structure.bytes !== raw.length ||
+  const relative = structure?.format === 'quantumbridge.structured-json-relative.v2';
+  if ((!relative && structure?.format !== 'quantumbridge.structured-json.v1') || structure.bytes !== raw.length ||
       structure.leaf_byte_limit !== structuredJSONLeafLimit || !/^[a-f0-9]{64}$/.test(structure.sha256 || '') ||
       await hash(raw) !== structure.sha256) throw new Error('Structured JSON identity differs');
   let nodes = 0, largestLeaf = 0;
-  function parse(node, depth = 0) {
-    if (++nodes > 500000 || depth > 128 || !Array.isArray(node) || ![2, 4].includes(node.length))
-      throw new Error('Structured JSON node bounds differ');
-    const [start, end, kind, children] = node;
+  function span(node, base) {
+    if (!Array.isArray(node) || ![2, 4].includes(node.length) ||
+        !Number.isSafeInteger(node[0]) || !Number.isSafeInteger(node[1]) || node[0] < 0 ||
+        (relative && node[1] < 1)) throw new Error('Structured JSON span bounds differ');
+    const start = relative ? base + node[0] : node[0];
+    const end = relative ? start + node[1] : node[1];
     if (!Number.isSafeInteger(start) || !Number.isSafeInteger(end) || start < 0 || end <= start || end > raw.length)
       throw new Error('Structured JSON span bounds differ');
+    return [start, end];
+  }
+  function parse(node, depth = 0, base = 0) {
+    if (++nodes > 500000 || depth > 128 || !Array.isArray(node) || ![2, 4].includes(node.length))
+      throw new Error('Structured JSON node bounds differ');
+    const [start, end] = span(node, base);
+    const [, , kind, children] = node;
     if (node.length === 2) {
       if (end - start > structuredJSONLeafLimit) throw new Error('Structured JSON leaf exceeds its bound');
       largestLeaf = Math.max(largestLeaf, end - start);
@@ -34,14 +44,15 @@ export async function parseStructuredJSON(raw, structure) {
       if (!Array.isArray(entry) || entry.length !== 2 || !Array.isArray(entry[1]))
         throw new Error('Structured JSON child differs');
       const [key, child] = entry;
-      if (!Number.isSafeInteger(child[0]) || !Number.isSafeInteger(child[1]) || child[0] < cursor || child[1] >= end)
+      const [childStart, childEnd] = span(child, cursor);
+      if (childStart < cursor || childEnd >= end)
         throw new Error('Structured JSON child coverage differs');
-      if (child[0] - cursor > structuredJSONLeafLimit) throw new Error('Structured JSON separator exceeds its bound');
-      const gap = decode(raw.subarray(cursor, child[0]));
+      if (childStart - cursor > structuredJSONLeafLimit) throw new Error('Structured JSON separator exceeds its bound');
+      const gap = decode(raw.subarray(cursor, childStart));
       if (kind === 'array') {
         if (key !== index || !new RegExp(index ? '^[\\x20\\t\\r\\n]*,[\\x20\\t\\r\\n]*$' : '^[\\x20\\t\\r\\n]*$').test(gap))
           throw new Error('Structured JSON array coverage differs');
-        result.push(parse(child, depth + 1));
+        result.push(parse(child, depth + 1, cursor));
       } else {
         let prefix = gap;
         if (index) {
@@ -55,16 +66,17 @@ export async function parseStructuredJSON(raw, structure) {
         const parsedKey = JSON.parse(prefix.slice(0, colon));
         if (typeof key !== 'string' || Object.hasOwn(result, key) || typeof parsedKey !== 'string' || parsedKey !== key)
           throw new Error('Structured JSON object coverage differs');
-        Object.defineProperty(result, key, { value: parse(child, depth + 1), enumerable: true, writable: true, configurable: true });
+        Object.defineProperty(result, key, { value: parse(child, depth + 1, cursor), enumerable: true, writable: true, configurable: true });
       }
-      cursor = child[1];
+      cursor = childEnd;
     }
     if (!whitespace(raw.subarray(cursor, end - 1))) throw new Error('Structured JSON trailing container content');
     return result;
   }
   const root = structure.root;
   const value = parse(root);
-  if (!whitespace(raw.subarray(0, root[0])) || !whitespace(raw.subarray(root[1])))
+  const [rootStart, rootEnd] = span(root, 0);
+  if (!whitespace(raw.subarray(0, rootStart)) || !whitespace(raw.subarray(rootEnd)))
     throw new Error('Structured JSON trailing document content');
   if (structure.nodes !== nodes || structure.largest_leaf_bytes !== largestLeaf)
     throw new Error('Structured JSON traversal totals differ');

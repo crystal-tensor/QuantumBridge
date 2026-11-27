@@ -1,0 +1,27 @@
+{
+  "recorded_at": "2026-11-27T03:34:50.987311+00:00",
+  "purpose": "HISTORICAL_MUTABLE_URL_RECOVERY_NOT_NEW_VERIFICATION",
+  "previous_published_tree": "1caf8a68181d3bfa86f59fe3d7d8b0d3bbd692f5",
+  "aliases": [
+    {
+      "original_mutable_file": "native.json.gz",
+      "original_compressed_sha256": "97133ad113ea7bd2e261e2d3711248c3cd73610e6d195f3ca32be94c2f92282c",
+      "file": "dataset-original-97133ad113ea7bd2e261e2d3711248c3cd73610e6d195f3ca32be94c2f92282c.json.gz",
+      "bytes": 295005,
+      "exact_frozen_bytes_restored": true
+    },
+    {
+      "original_mutable_file": "target.json.gz",
+      "original_compressed_sha256": "36a5161e6ba7caff41135091685f486414d6a13ac2df2e64e3e1271ae0e2550e",
+      "file": "dataset-original-36a5161e6ba7caff41135091685f486414d6a13ac2df2e64e3e1271ae0e2550e.json.gz",
+      "bytes": 500017,
+      "exact_frozen_bytes_restored": true
+    }
+  ],
+  "runtime_details_exact_gzip_recipe_receipt": "dataset-detail-transport-de12076750be99216a1058e43ba168a3c18b6efaa3261e7dffb535c9ed8f495a.json",
+  "runtime_exact_gzip_recipe_receipt": "dataset-transport-33a60296753d3a2c80e4a45fc775de51baa73739a0b21600db2d73eea3e51888.json",
+  "older_unmatched_mutable_dataset_hashes": "MISSING_MATCHING_FROZEN_BYTES_NOT_RECREATED_OR_CLAIMED_ACCESSIBLE",
+  "previous_complete_download_retained_in_exact_private_git_archive": true,
+  "previous_mutable_urls_not_claimed_to_serve_old_bodies": true,
+  "new_function_acceptances": 0
+}

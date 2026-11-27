@@ -1,7 +1,7 @@
 {
-  "recorded_at": "2026-11-27T03:34:50.987311+00:00",
+  "recorded_at": "2026-11-27T11:32:19.796437+00:00",
   "purpose": "HISTORICAL_MUTABLE_URL_RECOVERY_NOT_NEW_VERIFICATION",
-  "previous_published_tree": "1caf8a68181d3bfa86f59fe3d7d8b0d3bbd692f5",
+  "previous_published_tree": "4159a02ced143a707b14c50c06a68e01bc7f0e61",
   "aliases": [
     {
       "original_mutable_file": "native.json.gz",
@@ -16,10 +16,74 @@
       "file": "dataset-original-36a5161e6ba7caff41135091685f486414d6a13ac2df2e64e3e1271ae0e2550e.json.gz",
       "bytes": 500017,
       "exact_frozen_bytes_restored": true
+    },
+    {
+      "original_mutable_file": "native.json.gz",
+      "original_compressed_sha256": "da327a227c19ef4593c300607434a5839fc0fc76c7db0bab2f73799dde7d1c92",
+      "original_raw_json_sha256": "ed21344c323c87250e6774643007c4e72eae590f5366472d59d836d831e8d7e7",
+      "bytes": 299118,
+      "immutable_revision_archive": {
+        "provider": "github_raw_immutable_commit",
+        "commit": "4159a02ced143a707b14c50c06a68e01bc7f0e61",
+        "repository": "crystal-tensor/QuantumBridge",
+        "path": "src/progress/data/native.json.gz",
+        "source_url": "https://raw.githubusercontent.com/crystal-tensor/QuantumBridge/4159a02ced143a707b14c50c06a68e01bc7f0e61/src/progress/data/native.json.gz"
+      },
+      "actual_online_bytes_verified": true,
+      "actual_online_receipt": {
+        "recorded_at": "2026-11-27T07:07:07.089858+00:00",
+        "started_at": "2026-11-27T07:07:05.413005+00:00",
+        "terminal": true,
+        "pid": 94272,
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 299118,
+        "sha256": "da327a227c19ef4593c300607434a5839fc0fc76c7db0bab2f73799dde7d1c92",
+        "source_url": "https://raw.githubusercontent.com/crystal-tensor/QuantumBridge/4159a02ced143a707b14c50c06a68e01bc7f0e61/src/progress/data/native.json.gz"
+      },
+      "public_content_preexisted_this_batch": true,
+      "new_scientific_verification": false
+    },
+    {
+      "original_mutable_file": "target.json.gz",
+      "original_compressed_sha256": "ce4f050ae8a818aff444e3418a987c7e29482dfd4c53e216d0ee3c3a4be2d995",
+      "original_raw_json_sha256": "3565553f07400ca565aa09553b3c8de681139acfbf7112dd7c048f9451d37252",
+      "bytes": 503389,
+      "immutable_revision_archive": {
+        "provider": "github_raw_immutable_commit",
+        "commit": "4159a02ced143a707b14c50c06a68e01bc7f0e61",
+        "repository": "crystal-tensor/QuantumBridge",
+        "path": "src/progress/data/target.json.gz",
+        "source_url": "https://raw.githubusercontent.com/crystal-tensor/QuantumBridge/4159a02ced143a707b14c50c06a68e01bc7f0e61/src/progress/data/target.json.gz"
+      },
+      "actual_online_bytes_verified": true,
+      "actual_online_receipt": {
+        "recorded_at": "2026-11-27T07:07:09.650260+00:00",
+        "started_at": "2026-11-27T07:07:07.095405+00:00",
+        "terminal": true,
+        "pid": 94284,
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 503389,
+        "sha256": "ce4f050ae8a818aff444e3418a987c7e29482dfd4c53e216d0ee3c3a4be2d995",
+        "source_url": "https://raw.githubusercontent.com/crystal-tensor/QuantumBridge/4159a02ced143a707b14c50c06a68e01bc7f0e61/src/progress/data/target.json.gz"
+      },
+      "public_content_preexisted_this_batch": true,
+      "new_scientific_verification": false
     }
   ],
-  "runtime_details_exact_gzip_recipe_receipt": "dataset-detail-transport-de12076750be99216a1058e43ba168a3c18b6efaa3261e7dffb535c9ed8f495a.json",
-  "runtime_exact_gzip_recipe_receipt": "dataset-transport-33a60296753d3a2c80e4a45fc775de51baa73739a0b21600db2d73eea3e51888.json",
+  "immutable_revision_retention_receipt": {
+    "file": "dataset-history-sources-06155308d9b25c3b3b24bb536eea37950dc8abdf941700c5e15949fafd082ae7.json",
+    "sha256": "06155308d9b25c3b3b24bb536eea37950dc8abdf941700c5e15949fafd082ae7"
+  },
+  "previous_recovery": {
+    "file": "dataset-recovery-7db407733068bf72a9655820e4d9171047e735a107384874ef9b37c5afcc615f.json",
+    "bytes": 1455,
+    "sha256": "7db407733068bf72a9655820e4d9171047e735a107384874ef9b37c5afcc615f"
+  },
+  "runtime_exact_gzip_recipe_receipt": "dataset-transport-3b4b667b300470278239b97b74491bb697cd2676d6132a403ddaf02843873330.json",
   "older_unmatched_mutable_dataset_hashes": "MISSING_MATCHING_FROZEN_BYTES_NOT_RECREATED_OR_CLAIMED_ACCESSIBLE",
   "previous_complete_download_retained_in_exact_private_git_archive": true,
   "previous_mutable_urls_not_claimed_to_serve_old_bodies": true,

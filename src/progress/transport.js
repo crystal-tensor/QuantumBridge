@@ -1,5 +1,5 @@
 import { validDeferredManifestFields } from "./model.js?manifest=delivery-20261123";
-import { parseStructuredJSON } from "./structured-json.js?observer=delivery-20261123";
+import { parseStructuredJSON } from "./structured-json.js?observer=relative-20261127";
 
 const CHUNK_BYTES = 1024 * 1024;
 const CONCURRENCY = 8;

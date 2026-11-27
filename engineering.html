@@ -6,22 +6,21 @@
   <meta name="description" content="QuantumBridge 工程验收：逐函数清单、源码证据、严格失败与夸父任务收据。">
   <title>QuantumBridge · 工程进展</title>
   <link rel="icon" href="./assets/ecosystem-icon.svg">
-  <link rel="stylesheet" href="./src/progress/progress.css?observer=morning-20261127">
+  <link rel="stylesheet" href="./src/progress/progress.css?observer=result-20261127">
 </head>
 <body>
-  <aside class="publication-note" aria-label="本次发布范围" data-current-contracts="32" data-contract-source="a2509199e910bac019a1a403da2e02a933fb3f8897bc627583ddb50ea72133e5" data-checkpoint-phase="morning">
-    <strong>2026-11-27 工程进展更新：上午快照（非 18:00 最终日报）</strong>
-    <p>采集点的本地冻结源码已按完整合同验收 32 项。今日基线 32 项，截至本次采集新增 0 项、失效或回退 0 项、净增 0 项；没有把旧函数重验、合同候选或网页维护计作新增。今天 18:00 的最终日报尚未完成。</p>
-    <p data-morning-publication="2026-11-27">本次上午补更线上核验完成：2026-11-27 12:39:24（北京时间）。这是晨间补更，不替代今天 18:00 的最终日报。<a href="./src/progress/data/delivery-20261127-morning.json" download>下载本次上午发布与核验收据</a>。</p>
-    <p>科学快照采集于 2026-11-27 10:27:32（北京时间），旧测试与硬件证据各自保留原时间。发布完成时间另按远端提交、线上实际字节和浏览器核验记录，不把本地生成算作已上线。<a href="./src/progress/data/delivery-20261126.json" download>查看 11 月 26 日发布收据</a>；<a href="./src/progress/data/dataset-recovery.json" download>历史数据体恢复收据</a>。</p>
-    <details><summary>查看本地集成、严格失败与候选边界</summary>
-      <p>冻结源码指纹：<code>a2509199e910bac019a1a403da2e02a933fb3f8897bc627583ddb50ea72133e5</code>。公共 Job 小批已在本地集成，并完成最终测试上下文核对；19 组同源记录按各自范围保留。选定 Native 范围各 2941/2941、Qiskit 参考范围各 7639/7639、编译范围各 1365/1365、独立安装 SDK-free 范围 2946/2946 通过。不同且交叠的组不能相加成全套通过。上述集成不代表完整 Job 类、整个核心库或线上核心代码已交付。</p>
-      <p>选定严格组每个环境仍为 26 通过、4 失败；当前本地工作区的选定参考范围仍有主环境 8 项、备用环境 10 项失败。另有仅修正原十位寄存器 view 案例判定方式的冻结候选：原始内存与独立位序、Native 和实际 StatevectorSampler 一致，而固定版本 BackendSamplerV2 有明确提取差异。其双环境与 SDK-free 回执已保留，但测试迁移尚未并入本地工作区，不提前扣除工作区失败，也不称为全兼容。</p>
-      <p>当前工作区原保护基线 1373 个文件，其中 1321 个未迁移、52 个文件的 115 个案例有精确迁移记录；迁移过的文件不计作原测试未改。另有 9 个后来新增测试文件、65 个案例的独立记录。view 私有候选为 53 个原文件、116 个案例，不冒充已集成。保留全部既有异常终止、45 组诊断、旧失败和首次 SDK-free 启动失败；正常退出本身不是数学验收。失败的 TensorFlow 原型未进入生产。</p>
-      <p>运行时元数据保留 11 月 21 日原采集时间，27 条真机收据保留 11 月 19 日原时间；没有新增硬件或收费任务，也没有新业务或逐函数真机认证。逐函数分母仍未封闭，首次审查已经逾期；2027 年 5 月 11 日硬截止不变，交付预测仍为高风险、未验证。数据压缩只调整传输编码，不刷新上述证据或增加函数数。</p>
+  <aside class="publication-note" aria-label="本次发布范围" data-current-contracts="33" data-contract-source="a2509199e910bac019a1a403da2e02a933fb3f8897bc627583ddb50ea72133e5" data-checkpoint-phase="daily18-late">
+    <strong>2026-11-27 工程进展更新：18:00 日报延迟补更</strong>
+    <p>采集点的本地冻结源码已按完整合同验收 33 项。今日基线 32 项，本批新增 1 项、失效或回退 0 项、净增 1 项：<code>PrimitiveJob.result</code>。原 32 项已在最终测试上下文真实重验，不把重验、测试迁移或网页维护计作新增。</p>
+    <p>科学快照采集于 2026-11-27 14:52:08（北京时间），旧测试与硬件证据各自保留原时间。本次为 18:00 日程的延迟补更，不记作准时完成。实际发布身份与完成时间按远端提交、线上字节和浏览器核验另行记录；不以本地生成冒充上线，也不刷新科学证据时间。<a href="./src/progress/data/delivery-20261127-morning.json" download>查看本日上午发布收据</a>；<a href="./src/progress/data/dataset-recovery.json" download>历史数据体恢复收据</a>。</p>
+    <details><summary>查看合同范围、严格失败与证据边界</summary>
+      <p>冻结源码指纹：<code>a2509199e910bac019a1a403da2e02a933fb3f8897bc627583ddb50ea72133e5</code>。本批只新增结果获取方法的完整合同，不代表整个 Job 类、全部核心库或供应商服务完成。19 组同源记录分别保留：选定 Native 范围各 2969/2969、Qiskit 参考范围各 7639/7639、编译范围各 1365/1365、实际离线安装 SDK-free 范围 2974/2974 通过。交叠组不能相加成全套通过，网页发布也不等于核心代码交付。</p>
+      <p>选定严格组每个环境仍为 26 通过、4 失败；选定参考范围仍有主环境 7 项、备用环境 9 项失败。非连续寄存器 view 案例已按精确授权迁移到原始内存和独立位序判定；Native 与实际 StatevectorSampler 一致，固定版本 BackendSamplerV2 的提取差异仍明确保留，不称为全兼容。</p>
+      <p>原保护基线 1373 个文件：1320 个未迁移，53 个文件的 116 个案例有精确迁移记录；获准迁移文件不计作原测试未改。另有 9 个后来新增测试文件、65 个案例的独立记录。保留 12 条异常终止、46 组诊断、旧失败和最初失败的新增测试夹具；这些失败未改称通过，TensorFlow 失败原型未进入生产。</p>
+      <p>运行时元数据保留 11 月 21 日原采集时间，27 条真机收据保留 11 月 19 日原时间；没有新增硬件或收费任务，没有新增业务或逐函数真机认证。逐函数分母仍未封闭，首次审查已经逾期；2027 年 5 月 11 日硬截止不变，交付预测仍为高风险、未验证。无损编码只调整传输，不刷新科学证据。</p>
     </details>
   </aside>
   <div id="engineering-app" aria-busy="true"><p class="loading">正在读取工程快照…</p></div>
-    <script type="module" src="./src/progress/main.js?observer=caption-20261127"></script>
+    <script type="module" src="./src/progress/main.js?observer=result-20261127"></script>
 </body>
 </html>
