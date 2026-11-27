@@ -1,7 +1,7 @@
 {
-  "recorded_at": "2026-11-27T11:32:19.796437+00:00",
+  "recorded_at": "2026-11-27T18:11:30.775595+00:00",
   "purpose": "HISTORICAL_MUTABLE_URL_RECOVERY_NOT_NEW_VERIFICATION",
-  "previous_published_tree": "4159a02ced143a707b14c50c06a68e01bc7f0e61",
+  "previous_published_tree": "013e1ac44a0adeb62750c9160df6bcb4358c17a9",
   "aliases": [
     {
       "original_mutable_file": "native.json.gz",
@@ -72,6 +72,90 @@
       },
       "public_content_preexisted_this_batch": true,
       "new_scientific_verification": false
+    },
+    {
+      "original_mutable_file": "native.json.gz",
+      "original_compressed_sha256": "19eb6f777fa0096a9d13bdd4fbfd9ec03f2bf807c4e726c9af822390145beda3",
+      "original_raw_json_sha256": "a0dfa9e1b1b98e255f0e0d9c6324f7e4e4c045c3e16d420c231e3044cf98eafa",
+      "bytes": 287387,
+      "immutable_revision_archive": {
+        "provider": "github_raw_immutable_commit",
+        "repository": "crystal-tensor/QuantumBridge",
+        "commit": "013e1ac44a0adeb62750c9160df6bcb4358c17a9",
+        "path": "src/progress/data/native.json.gz",
+        "source_url": "https://raw.githubusercontent.com/crystal-tensor/QuantumBridge/013e1ac44a0adeb62750c9160df6bcb4358c17a9/src/progress/data/native.json.gz"
+      },
+      "actual_online_bytes_verified": true,
+      "actual_online_receipt": {
+        "started_at": "2026-11-27T18:09:47.911680+00:00",
+        "recorded_at": "2026-11-27T18:10:50.628880+00:00",
+        "terminal": true,
+        "exit": 0,
+        "pid": 82700,
+        "source_url": "https://raw.githubusercontent.com/crystal-tensor/QuantumBridge/013e1ac44a0adeb62750c9160df6bcb4358c17a9/src/progress/data/native.json.gz",
+        "bytes": 287387,
+        "sha256": "19eb6f777fa0096a9d13bdd4fbfd9ec03f2bf807c4e726c9af822390145beda3",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "public_content_preexisted_this_batch": true,
+      "new_scientific_verification": false
+    },
+    {
+      "original_mutable_file": "target.json.gz",
+      "original_compressed_sha256": "ef573d77e7bbf9b218d9d8fd7b1ec2e75221b29de97e1150b80dc04835497d6b",
+      "original_raw_json_sha256": "da6047a3edf3c6e4b15cfbd5f41ecb729b799c271f02a489c4ca7d62c2a5fae8",
+      "bytes": 483265,
+      "immutable_revision_archive": {
+        "provider": "github_raw_immutable_commit",
+        "repository": "crystal-tensor/QuantumBridge",
+        "commit": "013e1ac44a0adeb62750c9160df6bcb4358c17a9",
+        "path": "src/progress/data/target.json.gz",
+        "source_url": "https://raw.githubusercontent.com/crystal-tensor/QuantumBridge/013e1ac44a0adeb62750c9160df6bcb4358c17a9/src/progress/data/target.json.gz"
+      },
+      "actual_online_bytes_verified": true,
+      "actual_online_receipt": {
+        "started_at": "2026-11-27T18:10:50.633971+00:00",
+        "recorded_at": "2026-11-27T18:11:01.712851+00:00",
+        "terminal": true,
+        "exit": 0,
+        "pid": 82942,
+        "source_url": "https://raw.githubusercontent.com/crystal-tensor/QuantumBridge/013e1ac44a0adeb62750c9160df6bcb4358c17a9/src/progress/data/target.json.gz",
+        "bytes": 483265,
+        "sha256": "ef573d77e7bbf9b218d9d8fd7b1ec2e75221b29de97e1150b80dc04835497d6b",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "public_content_preexisted_this_batch": true,
+      "new_scientific_verification": false
+    },
+    {
+      "original_mutable_file": "manifest.json.gz",
+      "original_compressed_sha256": "ef4ea3763aa3fec8af1342f1c51a1c775a9818d7df3b56d495034a1c74f4fe58",
+      "original_raw_json_sha256": "cd712372734786f1ace9ddd9f2f5ccd30f7ba0a532793231271cf8eec59c7702",
+      "bytes": 40208379,
+      "immutable_revision_archive": {
+        "provider": "github_raw_immutable_commit",
+        "repository": "crystal-tensor/QuantumBridge",
+        "commit": "013e1ac44a0adeb62750c9160df6bcb4358c17a9",
+        "path": "src/progress/data/manifest.json.gz",
+        "source_url": "https://raw.githubusercontent.com/crystal-tensor/QuantumBridge/013e1ac44a0adeb62750c9160df6bcb4358c17a9/src/progress/data/manifest.json.gz"
+      },
+      "actual_online_bytes_verified": true,
+      "actual_online_receipt": {
+        "started_at": "2026-11-27T18:11:01.740550+00:00",
+        "recorded_at": "2026-11-27T18:11:30.265524+00:00",
+        "terminal": true,
+        "exit": 0,
+        "pid": 82972,
+        "source_url": "https://raw.githubusercontent.com/crystal-tensor/QuantumBridge/013e1ac44a0adeb62750c9160df6bcb4358c17a9/src/progress/data/manifest.json.gz",
+        "bytes": 40208379,
+        "sha256": "ef4ea3763aa3fec8af1342f1c51a1c775a9818d7df3b56d495034a1c74f4fe58",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "public_content_preexisted_this_batch": true,
+      "new_scientific_verification": false
     }
   ],
   "immutable_revision_retention_receipt": {
@@ -79,13 +163,14 @@
     "sha256": "06155308d9b25c3b3b24bb536eea37950dc8abdf941700c5e15949fafd082ae7"
   },
   "previous_recovery": {
-    "file": "dataset-recovery-7db407733068bf72a9655820e4d9171047e735a107384874ef9b37c5afcc615f.json",
-    "bytes": 1455,
-    "sha256": "7db407733068bf72a9655820e4d9171047e735a107384874ef9b37c5afcc615f"
+    "file": "dataset-recovery-65183a252cc2f03f93a664cc2550f0cdb8f4bb3384a03c57c0bec4242cc17a57.json",
+    "bytes": 4863,
+    "sha256": "65183a252cc2f03f93a664cc2550f0cdb8f4bb3384a03c57c0bec4242cc17a57"
   },
   "runtime_exact_gzip_recipe_receipt": "dataset-transport-3b4b667b300470278239b97b74491bb697cd2676d6132a403ddaf02843873330.json",
   "older_unmatched_mutable_dataset_hashes": "MISSING_MATCHING_FROZEN_BYTES_NOT_RECREATED_OR_CLAIMED_ACCESSIBLE",
   "previous_complete_download_retained_in_exact_private_git_archive": true,
   "previous_mutable_urls_not_claimed_to_serve_old_bodies": true,
-  "new_function_acceptances": 0
+  "new_function_acceptances": 0,
+  "original_current_download_retained_at_verified_immutable_Git_revision": true
 }

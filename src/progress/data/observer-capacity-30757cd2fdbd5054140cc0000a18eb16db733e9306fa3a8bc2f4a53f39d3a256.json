@@ -1,0 +1,26 @@
+{
+  "recorded_at": "2026-11-27T17:48:21.739445+00:00",
+  "purpose": "INTERNAL_OBSERVER_STORAGE_ENVELOPE_REVIEW_NOT_NATIVE_OR_HOST_LIMIT_WAIVER",
+  "actual_remote_heads": {
+    "refs/heads/gh-pages": "013e1ac44a0adeb62750c9160df6bcb4358c17a9",
+    "refs/heads/main": "aa0a45b6cfb53ad7da9ad4faa9be722ab645d510"
+  },
+  "actual_published_progress_bytes": 471638163,
+  "actual_published_site_bytes": 607466018,
+  "previous_internal_progress_limit_bytes": 471859200,
+  "previous_internal_headroom_bytes": 221037,
+  "reviewed_internal_progress_limit_bytes": 503316480,
+  "conservative_published_site_limit_bytes": 1000000000,
+  "maximum_site_bytes_at_new_progress_envelope": 639144335,
+  "reserved_site_headroom_at_new_progress_envelope": 360855665,
+  "official_limit_source": "https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits",
+  "reason": "The450MiB value was a private operational envelope, not the host limit. Current actual site has over390MB headroom. Keep exact byte-span transport, every old remote object, the1GB total gate and100MB minimum reserve; do not weaken scientific or paid-resource gates.",
+  "whole_site_limit_changed": false,
+  "Native_resource_limits_or_tolerances_changed": false,
+  "hardware_task_or_fee_limits_changed": false,
+  "original_ids_hashes_dates_failures_and_receipts_retained": true,
+  "old_remote_paths_removed": false,
+  "global_configuration_or_authorization_changed": false,
+  "lossless_transport_continues": true,
+  "new_function_acceptances": 0
+}
