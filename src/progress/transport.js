@@ -84,7 +84,7 @@ export async function verifiedBytes(url, descriptor, { fetcher = globalThis.fetc
   if (!Number.isSafeInteger(chunkBytes) || chunkBytes < 1 || !Number.isSafeInteger(concurrency) || concurrency < 1 || concurrency > CONCURRENCY) throw new Error("Invalid transfer bounds");
   const target = new URL(url);
   target.searchParams.set("sha256", descriptor.sha256);
-  const options = { cache: "no-cache" };
+  const options = { cache: "no-store" };
   let size = descriptor.bytes ?? null;
   if (size !== null && (!Number.isSafeInteger(size) || size < 1)) throw new Error("Invalid artifact size");
   let ranged = false;
