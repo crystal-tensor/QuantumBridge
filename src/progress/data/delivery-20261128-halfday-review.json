@@ -1,0 +1,133 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-11-28T06:48:10.690786+00:00",
+  "kind": "HALFDAY_DATA_PUBLISHED_BROWSER_DETAILS_DEGRADED",
+  "date_beijing": "2026-11-28",
+  "state": "PUBLIC_BYTES_VERIFIED_FULL_BROWSER_DETAILS_NOT_ACCEPTED",
+  "online_target": "https://crystal-tensor.github.io/QuantumBridge/engineering.html",
+  "scientific_data_commit": "3b419854b174ba4b7c8bb0d9206e68ab948d78a2",
+  "scientific_data_origin_commit": "c17eb4eb3a7e27407b82feb20183cf67c56d842d",
+  "main_head": "aa0a45b6cfb53ad7da9ad4faa9be722ab645d510",
+  "main_unchanged": true,
+  "source_fingerprint": "67025fb74d1e335e234f5575b6c7d9b7eda03ea87db2f61ecf8d9291ef7de43b",
+  "scientific_snapshot_generated_at": "2026-11-28T05:47:46.103259+00:00",
+  "full_source_manifest_sha256": "d24868bd3ba1a01418ab102db38049bad980efe2c3ab401519f602fa0575f7cc",
+  "scheduled_at": "2026-11-28T05:55:51.127285+00:00",
+  "submitted_on_time": false,
+  "actual_data_verification_completed_at": "2026-11-28T06:36:51.950753+00:00",
+  "actual_full_browser_verification_completed_at": null,
+  "full_browser_verification": false,
+  "basic_desktop_mobile_home_function_home_verified": true,
+  "basic_browser_report_sha256": "2bf4fd5cc61f3ae70ec11d6ef3e58dfb3dc16e24978665febbd6e1c2ae10a8c2",
+  "test_and_hardware_details_browser_accepted": false,
+  "known_browser_errors": [
+    "Invalid artifact range response",
+    "signal timed out"
+  ],
+  "instrumented_attempts_preserve_one_explicit_UI_retry": true,
+  "browser_observation_wait_seconds": 900,
+  "production_request_timeout_seconds": 60,
+  "production_concurrency": 2,
+  "cache_policy": "no-store",
+  "cache_guard_unit_regression_passed": true,
+  "network_root_cause_not_proven": true,
+  "current_full_contracts": 33,
+  "baseline_full_contracts": 33,
+  "genuinely_new_distinct_full_contracts": 0,
+  "selected_Native_failures_each_profile": 4,
+  "selected_reference_failures": {
+    "main": 7,
+    "alternate": 9
+  },
+  "canonical_records": 15939,
+  "diagnostic_groups": 59,
+  "hardware_receipts": 27,
+  "hardware_evidence_date": "2026-11-19",
+  "metadata_evidence_date": "2026-11-21",
+  "new_hardware_tasks": 0,
+  "authorized_original_migration_files": 53,
+  "authorized_original_migration_cases": 116,
+  "public_Node_tests_passed": 360,
+  "public_Node_tests_failed": 0,
+  "public_private_document_exclusions": [
+    "project Word documents are reachable from every domain with valid downloads"
+  ],
+  "separate_owner_artifact_tests_passed": 10,
+  "online_complete_snapshot_raw_bytes": 803939543,
+  "online_complete_snapshot_raw_sha256": "cdacc3dfaa391f2cacef66fb65627818ff69b35b69174c748fe5e636259063d5",
+  "actual_online_byte_report_sha256": "85ddd7e4b4cfe3916dfde0243e202941fe793e2869d4c86dad6d93b1fa74fa2d",
+  "critical_online_files_verified": 52,
+  "unchanged_data_receipt_dates_not_refreshed": true,
+  "full_strict_suite_accepted": false,
+  "public_api_denominator_closed": false,
+  "core_source_published": false,
+  "goal_complete": false,
+  "delivery_risk": "HIGH_RISK_UNVERIFIED",
+  "deadline": "2027-05-11T23:59:59+08:00",
+  "formal_daily18_submission": false,
+  "daily18_precredited": false,
+  "scientific_dates_not_refreshed": true,
+  "checks": {
+    "qa-node-final": {
+      "terminal_exit": 0,
+      "recorded_at": "2026-11-28T06:43:08.295431+00:00",
+      "terminal_receipt_sha256": "5826d100c7cbee944d3f6749b11a3d05af530db944f2aaa19dd348d4ead87feb",
+      "log_sha256": "02ba9b18e053f774dedf4edb19baf6b324afbe5d9a592775df9f48ddedc75b3b"
+    },
+    "owner-artifact": {
+      "terminal_exit": 0,
+      "recorded_at": "2026-11-28T06:03:23.056625+00:00",
+      "terminal_receipt_sha256": "15ee5f4d2b282589f4b35d3b9caafa332c9f8d01dc5f1c49b12311aa9bcfaeab",
+      "log_sha256": "85c76096519b77b34bb8b97b5f8cdb61c77bfa0fef33fcea8dcc52aab4107412"
+    },
+    "browser-private-v3": {
+      "terminal_exit": 0,
+      "recorded_at": "2026-11-28T06:39:39.754637+00:00",
+      "terminal_receipt_sha256": "d8a09cbcce428aa8352e5cf52d5244fc6631087539a9da588dda3bfe8d55c1bc",
+      "log_sha256": "244ea5d205b71609f30fedcd44087afb5c5c77bc4f01fb10514527b0d8f31e39"
+    },
+    "publish-cache-fix": {
+      "terminal_exit": 0,
+      "recorded_at": "2026-11-28T06:33:12.427500+00:00",
+      "terminal_receipt_sha256": "65b48bd712e7edd62662ac72b570c84a94ad406d0b0ca9b54d1da3898323d0fc",
+      "log_sha256": "23982172f3a3d179be49a5f6dfbda07338ab965020714df25f785f8bd92e217f"
+    },
+    "online-cache-bytes": {
+      "terminal_exit": 0,
+      "recorded_at": "2026-11-28T06:36:52.329939+00:00",
+      "terminal_receipt_sha256": "ee19f0e82f67a1c4b4acf0d26559b292235452a71730159333129fbe34fd8650",
+      "log_sha256": "39297234973bb1a9cb8ae8573a0946aa3b165c9e9e7a6e0e35626a6da2756fad"
+    },
+    "privacy-cache": {
+      "terminal_exit": 0,
+      "recorded_at": "2026-11-28T06:36:46.221857+00:00",
+      "terminal_receipt_sha256": "4e634a600a5d893c60e7538b8895b6615e8887da36d38f1cd07e8690d43b13af",
+      "log_sha256": "70b6914543eb45539dbf521a8b73eb3a1f1798dfd97159f1ece96d54b9973ce3"
+    },
+    "browser-basic-online": {
+      "terminal_exit": 0,
+      "recorded_at": "2026-11-28T06:46:44.066640+00:00",
+      "terminal_receipt_sha256": "400ee3bef598aa6290fe3878980c65a8094a7d0e32f8aa8e9ba6f085636354dc",
+      "log_sha256": "4b453f15aeee53c2812db55a41cb5400ae1d62a9916b92336d52456abffbd6cb"
+    },
+    "browser-online": {
+      "terminal_exit": 1,
+      "recorded_at": "2026-11-28T06:19:30.551721+00:00",
+      "terminal_receipt_sha256": "49c772aa023c06334ae1e433488002c1f9828a7ce193ad76744d421f2064a8d0",
+      "log_sha256": "fafeea38b0ba92de727000a29c9d9652b20ec85410ebb8e185469d44b8a4661e"
+    },
+    "browser-online-v2": {
+      "terminal_exit": 1,
+      "recorded_at": "2026-11-28T06:29:57.224245+00:00",
+      "terminal_receipt_sha256": "871e134ea6c0cbbc568093b488f9e7e032925f4a26789f84596d21956b6bb8ba",
+      "log_sha256": "460523a116049cf0d1fce062d843100b93e94b1d27823fd23f4b272415b075f6"
+    },
+    "browser-online-v3": {
+      "terminal_exit": 1,
+      "recorded_at": "2026-11-28T06:44:29.020410+00:00",
+      "terminal_receipt_sha256": "dce4d86b8cd4228308231045cfa9b21af77fd3941ef9c01f64e06c2635584670",
+      "log_sha256": "e5c498bb8fc43e88c4387b2741a17c7cba1adb35b48a729dd81b0afc0e4dbf80"
+    }
+  },
+  "next_action": "Repair bounded browser evidence loading without deleting historical records or relaxing integrity, then repeat full default-browser checks."
+}
