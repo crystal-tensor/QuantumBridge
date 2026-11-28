@@ -1,0 +1,26 @@
+{
+  "recorded_at": "2026-11-28T05:36:40.400805+00:00",
+  "purpose": "INTERNAL_OBSERVER_STORAGE_ENVELOPE_REVIEW_NOT_NATIVE_OR_HOST_LIMIT_WAIVER",
+  "actual_remote_heads": {
+    "refs/heads/gh-pages": "941a3d211ed1cb6b257cfc891b5022c88aa18f20",
+    "refs/heads/main": "aa0a45b6cfb53ad7da9ad4faa9be722ab645d510"
+  },
+  "actual_published_progress_bytes": 476904690,
+  "actual_published_site_bytes": 612732722,
+  "previous_internal_progress_limit_bytes": 503316480,
+  "previous_internal_headroom_bytes": 26411790,
+  "reviewed_internal_progress_limit_bytes": 503316480,
+  "conservative_published_site_limit_bytes": 1000000000,
+  "maximum_site_bytes_at_new_progress_envelope": 639144512,
+  "reserved_site_headroom_at_new_progress_envelope": 360855488,
+  "official_limit_source": "https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits",
+  "reason": "Retain the already-reviewed480MiB observer envelope and1GB whole-site gate. Preserve every old remote object and exact source/date identity. This review does not raise host, Native, hardware or fee limits.",
+  "whole_site_limit_changed": false,
+  "Native_resource_limits_or_tolerances_changed": false,
+  "hardware_task_or_fee_limits_changed": false,
+  "original_ids_hashes_dates_failures_and_receipts_retained": true,
+  "old_remote_paths_removed": false,
+  "global_configuration_or_authorization_changed": false,
+  "lossless_transport_continues": true,
+  "new_function_acceptances": 0
+}
